@@ -1,0 +1,735 @@
+// === Header
+
+.module {
+  display: flex;
+  flex-direction: column;
+  min-height: 90vh;
+}
+
+.module__header {
+  flex-grow: 0;
+
+  padding: 2rem 0;
+  background-color: $white;
+}
+
+.module__header-top {
+  display: flex;
+}
+
+.module__title {
+  width: 60%;
+  color: $grey;
+
+  @media (max-width: $mobile) {
+    font-size: 1.3rem;
+  }
+}
+
+.module__return {
+  width: 40%;
+  text-align: right;
+}
+
+.module__body {
+  flex-grow: 1;
+  padding: 3rem 0;
+}
+
+.module__title {
+  margin-bottom: 3rem;
+}
+
+.module__study {
+  padding-bottom: 4rem;
+  border-bottom: 2px solid $grey-light;
+}
+
+.module__study-title {
+  color: $grey;
+  font-weight: bold;
+  font-size: 1.3rem;
+  margin-bottom: 1.2rem;
+}
+
+.module__study-item {
+  & button {
+    color: $grey;
+    font-size: 1.6rem;
+    margin-bottom: 0.3rem;
+    & svg {
+      vertical-align: middle;
+      margin-right: 0.5rem;
+      fill: $blue;
+      transition: all 0.1s linear;
+    }
+    & span {
+      display: inline-block;
+      vertical-align: middle;
+    }
+
+    &:hover {
+      color: $yellow;
+      & svg {
+        fill: $yellow;
+      }
+    }
+  }
+}
+
+.module__info {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 2rem;
+
+  @media (max-width: $mobile-m) {
+    flex-direction: column;
+  }
+}
+
+.module__author {
+  @media (max-width: $mobile-m) {
+    margin-bottom: 1.5rem;
+  }
+}
+
+.module__author-created {
+  color: rgb(134, 134, 134);
+  display: block;
+  font-size: 1.2rem;
+}
+
+.module__author-nickname {
+  color: $grey;
+  display: block;
+  font-size: 1.8rem;
+  font-weight: bold;
+}
+
+.module__nav {
+  position: relative;
+  display: flex;
+  align-items: center;
+  margin-right: 1rem;
+  margin-top: auto;
+  margin-bottom: auto;
+
+  @media (max-width: $mobile-sm) {
+    align-self: center;
+    margin-right: 0;
+  }
+}
+
+.module__drop-studyregime,
+.module__study-regime,
+.module__card-study-regime,
+.module__drop-card-study-regime,
+.edit__save-include,
+.edit__all-cards-save-include {
+  display: flex;
+  align-items: center;
+  line-height: 1;
+  color: $grey;
+  font-size: 1.5rem;
+
+  & svg {
+    margin-left: auto;
+    margin-right: 1rem;
+    fill: $grey;
+    transition: all 0.2s;
+  }
+
+  span {
+    z-index: 30;
+    position: absolute;
+    transition: all 0.2s;
+    color: $grey;
+    margin: 0;
+    background-color: $white;
+    padding: 1rem;
+    box-shadow: 0 0 1.25rem 0 rgba($grey, 0.28);
+    border-radius: 2rem;
+    // display: none;
+    transition: all 0.2s;
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  &:hover span {
+    opacity: 1;
+  }
+}
+
+.module__study-regime,
+.module__drop-studyregime {
+  position: relative;
+  border-right: 2px solid $grey-light;
+
+  & span {
+    top: -4.5rem;
+    width: max-content;
+  }
+}
+
+.module__study-regime {
+  padding-right: 1.5rem;
+  padding-left: 1.5rem;
+}
+
+.module__drop-studyregime {
+  cursor: pointer;
+  padding-right: 0.65rem;
+
+  &:hover {
+    svg {
+      fill: $red;
+    }
+  }
+
+  &[data-active='true'] {
+    span {
+      opacity: 0;
+    }
+
+    svg {
+      fill: $red;
+    }
+  }
+}
+
+.module__card-study-regime,
+.module__drop-card-study-regime {
+  position: absolute;
+  top: 0;
+  left: 42.5px;
+  border: none;
+
+  & span {
+    margin-right: 1rem;
+    top: -4.5rem;
+    left: 0rem;
+    width: max-content;
+  }
+}
+
+.module__drop-card-study-regime {
+  cursor: pointer;
+  left: 115.5px;
+  padding-left: 1.25rem;
+  border-left: 2px solid $grey-light;
+
+  &:hover {
+    svg {
+      fill: $red;
+    }
+  }
+
+  &[data-active='true'] {
+    span {
+      opacity: 0;
+    }
+
+    svg {
+      fill: $red;
+    }
+  }
+}
+
+.module__question {
+  position: absolute;
+  top: -10.5rem;
+  left: 4rem;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  text-align: center;
+  justify-content: space-around;
+  background-color: $white;
+  box-shadow: 0 0 1.25rem 0 rgba($grey, 0.28);
+  padding: 0.5rem;
+  border-radius: 1rem;
+  height: 9rem;
+  width: 20rem;
+
+  transition: all 0.2s;
+  z-index: 2000;
+
+  opacity: 0;
+  pointer-events: none;
+
+  &[data-active='true'] {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  & p {
+    font-size: 1.5rem;
+    width: 100%;
+  }
+
+  @media (max-width: $mobile) {
+    left: 1rem;
+  }
+
+  &--big {
+    width: 22rem;
+    top: -11rem;
+    left: -9.5rem;
+
+    @media (max-width: $mobile) {
+      left: 1.75rem;
+    }
+  }
+}
+
+.module__question-answer {
+  z-index: 30;
+  cursor: pointer;
+  display: inline-block;
+  padding: 0.75rem 2.5rem;
+  border-radius: 0.75rem;
+  transition: all 0.2s;
+  color: $white;
+  user-select: none;
+  font-size: 1.5rem;
+
+  &:hover {
+    animation: pulse 1.25s linear infinite;
+  }
+
+  &[data-answer='false'] {
+    background-color: $palegreen;
+
+    &:hover {
+      background-color: $green;
+    }
+  }
+
+  &[data-answer='true'] {
+    background-color: $palered;
+
+    &:hover {
+      background-color: $red;
+    }
+  }
+}
+
+.module__edit-card {
+  display: flex;
+  position: absolute;
+  top: 0;
+  left: 0;
+  padding-right: 1rem;
+  border-right: 2px solid #f0f0f0;
+  cursor: pointer;
+
+  & svg {
+    fill: $grey;
+    vertical-align: middle;
+    transition: all 0.1s linear;
+  }
+
+  &:hover {
+    & svg {
+      fill: rgba(255, 0, 0, 0.856);
+    }
+  }
+}
+
+.edit__study-progress,
+.edit__save-include,
+.edit__all-cards-save-include {
+  position: relative;
+  padding-right: 1.5rem;
+
+  & span {
+    top: -4.5rem;
+    right: 1.5rem;
+    width: max-content;
+  }
+}
+
+.edit__study-progress,
+.edit__save-include {
+  border-right: 2px solid $grey-light;
+}
+
+.module__checkbox,
+.edit__checkbox {
+  display: none;
+}
+
+.module__checkbox {
+  &:checked {
+    & ~ span {
+      color: $green;
+      border-color: $green;
+    }
+
+    & ~ .module__toggle-switch {
+      border-color: $green;
+      &:after {
+        left: 26px;
+        background-color: $green;
+      }
+    }
+
+    & ~ .module__toggle-switch.sm {
+      &:after {
+        left: 16px;
+      }
+    }
+
+    & ~ svg {
+      fill: $green;
+    }
+  }
+}
+
+.edit__checkbox {
+  &:checked {
+    & ~ .edit__toggle-switch {
+      &:after {
+        left: 26px;
+      }
+    }
+
+    & ~ .edit__toggle-switch.sm {
+      &:after {
+        left: 16.5px;
+      }
+    }
+  }
+
+  &--drop {
+    &:checked {
+      & ~ span {
+        color: $red;
+        border-color: $red;
+      }
+
+      & ~ .edit__toggle-switch {
+        border-color: $red;
+        &:after {
+          background-color: $red;
+        }
+      }
+
+      & ~ svg {
+        fill: $red;
+      }
+    }
+  }
+
+  &--save {
+    &:checked {
+      & ~ span {
+        color: $green;
+        border-color: $green;
+      }
+
+      & ~ .edit__toggle-switch {
+        border-color: $green;
+        &:after {
+          background-color: $green;
+        }
+      }
+
+      & ~ svg {
+        fill: $green;
+      }
+    }
+  }
+}
+
+.module__toggle-switch,
+.edit__toggle-switch {
+  cursor: pointer;
+  position: relative;
+  display: inline-block;
+  height: 2.8rem;
+  width: 5rem;
+  border-radius: 1.4rem;
+  border: 2px solid $grey;
+  transition: all 0.2s;
+
+  &:after {
+    content: '';
+    display: inline-block;
+    position: absolute;
+    top: 3px;
+    left: 2px;
+    height: 1.8rem;
+    width: 1.8rem;
+    background-color: $grey;
+    border-radius: 50%;
+    transition: all 0.2s;
+  }
+
+  &.sm {
+    height: 20px;
+    width: 3.5rem;
+    border-radius: 1rem;
+    border: 1.5px solid $grey;
+
+    &:after {
+      // top: 1px;
+      top: 50%;
+      transform: translateY(-50%);
+      left: 1.5px;
+      // left: 50%;
+      height: 14px;
+      width: 14px;
+    }
+  }
+}
+
+.module__nav-item {
+  display: inline-block;
+  margin-left: 1.5rem;
+  border-radius: 5rem;
+  cursor: pointer;
+
+  & svg {
+    fill: $grey;
+    vertical-align: middle;
+    transition: all 0.1s linear;
+  }
+
+  &:hover {
+    & svg {
+      fill: rgba(255, 0, 0, 0.856);
+    }
+  }
+}
+
+.module__edit {
+  margin-right: 1rem;
+}
+
+// === Body
+
+.module__param {
+  display: flex;
+  justify-content: space-between;
+  padding-bottom: 3rem;
+
+  @media (max-width: $tablet) {
+    flex-direction: column;
+  }
+}
+
+.module__search {
+  width: 70%;
+
+  @media (max-width: $tablet) {
+    margin-top: 1.5rem;
+  }
+}
+
+.module__select {
+  width: 12.5rem;
+  height: 4rem;
+
+  @media (max-width: $tablet) {
+    margin-top: 1.5rem;
+  }
+}
+
+.module__search-container {
+  display: flex;
+  justify-content: flex-end;
+  transition: all 0.2s;
+
+  input {
+    max-width: 30rem;
+    margin-right: 1.5rem;
+  }
+
+  @media (max-width: $tablet) {
+    flex-direction: column;
+
+    input {
+      margin-right: 0;
+    }
+  }
+}
+
+.module__none-found {
+  text-align: center;
+  font-size: 1.7rem;
+}
+
+.module__count {
+  color: $grey;
+  font-size: 2rem;
+  font-weight: bold;
+}
+
+.module__card {
+  display: flex;
+  background-color: $white;
+  padding: 2rem;
+  min-height: 10rem;
+  margin-bottom: 1.5rem;
+
+  @media (max-width: $tablet-sm) {
+    flex-direction: column;
+  }
+}
+
+.module__card-term {
+  position: relative;
+  width: 30%;
+  text-align: center;
+  padding: 3rem 1.5rem 0 1.5rem;
+  border-right: 2px solid $grey-light;
+
+  font-size: 1.7rem;
+
+  overflow-wrap: break-word;
+
+  @media (max-width: $tablet-sm) {
+    width: 100%;
+    text-align: left;
+    border-right: none;
+    border-bottom: 2px solid $grey-light;
+    padding: 3rem 1rem 1.5rem 1rem;
+  }
+}
+
+.module__speaker,
+.game__speaker-flashcards,
+.game__speaker-write {
+  cursor: pointer;
+  display: flex;
+  position: absolute;
+
+  &.relative {
+    position: initial;
+  }
+
+  animation-duration: 1.5s;
+  animation-iteration-count: infinite;
+
+  svg {
+    transition: all 0.2s;
+    fill: $grey;
+    // transform: scale(1.5);
+  }
+
+  &:hover {
+    svg {
+      fill: $yellow;
+    }
+  }
+
+  &[data-active='false'] {
+    cursor: initial;
+
+    svg {
+      fill: $grey-medium;
+    }
+
+    &:hover {
+      svg {
+        fill: $grey-medium;
+      }
+    }
+  }
+
+  &[data-speaking='true'] {
+    svg {
+      fill: $yellow;
+    }
+
+    animation-name: example;
+  }
+}
+
+.module__speaker {
+  right: 1rem;
+  top: 0;
+
+  svg {
+    height: 17px;
+    width: 17px;
+  }
+}
+
+.game__speaker-flashcards {
+  right: 2rem;
+  top: 2rem;
+
+  svg {
+    height: 22px;
+    width: 22px;
+  }
+}
+
+.module__card-definition-container {
+  width: 70%;
+
+  display: flex;
+
+  @media (max-width: $tablet) {
+    flex-direction: column;
+  }
+
+  @media (max-width: $tablet-sm) {
+    width: 100%;
+    padding-top: 1.5rem;
+  }
+}
+
+.module__card-definition {
+  padding: 3rem 1.5rem 0 1.5rem;
+  position: relative;
+  padding-top: 2rem;
+  // display: none;
+  font-size: 1.7rem;
+  overflow-wrap: break-word;
+  text-align: left;
+
+  flex: 1;
+
+  @media (max-width: $tablet) {
+    padding: 3rem 1rem 0 1rem;
+    flex-direction: column;
+  }
+}
+
+.module__card-img-container {
+  padding: 0 1.5rem;
+  align-self: center;
+  width: 20%;
+  min-width: 12rem;
+
+  margin-left: 1rem;
+
+  &--inactive {
+    display: none;
+  }
+
+  @media (max-width: $tablet) {
+    padding: 0 1rem;
+    margin-left: 0;
+    margin-top: 1rem;
+    width: 100%;
+  }
+}
+
+.module__card-img {
+  margin: 0 auto;
+  width: 12rem;
+  height: 10rem;
+  border-radius: 5px;
+
+  background-size: cover;
+  background-position: center;
+
+  @media (max-width: $tablet) {
+    margin: 0;
+    margin-right: auto;
+  }
+}

@@ -1,0 +1,396 @@
+//main: styles.less
+
+// =========== Textareas
+
+.textarea {
+  display: block;
+  resize: none;
+
+  width: 100%;
+  max-width: 100%;
+
+  font-family: inherit;
+  font-size: 1.7rem;
+  text-align: left;
+  overflow-wrap: break-word;
+
+  border: none;
+  border-bottom: 2px solid $grey;
+
+  padding: 0.5rem 0;
+
+  &:focus {
+    outline: none;
+    border-bottom: 2px solid $yellow;
+  }
+
+  &--module {
+    padding: 1rem 0;
+  }
+
+  &.error {
+    border-color: red;
+  }
+}
+
+// =========== Labels
+
+.label {
+  display: block;
+  width: 100%;
+  text-align: left;
+  color: $grey;
+  font-size: 1.5rem;
+  text-transform: uppercase;
+  &.error {
+    color: red;
+  }
+}
+
+// =========== BTN
+
+.btn {
+  background: none;
+  border: none;
+  padding: 0;
+  margin: 0;
+  font-family: inherit;
+  cursor: pointer;
+  transition: all 0.1s linear;
+
+  &:focus {
+    outline: none;
+  }
+}
+
+.hidden {
+  display: none;
+
+  &__media-tablet {
+    @media (max-width: $tablet) {
+      display: none;
+    }
+  }
+
+  &__media-mobile {
+    @media (max-width: $mobile) {
+      display: none;
+    }
+  }
+
+  &__media-min-tablet {
+    @media (min-width: $tablet) {
+      display: none;
+    }
+  }
+
+  &__media-min-mobile {
+    @media (min-width: $mobile) {
+      display: none;
+    }
+  }
+}
+
+.ai-c {
+  align-items: center;
+}
+
+.d-f {
+  display: flex;
+}
+
+.p-r {
+  position: relative;
+}
+
+.ta-l {
+  text-align: left;
+}
+
+.pad5 {
+  padding: 0.5rem;
+}
+
+.pad7 {
+  padding: 0.7rem;
+}
+
+.pad10 {
+  padding: 1rem;
+}
+
+.pad15 {
+  padding: 1.5rem;
+}
+
+.pad30 {
+  padding: 3rem;
+}
+
+.pad-bot10 {
+  padding-bottom: 1rem;
+}
+
+.pad12-30 {
+  padding: 1.25rem 3rem;
+}
+
+.pad15-20 {
+  padding: 1.5rem 2rem;
+}
+
+.pad10-30 {
+  padding: 1rem 3rem;
+  @media (max-width: $mobile) {
+    padding: 1rem 2rem;
+  }
+}
+
+.pad15-30 {
+  padding: 1.5rem 3rem;
+  @media (max-width: $mobile) {
+    padding: 1rem 2rem;
+  }
+}
+
+.pad20-15 {
+  padding: 2rem 1.5rem;
+}
+
+.pad30-50 {
+  padding: 3rem 5rem;
+  @media (max-width: $mobile) {
+    padding: 2.5rem 4rem;
+  }
+}
+
+.pad30-70 {
+  padding: 3rem 7rem;
+}
+
+.mar-bottom20 {
+  margin-bottom: 2rem;
+}
+
+.no-mar {
+  margin: 0 !important;
+}
+
+.br2 {
+  border: 2px solid $white;
+}
+
+.br-bottom2 {
+  border-bottom: 2px solid $white;
+}
+
+.br-bottom5 {
+  border-bottom: 5px solid $white;
+}
+
+.brr5 {
+  border-radius: 0.5rem;
+}
+
+.brr10 {
+  border-radius: 1rem;
+}
+
+.brr50p {
+  border-radius: 50%;
+}
+
+.brc-lightblue {
+  border-color: $lightblue;
+}
+
+.brc-grey {
+  border-color: $grey;
+}
+
+.brc-grey-medium {
+  border-color: $grey-medium;
+}
+
+.f-brc-yellow {
+  &:focus {
+    border-color: $yellow;
+  }
+}
+
+.h-brc-yellow {
+  &:hover {
+    border-color: $yellow;
+  }
+}
+
+.h-brc-red {
+  &:hover {
+    border-color: $red;
+  }
+}
+
+.bc-none {
+  background: none;
+}
+
+.bcc-white {
+  background-color: $white;
+}
+
+.bcc-mudblue {
+  background-color: #455358;
+}
+
+.bcc-coral {
+  background-color: #fe725b;
+}
+
+.bcc-yellow {
+  background-color: $yellow;
+}
+
+.bcc-lightblue {
+  background-color: $lightblue;
+}
+
+.bcc-whiteblue {
+  background-color: #e8f0fd;
+}
+
+.h-bcc-yellow {
+  &:hover {
+    background-color: $yellow;
+  }
+}
+
+.grey {
+  color: $grey;
+}
+
+.white {
+  color: $white;
+}
+
+.black {
+  color: $black;
+}
+
+.lightblue {
+  color: $lightblue;
+}
+
+.blue {
+  color: $blue;
+}
+
+.h-yellow {
+  &:hover {
+    color: $yellow;
+  }
+}
+
+.h-red {
+  &:hover {
+    color: $red;
+  }
+}
+
+.h-grey {
+  &:hover {
+    color: $grey;
+  }
+}
+
+.h-thinblue {
+  &:hover {
+    color: rgb(137, 171, 235);
+
+    svg {
+      fill: rgb(137, 171, 235);
+    }
+  }
+}
+
+.uppercase {
+  text-transform: uppercase;
+}
+
+.fz15 {
+  font-size: 1.5rem;
+}
+
+.fz16 {
+  font-size: 1.6rem;
+}
+
+.fz17 {
+  font-size: 1.7rem;
+}
+
+.fz175 {
+  font-size: 1.75rem;
+  @media (max-width: $mobile) {
+    font-size: 1.5rem;
+  }
+}
+
+.fz20 {
+  font-size: 2rem;
+}
+
+.fw-normal {
+  font-weight: normal;
+}
+
+.fw-bold {
+  font-weight: bold;
+}
+
+.width50 {
+  width: 50%;
+}
+
+.width100 {
+  width: 100%;
+}
+
+.height100 {
+  height: 100%;
+}
+
+.height4r {
+  height: 4rem;
+}
+
+.inline-block {
+  display: inline-block;
+}
+
+.inactive {
+  cursor: auto;
+  background-color: rgb(218, 38, 38);
+
+  &:hover {
+    color: $white;
+    background-color: rgb(218, 38, 38);
+  }
+}
+
+.h-opacity09 {
+  &:hover {
+    opacity: 0.8;
+  }
+}
+
+.border-green {
+  border: 2px solid rgb(35, 200, 35);
+
+  &:focus {
+    border: 2px solid rgb(35, 200, 35);
+  }
+}
+
+.overflow-hid {
+  overflow: hidden;
+}
