@@ -1,0 +1,19 @@
+.start__content {
+  display: flex;
+  height: 50rem;
+}
+
+.start__intro {
+  // width: 50%;
+  margin: auto;
+  text-align: center;
+}
+
+.start__welcome {
+  font-size: 2rem;
+  margin-bottom: 2rem;
+
+  @media (max-width: $mobile) {
+    font-size: 1.5rem;
+  }
+}
