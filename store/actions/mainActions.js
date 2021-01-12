@@ -1,4 +1,5 @@
 import {
+  SET_IS_SERVER,
   GET_MODULES,
   SET_SKIP_CARDS,
   SET_SKIP_MODULES,
@@ -6,7 +7,8 @@ import {
   GET_CARDS,
   CONTROL_SEARCH_CARDS,
   CONTROL_SEARCH_MODULES,
-  SET_SELECT,
+  SET_SELECT_BY,
+  SET_SELECT_CREATED,
   RESET_FIELDS_CARDS,
   RESET_FIELDS_MODULES,
   RESET_SEARCH,
@@ -15,8 +17,19 @@ import {
   CLEAR_MODULE,
   SET_SCROLL_TOP,
 } from './types';
-import { card_fields, module_fields } from '../reducers/main/mainInitState';
+import {
+  card_fields,
+  module_fields,
+} from '../reducers/main/mainInitState';
 import axios from '../../server/supplemental/axios';
+
+// SET_IS_SERVER
+export const set_is_server = () => ({
+  type: SET_IS_SERVER,
+  payload: {
+    value: typeof document === 'undefined',
+  },
+});
 
 // CLEAR_MODULE
 export const clear_module = () => ({
@@ -38,9 +51,15 @@ export const reset_search = () => ({
   type: RESET_SEARCH,
 });
 
-// SET_SELECT
-export const set_select = (value) => ({
-  type: SET_SELECT,
+// SET_SELECT_BY
+export const set_select_by = (value) => ({
+  type: SET_SELECT_BY,
+  payload: value,
+});
+
+// SET_SELECT_CREATED
+export const set_select_created = (value) => ({
+  type: SET_SELECT_CREATED,
   payload: value,
 });
 
@@ -73,7 +92,13 @@ export const get_modules = () => async (dispatch, getState) => {
   try {
     const {
       auth: { user },
-      main: { skip_modules, loading, all_modules, search_modules },
+      main: {
+        skip_modules,
+        loading,
+        all_modules,
+        search_modules,
+        select_created,
+      },
     } = getState();
     if (!user || loading || all_modules) return;
 
@@ -86,6 +111,7 @@ export const get_modules = () => async (dispatch, getState) => {
       params: {
         skip: skip_modules,
         filter: search_modules.value,
+        created: select_created.value,
       },
     });
 
@@ -109,7 +135,14 @@ export const get_cards = () => async (dispatch, getState) => {
   try {
     const {
       auth: { user },
-      main: { skip_cards, loading, all_cards, search_cards, select },
+      main: {
+        skip_cards,
+        loading,
+        all_cards,
+        search_cards,
+        select_by,
+        select_created,
+      },
     } = getState();
     if (!user || loading || all_cards) return;
 
@@ -122,7 +155,8 @@ export const get_cards = () => async (dispatch, getState) => {
       params: {
         skip: skip_cards,
         filter: search_cards.value,
-        by: select.value,
+        by: select_by.value,
+        created: select_created.value,
       },
     });
 
@@ -144,11 +178,14 @@ export const get_cards = () => async (dispatch, getState) => {
 };
 
 // GET MODULE CARDS
-export const get_module_cards = (_id) => async (dispatch, getState) => {
+export const get_module_cards = (_id) => async (
+  dispatch,
+  getState
+) => {
   try {
     const {
       auth: { user },
-      main: { loading, search_cards, select },
+      main: { loading, search_cards, select_by, select_created },
     } = getState();
     if (!user || loading) return;
 
@@ -161,7 +198,8 @@ export const get_module_cards = (_id) => async (dispatch, getState) => {
       params: {
         _id,
         filter: search_cards.value,
-        by: select.value,
+        by: select_by.value,
+        created: select_created.value,
       },
     });
 

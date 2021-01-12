@@ -1,8 +1,20 @@
 export default {
   flashcards: {
-    progress: 2,
+    progress: 0,
     side: 'definition',
     shuffled: false,
   },
-  write: {},
+  write: {
+    is_init: false,
+    all_cards_num: 0,
+    remaining: [],
+    answer: '',
+    copy_answer: '',
+    answered: [],
+    rounds: [],
+  },
+};
+
+export const card_fields = {
+  answer: false,
 };

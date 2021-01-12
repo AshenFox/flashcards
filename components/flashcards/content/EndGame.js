@@ -1,8 +1,13 @@
+import { useRouter } from 'next/router';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import Link from 'next/link';
 
 const EndGame = ({ main, active }) => {
-  const { cards } = main;
+  const { cards, module } = main;
+
+  const router = useRouter();
+  const { _id } = router.query;
 
   const cardsArr = Object.values(cards);
 
@@ -17,9 +22,11 @@ const EndGame = ({ main, active }) => {
         <p className='game__card-message-info'>{`You've just studied ${
           cardsArr.length
         } term${cardsArr.length > 1 ? 's' : ''}!`}</p>
-        <button className='btn bcc-lightblue pad30 brr5 white fz175 h-grey h-bcc-yellow width50'>
-          Finish up
-        </button>
+        <Link href={`/module/${_id}`}>
+          <button className='btn bcc-lightblue pad30 brr15 white fz175 h-grey h-bcc-yellow width50'>
+            Finish up
+          </button>
+        </Link>
       </div>
       <div
         className={`game__card-back unturnable rearside ${

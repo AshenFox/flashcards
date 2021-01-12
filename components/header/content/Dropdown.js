@@ -1,3 +1,4 @@
+import { useEffect, useRef } from 'react';
 import { useRouter } from 'next/router';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
@@ -7,7 +8,9 @@ import {
   sort_flashcards,
   shuffle_flashcards,
   reset_flashcards_progress,
+  prepare_write,
 } from '../../../store/actions/gameActions';
+import { set_dropdown } from '../../../store/actions/headerActions';
 import Link from 'next/link';
 
 const Dropdown = ({
@@ -19,6 +22,8 @@ const Dropdown = ({
   sort_flashcards,
   shuffle_flashcards,
   reset_flashcards_progress,
+  prepare_write,
+  set_dropdown,
 }) => {
   const { dropdown_active } = header;
   const { header_height } = dimen;
@@ -27,6 +32,35 @@ const Dropdown = ({
   } = game;
 
   const router = useRouter();
+
+  const deactivateDropdown = useRef((e) => {
+    let menuEl = e.target.closest('.header__menu');
+    let menuItemEl = e.target.closest('.header__menu-item');
+
+    if (menuEl) {
+      if (menuItemEl) set_dropdown(false);
+    } else {
+      set_dropdown(false);
+    }
+  });
+
+  useEffect(() => {
+    setTimeout(
+      () =>
+        dropdown_active
+          ? window.addEventListener(
+              'click',
+              deactivateDropdown.current
+            )
+          : window.removeEventListener(
+              'click',
+              deactivateDropdown.current
+            ),
+      0
+    );
+    return () =>
+      window.removeEventListener('click', deactivateDropdown.current);
+  }, [dropdown_active]);
 
   const clickSuffle = () => {
     if (shuffled) {
@@ -39,6 +73,8 @@ const Dropdown = ({
 
     reset_flashcards_progress();
   };
+
+  const clickStartOver = () => prepare_write();
 
   const stylesHeader = { paddingTop: `${header_height}px` };
 
@@ -74,14 +110,17 @@ const Dropdown = ({
           <span>Log out</span>
         </button>
       </div>
+      {(isFlashcards || isWrite) && (
+        <div className='header__menu-devider'>
+          <span>Options:</span>
+        </div>
+      )}
       {isFlashcards && (
         <>
-          <div className='header__menu-devider'>
-            <span>Options:</span>
-          </div>
-
           <div
-            className={`header__menu-item ${shuffled ? 'active' : ''}`}
+            className={`header__menu-item ${
+              shuffled ? 'active' : ''
+            }`}
             onClick={clickSuffle}
           >
             <button className='btn fz15'>
@@ -89,6 +128,18 @@ const Dropdown = ({
                 <use href='../img/sprite.svg#icon__shuffle'></use>
               </svg>
               <span>Shuffle</span>
+            </button>
+          </div>
+        </>
+      )}
+      {isWrite && (
+        <>
+          <div
+            className={`header__menu-item caution`}
+            onClick={clickStartOver}
+          >
+            <button className='btn fz15'>
+              <span>Start over</span>
             </button>
           </div>
         </>
@@ -105,6 +156,8 @@ Dropdown.propTypes = {
   sort_flashcards: PropTypes.func.isRequired,
   shuffle_flashcards: PropTypes.func.isRequired,
   reset_flashcards_progress: PropTypes.func.isRequired,
+  prepare_write: PropTypes.func.isRequired,
+  set_dropdown: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
@@ -119,4 +172,6 @@ export default connect(mapStateToProps, {
   sort_flashcards,
   shuffle_flashcards,
   reset_flashcards_progress,
+  prepare_write,
+  set_dropdown,
 })(Dropdown);

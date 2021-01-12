@@ -64,7 +64,7 @@ const ModuleContainer = ({
             </div>
             <Link href='/home/modules'>
               <div className='module__return'>
-                <button className='btn bcc-lightblue pad12-30 brr10 white fz15 fw-normal h-grey h-bcc-yellow'>
+                <button className='btn bcc-lightblue pad12-30 brr15 white fz15 fw-normal h-grey h-bcc-yellow'>
                   Return
                 </button>
               </div>

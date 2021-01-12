@@ -7,7 +7,7 @@ const Speaker = ({
   text,
   type,
   className,
-  ref,
+  refProp,
   voice,
   set_voice_speaking,
 }) => {
@@ -59,7 +59,7 @@ const Speaker = ({
       }
     }
 
-    SSU.rate = 1;
+    SSU.rate = 0.85;
     SSU.pitch = 1;
 
     let int = setInterval(() => {
@@ -85,15 +85,13 @@ const Speaker = ({
   if (speaking)
     speakerSpeaking = speaking._id === _id && speaking.type === type;
 
-  const refProp = { ref };
-
   return (
     <div
       className={className}
       data-active={active}
       data-speaking={speakerSpeaking}
       onClick={clickSpeaker}
-      {...refProp}
+      ref={refProp}
     >
       <svg>
         <use href='../img/sprite.svg#icon__speaker'></use>
@@ -152,4 +150,8 @@ const filterLang = (text, lang) => {
 };
 
 const filterText = (text) =>
-  text.replace(/<[^>]*>/g, ' ').replace(/\( \/[^/]*\/ \)/g, ' ');
+  text
+    .replace(/<[^>]*>/g, ' ')
+    .replace(/\( \/[^/]*\/ \)/g, ' ')
+    .replace(/&nbsp;/g, ' ')
+    .replace(/\.\.\./g, '. ');

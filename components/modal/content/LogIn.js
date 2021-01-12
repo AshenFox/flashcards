@@ -6,7 +6,7 @@ import {
 } from '../../../store/actions/modalActions';
 import { enter } from '../../../store/actions/authActions';
 import Error from './Error';
-import LoadingButton from './LoadingButton';
+import LoadingButton from '../../main/LoadingButton';
 
 const LogIn = ({ modal, change_modal, control_field, enter }) => {
   const {
@@ -71,6 +71,9 @@ const LogIn = ({ modal, change_modal, control_field, enter }) => {
         active={true}
         loading={loading}
         onClickHandler={onCLickLoadingButton('log_in')}
+        classStr={
+          'btn width100 bcc-lightblue pad15-30 brr15 fz175 white h-grey h-bcc-yellow'
+        }
       >
         Log in
       </LoadingButton>

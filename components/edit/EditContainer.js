@@ -48,7 +48,7 @@ const EditContainer = ({ main, auth, get_module, get_draft, clear_module }) => {
             <div className='edit__intro-return'>
               <Link href={draft ? '/home/modules' : `/module/${_id}`}>
                 <button
-                  className='btn bcc-lightblue pad12-30 brr10 white fz15 fw-normal h-grey h-bcc-yellow'
+                  className='btn bcc-lightblue pad12-30 brr15 white fz15 fw-normal h-grey h-bcc-yellow'
                   type='button'
                 >
                   {/* onclick="active.return();" */}

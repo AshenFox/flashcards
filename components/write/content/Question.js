@@ -1,46 +1,99 @@
+import { useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import {
+  set_write_answer_field,
+  check_write_answer,
+} from '../../../store/actions/gameActions';
+import ContentEditable from 'react-contenteditable';
+import Speaker from '../../main/Speaker';
+import Img from '../../main/Img';
 
-const Question = (props) => {
+const Question = ({
+  data,
+  game,
+  set_write_answer_field,
+  check_write_answer,
+}) => {
+  const { _id, term, defenition, imgurl } = data;
+  const {
+    write: { answer },
+  } = game;
+
+  const changeAnswer = (e) => set_write_answer_field(e.target.value);
+
+  const keyDownAnswer = (e) => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      check_write_answer();
+    }
+  };
+
+  const clickAnswer = (e) => {
+    e.preventDefault();
+    check_write_answer();
+  };
+
+  const clickNotKnow = (e) => {
+    check_write_answer(true);
+  };
+
+  const answerInput = useRef(false);
+
+  useEffect(() => {
+    if (answerInput.current) answerInput.current.focus();
+    window.addEventListener('keydown', keyDownAnswer);
+
+    return () => {
+      window.removeEventListener('keydown', keyDownAnswer);
+    };
+  }, []);
+
   return (
     <div className='game__question'>
-      <div className='game__question-dontknow'>
-        <span>Don't know</span>
-      </div>
-      <div
-        className='game__question-img '
-        style={{
-          backgroundImage:
-            'url(http://www.5forty.news/wp-content/uploads/2020/02/season-3-of-the-boss-baby-back-in-business-is-hitting-netflix-in-march-see-the-first-trailer.jpg)',
-        }}
-      ></div>
-      <div className='game__question-definition'>
-        <p>
-          Perkins may have been innocent, but he was still Mazlo's ... .<br />
-          <br />
-        </p>
-        <div>She has a dozen ... , but manages many more people.</div>
-        <br />
-        <div>
-          ( an employee whose position at work is directly below that of another
-          person, and who is managed by that person: )<span>( noun )</span>
-        </div>
-        <p></p>
-        <div className='game__speaker-write' data-active='true'>
-          <svg height='22' width='22'>
-            <use href='../img/sprite.svg#icon__speaker'></use>
-          </svg>
-        </div>
+      <div className='game__question-container'>
+        {term && (
+          <div className='game__question-dontknow' onClick={clickNotKnow}>
+            <span>Don't know</span>
+          </div>
+        )}
+        <Img
+          containerClass={'game__question-img-container'}
+          imgClass={'game__question-img'}
+          url={imgurl}
+        />
+        <ContentEditable
+          html={defenition}
+          disabled={true}
+          className='game__question-definition'
+        />
+        <Speaker
+          _id={_id}
+          text={defenition}
+          type={'definition'}
+          className='game__speaker-write'
+        />
       </div>
       <form action='' className='game__form' autoComplete='off'>
         <fieldset className='game__form-fieldset'>
           <div className='game__form-input'>
-            <input type='text' id='write-input' autoComplete='off' />
+            <input
+              type='text'
+              id='write-input'
+              autoComplete='off'
+              onChange={changeAnswer}
+              value={answer}
+              ref={answerInput}
+            />
           </div>
 
           <label htmlFor='write-input'>type the answer</label>
         </fieldset>
         <div className='game__form-btn-container'>
-          <button className='btn bcc-lightblue pad10-30 brr5 white fz15 fw-normal h-grey h-bcc-yellow'>
+          <button
+            className='btn bcc-lightblue pad10-30 brr15 white fz15 fw-normal h-grey h-bcc-yellow'
+            onClick={clickAnswer}
+          >
             Answer
           </button>
         </div>
@@ -49,11 +102,24 @@ const Question = (props) => {
   );
 };
 
-Question.propTypes = {};
+Question.propTypes = {
+  data: PropTypes.object.isRequired,
+  set_write_answer_field: PropTypes.func.isRequired,
+  check_write_answer: PropTypes.func.isRequired,
+};
 
-export default Question;
+const mapStateToProps = (state) => ({
+  game: state.game,
+});
+
+export default connect(mapStateToProps, {
+  set_write_answer_field,
+  check_write_answer,
+})(Question);
 
 /* 
+
+
 
 <div class="game__question-dontknow">
           <span>Don't know</span>
@@ -84,7 +150,7 @@ export default Question;
             <label htmlFor="write-input">type the answer</label>
           </fieldset>
           <div class="game__form-btn-container">
-            <button class="btn bcc-lightblue pad10-30 brr5 white fz15 fw-normal h-grey h-bcc-yellow">Answer</button>
+            <button class="btn bcc-lightblue pad10-30 brr15 white fz15 fw-normal h-grey h-bcc-yellow">Answer</button>
           </div>
         </form>
 

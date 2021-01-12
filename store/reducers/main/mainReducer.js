@@ -1,4 +1,5 @@
 import {
+  SET_IS_SERVER,
   GET_MODULES,
   SET_SKIP_CARDS,
   SET_SKIP_MODULES,
@@ -6,7 +7,8 @@ import {
   GET_CARDS,
   CONTROL_SEARCH_CARDS,
   CONTROL_SEARCH_MODULES,
-  SET_SELECT,
+  SET_SELECT_BY,
+  SET_SELECT_CREATED,
   RESET_FIELDS_CARDS,
   RESET_FIELDS_MODULES,
   RESET_SEARCH,
@@ -37,7 +39,7 @@ import {
   SET_CARDS_SAVE_POSITIVE,
   SET_MODULE_QUESTION,
   SET_CARD_QUESTION,
-  SET_SAVE_MODULE_LOADING,
+  SET_MODULE_LOADING,
   SHUFFLE_FLASHCARDS,
   SORT_FLASHCARDS,
 } from '../../actions/types';
@@ -47,6 +49,12 @@ const MainReducer = (state = initialState, action) => {
   const { payload, type } = action;
 
   switch (type) {
+    case SET_IS_SERVER:
+      return {
+        ...state,
+        is_server: payload.value,
+      };
+
     case CLEAR_MODULE:
       return {
         ...state,
@@ -96,13 +104,20 @@ const MainReducer = (state = initialState, action) => {
         search_modules: {
           value: '',
         },
-        select: { value: 'term', label: 'Term' },
+        select_by: { value: 'term', label: 'Term' },
+        select_created: { value: 'newest', label: 'Newest' },
       };
 
-    case SET_SELECT:
+    case SET_SELECT_BY:
       return {
         ...state,
-        select: payload,
+        select_by: payload,
+      };
+
+    case SET_SELECT_CREATED:
+      return {
+        ...state,
+        select_created: payload,
       };
 
     case SET_SCROLL_TOP:
@@ -111,12 +126,12 @@ const MainReducer = (state = initialState, action) => {
         scroll_top: payload.value,
       };
 
-    case SET_SAVE_MODULE_LOADING:
+    case SET_MODULE_LOADING:
       return {
         ...state,
         module: {
           ...state.module,
-          save_loading: payload.value,
+          module_loading: payload.value,
         },
       };
 
@@ -233,7 +248,9 @@ const MainReducer = (state = initialState, action) => {
     case SHUFFLE_FLASHCARDS:
       return {
         ...state,
-        cards: Object.fromEntries(shuffle(Object.entries(state.cards))),
+        cards: Object.fromEntries(
+          shuffle(Object.entries(state.cards))
+        ),
       };
 
     case SORT_FLASHCARDS:
@@ -335,7 +352,9 @@ const MainReducer = (state = initialState, action) => {
               imgurl_obj: {
                 ...state.cards[payload._id].gallery.imgurl_obj,
                 [payload.index]: {
-                  ...state.cards[payload._id].gallery.imgurl_obj[payload.index],
+                  ...state.cards[payload._id].gallery.imgurl_obj[
+                    payload.index
+                  ],
                   ok: payload.value,
                 },
               },
@@ -408,7 +427,8 @@ const MainReducer = (state = initialState, action) => {
             gallery: {
               ...state.cards[payload._id].gallery,
               position:
-                state.cards[payload._id].gallery.position + payload.offset,
+                state.cards[payload._id].gallery.position +
+                payload.offset,
             },
           },
         },
@@ -433,7 +453,8 @@ const MainReducer = (state = initialState, action) => {
           ...state.cards,
           [payload._id]: {
             ...state.cards[payload._id],
-            defenition: state.cards[payload._id].defenition + payload.result,
+            defenition:
+              state.cards[payload._id].defenition + payload.result,
           },
         },
       };
@@ -471,7 +492,9 @@ const MainReducer = (state = initialState, action) => {
       return {
         ...state,
         cards: Object.fromEntries(
-          Object.entries(state.cards).filter(([_id]) => _id !== payload._id)
+          Object.entries(state.cards).filter(
+            ([_id]) => _id !== payload._id
+          )
         ),
       };
 

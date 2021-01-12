@@ -1,18 +1,25 @@
-import { useEffect, useRef } from 'react';
+import { useEffect } from 'react';
 import { useRouter } from 'next/router';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { get_module_cards } from '../../store/actions/mainActions';
+import {
+  get_module_cards,
+  clear_module,
+} from '../../store/actions/mainActions';
+import { reset_all_game_fields } from '../../store/actions/gameActions';
 import Controls from './content/Controls';
-import CardsContainer from './content/CardsContainer';
-import Navigation from './content/Navigation';
+import ContentContainer from './content/ContentContainer';
 
-const FlashcardsContainer = ({ auth, dimen, get_module_cards }) => {
+const FlashcardsContainer = ({
+  auth,
+  get_module_cards,
+  reset_all_game_fields,
+  clear_module,
+}) => {
   const router = useRouter();
   const { _id } = router.query;
 
   const { user } = auth;
-  const { header_height, game_controls_height } = dimen;
 
   useEffect(() => {
     if (user) {
@@ -21,39 +28,16 @@ const FlashcardsContainer = ({ auth, dimen, get_module_cards }) => {
   }, [user]);
 
   useEffect(() => {
-    flashcardsStyles.current = {
-      height: `${
-        document.documentElement.clientHeight -
-        header_height -
-        (document.documentElement.clientWidth < 991 ? game_controls_height : 0)
-      }px`,
+    return () => {
+      reset_all_game_fields();
+      clear_module();
     };
-  });
-
-  const flashcardsStyles = useRef({}); // ????????? Do you need this?
+  }, []);
 
   return (
     <>
       <Controls />
-
-      <div
-        className='game__content-container game__content-container--unscrollable'
-        style={flashcardsStyles.current}
-      >
-        <div className='game__components game__components--unscrollable'>
-          <CardsContainer />
-          <Navigation />
-        </div>
-      </div>
-
-      {/* <div
-        className='game__content-container game__content-container--scrollable'
-        style={flashcardsStyles.current}
-      >
-        <div className='game__components game__components--scrollable'>
-          <CardsContainer />
-        </div>
-      </div> */}
+      <ContentContainer />
     </>
   );
 };
@@ -61,6 +45,8 @@ const FlashcardsContainer = ({ auth, dimen, get_module_cards }) => {
 FlashcardsContainer.propTypes = {
   main: PropTypes.object.isRequired,
   get_module_cards: PropTypes.func.isRequired,
+  reset_all_game_fields: PropTypes.func.isRequired,
+  clear_module: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
@@ -71,6 +57,8 @@ const mapStateToProps = (state) => ({
 
 export default connect(mapStateToProps, {
   get_module_cards,
+  reset_all_game_fields,
+  clear_module,
 })(FlashcardsContainer);
 
 /* 

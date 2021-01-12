@@ -1,0 +1,18 @@
+.img {
+  object-fit: contain;
+
+  &__container {
+    &--not-loaded {
+      display: none;
+    }
+  }
+
+  &__error {
+    padding: 1.25rem;
+    svg {
+      fill: $black;
+      height: 2.5rem;
+      width: 2.5rem;
+    }
+  }
+}

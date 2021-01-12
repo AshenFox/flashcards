@@ -10,8 +10,14 @@ const CardQuestion = ({ data, set_card_question }) => {
     setTimeout(
       () =>
         question
-          ? window.addEventListener('click', deactivateQuestion.current)
-          : window.removeEventListener('click', deactivateQuestion.current),
+          ? window.addEventListener(
+              'click',
+              deactivateQuestion.current
+            )
+          : window.removeEventListener(
+              'click',
+              deactivateQuestion.current
+            ),
       0
     );
 
@@ -19,7 +25,18 @@ const CardQuestion = ({ data, set_card_question }) => {
       window.removeEventListener('click', deactivateQuestion.current);
   }, [question]);
 
-  const deactivateQuestion = useRef(() => set_card_question(_id, false));
+  const deactivateQuestion = useRef((e) => {
+    let questionEl = e.target.closest('.module__question');
+    let questionAnswerEl = e.target.closest(
+      '.module__question-answer'
+    );
+
+    if (questionEl) {
+      if (questionAnswerEl) set_card_question(_id, false);
+    } else {
+      set_card_question(_id, false);
+    }
+  });
 
   return (
     <div className='module__question' data-active={question}>

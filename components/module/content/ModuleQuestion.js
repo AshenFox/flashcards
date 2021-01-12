@@ -12,8 +12,14 @@ const ModuleQuestion = ({ main, set_module_question }) => {
     setTimeout(
       () =>
         question
-          ? window.addEventListener('click', deactivateQuestion.current)
-          : window.removeEventListener('click', deactivateQuestion.current),
+          ? window.addEventListener(
+              'click',
+              deactivateQuestion.current
+            )
+          : window.removeEventListener(
+              'click',
+              deactivateQuestion.current
+            ),
       0
     );
 
@@ -21,7 +27,18 @@ const ModuleQuestion = ({ main, set_module_question }) => {
       window.removeEventListener('click', deactivateQuestion.current);
   }, [question]);
 
-  const deactivateQuestion = useRef(() => set_module_question(false));
+  const deactivateQuestion = useRef((e) => {
+    let questionEl = e.target.closest('.module__question');
+    let questionAnswerEl = e.target.closest(
+      '.module__question-answer'
+    );
+
+    if (questionEl) {
+      if (questionAnswerEl) set_module_question(false);
+    } else {
+      set_module_question(false);
+    }
+  });
 
   return (
     <div
