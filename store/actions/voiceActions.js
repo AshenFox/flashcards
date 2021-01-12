@@ -15,35 +15,43 @@ export const set_voice_speaking = (_id, type) => {
 
 // INIT_VOICE
 export const init_voice = () => async (dispatch) => {
-  const synth = window.speechSynthesis;
-
-  synth.getVoices();
-
-  const voicesArr = await new Promise((res) => {
-    let int;
-
-    int = setInterval(() => {
-      if (synth.getVoices().length !== 0) {
-        res(synth.getVoices());
-        clearInterval(int);
-      }
-    }, 10);
-  });
-
+  let working = true;
   const voices = {};
 
-  voicesArr.forEach((voice) => {
-    if (voice.name === 'Google US English') voices.english = voice;
-    if (voice.name === 'Google русский') voices.russian = voice;
-    if (/en.+US/.test(voice.lang) && !voices.engBackup)
-      voices.engBackup = voice;
-    if (/ru.+RU/.test(voice.lang) && !voices.rusBackup)
-      voices.rusBackup = voice;
-  });
+  try {
+    const synth = window.speechSynthesis;
 
-  let working = true;
+    if (!synth) {
+      working = false;
+      throw new Error('Speech synthesis has not been found');
+    }
 
-  if (!voices.engBackup && !voices.rusBackup) working = false;
+    synth.getVoices();
+
+    const voicesArr = await new Promise((res) => {
+      let int;
+
+      int = setInterval(() => {
+        if (synth.getVoices().length !== 0) {
+          res(synth.getVoices());
+          clearInterval(int);
+        }
+      }, 10);
+    });
+
+    voicesArr.forEach((voice) => {
+      if (voice.name === 'Google US English') voices.english = voice;
+      if (voice.name === 'Google русский') voices.russian = voice;
+      if (/en.+US/.test(voice.lang) && !voices.engBackup)
+        voices.engBackup = voice;
+      if (/ru.+RU/.test(voice.lang) && !voices.rusBackup)
+        voices.rusBackup = voice;
+    });
+
+    if (!voices.engBackup && !voices.rusBackup) working = false;
+  } catch (err) {
+    console.error(err);
+  }
 
   dispatch({
     type: INIT_VOICE,

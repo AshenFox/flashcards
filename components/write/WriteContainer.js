@@ -2,24 +2,44 @@ import { useEffect, useRef } from 'react';
 import { useRouter } from 'next/router';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { get_module_cards } from '../../store/actions/mainActions';
-import Question from './content/Question';
-import Answer from './content/Answer';
-import Round from './content/Round';
-import Finish from './content/Finish';
+import {
+  get_module_cards,
+  clear_module,
+} from '../../store/actions/mainActions';
+import {
+  prepare_write,
+  reset_all_game_fields,
+} from '../../store/actions/gameActions';
+import ContentContainer from './content/ContentContainer';
 import Controls from './content/Controls';
-import EditCard from '../edit/content/EditCard';
 
-const WriteContainer = ({ main, dimen, auth, get_module_cards }) => {
-  const { header_height, game_controls_height } = dimen;
+const WriteContainer = ({
+  main,
+  auth,
+  game,
+  get_module_cards,
+  prepare_write,
+  reset_all_game_fields,
+  clear_module,
+}) => {
   const { cards } = main;
+  /* const {
+    write: { is_init },
+  } = game; */
 
   const router = useRouter();
   const { _id } = router.query;
-
   const { user } = auth;
 
-  const cards_arr = Object.values(cards);
+  const { length } = Object.values(cards);
+  const cardPrev = useRef(cards);
+
+  useEffect(() => {
+    return () => {
+      reset_all_game_fields();
+      clear_module();
+    };
+  }, []);
 
   useEffect(() => {
     if (user) {
@@ -28,53 +48,39 @@ const WriteContainer = ({ main, dimen, auth, get_module_cards }) => {
   }, [user]);
 
   useEffect(() => {
-    writeStyles.current = {
-      height: `${
-        document.documentElement.clientHeight -
-        header_height -
-        (document.documentElement.clientWidth < 991 ? game_controls_height : 0)
-      }px`,
-    }; // subtract controls height
-  });
-
-  const writeStyles = useRef({}); // ????????? Do you need this?
+    if (length) {
+      prepare_write();
+      cardPrev.current = cards;
+    }
+  }, [length]);
 
   return (
     <>
       <Controls />
-
-      <div
-        className='game__content-container game__content-container--scrollable'
-        style={writeStyles.current}
-      >
-        {/* COMPONENTS */}
-        <div className='game__components game__components--scrollable'>
-          {/* QUESTION */}
-          <Question />
-          <Answer />
-          <Round />
-          <Finish />
-
-          {/* <div className='game__cards-container'>
-            {cards_arr.length && (
-              <EditCard data={cards_arr[0]} toggle={true} game={true} />
-            )}
-          </div> */}
-        </div>
-      </div>
+      <ContentContainer />
     </>
   );
 };
 
 WriteContainer.propTypes = {
-  dimen: PropTypes.object.isRequired,
+  main: PropTypes.object.isRequired,
+  auth: PropTypes.object.isRequired,
+  game: PropTypes.object.isRequired,
+  get_module_cards: PropTypes.func.isRequired,
+  clear_module: PropTypes.func.isRequired,
+  prepare_write: PropTypes.func.isRequired,
+  reset_all_game_fields: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
-  dimen: state.dimen,
   main: state.main,
   auth: state.auth,
-  get_module_cards: PropTypes.func.isRequired,
+  game: state.game,
 });
 
-export default connect(mapStateToProps, { get_module_cards })(WriteContainer);
+export default connect(mapStateToProps, {
+  get_module_cards,
+  prepare_write,
+  reset_all_game_fields,
+  clear_module,
+})(WriteContainer);

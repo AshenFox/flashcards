@@ -11,7 +11,7 @@ const { auth } = require('../supplemental/middleware');
 
 router.get('/modules', auth, async (req, res) => {
   try {
-    let { skip, filter } = req.query;
+    let { skip, filter, created } = req.query;
     skip = parseInt(skip);
 
     const server_id = req.user.server_id;
@@ -32,15 +32,21 @@ router.get('/modules', auth, async (req, res) => {
       draft: false,
     };
 
+    const sortObj = {};
+    if (created === 'newest') sortObj.creation_date = -1;
+    if (created === 'oldest') sortObj.creation_date = 1;
+
     if (filter) filterObj.title = { $regex: filter };
 
     const modules = await moduleModel
       .find(filterObj)
-      .sort({ creation_date: -1 })
+      .sort(sortObj)
       .skip(skip * 10)
       .limit(10);
 
-    const modules_number = await moduleModel.countDocuments(filterObj);
+    const modules_number = await moduleModel.countDocuments(
+      filterObj
+    );
 
     if (draft) --all_modules_number;
 
@@ -69,7 +75,7 @@ router.get('/modules', auth, async (req, res) => {
 
 router.get('/cards', auth, async (req, res) => {
   try {
-    let { skip, filter, by } = req.query;
+    let { skip, filter, by, created } = req.query;
     skip = parseInt(skip);
 
     const server_id = req.user.server_id;
@@ -87,13 +93,19 @@ router.get('/cards', auth, async (req, res) => {
 
     const filterObj = draft ? { moduleID: { $ne: draft._id } } : {};
 
-    const all_cards_number = await cardModel.countDocuments(filterObj);
+    const sortObj = {};
+    if (created === 'newest') sortObj.creation_date = -1;
+    if (created === 'oldest') sortObj.creation_date = 1;
+
+    const all_cards_number = await cardModel.countDocuments(
+      filterObj
+    );
 
     if (filter) filterObj[by] = { $regex: filter };
 
     const cards = await cardModel
       .find(filterObj)
-      .sort({ creation_date: -1 })
+      .sort(sortObj)
       .skip(skip * 10)
       .limit(10);
 
@@ -101,7 +113,9 @@ router.get('/cards', auth, async (req, res) => {
 
     const all_cards = cards_number <= (skip + 1) * 10;
 
-    res.status(200).json({ cards, cards_number, all_cards, all_cards_number });
+    res
+      .status(200)
+      .json({ cards, cards_number, all_cards, all_cards_number });
   } catch (err) {
     console.error(err.message);
     res.status(500).json({ errorBody: 'Server Error' });
@@ -109,7 +123,7 @@ router.get('/cards', auth, async (req, res) => {
 });
 
 // @route ------ GET api/main/module
-// @desc ------- Get modules with cards
+// @desc ------- Get module with cards
 // @access ----- Private
 
 router.get('/module', auth, async (req, res) => {
@@ -148,7 +162,7 @@ router.get('/module', auth, async (req, res) => {
 
 router.get('/module/cards', auth, async (req, res) => {
   try {
-    let { _id, filter, by } = req.query;
+    let { _id, filter, by, created } = req.query;
 
     const server_id = req.user.server_id;
 
@@ -160,9 +174,13 @@ router.get('/module/cards', auth, async (req, res) => {
 
     const filterObj = { moduleID: _id };
 
+    const sortObj = {};
+    if (created === 'newest') sortObj.creation_date = -1;
+    if (created === 'oldest') sortObj.creation_date = 1;
+
     if (filter) filterObj[by] = { $regex: filter };
 
-    const cards = await cardModel.find(filterObj);
+    const cards = await cardModel.find(filterObj).sort(sortObj);
 
     res.status(200).json({ cards });
   } catch (err) {

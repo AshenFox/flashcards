@@ -1,16 +1,23 @@
+import { useRouter } from 'next/router';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { create_module } from '../../../store/actions/editActions';
 import Link from 'next/link';
+import LoadingButton from '../../main/LoadingButton';
 
 const Save = ({ main, create_module }) => {
   const {
-    module: { _id, draft, title },
+    module: { _id, draft, title, module_loading },
     cards,
   } = main;
+  const router = useRouter();
 
   const clickSave = () => {
     if (active) create_module();
+  };
+
+  const clickLink = () => {
+    router.replace(`/module/${_id}`);
   };
 
   const cardsArr = Object.values(cards);
@@ -31,18 +38,15 @@ const Save = ({ main, create_module }) => {
   const active = !!(twoSaved && title);
 
   let btn = (
-    <button
-      className={`btn bcc-lightblue pad30-70 brr10 white fz20 fw-bold h-grey h-bcc-yellow ${
-        active || !draft ? '' : 'inactive'
-      }`}
-      type='button'
-      {...(draft ? { onClick: clickSave } : {})}
+    <LoadingButton
+      active={active || !draft ? true : false}
+      loading={module_loading}
+      onClickHandler={draft ? clickSave : clickLink}
+      classStr='btn bcc-lightblue pad30-70 brr15 white fz20 fw-bold h-grey h-bcc-yellow'
     >
       {draft ? 'Save' : 'Return'}
-    </button>
+    </LoadingButton>
   );
-
-  if (!draft) btn = <Link href={`/module/${_id}`}>{btn}</Link>;
 
   return (
     <div className='edit__save'>

@@ -9,11 +9,12 @@ import Skeleton from 'react-loading-skeleton';
 import ModuleQuestion from './ModuleQuestion';
 import ModuleSRDropControl from './ModuleSRDropControl';
 import ModuleSRControl from './ModuleSRControl';
+import DateStr from '../../main/DateSrt';
 
 const Info = ({ main, change_modal, toggle_modal }) => {
   const { module } = main;
   const {
-    module: { author, _id },
+    module: { author, _id, creation_date },
   } = main;
 
   const openModal = (value) => (e) => {
@@ -24,7 +25,9 @@ const Info = ({ main, change_modal, toggle_modal }) => {
   return (
     <div className='module__info'>
       <div className='module__author'>
-        <span className='module__author-created'>Created by</span>
+        <span className='module__author-created'>
+          Created <DateStr date={creation_date} /> by
+        </span>
         <span className='module__author-nickname'>
           {module ? author : <Skeleton width={100} />}
         </span>
@@ -41,7 +44,10 @@ const Info = ({ main, change_modal, toggle_modal }) => {
             </svg>
           </div>
         </Link>
-        <div className='module__nav-item' onClick={openModal('delete')}>
+        <div
+          className='module__nav-item'
+          onClick={openModal('delete')}
+        >
           <svg width='25' height='25'>
             <use href='../img/sprite.svg#icon__delete'></use>
           </svg>

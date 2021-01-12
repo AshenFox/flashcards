@@ -1,9 +1,17 @@
 import PropTypes from 'prop-types';
 
-const LoadingButton = ({ active, loading, children, onClickHandler }) => {
+const LoadingButton = ({
+  active,
+  loading,
+  children,
+  classStr,
+  onClickHandler,
+}) => {
   const logError = () => {
     console.error('Button has been deactivated.');
   };
+
+  // console.log(onClickHandler);
 
   return (
     <div
@@ -11,10 +19,11 @@ const LoadingButton = ({ active, loading, children, onClickHandler }) => {
       data-loading={loading && active ? 'true' : 'false'}
     >
       <button
-        className={`btn width100 bcc-lightblue pad15-30 brr5 fz175 white h-grey h-bcc-yellow ${
-          !active ? 'inactive' : ''
-        }`}
-        onClick={active ? onClickHandler : logError}
+        className={`${classStr} ${!active ? 'inactive' : ''}`}
+        {...{
+          onClick:
+            active && onClickHandler ? onClickHandler : logError,
+        }}
       >
         <span>{children}</span>
       </button>
@@ -27,7 +36,6 @@ LoadingButton.propTypes = {
   active: PropTypes.bool.isRequired,
   loading: PropTypes.bool.isRequired,
   children: PropTypes.string.isRequired,
-  onClickHandler: PropTypes.func.isRequired,
 };
 
 export default LoadingButton;

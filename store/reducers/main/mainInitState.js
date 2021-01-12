@@ -1,4 +1,5 @@
 export default {
+  is_server: true,
   module: false,
   draft: false,
   modules: [],
@@ -18,7 +19,8 @@ export default {
   search_modules: {
     value: '',
   },
-  select: { value: 'term', label: 'Term' },
+  select_by: { value: 'term', label: 'Term' },
+  select_created: { value: 'newest', label: 'Newest' },
   scroll_top: false,
 };
 
@@ -45,7 +47,7 @@ export const card_fields = {
 
 export const module_fields = {
   question: false,
-  save_loading: false,
+  module_loading: false,
 };
 
 export const url_fields = {

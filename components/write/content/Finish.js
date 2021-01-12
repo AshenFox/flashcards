@@ -1,57 +1,83 @@
+import { useEffect } from 'react';
+import { useRouter } from 'next/router';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { next_write_round } from '../../../store/actions/gameActions';
+import FinishItem from './FinishItem';
+import Link from 'next/link';
 
-const Finish = (props) => {
-  return (
-    <div className='game__finish'>
-      <div className='game__finish-header'>
-        <div className='game__finish-header-item'>
-          <h1 className='game__finish-title'>Round 1</h1>
-          <h3 className='game__finish-round-stats'>3/4 - 75%</h3>
-        </div>
-        <div className='game__finish-header-item hidden'>
-          <button
-            className='btn bcc-lightblue pad10-30 brr5 white fz15 fw-normal h-grey h-bcc-yellow'
-            /* onclick='active.startOver()' */
+const Finish = ({ game, next_write_round }) => {
+  const router = useRouter();
+  const { _id } = router.query;
+
+  const {
+    write: { rounds, all_cards_num },
+  } = game;
+
+  const keyDownFinish = (e) => {
+    if (e.key === 'Enter') {
+      router.replace(`/module/${_id}`);
+    }
+  };
+
+  useEffect(() => {
+    console.log('fire!');
+    if (all_cards_num) next_write_round();
+
+    window.addEventListener('keydown', keyDownFinish);
+
+    return () => {
+      window.removeEventListener('keydown', keyDownFinish);
+    };
+  }, []);
+
+  return rounds.map((round, i) => {
+    const correctNum = round.filter((item) => item.answer === 'correct').length;
+
+    return (
+      <div className='game__finish' key={i}>
+        <div className='game__finish-header'>
+          <div className='game__finish-header-item'>
+            <h1 className='game__finish-title'>Round {i + 1}</h1>
+            <h3 className='game__finish-round-stats'>
+              {correctNum}/{round.length} -{' '}
+              {Math.round((correctNum / round.length) * 100)}%
+            </h3>
+          </div>
+          <div
+            className={`game__finish-header-item ${i !== 0 ? 'hidden' : ''}`}
           >
-            Start over
-          </button>
+            {' '}
+            <Link href={`/module/${_id}`}>
+              <button className='btn bcc-lightblue pad10-30 brr15 white fz15 fw-normal h-grey h-bcc-yellow'>
+                Finish game
+              </button>
+            </Link>
+          </div>
+        </div>
+
+        <div className='game__finish-body'>
+          {round.map((data, i) => (
+            <FinishItem data={data} i={i + 1} key={data.id} />
+          ))}
         </div>
       </div>
+    );
+  });
+};
 
-      <div className='game__finish-body'>
-        <div className='game__finish-body-item'>
-          <div className='game__finish-body-left'>
-            <div className='game__finish-icon game__finish-icon--correct'>
-              <svg height='22' width='22'>
-                <use href='../img/sprite.svg#icon__tick'></use>
-              </svg>
-            </div>
-            <div className='game__finish-term game__finish-term--correct'>
-              <span>1.</span>
-              <span>proposition</span>
-            </div>
-          </div>
+Finish.propTypes = {
+  next_write_round: PropTypes.func.isRequired,
+};
 
-          <div className='game__finish-body-right'>
-            <div className='game__finish-definition'>
-              <p>
-                I'm not the one who's based his entire world view on a ... ( a
-                statement or problem that must be solved or proved to be true or
-                not true )(&nbsp;an expression in language or signs of something
-                that can be believed, doubted, or denied or is either true or
-                false )
-              </p>
-              <div
-                className='game__finish-img '
-                style={{
-                  backgroundImage:
-                    'url(https://coterie.global/wp-content/uploads/2019/12/The-art-of-the-perfectly-formed-joint-value-proposition-blog-new.jpg)',
-                }}
-              ></div>
-            </div>
-          </div>
-        </div>
-        <div className='game__finish-body-item'>
+const mapStateToProps = (state) => ({
+  game: state.game,
+});
+
+export default connect(mapStateToProps, { next_write_round })(Finish);
+
+/* 
+<div className='game__finish-body-item'>
           <div className='game__finish-body-left'>
             <div className='game__finish-icon game__finish-icon--correct'>
               <svg height='22' width='22'>
@@ -144,11 +170,5 @@ const Finish = (props) => {
             </div>
           </div>
         </div>
-      </div>
-    </div>
-  );
-};
 
-Finish.propTypes = {};
-
-export default Finish;
+*/

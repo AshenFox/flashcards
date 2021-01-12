@@ -2,7 +2,10 @@ import { useEffect, useRef } from 'react';
 import { useRouter } from 'next/router';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { change_modal, toggle_modal } from '../../store/actions/modalActions';
+import {
+  change_modal,
+  toggle_modal,
+} from '../../store/actions/modalActions';
 import { set_dropdown } from '../../store/actions/headerActions';
 import { log_out } from '../../store/actions/authActions';
 import { set_header_dimen } from '../../store/actions/dimenActions';
@@ -13,6 +16,7 @@ import Dropdown from './content/Dropdown';
 const Header = ({
   auth,
   header,
+  dimen,
   change_modal,
   toggle_modal,
   log_out,
@@ -24,6 +28,7 @@ const Header = ({
     toggle_modal();
   };
 
+  const { header_width } = dimen;
   const { dropdown_active } = header;
   const { user, loading } = auth;
 
@@ -31,36 +36,38 @@ const Header = ({
   const { _id } = router.query;
 
   const activateDropdown = () => set_dropdown(true);
-  const deactivateDropdown = useRef(() => set_dropdown(false));
+  /* const deactivateDropdown = useRef((e) => {
+    let menuEl = e.target.closest('.header__menu');
+    let menuItemEl = e.target.closest('.header__menu-item');
 
-  useEffect(() => {
-    setTimeout(
-      () =>
-        dropdown_active
-          ? window.addEventListener('click', deactivateDropdown.current)
-          : window.removeEventListener('click', deactivateDropdown.current),
-      0
-    );
-    return () =>
-      window.removeEventListener('click', deactivateDropdown.current);
-  }, [dropdown_active]);
+    if (menuEl) {
+      if (menuItemEl) set_dropdown(false);
+    } else {
+      set_dropdown(false);
+    }
+  }); */
 
   const onSizeChange = () => set_header_dimen(headerEl.current);
+  const onSizeChangeDelayed = () =>
+    setTimeout(() => set_header_dimen(headerEl.current), 200);
 
   useEffect(() => {
     set_header_dimen(headerEl.current);
     window.addEventListener('resize', onSizeChange);
-    window.addEventListener('orientationchange', onSizeChange);
+    window.addEventListener('orientationchange', onSizeChangeDelayed);
 
     return () => {
       window.removeEventListener('resize', onSizeChange);
-      window.removeEventListener('orientationchange', onSizeChange);
+      window.removeEventListener(
+        'orientationchange',
+        onSizeChangeDelayed
+      );
     };
   }, []);
 
   useEffect(() => {
     set_header_dimen(headerEl.current);
-  }, [user]);
+  }, [user, loading]);
 
   const headerEl = useRef(false);
 
@@ -75,7 +82,7 @@ const Header = ({
       {router.asPath !== '/edit/draft' && (
         <Link href='/edit/draft'>
           <button
-            className={`btn white fz175 h-thinblue ${
+            className={`btn white fz175 h-primary-pale ${
               isGame ? 'hidden__media-tablet' : 'hidden__media-mobile'
             }`}
           >
@@ -88,7 +95,7 @@ const Header = ({
       )}
 
       <button
-        className={`btn white fz175 h-thinblue ${
+        className={`btn white fz175 h-primary-pale ${
           isGame ? 'hidden__media-tablet' : 'hidden__media-mobile'
         }`}
         onClick={log_out}
@@ -98,7 +105,9 @@ const Header = ({
 
       <button
         className={`btn header__hamburger header__hamburger--spring ${
-          isGame ? 'hidden__media-min-tablet' : 'hidden__media-min-mobile'
+          isGame
+            ? 'hidden__media-min-tablet'
+            : 'hidden__media-min-mobile'
         } ${dropdown_active ? 'active' : ''}`}
         type='button'
         onClick={!dropdown_active ? activateDropdown : () => {}}
@@ -112,14 +121,14 @@ const Header = ({
     <>
       <button
         onClick={openModal('log_in')}
-        className='btn white fz175 h-thinblue'
+        className='btn white fz175 h-primary-pale'
       >
         Log in
       </button>
 
       <button
         onClick={openModal('sign_up')}
-        className='btn bcc-lightblue pad15-30 brr5 white fz175 h-grey h-bcc-yellow'
+        className='btn bcc-lightblue pad15-30 brr15 white fz175 h-grey h-bcc-yellow'
       >
         Sign up
       </button>
@@ -129,14 +138,18 @@ const Header = ({
   let buttonsLeft = (
     <>
       <Link href={user ? '/home/modules' : '/'}>
-        <h1 className={`header__title ${isGame ? 'hidden__media-tablet' : ''}`}>
-          Flash Cards
+        <h1
+          className={`header__title ${
+            isGame ? 'hidden__media-tablet' : ''
+          }`}
+        >
+          {header_width > 620 ? 'Flash Cards' : 'FC'}
         </h1>
       </Link>
       {user && isGame && (
         <Link href={`/module/${_id}`}>
           <div className='header__button header__button--back'>
-            <button className='btn d-f h-thinblue'>
+            <button className='btn d-f h-primary-pale'>
               <svg width='25' height='25'>
                 <use href='../img/sprite.svg#icon__game_back'></use>
               </svg>
@@ -168,6 +181,7 @@ const Header = ({
 Header.propTypes = {
   auth: PropTypes.object.isRequired,
   header: PropTypes.object.isRequired,
+  dimen: PropTypes.object.isRequired,
   change_modal: PropTypes.func.isRequired,
   toggle_modal: PropTypes.func.isRequired,
   log_out: PropTypes.func.isRequired,
@@ -178,6 +192,7 @@ Header.propTypes = {
 const mapStateToProps = (state) => ({
   auth: state.auth,
   header: state.header,
+  dimen: state.dimen,
 });
 
 export default connect(mapStateToProps, {
@@ -191,7 +206,7 @@ export default connect(mapStateToProps, {
 /* 
 
           {<div className='header__button header__button--back'>
-            <button className='btn d-f h-thinblue'>
+            <button className='btn d-f h-primary-pale'>
               <svg width='25' height='25'>
                 <use href='../img/sprite.svg#icon__game_back'></use>
               </svg>
@@ -199,7 +214,7 @@ export default connect(mapStateToProps, {
           </div> }
 
           { <div className='header__button header__button--options'>
-            <button className='btn d-f h-thinblue'>
+            <button className='btn d-f h-primary-pale'>
               <svg width='30' height='30'>
                 <use href='../img/sprite.svg#icon__game_options'></use>
               </svg>

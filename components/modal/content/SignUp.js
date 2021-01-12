@@ -5,11 +5,20 @@ import {
   change_modal,
   control_field,
 } from '../../../store/actions/modalActions';
-import { enter, check_field } from '../../../store/actions/authActions';
+import {
+  enter,
+  check_field,
+} from '../../../store/actions/authActions';
 import Error from './Error';
-import LoadingButton from './LoadingButton';
+import LoadingButton from '../../main/LoadingButton';
 
-const SignUp = ({ modal, change_modal, control_field, check_field, enter }) => {
+const SignUp = ({
+  modal,
+  change_modal,
+  control_field,
+  check_field,
+  enter,
+}) => {
   const {
     sign_up: { username, password, email },
     sign_up_errors: {
@@ -79,7 +88,9 @@ const SignUp = ({ modal, change_modal, control_field, check_field, enter }) => {
         name='email'
         type='email'
         className={`pad20-15 fz17 height4r br2 bc-none brc-grey f-brc-yellow mar-bottom20 email ${
-          email && emailErr.ok && !timers.current.email ? 'border-green' : ''
+          email && emailErr.ok && !timers.current.email
+            ? 'border-green'
+            : ''
         }`}
         id='email'
         placeholder='Enter an email'
@@ -108,6 +119,9 @@ const SignUp = ({ modal, change_modal, control_field, check_field, enter }) => {
         active={ok}
         loading={loading}
         onClickHandler={onCLickLoadingButton('sign_up')}
+        classStr={
+          'btn width100 bcc-lightblue pad15-30 brr15 fz175 white h-grey h-bcc-yellow'
+        }
       >
         Sign up
       </LoadingButton>

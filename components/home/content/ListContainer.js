@@ -21,12 +21,13 @@ const ListContainer = ({ main }) => {
     cards,
     search_cards,
     search_modules,
-    select,
+    select_by,
   } = main;
 
   const process = (dataArr, data, i) => {
     const prev_data = dataArr[i - 1];
-    const prev_name = prev_data && create_name(prev_data.creation_date);
+    const prev_name =
+      prev_data && create_name(prev_data.creation_date);
     const new_name = create_name(data.creation_date);
 
     const exists = prev_name === new_name;
@@ -40,18 +41,26 @@ const ListContainer = ({ main }) => {
     <div className='home__items'>
       {section === 'cards' &&
         formatted_cards.map((card, i) => {
-          const { exists, new_name } = process(formatted_cards, card, i);
+          const { exists, new_name } = process(
+            formatted_cards,
+            card,
+            i
+          );
 
           return (
             <ListItem key={card._id}>
               {!exists && <Devider name={new_name} />}
               {card.edit ? (
-                <EditCard data={card} toggle={true} loading={loading} />
+                <EditCard
+                  data={card}
+                  toggle={true}
+                  loading={loading}
+                />
               ) : (
                 <Card
                   data={card}
                   filter={search_cards.value}
-                  filter_type={select.value}
+                  filter_type={select_by.value}
                 />
               )}
             </ListItem>

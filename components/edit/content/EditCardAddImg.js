@@ -6,6 +6,7 @@ import {
   set_card_imgurl,
   edit_card,
 } from '../../../store/actions/editActions';
+import Img from '../../main/Img';
 
 const EditCardAddImg = ({
   data,
@@ -16,7 +17,7 @@ const EditCardAddImg = ({
   const { _id, imgurl, gallery } = data;
 
   const clickImgSearch = (e) => {
-    if (imgurl && e.target !== addImgEl.current) return;
+    if (imgurl && e.target === deleteEl.current) return;
     set_gallery_search(_id, !gallery.search);
   };
 
@@ -25,24 +26,25 @@ const EditCardAddImg = ({
     edit_card(_id);
   };
 
-  const addImgEl = useRef(false);
+  const deleteEl = useRef(false);
 
   return (
     <div
       className='edit__addimg'
-      style={{
-        backgroundImage: `url(${imgurl})`,
-      }}
       onClick={clickImgSearch}
-      ref={addImgEl}
       data-imgurl={imgurl ? true : false}
     >
+      <Img
+        containerClass={'edit__img-container'}
+        imgClass={'edit__img'}
+        url={imgurl}
+      />
       <div className='edit__img-logo'>
         <svg>
           <use href='../img/sprite.svg#icon__img'></use>
         </svg>
       </div>
-      <div className='edit__img-delete' onClick={clickImgDelete}>
+      <div className='edit__img-delete' onClick={clickImgDelete} ref={deleteEl}>
         <svg>
           <use href='../img/sprite.svg#icon__delete'></use>
         </svg>

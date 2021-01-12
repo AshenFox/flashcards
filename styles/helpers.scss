@@ -21,7 +21,7 @@
 
   &:focus {
     outline: none;
-    border-bottom: 2px solid $yellow;
+    border-bottom: 2px solid $tertiary;
   }
 
   &--module {
@@ -153,6 +153,13 @@
   }
 }
 
+.pad15-60 {
+  padding: 1.5rem 6rem;
+  @media (max-width: $mobile) {
+    padding: 1.5rem 4rem;
+  }
+}
+
 .pad20-15 {
   padding: 2rem 1.5rem;
 }
@@ -196,12 +203,16 @@
   border-radius: 1rem;
 }
 
+.brr15 {
+  border-radius: 1.5rem;
+}
+
 .brr50p {
   border-radius: 50%;
 }
 
 .brc-lightblue {
-  border-color: $lightblue;
+  border-color: $secondary;
 }
 
 .brc-grey {
@@ -214,13 +225,13 @@
 
 .f-brc-yellow {
   &:focus {
-    border-color: $yellow;
+    border-color: $tertiary;
   }
 }
 
 .h-brc-yellow {
   &:hover {
-    border-color: $yellow;
+    border-color: $tertiary;
   }
 }
 
@@ -247,11 +258,11 @@
 }
 
 .bcc-yellow {
-  background-color: $yellow;
+  background-color: $tertiary;
 }
 
 .bcc-lightblue {
-  background-color: $lightblue;
+  background-color: $secondary;
 }
 
 .bcc-whiteblue {
@@ -260,7 +271,7 @@
 
 .h-bcc-yellow {
   &:hover {
-    background-color: $yellow;
+    background-color: $tertiary;
   }
 }
 
@@ -277,16 +288,16 @@
 }
 
 .lightblue {
-  color: $lightblue;
+  color: $secondary;
 }
 
 .blue {
-  color: $blue;
+  color: $primary;
 }
 
 .h-yellow {
   &:hover {
-    color: $yellow;
+    color: $tertiary;
   }
 }
 
@@ -302,12 +313,12 @@
   }
 }
 
-.h-thinblue {
+.h-primary-pale {
   &:hover {
-    color: rgb(137, 171, 235);
+    color: $primary-pale;
 
     svg {
-      fill: rgb(137, 171, 235);
+      fill: $primary-pale;
     }
   }
 }

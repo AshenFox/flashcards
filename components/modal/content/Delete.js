@@ -1,11 +1,18 @@
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { delete_module } from '../../../store/actions/editActions';
+import { toggle_modal } from '../../../store/actions/modalActions';
+import LoadingButton from '../../main/LoadingButton';
 
-const Delete = ({ modal, main, delete_module }) => {
-  const { module } = main;
+const Delete = ({ modal, main, delete_module, toggle_modal }) => {
+  const {
+    module: { _id, module_loading },
+  } = main;
 
-  const clickDelete = () => delete_module(module._id);
+  const clickDelete = () => delete_module(_id);
+
+  const close = (e) => toggle_modal();
+
   return (
     <>
       <div className='modal__set-title'>
@@ -14,8 +21,8 @@ const Delete = ({ modal, main, delete_module }) => {
 
       <div className='modal__warning'>
         <p>
-          You are about to delete this set and all of its data. You won't be
-          able to access this set ever again.
+          You are about to delete this set and all of its data. You
+          won't be able to access this set ever again.
         </p>
       </div>
 
@@ -25,18 +32,29 @@ const Delete = ({ modal, main, delete_module }) => {
 
       <div className='modal__choice'>
         <div className='modal__choice-item'>
-          <button className='btn width100 bcc-mudblue pad15-30 brr5 fz175 white h-opacity09'>
+          <button
+            className='btn width100 bcc-mudblue pad15-30 brr15 fz175 white h-opacity09'
+            onClick={close}
+          >
             Cancel
           </button>
         </div>
 
         <div className='modal__choice-item'>
-          <button
-            className='btn width100 bcc-coral pad15-30 brr5 fz175 white h-opacity09'
+          {/* <button
+            className='btn width100 bcc-coral pad15-30 brr15 fz175 white h-opacity09'
             onClick={clickDelete}
           >
             Yes, delete set
-          </button>
+          </button> */}
+          <LoadingButton
+            active={true}
+            loading={module_loading}
+            onClickHandler={clickDelete}
+            classStr='btn width100 bcc-coral pad15-30 brr15 fz175 white h-opacity09'
+          >
+            Yes, delete set
+          </LoadingButton>
         </div>
       </div>
     </>
@@ -47,6 +65,7 @@ Delete.propTypes = {
   modal: PropTypes.object.isRequired,
   main: PropTypes.object.isRequired,
   delete_module: PropTypes.func.isRequired,
+  toggle_modal: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
@@ -54,4 +73,7 @@ const mapStateToProps = (state) => ({
   main: state.main,
 });
 
-export default connect(mapStateToProps, { delete_module })(Delete);
+export default connect(mapStateToProps, {
+  delete_module,
+  toggle_modal,
+})(Delete);

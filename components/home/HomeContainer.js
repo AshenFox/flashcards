@@ -28,7 +28,12 @@ const HomeContainer = ({
 
   const { user } = auth;
   const { username } = user ? user : {};
-  const { modules, cards, all_modules_number, all_cards_number } = main;
+  const {
+    modules,
+    cards,
+    all_modules_number,
+    all_cards_number,
+  } = main;
 
   useEffect(() => {
     loadContent();
@@ -36,6 +41,7 @@ const HomeContainer = ({
 
   useEffect(() => {
     if (!user) return;
+    reset_search();
     loadContent();
   }, [section]);
 
@@ -76,11 +82,15 @@ const HomeContainer = ({
 
   const scrollModules = useRef(
     (e) =>
-      router.pathname === '/home/[section]' && check_bottom() && get_modules()
+      router.pathname === '/home/[section]' &&
+      check_bottom() &&
+      get_modules()
   );
   const scrollCards = useRef(
     (e) =>
-      router.pathname === '/home/[section]' && check_bottom() && get_cards()
+      router.pathname === '/home/[section]' &&
+      check_bottom() &&
+      get_cards()
   );
 
   const check_bottom = (e) => {
@@ -109,12 +119,16 @@ const HomeContainer = ({
           <div className='home__content-header'>
             <div className='home__user-info'>
               <div className='home__nickname'>
-                <h1>{username ? username : <Skeleton width={250} />}</h1>
+                <h1>
+                  {username ? username : <Skeleton width={250} />}
+                </h1>
               </div>
               <Navigation />
               <div className='home__all-items-number'>
                 {section === 'cards' &&
-                  `All cards: ${all_cards_number ? all_cards_number : '0'}`}
+                  `All cards: ${
+                    all_cards_number ? all_cards_number : '0'
+                  }`}
                 {section === 'modules' &&
                   `All modules: ${
                     all_modules_number ? all_modules_number : '0'
@@ -124,7 +138,9 @@ const HomeContainer = ({
           </div>
 
           <div className='home__content-items-cont'>
-            {(section === 'cards' || section === 'modules') && <Search />}
+            {(section === 'cards' || section === 'modules') && (
+              <Search />
+            )}
             <ListContainer />
           </div>
         </div>

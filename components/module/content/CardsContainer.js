@@ -6,7 +6,7 @@ import NotFound from './NotFound';
 import ScrollLoading from '../../home/content/ScrollLoading';
 
 const CardsContainer = ({ main }) => {
-  const { cards, loading, search_cards, select } = main;
+  const { cards, loading, search_cards, select_by } = main;
 
   const formatted_cards = Object.values(cards);
 
@@ -25,7 +25,7 @@ const CardsContainer = ({ main }) => {
             key={card._id}
             data={card}
             filter={search_cards.value}
-            filter_type={select.value}
+            filter_type={select_by.value}
           />
         )
       )}

@@ -26,6 +26,11 @@ export default function Head() {
         href='https://fonts.googleapis.com/css?family=Alata&display=swap'
         rel='stylesheet'
       />
+      <link rel='preconnect' href='https://fonts.gstatic.com' />
+      <link
+        href='https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap'
+        rel='stylesheet'
+      />
       <title>Flash Cards</title>
     </Next_head>
   );
