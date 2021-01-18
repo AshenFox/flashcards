@@ -8,13 +8,9 @@ import {
 import ContentEditable from 'react-contenteditable';
 import Speaker from '../../main/Speaker';
 import Img from '../../main/Img';
+import SRIndicator from '../../main/SRIngicator';
 
-const Question = ({
-  data,
-  game,
-  set_write_answer_field,
-  check_write_answer,
-}) => {
+const Question = ({ data, game, set_write_answer_field, check_write_answer }) => {
   const { _id, term, defenition, imgurl } = data;
   const {
     write: { answer },
@@ -52,6 +48,10 @@ const Question = ({
   return (
     <div className='game__question'>
       <div className='game__question-container'>
+        <SRIndicator
+          data={data}
+          classStr={'sr-indicator--write sr-indicator--write--1'}
+        />
         {term && (
           <div className='game__question-dontknow' onClick={clickNotKnow}>
             <span>Don't know</span>

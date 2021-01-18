@@ -6,12 +6,20 @@ import {
   get_module,
   get_draft,
   clear_module,
+  set_main_loading,
 } from '../../store/actions/mainActions';
 import Link from 'next/link';
 import EditModule from './content/EditModule';
 import CardsContainer from './content/CardsContainer';
 
-const EditContainer = ({ main, auth, get_module, get_draft, clear_module }) => {
+const EditContainer = ({
+  main,
+  auth,
+  get_module,
+  get_draft,
+  clear_module,
+  set_main_loading,
+}) => {
   const router = useRouter();
   const { _id } = router.query;
 
@@ -26,6 +34,7 @@ const EditContainer = ({ main, auth, get_module, get_draft, clear_module }) => {
 
   useEffect(() => {
     return () => {
+      set_main_loading(true);
       clear_module();
     };
   }, []);
@@ -72,6 +81,7 @@ EditContainer.propTypes = {
   get_module: PropTypes.func.isRequired,
   get_draft: PropTypes.func.isRequired,
   clear_module: PropTypes.func.isRequired,
+  set_main_loading: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
@@ -83,4 +93,5 @@ export default connect(mapStateToProps, {
   get_module,
   get_draft,
   clear_module,
+  set_main_loading,
 })(EditContainer);

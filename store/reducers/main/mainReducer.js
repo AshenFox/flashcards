@@ -34,6 +34,8 @@ import {
   DELETE_CARD,
   CREATE_CARD,
   SET_CARD_STUDY_REGIME,
+  SET_CARDS_STUDY_REGIME,
+  SET_CARDS_STUDY_REGIME_POSITIVE,
   SET_CARD_SAVE,
   SET_CARDS_SAVE,
   SET_CARDS_SAVE_POSITIVE,
@@ -248,9 +250,7 @@ const MainReducer = (state = initialState, action) => {
     case SHUFFLE_FLASHCARDS:
       return {
         ...state,
-        cards: Object.fromEntries(
-          shuffle(Object.entries(state.cards))
-        ),
+        cards: Object.fromEntries(shuffle(Object.entries(state.cards))),
       };
 
     case SORT_FLASHCARDS:
@@ -258,8 +258,7 @@ const MainReducer = (state = initialState, action) => {
         ...state,
         cards: Object.fromEntries(
           Object.entries(state.cards).sort(
-            ([, a], [, b]) =>
-              new Date(a.creation_date) - new Date(b.creation_date)
+            ([, a], [, b]) => new Date(a.creation_date) - new Date(b.creation_date)
           )
         ),
       };
@@ -352,9 +351,7 @@ const MainReducer = (state = initialState, action) => {
               imgurl_obj: {
                 ...state.cards[payload._id].gallery.imgurl_obj,
                 [payload.index]: {
-                  ...state.cards[payload._id].gallery.imgurl_obj[
-                    payload.index
-                  ],
+                  ...state.cards[payload._id].gallery.imgurl_obj[payload.index],
                   ok: payload.value,
                 },
               },
@@ -426,9 +423,7 @@ const MainReducer = (state = initialState, action) => {
             ...state.cards[payload._id],
             gallery: {
               ...state.cards[payload._id].gallery,
-              position:
-                state.cards[payload._id].gallery.position +
-                payload.offset,
+              position: state.cards[payload._id].gallery.position + payload.offset,
             },
           },
         },
@@ -453,8 +448,7 @@ const MainReducer = (state = initialState, action) => {
           ...state.cards,
           [payload._id]: {
             ...state.cards[payload._id],
-            defenition:
-              state.cards[payload._id].defenition + payload.result,
+            defenition: state.cards[payload._id].defenition + payload.result,
           },
         },
       };
@@ -492,9 +486,7 @@ const MainReducer = (state = initialState, action) => {
       return {
         ...state,
         cards: Object.fromEntries(
-          Object.entries(state.cards).filter(
-            ([_id]) => _id !== payload._id
-          )
+          Object.entries(state.cards).filter(([_id]) => _id !== payload._id)
         ),
       };
 

@@ -1,9 +1,7 @@
+import { useRouter } from 'next/router';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import {
-  change_modal,
-  toggle_modal,
-} from '../../../store/actions/modalActions';
+import { change_modal, toggle_modal } from '../../../store/actions/modalActions';
 import Link from 'next/link';
 import Skeleton from 'react-loading-skeleton';
 import ModuleQuestion from './ModuleQuestion';
@@ -12,6 +10,8 @@ import ModuleSRControl from './ModuleSRControl';
 import DateStr from '../../main/DateSrt';
 
 const Info = ({ main, change_modal, toggle_modal }) => {
+  const router = useRouter();
+
   const { module } = main;
   const {
     module: { author, _id, creation_date },
@@ -44,10 +44,7 @@ const Info = ({ main, change_modal, toggle_modal }) => {
             </svg>
           </div>
         </Link>
-        <div
-          className='module__nav-item'
-          onClick={openModal('delete')}
-        >
+        <div className='module__nav-item' onClick={openModal('delete')}>
           <svg width='25' height='25'>
             <use href='../img/sprite.svg#icon__delete'></use>
           </svg>
@@ -59,12 +56,12 @@ const Info = ({ main, change_modal, toggle_modal }) => {
 
 Info.propTypes = {
   main: PropTypes.object.isRequired,
+  change_modal: PropTypes.func.isRequired,
+  toggle_modal: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
   main: state.main,
-  change_modal: PropTypes.func.isRequired,
-  toggle_modal: PropTypes.func.isRequired,
 });
 
 export default connect(mapStateToProps, {

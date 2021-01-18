@@ -9,7 +9,7 @@ const CardSRDropControl = ({ data, set_card_question }) => {
 
   return (
     <div
-      className='module__drop-card-study-regime'
+      className='module__card-controls-item module__drop-card-study-regime'
       onClick={clickDropSR}
       data-active={question}
     >

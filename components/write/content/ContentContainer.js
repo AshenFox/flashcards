@@ -8,7 +8,7 @@ import EditCard from '../../edit/content/EditCard';
 
 const ContentContainer = ({ dimen, main, game }) => {
   const { header_height, game_controls_height } = dimen;
-  const { cards, is_server } = main;
+  const { cards, is_server, loading } = main;
   const {
     write: { is_init, remaining, answered, rounds },
   } = game;
@@ -18,9 +18,7 @@ const ContentContainer = ({ dimen, main, game }) => {
       !is_server
         ? document.documentElement.clientHeight -
           header_height -
-          (document.documentElement.clientWidth < 991
-            ? game_controls_height
-            : 0)
+          (document.documentElement.clientWidth < 991 ? game_controls_height : 0)
         : 0
     }px`,
   };
@@ -69,7 +67,7 @@ const ContentContainer = ({ dimen, main, game }) => {
     >
       {/* COMPONENTS */}
       <div className='game__components game__components--scrollable'>
-        {is_init ? components : <div className='game__loading-spinner' />}
+        {is_init && !loading ? components : <div className='game__loading-spinner' />}
         {/* { QUESTION }
         <Round />
         <Finish /> } */}

@@ -3,6 +3,8 @@ export default {
     progress: 0,
     side: 'definition',
     shuffled: false,
+    answers: [],
+    is_turned: false,
   },
   write: {
     is_init: false,

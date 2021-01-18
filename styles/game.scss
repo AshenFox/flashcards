@@ -503,6 +503,10 @@
     &::first-letter {
       text-transform: uppercase;
     }
+
+    @media (max-width: $mobile-m) {
+      margin-top: 4rem;
+    }
   }
 
   &__answer-section {
@@ -679,13 +683,29 @@
   // }
 
   &__finish-body-item {
-    display: flex;
-
     &:not(:first-child) {
       margin-top: 1.5rem;
       padding-top: 1.5rem;
       border-top: 0.2rem solid #f4f4f4;
     }
+  }
+
+  &__finish-body-header {
+    font-size: 1.2rem;
+    margin-bottom: 1rem;
+
+    &--correct {
+      color: $green;
+    }
+
+    &--incorrect {
+      color: $red;
+    }
+  }
+
+  &__finish-body-main {
+    display: flex;
+    width: 100%;
 
     @media (max-width: $mobile) {
       flex-direction: column;
@@ -835,6 +855,23 @@
     }
   }
 
+  &__card-front,
+  &__card-back {
+    &.rearside {
+      & .sr-indicator {
+        opacity: 0;
+
+        & .sr-indicator__dots {
+          opacity: 0;
+
+          & .sr-indicator__dot {
+            opacity: 0;
+          }
+        }
+      }
+    }
+  }
+
   &__img-container {
     display: flex;
     align-items: center;
@@ -954,14 +991,22 @@
     }
 
     &--write {
-      top: 2.5rem;
-      right: 4rem;
+      /* top: 2.5rem;
+      right: 8rem;
       padding: 0;
       border: none;
 
       @media (max-width: $mobile) {
         top: 1.5rem;
         right: 3rem;
+      } */
+
+      top: 2.5rem;
+      right: 8.75rem;
+
+      @media (max-width: $mobile) {
+        top: 2rem;
+        right: 7.75rem;
       }
     }
   }
@@ -1239,5 +1284,32 @@
       border-color: $tertiary transparent $tertiary transparent;
       animation: lds-dual-ring 1.2s linear infinite;
     }
+  }
+}
+
+// ==========
+
+.game__speaker-flashcards,
+.game__speaker-write {
+  @include speaker;
+}
+
+.game__speaker-flashcards {
+  right: 2rem;
+  top: 2rem;
+
+  svg {
+    height: 22px;
+    width: 22px;
+  }
+}
+
+.game__speaker-write {
+  bottom: 0;
+  right: 0;
+
+  svg {
+    height: 22px;
+    width: 22px;
   }
 }

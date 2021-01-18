@@ -5,6 +5,7 @@ import {
   SORT_FLASHCARDS,
   SET_FLASHCARDS_SHUFFLED,
   SET_FLASHCARDS_SIDE,
+  SAVE_FLASHCARDS_ANSWER,
   PREPARE_WRITE,
   SET_WRITE_IS_INIT,
   SET_WRITE_ANSWER_FIELD,
@@ -16,6 +17,15 @@ import {
   RESET_ALL_GAME_FIELDS,
 } from './types';
 import { card_fields } from '../reducers/game/gameInitState';
+
+// SAVE_FLASHCARDS_ANSWER
+export const save_flashcards_answer = (id, card_answer) => ({
+  type: SAVE_FLASHCARDS_ANSWER,
+  payload: {
+    id,
+    card_answer,
+  },
+});
 
 // SET_WRITE_IS_INIT
 export const set_write_is_init = (value) => ({
@@ -107,8 +117,7 @@ export const check_write_answer = (not_know) => async (dispatch, getState) => {
   dispatch({
     type: CHECK_WRITE_ANSWER,
     payload: {
-      card_answer:
-        answer === formatedTerm && !not_know ? 'correct' : 'incorrect',
+      card_answer: answer === formatedTerm && !not_know ? 'correct' : 'incorrect',
       answer: not_know ? '' : answer,
     },
   });
@@ -130,10 +139,7 @@ export const next_write_round = () => ({
 });
 
 // SET_FLASHCARDS_PROGRESS
-export const set_flashcards_progress = (value) => async (
-  dispatch,
-  getState
-) => {
+export const set_flashcards_progress = (value) => async (dispatch, getState) => {
   const {
     main: { cards },
     game: {
@@ -154,13 +160,6 @@ export const set_flashcards_progress = (value) => async (
     if (progress <= 0) return;
     payload.value = -1;
   }
-
-  dispatch({
-    type: SET_FLASHCARDS_SIDE,
-    payload: {
-      value: 'definition',
-    },
-  });
 
   dispatch({
     type: SET_FLASHCARDS_PROGRESS,

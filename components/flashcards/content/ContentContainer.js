@@ -1,9 +1,11 @@
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+
 import Navigation from './Navigation';
 import Card from './Card';
 import EndGame from './EndGame';
 import EditCard from '../../edit/content/EditCard';
+import Results from './Results';
 
 const ContentContainer = ({ main, dimen, game }) => {
   const { cards, loading, is_server } = main;
@@ -18,43 +20,42 @@ const ContentContainer = ({ main, dimen, game }) => {
       !is_server
         ? document.documentElement.clientHeight -
           header_height -
-          (document.documentElement.clientWidth < 991
-            ? game_controls_height
-            : 0)
+          (document.documentElement.clientWidth < 991 ? game_controls_height : 0)
         : 0
     }px`,
   };
 
   const formatted_cards = Object.values(cards);
+  const { length } = formatted_cards;
 
   let activeFound = false;
 
   const activeCardData = formatted_cards[progress];
 
-  const isEnd = formatted_cards.length === progress;
-  const isEdit =
-    formatted_cards.length && formatted_cards.length !== progress
-      ? activeCardData.edit
-      : false;
+  const isEnd = length === progress;
+  const isEdit = length && length !== progress ? activeCardData.edit : false;
+
+  const isSR = false;
 
   return (
     <div
       className={`game__content-container game__content-container--${
-        isEdit ? '' : 'un'
+        isEdit || (isSR && isEnd) ? '' : 'un'
       }scrollable`}
       style={flashcardsStyles}
     >
       <div
         className={`game__components game__components--${
-          isEdit ? '' : 'un'
+          isEdit || (isSR && isEnd) ? '' : 'un'
         }scrollable`}
       >
-        {loading ? (
+        {loading || !length ? (
           <div className='game__loading-spinner' />
         ) : (
           <>
             <div className='game__cards-container'>
               {!isEdit &&
+                !isEnd &&
                 formatted_cards.map((card, i) => {
                   if (i === progress) {
                     activeFound = true;
@@ -62,16 +63,19 @@ const ContentContainer = ({ main, dimen, game }) => {
                     return <Card key={card._id} data={card} side={side} />;
                   }
                   if (activeFound) {
-                    return (
-                      <Card key={card._id} data={card} position={'next'} />
-                    );
+                    return <Card key={card._id} data={card} position={'next'} />;
                   } else {
-                    return (
-                      <Card key={card._id} data={card} position={'prev'} />
-                    );
+                    return <Card key={card._id} data={card} position={'prev'} />;
                   }
                 })}
-              {!isEdit && formatted_cards.length && <EndGame active={isEnd} />}
+              {/* {!isEdit && length && !isSR && <EndGame active={isEnd} />}
+              {!isEdit && length && isSR && isEnd && 'Finish'} */}
+              {!isEdit && length && isEnd && isSR ? (
+                <Results />
+              ) : (
+                <EndGame active={isEnd} />
+              )}
+
               {isEdit && (
                 <EditCard
                   key={activeCardData._id}
@@ -81,7 +85,7 @@ const ContentContainer = ({ main, dimen, game }) => {
                 />
               )}
             </div>
-            {!isEdit && <Navigation />}
+            {!isEdit && !isEnd && <Navigation />}
           </>
         )}
       </div>
@@ -100,4 +104,4 @@ const mapStateToProps = (state) => ({
   dimen: state.dimen,
 });
 
-export default connect(mapStateToProps, {})(ContentContainer);
+export default connect(mapStateToProps)(ContentContainer);

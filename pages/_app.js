@@ -5,6 +5,8 @@ import store from '../store/store';
 import AuthWrapper from '../components/main/AuthWrapper';
 import PasteControl from '../components/main/PasteControl';
 import Voice from '../components/main/Voice';
+import Push from '../components/main/Push';
+import RouterConfiguration from '../components/main/RouterConfiguration';
 
 function MyApp({ Component, pageProps }) {
   return (
@@ -15,8 +17,10 @@ function MyApp({ Component, pageProps }) {
           <Component {...pageProps} />
         </AuthWrapper>
         <Voice />
+        <RouterConfiguration />
       </Provider>
       <PasteControl />
+      <Push />
     </>
   );
 }

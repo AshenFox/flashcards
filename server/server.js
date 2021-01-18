@@ -4,6 +4,8 @@ const express = require('express');
 const connectDB = require('../config/db');
 const next = require('next');
 
+const webpush = require('web-push');
+
 const port = process.env.PORT || 3000;
 const dev = process.env.NODE_ENV !== 'production';
 
@@ -30,10 +32,26 @@ server.use('/api/main', require('./routes/main'));
 server.use('/api/imgsearch', require('./routes/img_search'));
 server.use('/api/scrape', require('./routes/scrape'));
 server.use('/api/edit', require('./routes/edit'));
+server.use('/api/sr', require('./routes/sr'));
 
 server.all('*', (req, res) => {
   return handle(req, res);
 });
+
+// ----------
+// ----------
+// ----------
+
+// Push notifications
+const publicVapidKey =
+  '***REMOVED***';
+const privateVapidKey = '***REMOVED***';
+
+webpush.setVapidDetails('***REMOVED***', publicVapidKey, privateVapidKey);
+
+/* let pushInterval = setInterval(async () => {
+  await notifications.sendNotifications();
+}, 5000); */
 
 // ----------
 // ----------

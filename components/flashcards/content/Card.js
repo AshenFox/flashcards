@@ -5,6 +5,7 @@ import { set_card_edit } from '../../../store/actions/editActions';
 import ContentEditable from 'react-contenteditable';
 import Speaker from '../../main/Speaker';
 import Img from '../../main/Img';
+import SRIndicator from '../../main/SRIngicator';
 
 const Card = ({
   data,
@@ -15,16 +16,17 @@ const Card = ({
 }) => {
   const { _id, term, defenition, imgurl } = data;
 
-  const frontClassName = `game__card-front ${
-    position ? `transparent ${position}` : ''
-  } ${side === 'definition' ? '' : 'rearside'}`;
-  const backClassName = `game__card-back ${
-    position ? `transparent ${position}` : ''
-  } ${position ? position : ''} ${side === 'term' ? '' : 'rearside'}`;
+  const frontClassName = `game__card-front ${position ? `transparent ${position}` : ''} ${
+    side === 'definition' ? '' : 'rearside'
+  }`;
+  const backClassName = `game__card-back ${position ? `transparent ${position}` : ''} ${
+    position ? position : ''
+  } ${side === 'term' ? '' : 'rearside'}`;
 
   const clickSide = (value) => (e) => {
     if (e.target.closest('.game__speaker-flashcards')) return;
     if (e.target.closest('.game__edit')) return;
+    if (e.target.closest('.sr-indicator')) return;
 
     set_flashcards_side(value);
   };
@@ -34,25 +36,12 @@ const Card = ({
   return (
     <div className='game__card'>
       <div className={frontClassName} onClick={clickSide('term')}>
-        {/* <div className={`game__img-container ${defenition ? '' : 'full'}`}>
-          <div
-            className='game__img'
-            style={
-              imgurl
-                ? {
-                    backgroundImage: `url(${imgurl})`,
-                  }
-                : {}
-            }
-          ></div>
-        </div> */}
-
         <Img
           containerClass={`game__img-container ${defenition ? '' : 'full'}`}
           imgClass={'game__img'}
           url={imgurl}
         />
-
+        <SRIndicator data={data} classStr={'sr-indicator--flashcards'} />
         {defenition && (
           <div className={`game__definition-container ${imgurl ? '' : 'full'}`}>
             <ContentEditable
@@ -75,6 +64,7 @@ const Card = ({
         </div>
       </div>
       <div className={backClassName} onClick={clickSide('definition')}>
+        <SRIndicator data={data} classStr={'sr-indicator--flashcards'} />
         <div className='game__term-container '>
           <ContentEditable html={term} disabled={true} className='game__term' />
         </div>
@@ -98,6 +88,4 @@ Card.propTypes = {};
 
 const mapStateToProps = (state) => ({});
 
-export default connect(mapStateToProps, { set_flashcards_side, set_card_edit })(
-  Card
-);
+export default connect(mapStateToProps, { set_flashcards_side, set_card_edit })(Card);

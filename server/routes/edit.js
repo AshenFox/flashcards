@@ -55,7 +55,9 @@ router.delete('/card', auth, async (req, res) => {
 
     await cardModel.deleteOne({ _id });
 
-    const number = await cardModel.countDocuments({ moduleID: card.moduleID });
+    const number = await cardModel.countDocuments({
+      moduleID: card.moduleID,
+    });
 
     await moduleModel.updateOne({ _id: card.moduleID }, { number });
 
@@ -129,11 +131,6 @@ router.put('/card', auth, async (req, res) => {
     card.defenition = card_data.defenition;
     card.imgurl = card_data.imgurl;
 
-    /* 
-    Drop study regime? Set study regime?
-    card.studyRegime = cardData.studyRegime;
-    */
-
     await card.save();
 
     res.status(200).json({ msg: 'The card has been edited.' });
@@ -178,7 +175,9 @@ router.post('/module', auth, async (req, res) => {
       { moduleID: new_module._id }
     );
 
-    const number = await cardModel.countDocuments({ moduleID: draft._id });
+    const number = await cardModel.countDocuments({
+      moduleID: draft._id,
+    });
 
     if (!number) {
       await moduleModel.deleteOne({ draft: true });
@@ -228,7 +227,9 @@ router.post('/card', auth, async (req, res) => {
       prevStage: new Date(),
     });
 
-    const number = await cardModel.countDocuments({ moduleID: module._id });
+    const number = await cardModel.countDocuments({
+      moduleID: module._id,
+    });
 
     await moduleModel.updateOne({ _id: module._id }, { number });
 

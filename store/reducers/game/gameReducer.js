@@ -3,6 +3,7 @@ import {
   RESET_FLASHCARDS_PROGRESS,
   SET_FLASHCARDS_SHUFFLED,
   SET_FLASHCARDS_SIDE,
+  SAVE_FLASHCARDS_ANSWER,
   PREPARE_WRITE,
   SET_WRITE_IS_INIT,
   SET_WRITE_ANSWER_FIELD,
@@ -86,9 +87,7 @@ const GameReducer = (state = initialState, action) => {
           ...state.write,
           answer: '',
           copy_answer: '',
-          remaining: state.write.remaining.filter(
-            (item, i, arr) => i !== arr.length - 1
-          ),
+          remaining: state.write.remaining.filter((item, i, arr) => i !== arr.length - 1),
           answered: [
             ...state.write.answered,
             state.write.remaining[state.write.remaining.length - 1],
@@ -103,9 +102,7 @@ const GameReducer = (state = initialState, action) => {
           ...state.write,
           answer: '',
           copy_answer: '',
-          remaining: state.write.remaining.filter(
-            (item, i, arr) => i !== arr.length - 1
-          ),
+          remaining: state.write.remaining.filter((item, i, arr) => i !== arr.length - 1),
           answered: [
             ...state.write.answered,
             {
@@ -141,6 +138,8 @@ const GameReducer = (state = initialState, action) => {
         flashcards: {
           ...state.flashcards,
           progress: state.flashcards.progress + payload.value,
+          is_turned: false,
+          side: 'definition',
         },
       };
 
@@ -150,6 +149,8 @@ const GameReducer = (state = initialState, action) => {
         flashcards: {
           ...state.flashcards,
           progress: 0,
+          is_turned: false,
+          answers: [],
         },
       };
 
@@ -168,6 +169,19 @@ const GameReducer = (state = initialState, action) => {
         flashcards: {
           ...state.flashcards,
           side: payload.value,
+          is_turned: true,
+        },
+      };
+
+    case SAVE_FLASHCARDS_ANSWER:
+      return {
+        ...state,
+        flashcards: {
+          ...state.flashcards,
+          answers: [
+            ...state.flashcards.answers,
+            { id: payload.id, answer: payload.card_answer },
+          ],
         },
       };
     default:

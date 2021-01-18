@@ -51,24 +51,16 @@ const ModuleContainer = ({
           <div className='module__header-top'>
             <div className='module__title'>
               <h1 className={`${title ? '' : 'blue'}`}>
-                {module ? (
-                  title ? (
-                    title
-                  ) : (
-                    '(Untitled)'
-                  )
-                ) : (
-                  <Skeleton width={150} />
-                )}
+                {module ? title ? title : '(Untitled)' : <Skeleton width={150} />}
               </h1>
             </div>
-            <Link href='/home/modules'>
-              <div className='module__return'>
+            <div className='module__return'>
+              <Link href={'/home/modules'}>
                 <button className='btn bcc-lightblue pad12-30 brr15 white fz15 fw-normal h-grey h-bcc-yellow'>
                   Return
                 </button>
-              </div>
-            </Link>
+              </Link>
+            </div>
           </div>
           <Study />
           <Info />

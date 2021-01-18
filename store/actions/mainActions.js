@@ -17,11 +17,14 @@ import {
   CLEAR_MODULE,
   SET_SCROLL_TOP,
 } from './types';
-import {
-  card_fields,
-  module_fields,
-} from '../reducers/main/mainInitState';
+import { card_fields, module_fields } from '../reducers/main/mainInitState';
 import axios from '../../server/supplemental/axios';
+
+// SET_MAIN_LOADING
+export const set_main_loading = (value) => ({
+  type: SET_MAIN_LOADING,
+  payload: value,
+});
 
 // SET_IS_SERVER
 export const set_is_server = () => ({
@@ -92,15 +95,9 @@ export const get_modules = () => async (dispatch, getState) => {
   try {
     const {
       auth: { user },
-      main: {
-        skip_modules,
-        loading,
-        all_modules,
-        search_modules,
-        select_created,
-      },
+      main: { skip_modules, all_modules, search_modules, select_created },
     } = getState();
-    if (!user || loading || all_modules) return;
+    if (!user || all_modules) return; // loading ???
 
     dispatch({
       type: SET_MAIN_LOADING,
@@ -135,16 +132,9 @@ export const get_cards = () => async (dispatch, getState) => {
   try {
     const {
       auth: { user },
-      main: {
-        skip_cards,
-        loading,
-        all_cards,
-        search_cards,
-        select_by,
-        select_created,
-      },
+      main: { skip_cards, all_cards, search_cards, select_by, select_created },
     } = getState();
-    if (!user || loading || all_cards) return;
+    if (!user || all_cards) return; // loading ???
 
     dispatch({
       type: SET_MAIN_LOADING,
@@ -178,16 +168,13 @@ export const get_cards = () => async (dispatch, getState) => {
 };
 
 // GET MODULE CARDS
-export const get_module_cards = (_id) => async (
-  dispatch,
-  getState
-) => {
+export const get_module_cards = (_id) => async (dispatch, getState) => {
   try {
     const {
       auth: { user },
-      main: { loading, search_cards, select_by, select_created },
+      main: { search_cards, select_by, select_created },
     } = getState();
-    if (!user || loading) return;
+    if (!user) return; // loading
 
     dispatch({
       type: SET_MAIN_LOADING,
@@ -221,9 +208,8 @@ export const get_module = (_id) => async (dispatch, getState) => {
   try {
     const {
       auth: { user },
-      main: { loading },
     } = getState();
-    if (!user || loading) return;
+    if (!user) return; // loading
 
     dispatch({
       type: SET_MAIN_LOADING,
@@ -256,9 +242,8 @@ export const get_draft = () => async (dispatch, getState) => {
   try {
     const {
       auth: { user },
-      main: { loading },
     } = getState();
-    if (!user || loading) return;
+    if (!user) return; // loading
 
     dispatch({
       type: SET_MAIN_LOADING,
