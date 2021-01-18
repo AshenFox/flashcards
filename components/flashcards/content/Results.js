@@ -2,16 +2,16 @@ import { useEffect } from 'react';
 import { useRouter } from 'next/router';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { next_write_round } from '../../../store/actions/gameActions';
-import FinishItem from './FinishItem';
+// import { next_write_round } from '../../../store/actions/gameActions';
+import ResultsItem from './ResultsItem';
 import Link from 'next/link';
 
-const Finish = ({ game, next_write_round }) => {
+const Finish = ({ game }) => {
   const router = useRouter();
   const { _id } = router.query;
 
   const {
-    write: { rounds, all_cards_num },
+    flashcards: { answers },
   } = game;
 
   const keyDownFinish = (e) => {
@@ -21,8 +21,8 @@ const Finish = ({ game, next_write_round }) => {
   };
 
   useEffect(() => {
-    console.log('fire!');
-    if (all_cards_num) next_write_round();
+    // console.log('fire!');
+    // if (all_cards_num) next_write_round();
 
     window.addEventListener('keydown', keyDownFinish);
 
@@ -31,48 +31,44 @@ const Finish = ({ game, next_write_round }) => {
     };
   }, []);
 
-  return rounds.map((round, i) => {
-    const correctNum = round.filter((item) => item.answer === 'correct').length;
+  const correctNum = answers.filter((item) => item.answer === 'correct').length;
 
-    return (
-      <div className='game__finish' key={i}>
-        <div className='game__finish-header'>
-          <div className='game__finish-header-item'>
-            <h1 className='game__finish-title'>Round {i + 1}</h1>
-            <h3 className='game__finish-round-stats'>
-              {correctNum}/{round.length} -{' '}
-              {Math.round((correctNum / round.length) * 100)}%
-            </h3>
-          </div>
-          <div className={`game__finish-header-item ${i !== 0 ? 'hidden' : ''}`}>
-            {' '}
-            <Link href={`/module/${_id}`}>
-              <button className='btn bcc-lightblue pad10-30 brr15 white fz15 fw-normal h-grey h-bcc-yellow'>
-                Finish game
-              </button>
-            </Link>
-          </div>
+  return (
+    <div className='game__finish'>
+      <div className='game__finish-header'>
+        <div className='game__finish-header-item'>
+          <h1 className='game__finish-title'>Results</h1>
+          <h3 className='game__finish-round-stats'>
+            {correctNum}/{answers.length} -{' '}
+            {Math.round((correctNum / answers.length) * 100)}%
+          </h3>
         </div>
-
-        <div className='game__finish-body'>
-          {round.map((data, z) => (
-            <FinishItem data={data} i={z + 1} key={data.id} stats={i === 0} />
-          ))}
+        <div className='game__finish-header-item '>
+          {' '}
+          <Link href={`/module/${_id}`}>
+            <button className='btn bcc-lightblue pad10-30 brr15 white fz15 fw-normal h-grey h-bcc-yellow'>
+              Finish game
+            </button>
+          </Link>
         </div>
       </div>
-    );
-  });
+
+      <div className='game__finish-body'>
+        {answers.map((data, i) => (
+          <ResultsItem data={data} i={i + 1} key={data.id} />
+        ))}
+      </div>
+    </div>
+  );
 };
 
-Finish.propTypes = {
-  next_write_round: PropTypes.func.isRequired,
-};
+Finish.propTypes = {};
 
 const mapStateToProps = (state) => ({
   game: state.game,
 });
 
-export default connect(mapStateToProps, { next_write_round })(Finish);
+export default connect(mapStateToProps)(Finish);
 
 /* 
 <div className='game__finish-body-item'>

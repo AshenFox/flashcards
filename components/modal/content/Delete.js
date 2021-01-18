@@ -6,7 +6,7 @@ import LoadingButton from '../../main/LoadingButton';
 
 const Delete = ({ modal, main, delete_module, toggle_modal }) => {
   const {
-    module: { _id, module_loading },
+    module: { _id, module_loading, title },
   } = main;
 
   const clickDelete = () => delete_module(_id);
@@ -16,13 +16,13 @@ const Delete = ({ modal, main, delete_module, toggle_modal }) => {
   return (
     <>
       <div className='modal__set-title'>
-        <h2>A few words per day 24</h2>
+        <h2>{title}</h2>
       </div>
 
       <div className='modal__warning'>
         <p>
-          You are about to delete this set and all of its data. You
-          won't be able to access this set ever again.
+          You are about to delete this set and all of its data. You won't be able to access this set
+          ever again.
         </p>
       </div>
 

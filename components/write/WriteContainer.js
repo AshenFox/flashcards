@@ -5,11 +5,9 @@ import { connect } from 'react-redux';
 import {
   get_module_cards,
   clear_module,
+  set_main_loading,
 } from '../../store/actions/mainActions';
-import {
-  prepare_write,
-  reset_all_game_fields,
-} from '../../store/actions/gameActions';
+import { prepare_write, reset_all_game_fields } from '../../store/actions/gameActions';
 import ContentContainer from './content/ContentContainer';
 import Controls from './content/Controls';
 
@@ -21,6 +19,7 @@ const WriteContainer = ({
   prepare_write,
   reset_all_game_fields,
   clear_module,
+  set_main_loading,
 }) => {
   const { cards } = main;
   /* const {
@@ -36,6 +35,7 @@ const WriteContainer = ({
 
   useEffect(() => {
     return () => {
+      set_main_loading(true);
       reset_all_game_fields();
       clear_module();
     };
@@ -70,6 +70,7 @@ WriteContainer.propTypes = {
   clear_module: PropTypes.func.isRequired,
   prepare_write: PropTypes.func.isRequired,
   reset_all_game_fields: PropTypes.func.isRequired,
+  set_main_loading: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
@@ -83,4 +84,5 @@ export default connect(mapStateToProps, {
   prepare_write,
   reset_all_game_fields,
   clear_module,
+  set_main_loading,
 })(WriteContainer);

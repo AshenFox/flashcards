@@ -4,7 +4,7 @@ import ContentEditable from 'react-contenteditable';
 import Img from '../../main/Img';
 import DateStr from '../../main/DateSrt';
 
-const FinishItem = ({ main, data, i, stats }) => {
+const FinishItem = ({ main, data, i }) => {
   const { cards } = main;
 
   const { term, defenition, imgurl, stage, nextRep, prevStage } = cards[data.id];
@@ -12,9 +12,7 @@ const FinishItem = ({ main, data, i, stats }) => {
   return (
     <div className='game__finish-body-item'>
       <div
-        className={`game__finish-body-header game__finish-body-header--${data.answer} ${
-          stats ? '' : 'hidden'
-        }`}
+        className={`game__finish-body-header game__finish-body-header--${data.answer}`}
       >
         <p>SR Stage: {stage}</p>
         <p>

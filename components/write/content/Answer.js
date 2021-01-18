@@ -10,6 +10,7 @@ import {
 import ContentEditable from 'react-contenteditable';
 import Speaker from '../../main/Speaker';
 import Img from '../../main/Img';
+import SRIndicator from '../../main/SRIngicator';
 
 const Answer = ({
   data,
@@ -80,6 +81,7 @@ const Answer = ({
 
   return (
     <div className='game__answer'>
+      <SRIndicator data={data} classStr={'sr-indicator--write sr-indicator--write--2'} />
       <div className='game__edit game__edit--write' onClick={clickEdit}>
         <svg width='21' height='21'>
           <use href='../img/sprite.svg#icon__edit'></use>

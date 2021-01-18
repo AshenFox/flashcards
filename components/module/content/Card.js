@@ -12,12 +12,7 @@ import CardSRControl from './CardSRControl';
 import Img from '../../main/Img';
 import DateStr from '../../main/DateSrt';
 
-const Card = ({
-  data,
-  filter = false,
-  filter_type = false,
-  set_card_edit,
-}) => {
+const Card = ({ data, filter = false, filter_type = false, set_card_edit }) => {
   const router = useRouter();
 
   const {
@@ -30,21 +25,14 @@ const Card = ({
     creation_date,
   } = data;
 
-  const filterRegExp = new RegExp(
-    `(${filter})(?![^<]*>|[^<>]*<\/)`,
-    'g'
-  );
+  const filterRegExp = new RegExp(`(${filter})(?![^<]*>|[^<>]*<\/)`, 'g');
   const replacement = `<span class='bcc-yellow'>${filter}</span>`;
 
   let formatted_term, formatted_definition;
 
-  if (filter_type === 'term')
-    formatted_term = term.replace(filterRegExp, replacement);
+  if (filter_type === 'term') formatted_term = term.replace(filterRegExp, replacement);
   if (filter_type === 'defenition')
-    formatted_definition = defenition.replace(
-      filterRegExp,
-      replacement
-    );
+    formatted_definition = defenition.replace(filterRegExp, replacement);
 
   const isModule = router.pathname === '/module/[_id]';
 
@@ -70,29 +58,22 @@ const Card = ({
       <div className='module__card-main'>
         <div className='module__card-term'>
           <ContentEditable
-            html={
-              filter_type === 'term' && filter ? formatted_term : term
-            }
+            html={filter_type === 'term' && filter ? formatted_term : term}
             disabled={true}
           />
-          <CardEditControl data={data} />
-          <CardSRControl data={data} />
-          <CardSRDropControl data={data} />
+          <div className='module__card-controls'>
+            <CardEditControl data={data} />
+            <CardSRControl data={data} />
+            <CardSRDropControl data={data} />
+          </div>
           <CardQuestion data={data} />
-          <Speaker
-            _id={_id}
-            text={term}
-            type={'term'}
-            className='module__speaker'
-          />
+          <Speaker _id={_id} text={term} type={'term'} className='module__speaker' />
         </div>
         <div className='module__card-definition-container'>
           <div className='module__card-definition'>
             <ContentEditable
               html={
-                filter_type === 'defenition' && filter
-                  ? formatted_definition
-                  : defenition
+                filter_type === 'defenition' && filter ? formatted_definition : defenition
               }
               disabled={true}
             />

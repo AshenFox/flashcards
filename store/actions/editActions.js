@@ -21,6 +21,8 @@ import {
   CREATE_MODULE,
   CREATE_CARD,
   SET_CARD_STUDY_REGIME,
+  SET_CARDS_STUDY_REGIME,
+  SET_CARDS_STUDY_REGIME_POSITIVE,
   SET_CARD_SAVE,
   SET_CARDS_SAVE,
   SET_CARDS_SAVE_POSITIVE,
@@ -32,15 +34,20 @@ import { url_fields } from '../reducers/main/mainInitState';
 import { card_fields } from '../reducers/main/mainInitState';
 import axios from '../../server/supplemental/axios';
 
-/* 
-SET_CARD_STUDY_REGIME,
-*/
-
-// SET_CARDS_SAVE_POSITIVE
-export const set_cards_save_positive = (_id) => async (
+// SET_CARDS_STUDY_REGIME_POSITIVE
+export const set_cards_study_regime_positive = (_id, value) => async (
   dispatch,
   getState
-) => {
+) => {};
+
+// SET_CARDS_STUDY_REGIME
+export const set_cards_study_regime = (value) => async (dispatch, getState) => {};
+
+// SET_CARD_STUDY_REGIME
+export const set_card_study_regime = (_id, value) => async (dispatch, getState) => {};
+
+// SET_CARDS_SAVE_POSITIVE
+export const set_cards_save_positive = (_id) => async (dispatch, getState) => {
   const {
     main: { cards },
   } = getState();
@@ -68,14 +75,6 @@ export const set_cards_save_positive = (_id) => async (
   });
 };
 
-// SET_MODULE_LOADING
-export const set_module_loading = (value) => ({
-  type: SET_MODULE_LOADING,
-  payload: {
-    value,
-  },
-});
-
 // SET_CARDS_SAVE
 export const set_cards_save = (value) => ({
   type: SET_CARDS_SAVE,
@@ -89,6 +88,14 @@ export const set_card_save = (_id, value) => ({
   type: SET_CARD_SAVE,
   payload: {
     _id,
+    value,
+  },
+});
+
+// SET_MODULE_LOADING
+export const set_module_loading = (value) => ({
+  type: SET_MODULE_LOADING,
+  payload: {
     value,
   },
 });
@@ -120,10 +127,7 @@ export const set_gallery_error = (_id, value) => ({
 });
 
 // SCRAPE_DICTIONARY
-export const scrape_dictionary = (_id, value) => async (
-  dispatch,
-  getState
-) => {
+export const scrape_dictionary = (_id, value) => async (dispatch, getState) => {
   try {
     const {
       main: { cards },
@@ -139,10 +143,8 @@ export const scrape_dictionary = (_id, value) => async (
 
     let query;
 
-    if (value === 'cod')
-      query = term_without_tags.replace(/\s+/g, '-');
-    if (value === 'urban')
-      query = term_without_tags.replace(/\s+/g, '+');
+    if (value === 'cod') query = term_without_tags.replace(/\s+/g, '-');
+    if (value === 'urban') query = term_without_tags.replace(/\s+/g, '+');
 
     const { data } = await axios.get(`/api/scrape/${value}`, {
       params: {
@@ -231,10 +233,7 @@ export const reset_gallery_fields = (_id) => ({
 });
 
 // SET_URL_OK
-export const set_url_ok = (_id, index, value) => async (
-  dispatch,
-  getState
-) => {
+export const set_url_ok = (_id, index, value) => async (dispatch, getState) => {
   const {
     main: { cards },
   } = getState();
@@ -369,9 +368,9 @@ export const delete_module = (_id) => async (dispatch, getState) => {
   try {
     const {
       auth: { user },
-      main: { loading },
+      module: { module_loading },
     } = getState();
-    if (!user || loading) return;
+    if (!user || module_loading) return;
     dispatch(set_module_loading(true));
 
     const { data } = await axios.delete('/api/edit/module', {
@@ -556,12 +555,7 @@ const format_dictionary_result = (result, type) => {
   // cod
   if (type === 'cod') {
     result.map((sect) => {
-      let {
-        part_of_speech,
-        transcr_uk,
-        transcr_us,
-        sub_sections,
-      } = sect;
+      let { part_of_speech, transcr_uk, transcr_us, sub_sections } = sect;
 
       sub_sections.map((sub_sect) => {
         let { guideword, blocks } = sub_sect;
@@ -574,16 +568,10 @@ const format_dictionary_result = (result, type) => {
             examplesHtml = examplesHtml + wrap_in(example, 'div');
           });
 
-          let defenitionHtml = wrap_in(
-            guideword.concat(wrap_in(definition)),
-            'div'
-          );
+          let defenitionHtml = wrap_in(guideword.concat(wrap_in(definition)), 'div');
 
           let additionalInfoHtml = wrap_in(
-            wrap_in(transcr_us).concat(
-              wrap_in(part_of_speech),
-              wrap_in()
-            ),
+            wrap_in(transcr_us).concat(wrap_in(part_of_speech), wrap_in()),
             'div'
           );
 
@@ -606,11 +594,7 @@ const format_dictionary_result = (result, type) => {
 
       if (!term) {
         term = panel.term;
-        formatedResult = formatedResult.concat(
-          br,
-          wrap_in(term, 'div'),
-          br
-        );
+        formatedResult = formatedResult.concat(br, wrap_in(term, 'div'), br);
       }
 
       formatedResult = formatedResult.concat(

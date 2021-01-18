@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import {
   get_module_cards,
   clear_module,
+  set_main_loading,
 } from '../../store/actions/mainActions';
 import { reset_all_game_fields } from '../../store/actions/gameActions';
 import Controls from './content/Controls';
@@ -15,6 +16,7 @@ const FlashcardsContainer = ({
   get_module_cards,
   reset_all_game_fields,
   clear_module,
+  set_main_loading,
 }) => {
   const router = useRouter();
   const { _id } = router.query;
@@ -29,6 +31,7 @@ const FlashcardsContainer = ({
 
   useEffect(() => {
     return () => {
+      set_main_loading(true);
       reset_all_game_fields();
       clear_module();
     };
@@ -47,6 +50,7 @@ FlashcardsContainer.propTypes = {
   get_module_cards: PropTypes.func.isRequired,
   reset_all_game_fields: PropTypes.func.isRequired,
   clear_module: PropTypes.func.isRequired,
+  set_main_loading: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
@@ -59,6 +63,7 @@ export default connect(mapStateToProps, {
   get_module_cards,
   reset_all_game_fields,
   clear_module,
+  set_main_loading,
 })(FlashcardsContainer);
 
 /* 

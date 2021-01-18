@@ -1,8 +1,9 @@
 import { useRouter } from 'next/router';
+import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import Link from 'next/link';
 
-const Study = () => {
+const Study = ({}) => {
   const router = useRouter();
   const { _id } = router.query;
 
@@ -37,4 +38,6 @@ const Study = () => {
 
 Study.propTypes = {};
 
-export default Study;
+const mapStateToProps = (state) => ({});
+
+export default connect(mapStateToProps)(Study);

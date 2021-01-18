@@ -8,7 +8,7 @@ const CardEditControl = ({ data, set_card_edit }) => {
   const clickEdit = (e) => set_card_edit(_id, true);
 
   return (
-    <div className='module__edit-card' onClick={clickEdit}>
+    <div className='module__card-controls-item module__edit-card' onClick={clickEdit}>
       <svg width='19' height='19'>
         <use href='../img/sprite.svg#icon__edit'></use>
       </svg>
