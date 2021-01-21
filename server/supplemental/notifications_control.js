@@ -21,8 +21,6 @@ const newNotif = async () => {
   }
 };
 
-newNotif();
-
 // ========================
 
 const send_notifications = async () => {

@@ -53,9 +53,9 @@ const privateVapidKey = '2ff0a8Wh7SJ6kCIOe67UUPVLm4KI225AmSqSVlS1fTo';
 
 webpush.setVapidDetails('mailto:test@test.com', publicVapidKey, privateVapidKey);
 
-let pushInterval = setInterval(async () => {
+/* let pushInterval = setInterval(async () => {
   await send_notifications();
-}, 5000);
+}, 5000); */
 
 // ----------
 // ----------
