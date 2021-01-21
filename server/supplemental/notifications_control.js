@@ -79,13 +79,6 @@ const send_notifications = async () => {
 
       await notificationModel.deleteOne({ _id: notif._id });
     }
-
-    /* let result = {
-        users,
-        notifications,
-      };
-  
-      return result; */
   } catch (err) {
     console.error(err.message);
   }
@@ -160,6 +153,11 @@ const create_notifications = async (user) => {
           notif.calcTime = card.nextRep;
           notif.calcPrevStage = card.prevStage;
           notif.time = card.nextRep;
+
+          if (notifArr.length === 1)
+            remindTime = new Date(
+              new Date(notif.calcTime.getTime() + 86400000).setHours(12, 0, 0, 0)
+            );
         }
 
         if (notif.stage >= 3) stageDelay = sr_stages[1].prevStage - sr_stages[1].nextRep;
