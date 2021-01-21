@@ -14,6 +14,39 @@ import {
 import axios from '../../server/supplemental/axios';
 import { card_fields } from '../reducers/main/mainInitState';
 
+// SET_SR_COUNTER
+export const set_sr_counter = (additionNumber, value) => (dispatch, getState) => {
+  const {
+    sr: { counter, repeat_num },
+  } = getState();
+  let result;
+
+  if (value) {
+    result = parseInt(value);
+  } else {
+    let remainder = Math.abs(counter % additionNumber);
+    let abs = Math.abs(additionNumber);
+
+    if (remainder) {
+      result = counter + (additionNumber > 0 ? abs - remainder : -remainder);
+    } else {
+      result = counter + additionNumber;
+    }
+  }
+
+  if (result > repeat_num) result = repeat_num;
+  if (result > 999) result = 999;
+  if (result < 1) result = 1;
+  if (!result) result = 1;
+
+  dispatch({
+    type: SET_SR_COUNTER,
+    payload: {
+      value: result,
+    },
+  });
+};
+
 // SET_SR_LOADING
 export const set_sr_loading = (value) => ({
   type: SET_SR_LOADING,

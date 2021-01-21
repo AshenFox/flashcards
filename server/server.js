@@ -53,9 +53,9 @@ const privateVapidKey = '***REMOVED***';
 
 webpush.setVapidDetails('***REMOVED***', publicVapidKey, privateVapidKey);
 
-/* let pushInterval = setInterval(async () => {
+let pushInterval = setInterval(async () => {
   await send_notifications();
-}, 5000); */
+}, 5000);
 
 // ----------
 // ----------

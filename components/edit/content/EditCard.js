@@ -67,10 +67,7 @@ const EditCard = ({
               className='textarea'
               onChange={handleCardChange('defenition')}
             />
-            <div
-              className='edit__cards-label'
-              htmlFor='cards__definition-input1'
-            >
+            <div className='edit__cards-label' htmlFor='cards__definition-input1'>
               DEFINITION
             </div>
           </div>
