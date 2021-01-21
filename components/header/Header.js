@@ -2,10 +2,7 @@ import { useEffect, useRef } from 'react';
 import { useRouter } from 'next/router';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import {
-  change_modal,
-  toggle_modal,
-} from '../../store/actions/modalActions';
+import { change_modal, toggle_modal } from '../../store/actions/modalActions';
 import { set_dropdown } from '../../store/actions/headerActions';
 import { log_out } from '../../store/actions/authActions';
 import { set_header_dimen } from '../../store/actions/dimenActions';
@@ -35,6 +32,8 @@ const Header = ({
   const router = useRouter();
   const { _id } = router.query;
 
+  const isSR = _id === 'sr';
+
   const activateDropdown = () => set_dropdown(true);
   /* const deactivateDropdown = useRef((e) => {
     let menuEl = e.target.closest('.header__menu');
@@ -58,10 +57,7 @@ const Header = ({
 
     return () => {
       window.removeEventListener('resize', onSizeChange);
-      window.removeEventListener(
-        'orientationchange',
-        onSizeChangeDelayed
-      );
+      window.removeEventListener('orientationchange', onSizeChangeDelayed);
     };
   }, []);
 
@@ -72,8 +68,7 @@ const Header = ({
   const headerEl = useRef(false);
 
   const isGame =
-    router.pathname === '/flashcards/[_id]' ||
-    router.pathname === '/write/[_id]'
+    router.pathname === '/flashcards/[_id]' || router.pathname === '/write/[_id]'
       ? true
       : false;
 
@@ -105,9 +100,7 @@ const Header = ({
 
       <button
         className={`btn header__hamburger header__hamburger--spring ${
-          isGame
-            ? 'hidden__media-min-tablet'
-            : 'hidden__media-min-mobile'
+          isGame ? 'hidden__media-min-tablet' : 'hidden__media-min-mobile'
         } ${dropdown_active ? 'active' : ''}`}
         type='button'
         onClick={!dropdown_active ? activateDropdown : () => {}}
@@ -119,10 +112,7 @@ const Header = ({
     </>
   ) : (
     <>
-      <button
-        onClick={openModal('log_in')}
-        className='btn white fz175 h-primary-pale'
-      >
+      <button onClick={openModal('log_in')} className='btn white fz175 h-primary-pale'>
         Log in
       </button>
 
@@ -138,16 +128,12 @@ const Header = ({
   let buttonsLeft = (
     <>
       <Link href={user ? '/home/modules' : '/'}>
-        <h1
-          className={`header__title ${
-            isGame ? 'hidden__media-tablet' : ''
-          }`}
-        >
+        <h1 className={`header__title ${isGame ? 'hidden__media-tablet' : ''}`}>
           {header_width > 620 ? 'Flash Cards' : 'FC'}
         </h1>
       </Link>
       {user && isGame && (
-        <Link href={`/module/${_id}`}>
+        <Link href={isSR ? '/home/sr' : `/module/${_id}`}>
           <div className='header__button header__button--back'>
             <button className='btn d-f h-primary-pale'>
               <svg width='25' height='25'>
@@ -167,9 +153,7 @@ const Header = ({
           <div className='header__content'>
             <div className='header__buttons-left'>{buttonsLeft}</div>
 
-            <div className='header__buttons-right'>
-              {!loading && buttonsRight}
-            </div>
+            <div className='header__buttons-right'>{!loading && buttonsRight}</div>
           </div>
         </div>
       </header>

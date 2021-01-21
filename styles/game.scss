@@ -990,23 +990,25 @@
       }
     }
 
+    &--write-sr {
+      top: 2.5rem;
+      right: 8.25rem;
+
+      @media (max-width: $mobile) {
+        top: 2rem;
+        right: 7.75rem;
+      }
+    }
+
     &--write {
-      /* top: 2.5rem;
-      right: 8rem;
+      top: 2.5rem;
+      right: 4rem;
       padding: 0;
       border: none;
 
       @media (max-width: $mobile) {
         top: 1.5rem;
         right: 3rem;
-      } */
-
-      top: 2.5rem;
-      right: 8.75rem;
-
-      @media (max-width: $mobile) {
-        top: 2rem;
-        right: 7.75rem;
       }
     }
   }

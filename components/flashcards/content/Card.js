@@ -1,3 +1,4 @@
+import { useRouter } from 'next/router';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { set_flashcards_side } from '../../../store/actions/gameActions';
@@ -14,6 +15,11 @@ const Card = ({
   set_flashcards_side,
   set_card_edit,
 }) => {
+  const router = useRouter();
+  const { _id: _id_param } = router.query;
+
+  const isSR = _id_param === 'sr';
+
   const { _id, term, defenition, imgurl } = data;
 
   const frontClassName = `game__card-front ${position ? `transparent ${position}` : ''} ${
@@ -41,7 +47,8 @@ const Card = ({
           imgClass={'game__img'}
           url={imgurl}
         />
-        <SRIndicator data={data} classStr={'sr-indicator--flashcards'} />
+        {isSR && <SRIndicator data={data} classStr={'sr-indicator--flashcards'} />}
+
         {defenition && (
           <div className={`game__definition-container ${imgurl ? '' : 'full'}`}>
             <ContentEditable
@@ -64,7 +71,7 @@ const Card = ({
         </div>
       </div>
       <div className={backClassName} onClick={clickSide('definition')}>
-        <SRIndicator data={data} classStr={'sr-indicator--flashcards'} />
+        {isSR && <SRIndicator data={data} classStr={'sr-indicator--flashcards'} />}
         <div className='game__term-container '>
           <ContentEditable html={term} disabled={true} className='game__term' />
         </div>

@@ -2,7 +2,7 @@
   position: fixed;
   right: -100px;
   bottom: 25px;
-  z-index: 1000;
+  z-index: 10000;
   cursor: pointer;
   width: 55px;
   height: 55px;
@@ -14,6 +14,7 @@
   align-items: center;
   justify-content: center;
   box-shadow: 0 0.5rem 1.25rem 0 rgba($primary, 0.28);
+  pointer-events: all;
 
   @media (max-width: $mobile) {
     bottom: 15px;

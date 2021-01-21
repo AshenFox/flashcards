@@ -32,6 +32,12 @@ const Dropdown = ({
   } = game;
 
   const router = useRouter();
+  const { _id } = router.query;
+
+  const isSR = _id === 'sr';
+
+  const isFlashcards = router.pathname === '/flashcards/[_id]',
+    isWrite = router.pathname === '/write/[_id]';
 
   const deactivateDropdown = useRef((e) => {
     let menuEl = e.target.closest('.header__menu');
@@ -48,18 +54,11 @@ const Dropdown = ({
     setTimeout(
       () =>
         dropdown_active
-          ? window.addEventListener(
-              'click',
-              deactivateDropdown.current
-            )
-          : window.removeEventListener(
-              'click',
-              deactivateDropdown.current
-            ),
+          ? window.addEventListener('click', deactivateDropdown.current)
+          : window.removeEventListener('click', deactivateDropdown.current),
       0
     );
-    return () =>
-      window.removeEventListener('click', deactivateDropdown.current);
+    return () => window.removeEventListener('click', deactivateDropdown.current);
   }, [dropdown_active]);
 
   const clickSuffle = () => {
@@ -78,17 +77,10 @@ const Dropdown = ({
 
   const stylesHeader = { paddingTop: `${header_height}px` };
 
-  const isFlashcards = router.pathname === '/flashcards/[_id]',
-    isWrite = router.pathname === '/write/[_id]';
-
   return (
     <div
-      className={`header__menu ${
-        dropdown_active ? 'header__menu--active' : ''
-      } ${
-        isFlashcards || isWrite
-          ? 'hidden__media-min-tablet'
-          : 'hidden__media-min-mobile'
+      className={`header__menu ${dropdown_active ? 'header__menu--active' : ''} ${
+        isFlashcards || isWrite ? 'hidden__media-min-tablet' : 'hidden__media-min-mobile'
       }`}
       style={stylesHeader}
     >
@@ -110,17 +102,15 @@ const Dropdown = ({
           <span>Log out</span>
         </button>
       </div>
-      {(isFlashcards || isWrite) && (
+      {(isFlashcards || isWrite) && !isSR && (
         <div className='header__menu-devider'>
           <span>Options:</span>
         </div>
       )}
-      {isFlashcards && (
+      {isFlashcards && !isSR && (
         <>
           <div
-            className={`header__menu-item ${
-              shuffled ? 'active' : ''
-            }`}
+            className={`header__menu-item ${shuffled ? 'active' : ''}`}
             onClick={clickSuffle}
           >
             <button className='btn fz15'>
@@ -132,12 +122,9 @@ const Dropdown = ({
           </div>
         </>
       )}
-      {isWrite && (
+      {isWrite && !isSR && (
         <>
-          <div
-            className={`header__menu-item caution`}
-            onClick={clickStartOver}
-          >
+          <div className={`header__menu-item caution`} onClick={clickStartOver}>
             <button className='btn fz15'>
               <span>Start over</span>
             </button>

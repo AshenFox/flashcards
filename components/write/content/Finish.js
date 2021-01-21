@@ -10,13 +10,15 @@ const Finish = ({ game, next_write_round }) => {
   const router = useRouter();
   const { _id } = router.query;
 
+  const isSR = _id === 'sr';
+
   const {
     write: { rounds, all_cards_num },
   } = game;
 
   const keyDownFinish = (e) => {
     if (e.key === 'Enter') {
-      router.replace(`/module/${_id}`);
+      router.replace(isSR ? '/home/sr' : `/module/${_id}`);
     }
   };
 
@@ -46,7 +48,7 @@ const Finish = ({ game, next_write_round }) => {
           </div>
           <div className={`game__finish-header-item ${i !== 0 ? 'hidden' : ''}`}>
             {' '}
-            <Link href={`/module/${_id}`}>
+            <Link href={isSR ? '/home/sr' : `/module/${_id}`}>
               <button className='btn bcc-lightblue pad10-30 brr15 white fz15 fw-normal h-grey h-bcc-yellow'>
                 Finish game
               </button>

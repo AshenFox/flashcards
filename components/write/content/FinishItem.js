@@ -1,3 +1,4 @@
+import { useRouter } from 'next/router';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import ContentEditable from 'react-contenteditable';
@@ -5,25 +6,33 @@ import Img from '../../main/Img';
 import DateStr from '../../main/DateSrt';
 
 const FinishItem = ({ main, data, i, stats }) => {
+  const router = useRouter();
+  const { _id } = router.query;
+
+  const isSR = _id === 'sr';
+
   const { cards } = main;
 
   const { term, defenition, imgurl, stage, nextRep, prevStage } = cards[data.id];
 
   return (
     <div className='game__finish-body-item'>
-      <div
-        className={`game__finish-body-header game__finish-body-header--${data.answer} ${
-          stats ? '' : 'hidden'
-        }`}
-      >
-        <p>SR Stage: {stage}</p>
-        <p>
-          Next repeat: <DateStr date={nextRep} />
-        </p>
-        <p>
-          Drop stage: <DateStr date={prevStage} />
-        </p>
-      </div>
+      {isSR && (
+        <div
+          className={`game__finish-body-header game__finish-body-header--${data.answer} ${
+            stats ? '' : 'hidden'
+          }`}
+        >
+          <p>SR Stage: {stage}</p>
+          <p>
+            Next repeat: <DateStr date={nextRep} />
+          </p>
+          <p>
+            Drop stage: <DateStr date={prevStage} />
+          </p>
+        </div>
+      )}
+
       <div className='game__finish-body-main'>
         <div className='game__finish-body-left'>
           <div className={`game__finish-icon game__finish-icon--${data.answer}`}>

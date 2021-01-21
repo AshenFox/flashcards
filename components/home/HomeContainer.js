@@ -8,12 +8,13 @@ import {
   reset_fields_cards,
   reset_fields_modules,
   reset_search,
-  set_main_loading,
 } from '../../store/actions/mainActions';
+import { get_sr_count } from '../../store/actions/srActions';
 import Skeleton from 'react-loading-skeleton';
 import Navigation from './content/Navigation';
 import ListContainer from './content/ListContainer';
 import Search from './content/Search';
+import Push from '../main/Push';
 
 const HomeContainer = ({
   auth,
@@ -23,7 +24,7 @@ const HomeContainer = ({
   reset_fields_cards,
   reset_fields_modules,
   reset_search,
-  set_main_loading,
+  get_sr_count,
 }) => {
   const router = useRouter();
   const { section } = router.query;
@@ -32,15 +33,15 @@ const HomeContainer = ({
   const { username } = user ? user : {};
   const { modules, cards, all_modules_number, all_cards_number } = main;
 
-  useEffect(() => {
+  /* useEffect(() => {
     loadContent();
-  }, [user]);
+  }, [user]); */
 
   useEffect(() => {
     if (!user) return;
     reset_search();
     loadContent();
-  }, [section]);
+  }, [user, section]);
 
   useEffect(() => {
     if (section === 'modules') {
@@ -66,7 +67,6 @@ const HomeContainer = ({
 
   useEffect(() => {
     return () => {
-      set_main_loading(true);
       reset_fields_cards();
       reset_fields_modules();
       reset_search();
@@ -74,8 +74,9 @@ const HomeContainer = ({
   }, []);
 
   const loadContent = () => {
-    if (!modules.length && section === 'modules') get_modules();
-    if (!cards.length && section === 'cards') get_cards();
+    if (!modules.length && section === 'modules') get_modules(true);
+    if (!cards.length && section === 'cards') get_cards(true);
+    if (section === 'sr') get_sr_count();
   };
 
   const scrollModules = useRef(
@@ -129,6 +130,7 @@ const HomeContainer = ({
           </div>
         </div>
       </div>
+      <Push />
     </div>
   );
 };
@@ -141,7 +143,7 @@ HomeContainer.propTypes = {
   reset_fields_cards: PropTypes.func.isRequired,
   reset_fields_modules: PropTypes.func.isRequired,
   reset_search: PropTypes.func.isRequired,
-  set_main_loading: PropTypes.func.isRequired,
+  get_sr_count: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
@@ -155,5 +157,5 @@ export default connect(mapStateToProps, {
   reset_fields_cards,
   reset_fields_modules,
   reset_search,
-  set_main_loading,
+  get_sr_count,
 })(HomeContainer);

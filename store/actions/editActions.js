@@ -20,9 +20,6 @@ import {
   EDIT_CARD,
   CREATE_MODULE,
   CREATE_CARD,
-  SET_CARD_STUDY_REGIME,
-  SET_CARDS_STUDY_REGIME,
-  SET_CARDS_STUDY_REGIME_POSITIVE,
   SET_CARD_SAVE,
   SET_CARDS_SAVE,
   SET_CARDS_SAVE_POSITIVE,
@@ -368,7 +365,9 @@ export const delete_module = (_id) => async (dispatch, getState) => {
   try {
     const {
       auth: { user },
-      module: { module_loading },
+      main: {
+        module: { module_loading },
+      },
     } = getState();
     if (!user || module_loading) return;
     dispatch(set_module_loading(true));

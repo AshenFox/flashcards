@@ -33,6 +33,7 @@ server.use('/api/imgsearch', require('./routes/img_search'));
 server.use('/api/scrape', require('./routes/scrape'));
 server.use('/api/edit', require('./routes/edit'));
 server.use('/api/sr', require('./routes/sr'));
+server.use('/api/notifications', require('./routes/notifications'));
 
 server.all('*', (req, res) => {
   return handle(req, res);
@@ -43,15 +44,18 @@ server.all('*', (req, res) => {
 // ----------
 
 // Push notifications
+
+const { send_notifications } = require('./supplemental/notifications_control');
+
 const publicVapidKey =
   'BO-nIcm9sOZzf2YK6W7YkQsPrxjeFwdjoBfETtk7Fu1WOXNATlphUt1Khu5vwZs9WcI9EbgxwPMUuoFLLgmumMc';
 const privateVapidKey = '2ff0a8Wh7SJ6kCIOe67UUPVLm4KI225AmSqSVlS1fTo';
 
 webpush.setVapidDetails('mailto:test@test.com', publicVapidKey, privateVapidKey);
 
-/* let pushInterval = setInterval(async () => {
-  await notifications.sendNotifications();
-}, 5000); */
+let pushInterval = setInterval(async () => {
+  await send_notifications();
+}, 5000);
 
 // ----------
 // ----------
@@ -73,6 +77,6 @@ const start = async () => {
 
 start();
 
-// ====================
-// ====================
-// ====================
+// ----------
+// ----------
+// ----------

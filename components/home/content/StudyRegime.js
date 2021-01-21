@@ -1,64 +1,78 @@
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import Link from 'next/link';
+import SrInTime from './SrInTime';
+import SrCounter from './SrCounter';
+import Skeleton from 'react-loading-skeleton';
 
-const StudyRegime = () => {
+const StudyRegime = ({ main, sr }) => {
+  const { loading } = main;
+  const { all_num, repeat_num, counter } = sr;
+
   return (
     <div className='home__module home__module--v2'>
       <div className='home__module-container'>
-        <div className='home__module-title home__module-title--v2'>
-          Study Regime
-        </div>
+        <div className='home__module-title home__module-title--v2'>Study Regime</div>
         <ul className='home__study-regime-info'>
           <li>
-            <span>60{/* all cards in the regime */} cards</span> in the regime.
-          </li>
-          <li className=''>
-            {/* hidden */}
             <span>
-              10 {/* number */}card{/* "card" */}
-              {/* "more cards" */}
+              {loading ? <Skeleton width={25} /> : all_num} card
+              {all_num > 1 || all_num < 1 ? 's' : ''}
             </span>{' '}
-            to repeat in 10 hours.{/* how many houes */}
+            in the regime.
+          </li>
+          <li>
+            {/* hidden */}
+            <SrInTime />
           </li>
         </ul>
       </div>
 
       <div className='home__repeat'>
         <p>
-          Currently you have <span>10 cards</span> to repeat.
+          Currently you have{' '}
+          <span>
+            {loading ? <Skeleton width={30} /> : repeat_num} card
+            {repeat_num > 1 || repeat_num < 1 ? 's' : ''}
+          </span>{' '}
+          to repeat.
         </p>
-        <p className=''>{/* hidden */}Repeat with:</p>
-        <div className='home__repeat-methods'>
-          {/* hidden */}
-          <div className='home__counter-container'>
-            <div className='home__counter'>
-              <div className='home__counter-subtract'>
-                <span>-</span>
-              </div>
-              <div className='home__counter-number'>
-                {/* contentEditable='true' */}
-                10
-              </div>
-              <div className='home__counter-add'>
-                <span>+</span>
-              </div>
+        {!!repeat_num && (
+          <>
+            <p className=''>{/* hidden */}Repeat with:</p>
+            <div className='home__repeat-methods'>
+              {/* hidden */}
+              <SrCounter />
+              <Link href={'/flashcards/sr' + (counter ? `?number=${counter}` : '')}>
+                <div className='home__repeat-item'>
+                  <svg height='35' width='35'>
+                    <use href='../img/sprite.svg#icon__cards'></use>
+                  </svg>
+                </div>
+              </Link>
+              <Link href={'/write/sr' + (counter ? `?number=${counter}` : '')}>
+                <div className='home__repeat-item'>
+                  <svg height='35' width='35'>
+                    <use href='../img/sprite.svg#icon__write'></use>
+                  </svg>
+                </div>
+              </Link>
             </div>
-          </div>
-          <div className='home__repeat-item' data-game='flashcards'>
-            <svg height='35' width='35'>
-              <use href='../img/sprite.svg#icon__cards'></use>
-            </svg>
-          </div>
-          <div className='home__repeat-item' data-game='write'>
-            <svg height='35' width='35'>
-              <use href='../img/sprite.svg#icon__write'></use>
-            </svg>
-          </div>
-        </div>
+          </>
+        )}
       </div>
     </div>
   );
 };
 
-StudyRegime.propTypes = {};
+StudyRegime.propTypes = {
+  main: PropTypes.object.isRequired,
+  sr: PropTypes.object.isRequired,
+};
 
-export default StudyRegime;
+const mapStateToProps = (state) => ({
+  main: state.main,
+  sr: state.sr,
+});
+
+export default connect(mapStateToProps)(StudyRegime);

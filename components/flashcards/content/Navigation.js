@@ -1,3 +1,4 @@
+import { useRouter } from 'next/router';
 import { useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
@@ -6,6 +7,7 @@ import {
   save_flashcards_answer,
   set_flashcards_side,
 } from '../../../store/actions/gameActions';
+import { put_sr_answer } from '../../../store/actions/srActions';
 
 const Navigation = ({
   main,
@@ -13,16 +15,25 @@ const Navigation = ({
   set_flashcards_progress,
   save_flashcards_answer,
   set_flashcards_side,
+  put_sr_answer,
 }) => {
+  const router = useRouter();
+  const { _id } = router.query;
+
+  const isSR = _id === 'sr';
+
   const { cards } = main;
   const {
     flashcards: { progress, is_turned, side },
   } = game;
 
-  const isSR = false;
-
   const clickNavItem = (value, cardAnswer) => (e) => {
-    if (value === 'next' && isSR) save_flashcards_answer(activeCardData._id, cardAnswer);
+    if (value === 'next' && isSR) {
+      if (cardAnswer === 'correct') put_sr_answer(activeCardData._id, 1);
+      if (cardAnswer === 'incorrect') put_sr_answer(activeCardData._id, -1);
+
+      save_flashcards_answer(activeCardData._id, cardAnswer);
+    }
     set_flashcards_progress(value);
   };
 
@@ -52,13 +63,15 @@ const Navigation = ({
       }
 
       if (isSR && isTurnedRef.current) {
-        if (e.key === 'ArrowLeft') {
-          save_flashcards_answer(_idRef.current, 'incorrect');
+        if (e.key === 'ArrowRight') {
+          put_sr_answer(_idRef.current, 1);
+          save_flashcards_answer(_idRef.current, 'correct');
           set_flashcards_progress('next');
         }
 
-        if (e.key === 'ArrowRight') {
-          save_flashcards_answer(_idRef.current, 'correct');
+        if (e.key === 'ArrowLeft') {
+          put_sr_answer(_idRef.current, -1);
+          save_flashcards_answer(_idRef.current, 'incorrect');
           set_flashcards_progress('next');
         }
       }
@@ -135,6 +148,7 @@ Navigation.propTypes = {
   main: PropTypes.object.isRequired,
   game: PropTypes.object.isRequired,
   set_flashcards_side: PropTypes.func.isRequired,
+  put_sr_answer: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
@@ -146,4 +160,5 @@ export default connect(mapStateToProps, {
   set_flashcards_progress,
   save_flashcards_answer,
   set_flashcards_side,
+  put_sr_answer,
 })(Navigation);
