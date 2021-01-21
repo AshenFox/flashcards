@@ -64,13 +64,13 @@ const Answer = ({
 
   const continueGame = () => {
     if (canContinue.current) {
-      if (isFirstRound.current) put_sr_answer(_id, isCorrect ? 1 : -1);
+      if (isFirstRound.current && isSR) put_sr_answer(_id, isCorrect ? 1 : -1);
       next_write_card();
     }
   };
 
   const overrideAnswer = () => {
-    if (isFirstRound.current) put_sr_answer(_id, 1);
+    if (isFirstRound.current && isSR) put_sr_answer(_id, 1);
     override_write_answer();
   };
 
