@@ -2,8 +2,8 @@ export default {
   is_modal: false,
   active_modal: false,
   log_in: {
-    username: 'Testuser2',
-    password: 'Testuser2',
+    username: '',
+    password: '',
   },
   sign_up: {
     username: '',
