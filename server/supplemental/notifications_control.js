@@ -6,7 +6,7 @@ const webpush = require('web-push');
 
 // Tests
 
-const newNotif = async () => {
+/* const newNotif = async () => {
   try {
     let notif = await notificationModel.create({
       time: new Date(Date.now() - 5000),
@@ -19,7 +19,9 @@ const newNotif = async () => {
     console.log(err);
     return false;
   }
-};
+}; */
+
+// newNotif();
 
 // ========================
 

@@ -1,23 +1,76 @@
+import { useRef, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import Skeleton from 'react-loading-skeleton';
+import { set_sr_counter } from '../../../store/actions/srActions';
 
-const SrCounter = ({ main, sr }) => {
-  const { loading } = main;
+const SrCounter = ({ sr, set_sr_counter }) => {
   const { counter } = sr;
+
+  const handleCounterChange = (e) => set_sr_counter(false, e.target.value);
+
+  const intervalRef = useRef(false);
+  const timeoutRef = useRef(false);
+
+  const single = (value) => () => {
+    if (value === 'stepUp') set_sr_counter(1);
+    if (value === 'stepDown') set_sr_counter(-1);
+  };
+
+  const multiple = (value) => (e) => {
+    // if (timeoutRef.current) return;
+    console.log('fire!', e.type);
+
+    timeoutRef.current = setTimeout(() => {
+      timeoutRef.current = false;
+
+      intervalRef.current = setInterval(() => {
+        if (value === 'stepUp') set_sr_counter(5);
+        if (value === 'stepDown') set_sr_counter(-5);
+      }, 100);
+    }, 500);
+  };
+
+  useEffect(() => {
+    const cleanup = (e) => {
+      console.log('cleanup', e.type);
+      clearTimeout(timeoutRef.current);
+      clearInterval(intervalRef.current);
+      timeoutRef.current = false;
+      intervalRef.current = false;
+    };
+
+    window.addEventListener('mouseup', cleanup);
+    window.addEventListener('touchend', cleanup);
+    document.addEventListener('mouseleave', cleanup);
+
+    return () => {
+      window.removeEventListener('mouseup', cleanup);
+      window.removeEventListener('touchend', cleanup);
+      document.removeEventListener('mouseleave', cleanup);
+    };
+  }, []);
 
   return (
     <div className='home__counter-container'>
       <div className='home__counter'>
-        <div className='home__counter-subtract'>
-          <span>-</span>
-        </div>
-        <div className='home__counter-number'>
-          {loading ? <Skeleton width={35} /> : counter}
-        </div>
-        <div className='home__counter-add'>
-          <span>+</span>
-        </div>
+        <div
+          className='home__counter-subtract'
+          onMouseDown={multiple('stepDown')}
+          onTouchStart={multiple('stepDown')}
+          onMouseUp={single('stepDown')}
+        />
+        <input
+          type='number'
+          className='home__counter-number'
+          onChange={handleCounterChange}
+          value={counter}
+        />
+        <div
+          className='home__counter-add'
+          onMouseDown={multiple('stepUp')}
+          onTouchStart={multiple('stepUp')}
+          onMouseUp={single('stepUp')}
+        />
       </div>
     </div>
   );
@@ -25,12 +78,11 @@ const SrCounter = ({ main, sr }) => {
 
 SrCounter.propTypes = {
   sr: PropTypes.object.isRequired,
-  main: PropTypes.object.isRequired,
+  set_sr_counter: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
   sr: state.sr,
-  main: state.main,
 });
 
-export default connect(mapStateToProps)(SrCounter);
+export default connect(mapStateToProps, { set_sr_counter })(SrCounter);

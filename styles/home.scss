@@ -421,43 +421,77 @@
 
   &__counter-subtract,
   &__counter-add {
+    user-select: none;
+    position: relative;
     cursor: pointer;
-    min-width: 3.5rem;
+    width: 3.5rem;
+    height: 3.5rem;
     font-weight: bold;
-    font-size: 3rem;
     color: $white;
     background-color: $primary;
     transition: all 0.2s;
     border-radius: 50%;
 
+    &::before,
+    &::after {
+      content: '';
+      position: absolute;
+      background-color: $white;
+      border-radius: 0.25rem;
+      transition: all 0.2s;
+    }
+
     &:hover {
       color: $black;
       background-color: $tertiary;
       border-color: $tertiary;
+
+      &::before,
+      &::after {
+        background-color: $grey;
+      }
     }
   }
 
   &__counter-number {
-    display: block;
+    /* display: block;
     border-bottom: 2px solid $primary;
     padding: 0 1rem;
     max-width: 6rem;
-    overflow: hidden;
+    overflow: hidden; */
+    border-bottom: 2px solid $primary;
+    appearance: textfield;
+    height: 100%;
+    width: 4rem;
+    font-size: 1.75rem;
+    text-align: center;
+
+    &::-webkit-inner-spin-button,
+    &::-webkit-outer-spin-button {
+      appearance: none;
+    }
   }
 
   &__counter-subtract {
     margin-right: 0.5rem;
 
-    span {
-      transform: translateY(-0.5rem);
+    &::after {
+      height: 0.4rem;
+      width: 1.8rem;
     }
   }
 
   &__counter-add {
     margin-left: 0.5rem;
 
-    span {
-      transform: translateY(-0.3rem);
+    &::before {
+      height: 1.8rem;
+      width: 0.4rem;
+    }
+
+    &::after {
+      height: 0.4rem;
+      width: 1.8rem;
     }
   }
 
