@@ -1,3 +1,4 @@
+import { useRouter } from 'next/router';
 import { useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
@@ -7,6 +8,7 @@ import {
   next_write_card,
   override_write_answer,
 } from '../../../store/actions/gameActions';
+import { put_sr_answer } from '../../../store/actions/srActions';
 import ContentEditable from 'react-contenteditable';
 import Speaker from '../../main/Speaker';
 import Img from '../../main/Img';
@@ -19,10 +21,16 @@ const Answer = ({
   set_write_copy_answer_field,
   next_write_card,
   override_write_answer,
+  put_sr_answer,
 }) => {
+  const router = useRouter();
+  const { _id: _id_param } = router.query;
+
+  const isSR = _id_param === 'sr';
+
   const { _id, term, defenition, imgurl } = data;
   const {
-    write: { answer, copy_answer, remaining },
+    write: { answer, copy_answer, remaining, rounds },
   } = game;
 
   const activeCard = remaining[remaining.length - 1];
@@ -32,6 +40,9 @@ const Answer = ({
 
   const isEmpty = !answer && term;
   const copiedCorrectly = copy_answer === term.replace(/&nbsp;/g, ' ').trim();
+
+  const isFirstRound = useRef(!rounds.length);
+  isFirstRound.current = !rounds.length;
 
   const canContinue = useRef(false);
 
@@ -51,22 +62,39 @@ const Answer = ({
 
   const clickEdit = () => set_card_edit(_id, true);
 
+  const continueGame = () => {
+    if (canContinue.current) {
+      if (isFirstRound.current) put_sr_answer(_id, isCorrect ? 1 : -1);
+      next_write_card();
+    }
+  };
+
+  const overrideAnswer = () => {
+    if (isFirstRound.current) put_sr_answer(_id, 1);
+    override_write_answer();
+  };
+
   const clickContinue = (e) => {
     e.preventDefault();
 
-    if (canContinue.current) next_write_card();
+    continueGame();
   };
 
-  const clickOverride = () => override_write_answer();
+  const clickOverride = () => {
+    overrideAnswer();
+  };
 
   const keyDownControl = (e) => {
     if (e.key === 'Enter') {
       e.preventDefault();
-      if (canContinue.current) next_write_card();
+
+      continueGame();
     }
 
     if (e.key === 'o') {
-      if (!isCorrect && !isEmpty) override_write_answer();
+      if (!isCorrect && !isEmpty) {
+        overrideAnswer();
+      }
     }
   };
 
@@ -81,8 +109,16 @@ const Answer = ({
 
   return (
     <div className='game__answer'>
-      <SRIndicator data={data} classStr={'sr-indicator--write sr-indicator--write--2'} />
-      <div className='game__edit game__edit--write' onClick={clickEdit}>
+      {isSR && (
+        <SRIndicator
+          data={data}
+          classStr={'sr-indicator--write sr-indicator--write--2'}
+        />
+      )}
+      <div
+        className={`game__edit game__edit--write${isSR ? '-sr' : ''}`}
+        onClick={clickEdit}
+      >
         <svg width='21' height='21'>
           <use href='../img/sprite.svg#icon__edit'></use>
         </svg>
@@ -176,6 +212,7 @@ Answer.propTypes = {
   set_write_copy_answer_field: PropTypes.func.isRequired,
   next_write_card: PropTypes.func.isRequired,
   override_write_answer: PropTypes.func.isRequired,
+  put_sr_answer: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
@@ -187,4 +224,5 @@ export default connect(mapStateToProps, {
   set_write_copy_answer_field,
   next_write_card,
   override_write_answer,
+  put_sr_answer,
 })(Answer);

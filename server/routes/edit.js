@@ -4,6 +4,7 @@ const userModel = require('../models/user_model.js');
 const cardModelGenerator = require('../models/card_model.js');
 const moduleModelGenerator = require('../models/module_model.js');
 const { auth } = require('../supplemental/middleware');
+const { notification_timeout } = require('../supplemental/notifications_control');
 
 // @route ------ DELETE api/edit/module
 // @desc ------- Delete a module
@@ -26,6 +27,8 @@ router.delete('/module', auth, async (req, res) => {
     await cardModel.deleteMany({ moduleID: _id });
 
     res.status(200).json({ msg: 'The module has been deleted.' });
+
+    await notification_timeout(user);
   } catch (err) {
     console.error(err.message);
     res.status(500).json({ errorBody: 'Server Error' });
@@ -62,6 +65,8 @@ router.delete('/card', auth, async (req, res) => {
     await moduleModel.updateOne({ _id: card.moduleID }, { number });
 
     res.status(200).json({ msg: 'The card has been deleted.' });
+
+    await notification_timeout(user);
   } catch (err) {
     console.error(err.message);
     res.status(500).json({ errorBody: 'Server Error' });
@@ -170,10 +175,7 @@ router.post('/module', auth, async (req, res) => {
       draft: false,
     });
 
-    await cardModel.updateMany(
-      { _id: { $in: _id_arr } },
-      { moduleID: new_module._id }
-    );
+    await cardModel.updateMany({ _id: { $in: _id_arr } }, { moduleID: new_module._id });
 
     const number = await cardModel.countDocuments({
       moduleID: draft._id,
@@ -264,9 +266,7 @@ router.get('/draft', auth, async (req, res) => {
     });
 
     if (module) {
-      cards = await cardModel
-        .find({ moduleID: module._id })
-        .sort({ creation_date: -1 });
+      cards = await cardModel.find({ moduleID: module._id }).sort({ creation_date: -1 });
     } else {
       // Create a new draft
       module = await moduleModel.create({

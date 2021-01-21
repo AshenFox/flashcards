@@ -91,13 +91,14 @@ export const control_search_modules = (value) => ({
 });
 
 // GET MODULES
-export const get_modules = () => async (dispatch, getState) => {
+export const get_modules = (ignore) => async (dispatch, getState) => {
   try {
     const {
       auth: { user },
-      main: { skip_modules, all_modules, search_modules, select_created },
+      main: { skip_modules, all_modules, search_modules, select_created, loading },
     } = getState();
-    if (!user || all_modules) return; // loading ???
+    if (!user || all_modules) return;
+    if (!ignore && loading) return;
 
     dispatch({
       type: SET_MAIN_LOADING,
@@ -128,13 +129,14 @@ export const get_modules = () => async (dispatch, getState) => {
 };
 
 // GET CARDS
-export const get_cards = () => async (dispatch, getState) => {
+export const get_cards = (ignore) => async (dispatch, getState) => {
   try {
     const {
       auth: { user },
-      main: { skip_cards, all_cards, search_cards, select_by, select_created },
+      main: { skip_cards, all_cards, search_cards, select_by, select_created, loading },
     } = getState();
-    if (!user || all_cards) return; // loading ???
+    if (!user || all_cards) return;
+    if (!ignore && loading) return;
 
     dispatch({
       type: SET_MAIN_LOADING,

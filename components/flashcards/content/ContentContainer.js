@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
+import { useRouter } from 'next/router';
 import { connect } from 'react-redux';
-
 import Navigation from './Navigation';
 import Card from './Card';
 import EndGame from './EndGame';
@@ -8,6 +8,11 @@ import EditCard from '../../edit/content/EditCard';
 import Results from './Results';
 
 const ContentContainer = ({ main, dimen, game }) => {
+  const router = useRouter();
+  const { _id } = router.query;
+
+  const isSR = _id === 'sr';
+
   const { cards, loading, is_server } = main;
   const {
     flashcards: { progress, side },
@@ -34,8 +39,6 @@ const ContentContainer = ({ main, dimen, game }) => {
 
   const isEnd = length === progress;
   const isEdit = length && length !== progress ? activeCardData.edit : false;
-
-  const isSR = false;
 
   return (
     <div

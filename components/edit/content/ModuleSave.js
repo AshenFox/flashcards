@@ -9,7 +9,7 @@ const ModuleSave = ({ main, set_cards_save }) => {
 
   const cardsArr = Object.values(cards);
 
-  let active = true;
+  let active = !!cardsArr.length;
 
   for (const card of cardsArr) {
     if (card.save === false) {

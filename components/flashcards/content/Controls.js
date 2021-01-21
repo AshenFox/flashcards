@@ -1,5 +1,5 @@
-import { useEffect, useRef } from 'react';
 import { useRouter } from 'next/router';
+import { useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { set_game_controls_dimen } from '../../../store/actions/dimenActions';
@@ -10,6 +10,8 @@ import ShuffleBtn from './ShuffleBtn';
 const Controls = ({ set_game_controls_dimen }) => {
   const router = useRouter();
   const { _id } = router.query;
+
+  const isSR = _id === 'sr';
 
   const onSizeChange = () => set_game_controls_dimen(controllsEl.current);
 
@@ -30,7 +32,7 @@ const Controls = ({ set_game_controls_dimen }) => {
       <div className='game__controls-container' ref={controllsEl}>
         <div className='game__controls'>
           <div className='game__back'>
-            <Link href={`/module/${_id}`}>
+            <Link href={isSR ? '/home/sr' : `/module/${_id}`}>
               <button className='btn grey ai-c ta-l fz17 width100 pad15-20 h-bcc-yellow'>
                 {' '}
                 <svg height='15' width='15'>
@@ -50,9 +52,7 @@ const Controls = ({ set_game_controls_dimen }) => {
 
           <Progress />
 
-          <div className='game__control-buttons '>
-            <ShuffleBtn />
-          </div>
+          <div className='game__control-buttons '>{!isSR && <ShuffleBtn />}</div>
         </div>
       </div>
     </div>

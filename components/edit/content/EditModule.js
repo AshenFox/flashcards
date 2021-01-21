@@ -1,10 +1,7 @@
 import { useRef } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import {
-  control_module,
-  edit_module,
-} from '../../../store/actions/editActions';
+import { control_module, edit_module } from '../../../store/actions/editActions';
 import ContentEditable from 'react-contenteditable';
 import ModuleSave from './ModuleSave';
 
@@ -41,7 +38,8 @@ const EditModule = ({ main, control_module, edit_module }) => {
     }
   }
 
-  const active = draft ? !!(twoSaved && title) : !!title;
+  let active = draft ? !!(twoSaved && title) : !!title;
+  if (!cardsArr.length) active = true;
 
   const errMessage = draft
     ? 'PLEASE ENTER A TITLE AND ENSURE SAVING OF AT LEAST 2 CARDS'
@@ -83,6 +81,4 @@ const mapStateToProps = (state) => ({
   main: state.main,
 });
 
-export default connect(mapStateToProps, { control_module, edit_module })(
-  EditModule
-);
+export default connect(mapStateToProps, { control_module, edit_module })(EditModule);

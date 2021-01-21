@@ -1,3 +1,4 @@
+import { useRouter } from 'next/router';
 import { useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
@@ -11,6 +12,11 @@ import Img from '../../main/Img';
 import SRIndicator from '../../main/SRIngicator';
 
 const Question = ({ data, game, set_write_answer_field, check_write_answer }) => {
+  const router = useRouter();
+  const { _id: _id_param } = router.query;
+
+  const isSR = _id_param === 'sr';
+
   const { _id, term, defenition, imgurl } = data;
   const {
     write: { answer },
@@ -48,10 +54,12 @@ const Question = ({ data, game, set_write_answer_field, check_write_answer }) =>
   return (
     <div className='game__question'>
       <div className='game__question-container'>
-        <SRIndicator
-          data={data}
-          classStr={'sr-indicator--write sr-indicator--write--1'}
-        />
+        {isSR && (
+          <SRIndicator
+            data={data}
+            classStr={'sr-indicator--write sr-indicator--write--1'}
+          />
+        )}
         {term && (
           <div className='game__question-dontknow' onClick={clickNotKnow}>
             <span>Don't know</span>

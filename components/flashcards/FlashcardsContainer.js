@@ -2,12 +2,9 @@ import { useEffect } from 'react';
 import { useRouter } from 'next/router';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import {
-  get_module_cards,
-  clear_module,
-  set_main_loading,
-} from '../../store/actions/mainActions';
+import { get_module_cards, clear_module } from '../../store/actions/mainActions';
 import { reset_all_game_fields } from '../../store/actions/gameActions';
+import { get_sr_cards } from '../../store/actions/srActions';
 import Controls from './content/Controls';
 import ContentContainer from './content/ContentContainer';
 
@@ -16,22 +13,27 @@ const FlashcardsContainer = ({
   get_module_cards,
   reset_all_game_fields,
   clear_module,
-  set_main_loading,
+  get_sr_cards,
 }) => {
   const router = useRouter();
-  const { _id } = router.query;
+  const { _id, number } = router.query;
+
+  const isSR = _id === 'sr';
 
   const { user } = auth;
 
   useEffect(() => {
     if (user) {
-      get_module_cards(_id);
+      if (isSR) {
+        get_sr_cards(number);
+      } else {
+        get_module_cards(_id);
+      }
     }
   }, [user]);
 
   useEffect(() => {
     return () => {
-      set_main_loading(true);
       reset_all_game_fields();
       clear_module();
     };
@@ -50,7 +52,7 @@ FlashcardsContainer.propTypes = {
   get_module_cards: PropTypes.func.isRequired,
   reset_all_game_fields: PropTypes.func.isRequired,
   clear_module: PropTypes.func.isRequired,
-  set_main_loading: PropTypes.func.isRequired,
+  get_sr_cards: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
@@ -63,7 +65,7 @@ export default connect(mapStateToProps, {
   get_module_cards,
   reset_all_game_fields,
   clear_module,
-  set_main_loading,
+  get_sr_cards,
 })(FlashcardsContainer);
 
 /* 

@@ -11,6 +11,8 @@ const Controls = ({ set_game_controls_dimen, prepare_write }) => {
   const router = useRouter();
   const { _id } = router.query;
 
+  const isSR = _id === 'sr';
+
   const clickStartOver = () => prepare_write();
 
   const onSizeChange = () => {
@@ -35,7 +37,7 @@ const Controls = ({ set_game_controls_dimen, prepare_write }) => {
       <div className='game__controls-container' ref={controllsEl}>
         <div className='game__controls'>
           <div className='game__back'>
-            <Link href={`/module/${_id}`}>
+            <Link href={isSR ? '/home/sr' : `/module/${_id}`}>
               <button className='btn grey ai-c ta-l fz17 width100 pad15-20 h-bcc-yellow'>
                 <svg height='15' width='15'>
                   <use href='../img/sprite.svg#icon__triangle_left'></use>
@@ -55,14 +57,16 @@ const Controls = ({ set_game_controls_dimen, prepare_write }) => {
           <Progress />
 
           <div className='game__control-buttons'>
-            <div className='game__startover'>
-              <button
-                className='btn width100 fz15 pad7 br2 brc-grey-medium brr15 lightblue h-red h-brc-red'
-                onClick={clickStartOver}
-              >
-                <span>Start over</span>
-              </button>
-            </div>
+            {!isSR && (
+              <div className='game__startover'>
+                <button
+                  className='btn width100 fz15 pad7 br2 brc-grey-medium brr15 lightblue h-red h-brc-red'
+                  onClick={clickStartOver}
+                >
+                  <span>Start over</span>
+                </button>
+              </div>
+            )}
           </div>
         </div>
       </div>

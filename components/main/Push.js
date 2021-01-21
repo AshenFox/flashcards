@@ -1,15 +1,43 @@
 import { useEffect } from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import axios from '../../server/supplemental/axios';
 
-const Push = (props) => {
+const Push = ({ auth }) => {
+  const { user } = auth;
+
+  useEffect(() => {
+    let device;
+    const screenWidth = screen.width;
+
+    if (screenWidth < 620) {
+      device = 'mobile';
+    } else if (screenWidth < 991) {
+      device = 'tablet';
+    } else {
+      device = 'pc';
+    }
+
+    if (user) {
+      preparePush(device);
+    }
+  }, [user]);
   return <></>;
 };
 
-Push.propTypes = {};
+Push.propTypes = {
+  auth: PropTypes.object.isRequired,
+};
 
-export default Push;
+const mapStateToProps = (state) => ({
+  auth: state.auth,
+});
+
+export default connect(mapStateToProps)(Push);
 
 // ==========
+
+let subscriptionSent = false;
 
 const publicVapidKey =
   '***REMOVED***'; // ???
@@ -27,21 +55,24 @@ const urlBase64ToUint8Array = (base64String) => {
   return outputArray;
 };
 
-const preparePush = async () => {
+const preparePush = async (device) => {
+  console.log('serviceWorker' in navigator);
+  console.log(subscriptionSent);
+  console.log(navigator);
   if ('serviceWorker' in navigator) {
     if (subscriptionSent) return;
 
     console.log('preparing push...');
 
     try {
-      register = await navigator.serviceWorker.register('../../supplemental/worker.js');
+      const register = await navigator.serviceWorker.register('/scripts/Worker.js');
 
       const subscription = await register.pushManager.subscribe({
         userVisibleOnly: true,
         applicationServerKey: urlBase64ToUint8Array(publicVapidKey),
       });
 
-      await sendSubscription(subscription);
+      await sendSubscription(device, subscription);
 
       subscriptionSent = true;
     } catch (err) {
@@ -50,18 +81,15 @@ const preparePush = async () => {
   }
 };
 
-/* async function sendSubscription(subscription) {
-  let reqData = {
-    device,
-    subscription,
-  };
-  let httpParam = new HttpParam('POST', reqData, true);
-  let response = await fetch(url + '/notifications/subscribe', httpParam);
+const sendSubscription = async (device, subscription) => {
+  try {
+    const { data } = await axios.put('/api/notifications/subscribe', {
+      device,
+      subscription,
+    });
 
-  if (response.ok) {
-    let result = JSON.parse(await response.text());
-    return result;
+    console.log(data);
+  } catch (err) {
+    console.log(err);
   }
-
-  return false;
-} */
+};
