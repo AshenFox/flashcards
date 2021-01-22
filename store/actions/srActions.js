@@ -69,8 +69,6 @@ export const put_sr_answer = (_id, answer) => async (dispatch, getState) => {
       answer,
     });
 
-    console.log(data);
-
     dispatch({
       type: PUT_SR_ANSWER,
       payload: { _id, ...data },
@@ -178,8 +176,6 @@ export const set_card_sr = (_id, value) => async (dispatch, getState) => {
       _id_arr: [_id],
       study_regime: value,
     });
-
-    console.log(data);
 
     dispatch({
       type: SET_CARD_SR,

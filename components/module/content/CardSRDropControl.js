@@ -22,6 +22,7 @@ const CardSRDropControl = ({ data, set_card_question }) => {
 };
 
 CardSRDropControl.propTypes = {
+  data: PropTypes.object.isRequired,
   set_card_question: PropTypes.func.isRequired,
 };
 

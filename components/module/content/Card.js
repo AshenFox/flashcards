@@ -1,7 +1,6 @@
 import { useRouter } from 'next/router';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { set_card_edit } from '../../../store/actions/editActions';
 import Link from 'next/link';
 import ContentEditable from 'react-contenteditable';
 import Speaker from '../../main/Speaker';
@@ -12,18 +11,10 @@ import CardSRControl from './CardSRControl';
 import Img from '../../main/Img';
 import DateStr from '../../main/DateSrt';
 
-const Card = ({ data, filter = false, filter_type = false, set_card_edit }) => {
+const Card = ({ data, filter = false, filter_type = false }) => {
   const router = useRouter();
 
-  const {
-    term = '',
-    defenition = '',
-    // studyRegime = false,
-    imgurl = '',
-    _id,
-    moduleID,
-    creation_date,
-  } = data;
+  const { term = '', defenition = '', imgurl = '', _id, moduleID, creation_date } = data;
 
   const filterRegExp = new RegExp(`(${filter})(?![^<]*>|[^<>]*<\/)`, 'g');
   const replacement = `<span class='bcc-yellow'>${filter}</span>`;
@@ -99,9 +90,8 @@ Card.propTypes = {
   data: PropTypes.object.isRequired,
   filter: PropTypes.string,
   filter_type: PropTypes.string,
-  set_card_edit: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({});
 
-export default connect(false, { set_card_edit })(Card);
+export default connect(false)(Card);

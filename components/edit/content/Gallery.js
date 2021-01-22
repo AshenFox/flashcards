@@ -75,10 +75,6 @@ const Gallery = ({
   );
 };
 
-// edit__gallery-container--hide
-
-///* edit__gallery-container--hide */
-
 Gallery.propTypes = {
   main: PropTypes.object.isRequired,
   active: PropTypes.bool.isRequired,

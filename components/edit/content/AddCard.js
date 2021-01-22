@@ -6,6 +6,7 @@ const AddCard = ({ create_card }) => {
   const clickAddcard = () => {
     create_card();
   };
+
   return (
     <div className='edit__cards-addcard' onClick={clickAddcard}>
       <button

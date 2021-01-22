@@ -111,6 +111,7 @@ const Question = ({ data, game, set_write_answer_field, check_write_answer }) =>
 };
 
 Question.propTypes = {
+  game: PropTypes.object.isRequired,
   data: PropTypes.object.isRequired,
   set_write_answer_field: PropTypes.func.isRequired,
   check_write_answer: PropTypes.func.isRequired,
@@ -124,42 +125,3 @@ export default connect(mapStateToProps, {
   set_write_answer_field,
   check_write_answer,
 })(Question);
-
-/* 
-
-
-
-<div class="game__question-dontknow">
-          <span>Don't know</span>
-        </div>
-        <div class="game__question-img ${
-          imgurl === '' ? 'hidden' : ''
-        }" style="background-image: url(${imgurl !== '' ? imgurl : ''});"></div>
-        <div class="game__question-defenition">
-          <p>${defenition}</p>
-          <div class="game__speaker-write" data-active="${
-            voice.working &&
-            defenition !== '' &&
-            voice.detectLanguage(defenition)
-              ? 'true'
-              : 'false'
-          }">
-            <svg height="22" width="22">
-              <use href="../img/sprite.svg#icon__speaker"></use>
-            </svg>
-          </div>
-        </div>
-        <form action="" class="game__form" autocomplete="off">
-          <fieldset class="game__form-fieldset">
-            <div class="game__form-input">
-              <input type="text" id="write-input" autocomplete="off"/>
-            </div>
-            
-            <label htmlFor="write-input">type the answer</label>
-          </fieldset>
-          <div class="game__form-btn-container">
-            <button class="btn bcc-lightblue pad10-30 brr15 white fz15 fw-normal h-grey h-bcc-yellow">Answer</button>
-          </div>
-        </form>
-
-*/

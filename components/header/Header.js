@@ -9,7 +9,6 @@ import { set_header_dimen } from '../../store/actions/dimenActions';
 import Link from 'next/link';
 import Dropdown from './content/Dropdown';
 
-// set_dropdown
 const Header = ({
   auth,
   header,
@@ -35,16 +34,6 @@ const Header = ({
   const isSR = _id === 'sr';
 
   const activateDropdown = () => set_dropdown(true);
-  /* const deactivateDropdown = useRef((e) => {
-    let menuEl = e.target.closest('.header__menu');
-    let menuItemEl = e.target.closest('.header__menu-item');
-
-    if (menuEl) {
-      if (menuItemEl) set_dropdown(false);
-    } else {
-      set_dropdown(false);
-    }
-  }); */
 
   const onSizeChange = () => set_header_dimen(headerEl.current);
   const onSizeChangeDelayed = () =>
@@ -186,75 +175,3 @@ export default connect(mapStateToProps, {
   set_dropdown,
   set_header_dimen,
 })(Header);
-
-/* 
-
-          {<div className='header__button header__button--back'>
-            <button className='btn d-f h-primary-pale'>
-              <svg width='25' height='25'>
-                <use href='../img/sprite.svg#icon__game_back'></use>
-              </svg>
-            </button>
-          </div> }
-
-          { <div className='header__button header__button--options'>
-            <button className='btn d-f h-primary-pale'>
-              <svg width='30' height='30'>
-                <use href='../img/sprite.svg#icon__game_options'></use>
-              </svg>
-            </button>
-          </div> }
-
-          // -------------------------------
-
-              <div className='header__buttons-regular hidden'>
-              <div
-                className='header__btn-holder regular'
-                id='new-module-regular'
-              >
-                <button
-                  className='btn white fz175' onclick="location.href = hashValues.edit"
-                  >
-                  <svg fill='#ffffff' width='20' height='20'>
-                    <use href='./sprite.svg#icon__new_module'></use>
-                  </svg>
-                  Create new module
-                </button>
-              </div>
-
-              <div className='header__btn-holder regular'>
-                <button className='btn white fz175' onclick="log_out()">
-                  Log out
-                </button>
-              </div>
-
-              <div className='header__btn-menu'>
-                <button
-                  className='btn' onclick="htmlGen.toggleHeaderMenu()"
-                >
-                  <svg width='25' height='25' fill='#ffffff'>
-                    <use href='img/sprite.svg#icon__menu'></use>
-                  </svg>
-                </button>
-              </div>
-            </div>
-
-            <div className='header__button-game-back hidden'>
-              <button className='btn d-f' >
-                onclick="active.return()" 
-                <svg fill='#ffffff' width='25' height='25'>
-                  <use href='img/sprite.svg#icon__game_back'></use>
-                </svg>
-              </button>
-            </div>
-
-            <div className='header__button-game-options hidden'>
-              <button className='btn d-f' >
-              onclick="htmlGen.options();"
-                <svg fill='#ffffff' width='30' height='30'>
-                  <use href='img/sprite.svg#icon__game_options'></use>
-                </svg>
-              </button>
-            </div>
-
-*/

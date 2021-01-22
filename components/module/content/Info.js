@@ -1,4 +1,3 @@
-import { useRouter } from 'next/router';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { change_modal, toggle_modal } from '../../../store/actions/modalActions';
@@ -10,8 +9,6 @@ import ModuleSRControl from './ModuleSRControl';
 import DateStr from '../../main/DateSrt';
 
 const Info = ({ main, change_modal, toggle_modal }) => {
-  const router = useRouter();
-
   const { module } = main;
   const {
     module: { author, _id, creation_date },

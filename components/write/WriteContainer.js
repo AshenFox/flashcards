@@ -11,7 +11,6 @@ import Controls from './content/Controls';
 const WriteContainer = ({
   main,
   auth,
-  game,
   get_module_cards,
   prepare_write,
   reset_all_game_fields,
@@ -19,14 +18,9 @@ const WriteContainer = ({
   get_sr_cards,
 }) => {
   const { cards } = main;
-  /* const {
-    write: { is_init },
-  } = game; */
 
   const router = useRouter();
   const { _id, number } = router.query;
-
-  // console.log(number);
 
   const isSR = _id === 'sr';
 
@@ -70,7 +64,6 @@ const WriteContainer = ({
 WriteContainer.propTypes = {
   main: PropTypes.object.isRequired,
   auth: PropTypes.object.isRequired,
-  game: PropTypes.object.isRequired,
   get_module_cards: PropTypes.func.isRequired,
   clear_module: PropTypes.func.isRequired,
   prepare_write: PropTypes.func.isRequired,
@@ -81,7 +74,6 @@ WriteContainer.propTypes = {
 const mapStateToProps = (state) => ({
   main: state.main,
   auth: state.auth,
-  game: state.game,
 });
 
 export default connect(mapStateToProps, {

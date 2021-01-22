@@ -3,6 +3,7 @@
 const express = require('express');
 const connectDB = require('../config/db');
 const next = require('next');
+const config = require('config');
 
 const webpush = require('web-push');
 
@@ -47,11 +48,11 @@ server.all('*', (req, res) => {
 
 const { send_notifications } = require('./supplemental/notifications_control');
 
-const publicVapidKey =
-  'BO-nIcm9sOZzf2YK6W7YkQsPrxjeFwdjoBfETtk7Fu1WOXNATlphUt1Khu5vwZs9WcI9EbgxwPMUuoFLLgmumMc';
-const privateVapidKey = '2ff0a8Wh7SJ6kCIOe67UUPVLm4KI225AmSqSVlS1fTo';
+const publicVapidKey = config.get('publicVapidKey');
+const privateVapidKey = config.get('privateVapidKey');
+const webpushSubject = config.get('webpushSubject');
 
-webpush.setVapidDetails('mailto:test@test.com', publicVapidKey, privateVapidKey);
+webpush.setVapidDetails(webpushSubject, publicVapidKey, privateVapidKey);
 
 let pushInterval = setInterval(async () => {
   await send_notifications();

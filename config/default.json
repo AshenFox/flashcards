@@ -1,4 +1,7 @@
 {
   "mongoURI": "mongodb+srv://user:FnEFdHSyvH7i0ft2@wordcards-dftds.mongodb.net/test?retryWrites=true&w=majority",
-  "jwtSecret": "wc_myjwtSecret"
+  "jwtSecret": "wc_myjwtSecret",
+  "publicVapidKey": "BO-nIcm9sOZzf2YK6W7YkQsPrxjeFwdjoBfETtk7Fu1WOXNATlphUt1Khu5vwZs9WcI9EbgxwPMUuoFLLgmumMc",
+  "privateVapidKey": "2ff0a8Wh7SJ6kCIOe67UUPVLm4KI225AmSqSVlS1fTo",
+  "webpushSubject": "mailto:test@test.com"
 }

@@ -1,4 +1,3 @@
-import { useRef } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import Search from '../../home/content/Search';
@@ -7,13 +6,6 @@ const Param = ({ main }) => {
   const {
     module: { number },
   } = main;
-
-  /* const cardsArr = Object.values(cards);
-
-  const number = useRef(false);
-
-  if (typeof number.current === 'boolean' && cardsArr.length)
-    number.current = cardsArr.length; */
 
   return (
     <div className='module__param'>

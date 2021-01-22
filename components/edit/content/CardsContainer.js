@@ -44,5 +44,3 @@ const mapStateToProps = (state) => ({
 });
 
 export default connect(mapStateToProps, {})(CardsContainer);
-
-// testuser2's cards

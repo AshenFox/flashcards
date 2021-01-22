@@ -2,7 +2,6 @@ import { useRouter } from 'next/router';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { create_module } from '../../../store/actions/editActions';
-import Link from 'next/link';
 import LoadingButton from '../../main/LoadingButton';
 
 const Save = ({ main, create_module }) => {

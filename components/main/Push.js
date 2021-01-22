@@ -56,13 +56,10 @@ const urlBase64ToUint8Array = (base64String) => {
 };
 
 const preparePush = async (device) => {
-  console.log('serviceWorker' in navigator);
-  console.log(subscriptionSent);
-  console.log(navigator);
   if ('serviceWorker' in navigator) {
     if (subscriptionSent) return;
 
-    console.log('preparing push...');
+    // console.log('preparing push...');
 
     try {
       const register = await navigator.serviceWorker.register('/scripts/Worker.js');
@@ -87,8 +84,6 @@ const sendSubscription = async (device, subscription) => {
       device,
       subscription,
     });
-
-    console.log(data);
   } catch (err) {
     console.log(err);
   }

@@ -27,10 +27,7 @@ export const enter = (type) => async (dispatch, getState) => {
 
     const {
       data: { token, errors },
-    } = await axios.post(
-      `/api/auth/entry/${type}`,
-      type === 'log_in' ? log_in : sign_up
-    );
+    } = await axios.post(`/api/auth/entry/${type}`, type === 'log_in' ? log_in : sign_up);
 
     if (token) {
       localStorage.setItem('value', token);
@@ -41,8 +38,7 @@ export const enter = (type) => async (dispatch, getState) => {
       type: ENTER,
       payload: { [`${type}_errors`]: errors },
     });
-    // Clear Fields
-    // Is it nessesary?
+
     if (token)
       type === 'log_in'
         ? dispatch({ type: CLEAR_LOG_IN })

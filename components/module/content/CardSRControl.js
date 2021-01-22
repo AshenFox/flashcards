@@ -4,12 +4,8 @@ import SRIndicator from '../../main/SRIngicator';
 import { connect } from 'react-redux';
 import { set_card_sr, set_cards_sr_positive } from '../../../store/actions/srActions';
 
-// set_card_sr
-
 const CardSRControl = ({ data, set_card_sr, set_cards_sr_positive }) => {
   const { _id, studyRegime } = data;
-
-  // const clickToggleSwitch = () => set_card_sr(_id, !studyRegime);
 
   const up = (e) => {
     e.preventDefault();
@@ -42,7 +38,6 @@ const CardSRControl = ({ data, set_card_sr, set_cards_sr_positive }) => {
       <label
         className='module__toggle-switch sm'
         htmlFor={`card_sr_${_id}`}
-        /* onClick={clickToggleSwitch} */
         onMouseDown={down}
         onMouseUp={up}
         onTouchStart={down}

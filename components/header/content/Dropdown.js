@@ -138,6 +138,7 @@ const Dropdown = ({
 Dropdown.propTypes = {
   header: PropTypes.object.isRequired,
   dimen: PropTypes.object.isRequired,
+  game: PropTypes.object.isRequired,
   log_out: PropTypes.func.isRequired,
   set_flashcards_shuffled: PropTypes.func.isRequired,
   sort_flashcards: PropTypes.func.isRequired,

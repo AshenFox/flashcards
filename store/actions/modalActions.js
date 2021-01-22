@@ -5,7 +5,6 @@ import {
   CLEAR_LOG_IN,
   CLEAR_SIGN_UP,
 } from './types';
-// import initialState from '../reducers/modal/modalInitState';
 
 // CLEAR_LOG_IN
 export const clear_log_in = () => ({
@@ -43,7 +42,3 @@ export const control_field = (field, name, value) => {
     },
   };
 };
-
-//------------------------------------------
-//------------------------------------------
-//------------------------------------------

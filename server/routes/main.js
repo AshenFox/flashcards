@@ -44,9 +44,7 @@ router.get('/modules', auth, async (req, res) => {
       .skip(skip * 10)
       .limit(10);
 
-    const modules_number = await moduleModel.countDocuments(
-      filterObj
-    );
+    const modules_number = await moduleModel.countDocuments(filterObj);
 
     if (draft) --all_modules_number;
 
@@ -97,9 +95,7 @@ router.get('/cards', auth, async (req, res) => {
     if (created === 'newest') sortObj.creation_date = -1;
     if (created === 'oldest') sortObj.creation_date = 1;
 
-    const all_cards_number = await cardModel.countDocuments(
-      filterObj
-    );
+    const all_cards_number = await cardModel.countDocuments(filterObj);
 
     if (filter) filterObj[by] = { $regex: filter };
 
@@ -113,9 +109,7 @@ router.get('/cards', auth, async (req, res) => {
 
     const all_cards = cards_number <= (skip + 1) * 10;
 
-    res
-      .status(200)
-      .json({ cards, cards_number, all_cards, all_cards_number });
+    res.status(200).json({ cards, cards_number, all_cards, all_cards_number });
   } catch (err) {
     console.error(err.message);
     res.status(500).json({ errorBody: 'Server Error' });
@@ -129,8 +123,6 @@ router.get('/cards', auth, async (req, res) => {
 router.get('/module', auth, async (req, res) => {
   try {
     let { _id } = req.query;
-
-    // const draft = _id === 'draft';
 
     const server_id = req.user.server_id;
 

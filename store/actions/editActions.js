@@ -31,18 +31,6 @@ import { url_fields } from '../reducers/main/mainInitState';
 import { card_fields } from '../reducers/main/mainInitState';
 import axios from '../../server/supplemental/axios';
 
-// SET_CARDS_STUDY_REGIME_POSITIVE
-export const set_cards_study_regime_positive = (_id, value) => async (
-  dispatch,
-  getState
-) => {};
-
-// SET_CARDS_STUDY_REGIME
-export const set_cards_study_regime = (value) => async (dispatch, getState) => {};
-
-// SET_CARD_STUDY_REGIME
-export const set_card_study_regime = (_id, value) => async (dispatch, getState) => {};
-
 // SET_CARDS_SAVE_POSITIVE
 export const set_cards_save_positive = (_id) => async (dispatch, getState) => {
   const {
@@ -237,8 +225,6 @@ export const set_url_ok = (_id, index, value) => async (dispatch, getState) => {
 
   let { loaded, failed, all, loading } = cards[_id].gallery;
 
-  // if (!loading) return;
-
   const payload = {
     _id,
     index,
@@ -251,10 +237,6 @@ export const set_url_ok = (_id, index, value) => async (dispatch, getState) => {
   if (!value) payload.failed = failed + 1;
 
   dispatch(set_gallery_width(_id, payload.loaded));
-
-  // const sum = loaded + failed + 1;
-
-  // if (sum === all) dispatch(set_gallery_loading(_id, false));
 
   dispatch({
     type: SET_URL_OK,

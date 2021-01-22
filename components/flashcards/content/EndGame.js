@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import Link from 'next/link';
 
 const EndGame = ({ main, game, active }) => {
-  const { cards, module } = main;
+  const { cards } = main;
   const {
     flashcards: { progress },
   } = game;
@@ -58,6 +58,7 @@ const EndGame = ({ main, game, active }) => {
 };
 
 EndGame.propTypes = {
+  active: PropTypes.bool,
   main: PropTypes.object.isRequired,
   game: PropTypes.object.isRequired,
 };

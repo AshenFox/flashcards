@@ -91,7 +91,11 @@ const Card = ({
   );
 };
 
-Card.propTypes = {};
+Card.propTypes = {
+  data: PropTypes.object.isRequired,
+  set_flashcards_side: PropTypes.func.isRequired,
+  set_card_edit: PropTypes.func.isRequired,
+};
 
 const mapStateToProps = (state) => ({});
 
