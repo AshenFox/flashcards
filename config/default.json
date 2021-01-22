@@ -3,5 +3,13 @@
   "jwtSecret": "wc_myjwtSecret",
   "publicVapidKey": "BO-nIcm9sOZzf2YK6W7YkQsPrxjeFwdjoBfETtk7Fu1WOXNATlphUt1Khu5vwZs9WcI9EbgxwPMUuoFLLgmumMc",
   "privateVapidKey": "2ff0a8Wh7SJ6kCIOe67UUPVLm4KI225AmSqSVlS1fTo",
-  "webpushSubject": "mailto:test@test.com"
+  "webpushSubject": "mailto:test@test.com",
+  "cse_id": "014021038602380498207:bkyupulicud",
+  "keyArr": [
+    "AIzaSyB-4XnR-3_cOaaB9-_nbzu8RW-5_0utf3I",
+    "AIzaSyDc9kt0SEkSWtPHJ0wwROvHoOlToZUSYe4",
+    "AIzaSyCLIrnPD4TcMO6sd13NOI2_oz10scQQ12g",
+    "AIzaSyBh8xHsNP0HsyW04mBEVMqS8EEO0L8SxE4",
+    "AIzaSyC4It5s2ZLsqB-pnVMofYwdFGoPWhUmHic"
+  ]
 }
