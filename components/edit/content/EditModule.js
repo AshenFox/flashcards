@@ -6,7 +6,7 @@ import ContentEditable from 'react-contenteditable';
 import ModuleSave from './ModuleSave';
 
 const EditModule = ({ main, control_module, edit_module }) => {
-  const { module, loading, cards, user } = main;
+  const { module, loading, cards } = main;
   const { title, draft } = module ? module : {};
 
   const handleModuleChange = (e) => {

@@ -11,8 +11,6 @@ const RouterConfiguration = ({ set_main_loading }) => {
     Router.events.on('routeChangeComplete', (url) => {
       const base = url.match(/\/.[^\/]*/)[0];
 
-      // console.log(`Loading: ${url}`, base, baseRef.current);
-
       if (base !== baseRef.current) set_main_loading(true);
       baseRef.current = base;
     });
@@ -27,6 +25,6 @@ RouterConfiguration.propTypes = {
 
 const mapStateToProps = (state) => ({});
 
-export default connect(mapStateToProps, {
+export default connect(false, {
   set_main_loading,
 })(RouterConfiguration);

@@ -104,10 +104,3 @@ export const SET_CARDS_SR = 'SET_CARDS_SR';
 export const SET_CARDS_SR_POSITIVE = 'SET_CARDS_SR_POSITIVE';
 export const DROP_CARD_SR = 'DROP_CARD_SR';
 export const DROP_CARDS_SR = 'DROP_CARDS_SR';
-
-/* 
-SET_CARD_SR,
-  SET_CARDS_SR,
-  SET_CARDS_SR_POSITIVE,
-
-*/

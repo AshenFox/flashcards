@@ -7,8 +7,7 @@ const Progress = ({ game }) => {
     write: { remaining, answered, rounds, all_cards_num },
   } = game;
 
-  const correctAnswered = answered.filter((item) => item.answer === 'correct')
-    .length;
+  const correctAnswered = answered.filter((item) => item.answer === 'correct').length;
   let correctRounds = 0;
   for (const round of rounds) {
     let correctRound = round.filter((item) => item.answer === 'correct').length;
@@ -17,8 +16,7 @@ const Progress = ({ game }) => {
 
   const remainingNum = remaining.length;
   const correctNum = correctAnswered + correctRounds;
-  const incorrectNum = answered.filter((item) => item.answer === 'incorrect')
-    .length;
+  const incorrectNum = answered.filter((item) => item.answer === 'incorrect').length;
 
   return (
     <div className='game__progress'>
@@ -83,7 +81,9 @@ const Progress = ({ game }) => {
   );
 };
 
-Progress.propTypes = {};
+Progress.propTypes = {
+  game: PropTypes.object.isRequired,
+};
 
 const mapStateToProps = (state) => ({
   game: state.game,

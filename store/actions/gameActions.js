@@ -35,28 +35,6 @@ export const set_write_is_init = (value) => ({
   },
 });
 
-// START_OVER
-/* export const start_over = () => async (dispatch, getState) => {
-  const {
-    main: { cards },
-  } = getState();
-  dispatch(set_write_is_init(false));
-
-  const remaining = Object.keys(cards).map((id) => ({ id, ...card_fields }));
-
-  dispatch({
-    type: RESET_ALL_GAME_FIELDS,
-  });
-  dispatch({
-    type: PREPARE_WRITE,
-    payload: {
-      remaining,
-    },
-  });
-
-  dispatch(set_write_is_init(true));
-}; */
-
 // PREPARE_WRITE
 export const reset_all_game_fields = () => ({
   type: RESET_ALL_GAME_FIELDS,
@@ -206,13 +184,3 @@ export const set_flashcards_side = (value) => ({
     value,
   },
 });
-
-/* 
-dispatch({
-    type: SET_FLASHCARDS_SIDE,
-    payload: {
-      value: 'definition',
-    },
-  })
-
-*/

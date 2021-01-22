@@ -149,6 +149,8 @@ Navigation.propTypes = {
   game: PropTypes.object.isRequired,
   set_flashcards_side: PropTypes.func.isRequired,
   put_sr_answer: PropTypes.func.isRequired,
+  set_flashcards_progress: PropTypes.func.isRequired,
+  save_flashcards_answer: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({

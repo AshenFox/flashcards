@@ -66,38 +66,3 @@ Controls.propTypes = {
 const mapStateToProps = (state) => ({});
 
 export default connect(mapStateToProps, { set_game_controls_dimen })(Controls);
-
-/* 
-
- ${
-                          this.regime === "study" ? "hidden" : ""
-                        } 
-
-           <div className='game__method '>
-                  <div className='game__method-tilte'>Answer with:</div>
-                  <button className='btn width100 fz15 pad7 br2 brc-grey-medium brr5 lightblue h-yellow'>
-                    <svg height='13' width='13'>
-                      <use href='../img/sprite.svg#icon__down_arrow'></use>
-                    </svg>
-                    <span>Term</span>
-                  </button>
-                  <div className='game__method-menu-container hidden'>
-                    <div className='game__method-menu'>
-                      <div
-                        className='game__method-menu-item'
-                        data-method='term'
-                      >
-                        <span>Term</span>
-                      </div>
-                      <div
-                        className='game__method-menu-item'
-                        data-method='defenition'
-                      >
-                        <span>Defenition</span>
-                      </div>
-                    </div>
-                  </div>
-                </div> 
-
-
-*/

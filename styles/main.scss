@@ -5,14 +5,6 @@
 @import 'lodaing-btn';
 @import 'sr-indicator';
 
-// @import '~normalize.css';
-
-// $notebook
-// max-height: $h-mobile-sm: 350px; //565px
-// $h-mobile: 620px; //767px
-// $h-tablet: 840px;
-// green
-
 *,
 *:before,
 *:after {
@@ -23,7 +15,7 @@
 
 html {
   font-size: 10px;
-  font-family: 'Alata', sans-serif; // 'Fredoka One'
+  font-family: 'Alata', sans-serif;
 }
 
 body {
@@ -35,11 +27,6 @@ body {
 
   background-color: $grey-light;
 }
-
-/* main {
-  position: relative;
-  overflow: hidden;
-} */
 
 h1,
 h2,

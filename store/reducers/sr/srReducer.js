@@ -9,7 +9,7 @@ const SrReducer = (state = initialState, action) => {
       return {
         ...state,
         ...payload,
-        counter: payload.repeat_num,
+        counter: payload.repeat_num > 999 ? 999 : payload.repeat_num,
       };
 
     case SET_SR_LOADING:

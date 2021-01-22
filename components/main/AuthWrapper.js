@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { authenticate } from '../../store/actions/authActions';
 import { set_is_server } from '../../store/actions/mainActions';
 
-const AuthWrapper = ({ auth, children, authenticate, set_is_server }) => {
+const AuthWrapper = ({ children, authenticate, set_is_server }) => {
   useEffect(() => {
     set_is_server();
     authenticate();
@@ -14,16 +14,11 @@ const AuthWrapper = ({ auth, children, authenticate, set_is_server }) => {
 };
 
 AuthWrapper.propTypes = {
-  auth: PropTypes.object.isRequired,
   children: PropTypes.object.isRequired,
   authenticate: PropTypes.func.isRequired,
   set_is_server: PropTypes.func.isRequired,
 };
 
-const mapStateToProps = (state) => ({
-  auth: state.auth,
-});
+const mapStateToProps = (state) => ({});
 
-export default connect(mapStateToProps, { authenticate, set_is_server })(
-  AuthWrapper
-);
+export default connect(false, { authenticate, set_is_server })(AuthWrapper);

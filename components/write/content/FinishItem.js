@@ -53,13 +53,6 @@ const FinishItem = ({ main, data, i, stats }) => {
         <div className='game__finish-body-right'>
           <div className='game__finish-definition'>
             <ContentEditable html={defenition} disabled={true} />
-            {/* <div
-            className='game__finish-img '
-            style={{
-              backgroundImage: `url(${imgurl})`,
-            }}
-          ></div> */}
-
             <Img
               containerClass={'game__finish-img-container'}
               imgClass={'game__finish-img'}
@@ -74,6 +67,9 @@ const FinishItem = ({ main, data, i, stats }) => {
 
 FinishItem.propTypes = {
   main: PropTypes.object.isRequired,
+  data: PropTypes.object.isRequired,
+  i: PropTypes.number.isRequired,
+  stats: PropTypes.bool,
 };
 
 const mapStateToProps = (state) => ({

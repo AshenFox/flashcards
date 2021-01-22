@@ -71,14 +71,11 @@ const ContentContainer = ({ main, dimen, game }) => {
                     return <Card key={card._id} data={card} position={'prev'} />;
                   }
                 })}
-              {/* {!isEdit && length && !isSR && <EndGame active={isEnd} />}
-              {!isEdit && length && isSR && isEnd && 'Finish'} */}
               {!isEdit && length && isEnd && isSR ? (
                 <Results />
               ) : (
                 <EndGame active={isEnd} />
               )}
-
               {isEdit && (
                 <EditCard
                   key={activeCardData._id}

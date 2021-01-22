@@ -23,7 +23,6 @@ const Finish = ({ game, next_write_round }) => {
   };
 
   useEffect(() => {
-    console.log('fire!');
     if (all_cards_num) next_write_round();
 
     window.addEventListener('keydown', keyDownFinish);
@@ -75,100 +74,3 @@ const mapStateToProps = (state) => ({
 });
 
 export default connect(mapStateToProps, { next_write_round })(Finish);
-
-/* 
-<div className='game__finish-body-item'>
-          <div className='game__finish-body-left'>
-            <div className='game__finish-icon game__finish-icon--correct'>
-              <svg height='22' width='22'>
-                <use href='../img/sprite.svg#icon__tick'></use>
-              </svg>
-            </div>
-            <div className='game__finish-term game__finish-term--correct'>
-              <span>2.</span>
-              <span>promiscuous</span>
-            </div>
-          </div>
-
-          <div className='game__finish-body-right'>
-            <div className='game__finish-definition'>
-              <p>
-                I suppose I was quite ... in my youth. (&nbsp;(of a person)
-                having a lot of different sexual partners or sexual
-                relationships, or (of sexual habits) involving a lot of
-                different partners )
-              </p>
-              <div
-                className='game__finish-img '
-                style={{
-                  backgroundImage:
-                    'url(https://i.ytimg.com/vi/0J3vgcE5i2o/maxresdefault.jpg)',
-                }}
-              ></div>
-            </div>
-          </div>
-        </div>
-        <div className='game__finish-body-item'>
-          <div className='game__finish-body-left'>
-            <div className='game__finish-icon game__finish-icon--correct'>
-              <svg height='22' width='22'>
-                <use href='../img/sprite.svg#icon__tick'></use>
-              </svg>
-            </div>
-            <div className='game__finish-term game__finish-term--correct'>
-              <span>3.</span>
-              <span>dissension</span>
-            </div>
-          </div>
-
-          <div className='game__finish-body-right'>
-            <div className='game__finish-definition'>
-              <p>
-                I figured I could sow some ... and get a few ties and
-                sweaters.&nbsp;There are signs of ... within the ruling
-                political party. (&nbsp;arguments and disagreement, especially
-                in an organization, group, political party, etc. )
-              </p>
-              <div
-                className='game__finish-img '
-                style={{
-                  backgroundImage:
-                    'url(https://i1.wp.com/leading2leadership.com/wp-content/uploads/2015/04/collaboration.png?fit=700%2C449&amp;ssl=1)',
-                }}
-              ></div>
-            </div>
-          </div>
-        </div>
-        <div className='game__finish-body-item'>
-          <div className='game__finish-body-left'>
-            <div className='game__finish-icon game__finish-icon--incorrect'>
-              <svg height='22' width='22'>
-                <use href='../img/sprite.svg#icon__close'></use>
-              </svg>
-            </div>
-            <div className='game__finish-term game__finish-term--incorrect'>
-              <span>4.</span>
-              <span>to hold down</span>
-            </div>
-          </div>
-
-          <div className='game__finish-body-right'>
-            <div className='game__finish-definition'>
-              <p>
-                But if it doesn't work you have to ... the kid ... . She proved
-                that being a woman wouldn’t hold her down. ( to prevent
-                something from developing, or to prevent someone from doing what
-                they want )
-              </p>
-              <div
-                className='game__finish-img '
-                style={{
-                  backgroundImage:
-                    'url(http://stronghandtools.com/stronghandtools/wp-content/uploads/2017/05/holddown_app2.jpg)',
-                }}
-              ></div>
-            </div>
-          </div>
-        </div>
-
-*/

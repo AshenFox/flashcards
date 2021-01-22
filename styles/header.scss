@@ -3,7 +3,6 @@
   background-color: $primary;
   position: relative;
   transition: all 0.1 linear;
-  // overflow: hidden;
   z-index: 40;
 
   padding: 1.5rem 0;
@@ -28,10 +27,6 @@
     @media (max-width: $mobile) {
       font-size: 3rem;
     }
-
-    /* @media (max-width: $mobile-sm) {
-      font-size: 2.5rem;
-    } */
   }
 
   &__buttons-left,
@@ -53,24 +48,6 @@
       }
     }
   }
-
-  /* &__btn-holder.regular {
-  @media (max-width: $mobile) {
-    display: none;
-  }
-
-  & button svg {
-    transition: all 0.2s;
-  }
-
-  & button:hover {
-    color: rgb(137, 171, 235);
-
-    & svg {
-      fill: rgb(137, 171, 235);
-    }
-  }
-} */
 
   &__button {
     display: none;
@@ -205,10 +182,6 @@
       }
     }
 
-    /* @media (min-width: $mobile) {
-    display: none;
-  } */
-
     &--spring {
       .header__hamburger-inner {
         top: 2px;
@@ -234,8 +207,7 @@
 
           &::before {
             top: 0;
-            transition: top 0.1s 0.15s
-                cubic-bezier(0.33333, 0, 0.66667, 0.33333),
+            transition: top 0.1s 0.15s cubic-bezier(0.33333, 0, 0.66667, 0.33333),
               transform 0.13s 0.22s cubic-bezier(0.215, 0.61, 0.355, 1);
             transform: translate3d(0, 10px, 0) rotate(45deg);
           }

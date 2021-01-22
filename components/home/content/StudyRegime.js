@@ -22,7 +22,6 @@ const StudyRegime = ({ main, sr }) => {
             in the regime.
           </li>
           <li>
-            {/* hidden */}
             <SrInTime />
           </li>
         </ul>
@@ -39,9 +38,8 @@ const StudyRegime = ({ main, sr }) => {
         </p>
         {!!repeat_num && (
           <>
-            <p className=''>{/* hidden */}Repeat with:</p>
+            <p className=''>Repeat with:</p>
             <div className='home__repeat-methods'>
-              {/* hidden */}
               <SrCounter />
               <Link href={'/flashcards/sr' + (counter ? `?number=${counter}` : '')}>
                 <div className='home__repeat-item'>

@@ -28,11 +28,9 @@
     border: 1.5px solid $grey;
 
     &:after {
-      // top: 1px;
       top: 50%;
       transform: translateY(-50%);
       left: 1.5px;
-      // left: 50%;
       height: 14px;
       width: 14px;
     }

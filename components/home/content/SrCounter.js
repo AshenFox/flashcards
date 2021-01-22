@@ -10,8 +10,10 @@ const SrCounter = ({ sr, set_sr_counter }) => {
 
   const intervalRef = useRef(false);
   const timeoutRef = useRef(false);
+  const blockSingle = useRef(false);
 
   const single = (value) => () => {
+    if (blockSingle.current) return;
     if (value === 'stepUp') set_sr_counter(1);
     if (value === 'stepDown') set_sr_counter(-1);
   };
@@ -22,6 +24,7 @@ const SrCounter = ({ sr, set_sr_counter }) => {
 
     timeoutRef.current = setTimeout(() => {
       timeoutRef.current = false;
+      blockSingle.current = true;
 
       intervalRef.current = setInterval(() => {
         if (value === 'stepUp') set_sr_counter(5);
@@ -37,6 +40,7 @@ const SrCounter = ({ sr, set_sr_counter }) => {
       clearInterval(intervalRef.current);
       timeoutRef.current = false;
       intervalRef.current = false;
+      blockSingle.current = false;
     };
 
     window.addEventListener('mouseup', cleanup);

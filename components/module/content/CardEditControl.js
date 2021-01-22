@@ -17,6 +17,7 @@ const CardEditControl = ({ data, set_card_edit }) => {
 };
 
 CardEditControl.propTypes = {
+  data: PropTypes.object.isRequired,
   set_card_edit: PropTypes.func.isRequired,
 };
 

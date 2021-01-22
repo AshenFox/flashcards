@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useEffect } from 'react';
 import { useRouter } from 'next/router';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
@@ -32,14 +32,7 @@ const EditContainer = ({ main, auth, get_module, get_draft, clear_module }) => {
         <div className='container'>
           <div className='edit__intro-content'>
             <div className='edit__intro-info'>
-              <h2>
-                {/* ${
-                          this.newModule
-                            ? 'Create a new study set!'
-                            : 'Edit the study set! :)'
-                        } */}
-                Edit the study set! :)
-              </h2>
+              <h2>Edit the study set! :)</h2>
             </div>
             <div className='edit__intro-return'>
               <Link href={draft ? '/home/modules' : `/module/${_id}`}>
@@ -47,8 +40,7 @@ const EditContainer = ({ main, auth, get_module, get_draft, clear_module }) => {
                   className='btn bcc-lightblue pad12-30 brr15 white fz15 fw-normal h-grey h-bcc-yellow'
                   type='button'
                 >
-                  {/* onclick="active.return();" */}
-                  {/* ${this.newModule ? 'Cancel' : 'Return'} */}Return
+                  Return
                 </button>
               </Link>
             </div>

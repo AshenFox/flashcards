@@ -1,4 +1,7 @@
 {
   "mongoURI": "***REMOVED***",
-  "jwtSecret": "***REMOVED***"
+  "jwtSecret": "***REMOVED***",
+  "publicVapidKey": "***REMOVED***",
+  "privateVapidKey": "***REMOVED***",
+  "webpushSubject": "***REMOVED***"
 }

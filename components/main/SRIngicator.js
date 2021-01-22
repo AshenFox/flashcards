@@ -55,7 +55,10 @@ const SRIngicator = ({ data, classStr }) => {
   );
 };
 
-SRIngicator.propTypes = {};
+SRIngicator.propTypes = {
+  data: PropTypes.object.isRequired,
+  classStr: PropTypes.string,
+};
 
 export default SRIngicator;
 

@@ -1,32 +1,15 @@
 import { useRef } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import {
-  change_modal,
-  control_field,
-} from '../../../store/actions/modalActions';
-import {
-  enter,
-  check_field,
-} from '../../../store/actions/authActions';
+import { change_modal, control_field } from '../../../store/actions/modalActions';
+import { enter, check_field } from '../../../store/actions/authActions';
 import Error from './Error';
 import LoadingButton from '../../main/LoadingButton';
 
-const SignUp = ({
-  modal,
-  change_modal,
-  control_field,
-  check_field,
-  enter,
-}) => {
+const SignUp = ({ modal, change_modal, control_field, check_field, enter }) => {
   const {
     sign_up: { username, password, email },
-    sign_up_errors: {
-      username: userErr,
-      password: passErr,
-      email: emailErr,
-      ok,
-    },
+    sign_up_errors: { username: userErr, password: passErr, email: emailErr, ok },
     loading,
   } = modal;
 
@@ -70,11 +53,8 @@ const SignUp = ({
         name='username'
         type='text'
         className={`pad20-15 fz17 height4r br2 bc-none brc-grey f-brc-yellow mar-bottom20 username ${
-          username && userErr.ok && !timers.current.username
-            ? 'border-green'
-            : ''
+          username && userErr.ok && !timers.current.username ? 'border-green' : ''
         }`}
-        /* border-green */
         id='username'
         placeholder='Enter a user name'
         value={username}
@@ -88,9 +68,7 @@ const SignUp = ({
         name='email'
         type='email'
         className={`pad20-15 fz17 height4r br2 bc-none brc-grey f-brc-yellow mar-bottom20 email ${
-          email && emailErr.ok && !timers.current.email
-            ? 'border-green'
-            : ''
+          email && emailErr.ok && !timers.current.email ? 'border-green' : ''
         }`}
         id='email'
         placeholder='Enter an email'
@@ -105,9 +83,7 @@ const SignUp = ({
         name='password'
         type='password'
         className={`pad20-15 fz17 height4r br2 bc-none brc-grey f-brc-yellow mar-bottom20 password ${
-          password && passErr.ok && !timers.current.password
-            ? 'border-green'
-            : ''
+          password && passErr.ok && !timers.current.password ? 'border-green' : ''
         }`}
         id='password'
         placeholder='Enter a password'

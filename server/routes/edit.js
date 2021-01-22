@@ -215,8 +215,6 @@ router.post('/card', auth, async (req, res) => {
     const cardModel = cardModelGenerator(user.username);
     const moduleModel = moduleModelGenerator(user.username);
 
-    // moduleID, term, defenition, imgurl
-
     const new_card = await cardModel.create({
       moduleID: module._id,
       term: '',
@@ -278,7 +276,6 @@ router.get('/draft', auth, async (req, res) => {
         draft: true,
       });
 
-      // cardModel
       const cardsData = [];
 
       for (let i = 0; i < 5; i++) {

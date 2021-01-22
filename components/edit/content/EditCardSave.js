@@ -9,11 +9,6 @@ import {
 const EditCardSave = ({ data, set_card_save, set_cards_save_positive }) => {
   const { _id, save } = data;
 
-  /* const changeSave = () => {
-    console.log('fire!');
-    set_card_save(_id, !save);
-  }; */
-
   const up = (e) => {
     e.preventDefault();
     clearTimeout(timer.current);
@@ -23,10 +18,7 @@ const EditCardSave = ({ data, set_card_save, set_cards_save_positive }) => {
     }
   };
 
-  // includes(value)
-
   const down = (e) => {
-    // console.log('down!');
     timer.current = setTimeout(() => {
       timer.current = false;
       if (!save) set_cards_save_positive(_id);
@@ -42,7 +34,6 @@ const EditCardSave = ({ data, set_card_save, set_cards_save_positive }) => {
         type='checkbox'
         id={`togglesave${_id}`}
         checked={save}
-        /* onChange={up} */
         readOnly
       />
       <svg height='17' width='17'>
@@ -69,6 +60,4 @@ EditCardSave.propTypes = {
 
 const mapStateToProps = (state) => ({});
 
-export default connect(false, { set_card_save, set_cards_save_positive })(
-  EditCardSave
-);
+export default connect(false, { set_card_save, set_cards_save_positive })(EditCardSave);

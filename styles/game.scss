@@ -547,11 +547,6 @@
   &__section-body {
     position: relative;
     padding-right: 2.75rem;
-    // display: flex;
-
-    @media (max-width: $mobile) {
-      // flex-direction: column;
-    }
   }
 
   &__override {
@@ -563,21 +558,10 @@
     }
   }
 
-  /* &__section-text {
-    flex: 1;
-  } */
-
   &__speaker-write {
-    // align-self: flex-end;
-    // margin-left: 1rem;
     position: absolute;
     bottom: 0;
     right: 0;
-
-    @media (max-width: $mobile) {
-      // margin-top: 1rem;
-      // flex-direction: column;
-    }
   }
 
   &__answer-continue {
@@ -678,9 +662,6 @@
     line-height: 1;
     color: $grey-lighter;
   }
-
-  // &__finish-body {
-  // }
 
   &__finish-body-item {
     &:not(:first-child) {
@@ -911,9 +892,7 @@
 
   &__definition-container {
     text-align: center;
-    // position: relative;
     height: 100%;
-    // width: 45%;
     flex: 1;
     display: flex;
     justify-content: center;
@@ -999,8 +978,6 @@
   }
 
   &__term-container {
-    // position: relative;
-
     height: 100%;
     width: 100%;
 
@@ -1028,7 +1005,6 @@
   &__term {
     overflow-y: auto;
     overflow-x: hidden;
-    // position: absolute;
 
     display: flex;
     align-items: center;
@@ -1060,19 +1036,12 @@
       left: 0;
       bottom: 0;
       min-height: 8rem;
-      // height: 20%;
     }
-
-    // @media max-width: $mobile {
-    //     min-height: 4.5rem;
-
-    // }
   }
 
   &__nav-item {
     width: 50%;
     padding: 0 5rem;
-    // margin: auto;
 
     @media (max-width: $tablet) {
       align-self: flex-end;
@@ -1276,27 +1245,29 @@
 
 // ==========
 
-.game__speaker-flashcards,
-.game__speaker-write {
-  @include speaker;
-}
-
-.game__speaker-flashcards {
-  right: 2rem;
-  top: 2rem;
-
-  svg {
-    height: 22px;
-    width: 22px;
+.game {
+  &__speaker-flashcards,
+  &__speaker-write {
+    @include speaker;
   }
-}
 
-.game__speaker-write {
-  bottom: 0;
-  right: 0;
+  &__speaker-flashcards {
+    right: 2rem;
+    top: 2rem;
 
-  svg {
-    height: 22px;
-    width: 22px;
+    svg {
+      height: 22px;
+      width: 22px;
+    }
+  }
+
+  &__speaker-write {
+    bottom: 0;
+    right: 0;
+
+    svg {
+      height: 22px;
+      width: 22px;
+    }
   }
 }

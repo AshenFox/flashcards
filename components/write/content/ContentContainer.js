@@ -1,4 +1,3 @@
-import { useRouter } from 'next/router';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import Question from './Question';
@@ -66,12 +65,8 @@ const ContentContainer = ({ dimen, main, game }) => {
       className='game__content-container game__content-container--scrollable'
       style={writeStyles}
     >
-      {/* COMPONENTS */}
       <div className='game__components game__components--scrollable'>
         {is_init && !loading ? components : <div className='game__loading-spinner' />}
-        {/* { QUESTION }
-        <Round />
-        <Finish /> } */}
       </div>
     </div>
   );

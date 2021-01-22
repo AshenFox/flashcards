@@ -106,44 +106,6 @@
     margin-bottom: 1.5rem;
   }
 
-  /* .modal__log-in,
-  .modal__sign-up {
-    text-align: center;
-    position: relative;
-  
-    &[data-checking='true'] {
-      & button {
-        background-color: $tertiary;
-        cursor: auto;
-  
-        & span {
-          visibility: hidden;
-        }
-      }
-  
-      & .modal__loading-spinner {
-        display: block;
-      }
-    }
-  }
-  
-  .modal__loading-spinner {
-    display: none;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: rotate(180deg);
-    transform-origin: center;
-    margin: -1.5rem 0 0 -1.5rem;
-    height: 3rem;
-    width: 3rem;
-    border-radius: 50%;
-    border: 4px solid $white;
-    border-right: 4px solid transparent;
-    border-left: 4px solid transparent;
-    animation: spin 1.25s linear infinite;
-  } */
-
   &__options {
     text-align: center;
     padding: 1rem;

@@ -2,7 +2,6 @@ import { useEffect } from 'react';
 import { useRouter } from 'next/router';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-// import { next_write_round } from '../../../store/actions/gameActions';
 import ResultsItem from './ResultsItem';
 import Link from 'next/link';
 
@@ -23,9 +22,6 @@ const Finish = ({ game }) => {
   };
 
   useEffect(() => {
-    // console.log('fire!');
-    // if (all_cards_num) next_write_round();
-
     window.addEventListener('keydown', keyDownFinish);
 
     return () => {
@@ -64,7 +60,9 @@ const Finish = ({ game }) => {
   );
 };
 
-Finish.propTypes = {};
+Finish.propTypes = {
+  game: PropTypes.object.isRequired,
+};
 
 const mapStateToProps = (state) => ({
   game: state.game,

@@ -33,7 +33,10 @@ const Progress = ({ main, game }) => {
   );
 };
 
-Progress.propTypes = {};
+Progress.propTypes = {
+  main: PropTypes.object.isRequired,
+  game: PropTypes.object.isRequired,
+};
 
 const mapStateToProps = (state) => ({
   main: state.main,

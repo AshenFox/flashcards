@@ -4,7 +4,7 @@ import { delete_module } from '../../../store/actions/editActions';
 import { toggle_modal } from '../../../store/actions/modalActions';
 import LoadingButton from '../../main/LoadingButton';
 
-const Delete = ({ modal, main, delete_module, toggle_modal }) => {
+const Delete = ({ main, delete_module, toggle_modal }) => {
   const {
     module: { _id, module_loading, title },
   } = main;
@@ -21,8 +21,8 @@ const Delete = ({ modal, main, delete_module, toggle_modal }) => {
 
       <div className='modal__warning'>
         <p>
-          You are about to delete this set and all of its data. You won't be able to access this set
-          ever again.
+          You are about to delete this set and all of its data. You won't be able to
+          access this set ever again.
         </p>
       </div>
 
@@ -62,14 +62,12 @@ const Delete = ({ modal, main, delete_module, toggle_modal }) => {
 };
 
 Delete.propTypes = {
-  modal: PropTypes.object.isRequired,
   main: PropTypes.object.isRequired,
   delete_module: PropTypes.func.isRequired,
   toggle_modal: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
-  modal: state.modal,
   main: state.main,
 });
 

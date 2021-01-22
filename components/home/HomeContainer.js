@@ -33,10 +33,6 @@ const HomeContainer = ({
   const { username } = user ? user : {};
   const { modules, cards, all_modules_number, all_cards_number } = main;
 
-  /* useEffect(() => {
-    loadContent();
-  }, [user]); */
-
   useEffect(() => {
     if (!user) return;
     reset_search();
