@@ -19,9 +19,6 @@ const SrCounter = ({ sr, set_sr_counter }) => {
   };
 
   const multiple = (value) => (e) => {
-    // if (timeoutRef.current) return;
-    console.log('fire!', e.type);
-
     timeoutRef.current = setTimeout(() => {
       timeoutRef.current = false;
       blockSingle.current = true;
@@ -35,7 +32,6 @@ const SrCounter = ({ sr, set_sr_counter }) => {
 
   useEffect(() => {
     const cleanup = (e) => {
-      console.log('cleanup', e.type);
       clearTimeout(timeoutRef.current);
       clearInterval(intervalRef.current);
       timeoutRef.current = false;

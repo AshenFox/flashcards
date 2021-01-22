@@ -106,7 +106,7 @@ router.put('/answer', auth, async (req, res) => {
 
     let stage = determine_stage(card) + answer;
     if (stage <= 0 || stage > 11) stage = 1;
-    if (stage > 11) studyRegime = false;
+    if (card.stage >= 11 && stage === 1) studyRegime = false;
 
     const { nextRep, prevStage } = get_dates(stage);
 

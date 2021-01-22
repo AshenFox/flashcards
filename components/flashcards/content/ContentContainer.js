@@ -33,8 +33,6 @@ const ContentContainer = ({ main, dimen, game }) => {
   const formatted_cards = Object.values(cards);
   const { length } = formatted_cards;
 
-  let activeFound = false;
-
   const activeCardData = formatted_cards[progress];
 
   const isEnd = length === progress;
@@ -61,14 +59,13 @@ const ContentContainer = ({ main, dimen, game }) => {
                 !isEnd &&
                 formatted_cards.map((card, i) => {
                   if (i === progress) {
-                    activeFound = true;
-
                     return <Card key={card._id} data={card} side={side} />;
-                  }
-                  if (activeFound) {
+                  } else if (i === progress - 1 && (i === progress - 1) >= 0) {
+                    return <Card key={card._id} data={card} position={'prev'} />;
+                  } else if (i === progress + 1 && (i === progress + 1) <= length - 1) {
                     return <Card key={card._id} data={card} position={'next'} />;
                   } else {
-                    return <Card key={card._id} data={card} position={'prev'} />;
+                    return false;
                   }
                 })}
               {!isEdit && length && isEnd && isSR ? (
