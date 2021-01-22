@@ -1,14 +1,8 @@
 const imageSearch = require('image-search-google');
-// const options = { page: 1 };
+const config = require('config');
 
-const cse_id = '***REMOVED***';
-const keyArr = [
-  '***REMOVED***',
-  '***REMOVED***',
-  '***REMOVED***',
-  '***REMOVED***',
-  '***REMOVED***',
-];
+const cse_id = config.get('cse_id');
+const keyArr = config.get('keyArr');
 
 let client_interface = {
   clientArr: [],
@@ -24,7 +18,6 @@ let client_interface = {
             size: 'medium',
           });
 
-          // throw new Error("Some error");
           return response;
         } catch (err) {
           if (!client.error) client.createError();
