@@ -68,9 +68,8 @@ router.get('/count', auth, async (req, res) => {
     });
 
     const notif = await notificationModel
-      .findOne({ user_id: user._id })
+      .findOne({ user_id: user._id, number: { $gt: 0 } })
       .sort({ time: 1 });
-    // ???
 
     const next_num = notif ? notif.number : 0;
     const next_date = notif ? notif.time : false;

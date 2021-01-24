@@ -16,7 +16,11 @@ const Card = ({ data, filter = false, filter_type = false }) => {
 
   const { term = '', defenition = '', imgurl = '', _id, moduleID, creation_date } = data;
 
-  const filterRegExp = new RegExp(`(${filter})(?![^<]*>|[^<>]*<\/)`, 'g');
+  const filterRegExp = new RegExp(
+    `${filter}(?!br>|r>|>|\/div>|div>|iv>|v>|nbsp;|bsp;|sp;|p;|;|\/span>|span>|pan>|an>|n>)`,
+    'g'
+  );
+
   const replacement = `<span class='bcc-yellow'>${filter}</span>`;
 
   let formatted_term, formatted_definition;
@@ -24,6 +28,8 @@ const Card = ({ data, filter = false, filter_type = false }) => {
   if (filter_type === 'term') formatted_term = term.replace(filterRegExp, replacement);
   if (filter_type === 'defenition')
     formatted_definition = defenition.replace(filterRegExp, replacement);
+
+  // console.log(filterRegExp);
 
   const isModule = router.pathname === '/module/[_id]';
 

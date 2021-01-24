@@ -36,7 +36,10 @@ router.get('/modules', auth, async (req, res) => {
     if (created === 'newest') sortObj.creation_date = -1;
     if (created === 'oldest') sortObj.creation_date = 1;
 
-    if (filter) filterObj.title = { $regex: filter };
+    if (filter)
+      filterObj.title = {
+        $regex: `${filter}(?!br>|r>|>|\/div>|div>|iv>|v>|nbsp;|bsp;|sp;|p;|;|\/span>|span>|pan>|an>|n>)`,
+      };
 
     const modules = await moduleModel
       .find(filterObj)
@@ -97,7 +100,10 @@ router.get('/cards', auth, async (req, res) => {
 
     const all_cards_number = await cardModel.countDocuments(filterObj);
 
-    if (filter) filterObj[by] = { $regex: filter };
+    if (filter)
+      filterObj[by] = {
+        $regex: `${filter}(?!br>|r>|>|\/div>|div>|iv>|v>|nbsp;|bsp;|sp;|p;|;|\/span>|span>|pan>|an>|n>)`,
+      };
 
     const cards = await cardModel
       .find(filterObj)
@@ -170,7 +176,10 @@ router.get('/module/cards', auth, async (req, res) => {
     if (created === 'newest') sortObj.creation_date = -1;
     if (created === 'oldest') sortObj.creation_date = 1;
 
-    if (filter) filterObj[by] = { $regex: filter };
+    if (filter)
+      filterObj[by] = {
+        $regex: `${filter}(?!br>|r>|>|\/div>|div>|iv>|v>|nbsp;|bsp;|sp;|p;|;|\/span>|span>|pan>|an>|n>)`,
+      };
 
     const cards = await cardModel.find(filterObj).sort(sortObj);
 
