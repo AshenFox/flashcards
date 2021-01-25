@@ -370,10 +370,10 @@
 
     & span {
       cursor: pointer;
-    }
 
-    &:hover {
-      color: $tertiary;
+      &:hover {
+        color: $tertiary;
+      }
     }
   }
 
