@@ -29,8 +29,6 @@ const Card = ({ data, filter = false, filter_type = false }) => {
   if (filter_type === 'defenition')
     formatted_definition = defenition.replace(filterRegExp, replacement);
 
-  // console.log(filterRegExp);
-
   const isModule = router.pathname === '/module/[_id]';
 
   return (

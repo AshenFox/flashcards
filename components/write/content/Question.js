@@ -61,8 +61,8 @@ const Question = ({ data, game, set_write_answer_field, check_write_answer }) =>
           />
         )}
         {term && (
-          <div className='game__question-dontknow' onClick={clickNotKnow}>
-            <span>Don't know</span>
+          <div className='game__question-dontknow'>
+            <span onClick={clickNotKnow}>Don't know</span>
           </div>
         )}
         <Img
