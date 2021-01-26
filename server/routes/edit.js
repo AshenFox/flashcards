@@ -264,7 +264,7 @@ router.get('/draft', auth, async (req, res) => {
     });
 
     if (module) {
-      cards = await cardModel.find({ moduleID: module._id }).sort({ creation_date: -1 });
+      cards = await cardModel.find({ moduleID: module._id }).sort({ creation_date: 1 });
     } else {
       // Create a new draft
       module = await moduleModel.create({
