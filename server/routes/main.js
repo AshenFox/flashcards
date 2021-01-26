@@ -145,7 +145,7 @@ router.get('/module', auth, async (req, res) => {
 
     if (module.draft) throw new Error('Can not get draft');
 
-    const cards = await cardModel.find({ moduleID: _id });
+    const cards = await cardModel.find({ moduleID: _id }).sort({ creation_date: 1 });
 
     res.status(200).json({ module, cards });
   } catch (err) {
@@ -172,9 +172,7 @@ router.get('/module/cards', auth, async (req, res) => {
 
     const filterObj = { moduleID: _id };
 
-    const sortObj = {};
-    if (created === 'newest') sortObj.creation_date = -1;
-    if (created === 'oldest') sortObj.creation_date = 1;
+    const sortObj = { creation_date: 1 };
 
     if (filter)
       filterObj[by] = {
