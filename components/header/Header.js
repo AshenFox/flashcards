@@ -116,11 +116,11 @@ const Header = ({
 
   let buttonsLeft = (
     <>
-      <Link href={user ? '/home/modules' : '/'}>
+      <a className='header__title-link' href={user ? '/home/modules' : '/'}>
         <h1 className={`header__title ${isGame ? 'hidden__media-tablet' : ''}`}>
           {header_width > 620 ? 'Flash Cards' : 'FC'}
         </h1>
-      </Link>
+      </a>
       {user && isGame && (
         <Link href={isSR ? '/home/sr' : `/module/${_id}`}>
           <div className='header__button header__button--back'>
