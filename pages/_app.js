@@ -6,22 +6,24 @@ import AuthWrapper from '../components/main/AuthWrapper';
 import PasteControl from '../components/main/PasteControl';
 import Voice from '../components/main/Voice';
 import RouterConfiguration from '../components/main/RouterConfiguration';
+import ScrollSizeController from '../components/main/ScrollSizeController';
+import Header from '../components/header/Header';
 
-function MyApp({ Component, pageProps }) {
-  return (
-    <>
-      <Head />
-      <Provider store={store}>
-        <AuthWrapper>
-          <Component {...pageProps} />
-        </AuthWrapper>
-        <Voice />
-        <RouterConfiguration />
-      </Provider>
-      <PasteControl />
-    </>
-  );
-}
+const MyApp = ({ Component, pageProps }) => (
+  <>
+    <Head />
+    <Provider store={store}>
+      <AuthWrapper>
+        <Header />
+        <Component {...pageProps} />
+      </AuthWrapper>
+      <ScrollSizeController />
+      <Voice />
+      <RouterConfiguration />
+    </Provider>
+    <PasteControl />
+  </>
+);
 
 export default MyApp;
 

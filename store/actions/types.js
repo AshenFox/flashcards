@@ -38,7 +38,9 @@ export const SET_DROPDOWN = 'SET_DROPDOWN';
 // dimen
 export const SET_HEADER_DIMEN = 'SET_HEADER_DIMEN';
 export const SET_SCROLL_HEIGHT = 'SET_SCROLL_HEIGHT';
+export const SET_SCROLL_WIDTH = 'SET_SCROLL_WIDTH';
 export const SET_GAME_CONTROLS_DIMEN = 'SET_GAME_CONTROLS_DIMEN';
+export const SET_IS_SCROLL = 'SET_IS_SCROLL';
 
 // edit
 export const SET_CARD_EDIT = 'SET_CARD_EDIT';

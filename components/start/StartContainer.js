@@ -13,22 +13,20 @@ const StartContainer = ({ dimen, main, change_modal, toggle_modal }) => {
 
   const startStyles = {
     minHeight: `${
-      !is_server
-        ? 0.1 + document.documentElement.clientHeight - header_height
-        : 0
+      !is_server ? 0.1 + document.documentElement.clientHeight - header_height : 0
     }px`,
   };
 
   return (
-    <div className='start'>
+    <main className='start'>
       <div className='start__content'>
         <div className='start__intro' style={startStyles}>
           <div className='start__welcome'>
             <h2>Welcome to</h2>
             <h1>Flash Cards</h1>
             <p>
-              Web application for memorizing information via spaced repetition
-              and interactive and engaging games.
+              Web application for memorizing information via spaced repetition and
+              interactive and engaging games.
             </p>
           </div>
           <button
@@ -39,7 +37,7 @@ const StartContainer = ({ dimen, main, change_modal, toggle_modal }) => {
           </button>
         </div>
       </div>
-    </div>
+    </main>
   );
 };
 

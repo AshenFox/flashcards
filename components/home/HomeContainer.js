@@ -15,6 +15,7 @@ import Navigation from './content/Navigation';
 import ListContainer from './content/ListContainer';
 import Search from './content/Search';
 import Push from '../main/Push';
+import ContentWrapper from '../main/ContentWrapper';
 
 const HomeContainer = ({
   auth,
@@ -102,32 +103,34 @@ const HomeContainer = ({
   };
 
   return (
-    <div className='home'>
-      <div className='container'>
-        <div className='home__content'>
-          <div className='home__content-header'>
-            <div className='home__user-info'>
-              <div className='home__nickname'>
-                <h1>{username ? username : <Skeleton width={250} />}</h1>
-              </div>
-              <Navigation />
-              <div className='home__all-items-number'>
-                {section === 'cards' &&
-                  `All cards: ${all_cards_number ? all_cards_number : '0'}`}
-                {section === 'modules' &&
-                  `All modules: ${all_modules_number ? all_modules_number : '0'}`}
+    <ContentWrapper>
+      <div className='home'>
+        <div className='container'>
+          <div className='home__content'>
+            <div className='home__content-header'>
+              <div className='home__user-info'>
+                <div className='home__nickname'>
+                  <h1>{username ? username : <Skeleton width={250} />}</h1>
+                </div>
+                <Navigation />
+                <div className='home__all-items-number'>
+                  {section === 'cards' &&
+                    `All cards: ${all_cards_number ? all_cards_number : '0'}`}
+                  {section === 'modules' &&
+                    `All modules: ${all_modules_number ? all_modules_number : '0'}`}
+                </div>
               </div>
             </div>
-          </div>
 
-          <div className='home__content-items-cont'>
-            {(section === 'cards' || section === 'modules') && <Search />}
-            <ListContainer />
+            <div className='home__content-items-cont'>
+              {(section === 'cards' || section === 'modules') && <Search />}
+              <ListContainer />
+            </div>
           </div>
         </div>
+        <Push />
       </div>
-      <Push />
-    </div>
+    </ContentWrapper>
   );
 };
 

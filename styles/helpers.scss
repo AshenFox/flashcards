@@ -29,6 +29,10 @@
   &.error {
     border-color: red;
   }
+
+  &[disabled] {
+    height: 4.6rem;
+  }
 }
 
 // =========== Labels
@@ -402,4 +406,10 @@
 
 .overflow-hid {
   overflow: hidden;
+}
+
+.scroll-size {
+  overflow: scroll;
+  height: 1px;
+  width: 200px;
 }

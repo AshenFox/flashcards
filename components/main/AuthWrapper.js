@@ -14,7 +14,7 @@ const AuthWrapper = ({ children, authenticate, set_is_server }) => {
 };
 
 AuthWrapper.propTypes = {
-  children: PropTypes.object.isRequired,
+  children: PropTypes.node.isRequired,
   authenticate: PropTypes.func.isRequired,
   set_is_server: PropTypes.func.isRequired,
 };
