@@ -48,6 +48,8 @@ const Answer = ({
 
   const copyAnswerInput = useRef(false);
 
+  const gameAnswer = useRef(false);
+
   if (isCorrect) {
     canContinue.current = true;
   } else {
@@ -99,6 +101,7 @@ const Answer = ({
   };
 
   useEffect(() => {
+    if (gameAnswer.current) gameAnswer.current.focus();
     if (copyAnswerInput.current) copyAnswerInput.current.focus();
     window.addEventListener('keydown', keyDownControl);
 
@@ -108,7 +111,7 @@ const Answer = ({
   }, []);
 
   return (
-    <div className='game__answer'>
+    <div className='game__answer' tabIndex={0} ref={gameAnswer}>
       {isSR && (
         <SRIndicator
           data={data}

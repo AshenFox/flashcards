@@ -4,6 +4,7 @@ import EditCard from './EditCard';
 import ScrollLoading from '../../home/content/ScrollLoading';
 import AddCard from './AddCard';
 import Save from './Save';
+import ContentWrapper from '../../main/ContentWrapper';
 
 const CardsContainer = ({ main }) => {
   const { cards, loading, module } = main;
@@ -11,7 +12,7 @@ const CardsContainer = ({ main }) => {
   const formatted_cards = Object.values(cards);
 
   return (
-    <>
+    <ContentWrapper>
       <div className='edit__cards'>
         <div className='container'>
           <div className='edit__cards-container'>
@@ -31,7 +32,7 @@ const CardsContainer = ({ main }) => {
         </div>
       </div>
       {!!formatted_cards.length && <Save />}
-    </>
+    </ContentWrapper>
   );
 };
 

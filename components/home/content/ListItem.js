@@ -5,7 +5,7 @@ const ListItem = ({ children }) => {
 };
 
 ListItem.propTypes = {
-  children: PropTypes.array.isRequired,
+  children: PropTypes.node.isRequired,
 };
 
 export default ListItem;

@@ -61,14 +61,14 @@ const ContentContainer = ({ dimen, main, game }) => {
   }
 
   return (
-    <div
+    <main
       className='game__content-container game__content-container--scrollable'
       style={writeStyles}
     >
       <div className='game__components game__components--scrollable'>
         {is_init && !loading ? components : <div className='game__loading-spinner' />}
       </div>
-    </div>
+    </main>
   );
 };
 

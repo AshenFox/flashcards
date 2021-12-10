@@ -8,6 +8,7 @@ import { log_out } from '../../store/actions/authActions';
 import { set_header_dimen } from '../../store/actions/dimenActions';
 import Link from 'next/link';
 import Dropdown from './content/Dropdown';
+import ContentWrapper from '../main/ContentWrapper';
 
 const Header = ({
   auth,
@@ -29,7 +30,7 @@ const Header = ({
   const { user, loading } = auth;
 
   const router = useRouter();
-  const { _id } = router.query;
+  const { _id, section } = router.query;
 
   const isSR = _id === 'sr';
 
@@ -138,13 +139,15 @@ const Header = ({
   return (
     <>
       <header className='header' ref={headerEl}>
-        <div className='container'>
-          <div className='header__content'>
-            <div className='header__buttons-left'>{buttonsLeft}</div>
+        <ContentWrapper tagType='section'>
+          <div className='container'>
+            <div className='header__content'>
+              <div className='header__buttons-left'>{buttonsLeft}</div>
 
-            <div className='header__buttons-right'>{!loading && buttonsRight}</div>
+              <div className='header__buttons-right'>{!loading && buttonsRight}</div>
+            </div>
           </div>
-        </div>
+        </ContentWrapper>
       </header>
       <Dropdown />
     </>

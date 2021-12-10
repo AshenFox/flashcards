@@ -39,7 +39,7 @@ const ContentContainer = ({ main, dimen, game }) => {
   const isEdit = length && length !== progress ? activeCardData.edit : false;
 
   return (
-    <div
+    <main
       className={`game__content-container game__content-container--${
         isEdit || (isSR && isEnd) ? '' : 'un'
       }scrollable`}
@@ -86,7 +86,7 @@ const ContentContainer = ({ main, dimen, game }) => {
           </>
         )}
       </div>
-    </div>
+    </main>
   );
 };
 
