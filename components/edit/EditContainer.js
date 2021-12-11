@@ -14,8 +14,10 @@ const EditContainer = ({ auth, get_module, get_draft, clear_module }) => {
   const { user } = auth;
 
   useEffect(() => {
-    if (user && _id === 'draft') clear_module();
-    if (user) _id === 'draft' ? get_draft() : get_module(_id);
+    if (user) {
+      clear_module();
+      _id === 'draft' ? get_draft() : get_module(_id);
+    }
   }, [user, _id]);
 
   useEffect(() => {
