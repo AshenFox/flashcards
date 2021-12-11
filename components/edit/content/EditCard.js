@@ -24,6 +24,9 @@ const EditCard = ({
   const { _id, term, defenition, gallery } = data;
 
   const handleCardChange = (type) => (e) => {
+    // console.log(e.target.value);
+    // const cleanText = sanitize(e.target.value, sanConfig);
+
     control_card(_id, type, e.target.value);
     clearTimeout(timer.current);
     timer.current = setTimeout(async () => {
