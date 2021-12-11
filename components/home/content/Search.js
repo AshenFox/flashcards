@@ -54,17 +54,10 @@ const Search = ({
   get_module_cards,
   get_cards,
 }) => {
-  const {
-    search_cards,
-    search_modules,
-    select_by,
-    select_created,
-    module,
-  } = main;
+  const { search_cards, search_modules, select_by, select_created, module } = main;
 
   const router = useRouter();
 
-  // console.log(router);
   const { pathname } = router;
   const { section } = router.query;
 
@@ -116,44 +109,24 @@ const Search = ({
   };
 
   const isModulePath = pathname === '/module/[_id]';
-  const isCards = section === 'cards'; // || isModulePath
+  const isCards = section === 'cards';
   const isModules = section === 'modules';
 
   return (
     <div className={isModulePath ? 'module__search' : 'home__search'}>
       <div
-        className={
-          isModulePath
-            ? 'module__search-container'
-            : 'home__search-container'
-        }
+        className={isModulePath ? 'module__search-container' : 'home__search-container'}
       >
         <input
           type='text'
           className='input pad5 fz17 height4r br-bottom2 bc-none brc-grey f-brc-yellow'
           placeholder={
-            isCards || isModulePath
-              ? 'Type to filter by ...'
-              : 'Type to filter...'
+            isCards || isModulePath ? 'Type to filter by ...' : 'Type to filter...'
           }
-          value={
-            isCards || isModulePath
-              ? search_cards.value
-              : search_modules.value
-          }
-          onChange={
-            isCards || isModulePath
-              ? changeSearchCards
-              : controlSearchModules
-          }
+          value={isCards || isModulePath ? search_cards.value : search_modules.value}
+          onChange={isCards || isModulePath ? changeSearchCards : controlSearchModules}
         />
-        <div
-          className={
-            isModulePath
-              ? 'module__select-group'
-              : 'home__select-group'
-          }
-        >
+        <div className={isModulePath ? 'module__select-group' : 'home__select-group'}>
           {(isModulePath || isCards) && (
             <Select
               className={

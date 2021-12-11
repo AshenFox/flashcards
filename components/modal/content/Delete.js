@@ -41,12 +41,6 @@ const Delete = ({ main, delete_module, toggle_modal }) => {
         </div>
 
         <div className='modal__choice-item'>
-          {/* <button
-            className='btn width100 bcc-coral pad15-30 brr15 fz175 white h-opacity09'
-            onClick={clickDelete}
-          >
-            Yes, delete set
-          </button> */}
           <LoadingButton
             active={true}
             loading={module_loading}
