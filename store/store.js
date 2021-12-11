@@ -7,9 +7,9 @@ const initialState = {};
 
 const middleware = [thunk];
 
-// const store = createStore(rootReducer, initialState, applyMiddleware(...middleware));
+const store = createStore(rootReducer, initialState, applyMiddleware(...middleware));
 
-const composeEnhancers = composeWithDevTools({
+/* const composeEnhancers = composeWithDevTools({
   trace: true,
   traceLimit: 25,
 });
@@ -18,6 +18,6 @@ const store = createStore(
   rootReducer,
   initialState,
   composeEnhancers(applyMiddleware(...middleware))
-);
+); */
 
 export default store;
