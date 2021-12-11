@@ -1,0 +1,5 @@
+{
+  "allowedTags": ["b", "i", "em", "strong", "a", "br", "div", "p", "span", "br"],
+  "allowedAttributes": {},
+  "allowedIframeHostnames": []
+}
