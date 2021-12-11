@@ -51,8 +51,6 @@ const send_notifications = async () => {
         title: "It's time to study some cards!",
       };
 
-      //   console.log(notif.number);
-
       if (notif.number) {
         payload.body = `You have ${notif.number} card${
           notif.number > 1 ? 's' : ''
@@ -109,19 +107,15 @@ const create_notifications = async (user) => {
       studyRegime: true,
     };
 
-    if (!(await cardModel.countDocuments(filterObj))) return; // false
+    if (!(await cardModel.countDocuments(filterObj))) return;
 
-    const cards = await cardModel.find(filterObj).sort({ nextRep: 1 }); // mongo sort???
-
-    // cards.sort((a, b) => a.nextRep.getTime() - b.nextRep.getTime());
+    const cards = await cardModel.find(filterObj).sort({ nextRep: 1 });
 
     const notifArr = [];
     let notif;
     let remindTime;
 
     for (let card of cards) {
-      //   console.log(card);
-
       if (card.nextRep.getTime() - Date.now() <= 0) {
         continue;
       }
@@ -166,20 +160,6 @@ const create_notifications = async (user) => {
             sr_stages[notif.stage - 2].prevStage - sr_stages[notif.stage - 2].nextRep;
         if (notif.stage === 1) stageDelay = 0;
 
-        /* console.log(
-          'card.nextRep.getTime()',
-          card.nextRep.getTime(),
-          'notif.calcTime.getTime()',
-          notif.calcTime.getTime()
-        );
-
-        console.log(
-          'card.nextRep.getTime() - notif.calcTime.getTime()',
-          card.nextRep.getTime() - notif.calcTime.getTime(),
-          'stageDelay',
-          stageDelay
-        ); */
-
         if (card.nextRep.getTime() - notif.calcTime.getTime() < stageDelay) {
           notif.cards.push(card);
           notif.number++;
@@ -214,9 +194,6 @@ const create_notifications = async (user) => {
     }
 
     await notificationModel.insertMany(notifArr);
-    /* for (let notif of notifArr) {
-        await notificationModel.create(notif);
-      } */
   } catch (err) {
     console.error(err.message);
   }

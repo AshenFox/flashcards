@@ -2,15 +2,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { set_voice_speaking } from '../../store/actions/voiceActions';
 
-const Speaker = ({
-  _id,
-  text,
-  type,
-  className,
-  refProp,
-  voice,
-  set_voice_speaking,
-}) => {
+const Speaker = ({ _id, text, type, className, refProp, voice, set_voice_speaking }) => {
   const { voices, working, speaking } = voice;
 
   const clickSpeaker = () => {
@@ -82,8 +74,7 @@ const Speaker = ({
 
   let speakerSpeaking = false;
 
-  if (speaking)
-    speakerSpeaking = speaking._id === _id && speaking.type === type;
+  if (speaking) speakerSpeaking = speaking._id === _id && speaking.type === type;
 
   return (
     <div
@@ -99,8 +90,6 @@ const Speaker = ({
     </div>
   );
 };
-
-// game__speaker-flashcards
 
 Speaker.propTypes = {
   _id: PropTypes.string.isRequired,

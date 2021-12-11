@@ -26,7 +26,6 @@ const Progress = ({ main, game }) => {
         <div className='game__progress-count'>
           <span>{progress}</span>
           <span>{`/${cards_arr.length}`}</span>
-          {/* ${this.number} */}
         </div>
       </div>
     </div>

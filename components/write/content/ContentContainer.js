@@ -33,8 +33,6 @@ const ContentContainer = ({ dimen, main, game }) => {
     !answered.filter((item) => item.answer === 'incorrect').length &&
     is_init;
 
-  // console.log(isRoundFinished, isGameFinished);
-
   let components = false;
 
   if (isGameFinished) {

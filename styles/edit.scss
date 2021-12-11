@@ -1,6 +1,4 @@
 .edit {
-  // min-height: 90vh;
-
   &__intro {
     padding: 2rem 0;
     background-color: $white;
@@ -382,7 +380,7 @@
       }
     }
   }
-  //  data-loading="true"
+
   &__img-search-container {
     border-top: 2px solid $grey-light;
     overflow: hidden;
