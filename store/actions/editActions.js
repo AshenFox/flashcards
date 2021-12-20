@@ -268,7 +268,7 @@ export const control_card = (_id, type, value) => ({
   payload: {
     _id,
     type,
-    value: cleanText,
+    value,
   },
 });
 
