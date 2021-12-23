@@ -6,14 +6,7 @@ import {
 } from '../../../store/actions/editActions';
 import PropTypes from 'prop-types';
 
-const GalleryItem = ({
-  _id,
-  index,
-  data,
-  set_url_ok,
-  set_card_imgurl,
-  edit_card,
-}) => {
+const GalleryItem = ({ _id, index, data, set_url_ok, set_card_imgurl, edit_card }) => {
   const { url, ok } = data;
 
   const error = () => set_url_ok(_id, index, false);

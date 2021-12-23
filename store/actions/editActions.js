@@ -298,27 +298,48 @@ export const search_images = (_id) => async (dispatch, getState) => {
 
     const query = cards[_id].gallery.query;
 
-    if (!query) throw new Error('Query can not be empty.');
+    if (!query) return console.error('Query can not be empty.');
+
+    const regexpURL = /^@url - /;
+
+    const isURL = regexpURL.test(query);
 
     dispatch(set_gallery_loading(_id, true));
 
-    let { data } = await axios.get('/api/imgsearch', {
-      params: {
-        query,
-      },
-    });
+    if (isURL) {
+      const url = query.replace(regexpURL, '');
 
-    const all = data.length;
-    const imgurl_obj = arr_to_obj(data);
+      if (!url) return console.error('Query can not be empty.');
 
-    dispatch({
-      type: SEARCH_IMGAGES,
-      payload: {
-        _id,
-        imgurl_obj,
-        all,
-      },
-    });
+      // console.log(queryURL);
+
+      dispatch({
+        type: SEARCH_IMGAGES,
+        payload: {
+          _id,
+          imgurl_obj: arr_to_obj([{ url }]),
+          all: 1,
+        },
+      });
+    } else {
+      let { data } = await axios.get('/api/imgsearch', {
+        params: {
+          query,
+        },
+      });
+
+      const all = data.length;
+      const imgurl_obj = arr_to_obj(data);
+
+      dispatch({
+        type: SEARCH_IMGAGES,
+        payload: {
+          _id,
+          imgurl_obj,
+          all,
+        },
+      });
+    }
 
     dispatch(set_gallery_loading(_id, false));
   } catch (err) {
