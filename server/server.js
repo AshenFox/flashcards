@@ -4,39 +4,49 @@ const express = require('express');
 const connectDB = require('../config/db');
 const next = require('next');
 const config = require('config');
+const https = require('https');
+const fs = require('fs');
 
 const webpush = require('web-push');
 
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 4000;
 const dev = process.env.NODE_ENV !== 'production';
+
+const credentials = {};
+
+if (dev) {
+  credentials.key = fs.readFileSync('.cert/key.pem', 'utf8');
+  credentials.cert = fs.readFileSync('.cert/cert.pem', 'utf8');
+  credentials.passphrase = 'cats';
+}
 
 // Connect database
 connectDB();
 
 // Tune next.js
-const app = next({ dev });
+const nextApp = next({ dev });
 
-const handle = app.getRequestHandler();
+const handle = nextApp.getRequestHandler();
 
 // Tune server
-const server = express();
+const expressServer = express();
 
-server.use(express.json({ extended: false }));
+expressServer.use(express.json({ extended: false }));
 
 // ----------
 // ----------
 // ----------
 
 // Define routes
-server.use('/api/auth', require('./routes/auth'));
-server.use('/api/main', require('./routes/main'));
-server.use('/api/imgsearch', require('./routes/img_search'));
-server.use('/api/scrape', require('./routes/scrape'));
-server.use('/api/edit', require('./routes/edit'));
-server.use('/api/sr', require('./routes/sr'));
-server.use('/api/notifications', require('./routes/notifications'));
+expressServer.use('/api/auth', require('./routes/auth'));
+expressServer.use('/api/main', require('./routes/main'));
+expressServer.use('/api/imgsearch', require('./routes/img_search'));
+expressServer.use('/api/scrape', require('./routes/scrape'));
+expressServer.use('/api/edit', require('./routes/edit'));
+expressServer.use('/api/sr', require('./routes/sr'));
+expressServer.use('/api/notifications', require('./routes/notifications'));
 
-server.all('*', (req, res) => {
+expressServer.all('*', (req, res) => {
   return handle(req, res);
 });
 
@@ -65,11 +75,15 @@ let pushInterval = setInterval(async () => {
 const start = async () => {
   try {
     // Prepare next.js
-    await app.prepare();
+    await nextApp.prepare();
     console.log(`Next.js is ready`);
     // Start server
-    await server.listen(port);
-    console.log(`Server is ready on http://localhost:${port}`);
+    if (dev) {
+      await https.createServer(credentials, expressServer).listen(port);
+    } else {
+      await expressServer.listen(port);
+    }
+    console.log(`Server is ready on https://localhost:${port}`);
   } catch (err) {
     console.error(err.message);
     process.exit(1);

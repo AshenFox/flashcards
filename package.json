@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "nodemon server/server.js",
+    "devs": "set HTTPS=true&&set SSL_CRT_FILE=./.cert/cert.pem&&set SSL_KEY_FILE=./.cert/key.pem&npm run dev",
     "build": "next build",
     "start": "node server/server.js",
     "heroku-postbuild": "npm run build"

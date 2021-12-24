@@ -54,12 +54,12 @@ const Gallery = ({
     }
   };
 
-  const up = (e) => {
-    e.preventDefault();
+  const onTouchEnd = (e) => {
+    // e.preventDefault();
     clearTimeout(timer.current);
   };
 
-  const down = (e) => {
+  const onTouchStart = (e) => {
     timer.current = setTimeout(() => {
       timer.current = false;
       addUrlFlag();
@@ -88,10 +88,9 @@ const Gallery = ({
                 onChange={changeImgSearchbar}
                 onKeyDown={keyDownImgSearchbar}
                 value={query}
-                onMouseDown={down}
-                onMouseUp={up}
-                onTouchStart={down}
-                onTouchEnd={up}
+                onTouchStart={onTouchStart}
+                onTouchEnd={onTouchEnd}
+                onBlur={onTouchEnd}
               />
               <div
                 className='edit__searchbar-icon'
