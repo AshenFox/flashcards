@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import {
@@ -23,8 +23,6 @@ const Gallery = ({
 
   const [uPressed, setUPressed] = useState(false);
   const [altPressed, setAltPressed] = useState(false);
-
-  const timer = useRef(false);
 
   const addUrlFlag = () => control_gallery_query(_id, '@url - ' + query);
 
@@ -54,18 +52,6 @@ const Gallery = ({
     }
   };
 
-  const onTouchEnd = (e) => {
-    // e.preventDefault();
-    clearTimeout(timer.current);
-  };
-
-  const onTouchStart = (e) => {
-    timer.current = setTimeout(() => {
-      timer.current = false;
-      addUrlFlag();
-    }, 550);
-  };
-
   const clickImgSearchbar = (e) => {
     reset_gallery_fields(_id);
     search_images(_id);
@@ -88,9 +74,6 @@ const Gallery = ({
                 onChange={changeImgSearchbar}
                 onKeyDown={keyDownImgSearchbar}
                 value={query}
-                onTouchStart={onTouchStart}
-                onTouchEnd={onTouchEnd}
-                onBlur={onTouchEnd}
               />
               <div
                 className='edit__searchbar-icon'
