@@ -307,7 +307,7 @@ export const search_images = (_id) => async (dispatch, getState) => {
     dispatch(set_gallery_loading(_id, true));
 
     if (isURL) {
-      const url = query.replace(regexpURL, '');
+      const url = query.replace(regexpURL, '').trim();
 
       if (!url) return console.error('Query can not be empty.');
 

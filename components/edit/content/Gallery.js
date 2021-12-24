@@ -1,3 +1,4 @@
+import { useState, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import {
@@ -20,14 +21,49 @@ const Gallery = ({
   const { _id, gallery } = data;
   const { loading, query, error } = gallery;
 
+  const [uPressed, setUPressed] = useState(false);
+  const [altPressed, setAltPressed] = useState(false);
+
+  const timer = useRef(false);
+
+  const addUrlFlag = () => control_gallery_query(_id, '@url - ' + query);
+
+  useEffect(() => {
+    if (uPressed && altPressed) addUrlFlag();
+  }, [uPressed, altPressed]);
+
   const changeImgSearchbar = (e) => control_gallery_query(_id, e.target.value);
 
   const keyDownImgSearchbar = (e) => {
-    if (e.key === 'Enter') {
+    const key = e.key;
+
+    if (key === 'u') {
+      setUPressed(true);
+      setTimeout(() => setUPressed(false), 250);
+    }
+
+    if (key === 'Alt') {
+      setAltPressed(true);
+      setTimeout(() => setAltPressed(false), 250);
+    }
+
+    if (key === 'Enter') {
       e.preventDefault();
       reset_gallery_fields(_id);
       search_images(_id);
     }
+  };
+
+  const up = (e) => {
+    e.preventDefault();
+    clearTimeout(timer.current);
+  };
+
+  const down = (e) => {
+    timer.current = setTimeout(() => {
+      timer.current = false;
+      addUrlFlag();
+    }, 550);
   };
 
   const clickImgSearchbar = (e) => {
@@ -52,6 +88,10 @@ const Gallery = ({
                 onChange={changeImgSearchbar}
                 onKeyDown={keyDownImgSearchbar}
                 value={query}
+                onMouseDown={down}
+                onMouseUp={up}
+                onTouchStart={down}
+                onTouchEnd={up}
               />
               <div
                 className='edit__searchbar-icon'
