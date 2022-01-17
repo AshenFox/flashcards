@@ -7,17 +7,19 @@ const initialState = {};
 
 const middleware = [thunk];
 
-const store = createStore(rootReducer, initialState, applyMiddleware(...middleware));
+const isDev = process.env.NODE_ENV === 'development'; // from create-react-app
 
-/* const composeEnhancers = composeWithDevTools({
-  trace: true,
-  traceLimit: 25,
-});
+console.log(isDev, process.env, process.env.NODE_ENV);
 
-const store = createStore(
-  rootReducer,
-  initialState,
-  composeEnhancers(applyMiddleware(...middleware))
-); */
+const store = isDev
+  ? createStore(
+      rootReducer,
+      initialState,
+      composeWithDevTools({
+        trace: true,
+        traceLimit: 25,
+      })(applyMiddleware(...middleware))
+    )
+  : createStore(rootReducer, initialState, applyMiddleware(...middleware));
 
 export default store;
