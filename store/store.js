@@ -9,8 +9,6 @@ const middleware = [thunk];
 
 const isDev = process.env.NODE_ENV === 'development'; // from create-react-app
 
-console.log(isDev, process.env, process.env.NODE_ENV);
-
 const store = isDev
   ? createStore(
       rootReducer,
