@@ -1,5 +1,6 @@
 import { SHUFFLE_FLASHCARDS, SORT_FLASHCARDS } from '../../../actions/types';
 import initialState from '../mainInitState';
+import { shuffle } from '../../helper-fucntions';
 
 const subFlashcardsReducer = (state, action) => {
   const { payload, type } = action;
@@ -8,7 +9,9 @@ const subFlashcardsReducer = (state, action) => {
     case SHUFFLE_FLASHCARDS:
       return {
         ...state,
-        cards: Object.fromEntries(shuffle(Object.entries(state.cards))),
+        cards: Object.fromEntries(
+          shuffle(Object.entries(state.cards)).sort((a, b) => a[1].stage - b[1].stage)
+        ),
       };
 
     case SORT_FLASHCARDS:
@@ -26,16 +29,3 @@ const subFlashcardsReducer = (state, action) => {
 };
 
 export default subFlashcardsReducer;
-
-// ==============================
-// ==============================
-// ==============================
-
-const shuffle = (array) => {
-  for (let i = array.length - 1; i > 0; i--) {
-    let j = Math.floor(Math.random() * (i + 1));
-    [array[i], array[j]] = [array[j], array[i]];
-  }
-
-  return array;
-};

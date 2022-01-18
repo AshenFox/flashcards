@@ -8,6 +8,7 @@ import {
   PUT_SR_ANSWER,
 } from '../../../actions/types';
 import initialState from '../mainInitState';
+import { shuffle } from '../../helper-fucntions';
 
 const subSrReducer = (state, action) => {
   const { payload, type } = action;
@@ -101,7 +102,9 @@ const subSrReducer = (state, action) => {
     case GET_SR_CARDS:
       return {
         ...state,
-        cards: Object.fromEntries(shuffle(Object.entries(payload.cards))),
+        cards: Object.fromEntries(
+          shuffle(Object.entries(payload.cards)).sort((a, b) => a[1].stage - b[1].stage)
+        ),
       };
     default:
       return false;
@@ -109,16 +112,3 @@ const subSrReducer = (state, action) => {
 };
 
 export default subSrReducer;
-
-// ==============================
-// ==============================
-// ==============================
-
-const shuffle = (array) => {
-  for (let i = array.length - 1; i > 0; i--) {
-    let j = Math.floor(Math.random() * (i + 1));
-    [array[i], array[j]] = [array[j], array[i]];
-  }
-
-  return array;
-};

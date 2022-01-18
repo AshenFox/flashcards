@@ -47,7 +47,11 @@ export const prepare_write = () => async (dispatch, getState) => {
   } = getState();
   dispatch(set_write_is_init(false));
 
-  const remaining = Object.keys(cards).map((id) => ({ id, ...card_fields }));
+  const remaining = Object.values(cards).map(({ _id, stage }) => ({
+    id: _id,
+    stage,
+    ...card_fields,
+  }));
 
   dispatch({
     type: RESET_ALL_GAME_FIELDS,
