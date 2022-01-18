@@ -15,6 +15,7 @@ import {
   RESET_ALL_GAME_FIELDS,
 } from '../../actions/types';
 import initialState from './gameInitState';
+import { shuffle } from '../helper-fucntions';
 
 const GameReducer = (state = initialState, action) => {
   const { payload, type } = action;
@@ -33,7 +34,7 @@ const GameReducer = (state = initialState, action) => {
         write: {
           ...state.write,
           all_cards_num: payload.remaining.length,
-          remaining: shuffle(payload.remaining),
+          remaining: shuffle(payload.remaining).sort((a, b) => b.stage - a.stage),
         },
       };
 
@@ -124,7 +125,7 @@ const GameReducer = (state = initialState, action) => {
             state.write.answered
               .filter((item) => item.answer === 'incorrect')
               .map((item) => ({ ...item, answer: false }))
-          ),
+          ).sort((a, b) => b.stage - a.stage),
           answered: [],
           rounds: [...state.write.rounds, [...state.write.answered]],
         },
@@ -190,16 +191,3 @@ const GameReducer = (state = initialState, action) => {
 };
 
 export default GameReducer;
-
-// ==============================
-// ==============================
-// ==============================
-
-const shuffle = (array) => {
-  for (let i = array.length - 1; i > 0; i--) {
-    let j = Math.floor(Math.random() * (i + 1));
-    [array[i], array[j]] = [array[j], array[i]];
-  }
-
-  return array;
-};
