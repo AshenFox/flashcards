@@ -22,6 +22,11 @@ const Question = ({ data, game, set_write_answer_field, check_write_answer }) =>
     write: { answer },
   } = game;
 
+  const hidTranscrDefenition = defenition.replaceAll(
+    /\( \/(.*?)\/ \)/g,
+    (x, match) => `( /<span class="game__definition-hidden">${match}</span>/ )`
+  );
+
   const changeAnswer = (e) => set_write_answer_field(e.target.value);
 
   const keyDownAnswer = (e) => {
@@ -71,7 +76,7 @@ const Question = ({ data, game, set_write_answer_field, check_write_answer }) =>
           url={imgurl}
         />
         <ContentEditable
-          html={defenition}
+          html={hidTranscrDefenition}
           disabled={true}
           className='game__question-definition'
         />

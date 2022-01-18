@@ -22,6 +22,11 @@ const Card = ({
 
   const { _id, term, defenition, imgurl } = data;
 
+  const hidTranscrDefenition = defenition.replaceAll(
+    /\( \/(.*?)\/ \)/g,
+    (x, match) => `( /<span class="game__definition-hidden">${match}</span>/ )`
+  );
+
   const frontClassName = `game__card-front ${position ? `transparent ${position}` : ''} ${
     side === 'definition' ? '' : 'rearside'
   }`;
@@ -33,6 +38,7 @@ const Card = ({
     if (e.target.closest('.game__speaker-flashcards')) return;
     if (e.target.closest('.game__edit')) return;
     if (e.target.closest('.sr-indicator')) return;
+    if (e.target.closest('.game__definition-hidden')) return;
 
     set_flashcards_side(value);
   };
@@ -52,7 +58,7 @@ const Card = ({
         {defenition && (
           <div className={`game__definition-container ${imgurl ? '' : 'full'}`}>
             <ContentEditable
-              html={defenition}
+              html={hidTranscrDefenition}
               disabled={true}
               className='game__definition'
             />

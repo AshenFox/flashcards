@@ -937,6 +937,18 @@
     }
   }
 
+  &__definition-hidden {
+    transition: all 0.2s;
+    background-color: $grey-medium;
+    color: $grey-medium;
+    user-select: none;
+
+    &:hover {
+      background-color: inherit;
+      color: inherit;
+    }
+  }
+
   &__edit {
     cursor: pointer;
     position: absolute;
