@@ -1,6 +1,6 @@
 import { SHUFFLE_FLASHCARDS, SORT_FLASHCARDS } from '../../../actions/types';
 import initialState from '../mainInitState';
-import { shuffle } from '../../helper-fucntions';
+import { shuffle } from '../../../helper-functions';
 
 const subFlashcardsReducer = (state, action) => {
   const { payload, type } = action;

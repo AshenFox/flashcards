@@ -8,6 +8,7 @@ import Voice from '../components/main/Voice';
 import RouterConfiguration from '../components/main/RouterConfiguration';
 import ScrollSizeController from '../components/main/ScrollSizeController';
 import Header from '../components/header/Header';
+import TabUpdateController from '../components/main/TabUpdateController';
 
 const MyApp = ({ Component, pageProps }) => (
   <>
@@ -15,8 +16,10 @@ const MyApp = ({ Component, pageProps }) => (
     <Provider store={store}>
       <AuthWrapper>
         <Header />
+
         <Component {...pageProps} />
       </AuthWrapper>
+      <TabUpdateController />
       <ScrollSizeController />
       <Voice />
       <RouterConfiguration />
