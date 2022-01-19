@@ -15,7 +15,7 @@ import {
   RESET_ALL_GAME_FIELDS,
 } from '../../actions/types';
 import initialState from './gameInitState';
-import { shuffle } from '../helper-fucntions';
+import { shuffle } from '../../helper-functions';
 
 const GameReducer = (state = initialState, action) => {
   const { payload, type } = action;

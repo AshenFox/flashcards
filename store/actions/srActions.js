@@ -13,6 +13,7 @@ import {
 } from './types';
 import axios from '../../server/supplemental/axios';
 import { card_fields } from '../reducers/main/mainInitState';
+import { saveLastUpdate } from '../helper-functions';
 
 // SET_SR_COUNTER
 export const set_sr_counter = (additionNumber, value) => (dispatch, getState) => {
@@ -73,6 +74,8 @@ export const put_sr_answer = (_id, answer) => async (dispatch, getState) => {
       type: PUT_SR_ANSWER,
       payload: { _id, ...data },
     });
+
+    saveLastUpdate();
   } catch (err) {
     console.error(err);
   }
@@ -139,6 +142,8 @@ export const set_cards_sr_positive = (_id) => async (dispatch, getState) => {
         _id_arr,
       },
     });
+
+    saveLastUpdate();
   } catch (err) {
     console.error(err);
   }
@@ -164,6 +169,8 @@ export const set_cards_sr = (value) => async (dispatch, getState) => {
         value,
       },
     });
+
+    saveLastUpdate();
   } catch (err) {
     console.error(err);
   }
@@ -184,6 +191,8 @@ export const set_card_sr = (_id, value) => async (dispatch, getState) => {
         value,
       },
     });
+
+    saveLastUpdate();
   } catch (err) {
     console.error(err);
   }
@@ -208,6 +217,8 @@ export const drop_cards_sr = () => async (dispatch, getState) => {
         ...data,
       },
     });
+
+    saveLastUpdate();
   } catch (err) {
     console.error(err);
   }
@@ -227,6 +238,8 @@ export const drop_card_sr = (_id) => async (dispatch, getState) => {
         ...data,
       },
     });
+
+    saveLastUpdate();
   } catch (err) {
     console.error(err);
   }

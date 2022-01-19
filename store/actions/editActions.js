@@ -30,6 +30,7 @@ import {
 import { url_fields } from '../reducers/main/mainInitState';
 import { card_fields } from '../reducers/main/mainInitState';
 import axios from '../../server/supplemental/axios';
+import { saveLastUpdate } from '../helper-functions';
 
 // SET_CARDS_SAVE_POSITIVE
 export const set_cards_save_positive = (_id) => async (dispatch, getState) => {
@@ -146,6 +147,8 @@ export const scrape_dictionary = (_id, value) => async (dispatch, getState) => {
         result,
       },
     });
+
+    saveLastUpdate();
   } catch (err) {
     console.error(err);
   }
@@ -350,18 +353,6 @@ export const search_images = (_id) => async (dispatch, getState) => {
   dispatch(set_gallery_loading(_id, false));
 };
 
-const arr_to_obj = (arr) => {
-  return Object.fromEntries(
-    arr.map((url, i) => [
-      i,
-      {
-        ...url,
-        ...url_fields,
-      },
-    ])
-  );
-};
-
 // DELETE_MODULE
 
 export const delete_module = (_id) => async (dispatch, getState) => {
@@ -384,6 +375,8 @@ export const delete_module = (_id) => async (dispatch, getState) => {
     console.log(data);
 
     dispatch({ type: DELETE_MODULE });
+
+    saveLastUpdate();
     window.location.replace(`/home/modules`);
   } catch (err) {
     console.error(err);
@@ -414,6 +407,8 @@ export const delete_card = (_id) => async (dispatch, getState) => {
         _id,
       },
     });
+
+    saveLastUpdate();
   } catch (err) {
     console.error(err);
   }
@@ -433,6 +428,8 @@ export const edit_module = () => async (dispatch, getState) => {
     console.log(data);
 
     dispatch({ type: EDIT_MODULE });
+
+    saveLastUpdate();
   } catch (err) {
     console.error(err);
   }
@@ -452,6 +449,8 @@ export const edit_card = (_id) => async (dispatch, getState) => {
     console.log(data);
 
     dispatch({ type: EDIT_CARD });
+
+    saveLastUpdate();
   } catch (err) {
     console.error(err);
   }
@@ -488,6 +487,8 @@ export const create_module = () => async (dispatch, getState) => {
     console.log(data);
 
     dispatch({ type: CREATE_MODULE });
+
+    saveLastUpdate();
   } catch (err) {
     console.error(err);
   }
@@ -525,6 +526,8 @@ export const create_card = () => async (dispatch, getState) => {
       document.documentElement.clientHeight
     );
 
+    saveLastUpdate();
+
     window.scrollTo(0, scrollHeight);
   } catch (err) {
     console.error(err);
@@ -536,6 +539,18 @@ export const create_card = () => async (dispatch, getState) => {
 // ======== Suplemental ========
 // =============================
 // =============================
+
+const arr_to_obj = (arr) => {
+  return Object.fromEntries(
+    arr.map((url, i) => [
+      i,
+      {
+        ...url,
+        ...url_fields,
+      },
+    ])
+  );
+};
 
 const format_dictionary_result = (result, type) => {
   let devider = '<br><div>-------</div><br>';
