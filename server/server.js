@@ -12,8 +12,6 @@ const webpush = require('web-push');
 const port = process.env.PORT || 4000;
 const dev = process.env.NODE_ENV !== 'production';
 
-console.log(process.env.NODE_ENV);
-
 const credentials = {};
 
 if (dev) {
