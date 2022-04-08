@@ -3,7 +3,11 @@ import Modal from '../../components/modal/Modal';
 import ModuleContainer from '../../components/module/ModuleContainer';
 import ScrollTop from '../../components/main/ScrollTop';
 
-export default function Module() {
+interface OwnProps {}
+
+type Props = OwnProps;
+
+const Module: React.FC<Props> = () => {
   return (
     <>
       <ModuleContainer />
@@ -12,4 +16,6 @@ export default function Module() {
       <Modal />
     </>
   );
-}
+};
+
+export default Module;

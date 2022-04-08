@@ -1,11 +1,17 @@
 import Spinner from '../../components/main/Spinner';
 import WriteContainer from '../../components/write/WriteContainer';
 
-export default function Write() {
+interface OwnProps {}
+
+type Props = OwnProps;
+
+const Write: React.FC<Props> = () => {
   return (
     <>
       <WriteContainer />
       <Spinner />
     </>
   );
-}
+};
+
+export default Write;

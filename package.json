@@ -3,10 +3,13 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "nodemon server/server.js",
+    "_dev": "nodemon server/server.js",
+    "dev": "nodemon server/server.ts",
     "build": "next build",
-    "start": "node server/server.js",
-    "heroku-postbuild": "npm run build"
+    "_start": "node server/server.js",
+    "start": "node .server/server.js",
+    "heroku-postbuild": "npm run build",
+    "build:server": "tsc --p ./server/tsconfig.server.json"
   },
   "dependencies": {
     "@types/bcryptjs": "^2.4.2",
@@ -48,6 +51,7 @@
   "devDependencies": {
     "nodemon": "^2.0.6",
     "sass": "^1.29.0",
+    "ts-node": "^10.7.0",
     "typescript": "^4.6.3"
   }
 }

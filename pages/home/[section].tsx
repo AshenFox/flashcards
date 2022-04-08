@@ -2,7 +2,11 @@ import Spinner from '../../components/main/Spinner';
 import HomeContainer from '../../components/home/HomeContainer';
 import ScrollTop from '../../components/main/ScrollTop';
 
-export default function Home() {
+interface OwnProps {}
+
+type Props = OwnProps;
+
+const Home: React.FC<Props> = () => {
   return (
     <>
       <HomeContainer />
@@ -10,4 +14,6 @@ export default function Home() {
       <ScrollTop />
     </>
   );
-}
+};
+
+export default Home;

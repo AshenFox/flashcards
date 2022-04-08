@@ -2,7 +2,11 @@ import Spinner from '../../components/main/Spinner';
 import EditContainer from '../../components/edit/EditContainer';
 import ScrollTop from '../../components/main/ScrollTop';
 
-export default function Edit() {
+interface OwnProps {}
+
+type Props = OwnProps;
+
+const Edit: React.FC<Props> = () => {
   return (
     <>
       <EditContainer />
@@ -10,4 +14,6 @@ export default function Edit() {
       <ScrollTop />
     </>
   );
-}
+};
+
+export default Edit;
