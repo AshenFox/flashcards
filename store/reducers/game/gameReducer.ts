@@ -13,7 +13,7 @@ import {
   OVERRIDE_WRITE_ANSWER,
   NEXT_WRITE_ROUND,
   RESET_ALL_GAME_FIELDS,
-} from '../../actions/types';
+} from '../../types/types';
 import initialState from './gameInitState';
 import { shuffle } from '../../helper-functions';
 

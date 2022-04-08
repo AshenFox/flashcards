@@ -6,7 +6,7 @@ import {
   SET_CARDS_SR_POSITIVE,
   GET_SR_CARDS,
   PUT_SR_ANSWER,
-} from '../../../actions/types';
+} from '../../../types/types';
 import initialState from '../mainInitState';
 import { shuffle } from '../../../helper-functions';
 

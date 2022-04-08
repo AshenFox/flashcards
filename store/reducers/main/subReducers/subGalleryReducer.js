@@ -8,7 +8,7 @@ import {
   SET_GALLERY_ERROR,
   SET_URL_OK,
   SEARCH_IMGAGES,
-} from '../../../actions/types';
+} from '../../../types/types';
 import initialState from '../mainInitState';
 
 const subGalleryReducer = (state, action) => {

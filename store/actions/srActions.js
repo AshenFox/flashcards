@@ -10,7 +10,7 @@ import {
   SET_SR_COUNTER,
   PUT_SR_ANSWER,
   SET_SR_LOADING,
-} from './types';
+} from '../types/types';
 import axios from '../../server/supplemental/axios';
 import { card_fields } from '../reducers/main/mainInitState';
 import { saveLastUpdate } from '../helper-functions';

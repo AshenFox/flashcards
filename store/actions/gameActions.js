@@ -15,7 +15,7 @@ import {
   OVERRIDE_WRITE_ANSWER,
   NEXT_WRITE_ROUND,
   RESET_ALL_GAME_FIELDS,
-} from './types';
+} from '../types/types';
 import { card_fields } from '../reducers/game/gameInitState';
 
 // SAVE_FLASHCARDS_ANSWER

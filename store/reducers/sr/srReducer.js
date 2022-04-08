@@ -1,4 +1,4 @@
-import { GET_SR_COUNT, SET_SR_LOADING, SET_SR_COUNTER } from '../../actions/types';
+import { GET_SR_COUNT, SET_SR_LOADING, SET_SR_COUNTER } from '../../types/types';
 import initialState from './srInitState';
 
 const SrReducer = (state = initialState, action) => {
