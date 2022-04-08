@@ -1,18 +1,32 @@
-// server.js
-// const path = require('path');
-const express = require('express');
-const connectDB = require('../config/db');
-const next = require('next');
-const config = require('config');
-const https = require('https');
-const fs = require('fs');
+// dependencies
+import express from 'express';
+import connectDB from '../config/db';
+import next from 'next';
+import config from 'config';
+import https from 'https';
+import fs from 'fs';
+
+// import routes
+import auth from './routes/auth.js';
+import main from './routes/main.js';
+import img_search from './routes/img_search.js';
+import scrape from './routes/scrape.js';
+import edit from './routes/edit.js';
+import sr from './routes/sr.js';
+import notifications from './routes/notifications.js';
 
 const webpush = require('web-push');
 
 const port = process.env.PORT || 4000;
 const dev = process.env.NODE_ENV !== 'production';
 
-const credentials = {};
+interface Credentials {
+  key?: string;
+  cert?: string;
+  passphrase?: string;
+}
+
+const credentials: Credentials = {};
 
 if (dev) {
   credentials.key = fs.readFileSync('.cert/key.pem', 'utf8');
@@ -31,20 +45,22 @@ const handle = nextApp.getRequestHandler();
 // Tune server
 const expressServer = express();
 
-expressServer.use(express.json({ extended: false }));
+// expressServer.use(express.json({ extended: false }));
+expressServer.use(express.urlencoded({ extended: false }));
+expressServer.use(express.json());
 
 // ----------
 // ----------
 // ----------
 
 // Define routes
-expressServer.use('/api/auth', require('./routes/auth'));
-expressServer.use('/api/main', require('./routes/main'));
-expressServer.use('/api/imgsearch', require('./routes/img_search'));
-expressServer.use('/api/scrape', require('./routes/scrape'));
-expressServer.use('/api/edit', require('./routes/edit'));
-expressServer.use('/api/sr', require('./routes/sr'));
-expressServer.use('/api/notifications', require('./routes/notifications'));
+expressServer.use('/api/auth', auth);
+expressServer.use('/api/main', main);
+expressServer.use('/api/imgsearch', img_search);
+expressServer.use('/api/scrape', scrape);
+expressServer.use('/api/edit', edit);
+expressServer.use('/api/sr', sr);
+expressServer.use('/api/notifications', notifications);
 
 expressServer.all('*', (req, res) => {
   return handle(req, res);
@@ -85,7 +101,7 @@ const start = async () => {
     }
     console.log(`Server is ready on https://localhost:${port}`);
   } catch (err) {
-    console.error(err.message);
+    console.error(err);
     process.exit(1);
   }
 };
