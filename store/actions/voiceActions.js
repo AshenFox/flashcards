@@ -1,4 +1,4 @@
-import { INIT_VOICE, SET_VOICE_SPEAKING } from './types';
+import { INIT_VOICE, SET_VOICE_SPEAKING } from '../types/types';
 
 // SET_VOICE_SPEAKING
 export const set_voice_speaking = (_id, type) => {

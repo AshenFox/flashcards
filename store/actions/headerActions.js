@@ -1,4 +1,4 @@
-import { SET_DROPDOWN } from './types';
+import { SET_DROPDOWN } from '../types/types';
 
 // SET_DROPDOWN
 export const set_dropdown = (value) => ({

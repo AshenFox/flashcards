@@ -4,7 +4,7 @@ import {
   SET_SCROLL_WIDTH,
   SET_GAME_CONTROLS_DIMEN,
   SET_IS_SCROLL,
-} from '../../actions/types';
+} from '../../types/types';
 import initialState from './dimenInitState';
 
 const DimenReducer = (state = initialState, action) => {

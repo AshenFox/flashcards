@@ -26,7 +26,7 @@ import {
   SET_MODULE_QUESTION,
   SET_CARD_QUESTION,
   SET_MODULE_LOADING,
-} from './types';
+} from '../types/types';
 import { url_fields } from '../reducers/main/mainInitState';
 import { card_fields } from '../reducers/main/mainInitState';
 import axios from '../../server/supplemental/axios';

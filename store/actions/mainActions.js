@@ -16,7 +16,7 @@ import {
   GET_MODULE_CARDS,
   CLEAR_MODULE,
   SET_SCROLL_TOP,
-} from './types';
+} from '../types/types';
 import { card_fields, module_fields } from '../reducers/main/mainInitState';
 import axios from '../../server/supplemental/axios';
 

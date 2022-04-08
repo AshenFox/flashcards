@@ -11,7 +11,7 @@ import {
   SET_MODULE_QUESTION,
   SET_CARD_QUESTION,
   SET_MODULE_LOADING,
-} from '../../../actions/types';
+} from '../../../types/types';
 import initialState from '../mainInitState';
 
 const subEditReducer = (state, action) => {

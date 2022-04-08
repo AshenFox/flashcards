@@ -7,7 +7,7 @@ import {
   CHECK_FIELD,
   CLEAR_LOG_IN,
   CLEAR_SIGN_UP,
-} from '../../actions/types';
+} from '../../types/types';
 import initialState from './modalInitState';
 
 const ModalReducer = (state = initialState, action) => {

@@ -4,7 +4,7 @@ import {
   SET_GAME_CONTROLS_DIMEN,
   SET_IS_SCROLL,
   SET_SCROLL_WIDTH,
-} from './types';
+} from '../types/types';
 
 // SET_HEADER_DIMEN
 export const set_header_dimen = (el) => ({

@@ -1,4 +1,4 @@
-import { SCRAPE_DICTIONARY, SET_SCRAPE_LOADING } from '../../../actions/types';
+import { SCRAPE_DICTIONARY, SET_SCRAPE_LOADING } from '../../../types/types';
 import initialState from '../mainInitState';
 
 const subScrapeReducer = (state, action) => {

@@ -16,7 +16,7 @@ import {
   GET_MODULE_CARDS,
   CLEAR_MODULE,
   SET_SCROLL_TOP,
-} from '../../actions/types';
+} from '../../types/types';
 import initialState from './mainInitState';
 import subEditReducer from './subReducers/subEditReducer';
 import subGalleryReducer from './subReducers/subGalleryReducer';

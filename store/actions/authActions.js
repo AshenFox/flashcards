@@ -7,7 +7,7 @@ import {
   AUTHENTICATE,
   CHANGE_AUTH_LOADING,
   LOG_OUT,
-} from './types';
+} from '../types/types';
 import axios from '../../server/supplemental/axios';
 
 // ENTER

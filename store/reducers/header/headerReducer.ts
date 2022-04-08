@@ -1,4 +1,4 @@
-import { SET_DROPDOWN } from '../../actions/types';
+import { SET_DROPDOWN } from '../../types/types';
 import initialState from './headerInitState';
 
 const HeaderReducer = (state = initialState, action) => {

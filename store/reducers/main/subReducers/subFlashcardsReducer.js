@@ -1,4 +1,4 @@
-import { SHUFFLE_FLASHCARDS, SORT_FLASHCARDS } from '../../../actions/types';
+import { SHUFFLE_FLASHCARDS, SORT_FLASHCARDS } from '../../../types/types';
 import initialState from '../mainInitState';
 import { shuffle } from '../../../helper-functions';
 

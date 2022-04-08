@@ -4,7 +4,7 @@ import {
   CONTROL_FIELD,
   CLEAR_LOG_IN,
   CLEAR_SIGN_UP,
-} from './types';
+} from '../types/types';
 
 // CLEAR_LOG_IN
 export const clear_log_in = () => ({

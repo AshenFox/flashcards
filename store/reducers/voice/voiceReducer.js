@@ -1,4 +1,4 @@
-import { INIT_VOICE, SET_VOICE_SPEAKING } from '../../actions/types';
+import { INIT_VOICE, SET_VOICE_SPEAKING } from '../../types/types';
 import initialState from './voiceInitState';
 
 const VoiceReducer = (state = initialState, action) => {
