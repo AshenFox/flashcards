@@ -1,23 +1,23 @@
+export interface User {
+  subscriptions: {
+    pc?: Subscription;
+    tablet?: Subscription;
+    mobile?: Subscription;
+  };
+  _id: string;
+  server_id: string;
+  username: string;
+  email: string;
+  registration_date: string;
+  __v: number;
+}
+
 export interface AuthState {
-  user:
-    | false
-    | {
-        subscriptions: {
-          pc?: Subscription;
-          tablet?: Subscription;
-          mobile?: Subscription;
-        };
-        _id: string;
-        server_id: string;
-        username: string;
-        email: string;
-        registration_date: string;
-        __v: number;
-      };
+  user: false | User;
   loading: boolean;
 }
 
-interface Subscription {
+export interface Subscription {
   endpoint: string;
   expirationTime: null;
   key: {

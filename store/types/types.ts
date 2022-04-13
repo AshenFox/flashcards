@@ -1,3 +1,17 @@
+import {
+  SelectBy,
+  SelectCreated,
+  Module,
+  Card,
+  Cards,
+} from './../reducers/main/mainInitState';
+import { User } from './../reducers/auth/authInitState';
+import {
+  ModalType,
+  ModalInputFileds,
+  LogInErrors,
+  SignUpErrors,
+} from './../reducers/modal/modalInitState';
 // modal
 export const CHANGE_MODAL = 'CHANGE_MODAL';
 export const TOGGLE_MODAL = 'TOGGLE_MODAL';
@@ -5,13 +19,93 @@ export const CONTROL_FIELD = 'CONTROL_FIELD';
 export const CHANGE_MODAL_LOADING = 'CHANGE_MODAL_LOADING';
 export const CLEAR_LOG_IN = 'CLEAR_LOG_IN';
 export const CLEAR_SIGN_UP = 'CLEAR_SIGN_UP';
+export const ENTER = 'ENTER';
+
+export interface ChangeModalAction {
+  type: typeof CHANGE_MODAL;
+  payload: {
+    active_modal: ModalType;
+  };
+}
+
+export interface ToggleModalAction {
+  type: typeof TOGGLE_MODAL;
+  payload?: {};
+}
+
+export interface ControlFieldAction {
+  type: typeof CONTROL_FIELD;
+  payload: {
+    field: ModalType;
+    name: ModalInputFileds;
+    value: string;
+  };
+}
+
+export interface ChangeModalLoadingAction {
+  type: typeof CHANGE_MODAL_LOADING;
+  payload: boolean;
+}
+
+export interface ClearLogInAction {
+  type: typeof CLEAR_LOG_IN;
+  payload?: {};
+}
+
+export interface ClearSignUpAction {
+  type: typeof CLEAR_SIGN_UP;
+  payload?: {};
+}
+
+interface CkeckFieldActionPayload extends SignUpErrors {
+  type: ModalInputFileds;
+}
+
+export interface CheckFieldAction {
+  type: typeof CHECK_FIELD;
+  payload: CkeckFieldActionPayload;
+}
+
+export interface EnterAction {
+  type: typeof ENTER;
+  payload: {
+    log_in_errors?: LogInErrors;
+    sign_up_errors?: SignUpErrors;
+  };
+}
+
+export type ModalActions =
+  | ChangeModalAction
+  | ToggleModalAction
+  | ControlFieldAction
+  | ChangeModalLoadingAction
+  | ClearLogInAction
+  | ClearSignUpAction
+  | CheckFieldAction
+  | EnterAction;
 
 // auth
-export const ENTER = 'ENTER';
 export const CHECK_FIELD = 'CHECK_FIELD';
 export const LOG_OUT = 'LOG_OUT';
 export const AUTHENTICATE = 'AUTHENTICATE';
 export const CHANGE_AUTH_LOADING = 'CHANGE_AUTH_LOADING';
+
+export interface LogOutAction {
+  type: typeof LOG_OUT;
+  payload?: {};
+}
+
+export interface AuthenticateAction {
+  type: typeof AUTHENTICATE;
+  payload: User;
+}
+
+export interface ChangeAuthLoadingAction {
+  type: typeof CHANGE_AUTH_LOADING;
+  payload: boolean;
+}
+
+export type AuthActions = LogOutAction | AuthenticateAction | ChangeAuthLoadingAction;
 
 // main
 export const SET_IS_SERVER = 'SET_IS_SERVER';
@@ -32,8 +126,143 @@ export const GET_MODULE_CARDS = 'GET_MODULE_CARDS';
 export const CLEAR_MODULE = 'CLEAR_MODULE';
 export const SET_SCROLL_TOP = 'SET_SCROLL_TOP';
 
+export interface SetIsServerAction {
+  type: typeof SET_IS_SERVER;
+  payload: {
+    value: boolean;
+  };
+}
+
+export interface SetMainLoadingAction {
+  type: typeof SET_MAIN_LOADING;
+  payload: boolean;
+}
+
+export interface GetModulesAction {
+  type: typeof GET_MODULES;
+  payload: {
+    all_modules: boolean;
+    all_modules_number: number;
+    draft: Module | false;
+    modules: Module[];
+    modules_number: number;
+  };
+}
+
+export interface GetCardsAction {
+  type: typeof GET_CARDS;
+  payload: {
+    all_cards: boolean;
+    all_cards_number: number;
+    cards: {
+      [key: string]: Card;
+    };
+    cards_number: number;
+  };
+}
+
+export interface SetSkipCardsAction {
+  type: typeof SET_SKIP_CARDS;
+  payload: number;
+}
+
+export interface SetSkipModulesAction {
+  type: typeof SET_SKIP_MODULES;
+  payload: number;
+}
+
+export interface ControlSearchCardsAction {
+  type: typeof CONTROL_SEARCH_CARDS;
+  payload: {
+    value: string;
+  };
+}
+
+export interface ControlSearchModulesAction {
+  type: typeof CONTROL_SEARCH_MODULES;
+  payload: {
+    value: string;
+  };
+}
+
+export interface SetSelectByAction {
+  type: typeof SET_SELECT_BY;
+  payload: SelectBy;
+}
+
+export interface SetSelectCreated {
+  type: typeof SET_SELECT_CREATED;
+  payload: SelectCreated;
+}
+
+export interface ResetFieldsCardsAction {
+  type: typeof RESET_FIELDS_CARDS;
+  payload?: {};
+}
+
+export interface ResetFieldsModulesAction {
+  type: typeof RESET_FIELDS_MODULES;
+  payload?: {};
+}
+
+export interface ResetSearchAction {
+  type: typeof RESET_SEARCH;
+  payload?: {};
+}
+
+export interface GetModuleAction {
+  type: typeof GET_MODULE;
+  payload: {
+    cards: Cards;
+    module: Module;
+  };
+}
+
+export interface GetModuleCardsAction {
+  type: typeof GET_MODULE_CARDS;
+  payload: {
+    cards: Cards;
+  };
+}
+
+export interface ClearModuleAction {
+  type: typeof CLEAR_MODULE;
+  payload?: {};
+}
+
+export interface SetScrollTopAction {
+  type: typeof SET_SCROLL_TOP;
+  payload: {
+    value: boolean;
+  };
+}
+
+export type MainActions =
+  | SetIsServerAction
+  | SetMainLoadingAction
+  | GetModulesAction
+  | GetCardsAction
+  | SetSkipCardsAction
+  | SetSkipModulesAction
+  | ControlSearchCardsAction
+  | ControlSearchModulesAction
+  | SetSelectByAction
+  | SetSelectCreated
+  | ResetFieldsCardsAction
+  | ResetFieldsModulesAction
+  | ResetSearchAction
+  | GetModuleAction
+  | GetModuleCardsAction
+  | ClearModuleAction
+  | SetScrollTopAction;
+
 // header
 export const SET_DROPDOWN = 'SET_DROPDOWN';
+
+export interface SetDropdownAction {
+  type: typeof SET_DROPDOWN;
+  payload?: {};
+}
 
 // dimen
 export const SET_HEADER_DIMEN = 'SET_HEADER_DIMEN';
@@ -41,6 +270,50 @@ export const SET_SCROLL_HEIGHT = 'SET_SCROLL_HEIGHT';
 export const SET_SCROLL_WIDTH = 'SET_SCROLL_WIDTH';
 export const SET_GAME_CONTROLS_DIMEN = 'SET_GAME_CONTROLS_DIMEN';
 export const SET_IS_SCROLL = 'SET_IS_SCROLL';
+
+export interface SetHeaderDimenAction {
+  type: typeof SET_HEADER_DIMEN;
+  payload: {
+    header_height: number;
+    header_width: number;
+  };
+}
+
+export interface SetScrollHeightAction {
+  type: typeof SET_SCROLL_HEIGHT;
+  payload: {
+    scroll_height: number;
+  };
+}
+
+export interface SetScrollWidthAction {
+  type: typeof SET_SCROLL_WIDTH;
+  payload: {
+    scroll_width: number;
+  };
+}
+
+export interface SetGameControlsDimen {
+  type: typeof SET_GAME_CONTROLS_DIMEN;
+  payload: {
+    game_controls_height: number;
+    game_controls_width: number;
+  };
+}
+
+export interface SetIsScrollAction {
+  type: typeof SET_IS_SCROLL;
+  payload: {
+    is_scroll: boolean;
+  };
+}
+
+export type DimenActions =
+  | SetHeaderDimenAction
+  | SetScrollHeightAction
+  | SetScrollWidthAction
+  | SetGameControlsDimen
+  | SetIsScrollAction;
 
 // edit
 export const SET_CARD_EDIT = 'SET_CARD_EDIT';
@@ -106,3 +379,7 @@ export const SET_CARDS_SR = 'SET_CARDS_SR';
 export const SET_CARDS_SR_POSITIVE = 'SET_CARDS_SR_POSITIVE';
 export const DROP_CARD_SR = 'DROP_CARD_SR';
 export const DROP_CARDS_SR = 'DROP_CARDS_SR';
+
+// ===========
+
+export type AppActions = AuthActions | ModalActions | MainActions | DimenActions;
