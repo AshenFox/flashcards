@@ -1,3 +1,4 @@
+import { MainActions } from './../../types/types';
 import {
   SET_IS_SERVER,
   GET_MODULES,
@@ -17,14 +18,14 @@ import {
   CLEAR_MODULE,
   SET_SCROLL_TOP,
 } from '../../types/types';
-import initialState from './mainInitState';
+import initialState, { MainState } from './mainInitState';
 import subEditReducer from './subReducers/subEditReducer';
 import subGalleryReducer from './subReducers/subGalleryReducer';
 import subScrapeReducer from './subReducers/subScrapeReducer';
 import subSrReducer from './subReducers/subSrReducer';
 import subFlashcardsReducer from './subReducers/subFlashcardsReducer';
 
-const MainReducer = (state = initialState, action) => {
+const MainReducer = (state = initialState, action: MainActions): MainState => {
   const { payload, type } = action;
 
   let editResult = subEditReducer(state, action);

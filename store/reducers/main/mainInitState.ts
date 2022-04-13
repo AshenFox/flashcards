@@ -3,9 +3,7 @@ export type MainState = {
   module: Module | false;
   draft: Module | false;
   modules: Module[];
-  cards: {
-    [key: string]: string;
-  };
+  cards: Cards;
   modules_number: number | false;
   cards_number: number | false;
   all_modules: boolean;
@@ -21,10 +19,20 @@ export type MainState = {
   search_modules: {
     value: string;
   };
-  select_by: { value: 'term' | 'defenition'; label: 'Term' | 'Defenition' };
-  select_created: { value: 'newest' | 'oldest'; label: 'Newest' | 'Oldest' };
+  select_by: SelectBy;
+  select_created: SelectCreated;
   scroll_top: boolean;
 };
+
+export interface SelectBy {
+  value: 'term' | 'defenition';
+  label: 'Term' | 'Defenition';
+}
+
+export interface SelectCreated {
+  value: 'newest' | 'oldest';
+  label: 'Newest' | 'Oldest';
+}
 
 export interface ImgurlFields {
   ok: Boolean;
@@ -72,6 +80,10 @@ export interface Card extends CardFields {
   nextRep: string;
   prevStage: string;
   __v: number;
+}
+
+export interface Cards {
+  [key: string]: Card;
 }
 
 export interface ModuleFields {

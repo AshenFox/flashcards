@@ -1,19 +1,26 @@
+import { ModalActions } from './../../types/types';
 import {
   CHANGE_MODAL,
   TOGGLE_MODAL,
   CONTROL_FIELD,
-  ENTER,
   CHANGE_MODAL_LOADING,
   CHECK_FIELD,
   CLEAR_LOG_IN,
   CLEAR_SIGN_UP,
+  ENTER,
 } from '../../types/types';
-import initialState from './modalInitState';
+import initialState, { ModalState } from './modalInitState';
 
-const ModalReducer = (state = initialState, action) => {
+const ModalReducer = (state = initialState, action: ModalActions): ModalState => {
   const { payload, type } = action;
 
   switch (type) {
+    case ENTER:
+      return {
+        ...state,
+        ...payload,
+      };
+
     case TOGGLE_MODAL:
       return {
         ...state,
@@ -41,20 +48,6 @@ const ModalReducer = (state = initialState, action) => {
         loading: payload,
       };
 
-    case ENTER:
-      return {
-        ...state,
-        ...payload,
-      };
-
-    case CHECK_FIELD:
-      return {
-        ...state,
-        sign_up_errors: {
-          ...state.sign_up_errors,
-          ...payload,
-        },
-      };
     case CLEAR_LOG_IN:
       return {
         ...state,
@@ -72,6 +65,16 @@ const ModalReducer = (state = initialState, action) => {
             ok: true,
             errors: [],
           },
+        },
+      };
+
+    case CHECK_FIELD:
+      return {
+        ...state,
+        sign_up_errors: {
+          ...state.sign_up_errors,
+          ok: payload.ok,
+          [payload.type]: payload[payload.type],
         },
       };
 

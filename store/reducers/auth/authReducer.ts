@@ -1,7 +1,8 @@
+import { AuthActions } from './../../types/types';
 import { AUTHENTICATE, CHANGE_AUTH_LOADING, LOG_OUT } from '../../types/types';
-import initialState from './authInitState';
+import initialState, { AuthState } from './authInitState';
 
-const AuthReducer = (state = initialState, action) => {
+const AuthReducer = (state = initialState, action: AuthActions): AuthState => {
   const { payload, type } = action;
 
   switch (type) {
