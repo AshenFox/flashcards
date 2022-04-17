@@ -5,7 +5,7 @@ import {
   Card,
   Cards,
 } from './../reducers/main/mainInitState';
-import { RootState } from './../store';
+import { ThunkActionApp } from './../store';
 import { AppActions } from './../types/types';
 import {
   SET_IS_SERVER,
@@ -29,8 +29,6 @@ import {
 import { ThunkAction } from 'redux-thunk';
 import { card_fields, module_fields } from '../reducers/main/mainInitState';
 import axios from '../../server/supplemental/axios';
-
-type ThunkActionMain = ThunkAction<void, RootState, unknown, AppActions>;
 
 // SET_MAIN_LOADING
 export const set_main_loading = (value: boolean): AppActions => ({
@@ -103,7 +101,7 @@ export const control_search_modules = (value: string): AppActions => ({
 });
 
 // GET MODULES
-export const get_modules = (ignore: boolean) => <ThunkActionMain>(async (
+export const get_modules = (ignore: boolean) => <ThunkActionApp>(async (
     dispatch,
     getState
   ) => {
@@ -154,7 +152,7 @@ export const get_modules = (ignore: boolean) => <ThunkActionMain>(async (
   });
 
 // GET CARDS
-export const get_cards = (ignore: boolean) => <ThunkActionMain>(async (
+export const get_cards = (ignore: boolean) => <ThunkActionApp>(async (
     dispatch,
     getState
   ) => {
@@ -205,7 +203,7 @@ export const get_cards = (ignore: boolean) => <ThunkActionMain>(async (
   });
 
 // GET MODULE CARDS
-export const get_module_cards = (_id: string) => <ThunkActionMain>(async (
+export const get_module_cards = (_id: string) => <ThunkActionApp>(async (
     dispatch,
     getState
   ) => {
@@ -236,10 +234,6 @@ export const get_module_cards = (_id: string) => <ThunkActionMain>(async (
         },
       });
 
-      // console.log(data);
-
-      // data.cards = arr_to_obj(data.cards);
-
       dispatch({ type: GET_MODULE_CARDS, payload: data });
     } catch (err) {
       console.error(err);
@@ -252,7 +246,7 @@ export const get_module_cards = (_id: string) => <ThunkActionMain>(async (
   });
 
 // GET_MODULE
-export const get_module = (_id: string) => <ThunkActionMain>(async (
+export const get_module = (_id: string) => <ThunkActionApp>(async (
     dispatch,
     getState
   ) => {
@@ -301,7 +295,7 @@ export const get_module = (_id: string) => <ThunkActionMain>(async (
   });
 
 // GET_DRAFT
-export const get_draft = () => <ThunkActionMain>(async (dispatch, getState) => {
+export const get_draft = () => <ThunkActionApp>(async (dispatch, getState) => {
     try {
       const {
         auth: { user },
@@ -321,8 +315,6 @@ export const get_draft = () => <ThunkActionMain>(async (dispatch, getState) => {
           module: Module;
         };
       } = await axios.get('/api/edit/draft');
-
-      console.log(data);
 
       data.module = { ...data.module, ...module_fields };
 

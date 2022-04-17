@@ -1,3 +1,5 @@
+import { MainState } from './../mainInitState';
+import { MainActions } from './../../../types/types';
 import {
   SET_GALLERY_SEARCH,
   CONTROL_GALLERY_QUERY,
@@ -7,11 +9,14 @@ import {
   MOVE_GALLERY,
   SET_GALLERY_ERROR,
   SET_URL_OK,
-  SEARCH_IMGAGES,
+  SEARCH_IMAGES,
 } from '../../../types/types';
 import initialState from '../mainInitState';
 
-const subGalleryReducer = (state, action) => {
+const subGalleryReducer = (
+  state = initialState,
+  action: MainActions
+): MainState | false => {
   const { payload, type } = action;
 
   switch (type) {
@@ -68,7 +73,7 @@ const subGalleryReducer = (state, action) => {
         },
       };
 
-    case SEARCH_IMGAGES:
+    case SEARCH_IMAGES:
       return {
         ...state,
         cards: {

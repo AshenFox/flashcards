@@ -1,3 +1,5 @@
+import { MainState } from './../mainInitState';
+import { MainActions } from './../../../types/types';
 import {
   SET_CARD_EDIT,
   CONTROL_CARD,
@@ -14,7 +16,7 @@ import {
 } from '../../../types/types';
 import initialState from '../mainInitState';
 
-const subEditReducer = (state, action) => {
+const subEditReducer = (state = initialState, action: MainActions): MainState | false => {
   const { payload, type } = action;
 
   switch (type) {
@@ -57,10 +59,12 @@ const subEditReducer = (state, action) => {
     case CONTROL_MODULE:
       return {
         ...state,
-        module: {
-          ...state.module,
-          title: payload.value,
-        },
+        module: state.module
+          ? {
+              ...state.module,
+              title: payload.value,
+            }
+          : state.module,
       };
 
     case DELETE_CARD:
@@ -120,10 +124,12 @@ const subEditReducer = (state, action) => {
     case SET_MODULE_QUESTION:
       return {
         ...state,
-        module: {
-          ...state.module,
-          question: payload.value,
-        },
+        module: state.module
+          ? {
+              ...state.module,
+              question: payload.value,
+            }
+          : state.module,
       };
 
     case SET_CARD_QUESTION:
@@ -141,10 +147,12 @@ const subEditReducer = (state, action) => {
     case SET_MODULE_LOADING:
       return {
         ...state,
-        module: {
-          ...state.module,
-          module_loading: payload.value,
-        },
+        module: state.module
+          ? {
+              ...state.module,
+              module_loading: payload.value,
+            }
+          : state.module,
       };
 
     default:
