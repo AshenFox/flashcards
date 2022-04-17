@@ -38,11 +38,17 @@ export interface ImgurlFields {
   ok: Boolean;
 }
 
-export interface ImgurlObj extends ImgurlFields {
+export interface ImgurlBase {
   url: string;
   thumbnail?: string;
   snippet?: string;
   context?: string;
+}
+
+export interface ImgurlObj extends ImgurlFields, ImgurlBase {}
+
+export interface ImgurlObjs {
+  [key: number]: ImgurlObj;
 }
 
 export interface CardFields {
@@ -50,9 +56,7 @@ export interface CardFields {
   gallery: {
     search: boolean;
     query: string;
-    imgurl_obj: {
-      [key: number]: ImgurlObj;
-    }; // ?????
+    imgurl_obj: ImgurlObjs; // ?????
     loading: boolean;
     loaded: number;
     failed: number;
@@ -68,7 +72,7 @@ export interface CardFields {
   question: boolean;
 }
 
-export interface Card extends CardFields {
+export interface CardBase {
   _id: string;
   moduleID: string;
   term: string;
@@ -81,6 +85,8 @@ export interface Card extends CardFields {
   prevStage: string;
   __v: number;
 }
+
+export interface Card extends CardFields, CardBase {}
 
 export interface Cards {
   [key: string]: Card;

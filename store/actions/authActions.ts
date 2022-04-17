@@ -4,8 +4,8 @@ import {
   SignUpErrors,
   ModalInputFileds,
 } from './../reducers/modal/modalInitState';
-import { AppActions, AuthActions } from './../types/types';
-import { RootState } from './../store';
+import { AppActions } from './../types/types';
+import { ThunkActionApp } from './../store';
 import {
   ENTER,
   CHANGE_MODAL_LOADING,
@@ -16,18 +16,15 @@ import {
   CHANGE_AUTH_LOADING,
   LOG_OUT,
 } from '../types/types';
-import { ThunkAction } from 'redux-thunk';
 import axios from '../../server/supplemental/axios';
 
-type ThunkActionMain = ThunkAction<void, RootState, unknown, AppActions>;
-
 // ENTER
-export const enter = (type: 'log_in' | 'sign_up') => <ThunkActionMain>(async (
+export const enter = (type: 'log_in' | 'sign_up') => <ThunkActionApp>(async (
     dispatch,
     getState
   ) => {
-    // type: log_in | sign_up
     const pathname = window.location.pathname;
+
     try {
       const {
         modal: { log_in, sign_up, loading },
@@ -79,7 +76,7 @@ export const enter = (type: 'log_in' | 'sign_up') => <ThunkActionMain>(async (
   });
 
 // CHECK_FIELD
-export const check_field = (type: ModalInputFileds) => <ThunkActionMain>(async (
+export const check_field = (type: ModalInputFileds) => <ThunkActionApp>(async (
     dispatch,
     getState
   ) => {
@@ -119,7 +116,7 @@ export const check_field = (type: ModalInputFileds) => <ThunkActionMain>(async (
 
 // AUTHENTICATE
 
-export const authenticate = () => <ThunkActionMain>(async (dispatch, getState) => {
+export const authenticate = () => <ThunkActionApp>(async (dispatch, getState) => {
     const pathname = window.location.pathname;
     try {
       dispatch({
@@ -154,7 +151,7 @@ export const authenticate = () => <ThunkActionMain>(async (dispatch, getState) =
   });
 
 // LOG_OUT
-export const log_out = (): AuthActions => {
+export const log_out = (): AppActions => {
   const pathname = window.location.pathname;
 
   localStorage.removeItem('value');

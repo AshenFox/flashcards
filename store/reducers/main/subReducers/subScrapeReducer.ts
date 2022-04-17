@@ -1,7 +1,12 @@
+import { MainState } from './../mainInitState';
+import { MainActions } from './../../../types/types';
 import { SCRAPE_DICTIONARY, SET_SCRAPE_LOADING } from '../../../types/types';
 import initialState from '../mainInitState';
 
-const subScrapeReducer = (state, action) => {
+const subScrapeReducer = (
+  state = initialState,
+  action: MainActions
+): MainState | false => {
   const { payload, type } = action;
 
   switch (type) {

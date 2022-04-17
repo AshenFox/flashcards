@@ -1,6 +1,6 @@
 import { createStore, applyMiddleware } from 'redux';
 import { composeWithDevTools } from 'redux-devtools-extension';
-import thunk, { ThunkDispatch, ThunkMiddleware } from 'redux-thunk';
+import thunk, { ThunkDispatch, ThunkMiddleware, ThunkAction } from 'redux-thunk';
 import rootReducer from './reducers/index';
 import { AppActions } from './types/types';
 import { useSelector, useDispatch, TypedUseSelectorHook } from 'react-redux';
@@ -35,3 +35,5 @@ export type AppDispatch = typeof store.dispatch &
 // Customized dispatch and selector hooks for the Tuner App
 export const useAppDispatch = () => useDispatch<AppDispatch>();
 export const useAppSelector: TypedUseSelectorHook<RootState> = useSelector;
+
+export type ThunkActionApp = ThunkAction<void, RootState, unknown, AppActions>;

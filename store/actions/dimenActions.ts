@@ -8,16 +8,13 @@ import {
 } from '../types/types';
 
 // SET_HEADER_DIMEN
-export const set_header_dimen = (el: HTMLHeadingElement): AppActions => {
-  // console.log(el);
-  return {
-    type: SET_HEADER_DIMEN,
-    payload: {
-      header_height: el.offsetHeight,
-      header_width: el.offsetWidth,
-    },
-  };
-};
+export const set_header_dimen = (el: HTMLHeadingElement): AppActions => ({
+  type: SET_HEADER_DIMEN,
+  payload: {
+    header_height: el.offsetHeight,
+    header_width: el.offsetWidth,
+  },
+});
 
 // SET_GAME_CONTROLS_DIMEN
 export const set_game_controls_dimen = (el: HTMLDivElement): AppActions => {
