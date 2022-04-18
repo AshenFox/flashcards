@@ -1,3 +1,5 @@
+import { MainState } from './../mainInitState';
+import { MainActions } from './../../../types/types';
 import {
   DROP_CARD_SR,
   DROP_CARDS_SR,
@@ -10,7 +12,7 @@ import {
 import initialState from '../mainInitState';
 import { shuffle } from '../../../helper-functions';
 
-const subSrReducer = (state, action) => {
+const subSrReducer = (state = initialState, action: MainActions): MainState | false => {
   const { payload, type } = action;
 
   switch (type) {

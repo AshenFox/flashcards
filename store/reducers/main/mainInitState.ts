@@ -82,6 +82,7 @@ export interface CardBase {
   studyRegime: boolean;
   stage: number;
   nextRep: string;
+  lastRep: string;
   prevStage: string;
   __v: number;
 }

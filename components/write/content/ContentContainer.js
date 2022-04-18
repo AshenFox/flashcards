@@ -27,6 +27,15 @@ const ContentContainer = ({ dimen, main, game }) => {
   const isAnswered = activeCard ? !!activeCard.answer : false;
   const activeCardData = activeCard ? cards[activeCard.id] : {};
 
+  console.log({
+    remaining,
+    activeCard,
+    activeCardData,
+    cards,
+    card: activeCard && cards[activeCard.id],
+    id: activeCard && activeCard.id,
+  });
+
   const isRoundFinished = !remaining.length && is_init;
   const isGameFinished =
     !remaining.length &&

@@ -11,7 +11,7 @@ import Speaker from '../../main/Speaker';
 import Img from '../../main/Img';
 import SRIndicator from '../../main/SRIngicator';
 
-const Question = ({ data, game, set_write_answer_field, check_write_answer }) => {
+const Question = ({ data = {}, game, set_write_answer_field, check_write_answer }) => {
   const router = useRouter();
   const { _id: _id_param } = router.query;
 

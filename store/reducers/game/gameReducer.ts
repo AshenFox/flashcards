@@ -1,3 +1,4 @@
+import { GameActions } from './../../types/types';
 import {
   SET_FLASHCARDS_PROGRESS,
   RESET_FLASHCARDS_PROGRESS,
@@ -14,10 +15,10 @@ import {
   NEXT_WRITE_ROUND,
   RESET_ALL_GAME_FIELDS,
 } from '../../types/types';
-import initialState from './gameInitState';
+import initialState, { GameState } from './gameInitState';
 import { shuffle } from '../../helper-functions';
 
-const GameReducer = (state = initialState, action) => {
+const GameReducer = (state = initialState, action: GameActions): GameState => {
   const { payload, type } = action;
 
   switch (type) {
