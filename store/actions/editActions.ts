@@ -139,18 +139,24 @@ export const scrape_dictionary = (_id: string, value: 'cod' | 'urban') =>
       if (value === 'cod') query = term_without_tags.replace(/\s+/g, '-');
       if (value === 'urban') query = term_without_tags.replace(/\s+/g, '+');
 
-      const { data }: { data: CodReply | UrbanReply } = await axios.get(
-        `/api/scrape/${value}`,
-        {
-          params: {
-            query,
-          },
-        }
-      );
+      const url = `/api/scrape/${value}`;
+      const params = {
+        params: {
+          query,
+        },
+      };
 
-      console.log(data);
+      let result: string;
 
-      const result = format_dictionary_result(data, value);
+      if (value === 'cod') {
+        const { data }: { data: CodReply } = await axios.get(url, params);
+        result = format_dictionary_result({ type: 'cod', data });
+      }
+
+      if (value === 'urban') {
+        const { data }: { data: UrbanReply } = await axios.get(url, params);
+        result = format_dictionary_result({ type: 'urban', data });
+      }
 
       dispatch({
         type: SCRAPE_DICTIONARY,
@@ -192,7 +198,7 @@ export const set_gallery_width = (_id: string, value: number): AppActions => {
 };
 
 // MOVE_GALLERY
-export const move_gallery = (_id: string, value: 'left' | 'right') => {
+export const move_gallery = (_id: string, value: 'left' | 'right'): AppActions => {
   let offset = 0;
   if (value === 'left') offset = 17;
   if (value === 'right') offset = -17;
@@ -270,7 +276,7 @@ export const set_card_edit = (_id: string, value: boolean): AppActions => ({
 });
 
 // SET_GALLERY_SEARCH
-export const set_gallery_search = (_id: string, value: boolean) => ({
+export const set_gallery_search = (_id: string, value: boolean): AppActions => ({
   type: SET_GALLERY_SEARCH,
   payload: {
     _id,
@@ -283,7 +289,7 @@ export const control_card = (
   _id: string,
   type: 'term' | 'defenition',
   value: string
-) => ({
+): AppActions => ({
   type: CONTROL_CARD,
   payload: {
     _id,
@@ -375,35 +381,35 @@ export const search_images = (_id: string) => <ThunkActionApp>(async (
 
 // DELETE_MODULE
 
-export const delete_module = (_id) => async (dispatch, getState) => {
-  try {
-    const {
-      auth: { user },
-      main: {
-        module: { module_loading },
-      },
-    } = getState();
-    if (!user || module_loading) return;
-    dispatch(set_module_loading(true));
+export const delete_module = (_id) => <ThunkActionApp>(async (dispatch, getState) => {
+    try {
+      const {
+        auth: { user },
+        main: { module },
+      } = getState();
+      const module_loading = module && module.module_loading;
 
-    const { data } = await axios.delete('/api/edit/module', {
-      params: {
-        _id,
-      },
-    });
+      if (!user || module_loading) return;
+      dispatch(set_module_loading(true));
 
-    console.log(data);
+      const { data }: { data: { msg: string } } = await axios.delete('/api/edit/module', {
+        params: {
+          _id,
+        },
+      });
 
-    dispatch({ type: DELETE_MODULE });
+      console.log(data);
 
-    saveLastUpdate();
-    window.location.replace(`/home/modules`);
-  } catch (err) {
-    console.error(err);
-  }
+      dispatch({ type: DELETE_MODULE });
 
-  dispatch(set_module_loading(false));
-};
+      saveLastUpdate();
+      window.location.replace(`/home/modules`);
+    } catch (err) {
+      console.error(err);
+    }
+
+    dispatch(set_module_loading(false));
+  });
 
 // DELETE_CARD
 export const delete_card = (_id: string) => <ThunkActionApp>(async (
@@ -438,46 +444,52 @@ export const delete_card = (_id: string) => <ThunkActionApp>(async (
   });
 
 // EDIT_MODULE
-export const edit_module = () => async (dispatch, getState) => {
-  try {
-    const {
-      auth: { user },
-      main: { module },
-    } = getState();
-    if (!user) return;
+export const edit_module = () => <ThunkActionApp>(async (dispatch, getState) => {
+    try {
+      const {
+        auth: { user },
+        main: { module },
+      } = getState();
+      if (!user) return;
 
-    const { data } = await axios.put('/api/edit/module', module);
+      const { data }: { data: { msg: string } } = await axios.put(
+        '/api/edit/module',
+        module
+      );
 
-    console.log(data);
+      console.log(data);
 
-    dispatch({ type: EDIT_MODULE });
+      dispatch({ type: EDIT_MODULE });
 
-    saveLastUpdate();
-  } catch (err) {
-    console.error(err);
-  }
-};
+      saveLastUpdate();
+    } catch (err) {
+      console.error(err);
+    }
+  });
 
 // EDIT_CARD
-export const edit_card = (_id) => async (dispatch, getState) => {
-  try {
-    const {
-      auth: { user },
-      main: { cards },
-    } = getState();
-    if (!user) return;
+export const edit_card = (_id: string) => <ThunkActionApp>(async (dispatch, getState) => {
+    try {
+      const {
+        auth: { user },
+        main: { cards },
+      } = getState();
+      if (!user) return;
 
-    const { data } = await axios.put('/api/edit/card', cards[_id]);
+      const { data }: { data: { msg: string } } = await axios.put(
+        '/api/edit/card',
+        cards[_id]
+      );
 
-    console.log(data);
+      console.log(data);
 
-    dispatch({ type: EDIT_CARD });
+      dispatch({ type: EDIT_CARD });
 
-    saveLastUpdate();
-  } catch (err) {
-    console.error(err);
-  }
-};
+      saveLastUpdate();
+    } catch (err) {
+      console.error(err);
+    }
+  });
 
 // CREATE_MODULE
 export const create_module = () => <ThunkActionApp>(async (dispatch, getState) => {
@@ -503,7 +515,7 @@ export const create_module = () => <ThunkActionApp>(async (dispatch, getState) =
 
       console.log(_id_arr);
 
-      const { data } = await axios.post('/api/edit/module', {
+      const { data }: { data: { msg: string } } = await axios.post('/api/edit/module', {
         _id_arr,
       });
 
@@ -575,10 +587,9 @@ const arr_to_obj = (arr: ImgurlBase[]): ImgurlObjs => {
   );
 };
 
-const format_dictionary_result = (
-  result: CodReply | UrbanReply,
-  type: 'cod' | 'urban'
-) => {
+const format_dictionary_result = (result: CodDictResult | UrbanDictResult): string => {
+  const { type, data } = result;
+
   let devider = '<br><div>-------</div><br>';
   let br = '<br>';
 
@@ -597,7 +608,7 @@ const format_dictionary_result = (
 
   // cod
   if (type === 'cod') {
-    result.map((sect) => {
+    data.map((sect) => {
       let { part_of_speech, transcr_uk, transcr_us, sub_sections } = sect;
 
       sub_sections.map((sub_sect) => {
@@ -632,7 +643,7 @@ const format_dictionary_result = (
     // urban
   } else if (type === 'urban') {
     let term;
-    result.map((panel) => {
+    data.map((panel) => {
       let { definition, example } = panel;
 
       if (!term) {
@@ -668,7 +679,7 @@ interface CodSection {
 type CodReply = CodSection[];
 
 interface CodDictResult {
-  tag: 'cod';
+  type: 'cod';
   data: CodReply;
 }
 
@@ -681,6 +692,6 @@ interface UrbanPanel {
 type UrbanReply = UrbanPanel[];
 
 interface UrbanDictResult {
-  tag: 'urban';
-  data: CodReply;
+  type: 'urban';
+  data: UrbanReply;
 }

@@ -1,3 +1,4 @@
+import { Round } from './../reducers/game/gameInitState';
 import {
   SelectBy,
   SelectCreated,
@@ -298,35 +299,87 @@ export type DimenActions =
   | SetIsScrollAction;
 
 // edit
-export const SET_CARD_EDIT = 'SET_CARD_EDIT';
-export const SET_GALLERY_SEARCH = 'SET_GALLERY_SEARCH';
-export const SET_URL_OK = 'SET_URL_OK';
-export const CONTROL_CARD = 'CONTROL_CARD';
-export const SET_CARD_IMGURL = 'SET_CARD_IMGURL';
-export const CONTROL_MODULE = 'CONTROL_MODULE';
-export const CONTROL_GALLERY_QUERY = 'CONTROL_GALLERY_QUERY';
-export const SEARCH_IMAGES = 'SEARCH_IMAGES';
-export const RESET_GALLERY_FIELDS = 'RESET_GALLERY_FIELDS';
-export const SET_GALLERY_LOADING = 'SET_GALLERY_LOADING';
-export const SET_GALLERY_WIDTH = 'SET_GALLERY_WIDTH';
-export const MOVE_GALLERY = 'MOVE_GALLERY';
-export const SCRAPE_DICTIONARY = 'SCRAPE_DICTIONARY';
-export const SET_SCRAPE_LOADING = 'SET_SCRAPE_LOADING';
-export const SET_GALLERY_ERROR = 'SET_GALLERY_ERROR';
-export const DELETE_MODULE = 'DELETE_MODULE';
-export const DELETE_CARD = 'DELETE_CARD';
-export const EDIT_MODULE = 'EDIT_MODULE';
-export const EDIT_CARD = 'EDIT_CARD';
-export const CREATE_MODULE = 'CREATE_MODULE';
-export const CREATE_CARD = 'CREATE_CARD';
-export const SET_CARD_SAVE = 'SET_CARD_SAVE';
-export const SET_CARDS_SAVE = 'SET_CARDS_SAVE';
-export const SET_CARDS_SAVE_POSITIVE = 'SET_CARDS_SAVE_POSITIVE';
-export const SET_MODULE_QUESTION = 'SET_MODULE_QUESTION';
-export const SET_CARD_QUESTION = 'SET_CARD_QUESTION';
-export const SET_MODULE_LOADING = 'SET_MODULE_LOADING';
-export const SHUFFLE_FLASHCARDS = 'SHUFFLE_FLASHCARDS';
-export const SORT_FLASHCARDS = 'SORT_FLASHCARDS';
+export const DELETE_MODULE = 'DELETE_MODULE'; // edit
+export const EDIT_MODULE = 'EDIT_MODULE'; // edit
+export const EDIT_CARD = 'EDIT_CARD'; // edit
+export const CREATE_MODULE = 'CREATE_MODULE'; // edit
+export const SCRAPE_DICTIONARY = 'SCRAPE_DICTIONARY'; // scrape
+export const SET_SCRAPE_LOADING = 'SET_SCRAPE_LOADING'; // scrape
+export const SET_GALLERY_SEARCH = 'SET_GALLERY_SEARCH'; // gallery
+export const SET_URL_OK = 'SET_URL_OK'; // gallery
+export const CONTROL_GALLERY_QUERY = 'CONTROL_GALLERY_QUERY'; // gallery
+export const SEARCH_IMAGES = 'SEARCH_IMAGES'; // gallery
+export const RESET_GALLERY_FIELDS = 'RESET_GALLERY_FIELDS'; // gallery
+export const SET_GALLERY_LOADING = 'SET_GALLERY_LOADING'; // gallery
+export const SET_GALLERY_WIDTH = 'SET_GALLERY_WIDTH'; // gallery
+export const MOVE_GALLERY = 'MOVE_GALLERY'; // gallery
+export const SET_GALLERY_ERROR = 'SET_GALLERY_ERROR'; // gallery
+export const SHUFFLE_FLASHCARDS = 'SHUFFLE_FLASHCARDS'; // flashcards
+export const SORT_FLASHCARDS = 'SORT_FLASHCARDS'; // flashcards
+export const SET_CARD_EDIT = 'SET_CARD_EDIT'; // edit
+export const CONTROL_CARD = 'CONTROL_CARD'; // edit
+export const SET_CARD_IMGURL = 'SET_CARD_IMGURL'; // edit
+export const CONTROL_MODULE = 'CONTROL_MODULE'; // edit
+export const DELETE_CARD = 'DELETE_CARD'; // edit
+export const CREATE_CARD = 'CREATE_CARD'; // edit
+export const SET_CARD_SAVE = 'SET_CARD_SAVE'; // edit
+export const SET_CARDS_SAVE = 'SET_CARDS_SAVE'; // edit
+export const SET_CARDS_SAVE_POSITIVE = 'SET_CARDS_SAVE_POSITIVE'; // edit
+export const SET_MODULE_QUESTION = 'SET_MODULE_QUESTION'; // edit
+export const SET_CARD_QUESTION = 'SET_CARD_QUESTION'; // edit
+export const SET_MODULE_LOADING = 'SET_MODULE_LOADING'; // edit
+
+export type SubMainActions =
+  | SetIsServerAction
+  | SetMainLoadingAction
+  | GetModulesAction
+  | GetCardsAction
+  | SetSkipCardsAction
+  | SetSkipModulesAction
+  | ControlSearchCardsAction
+  | ControlSearchModulesAction
+  | SetSelectByAction
+  | SetSelectCreated
+  | ResetFieldsCardsAction
+  | ResetFieldsModulesAction
+  | ResetSearchAction
+  | GetModuleAction
+  | GetModuleCardsAction
+  | ClearModuleAction
+  | SetScrollTopAction;
+
+export type SubGalleryActions =
+  | SetGallerySearchAction
+  | SetUrlOkAction
+  | ControlGalleryQueryAction
+  | SearchImagesAction
+  | ResetGalleryFieldsAction
+  | SetGalleryLoadingAction
+  | MoveGalleryAction
+  | SetGalleryErrorAction
+  | SetGalleryWidth;
+
+export type SubScrapeActions = ScrapeDictionaryAction | SetScrapeLoadingAction;
+
+export type SubFlashcardsActions = ShuffleFlashcardsAction | SortFlashcardsAction;
+
+export type SubEditActions =
+  | DeleteModuleAction
+  | EditModuleAction
+  | EditCardAction
+  | CreateModuleAction
+  | SetCardEditAction
+  | ControlCardAction
+  | SetCardImgurlAction
+  | ControlModuleAction
+  | DeleteCardAction
+  | CreateCardAction
+  | SetCardSaveAction
+  | SetCardsSaveAction
+  | SetCardsSavePositiveAction
+  | SetModuleQuestionAction
+  | SetCardQuestionAction
+  | SetModuleLoadingAction;
 
 export interface SetGalleryWidth {
   type: typeof SET_GALLERY_WIDTH;
@@ -537,54 +590,6 @@ export interface SortFlashcardsAction {
   payload?: {};
 }
 
-export type MainActions =
-  | SetIsServerAction
-  | SetMainLoadingAction
-  | GetModulesAction
-  | GetCardsAction
-  | SetSkipCardsAction
-  | SetSkipModulesAction
-  | ControlSearchCardsAction
-  | ControlSearchModulesAction
-  | SetSelectByAction
-  | SetSelectCreated
-  | ResetFieldsCardsAction
-  | ResetFieldsModulesAction
-  | ResetSearchAction
-  | GetModuleAction
-  | GetModuleCardsAction
-  | ClearModuleAction
-  | SetScrollTopAction
-  | SetCardEditAction
-  | SetGallerySearchAction
-  | SetUrlOkAction
-  | ControlCardAction
-  | SetCardImgurlAction
-  | ControlModuleAction
-  | ControlGalleryQueryAction
-  | SearchImagesAction
-  | ResetGalleryFieldsAction
-  | SetGalleryLoadingAction
-  | MoveGalleryAction
-  | ScrapeDictionaryAction
-  | SetScrapeLoadingAction
-  | SetGalleryErrorAction
-  | DeleteModuleAction
-  | DeleteCardAction
-  | EditModuleAction
-  | EditCardAction
-  | CreateModuleAction
-  | CreateCardAction
-  | SetCardSaveAction
-  | SetCardsSaveAction
-  | SetCardsSavePositiveAction
-  | SetModuleQuestionAction
-  | SetCardQuestionAction
-  | SetModuleLoadingAction
-  | SetGalleryWidth
-  | ShuffleFlashcardsAction
-  | SortFlashcardsAction;
-
 // voice
 export const INIT_VOICE = 'INIT_VOICE';
 export const SET_VOICE_SPEAKING = 'SET_VOICE_SPEAKING';
@@ -601,16 +606,6 @@ export interface SetVoiceSpeakingAction {
 
 export type VoiceActions = InitVoiceAction | SetVoiceSpeakingAction;
 
-// game
-export const RESET_ALL_GAME_FIELDS = 'RESET_ALL_GAME_FIELDS';
-
-export interface ResetAllGameFieldsAction {
-  type: typeof RESET_ALL_GAME_FIELDS;
-  payload?: {};
-}
-
-export type GameActions = ResetAllGameFieldsAction;
-
 // falshcards
 export const SET_FLASHCARDS_PROGRESS = 'SET_FLASHCARDS_PROGRESS';
 export const RESET_FLASHCARDS_PROGRESS = 'RESET_FLASHCARDS_PROGRESS';
@@ -620,7 +615,9 @@ export const SAVE_FLASHCARDS_ANSWER = 'SAVE_FLASHCARDS_ANSWER';
 
 export interface SetFlashcardsProgressAction {
   type: typeof SET_FLASHCARDS_PROGRESS;
-  payload?: {};
+  payload: {
+    value?: number;
+  };
 }
 
 export interface ResetFlashcardsProgressAction {
@@ -630,17 +627,24 @@ export interface ResetFlashcardsProgressAction {
 
 export interface SetFlashcardsShuffledAction {
   type: typeof SET_FLASHCARDS_SHUFFLED;
-  payload?: {};
+  payload: {
+    value: boolean;
+  };
 }
 
 export interface SetFlashcardsSideAction {
   type: typeof SET_FLASHCARDS_SIDE;
-  payload?: {};
+  payload: {
+    value: 'definition' | 'term';
+  };
 }
 
 export interface SaveFlashcardsAnswerAction {
   type: typeof SAVE_FLASHCARDS_ANSWER;
-  payload?: {};
+  payload: {
+    id: string;
+    card_answer: 'correct' | 'incorrect';
+  };
 }
 
 export type FlashcardsActions =
@@ -662,27 +666,38 @@ export const NEXT_WRITE_ROUND = 'NEXT_WRITE_ROUND';
 
 export interface PrepareWriteAction {
   type: typeof PREPARE_WRITE;
-  payload?: {};
+  payload: {
+    remaining: Round;
+  };
 }
 
 export interface SetWriteIsInitAction {
   type: typeof SET_WRITE_IS_INIT;
-  payload?: {};
+  payload: {
+    value: boolean;
+  };
 }
 
 export interface SetWriteAnswerFieldAction {
   type: typeof SET_WRITE_ANSWER_FIELD;
-  payload?: {};
+  payload: {
+    value: string;
+  };
 }
 
 export interface SetWriteCopyAnswerFieldAction {
   type: typeof SET_WRITE_COPY_ANSWER_FIELD;
-  payload?: {};
+  payload: {
+    value: string;
+  };
 }
 
 export interface CheckWriteAnswerAction {
   type: typeof CHECK_WRITE_ANSWER;
-  payload?: {};
+  payload: {
+    card_answer: 'correct' | 'incorrect';
+    answer: string;
+  };
 }
 
 export interface NextWriteCardAction {
@@ -710,13 +725,23 @@ export type WriteActions =
   | OverrideWriteAnswerAction
   | NextWriteRoundAction;
 
+// game
+export const RESET_ALL_GAME_FIELDS = 'RESET_ALL_GAME_FIELDS';
+
+export interface ResetAllGameFieldsAction {
+  type: typeof RESET_ALL_GAME_FIELDS;
+  payload?: {};
+}
+
+export type GameActions = ResetAllGameFieldsAction | WriteActions | FlashcardsActions;
+
 // sr
 export const GET_SR_COUNT = 'GET_SR_COUNT';
-export const GET_SR_CARDS = 'GET_SR_CARDS';
 export const SET_SR_COUNTER = 'SET_SR_COUNTER';
+export const SET_SR_LOADING = 'SET_SR_LOADING';
+export const GET_SR_CARDS = 'GET_SR_CARDS';
 export const PUT_SR_ANSWER = 'PUT_SR_ANSWER';
 export const SET_CARD_SR = 'SET_CARD_SR';
-export const SET_SR_LOADING = 'SET_SR_LOADING';
 export const SET_CARDS_SR = 'SET_CARDS_SR';
 export const SET_CARDS_SR_POSITIVE = 'SET_CARDS_SR_POSITIVE';
 export const DROP_CARD_SR = 'DROP_CARD_SR';
@@ -724,65 +749,108 @@ export const DROP_CARDS_SR = 'DROP_CARDS_SR';
 
 export interface GetSRCountAction {
   type: typeof GET_SR_COUNT;
-  payload?: {};
+  payload: {
+    all_num: number;
+    repeat_num: number;
+    next_num: number;
+    next_date: string;
+  };
 }
 
 export interface GetSRCardsAction {
   type: typeof GET_SR_CARDS;
-  payload?: {};
+  payload: {
+    cards: Cards;
+  };
 }
 
 export interface SetSRCounterAction {
   type: typeof SET_SR_COUNTER;
-  payload?: {};
+  payload: {
+    value: number;
+  };
 }
 
-export interface RutSRAnswerAction {
+export interface PutSRAnswerAction {
   type: typeof PUT_SR_ANSWER;
-  payload?: {};
+  payload: {
+    _id: string;
+    stage: number;
+    nextRep: string;
+    prevStage: string;
+    lastRep: string;
+    studyRegime: boolean;
+  };
 }
 
 export interface SetCardSRAction {
   type: typeof SET_CARD_SR;
-  payload?: {};
+  payload: {
+    _id: string;
+    value: boolean;
+  };
 }
 
 export interface SetSRLoadingAction {
   type: typeof SET_SR_LOADING;
-  payload?: {};
+  payload: {
+    value: boolean;
+  };
 }
 
 export interface SetCardsSRAction {
   type: typeof SET_CARDS_SR;
-  payload?: {};
+  payload: {
+    value: boolean;
+  };
 }
 
 export interface SetCardsSRPositiveAction {
   type: typeof SET_CARDS_SR_POSITIVE;
-  payload?: {};
+  payload: {
+    _id_arr: string[];
+  };
 }
 
 export interface DropCardSRAction {
   type: typeof DROP_CARD_SR;
-  payload?: {};
+  payload: {
+    _id: string;
+    stage: number;
+    nextRep: string;
+    prevStage: string;
+    lastRep: string;
+  };
 }
 
 export interface DropCardsSRAction {
   type: typeof DROP_CARDS_SR;
-  payload?: {};
+  payload: {
+    stage: number;
+    nextRep: string;
+    prevStage: string;
+    lastRep: string;
+  };
 }
 
-export type SrActions =
-  | GetSRCountAction
+export type SrActions = GetSRCountAction | SetSRCounterAction | SetSRLoadingAction;
+
+export type SubSrActions =
   | GetSRCardsAction
-  | SetSRCounterAction
-  | RutSRAnswerAction
+  | PutSRAnswerAction
   | SetCardSRAction
-  | SetSRLoadingAction
   | SetCardsSRAction
   | SetCardsSRPositiveAction
   | DropCardSRAction
   | DropCardsSRAction;
+
+export type MainActions =
+  | SubMainActions
+  | SubEditActions
+  | SubFlashcardsActions
+  | SubGalleryActions
+  | SubScrapeActions
+  | SubSrActions;
 
 // ===========
 
@@ -793,6 +861,4 @@ export type AppActions =
   | DimenActions
   | VoiceActions
   | GameActions
-  | FlashcardsActions
-  | WriteActions
   | SrActions;

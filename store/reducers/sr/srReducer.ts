@@ -1,7 +1,8 @@
+import { SrActions } from './../../types/types';
 import { GET_SR_COUNT, SET_SR_LOADING, SET_SR_COUNTER } from '../../types/types';
-import initialState from './srInitState';
+import initialState, { SrState } from './srInitState';
 
-const SrReducer = (state = initialState, action) => {
+const SrReducer = (state = initialState, action: SrActions): SrState => {
   const { payload, type } = action;
 
   switch (type) {

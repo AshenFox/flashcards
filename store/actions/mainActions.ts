@@ -2,7 +2,7 @@ import {
   SelectBy,
   SelectCreated,
   Module,
-  Card,
+  CardBase,
   Cards,
 } from './../reducers/main/mainInitState';
 import { ThunkActionApp } from './../store';
@@ -26,7 +26,6 @@ import {
   CLEAR_MODULE,
   SET_SCROLL_TOP,
 } from '../types/types';
-import { ThunkAction } from 'redux-thunk';
 import { card_fields, module_fields } from '../reducers/main/mainInitState';
 import axios from '../../server/supplemental/axios';
 
@@ -175,7 +174,7 @@ export const get_cards = (ignore: boolean) => <ThunkActionApp>(async (
         data: {
           all_cards: boolean;
           all_cards_number: number;
-          cards: Card[];
+          cards: CardBase[];
           cards_number: number;
         };
       } = await axios.get('/api/main/cards', {
@@ -223,7 +222,7 @@ export const get_module_cards = (_id: string) => <ThunkActionApp>(async (
         data,
       }: {
         data: {
-          cards: Cards;
+          cards: CardBase[];
         };
       } = await axios.get('/api/main/module/cards', {
         params: {
@@ -234,7 +233,9 @@ export const get_module_cards = (_id: string) => <ThunkActionApp>(async (
         },
       });
 
-      dispatch({ type: GET_MODULE_CARDS, payload: data });
+      console.log(data);
+
+      dispatch({ type: GET_MODULE_CARDS, payload: { cards: arr_to_obj(data.cards) } });
     } catch (err) {
       console.error(err);
     }
@@ -265,7 +266,7 @@ export const get_module = (_id: string) => <ThunkActionApp>(async (
         data,
       }: {
         data: {
-          cards: Card[];
+          cards: CardBase[];
           module: Module;
         };
       } = await axios.get('/api/main/module', {
@@ -311,7 +312,7 @@ export const get_draft = () => <ThunkActionApp>(async (dispatch, getState) => {
         data,
       }: {
         data: {
-          cards: Card[];
+          cards: CardBase[];
           module: Module;
         };
       } = await axios.get('/api/edit/draft');
@@ -340,7 +341,7 @@ export const get_draft = () => <ThunkActionApp>(async (dispatch, getState) => {
 // ==============================
 // ==============================
 
-const arr_to_obj = (arr: Card[]): Cards => {
+const arr_to_obj = (arr: CardBase[]): Cards => {
   return Object.fromEntries(
     arr.map((card) => [
       card._id,
