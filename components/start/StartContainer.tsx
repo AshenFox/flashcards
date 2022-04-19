@@ -1,17 +1,25 @@
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
+import { FC, CSSProperties, MouseEvent } from 'react';
 import { change_modal, toggle_modal } from '../../store/actions/modalActions';
+import { useAppDispatch, useAppSelector } from '../../store/store';
 
-const StartContainer = ({ dimen, main, change_modal, toggle_modal }) => {
-  const { header_height } = dimen;
-  const { is_server } = main;
+interface OwnProps {}
 
-  const click = (value) => (e) => {
-    change_modal(value);
-    toggle_modal();
+type Props = OwnProps;
+
+const StartContainer: FC<Props> = () => {
+  const dispatch = useAppDispatch();
+
+  const {
+    dimen: { header_height },
+    main: { is_server },
+  } = useAppSelector((state) => state);
+
+  const click = (value: 'log_in') => (e: MouseEvent<HTMLButtonElement>) => {
+    dispatch(change_modal(value));
+    dispatch(toggle_modal());
   };
 
-  const startStyles = {
+  const startStyles: CSSProperties = {
     minHeight: `${
       !is_server ? 0.1 + document.documentElement.clientHeight - header_height : 0
     }px`,
@@ -41,18 +49,4 @@ const StartContainer = ({ dimen, main, change_modal, toggle_modal }) => {
   );
 };
 
-StartContainer.propTypes = {
-  dimen: PropTypes.object.isRequired,
-  change_modal: PropTypes.func.isRequired,
-  toggle_modal: PropTypes.func.isRequired,
-};
-
-const mapStateToProps = (state) => ({
-  dimen: state.dimen,
-  main: state.main,
-});
-
-export default connect(mapStateToProps, {
-  change_modal,
-  toggle_modal,
-})(StartContainer);
+export default StartContainer;

@@ -1,38 +1,41 @@
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
-import {
-  change_modal,
-  control_field,
-} from '../../../store/actions/modalActions';
+import { FC, MouseEvent, KeyboardEvent, ChangeEvent } from 'react';
+import { change_modal, control_field } from '../../../store/actions/modalActions';
 import { enter } from '../../../store/actions/authActions';
 import Error from './Error';
 import LoadingButton from '../../main/LoadingButton';
+import { useAppDispatch, useAppSelector } from '../../../store/store';
 
-const LogIn = ({ modal, change_modal, control_field, enter }) => {
+interface OwnProps {}
+
+type Props = OwnProps;
+
+const LogIn: FC<Props> = () => {
+  const dispatch = useAppDispatch();
+
   const {
     log_in: { username, password },
     log_in_errors: { username: userErr, password: passErr },
     loading,
-  } = modal;
+  } = useAppSelector(({ modal }) => modal);
 
-  const onClickChangeModal = (value) => (e) => {
-    change_modal(value);
+  const onClickChangeModal = (value: 'sign_up') => (e: MouseEvent<HTMLButtonElement>) => {
+    dispatch(change_modal(value));
   };
 
-  const onCLickLoadingButton = (value) => (e) => {
-    enter(value);
+  const onCLickLoadingButton =
+    (value: 'log_in') => (e: MouseEvent<HTMLButtonElement>) => {
+      dispatch(enter(value));
+    };
+
+  const onChange = (e: ChangeEvent<HTMLInputElement>) => {
+    // const target = e.target;
+    const { value, name } = e.target;
+
+    dispatch(control_field('log_in', name, value));
   };
 
-  const onChange = (e) => {
-    const target = e.target;
-    const value = target.value;
-    const name = target.name;
-
-    control_field('log_in', name, value);
-  };
-
-  const onKeyDown = (e) => {
-    if (e.key === 'Enter') enter('log_in');
+  const onKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter') dispatch(enter('log_in'));
   };
 
   return (
@@ -93,19 +96,4 @@ const LogIn = ({ modal, change_modal, control_field, enter }) => {
   );
 };
 
-LogIn.propTypes = {
-  modal: PropTypes.object.isRequired,
-  change_modal: PropTypes.func.isRequired,
-  control_field: PropTypes.func.isRequired,
-  enter: PropTypes.func.isRequired,
-};
-
-const mapStateToProps = (state) => ({
-  modal: state.modal,
-});
-
-export default connect(mapStateToProps, {
-  change_modal,
-  control_field,
-  enter,
-})(LogIn);
+export default LogIn;

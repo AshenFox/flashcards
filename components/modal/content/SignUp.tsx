@@ -1,46 +1,57 @@
-import { useRef } from 'react';
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
+import { ChangeEvent, FC, MouseEvent, useRef } from 'react';
 import { change_modal, control_field } from '../../../store/actions/modalActions';
 import { enter, check_field } from '../../../store/actions/authActions';
 import Error from './Error';
 import LoadingButton from '../../main/LoadingButton';
+import { useAppDispatch, useAppSelector } from '../../../store/store';
 
-const SignUp = ({ modal, change_modal, control_field, check_field, enter }) => {
+interface OwnProps {}
+
+type Props = OwnProps;
+
+const SignUp: FC<Props> = () => {
+  const dispatch = useAppDispatch();
+
   const {
     sign_up: { username, password, email },
     sign_up_errors: { username: userErr, password: passErr, email: emailErr, ok },
     loading,
-  } = modal;
+  } = useAppSelector(({ modal }) => modal);
 
-  const onClickChangeModal = (value) => (e) => {
-    change_modal(value);
+  const onClickChangeModal = (value: 'log_in') => (e: MouseEvent<HTMLButtonElement>) => {
+    dispatch(change_modal(value));
   };
 
-  const onCLickLoadingButton = (value) => (e) => {
-    enter(value);
-  };
+  const onCLickLoadingButton =
+    (value: 'sign_up') => (e: MouseEvent<HTMLButtonElement>) => {
+      dispatch(enter(value));
+    };
 
-  const onChange = (e) => {
+  const onChange = (e: ChangeEvent<HTMLInputElement>) => {
     const target = e.target;
     const value = target.value;
     const name = target.name;
 
-    control_field('sign_up', name, value);
+    dispatch(control_field('sign_up', name, value));
 
     // Timer control
     let timer = timers.current[name];
+
     if (timer) clearTimeout(timer);
     timers.current[name] = setTimeout(() => {
-      check_field(name);
-      timers.current[name] = false;
+      dispatch(check_field(name));
+      timers.current[name] = null;
     }, 500);
   };
 
-  const timers = useRef({
-    username: false,
-    email: false,
-    password: false,
+  const timers = useRef<{
+    username: typeof setTimeout;
+    email: typeof setTimeout;
+    password: typeof setTimeout;
+  }>({
+    username: null,
+    email: null,
+    password: null,
   });
 
   return (
@@ -117,7 +128,7 @@ const SignUp = ({ modal, change_modal, control_field, check_field, enter }) => {
   );
 };
 
-SignUp.propTypes = {
+/* SignUp.propTypes = {
   modal: PropTypes.object.isRequired,
   change_modal: PropTypes.func.isRequired,
   control_field: PropTypes.func.isRequired,
@@ -134,4 +145,6 @@ export default connect(mapStateToProps, {
   control_field,
   check_field,
   enter,
-})(SignUp);
+})(SignUp); */
+
+export default SignUp;

@@ -76,7 +76,7 @@ export const enter = (type: 'log_in' | 'sign_up') => <ThunkActionApp>(async (
   });
 
 // CHECK_FIELD
-export const check_field = (type: ModalInputFileds) => <ThunkActionApp>(async (
+export const check_field = (type: string) => <ThunkActionApp>(async (
     dispatch,
     getState
   ) => {
@@ -95,15 +95,14 @@ export const check_field = (type: ModalInputFileds) => <ThunkActionApp>(async (
         sign_up
       );
 
-      const payload = {
-        ...data,
-        type,
-      };
-
-      dispatch({
-        type: CHECK_FIELD,
-        payload,
-      });
+      if (type === 'username' || type === 'password' || type === 'email')
+        dispatch({
+          type: CHECK_FIELD,
+          payload: {
+            ...data,
+            type,
+          },
+        });
     } catch (err) {
       console.error(err);
     }

@@ -1,14 +1,19 @@
-import { useRef, useEffect } from 'react';
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
+import { useRef, useEffect, FC, MouseEvent } from 'react';
 import { toggle_modal } from '../../store/actions/modalActions';
 import ModalContent from './content/ModalContent';
+import { useAppDispatch, useAppSelector } from '../../store/store';
 
-const Modal = ({ modal, toggle_modal }) => {
-  const { is_modal, active_modal } = modal;
+interface OwnProps {}
 
-  const modalEl = useRef(null);
-  const dialogEl = useRef(null);
+type Props = OwnProps;
+
+const Modal: FC<Props> = () => {
+  const dispatch = useAppDispatch();
+
+  const { is_modal, active_modal } = useAppSelector(({ modal }) => modal);
+
+  const modalEl = useRef<HTMLDivElement>(null);
+  const dialogEl = useRef<HTMLDivElement>(null);
 
   const transitionModal = 125;
   const transitionDialog = 225;
@@ -16,15 +21,16 @@ const Modal = ({ modal, toggle_modal }) => {
   useEffect(() => {
     let styleModal = modalEl.current.style;
     let styleDialog = dialogEl.current.style;
+
     if (is_modal) {
       styleModal.display = 'flex';
 
       setTimeout(() => {
-        styleModal.opacity = 1;
+        styleModal.opacity = '1';
       }, 0);
 
       setTimeout(() => {
-        styleDialog.opacity = 1;
+        styleDialog.opacity = '1';
         styleDialog.transform = 'translateY(0vh)';
       }, transitionModal);
     } else {
@@ -32,7 +38,7 @@ const Modal = ({ modal, toggle_modal }) => {
       styleDialog.transform = '';
 
       setTimeout(() => {
-        styleModal.opacity = 1;
+        styleModal.opacity = '1';
       }, transitionDialog);
 
       setTimeout(() => {
@@ -41,14 +47,16 @@ const Modal = ({ modal, toggle_modal }) => {
     }
   }, [is_modal]);
 
-  const close = (e) => {
-    if (e.target === modalEl.current) toggle_modal();
+  const onMouseDown = (e: MouseEvent<HTMLDivElement>) => {
+    if (e.target === modalEl.current) dispatch(toggle_modal());
   };
+
+  const closeClick = (e: MouseEvent<HTMLDivElement>) => dispatch(toggle_modal());
 
   return (
     <div
       className='modal'
-      onClick={close}
+      onMouseDown={onMouseDown}
       style={{ transitionDuration: transitionModal * 0.001 + 's' }}
       ref={modalEl}
     >
@@ -65,7 +73,7 @@ const Modal = ({ modal, toggle_modal }) => {
               {active_modal === 'delete' ? 'Delete this set?' : ''}
             </h3>
           </div>
-          <div className='modal__close' onClick={toggle_modal}>
+          <div className='modal__close' onClick={closeClick}>
             <svg>
               <use href='../img/sprite.svg#icon__close'></use>
             </svg>
@@ -78,15 +86,4 @@ const Modal = ({ modal, toggle_modal }) => {
   );
 };
 
-Modal.propTypes = {
-  modal: PropTypes.object.isRequired,
-};
-
-const mapStateToProps = (state) => ({
-  modal: state.modal,
-  toggle_modal: PropTypes.func.isRequired,
-});
-
-export default connect(mapStateToProps, {
-  toggle_modal,
-})(Modal);
+export default Modal;

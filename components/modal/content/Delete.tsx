@@ -1,17 +1,23 @@
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
+import { FC, MouseEvent } from 'react';
 import { delete_module } from '../../../store/actions/editActions';
 import { toggle_modal } from '../../../store/actions/modalActions';
+import { useAppDispatch, useAppSelector } from '../../../store/store';
 import LoadingButton from '../../main/LoadingButton';
 
-const Delete = ({ main, delete_module, toggle_modal }) => {
-  const {
-    module: { _id, module_loading, title },
-  } = main;
+interface OwnProps {}
 
-  const clickDelete = () => delete_module(_id);
+type Props = OwnProps;
 
-  const close = (e) => toggle_modal();
+const Delete: FC<Props> = () => {
+  const dispatch = useAppDispatch();
+
+  const { module } = useAppSelector(({ main }) => main);
+
+  const { _id, module_loading, title } = module || {};
+
+  const clickDelete = (e: MouseEvent<HTMLButtonElement>) => dispatch(delete_module(_id));
+
+  const close = (e: MouseEvent<HTMLButtonElement>) => dispatch(toggle_modal());
 
   return (
     <>
@@ -55,17 +61,4 @@ const Delete = ({ main, delete_module, toggle_modal }) => {
   );
 };
 
-Delete.propTypes = {
-  main: PropTypes.object.isRequired,
-  delete_module: PropTypes.func.isRequired,
-  toggle_modal: PropTypes.func.isRequired,
-};
-
-const mapStateToProps = (state) => ({
-  main: state.main,
-});
-
-export default connect(mapStateToProps, {
-  delete_module,
-  toggle_modal,
-})(Delete);
+export default Delete;
