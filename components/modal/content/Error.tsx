@@ -1,6 +1,14 @@
-import PropTypes from 'prop-types';
+import { FC } from 'react';
+import { ErrorObj } from '../../../store/reducers/modal/modalInitState';
 
-const Error = ({ errObj, single }) => {
+interface OwnProps {
+  errObj: ErrorObj;
+  single?: boolean;
+}
+
+type Props = OwnProps;
+
+const Error: FC<Props> = ({ errObj, single }) => {
   const { ok, errors } = errObj;
   return (
     <div className='modal__username-error'>
@@ -15,11 +23,6 @@ const Error = ({ errObj, single }) => {
       )}
     </div>
   );
-};
-
-Error.propTypes = {
-  errObj: PropTypes.object.isRequired,
-  single: PropTypes.bool,
 };
 
 export default Error;

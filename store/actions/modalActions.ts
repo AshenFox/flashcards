@@ -36,15 +36,16 @@ export const change_modal = (active_modal: ModalType): AppActions => {
 // CONTROL_FIELD
 export const control_field = (
   field: ModalType,
-  name: ModalInputFileds,
+  name: string,
   value: string
 ): AppActions => {
-  return {
-    type: CONTROL_FIELD,
-    payload: {
-      field,
-      name,
-      value,
-    },
-  };
+  if (name === 'username' || name === 'password' || name === 'email')
+    return {
+      type: CONTROL_FIELD,
+      payload: {
+        field,
+        name,
+        value,
+      },
+    };
 };
