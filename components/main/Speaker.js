@@ -5,6 +5,8 @@ import { set_voice_speaking } from '../../store/actions/voiceActions';
 const Speaker = ({ _id, text, type, className, refProp, voice, set_voice_speaking }) => {
   const { voices, working, speaking } = voice;
 
+  console.log(type);
+
   const clickSpeaker = () => {
     const synth = window.speechSynthesis;
 

@@ -1,3 +1,4 @@
+import { Voices, Speaking } from './../reducers/voice/voiceInitState';
 import { Round } from './../reducers/game/gameInitState';
 import {
   SelectBy,
@@ -244,8 +245,10 @@ export const SET_DROPDOWN = 'SET_DROPDOWN';
 
 export interface SetDropdownAction {
   type: typeof SET_DROPDOWN;
-  payload?: {};
+  payload: boolean;
 }
+
+export type HeaderActions = SetDropdownAction;
 
 // dimen
 export const SET_HEADER_DIMEN = 'SET_HEADER_DIMEN';
@@ -596,12 +599,15 @@ export const SET_VOICE_SPEAKING = 'SET_VOICE_SPEAKING';
 
 export interface InitVoiceAction {
   type: typeof INIT_VOICE;
-  payload?: {};
+  payload: {
+    voices: Voices;
+    working: boolean;
+  };
 }
 
 export interface SetVoiceSpeakingAction {
   type: typeof SET_VOICE_SPEAKING;
-  payload?: {};
+  payload: Speaking;
 }
 
 export type VoiceActions = InitVoiceAction | SetVoiceSpeakingAction;
@@ -861,4 +867,5 @@ export type AppActions =
   | DimenActions
   | VoiceActions
   | GameActions
-  | SrActions;
+  | SrActions
+  | HeaderActions;
