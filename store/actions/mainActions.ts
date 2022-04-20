@@ -100,7 +100,7 @@ export const control_search_modules = (value: string): AppActions => ({
 });
 
 // GET MODULES
-export const get_modules = (ignore: boolean) => <ThunkActionApp>(async (
+export const get_modules = (ignore?: boolean) => <ThunkActionApp>(async (
     dispatch,
     getState
   ) => {
@@ -151,7 +151,7 @@ export const get_modules = (ignore: boolean) => <ThunkActionApp>(async (
   });
 
 // GET CARDS
-export const get_cards = (ignore: boolean) => <ThunkActionApp>(async (
+export const get_cards = (ignore?: boolean) => <ThunkActionApp>(async (
     dispatch,
     getState
   ) => {

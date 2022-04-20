@@ -1,7 +1,5 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, FC } from 'react';
 import { useRouter } from 'next/router';
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
 import {
   get_modules,
   get_cards,
@@ -16,27 +14,29 @@ import ListContainer from './content/ListContainer';
 import Search from './content/Search';
 import Push from '../main/Push';
 import ContentWrapper from '../main/ContentWrapper';
+import { useAppDispatch, useAppSelector } from '../../store/store';
 
-const HomeContainer = ({
-  auth,
-  main,
-  get_modules,
-  get_cards,
-  reset_fields_cards,
-  reset_fields_modules,
-  reset_search,
-  get_sr_count,
-}) => {
+interface OwnProps {}
+
+type Props = OwnProps;
+
+const HomeContainer: FC<Props> = () => {
   const router = useRouter();
   const { section } = router.query;
 
-  const { user } = auth;
-  const { username } = user ? user : {};
-  const { modules, cards, all_modules_number, all_cards_number } = main;
+  const dispatch = useAppDispatch();
+
+  // const { user } = auth;
+  const {
+    main: { modules, cards, all_modules_number, all_cards_number },
+    auth: { user },
+  } = useAppSelector((state) => state);
+
+  const { username } = user || {};
 
   useEffect(() => {
     if (!user) return;
-    reset_search();
+    dispatch(reset_search());
     loadContent();
   }, [user, section]);
 
@@ -64,26 +64,28 @@ const HomeContainer = ({
 
   useEffect(() => {
     return () => {
-      reset_fields_cards();
-      reset_fields_modules();
-      reset_search();
+      dispatch(reset_fields_cards());
+      dispatch(reset_fields_modules());
+      dispatch(reset_search());
     };
   }, []);
 
   const loadContent = () => {
-    if (!modules.length && section === 'modules') get_modules(true);
-    if (!cards.length && section === 'cards') get_cards(true);
-    if (section === 'sr') get_sr_count();
+    if (!modules.length && section === 'modules') dispatch(get_modules(true));
+    if (!cards.length && section === 'cards') dispatch(get_cards(true));
+    if (section === 'sr') dispatch(get_sr_count());
   };
 
   const scrollModules = useRef(
-    (e) => router.pathname === '/home/[section]' && check_bottom() && get_modules()
+    (e: Event) =>
+      router.pathname === '/home/[section]' && check_bottom() && dispatch(get_modules())
   );
   const scrollCards = useRef(
-    (e) => router.pathname === '/home/[section]' && check_bottom() && get_cards()
+    (e: Event) =>
+      router.pathname === '/home/[section]' && check_bottom() && dispatch(get_cards())
   );
 
-  const check_bottom = (e) => {
+  const check_bottom = () => {
     const windowHeight = document.documentElement.clientHeight;
 
     const scrollHeight = Math.max(
@@ -134,27 +136,4 @@ const HomeContainer = ({
   );
 };
 
-HomeContainer.propTypes = {
-  auth: PropTypes.object.isRequired,
-  main: PropTypes.object.isRequired,
-  get_modules: PropTypes.func.isRequired,
-  get_cards: PropTypes.func.isRequired,
-  reset_fields_cards: PropTypes.func.isRequired,
-  reset_fields_modules: PropTypes.func.isRequired,
-  reset_search: PropTypes.func.isRequired,
-  get_sr_count: PropTypes.func.isRequired,
-};
-
-const mapStateToProps = (state) => ({
-  auth: state.auth,
-  main: state.main,
-});
-
-export default connect(mapStateToProps, {
-  get_modules,
-  get_cards,
-  reset_fields_cards,
-  reset_fields_modules,
-  reset_search,
-  get_sr_count,
-})(HomeContainer);
+export default HomeContainer;

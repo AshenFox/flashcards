@@ -1,7 +1,18 @@
-import PropTypes from 'prop-types';
+import { FC, ReactElement } from 'react';
 import DateStr from './DateSrt';
 
-const SRIngicator = ({ data, classStr }) => {
+interface OwnProps {
+  data: {
+    stage: number;
+    nextRep: string;
+    prevStage: string;
+  };
+  classStr?: string;
+}
+
+type Props = OwnProps;
+
+const SRIngicator: FC<Props> = ({ data, classStr }) => {
   const { stage, nextRep, prevStage } = data;
 
   const full = 360;
@@ -12,7 +23,7 @@ const SRIngicator = ({ data, classStr }) => {
   const radius = 2;
   const diameter = radius * 2;
 
-  const dots = [];
+  const dots: ReactElement[] = [];
 
   for (let i = 1; i <= stage; i++) {
     angle = angle - part;
@@ -53,11 +64,6 @@ const SRIngicator = ({ data, classStr }) => {
       <div className='sr-indicator__dots'>{dots}</div>
     </div>
   );
-};
-
-SRIngicator.propTypes = {
-  data: PropTypes.object.isRequired,
-  classStr: PropTypes.string,
 };
 
 export default SRIngicator;

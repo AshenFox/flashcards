@@ -5,8 +5,8 @@ import { ThunkActionApp } from '../store';
 
 // SET_VOICE_SPEAKING
 export const set_voice_speaking = (
-  _id: string,
-  type: 'term' | 'definition'
+  _id?: string,
+  type?: 'term' | 'definition'
 ): AppActions => {
   const payload = {
     _id,

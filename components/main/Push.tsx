@@ -1,13 +1,17 @@
+import { FC } from 'react';
 import { useEffect } from 'react';
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
 import axios from '../../server/supplemental/axios';
+import { useAppSelector } from '../../store/store';
 
-const Push = ({ auth }) => {
-  const { user } = auth;
+interface OwnProps {}
+
+type Props = OwnProps;
+
+const Push: FC<Props> = () => {
+  const { user } = useAppSelector(({ auth }) => auth);
 
   useEffect(() => {
-    let device;
+    let device: 'mobile' | 'tablet' | 'pc';
     const screenWidth = screen.width;
 
     if (screenWidth < 620) {
@@ -22,27 +26,20 @@ const Push = ({ auth }) => {
       preparePush(device);
     }
   }, [user]);
+
   return <></>;
 };
 
-Push.propTypes = {
-  auth: PropTypes.object.isRequired,
-};
-
-const mapStateToProps = (state) => ({
-  auth: state.auth,
-});
-
-export default connect(mapStateToProps)(Push);
+export default Push;
 
 // ==========
 
-let subscriptionSent = false;
+let subscriptionSent: boolean = false;
 
-const publicVapidKey =
+const publicVapidKey: string =
   '***REMOVED***'; // ???
 
-const urlBase64ToUint8Array = (base64String) => {
+const urlBase64ToUint8Array = (base64String: string) => {
   const padding = '='.repeat((4 - (base64String.length % 4)) % 4);
   const base64 = (base64String + padding).replace(/-/g, '+').replace(/_/g, '/');
 
@@ -55,7 +52,7 @@ const urlBase64ToUint8Array = (base64String) => {
   return outputArray;
 };
 
-const preparePush = async (device) => {
+const preparePush = async (device: 'mobile' | 'tablet' | 'pc') => {
   if ('serviceWorker' in navigator) {
     if (subscriptionSent) return;
 
@@ -78,12 +75,18 @@ const preparePush = async (device) => {
   }
 };
 
-const sendSubscription = async (device, subscription) => {
+const sendSubscription = async (
+  device: 'mobile' | 'tablet' | 'pc',
+  subscription: PushSubscription
+) => {
   try {
-    const { data } = await axios.put('/api/notifications/subscribe', {
-      device,
-      subscription,
-    });
+    const { data }: { data: { msg: string } } = await axios.put(
+      '/api/notifications/subscribe',
+      {
+        device,
+        subscription,
+      }
+    );
   } catch (err) {
     console.log(err);
   }

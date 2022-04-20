@@ -1,21 +1,27 @@
+import { FC } from 'react';
 import { useEffect, useRef } from 'react';
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
 import { set_scroll_top } from '../../store/actions/mainActions';
+import { useAppDispatch, useAppSelector } from '../../store/store';
 
-const ScrollTop = ({ main, set_scroll_top }) => {
-  const { scroll_top } = main;
+interface OwnProps {}
+
+type Props = OwnProps;
+
+const ScrollTop: FC<Props> = () => {
+  const dispatch = useAppDispatch();
+
+  const { scroll_top } = useAppSelector(({ main }) => main);
 
   const scroll_top_ref = useRef(scroll_top);
   scroll_top_ref.current = scroll_top;
 
   useEffect(() => {
-    const onScroll = (e) => {
+    const onScroll = (e: Event) => {
       if (window.pageYOffset > 100 && !scroll_top_ref.current)
-        set_scroll_top(true);
+        dispatch(set_scroll_top(true));
 
       if (window.pageYOffset < 100 && scroll_top_ref.current)
-        set_scroll_top(false);
+        dispatch(set_scroll_top(false));
     };
 
     window.addEventListener('scroll', onScroll);
@@ -26,10 +32,7 @@ const ScrollTop = ({ main, set_scroll_top }) => {
   const clickScroll = () => movePageUp();
 
   return (
-    <div
-      className={`scroll ${scroll_top ? 'active' : ''}`}
-      onClick={clickScroll}
-    >
+    <div className={`scroll ${scroll_top ? 'active' : ''}`} onClick={clickScroll}>
       <svg height='20' width='20'>
         <use href='../img/sprite.svg#icon__arrow_up'></use>
       </svg>
@@ -37,37 +40,32 @@ const ScrollTop = ({ main, set_scroll_top }) => {
   );
 };
 
-ScrollTop.propTypes = {
-  main: PropTypes.object.isRequired,
-  set_scroll_top: PropTypes.func.isRequired,
-};
+export default ScrollTop;
 
-const mapStateToProps = (state) => ({
-  main: state.main,
-});
+let startTime: number = null;
 
-export default connect(mapStateToProps, { set_scroll_top })(ScrollTop);
-
-let startTime = null;
-
-const ease = (currentTime, startValue, changeInValue, duration) => {
+const ease = (
+  currentTime: number,
+  startValue: number,
+  changeInValue: number,
+  duration: number
+) => {
   currentTime /= duration / 2;
 
   if (currentTime < 1)
     return (changeInValue / 2) * currentTime * currentTime + startValue;
   currentTime--;
-  return (
-    (-changeInValue / 2) * (currentTime * (currentTime - 2) - 1) + startValue
-  );
+  return (-changeInValue / 2) * (currentTime * (currentTime - 2) - 1) + startValue;
 };
 
-const animation = (currentTime) => {
+const animation = (currentTime: number) => {
   if (startTime === null) startTime = currentTime;
 
   let timeElapsed = currentTime - startTime;
-  let positionY = ease(timeElapsed, pageYOffset, -pageYOffset, 750);
+  let positionY = ease(timeElapsed, scrollY, -scrollY, 750);
 
   window.scrollTo(0, positionY);
+
   if (positionY) {
     requestAnimationFrame(animation);
   } else {
@@ -76,9 +74,7 @@ const animation = (currentTime) => {
 };
 
 const movePageUp = () => {
-  let pageYOffset = window.pageYOffset || document.documentElement.scrollTop;
+  let pageYOffset: number = window.pageYOffset || document.documentElement.scrollTop;
 
-  if (pageYOffset) {
-    requestAnimationFrame(animation);
-  }
+  if (pageYOffset) requestAnimationFrame(animation);
 };

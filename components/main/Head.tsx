@@ -1,6 +1,11 @@
+import { FC } from 'react';
 import Next_head from 'next/head';
 
-export default function Head() {
+interface OwnProps {}
+
+type Props = OwnProps;
+
+const Head: FC<Props> = () => {
   return (
     <Next_head>
       <meta charSet='UTF-8' />
@@ -25,4 +30,6 @@ export default function Head() {
       <title>Flash Cards</title>
     </Next_head>
   );
-}
+};
+
+export default Head;
