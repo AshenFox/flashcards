@@ -1,29 +1,37 @@
-import { useRef } from 'react';
-import PropTypes from 'prop-types';
+import { FC, MouseEvent, TouchEvent, useRef } from 'react';
 import SRIndicator from '../../main/SRIngicator';
-import { connect } from 'react-redux';
 import { set_card_sr, set_cards_sr_positive } from '../../../store/actions/srActions';
+import { Card } from '../../../store/reducers/main/mainInitState';
+import { useAppDispatch } from '../../../store/store';
 
-const CardSRControl = ({ data, set_card_sr, set_cards_sr_positive }) => {
+interface OwnProps {
+  data: Card;
+}
+
+type Props = OwnProps;
+
+const CardSRControl: FC<Props> = ({ data }) => {
+  const dispatch = useAppDispatch();
+
   const { _id, studyRegime } = data;
 
-  const up = (e) => {
+  const up = (e: MouseEvent<HTMLLabelElement> | TouchEvent<HTMLLabelElement>) => {
     e.preventDefault();
     clearTimeout(timer.current);
 
     if (timer.current) {
-      set_card_sr(_id, !studyRegime);
+      dispatch(set_card_sr(_id, !studyRegime));
     }
   };
 
-  const down = (e) => {
+  const down = (e: MouseEvent<HTMLLabelElement> | TouchEvent<HTMLLabelElement>) => {
     timer.current = setTimeout(() => {
-      timer.current = false;
-      if (!studyRegime) set_cards_sr_positive(_id);
+      timer.current = null;
+      if (!studyRegime) dispatch(set_cards_sr_positive(_id));
     }, 550);
   };
 
-  const timer = useRef(false);
+  const timer = useRef<ReturnType<typeof setTimeout>>(null);
 
   return (
     <div className='module__card-controls-item module__card-study-regime'>
@@ -47,13 +55,4 @@ const CardSRControl = ({ data, set_card_sr, set_cards_sr_positive }) => {
   );
 };
 
-CardSRControl.propTypes = {
-  set_card_sr: PropTypes.func.isRequired,
-  set_cards_sr_positive: PropTypes.func.isRequired,
-};
-
-const mapStateToProps = (state) => ({});
-
-export default connect(mapStateToProps, { set_card_sr, set_cards_sr_positive })(
-  CardSRControl
-);
+export default CardSRControl;

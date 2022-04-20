@@ -1,11 +1,15 @@
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
+import { FC } from 'react';
+import { useAppSelector } from '../../../store/store';
 import Search from '../../home/content/Search';
 
-const Param = ({ main }) => {
-  const {
-    module: { number },
-  } = main;
+interface OwnProps {}
+
+type Props = OwnProps;
+
+const Param: FC<Props> = () => {
+  const { module } = useAppSelector(({ main }) => main);
+
+  const { number } = module || {};
 
   return (
     <div className='module__param'>
@@ -19,12 +23,4 @@ const Param = ({ main }) => {
   );
 };
 
-Param.propTypes = {
-  main: PropTypes.object.isRequired,
-};
-
-const mapStateToProps = (state) => ({
-  main: state.main,
-});
-
-export default connect(mapStateToProps)(Param);
+export default Param;

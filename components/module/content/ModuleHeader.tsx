@@ -1,17 +1,19 @@
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
 import Skeleton from 'react-loading-skeleton';
 import Link from 'next/link';
 import Study from './Study';
 import Info from './Info';
 import ContentWrapper from '../../main/ContentWrapper';
+import { useAppSelector } from '../../../store/store';
+import { FC } from 'react';
 
-const ModuleContainer = ({ main }) => {
-  const { module } = main;
+interface OwnProps {}
 
-  const {
-    module: { title },
-  } = main;
+type Props = OwnProps;
+
+const ModuleContainer: FC<Props> = () => {
+  const { module } = useAppSelector(({ main }) => main);
+
+  const { title } = module || {};
 
   return (
     <div className='module__header'>
@@ -39,12 +41,4 @@ const ModuleContainer = ({ main }) => {
   );
 };
 
-ModuleContainer.propTypes = {
-  main: PropTypes.object.isRequired,
-};
-
-const mapStateToProps = (state) => ({
-  main: state.main,
-});
-
-export default connect(mapStateToProps, {})(ModuleContainer);
+export default ModuleContainer;

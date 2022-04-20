@@ -1,13 +1,20 @@
-import { useEffect, useRef } from 'react';
+import { FC, useEffect, useRef, MouseEvent as ReactMouseEvent } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { set_module_question } from '../../../store/actions/editActions';
 import { drop_cards_sr } from '../../../store/actions/srActions';
+import { useAppDispatch, useAppSelector } from '../../../store/store';
 
-const ModuleQuestion = ({ main, set_module_question, drop_cards_sr }) => {
-  const {
-    module: { question },
-  } = main;
+interface OwnProps {}
+
+type Props = OwnProps;
+
+const ModuleQuestion: FC<Props> = () => {
+  const dispatch = useAppDispatch();
+
+  const { module } = useAppSelector(({ main }) => main);
+
+  const { question } = module || {};
 
   useEffect(() => {
     setTimeout(
@@ -21,18 +28,18 @@ const ModuleQuestion = ({ main, set_module_question, drop_cards_sr }) => {
     return () => window.removeEventListener('click', deactivateQuestion.current);
   }, [question]);
 
-  const deactivateQuestion = useRef((e) => {
-    let questionEl = e.target.closest('.module__question');
-    let questionAnswerEl = e.target.closest('.module__question-answer');
+  const deactivateQuestion = useRef((e: MouseEvent) => {
+    let questionEl = (e.target as HTMLElement).closest('.module__question');
+    let questionAnswerEl = (e.target as HTMLElement).closest('.module__question-answer');
 
     if (questionEl) {
-      if (questionAnswerEl) set_module_question(false);
+      if (questionAnswerEl) dispatch(set_module_question(false));
     } else {
-      set_module_question(false);
+      dispatch(set_module_question(false));
     }
   });
 
-  const clickYes = () => drop_cards_sr();
+  const clickYes = (e: ReactMouseEvent<HTMLDivElement>) => dispatch(drop_cards_sr());
 
   return (
     <div className='module__question module__question--big' data-active={question}>
@@ -47,16 +54,4 @@ const ModuleQuestion = ({ main, set_module_question, drop_cards_sr }) => {
   );
 };
 
-ModuleQuestion.propTypes = {
-  main: PropTypes.object.isRequired,
-  set_module_question: PropTypes.func.isRequired,
-  drop_cards_sr: PropTypes.func.isRequired,
-};
-
-const mapStateToProps = (state) => ({
-  main: state.main,
-});
-
-export default connect(mapStateToProps, { set_module_question, drop_cards_sr })(
-  ModuleQuestion
-);
+export default ModuleQuestion;

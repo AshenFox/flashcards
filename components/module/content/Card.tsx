@@ -10,8 +10,18 @@ import CardSRDropControl from './CardSRDropControl';
 import CardSRControl from './CardSRControl';
 import Img from '../../main/Img';
 import DateStr from '../../main/DateSrt';
+import { FC } from 'react';
+import { Card as CardType } from '../../../store/reducers/main/mainInitState';
 
-const Card = ({ data, filter = null, filter_type = null }) => {
+interface OwnProps {
+  data: CardType;
+  filter?: string;
+  filter_type?: string;
+}
+
+type Props = OwnProps;
+
+const Card: FC<Props> = ({ data, filter = null, filter_type = null }) => {
   const router = useRouter();
 
   const { term = '', defenition = '', imgurl = '', _id, moduleID, creation_date } = data;
@@ -23,7 +33,7 @@ const Card = ({ data, filter = null, filter_type = null }) => {
 
   const replacement = `<span class='bcc-yellow'>${filter}</span>`;
 
-  let formatted_term, formatted_definition;
+  let formatted_term: string, formatted_definition: string;
 
   if (filter_type === 'term') formatted_term = term.replace(filterRegExp, replacement);
   if (filter_type === 'defenition')
@@ -55,6 +65,7 @@ const Card = ({ data, filter = null, filter_type = null }) => {
           <ContentEditable
             html={filter_type === 'term' && filter ? formatted_term : term}
             disabled={true}
+            onChange={null}
           />
           <div className='module__card-controls'>
             <CardEditControl data={data} />
@@ -71,6 +82,7 @@ const Card = ({ data, filter = null, filter_type = null }) => {
                 filter_type === 'defenition' && filter ? formatted_definition : defenition
               }
               disabled={true}
+              onChange={null}
             />
             <Speaker
               _id={_id}
@@ -90,12 +102,4 @@ const Card = ({ data, filter = null, filter_type = null }) => {
   );
 };
 
-Card.propTypes = {
-  data: PropTypes.object.isRequired,
-  filter: PropTypes.string,
-  filter_type: PropTypes.string,
-};
-
-const mapStateToProps = (state) => ({});
-
-export default connect(false)(Card);
+export default Card;

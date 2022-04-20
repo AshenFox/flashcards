@@ -1,9 +1,15 @@
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
+import { FC, MouseEvent } from 'react';
 import { set_cards_sr } from '../../../store/actions/srActions';
+import { useAppDispatch, useAppSelector } from '../../../store/store';
 
-const ModuleSRControl = ({ main, set_cards_sr }) => {
-  const { cards } = main;
+interface OwnProps {}
+
+type Props = OwnProps;
+
+const ModuleSRControl: FC<Props> = () => {
+  const dispatch = useAppDispatch();
+
+  const { cards } = useAppSelector(({ main }) => main);
 
   const cardsArr = Object.values(cards);
 
@@ -16,7 +22,8 @@ const ModuleSRControl = ({ main, set_cards_sr }) => {
     }
   }
 
-  const clickToggleSwitch = () => set_cards_sr(!active);
+  const clickToggleSwitch = (e: MouseEvent<HTMLLabelElement>) =>
+    dispatch(set_cards_sr(!active));
 
   return (
     <div className='module__study-regime'>
@@ -40,11 +47,4 @@ const ModuleSRControl = ({ main, set_cards_sr }) => {
   );
 };
 
-ModuleSRControl.propTypes = {
-  main: PropTypes.object.isRequired,
-  set_cards_sr: PropTypes.func.isRequired,
-};
-
-const mapStateToProps = (state) => ({ main: state.main });
-
-export default connect(mapStateToProps, { set_cards_sr })(ModuleSRControl);
+export default ModuleSRControl;
