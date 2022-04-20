@@ -1,11 +1,23 @@
+import { FC, MutableRefObject } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { set_voice_speaking } from '../../store/actions/voiceActions';
+import { useAppDispatch, useAppSelector } from '../../store/store';
 
-const Speaker = ({ _id, text, type, className, refProp, voice, set_voice_speaking }) => {
-  const { voices, working, speaking } = voice;
+interface OwnProps {
+  _id: string;
+  text: string;
+  type: 'term' | 'definition';
+  className: string;
+  refProp?: MutableRefObject<HTMLDivElement>;
+}
 
-  console.log(type);
+type Props = OwnProps;
+
+const Speaker: FC<Props> = ({ _id, text, type, className, refProp }) => {
+  const dispatch = useAppDispatch();
+
+  const { voices, working, speaking } = useAppSelector(({ voice }) => voice);
 
   const clickSpeaker = () => {
     const synth = window.speechSynthesis;
@@ -17,21 +29,21 @@ const Speaker = ({ _id, text, type, className, refProp, voice, set_voice_speakin
     } else {
       const textForSpeaking = filterLang(filteredText, language);
       speak(textForSpeaking, language);
-      set_voice_speaking(_id, type);
+      dispatch(set_voice_speaking(_id, type));
     }
   };
 
-  const speak = (text, language) => {
+  const speak = (text: string, language: 'english' | 'russian') => {
     const synth = window.speechSynthesis;
 
     const SSU = new SpeechSynthesisUtterance(text);
 
-    SSU.onend = (e) => {
-      set_voice_speaking();
+    SSU.onend = (e: SpeechSynthesisEvent) => {
+      dispatch(set_voice_speaking());
       console.log('Done speaking...');
     };
 
-    SSU.onerror = (e) => {
+    SSU.onerror = (e: SpeechSynthesisErrorEvent) => {
       console.log('Something vent wrong...', e);
     };
 
@@ -93,27 +105,15 @@ const Speaker = ({ _id, text, type, className, refProp, voice, set_voice_speakin
   );
 };
 
-Speaker.propTypes = {
-  _id: PropTypes.string.isRequired,
-  text: PropTypes.string.isRequired,
-  type: PropTypes.string.isRequired,
-  voice: PropTypes.object.isRequired,
-  set_voice_speaking: PropTypes.func.isRequired,
-};
-const mapStateToProps = (state) => ({
-  voice: state.voice,
-});
-
-export default connect(mapStateToProps, { set_voice_speaking })(Speaker);
+export default Speaker;
 
 // Supplemental functions
 // ==============================
 // ==============================
 // ==============================
 
-const detectLanguage = (text) => {
+const detectLanguage = (text: string) => {
   if (text !== '' && text) {
-    let length = text.length;
     let arrRus = text.match(/[а-яА-ЯЁё]/g);
     let arrEng = text.match(/[a-zA-Z]/g);
 
@@ -129,7 +129,7 @@ const detectLanguage = (text) => {
   }
 };
 
-const filterLang = (text, lang) => {
+const filterLang = (text: string, lang: 'english' | 'russian') => {
   let filtered = text;
   if (lang === 'english') {
     filtered = filtered.replace(/[а-яА-ЯЁё]/g, '');
@@ -140,7 +140,7 @@ const filterLang = (text, lang) => {
   return filtered;
 };
 
-const filterText = (text) =>
+const filterText = (text: string) =>
   text
     .replace(/<[^>]*>/g, ' ')
     .replace(/\( \/[^/]*\/ \)/g, ' ')

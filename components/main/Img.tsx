@@ -1,7 +1,15 @@
+import { FC, SyntheticEvent } from 'react';
 import { useState, useRef } from 'react';
-import PropTypes from 'prop-types';
 
-const Img = ({ containerClass = '', imgClass = '', url }) => {
+interface OwnProps {
+  containerClass?: string;
+  imgClass?: string;
+  url: string;
+}
+
+type Props = OwnProps;
+
+const Img: FC<Props> = ({ containerClass = '', imgClass = '', url }) => {
   const [loaded, setLoaded] = useState(false);
   const [error, setError] = useState(false);
 
@@ -13,8 +21,8 @@ const Img = ({ containerClass = '', imgClass = '', url }) => {
     urlMemo.current = url;
   }
 
-  const onError = () => setError(true);
-  const onLoad = () => setLoaded(true);
+  const onError = (e: SyntheticEvent<HTMLImageElement>) => setError(true);
+  const onLoad = (e: SyntheticEvent<HTMLImageElement>) => setLoaded(true);
 
   return (
     <div
@@ -34,10 +42,6 @@ const Img = ({ containerClass = '', imgClass = '', url }) => {
       )}
     </div>
   );
-};
-
-Img.propTypes = {
-  url: PropTypes.string.isRequired,
 };
 
 export default Img;

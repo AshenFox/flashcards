@@ -1,7 +1,23 @@
-import PropTypes from 'prop-types';
+import { FC, MouseEvent } from 'react';
 
-const LoadingButton = ({ active, loading, children, classStr, onClickHandler }) => {
-  const logError = () => {
+interface OwnProps {
+  active: boolean;
+  loading: boolean;
+  children: string;
+  classStr?: string;
+  onClickHandler: (e: MouseEvent<HTMLButtonElement>) => void;
+}
+
+type Props = OwnProps;
+
+const LoadingButton: FC<Props> = ({
+  active,
+  loading,
+  children,
+  classStr,
+  onClickHandler,
+}) => {
+  const logError = (e: MouseEvent<HTMLButtonElement>) => {
     console.error('Button has been deactivated.');
   };
 
@@ -18,14 +34,6 @@ const LoadingButton = ({ active, loading, children, classStr, onClickHandler }) 
       <div className='loading-btn__spinner'></div>
     </div>
   );
-};
-
-LoadingButton.propTypes = {
-  active: PropTypes.bool.isRequired,
-  loading: PropTypes.bool.isRequired,
-  children: PropTypes.string.isRequired,
-  classStr: PropTypes.string,
-  onClickHandler: PropTypes.func,
 };
 
 export default LoadingButton;
