@@ -1,11 +1,20 @@
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
+import { FC, MouseEvent } from 'react';
 import { set_card_edit } from '../../../store/actions/editActions';
+import { Card } from '../../../store/reducers/main/mainInitState';
+import { useAppDispatch } from '../../../store/store';
 
-const CardEditControl = ({ data, set_card_edit }) => {
+interface OwnProps {
+  data: Card;
+}
+
+type Props = OwnProps;
+
+const CardEditControl: FC<Props> = ({ data }) => {
+  const dispatch = useAppDispatch();
+
   const { _id } = data;
 
-  const clickEdit = (e) => set_card_edit(_id, true);
+  const clickEdit = (e: MouseEvent<HTMLDivElement>) => dispatch(set_card_edit(_id, true));
 
   return (
     <div className='module__card-controls-item module__edit-card' onClick={clickEdit}>
@@ -16,11 +25,4 @@ const CardEditControl = ({ data, set_card_edit }) => {
   );
 };
 
-CardEditControl.propTypes = {
-  data: PropTypes.object.isRequired,
-  set_card_edit: PropTypes.func.isRequired,
-};
-
-const mapStateToProps = (state) => ({});
-
-export default connect(false, { set_card_edit })(CardEditControl);
+export default CardEditControl;

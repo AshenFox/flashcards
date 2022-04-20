@@ -1,10 +1,18 @@
-import { useEffect, useRef } from 'react';
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
+import { FC, MouseEvent as ReactMouseEvent, useEffect, useRef } from 'react';
 import { set_card_question } from '../../../store/actions/editActions';
 import { drop_card_sr } from '../../../store/actions/srActions';
+import { Card } from '../../../store/reducers/main/mainInitState';
+import { useAppDispatch } from '../../../store/store';
 
-const CardQuestion = ({ data, set_card_question, drop_card_sr }) => {
+interface OwnProps {
+  data: Card;
+}
+
+type Props = OwnProps;
+
+const CardQuestion: FC<Props> = ({ data }) => {
+  const dispatch = useAppDispatch();
+
   const { question, _id } = data;
 
   useEffect(() => {
@@ -19,20 +27,20 @@ const CardQuestion = ({ data, set_card_question, drop_card_sr }) => {
     return () => window.removeEventListener('click', deactivateQuestion.current);
   }, [question]);
 
-  const deactivateQuestion = useRef((e) => {
-    let questionEl = e.target.closest('.module__question');
-    let questionAnswerEl = e.target.closest('.module__question-answer');
+  const deactivateQuestion = useRef((e: MouseEvent) => {
+    let questionEl = (e.target as HTMLElement).closest('.module__question');
+    let questionAnswerEl = (e.target as HTMLElement).closest('.module__question-answer');
 
     if (questionEl) {
       if (questionAnswerEl) {
-        set_card_question(_id, false);
+        dispatch(set_card_question(_id, false));
       }
     } else {
-      set_card_question(_id, false);
+      dispatch(set_card_question(_id, false));
     }
   });
 
-  const clickYes = () => drop_card_sr(_id);
+  const clickYes = (e: ReactMouseEvent<HTMLDivElement>) => dispatch(drop_card_sr(_id));
 
   return (
     <div className='module__question' data-active={question}>
@@ -47,12 +55,4 @@ const CardQuestion = ({ data, set_card_question, drop_card_sr }) => {
   );
 };
 
-CardQuestion.propTypes = {
-  data: PropTypes.object.isRequired,
-  set_card_question: PropTypes.func.isRequired,
-  drop_card_sr: PropTypes.func.isRequired,
-};
-
-const mapStateToProps = (state) => ({});
-
-export default connect(false, { set_card_question, drop_card_sr })(CardQuestion);
+export default CardQuestion;

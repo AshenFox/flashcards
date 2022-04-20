@@ -1,11 +1,21 @@
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
+import { FC, MouseEvent } from 'react';
 import { set_card_question } from '../../../store/actions/editActions';
+import { Card } from '../../../store/reducers/main/mainInitState';
+import { useAppDispatch } from '../../../store/store';
 
-const CardSRDropControl = ({ data, set_card_question }) => {
+interface OwnProps {
+  data: Card;
+}
+
+type Props = OwnProps;
+
+const CardSRDropControl: FC<Props> = ({ data }) => {
+  const dispatch = useAppDispatch();
+
   const { question, _id } = data;
 
-  const clickDropSR = () => set_card_question(_id, true);
+  const clickDropSR = (e: MouseEvent<HTMLDivElement>) =>
+    dispatch(set_card_question(_id, true));
 
   return (
     <div
@@ -21,11 +31,4 @@ const CardSRDropControl = ({ data, set_card_question }) => {
   );
 };
 
-CardSRDropControl.propTypes = {
-  data: PropTypes.object.isRequired,
-  set_card_question: PropTypes.func.isRequired,
-};
-
-const mapStateToProps = (state) => ({});
-
-export default connect(false, { set_card_question })(CardSRDropControl);
+export default CardSRDropControl;

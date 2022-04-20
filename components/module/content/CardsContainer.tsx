@@ -1,12 +1,16 @@
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
 import Card from './Card';
 import EditCard from '../../edit/content/EditCard';
 import NotFound from './NotFound';
 import ScrollLoading from '../../home/content/ScrollLoading';
+import { useAppSelector } from '../../../store/store';
+import { FC } from 'react';
 
-const CardsContainer = ({ main }) => {
-  const { cards, loading, search_cards, select_by } = main;
+interface OwnProps {}
+
+type Props = OwnProps;
+
+const CardsContainer: FC<Props> = () => {
+  const { cards, loading, search_cards, select_by } = useAppSelector(({ main }) => main);
 
   const formatted_cards = Object.values(cards);
 
@@ -14,12 +18,7 @@ const CardsContainer = ({ main }) => {
     <div className='module__card-cont'>
       {formatted_cards.map((card) =>
         card.edit ? (
-          <EditCard
-            key={card._id}
-            data={card}
-            toggle={true}
-            loading={loading}
-          />
+          <EditCard key={card._id} data={card} toggle={true} loading={loading} />
         ) : (
           <Card
             key={card._id}
@@ -35,12 +34,4 @@ const CardsContainer = ({ main }) => {
   );
 };
 
-CardsContainer.propTypes = {
-  main: PropTypes.object.isRequired,
-};
-
-const mapStateToProps = (state) => ({
-  main: state.main,
-});
-
-export default connect(mapStateToProps)(CardsContainer);
+export default CardsContainer;

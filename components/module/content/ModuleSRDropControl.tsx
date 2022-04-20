@@ -1,13 +1,20 @@
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
+import { FC, MouseEvent } from 'react';
 import { set_module_question } from '../../../store/actions/editActions';
+import { useAppDispatch, useAppSelector } from '../../../store/store';
 
-const ModuleSRDropControl = ({ main, set_module_question }) => {
-  const {
-    module: { question },
-  } = main;
+interface OwnProps {}
 
-  const clickDropSR = () => set_module_question(true);
+type Props = OwnProps;
+
+const ModuleSRDropControl: FC<Props> = () => {
+  const dispatch = useAppDispatch();
+
+  const { module } = useAppSelector(({ main }) => main);
+
+  const { question } = module || {};
+
+  const clickDropSR = (e: MouseEvent<HTMLDivElement>) =>
+    dispatch(set_module_question(true));
 
   return (
     <div
@@ -23,15 +30,4 @@ const ModuleSRDropControl = ({ main, set_module_question }) => {
   );
 };
 
-ModuleSRDropControl.propTypes = {
-  main: PropTypes.object.isRequired,
-};
-
-const mapStateToProps = (state) => ({
-  main: state.main,
-  set_module_question: PropTypes.func.isRequired,
-});
-
-export default connect(mapStateToProps, {
-  set_module_question,
-})(ModuleSRDropControl);
+export default ModuleSRDropControl;

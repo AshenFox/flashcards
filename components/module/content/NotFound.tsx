@@ -1,10 +1,14 @@
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
+import { FC, ReactNode } from 'react';
+import { useAppSelector } from '../../../store/store';
 
-const NotFound = ({ main }) => {
-  const { cards, search_cards } = main;
+interface OwnProps {}
 
-  let content;
+type Props = OwnProps;
+
+const NotFound: FC<Props> = () => {
+  const { cards, search_cards } = useAppSelector(({ main }) => main);
+
+  let content: ReactNode;
 
   const cardsArr = Object.values(cards);
 
@@ -18,12 +22,4 @@ const NotFound = ({ main }) => {
   return <div className='module__none-found'>{content}</div>;
 };
 
-NotFound.propTypes = {
-  main: PropTypes.object.isRequired,
-};
-
-const mapStateToProps = (state) => ({
-  main: state.main,
-});
-
-export default connect(mapStateToProps)(NotFound);
+export default NotFound;

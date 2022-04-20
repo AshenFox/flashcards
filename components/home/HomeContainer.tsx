@@ -26,7 +26,6 @@ const HomeContainer: FC<Props> = () => {
 
   const dispatch = useAppDispatch();
 
-  // const { user } = auth;
   const {
     main: { modules, cards, all_modules_number, all_cards_number },
     auth: { user },

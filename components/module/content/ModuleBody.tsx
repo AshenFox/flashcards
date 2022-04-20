@@ -1,9 +1,13 @@
-import PropTypes from 'prop-types';
 import Param from './Param';
 import CardsContainer from './CardsContainer';
 import ContentWrapper from '../../main/ContentWrapper';
+import { FC } from 'react';
 
-const ModuleContainer = () => (
+interface OwnProps {}
+
+type Props = OwnProps;
+
+const ModuleContainer: FC<Props> = () => (
   <ContentWrapper>
     <div className='module__body'>
       <div className='container'>
@@ -13,7 +17,5 @@ const ModuleContainer = () => (
     </div>
   </ContentWrapper>
 );
-
-ModuleContainer.propTypes = {};
 
 export default ModuleContainer;

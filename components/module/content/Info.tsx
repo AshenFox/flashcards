@@ -1,5 +1,3 @@
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
 import { change_modal, toggle_modal } from '../../../store/actions/modalActions';
 import Link from 'next/link';
 import Skeleton from 'react-loading-skeleton';
@@ -7,16 +5,23 @@ import ModuleQuestion from './ModuleQuestion';
 import ModuleSRDropControl from './ModuleSRDropControl';
 import ModuleSRControl from './ModuleSRControl';
 import DateStr from '../../main/DateSrt';
+import { FC, MouseEvent } from 'react';
+import { useAppDispatch, useAppSelector } from '../../../store/store';
 
-const Info = ({ main, change_modal, toggle_modal }) => {
-  const { module } = main;
-  const {
-    module: { author, _id, creation_date },
-  } = main;
+interface OwnProps {}
 
-  const openModal = (value) => (e) => {
-    change_modal(value);
-    toggle_modal();
+type Props = OwnProps;
+
+const Info: FC<Props> = () => {
+  const dispatch = useAppDispatch();
+
+  const { module } = useAppSelector(({ main }) => main);
+
+  const { author, _id, creation_date } = module || {};
+
+  const openModal = (value: 'delete') => (e: MouseEvent<HTMLDivElement>) => {
+    dispatch(change_modal(value));
+    dispatch(toggle_modal());
   };
 
   return (
@@ -51,17 +56,4 @@ const Info = ({ main, change_modal, toggle_modal }) => {
   );
 };
 
-Info.propTypes = {
-  main: PropTypes.object.isRequired,
-  change_modal: PropTypes.func.isRequired,
-  toggle_modal: PropTypes.func.isRequired,
-};
-
-const mapStateToProps = (state) => ({
-  main: state.main,
-});
-
-export default connect(mapStateToProps, {
-  change_modal,
-  toggle_modal,
-})(Info);
+export default Info;
