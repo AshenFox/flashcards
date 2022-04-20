@@ -9,30 +9,23 @@ import ListItem from './ListItem';
 import Card from '../../module/content/Card';
 import EditCard from '../../edit/content/EditCard';
 import ScrollLoading from './ScrollLoading';
+import { FC } from 'react';
+import { useAppSelector } from '../../../store/store';
+import {
+  Card as CardType,
+  Module as ModuleType,
+} from '../../../store/reducers/main/mainInitState';
 
-const ListContainer = ({ main }) => {
+interface OwnProps {}
+
+type Props = OwnProps;
+
+const ListContainer: FC<Props> = () => {
   const router = useRouter();
   const { section } = router.query;
 
-  const {
-    modules,
-    draft,
-    loading,
-    cards,
-    search_cards,
-    search_modules,
-    select_by,
-  } = main;
-
-  const process = (dataArr, data, i) => {
-    const prev_data = dataArr[i - 1];
-    const prev_name = prev_data && create_name(prev_data.creation_date);
-    const new_name = create_name(data.creation_date);
-
-    const exists = prev_name === new_name;
-
-    return { new_name, exists };
-  };
+  const { modules, draft, loading, cards, search_cards, search_modules, select_by } =
+    useAppSelector(({ main }) => main);
 
   const formatted_cards = Object.values(cards);
 
@@ -84,12 +77,18 @@ const ListContainer = ({ main }) => {
   );
 };
 
-ListContainer.propTypes = {
-  main: PropTypes.object.isRequired,
+export default ListContainer;
+
+const process = (
+  dataArr: CardType[] | ModuleType[],
+  data: CardType | ModuleType,
+  i: number
+) => {
+  const prev_data = dataArr[i - 1];
+  const prev_name = prev_data && create_name(prev_data.creation_date);
+  const new_name = create_name(data.creation_date);
+
+  const exists = prev_name === new_name;
+
+  return { new_name, exists };
 };
-
-const mapStateToProps = (state) => ({
-  main: state.main,
-});
-
-export default connect(mapStateToProps)(ListContainer);

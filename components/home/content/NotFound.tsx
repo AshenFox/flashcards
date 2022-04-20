@@ -1,18 +1,27 @@
-import { useEffect } from 'react';
+import { FC, ReactNode, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import { useAppSelector } from '../../../store/store';
 
-const NotFound = ({ main }) => {
-  const { draft, cards, modules, search_cards, search_modules } = main;
+interface OwnProps {}
+
+type Props = OwnProps;
+
+const NotFound: FC<Props> = () => {
+  const { draft, cards, modules, search_cards, search_modules } = useAppSelector(
+    ({ main }) => main
+  );
+
   const router = useRouter();
+
   const { section } = router.query;
 
   useEffect(() => {
     return () => {};
   }, []);
 
-  let content;
+  let content: ReactNode;
 
   if (section === 'modules') {
     if (!modules.length)
@@ -42,12 +51,4 @@ const NotFound = ({ main }) => {
   return <div className='home__none-found'>{content}</div>;
 };
 
-NotFound.propTypes = {
-  main: PropTypes.object.isRequired,
-};
-
-const mapStateToProps = (state) => ({
-  main: state.main,
-});
-
-export default connect(mapStateToProps)(NotFound);
+export default NotFound;

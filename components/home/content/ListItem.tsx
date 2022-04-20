@@ -1,11 +1,13 @@
-import PropTypes from 'prop-types';
+import { FC, ReactNode } from 'react';
 
-const ListItem = ({ children }) => {
+interface OwnProps {
+  children: ReactNode;
+}
+
+type Props = OwnProps;
+
+const ListItem: FC<Props> = ({ children }) => {
   return <>{children}</>;
-};
-
-ListItem.propTypes = {
-  children: PropTypes.node.isRequired,
 };
 
 export default ListItem;

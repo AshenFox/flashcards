@@ -11,7 +11,7 @@ import CardSRControl from './CardSRControl';
 import Img from '../../main/Img';
 import DateStr from '../../main/DateSrt';
 
-const Card = ({ data, filter = false, filter_type = false }) => {
+const Card = ({ data, filter = null, filter_type = null }) => {
   const router = useRouter();
 
   const { term = '', defenition = '', imgurl = '', _id, moduleID, creation_date } = data;

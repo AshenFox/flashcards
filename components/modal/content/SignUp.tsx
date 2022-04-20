@@ -45,9 +45,9 @@ const SignUp: FC<Props> = () => {
   };
 
   const timers = useRef<{
-    username: typeof setTimeout;
-    email: typeof setTimeout;
-    password: typeof setTimeout;
+    username: ReturnType<typeof setTimeout>;
+    email: ReturnType<typeof setTimeout>;
+    password: ReturnType<typeof setTimeout>;
   }>({
     username: null,
     email: null,

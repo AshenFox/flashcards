@@ -1,6 +1,12 @@
-import PropTypes from 'prop-types';
+import { FC } from 'react';
 
-const ScrollLoading = ({ loading }) => {
+interface OwnProps {
+  loading: boolean;
+}
+
+type Props = OwnProps;
+
+const ScrollLoading: FC<Props> = ({ loading }) => {
   return (
     <div
       className={`home__loading-container ${
@@ -15,10 +21,6 @@ const ScrollLoading = ({ loading }) => {
       </div>
     </div>
   );
-};
-
-ScrollLoading.propTypes = {
-  loading: PropTypes.bool.isRequired,
 };
 
 export default ScrollLoading;

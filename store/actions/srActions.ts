@@ -19,7 +19,7 @@ import { card_fields } from '../reducers/main/mainInitState';
 import { saveLastUpdate } from '../helper-functions';
 
 // SET_SR_COUNTER
-export const set_sr_counter = (additionNumber: number, value: string) =>
+export const set_sr_counter = (additionNumber: number, value?: string) =>
   <ThunkActionApp>((dispatch, getState) => {
     const {
       sr: { counter, repeat_num },

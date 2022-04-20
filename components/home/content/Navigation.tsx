@@ -1,14 +1,18 @@
 import PropTypes from 'prop-types';
-import { useEffect } from 'react';
+import { FC, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
 
-const Navigation = () => {
+interface OwnProps {}
+
+type Props = OwnProps;
+
+const Navigation: FC<Props> = () => {
   const router = useRouter();
+
   const { section } = router.query;
 
-  const _default =
-    section !== 'cards' && section !== 'modules' && section !== 'sr';
+  const _default = section !== 'cards' && section !== 'modules' && section !== 'sr';
 
   useEffect(() => {
     if (_default && section !== undefined) router.replace('/home/modules');
@@ -48,7 +52,5 @@ const Navigation = () => {
     </div>
   );
 };
-
-Navigation.propTypes = {};
 
 export default Navigation;

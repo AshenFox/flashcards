@@ -1,4 +1,4 @@
-import { useRef } from 'react';
+import { FC, useRef } from 'react';
 import { useRouter } from 'next/router';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
@@ -14,6 +14,7 @@ import {
   get_cards,
 } from '../../../store/actions/mainActions';
 import Select from 'react-select';
+import { useAppDispatch, useAppSelector } from '../../../store/store';
 
 const optionsBy = [
   { value: 'term', label: 'Term' },
@@ -42,68 +43,66 @@ const customStyles = {
   }),
 };
 
-const Search = ({
-  main,
-  control_search_cards,
-  control_search_modules,
-  set_select_by,
-  set_select_created,
-  reset_fields_cards,
-  reset_fields_modules,
-  get_modules,
-  get_module_cards,
-  get_cards,
-}) => {
-  const { search_cards, search_modules, select_by, select_created, module } = main;
+interface OwnProps {}
 
+type Props = OwnProps;
+
+const Search: FC<Props> = () => {
   const router = useRouter();
 
   const { pathname } = router;
   const { section } = router.query;
 
-  const timer = useRef(false);
+  const dispatch = useAppDispatch();
+
+  const { search_cards, search_modules, select_by, select_created, module } =
+    useAppSelector(({ main }) => main);
+
+  const { _id } = module || {};
+
+  const timer = useRef<ReturnType<typeof setTimeout>>(null);
 
   const changeSearchCards = (e) => {
-    control_search_cards(e.target.value);
+    dispatch(control_search_cards(e.target.value));
     clearTimeout(timer.current);
-    reset_fields_cards();
+    dispatch(reset_fields_cards());
     timer.current = setTimeout(() => {
-      isModulePath ? get_module_cards(module._id) : get_cards();
+      isModulePath ? dispatch(get_module_cards(_id)) : dispatch(get_cards());
     }, 500);
   };
 
   const controlSearchModules = (e) => {
-    control_search_modules(e.target.value);
+    dispatch(control_search_modules(e.target.value));
     clearTimeout(timer.current);
-    reset_fields_modules();
+    dispatch(reset_fields_modules());
     timer.current = setTimeout(() => {
-      get_modules();
+      dispatch(get_modules());
     }, 500);
   };
 
   const changeSelectBy = (value) => {
-    set_select_by(value);
+    dispatch(set_select_by(value));
     if (search_cards.value) {
-      reset_fields_cards();
+      dispatch(reset_fields_cards());
       console.log('fire!');
-      isModulePath ? get_module_cards(module._id) : get_cards();
+      isModulePath ? dispatch(get_module_cards(_id)) : dispatch(get_cards());
     }
   };
 
   const changeSelectCreated = (value) => {
-    set_select_created(value);
+    dispatch(set_select_created(value));
 
     if (isModulePath) {
-      reset_fields_cards();
-      get_module_cards(module._id);
+      dispatch(reset_fields_cards());
+      dispatch(get_module_cards(_id));
     } else {
       if (isCards) {
-        reset_fields_cards();
-        get_cards();
+        dispatch(reset_fields_cards());
+        dispatch(get_cards());
       }
       if (isModules) {
-        reset_fields_modules();
-        get_modules();
+        dispatch(reset_fields_modules());
+        dispatch(get_modules());
       }
     }
   };
@@ -161,30 +160,4 @@ const Search = ({
   );
 };
 
-Search.propTypes = {
-  main: PropTypes.object.isRequired,
-  control_search_cards: PropTypes.func.isRequired,
-  control_search_modules: PropTypes.func.isRequired,
-  set_select_by: PropTypes.func.isRequired,
-  set_select_created: PropTypes.func.isRequired,
-  reset_fields_cards: PropTypes.func.isRequired,
-  reset_fields_modules: PropTypes.func.isRequired,
-  get_modules: PropTypes.func.isRequired,
-  get_cards: PropTypes.func.isRequired,
-};
-
-const mapStateToProps = (state) => ({
-  main: state.main,
-});
-
-export default connect(mapStateToProps, {
-  control_search_cards,
-  control_search_modules,
-  set_select_by,
-  set_select_created,
-  reset_fields_cards,
-  reset_fields_modules,
-  get_modules,
-  get_module_cards,
-  get_cards,
-})(Search);
+export default Search;
