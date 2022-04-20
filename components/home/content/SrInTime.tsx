@@ -1,39 +1,35 @@
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
 import Skeleton from 'react-loading-skeleton';
+import { FC } from 'react';
+import { useAppSelector } from '../../../store/store';
 
-const SrInTime = ({ main, sr }) => {
-  const { loading } = main;
-  const { next_num, next_date } = sr;
+interface OwnProps {}
+
+type Props = OwnProps;
+
+const SrInTime: FC<Props> = () => {
+  const {
+    sr: { next_num, next_date },
+    main: { loading },
+  } = useAppSelector((state) => state);
 
   return (
     <>
-      {!!next_num && (
+      {!!next_num && next_date && (
         <>
           <span>
             {loading ? <Skeleton width={25} /> : next_num} card
             {next_num > 1 || next_num < 1 ? 's' : ''}
           </span>{' '}
-          to repeat in {getTimeIntervalStr(next_date)}.
+          to repeat {getTimeIntervalStr(next_date)}.
         </>
       )}
     </>
   );
 };
 
-SrInTime.propTypes = {
-  sr: PropTypes.object.isRequired,
-  main: PropTypes.object.isRequired,
-};
+export default SrInTime;
 
-const mapStateToProps = (state) => ({
-  sr: state.sr,
-  main: state.main,
-});
-
-export default connect(mapStateToProps)(SrInTime);
-
-const getTimeIntervalStr = (dateStr) => {
+const getTimeIntervalStr = (dateStr: string) => {
   const mil = new Date(dateStr).getTime();
 
   let sec = (mil - Date.now()) * 0.001;

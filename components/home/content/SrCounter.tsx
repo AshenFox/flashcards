@@ -1,41 +1,49 @@
-import { useRef, useEffect } from 'react';
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
+import { useRef, useEffect, FC, ChangeEvent, MouseEvent, TouchEvent } from 'react';
 import { set_sr_counter } from '../../../store/actions/srActions';
+import { useAppDispatch, useAppSelector } from '../../../store/store';
 
-const SrCounter = ({ sr, set_sr_counter }) => {
-  const { counter } = sr;
+interface OwnProps {}
 
-  const handleCounterChange = (e) => set_sr_counter(false, e.target.value);
+type Props = OwnProps;
 
-  const intervalRef = useRef(false);
-  const timeoutRef = useRef(false);
-  const blockSingle = useRef(false);
+const SrCounter: FC<Props> = () => {
+  const dispatch = useAppDispatch();
 
-  const single = (value) => () => {
+  const { counter } = useAppSelector(({ sr }) => sr);
+
+  const handleCounterChange = (e: ChangeEvent<HTMLInputElement>) =>
+    dispatch(set_sr_counter(null, e.target.value));
+
+  const intervalRef = useRef<ReturnType<typeof setInterval>>(null);
+  const timeoutRef = useRef<ReturnType<typeof setTimeout>>(null);
+  const blockSingle = useRef<boolean>(false);
+
+  const single = (value: 'stepUp' | 'stepDown') => (e: MouseEvent<HTMLDivElement>) => {
     if (blockSingle.current) return;
-    if (value === 'stepUp') set_sr_counter(1);
-    if (value === 'stepDown') set_sr_counter(-1);
+    if (value === 'stepUp') dispatch(set_sr_counter(1));
+    if (value === 'stepDown') dispatch(set_sr_counter(-1));
   };
 
-  const multiple = (value) => (e) => {
-    timeoutRef.current = setTimeout(() => {
-      timeoutRef.current = false;
-      blockSingle.current = true;
+  const multiple =
+    (value: 'stepUp' | 'stepDown') =>
+    (e: MouseEvent<HTMLDivElement> | TouchEvent<HTMLDivElement>) => {
+      timeoutRef.current = setTimeout(() => {
+        timeoutRef.current = null;
+        blockSingle.current = true;
 
-      intervalRef.current = setInterval(() => {
-        if (value === 'stepUp') set_sr_counter(5);
-        if (value === 'stepDown') set_sr_counter(-5);
-      }, 100);
-    }, 500);
-  };
+        intervalRef.current = setInterval(() => {
+          if (value === 'stepUp') dispatch(set_sr_counter(5));
+          if (value === 'stepDown') dispatch(set_sr_counter(-5));
+        }, 100);
+      }, 500);
+    };
 
   useEffect(() => {
-    const cleanup = (e) => {
+    const cleanup = (e: Event) => {
       clearTimeout(timeoutRef.current);
       clearInterval(intervalRef.current);
-      timeoutRef.current = false;
-      intervalRef.current = false;
+      timeoutRef.current = null;
+      intervalRef.current = null;
       blockSingle.current = false;
     };
 
@@ -76,13 +84,4 @@ const SrCounter = ({ sr, set_sr_counter }) => {
   );
 };
 
-SrCounter.propTypes = {
-  sr: PropTypes.object.isRequired,
-  set_sr_counter: PropTypes.func.isRequired,
-};
-
-const mapStateToProps = (state) => ({
-  sr: state.sr,
-});
-
-export default connect(mapStateToProps, { set_sr_counter })(SrCounter);
+export default SrCounter;

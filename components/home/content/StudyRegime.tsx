@@ -1,13 +1,19 @@
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
 import Link from 'next/link';
 import SrInTime from './SrInTime';
 import SrCounter from './SrCounter';
 import Skeleton from 'react-loading-skeleton';
+import { useAppSelector } from '../../../store/store';
+import { FC } from 'react';
 
-const StudyRegime = ({ main, sr }) => {
-  const { loading } = main;
-  const { all_num, repeat_num, counter } = sr;
+interface OwnProps {}
+
+type Props = OwnProps;
+
+const StudyRegime: FC<Props> = () => {
+  const {
+    sr: { all_num, repeat_num, counter },
+    main: { loading },
+  } = useAppSelector((state) => state);
 
   return (
     <div className='home__module home__module--v2'>
@@ -63,14 +69,4 @@ const StudyRegime = ({ main, sr }) => {
   );
 };
 
-StudyRegime.propTypes = {
-  main: PropTypes.object.isRequired,
-  sr: PropTypes.object.isRequired,
-};
-
-const mapStateToProps = (state) => ({
-  main: state.main,
-  sr: state.sr,
-});
-
-export default connect(mapStateToProps)(StudyRegime);
+export default StudyRegime;

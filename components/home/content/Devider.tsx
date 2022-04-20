@@ -1,6 +1,14 @@
-import PropTypes from 'prop-types';
+import { FC } from 'react';
+import { Module } from '../../../store/reducers/main/mainInitState';
 
-const Devider = ({ name, draft }) => {
+interface OwnProps {
+  name?: string;
+  draft?: Module | false;
+}
+
+type Props = OwnProps;
+
+const Devider: FC<Props> = ({ name, draft }) => {
   const msg = draft ? 'in progress' : name;
 
   return (
@@ -11,14 +19,9 @@ const Devider = ({ name, draft }) => {
   );
 };
 
-Devider.propTypes = {
-  name: PropTypes.string,
-  draft: PropTypes.object,
-};
-
 export default Devider;
 
-export const create_name = (str_date) => {
+export const create_name = (str_date: string) => {
   const date = new Date(str_date);
 
   const sec = (new Date().getTime() - date.getTime()) * 0.001;

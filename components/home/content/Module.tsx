@@ -1,10 +1,18 @@
-import PropTypes from 'prop-types';
 import Link from 'next/link';
 import ContentEditable from 'react-contenteditable';
 import DateStr from '../../main/DateSrt';
+import { Module as ModuleType } from '../../../store/reducers/main/mainInitState';
+import { FC } from 'react';
 
-const Module = ({ data, filter = false }) => {
-  const { title, author, number, draft, _id, creation_date } = data ? data : {};
+interface OwnProps {
+  data: ModuleType;
+  filter?: string;
+}
+
+type Props = OwnProps;
+
+const Module: FC<Props> = ({ data, filter = null }) => {
+  const { title, author, number, draft, _id, creation_date } = data || {};
 
   const filterRegExp = new RegExp(
     `${filter}(?!br>|r>|>|\/div>|div>|iv>|v>|nbsp;|bsp;|sp;|p;|;|\/span>|span>|pan>|an>|n>)`,
@@ -13,11 +21,12 @@ const Module = ({ data, filter = false }) => {
 
   const replacement = `<span class='bcc-yellow'>${filter}</span>`;
 
-  let formatted_title;
+  let formatted_title: string;
 
   if (filter) formatted_title = title.replace(filterRegExp, replacement);
 
-  let html;
+  let html: string;
+
   if (filter) html = formatted_title;
   if (!draft && !filter) html = title;
   if (!title) html = '(Untitled)';
@@ -42,16 +51,12 @@ const Module = ({ data, filter = false }) => {
             html={html}
             disabled={true}
             className={`home__module-title ${draft || !title ? 'blue' : ''}`}
+            onChange={null}
           />
         </div>
       </div>
     </Link>
   );
-};
-
-Module.propTypes = {
-  data: PropTypes.object.isRequired,
-  filter: PropTypes.string,
 };
 
 export default Module;
