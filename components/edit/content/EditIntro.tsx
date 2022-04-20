@@ -1,16 +1,21 @@
 import { useRouter } from 'next/router';
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
 import Link from 'next/link';
 import ContentWrapper from '../../main/ContentWrapper';
+import { useAppSelector } from '../../../store/store';
+import { FC } from 'react';
 
-const EditContainer = ({ main }) => {
+interface OwnProps {}
+
+type Props = OwnProps;
+
+const EditContainer: FC<Props> = () => {
   const router = useRouter();
+
   const { _id } = router.query;
 
-  const {
-    module: { draft },
-  } = main;
+  const { module } = useAppSelector(({ main }) => main);
+
+  const { draft } = module || {};
 
   return (
     <div className='edit__intro'>
@@ -37,12 +42,4 @@ const EditContainer = ({ main }) => {
   );
 };
 
-EditContainer.propTypes = {
-  main: PropTypes.object.isRequired,
-};
-
-const mapStateToProps = (state) => ({
-  main: state.main,
-});
-
-export default connect(mapStateToProps, {})(EditContainer);
+export default EditContainer;

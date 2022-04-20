@@ -1,31 +1,39 @@
-import { useRef } from 'react';
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
+import { FC, MouseEvent, TouchEvent, useRef } from 'react';
 import {
   set_card_save,
   set_cards_save_positive,
 } from '../../../store/actions/editActions';
+import { Card } from '../../../store/reducers/main/mainInitState';
+import { useAppDispatch } from '../../../store/store';
 
-const EditCardSave = ({ data, set_card_save, set_cards_save_positive }) => {
+interface OwnProps {
+  data: Card;
+}
+
+type Props = OwnProps;
+
+const EditCardSave: FC<Props> = ({ data }) => {
+  const dispatch = useAppDispatch();
+
   const { _id, save } = data;
 
-  const up = (e) => {
+  const up = (e: MouseEvent<HTMLLabelElement> | TouchEvent<HTMLLabelElement>) => {
     e.preventDefault();
     clearTimeout(timer.current);
 
     if (timer.current) {
-      set_card_save(_id, !save);
+      dispatch(set_card_save(_id, !save));
     }
   };
 
-  const down = (e) => {
+  const down = (e: MouseEvent<HTMLLabelElement> | TouchEvent<HTMLLabelElement>) => {
     timer.current = setTimeout(() => {
-      timer.current = false;
-      if (!save) set_cards_save_positive(_id);
+      timer.current = null;
+      if (!save) dispatch(set_cards_save_positive(_id));
     }, 550);
   };
 
-  const timer = useRef(false);
+  const timer = useRef<ReturnType<typeof setTimeout>>(null);
 
   return (
     <div className='edit__save-include'>
@@ -52,12 +60,4 @@ const EditCardSave = ({ data, set_card_save, set_cards_save_positive }) => {
   );
 };
 
-EditCardSave.propTypes = {
-  data: PropTypes.object.isRequired,
-  set_card_save: PropTypes.func.isRequired,
-  set_cards_save_positive: PropTypes.func.isRequired,
-};
-
-const mapStateToProps = (state) => ({});
-
-export default connect(false, { set_card_save, set_cards_save_positive })(EditCardSave);
+export default EditCardSave;

@@ -1,32 +1,38 @@
-import { useRef } from 'react';
+import { FC, useRef } from 'react';
 import { useRouter } from 'next/router';
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
 import { control_module, edit_module } from '../../../store/actions/editActions';
 import ContentEditable from 'react-contenteditable';
 import ModuleSave from './ModuleSave';
 import ContentWrapper from '../../main/ContentWrapper';
+import { useAppDispatch, useAppSelector } from '../../../store/store';
 
-const EditModule = ({ main, control_module, edit_module }) => {
+interface OwnProps {}
+
+type Props = OwnProps;
+
+const EditModule: FC<Props> = () => {
+  const dispatch = useAppDispatch();
+
   const router = useRouter();
   const { _id } = router.query;
 
   const isDraft = _id === 'draft';
 
-  const { module, loading, cards } = main;
-  const { title, draft } = module ? module : {};
+  const { module, loading, cards } = useAppSelector(({ main }) => main);
+
+  const { title, draft } = module || {};
 
   const handleModuleChange = (e) => {
-    control_module(e.target.value);
+    dispatch(control_module(e.target.value));
 
     clearTimeout(timer.current);
     timer.current = setTimeout(async () => {
-      edit_module();
-      timer.current = false;
+      dispatch(edit_module());
+      timer.current = null;
     }, 500);
   };
 
-  const timer = useRef(false);
+  const timer = useRef<ReturnType<typeof setTimeout>>(null);
 
   const cardsArr = Object.values(cards);
 
@@ -80,14 +86,4 @@ const EditModule = ({ main, control_module, edit_module }) => {
   );
 };
 
-EditModule.propTypes = {
-  main: PropTypes.object.isRequired,
-  control_module: PropTypes.func.isRequired,
-  edit_module: PropTypes.func.isRequired,
-};
-
-const mapStateToProps = (state) => ({
-  main: state.main,
-});
-
-export default connect(mapStateToProps, { control_module, edit_module })(EditModule);
+export default EditModule;

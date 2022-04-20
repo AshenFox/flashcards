@@ -1,38 +1,50 @@
-import { useRef } from 'react';
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
+import { FC, useRef } from 'react';
 import { control_card, edit_card } from '../../../store/actions/editActions';
-import ContentEditable from 'react-contenteditable';
+import ContentEditable, { ContentEditableEvent } from 'react-contenteditable';
 import Gallery from './Gallery';
 import Scrape from './Scrape';
 import EditCardSave from './EditCardSave';
 import EditCardClose from './EditCardClose';
 import EditCardDelete from './EditCardDelete';
 import EditCardAddImg from './EditCardAddImg';
+import { Card } from '../../../store/reducers/main/mainInitState';
+import { useAppDispatch } from '../../../store/store';
 
-const EditCard = ({
+interface OwnProps {
+  data: Card;
+  loading: boolean;
+  draft?: boolean;
+  index?: number;
+  toggle?: boolean;
+  game?: boolean;
+  number: number;
+}
+
+type Props = OwnProps;
+
+const EditCard: FC<Props> = ({
   data,
   loading,
-  draft = false,
-  index = false,
-  toggle = false,
-  game = false,
+  draft = null,
+  index = null,
+  toggle = null,
+  game = null,
   number,
-  control_card,
-  edit_card,
 }) => {
+  const dispatch = useAppDispatch();
+
   const { _id, term, defenition, gallery } = data;
 
-  const handleCardChange = (type) => (e) => {
-    control_card(_id, type, e.target.value);
+  const handleCardChange = (type: 'term' | 'defenition') => (e: ContentEditableEvent) => {
+    dispatch(control_card(_id, type, e.target.value));
     clearTimeout(timer.current);
     timer.current = setTimeout(async () => {
-      edit_card(_id);
-      timer.current = false;
+      dispatch(edit_card(_id));
+      timer.current = null;
     }, 500);
   };
 
-  const timer = useRef(false);
+  const timer = useRef<ReturnType<typeof setTimeout>>(null);
 
   const deleteActive = number > 2;
 
@@ -56,7 +68,7 @@ const EditCard = ({
             className='textarea'
             onChange={handleCardChange('term')}
           />
-          <div className='edit__cards-label'>TERM</div>
+          <label className='edit__cards-label'>TERM</label>
         </div>
 
         <div className='edit__cards-definition'>
@@ -67,9 +79,9 @@ const EditCard = ({
               className='textarea'
               onChange={handleCardChange('defenition')}
             />
-            <div className='edit__cards-label' htmlFor='cards__definition-input1'>
+            <label className='edit__cards-label' htmlFor='cards__definition-input1'>
               DEFINITION
-            </div>
+            </label>
           </div>
           <EditCardAddImg data={data} />
         </div>
@@ -80,18 +92,4 @@ const EditCard = ({
   );
 };
 
-EditCard.propTypes = {
-  data: PropTypes.object.isRequired,
-  index: PropTypes.number,
-  toggle: PropTypes.bool,
-  number: PropTypes.number,
-  control_card: PropTypes.func.isRequired,
-  edit_card: PropTypes.func.isRequired,
-};
-
-const mapStateToProps = (state) => ({});
-
-export default connect(false, {
-  control_card,
-  edit_card,
-})(EditCard);
+export default EditCard;

@@ -8,7 +8,7 @@ import {
 } from '../types/types';
 
 // SET_HEADER_DIMEN
-export const set_header_dimen = (el: HTMLHeadingElement): AppActions => ({
+export const set_header_dimen = (el: HTMLElement): AppActions => ({
   type: SET_HEADER_DIMEN,
   payload: {
     header_height: el.offsetHeight,

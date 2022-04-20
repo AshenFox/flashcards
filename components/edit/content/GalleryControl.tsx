@@ -1,16 +1,27 @@
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
+import { FC, MouseEvent } from 'react';
 import { move_gallery } from '../../../store/actions/editActions';
+import { useAppDispatch, useAppSelector } from '../../../store/store';
 
-const GalleryControl = ({ main, direction, _id, move_gallery }) => {
-  const { cards } = main;
+interface OwnProps {
+  direction: 'left' | 'right';
+  _id: string;
+}
+
+type Props = OwnProps;
+
+const GalleryControl: FC<Props> = ({ direction, _id }) => {
+  const dispatch = useAppDispatch();
+
+  const { cards } = useAppSelector(({ main }) => main);
+
   const card = cards[_id];
+
   const {
     gallery: { position, width },
   } = card;
 
-  const clickControl = (e) => {
-    if (active) move_gallery(_id, direction);
+  const clickControl = (e: MouseEvent<HTMLDivElement>) => {
+    if (active) dispatch(move_gallery(_id, direction));
   };
 
   let active = true;
@@ -53,17 +64,4 @@ const GalleryControl = ({ main, direction, _id, move_gallery }) => {
   );
 };
 
-GalleryControl.propTypes = {
-  main: PropTypes.object.isRequired,
-  direction: PropTypes.string.isRequired,
-  _id: PropTypes.string.isRequired,
-  move_gallery: PropTypes.func.isRequired,
-};
-
-const mapStateToProps = (state) => ({
-  main: state.main,
-});
-
-export default connect(mapStateToProps, {
-  move_gallery,
-})(GalleryControl);
+export default GalleryControl;

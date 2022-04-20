@@ -1,6 +1,4 @@
-import { useState, useEffect } from 'react';
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
+import { useState, useEffect, FC, ChangeEvent, KeyboardEvent, MouseEvent } from 'react';
 import {
   control_gallery_query,
   search_images,
@@ -9,30 +7,36 @@ import {
 import GalleryContainer from './GalleryContainer';
 import GalleryError from './GalleryError';
 import GallerySpinner from './GallerySpinner';
+import { Card } from '../../../store/reducers/main/mainInitState';
+import { useAppDispatch } from '../../../store/store';
 
-const Gallery = ({
-  data,
-  active,
-  game = false,
-  control_gallery_query,
-  search_images,
-  reset_gallery_fields,
-}) => {
+interface OwnProps {
+  data: Card;
+  active: boolean;
+  game?: boolean;
+}
+
+type Props = OwnProps;
+
+const Gallery: FC<Props> = ({ data, active, game = false }) => {
+  const dispatch = useAppDispatch();
+
   const { _id, gallery } = data;
   const { loading, query, error } = gallery;
 
   const [uPressed, setUPressed] = useState(false);
   const [altPressed, setAltPressed] = useState(false);
 
-  const addUrlFlag = () => control_gallery_query(_id, '@url - ' + query);
+  const addUrlFlag = () => dispatch(control_gallery_query(_id, '@url - ' + query));
 
   useEffect(() => {
     if (uPressed && altPressed) addUrlFlag();
   }, [uPressed, altPressed]);
 
-  const changeImgSearchbar = (e) => control_gallery_query(_id, e.target.value);
+  const changeImgSearchbar = (e: ChangeEvent<HTMLInputElement>) =>
+    dispatch(control_gallery_query(_id, e.target.value));
 
-  const keyDownImgSearchbar = (e) => {
+  const keyDownImgSearchbar = (e: KeyboardEvent<HTMLInputElement>) => {
     const key = e.key;
 
     if (key === 'u') {
@@ -47,14 +51,14 @@ const Gallery = ({
 
     if (key === 'Enter') {
       e.preventDefault();
-      reset_gallery_fields(_id);
-      search_images(_id);
+      dispatch(reset_gallery_fields(_id));
+      dispatch(search_images(_id));
     }
   };
 
-  const clickImgSearchbar = (e) => {
-    reset_gallery_fields(_id);
-    search_images(_id);
+  const clickImgSearchbar = (e: MouseEvent<HTMLDivElement>) => {
+    dispatch(reset_gallery_fields(_id));
+    dispatch(search_images(_id));
   };
 
   return (
@@ -97,20 +101,4 @@ const Gallery = ({
   );
 };
 
-Gallery.propTypes = {
-  main: PropTypes.object.isRequired,
-  active: PropTypes.bool.isRequired,
-  control_gallery_query: PropTypes.func.isRequired,
-  search_images: PropTypes.func.isRequired,
-  reset_gallery_fields: PropTypes.func.isRequired,
-};
-
-const mapStateToProps = (state) => ({
-  main: state.main,
-});
-
-export default connect(mapStateToProps, {
-  control_gallery_query,
-  search_images,
-  reset_gallery_fields,
-})(Gallery);
+export default Gallery;
