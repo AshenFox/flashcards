@@ -1,16 +1,25 @@
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
+import { FC, MouseEvent } from 'react';
 import { scrape_dictionary } from '../../../store/actions/editActions';
+import { Card } from '../../../store/reducers/main/mainInitState';
+import { useAppDispatch } from '../../../store/store';
 
-const Scrape = ({ data, scrape_dictionary }) => {
+interface OwnProps {
+  data: Card;
+}
+
+type Props = OwnProps;
+
+const Scrape: FC<Props> = ({ data }) => {
+  const dispatch = useAppDispatch();
   const {
     _id,
     scrape: { loading },
   } = data;
 
-  const clickScrapeButton = (value) => () => {
-    scrape_dictionary(_id, value);
-  };
+  const clickScrapeButton =
+    (value: 'cod' | 'urban') => (e: MouseEvent<HTMLDivElement>) => {
+      dispatch(scrape_dictionary(_id, value));
+    };
 
   return (
     <div className='edit__scrape-panel' data-loading={loading}>
@@ -32,13 +41,4 @@ const Scrape = ({ data, scrape_dictionary }) => {
   );
 };
 
-Scrape.propTypes = {
-  data: PropTypes.object.isRequired,
-  scrape_dictionary: PropTypes.func.isRequired,
-};
-
-const mapStateToProps = (state) => ({});
-
-export default connect(false, {
-  scrape_dictionary,
-})(Scrape);
+export default Scrape;

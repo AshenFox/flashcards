@@ -1,7 +1,11 @@
-import { useEffect, useRef } from 'react';
+import {
+  FC,
+  useEffect,
+  useRef,
+  MouseEvent as ReactMouseEvent,
+  CSSProperties,
+} from 'react';
 import { useRouter } from 'next/router';
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
 import { log_out } from '../../../store/actions/authActions';
 import {
   set_flashcards_shuffled,
@@ -12,24 +16,22 @@ import {
 } from '../../../store/actions/gameActions';
 import { set_dropdown } from '../../../store/actions/headerActions';
 import Link from 'next/link';
+import { useAppDispatch, useAppSelector } from '../../../store/store';
 
-const Dropdown = ({
-  header,
-  dimen,
-  game,
-  log_out,
-  set_flashcards_shuffled,
-  sort_flashcards,
-  shuffle_flashcards,
-  reset_flashcards_progress,
-  prepare_write,
-  set_dropdown,
-}) => {
-  const { dropdown_active } = header;
-  const { header_height } = dimen;
+interface OwnProps {}
+
+type Props = OwnProps;
+
+const Dropdown: FC<Props> = () => {
+  const dispatch = useAppDispatch();
+
   const {
-    flashcards: { shuffled },
-  } = game;
+    game: {
+      flashcards: { shuffled },
+    },
+    header: { dropdown_active },
+    dimen: { header_height },
+  } = useAppSelector((state) => state);
 
   const router = useRouter();
   const { _id } = router.query;
@@ -39,14 +41,14 @@ const Dropdown = ({
   const isFlashcards = router.pathname === '/flashcards/[_id]',
     isWrite = router.pathname === '/write/[_id]';
 
-  const deactivateDropdown = useRef((e) => {
-    let menuEl = e.target.closest('.header__menu');
-    let menuItemEl = e.target.closest('.header__menu-item');
+  const deactivateDropdown = useRef((e: MouseEvent) => {
+    let menuEl = (e.target as HTMLElement).closest('.header__menu');
+    let menuItemEl = (e.target as HTMLElement).closest('.header__menu-item');
 
     if (menuEl) {
-      if (menuItemEl) set_dropdown(false);
+      if (menuItemEl) dispatch(set_dropdown(false));
     } else {
-      set_dropdown(false);
+      dispatch(set_dropdown(false));
     }
   });
 
@@ -61,21 +63,24 @@ const Dropdown = ({
     return () => window.removeEventListener('click', deactivateDropdown.current);
   }, [dropdown_active]);
 
-  const clickSuffle = () => {
+  const clickSuffle = (e: ReactMouseEvent<HTMLDivElement>) => {
     if (shuffled) {
-      sort_flashcards();
-      set_flashcards_shuffled(false);
+      dispatch(sort_flashcards());
+      dispatch(set_flashcards_shuffled(false));
     } else {
-      shuffle_flashcards();
-      set_flashcards_shuffled(true);
+      dispatch(shuffle_flashcards());
+      dispatch(set_flashcards_shuffled(true));
     }
 
-    reset_flashcards_progress();
+    dispatch(reset_flashcards_progress());
   };
 
-  const clickStartOver = () => prepare_write();
+  const clickStartOver = (e: ReactMouseEvent<HTMLDivElement>) =>
+    dispatch(prepare_write());
 
-  const stylesHeader = { paddingTop: `${header_height}px` };
+  const logOut = (e: ReactMouseEvent<HTMLDivElement>) => dispatch(log_out());
+
+  const stylesHeader: CSSProperties = { paddingTop: `${header_height}px` };
 
   return (
     <div
@@ -97,7 +102,7 @@ const Dropdown = ({
         </div>
       )}
 
-      <div className='header__menu-item' onClick={log_out}>
+      <div className='header__menu-item' onClick={logOut}>
         <button className='btn fz15'>
           <span>Log out</span>
         </button>
@@ -135,31 +140,4 @@ const Dropdown = ({
   );
 };
 
-Dropdown.propTypes = {
-  header: PropTypes.object.isRequired,
-  dimen: PropTypes.object.isRequired,
-  game: PropTypes.object.isRequired,
-  log_out: PropTypes.func.isRequired,
-  set_flashcards_shuffled: PropTypes.func.isRequired,
-  sort_flashcards: PropTypes.func.isRequired,
-  shuffle_flashcards: PropTypes.func.isRequired,
-  reset_flashcards_progress: PropTypes.func.isRequired,
-  prepare_write: PropTypes.func.isRequired,
-  set_dropdown: PropTypes.func.isRequired,
-};
-
-const mapStateToProps = (state) => ({
-  header: state.header,
-  dimen: state.dimen,
-  game: state.game,
-});
-
-export default connect(mapStateToProps, {
-  log_out,
-  set_flashcards_shuffled,
-  sort_flashcards,
-  shuffle_flashcards,
-  reset_flashcards_progress,
-  prepare_write,
-  set_dropdown,
-})(Dropdown);
+export default Dropdown;

@@ -1,11 +1,17 @@
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
+import { FC } from 'react';
 import { set_cards_save } from '../../../store/actions/editActions';
+import { useAppDispatch, useAppSelector } from '../../../store/store';
 
-const ModuleSave = ({ main, set_cards_save }) => {
-  const { cards } = main;
+interface OwnProps {}
 
-  const clickAllSave = () => set_cards_save(!active);
+type Props = OwnProps;
+
+const ModuleSave: FC<Props> = () => {
+  const dispatch = useAppDispatch();
+
+  const { cards } = useAppSelector(({ main }) => main);
+
+  const clickAllSave = () => dispatch(set_cards_save(!active));
 
   const cardsArr = Object.values(cards);
 
@@ -40,13 +46,4 @@ const ModuleSave = ({ main, set_cards_save }) => {
   );
 };
 
-ModuleSave.propTypes = {
-  main: PropTypes.object.isRequired,
-  set_cards_save: PropTypes.func.isRequired,
-};
-
-const mapStateToProps = (state) => ({
-  main: state.main,
-});
-
-export default connect(mapStateToProps, { set_cards_save })(ModuleSave);
+export default ModuleSave;

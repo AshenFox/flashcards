@@ -48,7 +48,7 @@ export interface ImgurlBase {
 export interface ImgurlObj extends ImgurlFields, ImgurlBase {}
 
 export interface ImgurlObjs {
-  [key: number]: ImgurlObj;
+  [key: string]: ImgurlObj;
 }
 
 export interface CardFields {

@@ -1,7 +1,5 @@
-import { useEffect, useRef } from 'react';
+import { FC, MouseEvent, ReactNode, useEffect, useRef } from 'react';
 import { useRouter } from 'next/router';
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
 import { change_modal, toggle_modal } from '../../store/actions/modalActions';
 import { set_dropdown } from '../../store/actions/headerActions';
 import { log_out } from '../../store/actions/authActions';
@@ -9,39 +7,41 @@ import { set_header_dimen } from '../../store/actions/dimenActions';
 import Link from 'next/link';
 import Dropdown from './content/Dropdown';
 import ContentWrapper from '../main/ContentWrapper';
+import { useAppDispatch, useAppSelector } from '../../store/store';
 
-const Header = ({
-  auth,
-  header,
-  dimen,
-  change_modal,
-  toggle_modal,
-  log_out,
-  set_dropdown,
-  set_header_dimen,
-}) => {
-  const openModal = (value) => (e) => {
-    change_modal(value);
-    toggle_modal();
-  };
+interface OwnProps {}
 
-  const { header_width } = dimen;
-  const { dropdown_active } = header;
-  const { user, loading } = auth;
+type Props = OwnProps;
+
+const Header: FC<Props> = () => {
+  const dispatch = useAppDispatch();
+
+  const openModal =
+    (value: 'log_in' | 'sign_up') => (e: MouseEvent<HTMLButtonElement>) => {
+      dispatch(change_modal(value));
+      dispatch(toggle_modal());
+    };
+
+  const {
+    auth: { user, loading },
+    dimen: { header_width },
+    header: { dropdown_active },
+  } = useAppSelector((state) => state);
 
   const router = useRouter();
-  const { _id, section } = router.query;
+  const { _id } = router.query;
 
   const isSR = _id === 'sr';
 
-  const activateDropdown = () => set_dropdown(true);
+  const activateDropdown = (e: MouseEvent<HTMLButtonElement>) =>
+    dispatch(set_dropdown(true));
 
-  const onSizeChange = () => set_header_dimen(headerEl.current);
-  const onSizeChangeDelayed = () =>
-    setTimeout(() => set_header_dimen(headerEl.current), 200);
+  const onSizeChange = (e: UIEvent) => dispatch(set_header_dimen(headerEl.current));
+  const onSizeChangeDelayed = (e: Event) =>
+    setTimeout(() => dispatch(set_header_dimen(headerEl.current)), 200);
 
   useEffect(() => {
-    set_header_dimen(headerEl.current);
+    dispatch(set_header_dimen(headerEl.current));
     window.addEventListener('resize', onSizeChange);
     window.addEventListener('orientationchange', onSizeChangeDelayed);
 
@@ -52,17 +52,17 @@ const Header = ({
   }, []);
 
   useEffect(() => {
-    set_header_dimen(headerEl.current);
+    dispatch(set_header_dimen(headerEl.current));
   }, [user, loading]);
 
-  const headerEl = useRef(false);
+  const headerEl = useRef<HTMLElement>(null);
 
   const isGame =
     router.pathname === '/flashcards/[_id]' || router.pathname === '/write/[_id]'
       ? true
       : false;
 
-  const buttonsRight = user ? (
+  const buttonsRight: ReactNode = user ? (
     <>
       {router.asPath !== '/edit/draft' && (
         <Link href='/edit/draft'>
@@ -115,7 +115,7 @@ const Header = ({
     </>
   );
 
-  let buttonsLeft = (
+  const buttonsLeft: ReactNode = (
     <>
       <a className='header__title-link' href={user ? '/home/modules' : '/'}>
         <h1 className={`header__title ${isGame ? 'hidden__media-tablet' : ''}`}>
@@ -154,27 +154,4 @@ const Header = ({
   );
 };
 
-Header.propTypes = {
-  auth: PropTypes.object.isRequired,
-  header: PropTypes.object.isRequired,
-  dimen: PropTypes.object.isRequired,
-  change_modal: PropTypes.func.isRequired,
-  toggle_modal: PropTypes.func.isRequired,
-  log_out: PropTypes.func.isRequired,
-  set_dropdown: PropTypes.func.isRequired,
-  set_header_dimen: PropTypes.func.isRequired,
-};
-
-const mapStateToProps = (state) => ({
-  auth: state.auth,
-  header: state.header,
-  dimen: state.dimen,
-});
-
-export default connect(mapStateToProps, {
-  change_modal,
-  toggle_modal,
-  log_out,
-  set_dropdown,
-  set_header_dimen,
-})(Header);
+export default Header;

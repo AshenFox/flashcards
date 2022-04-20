@@ -1,21 +1,29 @@
 import { useRouter } from 'next/router';
 import PropTypes from 'prop-types';
+import { FC, MouseEvent } from 'react';
 import { connect } from 'react-redux';
 import { create_module } from '../../../store/actions/editActions';
+import { useAppDispatch, useAppSelector } from '../../../store/store';
 import LoadingButton from '../../main/LoadingButton';
 
-const Save = ({ main, create_module }) => {
-  const {
-    module: { _id, draft, title, module_loading },
-    cards,
-  } = main;
+interface OwnProps {}
+
+type Props = OwnProps;
+
+const Save: FC<Props> = () => {
+  const dispatch = useAppDispatch();
+
+  const { module, cards } = useAppSelector(({ main }) => main);
+
+  const { _id, draft, title, module_loading } = module || {};
+
   const router = useRouter();
 
-  const clickSave = () => {
-    if (active) create_module();
+  const clickSave = (e: MouseEvent<HTMLButtonElement>) => {
+    if (active) dispatch(create_module());
   };
 
-  const clickLink = () => {
+  const clickLink = (e: MouseEvent<HTMLButtonElement>) => {
     router.replace(`/module/${_id}`);
   };
 
@@ -56,13 +64,4 @@ const Save = ({ main, create_module }) => {
   );
 };
 
-Save.propTypes = {
-  main: PropTypes.object.isRequired,
-  create_module: PropTypes.func.isRequired,
-};
-
-const mapStateToProps = (state) => ({
-  main: state.main,
-});
-
-export default connect(mapStateToProps, { create_module })(Save);
+export default Save;

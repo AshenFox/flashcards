@@ -1,6 +1,12 @@
-import PropTypes from 'prop-types';
+import { FC } from 'react';
 
-const GallerySpinner = ({ active }) => {
+interface OwnProps {
+  active: boolean;
+}
+
+type Props = OwnProps;
+
+const GallerySpinner: FC<Props> = ({ active }) => {
   return (
     <div
       className={`edit__spinner-container ${
@@ -11,7 +17,5 @@ const GallerySpinner = ({ active }) => {
     </div>
   );
 };
-
-GallerySpinner.propTypes = { active: PropTypes.bool.isRequired };
 
 export default GallerySpinner;
