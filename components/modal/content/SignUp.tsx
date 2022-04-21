@@ -128,23 +128,4 @@ const SignUp: FC<Props> = () => {
   );
 };
 
-/* SignUp.propTypes = {
-  modal: PropTypes.object.isRequired,
-  change_modal: PropTypes.func.isRequired,
-  control_field: PropTypes.func.isRequired,
-  check_field: PropTypes.func.isRequired,
-  enter: PropTypes.func.isRequired,
-};
-
-const mapStateToProps = (state) => ({
-  modal: state.modal,
-});
-
-export default connect(mapStateToProps, {
-  change_modal,
-  control_field,
-  check_field,
-  enter,
-})(SignUp); */
-
 export default SignUp;

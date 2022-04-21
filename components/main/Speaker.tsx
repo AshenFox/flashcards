@@ -1,6 +1,4 @@
 import { FC, MutableRefObject } from 'react';
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
 import { set_voice_speaking } from '../../store/actions/voiceActions';
 import { useAppDispatch, useAppSelector } from '../../store/store';
 

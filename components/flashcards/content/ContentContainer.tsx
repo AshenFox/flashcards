@@ -1,6 +1,4 @@
-import PropTypes from 'prop-types';
 import { useRouter } from 'next/router';
-import { connect } from 'react-redux';
 import Navigation from './Navigation';
 import Card from './Card';
 import EndGame from './EndGame';

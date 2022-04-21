@@ -1,7 +1,5 @@
-import { useEffect } from 'react';
+import { FC, useEffect } from 'react';
 import { useRouter } from 'next/router';
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
 import {
   get_module,
   clear_module,
@@ -10,28 +8,29 @@ import {
 } from '../../store/actions/mainActions';
 import ModuleHeader from './content/ModuleHeader';
 import ModuleBody from './content/ModuleBody';
+import { useAppDispatch, useAppSelector } from '../../store/store';
 
-const ModuleContainer = ({
-  auth,
-  get_module,
-  clear_module,
-  reset_fields_cards,
-  reset_search,
-}) => {
+interface OwnProps {}
+
+type Props = OwnProps;
+
+const ModuleContainer: FC<Props> = () => {
+  const dispatch = useAppDispatch();
+
   const router = useRouter();
   const { _id } = router.query;
 
-  const { user } = auth;
+  const { user } = useAppSelector(({ auth }) => auth);
 
   useEffect(() => {
-    if (user) get_module(_id);
+    if (user && typeof _id === 'string') dispatch(get_module(_id));
   }, [user]);
 
   useEffect(() => {
     return () => {
-      clear_module();
-      reset_fields_cards();
-      reset_search();
+      dispatch(clear_module());
+      dispatch(reset_fields_cards());
+      dispatch(reset_search());
     };
   }, []);
 
@@ -43,23 +42,4 @@ const ModuleContainer = ({
   );
 };
 
-ModuleContainer.propTypes = {
-  main: PropTypes.object.isRequired,
-  auth: PropTypes.object.isRequired,
-  get_module: PropTypes.func.isRequired,
-  clear_module: PropTypes.func.isRequired,
-  reset_fields_cards: PropTypes.func.isRequired,
-  reset_search: PropTypes.func.isRequired,
-};
-
-const mapStateToProps = (state) => ({
-  auth: state.auth,
-  main: state.main,
-});
-
-export default connect(mapStateToProps, {
-  get_module,
-  clear_module,
-  reset_fields_cards,
-  reset_search,
-})(ModuleContainer);
+export default ModuleContainer;
