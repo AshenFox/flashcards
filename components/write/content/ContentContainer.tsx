@@ -1,17 +1,23 @@
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
 import Question from './Question';
 import Answer from './Answer';
 import Round from './Round';
 import Finish from './Finish';
 import EditCard from '../../edit/content/EditCard';
+import { useAppSelector } from '../../../store/store';
+import { FC, ReactNode } from 'react';
 
-const ContentContainer = ({ dimen, main, game }) => {
-  const { header_height, game_controls_height } = dimen;
-  const { cards, is_server, loading } = main;
+interface OwnProps {}
+
+type Props = OwnProps;
+
+const ContentContainer: FC<Props> = () => {
   const {
-    write: { is_init, remaining, answered, rounds },
-  } = game;
+    dimen: { header_height, game_controls_height },
+    main: { cards, is_server, loading },
+    game: {
+      write: { is_init, remaining, answered, rounds },
+    },
+  } = useAppSelector((state) => state);
 
   const writeStyles = {
     height: `${
@@ -25,16 +31,7 @@ const ContentContainer = ({ dimen, main, game }) => {
 
   const activeCard = remaining[remaining.length - 1];
   const isAnswered = activeCard ? !!activeCard.answer : false;
-  const activeCardData = activeCard ? cards[activeCard.id] : {};
-
-  console.log({
-    remaining,
-    activeCard,
-    activeCardData,
-    cards,
-    card: activeCard && cards[activeCard.id],
-    id: activeCard && activeCard.id,
-  });
+  const activeCardData = activeCard ? cards[activeCard.id] : null;
 
   const isRoundFinished = !remaining.length && is_init;
   const isGameFinished =
@@ -42,7 +39,7 @@ const ContentContainer = ({ dimen, main, game }) => {
     !answered.filter((item) => item.answer === 'incorrect').length &&
     is_init;
 
-  let components = false;
+  let components: ReactNode = null;
 
   if (isGameFinished) {
     components = <Finish />;
@@ -51,14 +48,7 @@ const ContentContainer = ({ dimen, main, game }) => {
   } else if (activeCard) {
     if (isAnswered) {
       if (activeCardData.edit) {
-        components = (
-          <EditCard
-            key={activeCardData._id}
-            data={activeCardData}
-            toggle={true}
-            game={true}
-          />
-        );
+        components = <EditCard key={activeCardData._id} toggle={true} game={true} />;
       } else {
         components = <Answer data={activeCardData} />;
       }
@@ -79,15 +69,4 @@ const ContentContainer = ({ dimen, main, game }) => {
   );
 };
 
-ContentContainer.propTypes = {
-  main: PropTypes.object.isRequired,
-  dimen: PropTypes.object.isRequired,
-};
-
-const mapStateToProps = (state) => ({
-  dimen: state.dimen,
-  main: state.main,
-  game: state.game,
-});
-
-export default connect(mapStateToProps)(ContentContainer);
+export default ContentContainer;

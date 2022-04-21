@@ -1,20 +1,25 @@
 import { useRouter } from 'next/router';
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
 import { set_flashcards_side } from '../../../store/actions/gameActions';
 import { set_card_edit } from '../../../store/actions/editActions';
 import ContentEditable from 'react-contenteditable';
 import Speaker from '../../main/Speaker';
 import Img from '../../main/Img';
 import SRIndicator from '../../main/SRIngicator';
+import { Card as CardType } from '../../../store/reducers/main/mainInitState';
+import { FC, MouseEvent } from 'react';
+import { useAppDispatch } from '../../../store/store';
 
-const Card = ({
-  data,
-  side = 'definition',
-  position = false,
-  set_flashcards_side,
-  set_card_edit,
-}) => {
+interface OwnProps {
+  data: CardType;
+  side?: 'definition' | 'term';
+  position?: 'prev' | 'next';
+}
+
+type Props = OwnProps;
+
+const Card: FC<Props> = ({ data, side = 'definition', position = null }) => {
+  const dispatch = useAppDispatch();
+
   const router = useRouter();
   const { _id: _id_param } = router.query;
 
@@ -34,16 +39,16 @@ const Card = ({
     position ? position : ''
   } ${side === 'term' ? '' : 'rearside'}`;
 
-  const clickSide = (value) => (e) => {
-    if (e.target.closest('.game__speaker-flashcards')) return;
-    if (e.target.closest('.game__edit')) return;
-    if (e.target.closest('.sr-indicator')) return;
-    if (e.target.closest('.game__definition-hidden')) return;
+  const clickSide = (value: 'term' | 'definition') => (e: MouseEvent<HTMLDivElement>) => {
+    if ((e.target as HTMLElement).closest('.game__speaker-flashcards')) return;
+    if ((e.target as HTMLElement).closest('.game__edit')) return;
+    if ((e.target as HTMLElement).closest('.sr-indicator')) return;
+    if ((e.target as HTMLElement).closest('.game__definition-hidden')) return;
 
-    set_flashcards_side(value);
+    dispatch(set_flashcards_side(value));
   };
 
-  const clickEdit = () => set_card_edit(_id, true);
+  const clickEdit = (e: MouseEvent<HTMLDivElement>) => dispatch(set_card_edit(_id, true));
 
   return (
     <div className='game__card'>
@@ -61,6 +66,7 @@ const Card = ({
               html={hidTranscrDefenition}
               disabled={true}
               className='game__definition'
+              onChange={null}
             />
           </div>
         )}
@@ -79,7 +85,12 @@ const Card = ({
       <div className={backClassName} onClick={clickSide('definition')}>
         {isSR && <SRIndicator data={data} classStr={'sr-indicator--flashcards'} />}
         <div className='game__term-container '>
-          <ContentEditable html={term} disabled={true} className='game__term' />
+          <ContentEditable
+            html={term}
+            disabled={true}
+            className='game__term'
+            onChange={null}
+          />
         </div>
         <Speaker
           _id={_id}
@@ -97,12 +108,4 @@ const Card = ({
   );
 };
 
-Card.propTypes = {
-  data: PropTypes.object.isRequired,
-  set_flashcards_side: PropTypes.func.isRequired,
-  set_card_edit: PropTypes.func.isRequired,
-};
-
-const mapStateToProps = (state) => ({});
-
-export default connect(mapStateToProps, { set_flashcards_side, set_card_edit })(Card);
+export default Card;

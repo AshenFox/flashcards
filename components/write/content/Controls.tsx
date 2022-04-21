@@ -1,26 +1,31 @@
-import { useEffect, useRef } from 'react';
+import { FC, MouseEvent, useEffect, useRef } from 'react';
 import { useRouter } from 'next/router';
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
 import { set_game_controls_dimen } from '../../../store/actions/dimenActions';
 import { prepare_write } from '../../../store/actions/gameActions';
 import Progress from './Progress';
 import Link from 'next/link';
+import { useAppDispatch } from '../../../store/store';
 
-const Controls = ({ set_game_controls_dimen, prepare_write }) => {
+interface OwnProps {}
+
+type Props = OwnProps;
+
+const Controls: FC<Props> = () => {
+  const dispatch = useAppDispatch();
+
   const router = useRouter();
   const { _id } = router.query;
 
   const isSR = _id === 'sr';
 
-  const clickStartOver = () => prepare_write();
+  const clickStartOver = (e: MouseEvent<HTMLButtonElement>) => dispatch(prepare_write());
 
-  const onSizeChange = () => {
-    set_game_controls_dimen(controllsEl.current);
+  const onSizeChange = (e: UIEvent) => {
+    dispatch(set_game_controls_dimen(controllsEl.current));
   };
 
   useEffect(() => {
-    set_game_controls_dimen(controllsEl.current);
+    dispatch(set_game_controls_dimen(controllsEl.current));
     window.addEventListener('resize', onSizeChange);
     window.addEventListener('orientationchange', onSizeChange);
 
@@ -30,7 +35,7 @@ const Controls = ({ set_game_controls_dimen, prepare_write }) => {
     };
   }, []);
 
-  const controllsEl = useRef(false);
+  const controllsEl = useRef<HTMLDivElement>(null);
 
   return (
     <div className='game__container'>
@@ -74,14 +79,4 @@ const Controls = ({ set_game_controls_dimen, prepare_write }) => {
   );
 };
 
-Controls.propTypes = {
-  set_game_controls_dimen: PropTypes.func.isRequired,
-  prepare_write: PropTypes.func.isRequired,
-};
-
-const mapStateToProps = (state) => ({});
-
-export default connect(mapStateToProps, {
-  set_game_controls_dimen,
-  prepare_write,
-})(Controls);
+export default Controls;

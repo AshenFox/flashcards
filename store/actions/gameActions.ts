@@ -90,7 +90,7 @@ export const set_write_copy_answer_field = (value: string): AppActions => ({
 });
 
 // CHECK_WRITE_ANSWER
-export const check_write_answer = (not_know: boolean) => <ThunkActionApp>(async (
+export const check_write_answer = (not_know?: boolean) => <ThunkActionApp>(async (
     dispatch,
     getState
   ) => {

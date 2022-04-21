@@ -1,7 +1,5 @@
 import { useRouter } from 'next/router';
-import { useEffect, useRef } from 'react';
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
+import { ChangeEvent, FC, MouseEvent, useEffect, useRef } from 'react';
 import {
   set_write_answer_field,
   check_write_answer,
@@ -10,42 +8,54 @@ import ContentEditable from 'react-contenteditable';
 import Speaker from '../../main/Speaker';
 import Img from '../../main/Img';
 import SRIndicator from '../../main/SRIngicator';
+import { Card } from '../../../store/reducers/main/mainInitState';
+import { useAppDispatch, useAppSelector } from '../../../store/store';
 
-const Question = ({ data = {}, game, set_write_answer_field, check_write_answer }) => {
+interface OwnProps {
+  data: Card;
+}
+
+type Props = OwnProps;
+
+const Question: FC<Props> = ({ data }) => {
+  const dispatch = useAppDispatch();
+
   const router = useRouter();
+
   const { _id: _id_param } = router.query;
 
   const isSR = _id_param === 'sr';
 
-  const { _id, term, defenition, imgurl } = data;
+  const { _id, term, defenition, imgurl } = data || {};
   const {
     write: { answer },
-  } = game;
+  } = useAppSelector(({ game }) => game);
 
   const hidTranscrDefenition = defenition.replaceAll(
     /\( \/(.*?)\/ \)/g,
     (x, match) => `( /<span class="game__definition-hidden">${match}</span>/ )`
   );
 
-  const changeAnswer = (e) => set_write_answer_field(e.target.value);
+  const changeAnswer = (e: ChangeEvent<HTMLInputElement>) =>
+    dispatch(set_write_answer_field(e.target.value));
 
-  const keyDownAnswer = (e) => {
+  const keyDownAnswer = (e: KeyboardEvent) => {
     if (e.key === 'Enter') {
       e.preventDefault();
-      check_write_answer();
+      dispatch(check_write_answer());
     }
   };
 
-  const clickAnswer = (e) => {
+  const clickAnswer = (e: MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
-    check_write_answer();
+    dispatch(check_write_answer());
   };
 
-  const clickNotKnow = (e) => {
-    check_write_answer(true);
+  const clickNotKnow = (e: MouseEvent<HTMLSpanElement>) => {
+    dispatch(check_write_answer(true));
   };
 
-  const answerInput = useRef(false);
+  const answerInput = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     if (answerInput.current) answerInput.current.focus();
@@ -79,6 +89,7 @@ const Question = ({ data = {}, game, set_write_answer_field, check_write_answer 
           html={hidTranscrDefenition}
           disabled={true}
           className='game__question-definition'
+          onChange={null}
         />
         <Speaker
           _id={_id}
@@ -115,18 +126,4 @@ const Question = ({ data = {}, game, set_write_answer_field, check_write_answer 
   );
 };
 
-Question.propTypes = {
-  game: PropTypes.object.isRequired,
-  data: PropTypes.object.isRequired,
-  set_write_answer_field: PropTypes.func.isRequired,
-  check_write_answer: PropTypes.func.isRequired,
-};
-
-const mapStateToProps = (state) => ({
-  game: state.game,
-});
-
-export default connect(mapStateToProps, {
-  set_write_answer_field,
-  check_write_answer,
-})(Question);
+export default Question;

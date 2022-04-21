@@ -6,21 +6,28 @@ import Card from './Card';
 import EndGame from './EndGame';
 import EditCard from '../../edit/content/EditCard';
 import Results from './Results';
+import { CSSProperties, FC } from 'react';
+import { useAppSelector } from '../../../store/store';
 
-const ContentContainer = ({ main, dimen, game }) => {
+interface OwnProps {}
+
+type Props = OwnProps;
+
+const ContentContainer: FC<Props> = () => {
   const router = useRouter();
   const { _id } = router.query;
 
   const isSR = _id === 'sr';
 
-  const { cards, loading, is_server } = main;
   const {
-    flashcards: { progress, side },
-  } = game;
+    dimen: { header_height, game_controls_height },
+    game: {
+      flashcards: { progress, side },
+    },
+    main: { cards, loading, is_server },
+  } = useAppSelector((state) => state);
 
-  const { header_height, game_controls_height } = dimen;
-
-  const flashcardsStyles = {
+  const flashcardsStyles: CSSProperties = {
     height: `${
       !is_server
         ? document.documentElement.clientHeight -
@@ -60,9 +67,9 @@ const ContentContainer = ({ main, dimen, game }) => {
                 formatted_cards.map((card, i) => {
                   if (i === progress) {
                     return <Card key={card._id} data={card} side={side} />;
-                  } else if (i === progress - 1 && (i === progress - 1) >= 0) {
+                  } else if (i === progress - 1 && progress - 1 >= 0) {
                     return <Card key={card._id} data={card} position={'prev'} />;
-                  } else if (i === progress + 1 && (i === progress + 1) <= length - 1) {
+                  } else if (i === progress + 1 && progress + 1 <= length - 1) {
                     return <Card key={card._id} data={card} position={'next'} />;
                   } else {
                     return false;
@@ -90,15 +97,4 @@ const ContentContainer = ({ main, dimen, game }) => {
   );
 };
 
-ContentContainer.propTypes = {
-  main: PropTypes.object.isRequired,
-  game: PropTypes.object.isRequired,
-};
-
-const mapStateToProps = (state) => ({
-  main: state.main,
-  game: state.game,
-  dimen: state.dimen,
-});
-
-export default connect(mapStateToProps)(ContentContainer);
+export default ContentContainer;

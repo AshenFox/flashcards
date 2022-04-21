@@ -11,29 +11,21 @@ import { Card } from '../../../store/reducers/main/mainInitState';
 import { useAppDispatch } from '../../../store/store';
 
 interface OwnProps {
-  data: Card;
-  loading: boolean;
+  data?: Card;
+  loading?: boolean;
   draft?: boolean;
   index?: number;
   toggle?: boolean;
   game?: boolean;
-  number: number;
+  number?: number;
 }
 
 type Props = OwnProps;
 
-const EditCard: FC<Props> = ({
-  data,
-  loading,
-  draft = null,
-  index = null,
-  toggle = null,
-  game = null,
-  number,
-}) => {
+const EditCard: FC<Props> = ({ data, loading, draft, index, toggle, game, number }) => {
   const dispatch = useAppDispatch();
 
-  const { _id, term, defenition, gallery } = data;
+  const { _id, term, defenition, gallery } = data || {};
 
   const handleCardChange = (type: 'term' | 'defenition') => (e: ContentEditableEvent) => {
     dispatch(control_card(_id, type, e.target.value));

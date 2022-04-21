@@ -1,7 +1,5 @@
 import { useRouter } from 'next/router';
-import { useEffect, useRef } from 'react';
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
+import { ChangeEvent, FC, MouseEvent, useEffect, useRef } from 'react';
 import { set_card_edit } from '../../../store/actions/editActions';
 import {
   set_write_copy_answer_field,
@@ -13,16 +11,18 @@ import ContentEditable from 'react-contenteditable';
 import Speaker from '../../main/Speaker';
 import Img from '../../main/Img';
 import SRIndicator from '../../main/SRIngicator';
+import { Card } from '../../../store/reducers/main/mainInitState';
+import { useAppDispatch, useAppSelector } from '../../../store/store';
 
-const Answer = ({
-  data,
-  game,
-  set_card_edit,
-  set_write_copy_answer_field,
-  next_write_card,
-  override_write_answer,
-  put_sr_answer,
-}) => {
+interface OwnProps {
+  data: Card;
+}
+
+type Props = OwnProps;
+
+const Answer: FC<Props> = ({ data }) => {
+  const dispatch = useAppDispatch();
+
   const router = useRouter();
   const { _id: _id_param } = router.query;
 
@@ -31,7 +31,7 @@ const Answer = ({
   const { _id, term, defenition, imgurl } = data;
   const {
     write: { answer, copy_answer, remaining, rounds },
-  } = game;
+  } = useAppSelector(({ game }) => game);
 
   const activeCard = remaining[remaining.length - 1];
   let isCorrect = false;
@@ -46,9 +46,9 @@ const Answer = ({
 
   const canContinue = useRef(false);
 
-  const copyAnswerInput = useRef(false);
+  const copyAnswerInput = useRef<HTMLInputElement>(null);
 
-  const gameAnswer = useRef(false);
+  const gameAnswer = useRef<HTMLDivElement>(null);
 
   if (isCorrect) {
     canContinue.current = true;
@@ -60,33 +60,34 @@ const Answer = ({
     }
   }
 
-  const changeCopyAnswer = (e) => set_write_copy_answer_field(e.target.value);
+  const changeCopyAnswer = (e: ChangeEvent<HTMLInputElement>) =>
+    dispatch(set_write_copy_answer_field(e.target.value));
 
-  const clickEdit = () => set_card_edit(_id, true);
+  const clickEdit = (e: MouseEvent<HTMLDivElement>) => dispatch(set_card_edit(_id, true));
 
   const continueGame = () => {
     if (canContinue.current) {
-      if (isFirstRound.current && isSR) put_sr_answer(_id, isCorrect ? 1 : -1);
-      next_write_card();
+      if (isFirstRound.current && isSR) dispatch(put_sr_answer(_id, isCorrect ? 1 : -1));
+      dispatch(next_write_card());
     }
   };
 
   const overrideAnswer = () => {
-    if (isFirstRound.current && isSR) put_sr_answer(_id, 1);
-    override_write_answer();
+    if (isFirstRound.current && isSR) dispatch(put_sr_answer(_id, 1));
+    dispatch(override_write_answer());
   };
 
-  const clickContinue = (e) => {
+  const clickContinue = (e: MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
 
     continueGame();
   };
 
-  const clickOverride = () => {
+  const clickOverride = (e: MouseEvent<HTMLButtonElement>) => {
     overrideAnswer();
   };
 
-  const keyDownControl = (e) => {
+  const keyDownControl = (e: KeyboardEvent) => {
     if (e.key === 'Enter') {
       e.preventDefault();
 
@@ -139,7 +140,7 @@ const Answer = ({
             url={imgurl}
           />
           <div className='game__section-body '>
-            <ContentEditable html={defenition} disabled={true} />
+            <ContentEditable html={defenition} disabled={true} onChange={null} />
             <Speaker
               _id={_id}
               text={defenition}
@@ -168,7 +169,7 @@ const Answer = ({
         <div className='game__answer-section'>
           <span className='game__section-title'>Correct</span>
           <div className='game__section-body '>
-            <ContentEditable html={term} disabled={true} />
+            <ContentEditable html={term} disabled={true} onChange={null} />
             <Speaker
               _id={_id}
               text={term}
@@ -209,23 +210,4 @@ const Answer = ({
   );
 };
 
-Answer.propTypes = {
-  data: PropTypes.object.isRequired,
-  set_card_edit: PropTypes.func.isRequired,
-  set_write_copy_answer_field: PropTypes.func.isRequired,
-  next_write_card: PropTypes.func.isRequired,
-  override_write_answer: PropTypes.func.isRequired,
-  put_sr_answer: PropTypes.func.isRequired,
-};
-
-const mapStateToProps = (state) => ({
-  game: state.game,
-});
-
-export default connect(mapStateToProps, {
-  set_card_edit,
-  set_write_copy_answer_field,
-  next_write_card,
-  override_write_answer,
-  put_sr_answer,
-})(Answer);
+export default Answer;
