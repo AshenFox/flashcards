@@ -1,35 +1,40 @@
-import { useEffect } from 'react';
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
+import { FC, MouseEvent, useEffect } from 'react';
 import { next_write_round } from '../../../store/actions/gameActions';
+import { useAppDispatch, useAppSelector } from '../../../store/store';
 
-const Round = ({ game, next_write_round }) => {
+interface OwnProps {}
+
+type Props = OwnProps;
+
+const Round: FC<Props> = () => {
+  const dispatch = useAppDispatch();
+
   const {
     write: { answered, rounds, all_cards_num },
-  } = game;
+  } = useAppSelector(({ game }) => game);
 
-  const correctAnswered = answered.filter((item) => item.answer === 'correct')
-    .length;
+  const correctAnswered = answered.filter((item) => item.answer === 'correct').length;
+
   let correctRounds = 0;
+
   for (const round of rounds) {
     let correctRound = round.filter((item) => item.answer === 'correct').length;
     correctRounds += correctRound;
   }
 
   const correctNum = correctAnswered + correctRounds;
-  const incorrectNum = answered.filter((item) => item.answer === 'incorrect')
-    .length;
+  const incorrectNum = answered.filter((item) => item.answer === 'incorrect').length;
   const roundCardsNum = answered.length;
 
   const roundNum = rounds.length + 1;
 
-  const clickContinue = (e) => {
-    next_write_round();
+  const clickContinue = (e: MouseEvent<HTMLButtonElement>) => {
+    dispatch(next_write_round());
   };
 
-  const keyDownContinue = (e) => {
+  const keyDownContinue = (e: KeyboardEvent) => {
     if (e.key === 'Enter') {
-      next_write_round();
+      dispatch(next_write_round());
     }
   };
 
@@ -87,13 +92,4 @@ const Round = ({ game, next_write_round }) => {
   );
 };
 
-Round.propTypes = {
-  game: PropTypes.object.isRequired,
-  next_write_round: PropTypes.func.isRequired,
-};
-
-const mapStateToProps = (state) => ({
-  game: state.game,
-});
-
-export default connect(mapStateToProps, { next_write_round })(Round);
+export default Round;

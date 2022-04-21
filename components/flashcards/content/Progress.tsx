@@ -1,15 +1,21 @@
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
+import { CSSProperties, FC } from 'react';
+import { useAppSelector } from '../../../store/store';
 
-const Progress = ({ main, game }) => {
+interface OwnProps {}
+
+type Props = OwnProps;
+
+const Progress: FC<Props> = () => {
   const {
-    flashcards: { progress },
-  } = game;
-  const { cards } = main;
+    main: { cards },
+    game: {
+      flashcards: { progress },
+    },
+  } = useAppSelector((state) => state);
 
   const cards_arr = Object.keys(cards);
 
-  const barFillStyle = {
+  const barFillStyle: CSSProperties = {
     width: `${(progress / cards_arr.length) * 100}%`,
   };
 
@@ -32,14 +38,4 @@ const Progress = ({ main, game }) => {
   );
 };
 
-Progress.propTypes = {
-  main: PropTypes.object.isRequired,
-  game: PropTypes.object.isRequired,
-};
-
-const mapStateToProps = (state) => ({
-  main: state.main,
-  game: state.game,
-});
-
-export default connect(mapStateToProps)(Progress);
+export default Progress;

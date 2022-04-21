@@ -1,13 +1,17 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
+import React, { FC } from 'react';
+import { useAppSelector } from '../../../store/store';
 
-const Progress = ({ game }) => {
+interface OwnProps {}
+
+type Props = OwnProps;
+
+const Progress: FC<Props> = () => {
   const {
     write: { remaining, answered, rounds, all_cards_num },
-  } = game;
+  } = useAppSelector(({ game }) => game);
 
   const correctAnswered = answered.filter((item) => item.answer === 'correct').length;
+
   let correctRounds = 0;
   for (const round of rounds) {
     let correctRound = round.filter((item) => item.answer === 'correct').length;
@@ -80,12 +84,4 @@ const Progress = ({ game }) => {
   );
 };
 
-Progress.propTypes = {
-  game: PropTypes.object.isRequired,
-};
-
-const mapStateToProps = (state) => ({
-  game: state.game,
-});
-
-export default connect(mapStateToProps)(Progress);
+export default Progress;

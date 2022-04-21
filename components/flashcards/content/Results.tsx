@@ -1,11 +1,14 @@
-import { useEffect } from 'react';
+import { FC, useEffect } from 'react';
 import { useRouter } from 'next/router';
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
 import ResultsItem from './ResultsItem';
 import Link from 'next/link';
+import { useAppSelector } from '../../../store/store';
 
-const Finish = ({ game }) => {
+interface OwnProps {}
+
+type Props = OwnProps;
+
+const Finish: FC<Props> = () => {
   const router = useRouter();
   const { _id } = router.query;
 
@@ -13,9 +16,9 @@ const Finish = ({ game }) => {
 
   const {
     flashcards: { answers },
-  } = game;
+  } = useAppSelector(({ game }) => game);
 
-  const keyDownFinish = (e) => {
+  const keyDownFinish = (e: KeyboardEvent) => {
     if (e.key === 'Enter') {
       router.replace(isSR ? `/home/sr` : `/module/${_id}`);
     }
@@ -60,12 +63,4 @@ const Finish = ({ game }) => {
   );
 };
 
-Finish.propTypes = {
-  game: PropTypes.object.isRequired,
-};
-
-const mapStateToProps = (state) => ({
-  game: state.game,
-});
-
-export default connect(mapStateToProps)(Finish);
+export default Finish;

@@ -1,16 +1,24 @@
-import { useEffect, useRef } from 'react';
+import { FC, useEffect, useRef } from 'react';
 import { useRouter } from 'next/router';
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
 import Link from 'next/link';
+import { useAppSelector } from '../../../store/store';
 
-const EndGame = ({ main, game, active }) => {
-  const { cards } = main;
+interface OwnProps {
+  active: boolean;
+}
+
+type Props = OwnProps;
+
+const EndGame: FC<Props> = ({ active }) => {
   const {
-    flashcards: { progress },
-  } = game;
+    main: { cards },
+    game: {
+      flashcards: { progress },
+    },
+  } = useAppSelector((state) => state);
 
   const router = useRouter();
+
   const { _id } = router.query;
 
   const cardsArr = Object.values(cards);
@@ -21,7 +29,7 @@ const EndGame = ({ main, game, active }) => {
   const isEndRef = useRef(isEnd);
   isEndRef.current = isEnd;
 
-  const keyDown = (e) => {
+  const keyDown = (e: KeyboardEvent) => {
     if (e.key === 'Enter' && isEndRef.current) {
       router.replace(`/module/${_id}`);
     }
@@ -57,15 +65,4 @@ const EndGame = ({ main, game, active }) => {
   );
 };
 
-EndGame.propTypes = {
-  active: PropTypes.bool,
-  main: PropTypes.object.isRequired,
-  game: PropTypes.object.isRequired,
-};
-
-const mapStateToProps = (state) => ({
-  main: state.main,
-  game: state.game,
-});
-
-export default connect(mapStateToProps, {})(EndGame);
+export default EndGame;

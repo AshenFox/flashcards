@@ -1,41 +1,43 @@
 import { useRouter } from 'next/router';
-import { useEffect, useRef } from 'react';
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
+import { FC, MouseEvent, useEffect, useRef } from 'react';
 import {
   set_flashcards_progress,
   save_flashcards_answer,
   set_flashcards_side,
 } from '../../../store/actions/gameActions';
 import { put_sr_answer } from '../../../store/actions/srActions';
+import { useAppDispatch, useAppSelector } from '../../../store/store';
 
-const Navigation = ({
-  main,
-  game,
-  set_flashcards_progress,
-  save_flashcards_answer,
-  set_flashcards_side,
-  put_sr_answer,
-}) => {
+interface OwnProps {}
+
+type Props = OwnProps;
+
+const Navigation: FC<Props> = () => {
+  const dispatch = useAppDispatch();
+
   const router = useRouter();
   const { _id } = router.query;
 
   const isSR = _id === 'sr';
 
-  const { cards } = main;
   const {
-    flashcards: { progress, is_turned, side },
-  } = game;
+    main: { cards },
+    game: {
+      flashcards: { progress, is_turned, side },
+    },
+  } = useAppSelector((state) => state);
 
-  const clickNavItem = (value, cardAnswer) => (e) => {
-    if (value === 'next' && isSR) {
-      if (cardAnswer === 'correct') put_sr_answer(activeCardData._id, 1);
-      if (cardAnswer === 'incorrect') put_sr_answer(activeCardData._id, -1);
+  const clickNavItem =
+    (value: 'next' | 'prev', cardAnswer?: 'correct' | 'incorrect') =>
+    (e: MouseEvent<HTMLDivElement>) => {
+      if (value === 'next' && isSR) {
+        if (cardAnswer === 'correct') dispatch(put_sr_answer(activeCardData._id, 1));
+        if (cardAnswer === 'incorrect') dispatch(put_sr_answer(activeCardData._id, -1));
 
-      save_flashcards_answer(activeCardData._id, cardAnswer);
-    }
-    set_flashcards_progress(value);
-  };
+        dispatch(save_flashcards_answer(activeCardData._id, cardAnswer));
+      }
+      dispatch(set_flashcards_progress(value));
+    };
 
   const cardsArr = Object.values(cards);
 
@@ -50,39 +52,39 @@ const Navigation = ({
   isTurnedRef.current = is_turned;
 
   useEffect(() => {
-    const keyDown = (e) => {
+    const keyDown = (e: KeyboardEvent) => {
       if (e.key === 'ArrowUp' || e.key === 'ArrowDown') {
         if (sideRef.current === 'term') {
-          set_flashcards_side('definition');
+          dispatch(set_flashcards_side('definition'));
           return;
         }
         if (sideRef.current === 'definition') {
-          set_flashcards_side('term');
+          dispatch(set_flashcards_side('term'));
           return;
         }
       }
 
       if (isSR && isTurnedRef.current) {
         if (e.key === 'ArrowRight') {
-          put_sr_answer(_idRef.current, 1);
-          save_flashcards_answer(_idRef.current, 'correct');
-          set_flashcards_progress('next');
+          dispatch(put_sr_answer(_idRef.current, 1));
+          dispatch(save_flashcards_answer(_idRef.current, 'correct'));
+          dispatch(set_flashcards_progress('next'));
         }
 
         if (e.key === 'ArrowLeft') {
-          put_sr_answer(_idRef.current, -1);
-          save_flashcards_answer(_idRef.current, 'incorrect');
-          set_flashcards_progress('next');
+          dispatch(put_sr_answer(_idRef.current, -1));
+          dispatch(save_flashcards_answer(_idRef.current, 'incorrect'));
+          dispatch(set_flashcards_progress('next'));
         }
       }
 
       if (!isSR) {
         if (e.key === 'ArrowLeft') {
-          set_flashcards_progress('prev');
+          dispatch(set_flashcards_progress('prev'));
         }
 
         if (e.key === 'ArrowRight') {
-          set_flashcards_progress('next');
+          dispatch(set_flashcards_progress('next'));
         }
       }
     };
@@ -144,23 +146,4 @@ const Navigation = ({
   );
 };
 
-Navigation.propTypes = {
-  main: PropTypes.object.isRequired,
-  game: PropTypes.object.isRequired,
-  set_flashcards_side: PropTypes.func.isRequired,
-  put_sr_answer: PropTypes.func.isRequired,
-  set_flashcards_progress: PropTypes.func.isRequired,
-  save_flashcards_answer: PropTypes.func.isRequired,
-};
-
-const mapStateToProps = (state) => ({
-  main: state.main,
-  game: state.game,
-});
-
-export default connect(mapStateToProps, {
-  set_flashcards_progress,
-  save_flashcards_answer,
-  set_flashcards_side,
-  put_sr_answer,
-})(Navigation);
+export default Navigation;

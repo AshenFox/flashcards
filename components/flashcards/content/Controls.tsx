@@ -1,22 +1,28 @@
 import { useRouter } from 'next/router';
-import { useEffect, useRef } from 'react';
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
+import { FC, useEffect, useRef } from 'react';
 import { set_game_controls_dimen } from '../../../store/actions/dimenActions';
 import Link from 'next/link';
 import Progress from './Progress';
 import ShuffleBtn from './ShuffleBtn';
+import { useAppDispatch } from '../../../store/store';
 
-const Controls = ({ set_game_controls_dimen }) => {
+interface OwnProps {}
+
+type Props = OwnProps;
+
+const Controls: FC<Props> = () => {
+  const dispatch = useAppDispatch();
+
   const router = useRouter();
   const { _id } = router.query;
 
   const isSR = _id === 'sr';
 
-  const onSizeChange = () => set_game_controls_dimen(controllsEl.current);
+  const onSizeChange = (e: UIEvent | Event) =>
+    dispatch(set_game_controls_dimen(controllsEl.current));
 
   useEffect(() => {
-    set_game_controls_dimen(controllsEl.current);
+    dispatch(set_game_controls_dimen(controllsEl.current));
     window.addEventListener('resize', onSizeChange);
     window.addEventListener('orientationchange', onSizeChange);
     return () => {
@@ -25,7 +31,7 @@ const Controls = ({ set_game_controls_dimen }) => {
     };
   }, []);
 
-  const controllsEl = useRef(false);
+  const controllsEl = useRef<HTMLDivElement>(null);
 
   return (
     <div className='game__container'>
@@ -59,10 +65,4 @@ const Controls = ({ set_game_controls_dimen }) => {
   );
 };
 
-Controls.propTypes = {
-  set_game_controls_dimen: PropTypes.func.isRequired,
-};
-
-const mapStateToProps = (state) => ({});
-
-export default connect(mapStateToProps, { set_game_controls_dimen })(Controls);
+export default Controls;
