@@ -1,13 +1,22 @@
-const express = require('express');
+/* const express = require('express');
 const router = express.Router();
 const { auth } = require('../supplemental/middleware');
-const client_interface = require('../supplemental/client_interface');
+const client_interface = require('../supplemental/client_interface'); */
+
+import express, { Request, Response } from 'express';
+import middleware from '../supplemental/middleware';
+import client_interface from '../supplemental/client_interface';
+
+const { auth } = middleware;
+const router = express.Router();
 
 // @route ------ GET api/imgsearch
 // @desc ------- Search images on google by query
 // @access ----- Private
 
-router.get('/', auth, async (req, res) => {
+type TGetRes = Response<any | { errorBody: string }>;
+
+router.get('/', auth, async (req: Request, res: TGetRes) => {
   try {
     const { query } = req.query;
 
@@ -16,6 +25,7 @@ router.get('/', auth, async (req, res) => {
       return;
     }
 
+    //@ts-ignore
     const searchResults = await client_interface.search(query);
 
     if (!searchResults) {
@@ -25,11 +35,10 @@ router.get('/', auth, async (req, res) => {
 
     res.status(200).json(searchResults);
   } catch (err) {
-    console.error(err.message);
+    console.error(err);
     res.status(500).json({ errorBody: 'Server Error' });
   }
 });
 
-let half = false;
-
-module.exports = router;
+// module.exports = router;
+export default router;

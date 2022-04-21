@@ -1,8 +1,16 @@
-const express = require('express');
+/* const express = require('express');
 const router = express.Router();
 const axios = require('axios');
 const cheerio = require('cheerio');
-const { auth } = require('../supplemental/middleware');
+const { auth } = require('../supplemental/middleware'); */
+
+import express from 'express';
+import axios from 'axios';
+import cheerio from 'cheerio';
+import middleware from '../supplemental/middleware';
+
+const { auth } = middleware;
+const router = express.Router();
 
 // @route ------ GET api/scrape/cod
 // @desc ------- Scrape cambridge online dictionary
@@ -60,10 +68,7 @@ router.get('/cod', auth, async (req, res) => {
 
         subSectionsArr.push(subSectionObj);
 
-        subSectionObj.guideword = subSection
-          .find('.guideword.dsense_gw')
-          .text()
-          .trim();
+        subSectionObj.guideword = subSection.find('.guideword.dsense_gw').text().trim();
 
         const blocksBody = subSection.find('.sense-body.dsense_b');
         const blocks = blocksBody.find('.def-block.ddef_block ');
@@ -158,4 +163,5 @@ router.get('/urban', auth, async (req, res) => {
   }
 });
 
-module.exports = router;
+// module.exports = router;
+export default router;

@@ -1,10 +1,21 @@
-const express = require('express');
+/* const express = require('express');
 const router = express.Router();
-const userModel = require('../models/user_model.js');
-const cardModelGenerator = require('../models/card_model.js');
-const moduleModelGenerator = require('../models/module_model.js');
+const userModel = require('../models/user_model');
+const cardModelGenerator = require('../models/card_model');
+const moduleModelGenerator = require('../models/module_model');
 const { auth } = require('../supplemental/middleware');
-const { notification_timeout } = require('../supplemental/notifications_control');
+const { notification_timeout } = require('../supplemental/notifications_control'); */
+
+import express from 'express';
+import userModel from '../models/user_model';
+import cardModelGenerator from '../models/card_model';
+import moduleModelGenerator from '../models/module_model';
+import middleware from '../supplemental/middleware';
+import notifications_control from '../supplemental/notifications_control';
+
+const { auth } = middleware;
+const { notification_timeout } = notifications_control;
+const router = express.Router();
 
 // @route ------ DELETE api/edit/module
 // @desc ------- Delete a module
@@ -304,4 +315,5 @@ router.get('/draft', auth, async (req, res) => {
 
 // ----------------
 
-module.exports = router;
+// module.exports = router;
+export default router;

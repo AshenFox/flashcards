@@ -1,18 +1,9 @@
-// const uuidv4 = require('uuid/v4');
-const userModel = require('../models/user_model.js');
-const bcrypt = require('bcryptjs');
+import userModel from '../models/user_model';
+import bcrypt from 'bcryptjs';
 
-const minLength = (str, length) => {
-  let result = false;
+const minLength = (str: string, length: number) => str.length <= length;
 
-  if (str.length <= length) {
-    result = true;
-  }
-
-  return result;
-};
-
-const invalidChar = (str, allowed) => {
+const invalidChar = (str: string, allowed: RegExp) => {
   let result = false;
 
   let arr = [...str];
@@ -26,7 +17,7 @@ const invalidChar = (str, allowed) => {
   return result;
 };
 
-const userExists = async (str) => {
+const userExists = async (str: string) => {
   let result = false;
 
   try {
@@ -42,13 +33,9 @@ const userExists = async (str) => {
   return result;
 };
 
-const emailFormat = (str) => {
-  let result = !emailRegExp.test(str);
+const emailFormat = (str: string) => !emailRegExp.test(str);
 
-  return result;
-};
-
-const emailTaken = async (str) => {
+const emailTaken = async (str: string) => {
   let result = false;
 
   try {
@@ -64,11 +51,9 @@ const emailTaken = async (str) => {
   return result;
 };
 
-const oneUppercase = (str) => {
-  return allCapitalRegExp.test(str);
-};
+const oneUppercase = (str: string) => allCapitalRegExp.test(str);
 
-const noUser = async (str) => {
+const noUser = async (str: string) => {
   let result = false;
 
   try {
@@ -84,8 +69,9 @@ const noUser = async (str) => {
   return result;
 };
 
-const incorrectPassword = async (username, password) => {
+const incorrectPassword = async (username: string, password: string) => {
   let result = false;
+
   try {
     let user = await userModel.findOne({
       username: username,
@@ -104,20 +90,36 @@ const incorrectPassword = async (username, password) => {
   return result;
 };
 
-const isEmpty = (str) => {
-  if (!str) return true;
-  return false;
-};
+const isEmpty = (str: string) => !str;
 
 const userRegExp = /[A-z0-9]/;
 const passRegExp = /[A-z0-9"!#$%&'()*+,.:;<=>?@\]\[^_`{}~"\/\\\-]/;
-const emailRegExp = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+const emailRegExp =
+  /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 const allCapitalRegExp = /[A-Z]/;
 
-const check = async (data, type) => {
+interface ICheckData {
+  username: string;
+  password: string;
+  email: string;
+}
+
+interface IField {
+  ok: boolean;
+  errors: string[];
+}
+
+export interface ICheckResult {
+  ok: boolean;
+  username?: IField;
+  password?: IField;
+  email?: IField;
+}
+
+export const check = async (data: ICheckData, type: 'log_in' | 'sign_up') => {
   const { username, password, email } = data;
 
-  let result = { ok: true };
+  let result: ICheckResult = { ok: true };
 
   // Username checks
   if (typeof username !== 'undefined') {
@@ -130,8 +132,7 @@ const check = async (data, type) => {
 
     // type === log_in
     if (type === 'log_in') {
-      if (await noUser(username))
-        errors.push(`Username "${username}" does not exist`);
+      if (await noUser(username)) errors.push(`Username "${username}" does not exist`);
     }
     // ----------
 
@@ -193,8 +194,7 @@ const check = async (data, type) => {
 
     if (isEmpty(email)) errors.push('Please enter an email.');
     if (emailFormat(email)) errors.push('Invalid email format.');
-    if (await emailTaken(email))
-      errors.push('This email has already been taken.');
+    if (await emailTaken(email)) errors.push('This email has already been taken.');
 
     result.email = {
       ok: !errors.length,
@@ -207,8 +207,4 @@ const check = async (data, type) => {
   if (Object.keys(result).length < 3) result.ok = false;
 
   return result;
-};
-
-module.exports = {
-  check,
 };

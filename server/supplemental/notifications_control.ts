@@ -1,8 +1,9 @@
-const userModel = require('../models/user_model.js');
-const notificationModel = require('../models//notification_model.js');
-const cardModelGenerator = require('../models/card_model.js');
-const sr_stages = require('./sr_stages');
-const webpush = require('web-push');
+import { ICard } from './../models/card_model';
+import userModel, { IUser } from '../models/user_model';
+import notificationModel from '../models//notification_model';
+import cardModelGenerator from '../models/card_model';
+import sr_stages from './sr_stages';
+import webpush from 'web-push';
 
 // Tests
 
@@ -27,7 +28,9 @@ const webpush = require('web-push');
 
 const send_notifications = async () => {
   try {
-    const users = {};
+    const users: {
+      [key: string]: IUser;
+    } = {};
 
     const now = new Date(Date.now());
 
@@ -44,11 +47,15 @@ const send_notifications = async () => {
 
       if (!users.hasOwnProperty(_id)) {
         const user = await userModel.findOne({ _id });
-        users[_id] = user;
+        if (user) users[_id] = user;
       }
 
-      const payload = {
+      const payload: {
+        title: string;
+        body: string;
+      } = {
         title: "It's time to study some cards!",
+        body: '',
       };
 
       if (notif.number) {
@@ -61,12 +68,8 @@ const send_notifications = async () => {
 
       const { pc, tablet, mobile } = users[_id].subscriptions;
 
-      const errCallback = (err) => {
-        if (err.statusCode === 404 || err.statusCode === 410) {
-          console.log('Subscription has expired or is no longer valid: ', err);
-        } else {
-          console.log(err);
-        }
+      const errCallback = (err: any) => {
+        console.log('Something went wrong: ', err);
       };
 
       const payloadJSON = JSON.stringify(payload);
@@ -78,26 +81,38 @@ const send_notifications = async () => {
       await notificationModel.deleteOne({ _id: notif._id });
     }
   } catch (err) {
-    console.error(err.message);
+    console.error(err);
   }
 };
 
-const usersNotifTimers = {};
+const usersNotifTimers: {
+  [key: string]: ReturnType<typeof setTimeout>;
+} = {};
 
-const notification_timeout = async (user) => {
+const notification_timeout = async (user: IUser) => {
   try {
     if (usersNotifTimers[user._id]) clearTimeout(usersNotifTimers[user._id]);
 
     usersNotifTimers[user._id] = setTimeout(async () => {
       await create_notifications(user); // !!!
-      usersNotifTimers[user._id] = false;
+      delete usersNotifTimers[user._id];
     }, 500);
   } catch (err) {
-    console.error(err.message);
+    console.error(err);
   }
 };
 
-const create_notifications = async (user) => {
+interface INotif {
+  cards: ICard[];
+  number: number;
+  calcTime: Date;
+  calcPrevStage: Date;
+  time: Date;
+  user_id: string;
+  stage: number;
+}
+
+const create_notifications = async (user: IUser) => {
   try {
     await notificationModel.deleteMany({ user_id: user._id });
 
@@ -111,9 +126,9 @@ const create_notifications = async (user) => {
 
     const cards = await cardModel.find(filterObj).sort({ nextRep: 1 });
 
-    const notifArr = [];
-    let notif;
-    let remindTime;
+    const notifArr: INotif[] = [];
+    let notif: INotif | null = null;
+    let remindTime: Date = new Date();
 
     for (let card of cards) {
       if (card.nextRep.getTime() - Date.now() <= 0) {
@@ -137,7 +152,7 @@ const create_notifications = async (user) => {
           new Date(notif.calcTime.getTime() + 86400000).setHours(12, 0, 0, 0)
         );
       } else {
-        let stageDelay;
+        let stageDelay: number = 0;
         // New logic
         if (
           card.stage < notif.stage &&
@@ -187,6 +202,9 @@ const create_notifications = async (user) => {
           number: 0,
           time: remindTime,
           user_id: user._id,
+          calcTime: new Date(),
+          calcPrevStage: new Date(),
+          stage: 1,
         });
 
         remindTime = new Date(remindTime.getTime() + 86400000);
@@ -195,11 +213,11 @@ const create_notifications = async (user) => {
 
     await notificationModel.insertMany(notifArr);
   } catch (err) {
-    console.error(err.message);
+    console.error(err);
   }
 };
 
-module.exports = {
+export default {
   notification_timeout,
   send_notifications,
 };

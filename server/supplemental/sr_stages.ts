@@ -1,4 +1,4 @@
-module.exports = [
+export default [
   {
     stage: 2,
     nextRep: 900000,
