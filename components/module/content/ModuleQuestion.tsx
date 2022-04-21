@@ -1,6 +1,4 @@
 import { FC, useEffect, useRef, MouseEvent as ReactMouseEvent } from 'react';
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
 import { set_module_question } from '../../../store/actions/editActions';
 import { drop_cards_sr } from '../../../store/actions/srActions';
 import { useAppDispatch, useAppSelector } from '../../../store/store';

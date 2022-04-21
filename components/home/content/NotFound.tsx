@@ -1,7 +1,5 @@
 import { FC, ReactNode, useEffect } from 'react';
 import { useRouter } from 'next/router';
-import { connect } from 'react-redux';
-import PropTypes from 'prop-types';
 import { useAppSelector } from '../../../store/store';
 
 interface OwnProps {}

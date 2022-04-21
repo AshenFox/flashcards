@@ -1,6 +1,4 @@
 import { useRouter } from 'next/router';
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
 import Devider, { create_name } from './Devider';
 import Module from './Module';
 import NotFound from './NotFound';

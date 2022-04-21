@@ -1,7 +1,5 @@
 import { useRouter } from 'next/router';
-import PropTypes from 'prop-types';
 import { FC, MouseEvent } from 'react';
-import { connect } from 'react-redux';
 import { create_module } from '../../../store/actions/editActions';
 import { useAppDispatch, useAppSelector } from '../../../store/store';
 import LoadingButton from '../../main/LoadingButton';

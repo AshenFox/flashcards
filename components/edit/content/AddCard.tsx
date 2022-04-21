@@ -1,4 +1,4 @@
-import { MouseEvent } from 'react';
+import { FC, MouseEvent } from 'react';
 import { create_card } from '../../../store/actions/editActions';
 import { useAppDispatch } from '../../../store/store';
 
@@ -6,7 +6,7 @@ interface OwnProps {}
 
 type Props = OwnProps;
 
-const AddCard = () => {
+const AddCard: FC<Props> = () => {
   const dispatch = useAppDispatch();
 
   const clickAddcard = (e: MouseEvent<HTMLDivElement>) => dispatch(create_card());

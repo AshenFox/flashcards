@@ -1,4 +1,3 @@
-import PropTypes from 'prop-types';
 import { FC, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import Link from 'next/link';

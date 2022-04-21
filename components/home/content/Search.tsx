@@ -1,7 +1,5 @@
 import { FC, useRef } from 'react';
 import { useRouter } from 'next/router';
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
 import {
   control_search_cards,
   control_search_modules,
