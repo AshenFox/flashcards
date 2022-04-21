@@ -3,35 +3,35 @@ import express from 'express';
 import connectDB from '../config/db';
 import next from 'next';
 import config from 'config';
-import https from 'https';
+import https, { ServerOptions } from 'https';
 import fs from 'fs';
+import webpush from 'web-push';
+import notifications_control from './supplemental/notifications_control';
 
 // import routes
-import auth from './routes/auth.js';
-import main from './routes/main.js';
-import img_search from './routes/img_search.js';
-import scrape from './routes/scrape.js';
-import edit from './routes/edit.js';
-import sr from './routes/sr.js';
-import notifications from './routes/notifications.js';
-
-const webpush = require('web-push');
+import auth from './routes/auth';
+import main from './routes/main';
+import img_search from './routes/img_search';
+import scrape from './routes/scrape';
+import edit from './routes/edit';
+import sr from './routes/sr';
+import notifications from './routes/notifications';
 
 const port = process.env.PORT || 4000;
 const dev = process.env.NODE_ENV !== 'production';
 
-interface Credentials {
+/* interface serverOptions extends ServerOptions {
   key?: string;
   cert?: string;
   passphrase?: string;
-}
+} */
 
-const credentials: Credentials = {};
+const serverOptions: ServerOptions = {};
 
 if (dev) {
-  credentials.key = fs.readFileSync('.cert/key.pem', 'utf8');
-  credentials.cert = fs.readFileSync('.cert/cert.pem', 'utf8');
-  credentials.passphrase = 'cats';
+  serverOptions.key = fs.readFileSync('.cert/key.pem', 'utf8');
+  serverOptions.cert = fs.readFileSync('.cert/cert.pem', 'utf8');
+  serverOptions.passphrase = 'cats';
 }
 
 // Connect database
@@ -72,11 +72,11 @@ expressServer.all('*', (req, res) => {
 
 // Push notifications
 
-const { send_notifications } = require('./supplemental/notifications_control');
+const { send_notifications } = notifications_control;
 
-const publicVapidKey = config.get('publicVapidKey');
-const privateVapidKey = config.get('privateVapidKey');
-const webpushSubject = config.get('webpushSubject');
+const publicVapidKey = config.get('publicVapidKey') as string;
+const privateVapidKey = config.get('privateVapidKey') as string;
+const webpushSubject = config.get('webpushSubject') as string;
 
 webpush.setVapidDetails(webpushSubject, publicVapidKey, privateVapidKey);
 
@@ -95,7 +95,7 @@ const start = async () => {
     console.log(`Next.js is ready`);
     // Start server
     if (dev) {
-      await https.createServer(credentials, expressServer).listen(port);
+      await https.createServer(serverOptions, expressServer).listen(port);
     } else {
       await expressServer.listen(port);
     }

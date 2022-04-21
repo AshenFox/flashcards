@@ -1,11 +1,23 @@
-const express = require('express');
+/* const express = require('express');
 const router = express.Router();
-const userModel = require('../models/user_model.js');
+const userModel = require('../models/user_model');
 const notificationModel = require('../models//notification_model.js');
 const cardModelGenerator = require('../models/card_model.js');
 const { auth } = require('../supplemental/middleware');
 const sr_stages = require('../supplemental/sr_stages');
-const { notification_timeout } = require('../supplemental/notifications_control');
+const { notification_timeout } = require('../supplemental/notifications_control'); */
+
+import express from 'express';
+import userModel from '../models/user_model';
+import notificationModel from '../models//notification_model';
+import cardModelGenerator from '../models/card_model';
+import middleware from '../supplemental/middleware';
+import sr_stages from '../supplemental/sr_stages';
+import notifications_control from '../supplemental/notifications_control';
+
+const { auth } = middleware;
+const { notification_timeout } = notifications_control;
+const router = express.Router();
 
 // @route ------ GET api/sr/cards
 // @desc ------- Get Study Regime cards
@@ -196,7 +208,8 @@ router.put('/drop', auth, async (req, res) => {
 
 // ===================
 
-module.exports = router;
+// module.exports = router;
+export default router;
 
 const determine_stage = (card) => {
   let delay = Date.now() - card.prevStage.getTime();

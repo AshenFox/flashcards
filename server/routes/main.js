@@ -1,9 +1,18 @@
-const express = require('express');
+/* const express = require('express');
 const router = express.Router();
-const userModel = require('../models/user_model.js');
+const userModel = require('../models/user_model');
 const cardModelGenerator = require('../models/card_model.js');
 const moduleModelGenerator = require('../models/module_model.js');
-const { auth } = require('../supplemental/middleware');
+const { auth } = require('../supplemental/middleware'); */
+
+import express from 'express';
+import userModel from '../models/user_model';
+import cardModelGenerator from '../models/card_model';
+import moduleModelGenerator from '../models/module_model';
+import middleware from '../supplemental/middleware';
+
+const { auth } = middleware;
+const router = express.Router();
 
 // @route ------ GET api/main/modules
 // @desc ------- Get user modules
@@ -188,4 +197,5 @@ router.get('/module/cards', auth, async (req, res) => {
   }
 });
 
-module.exports = router;
+// module.exports = router;
+export default router;

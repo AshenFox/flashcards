@@ -1,8 +1,15 @@
-const express = require('express');
+/* const express = require('express');
 const router = express.Router();
-const userModel = require('../models/user_model.js');
+const userModel = require('../models/user_model');
+const { auth } = require('../supplemental/middleware'); */
 
-const { auth } = require('../supplemental/middleware');
+import express from 'express';
+import userModel from '../models/user_model';
+import middleware from '../supplemental/middleware';
+
+const { auth } = middleware;
+
+const router = express.Router();
 
 // @route ------ PUT api/notifications/subscribe
 // @desc ------- Update subscription
@@ -36,4 +43,5 @@ router.put('/subscribe', auth, async (req, res) => {
   }
 });
 
-module.exports = router;
+// module.exports = router;
+export default router;

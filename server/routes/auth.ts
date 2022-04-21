@@ -1,12 +1,29 @@
-const express = require('express');
+import { IUser } from './../models/user_model';
+/* const express = require('express');
 const { check } = require('../supplemental/checks');
-const router = express.Router();
-const userModel = require('../models/user_model.js');
+const userModel = require('../models/user_model');
 const jwt = require('jsonwebtoken');
 const config = require('config');
 const { v4: uuidv4 } = require('uuid');
 const bcrypt = require('bcryptjs');
-const { auth } = require('../supplemental/middleware');
+const { auth } = require('../supplemental/middleware'); */
+
+import express, { Request, Response } from 'express';
+import { check, ICheckResult } from '../supplemental/checks';
+import userModel from '../models/user_model';
+import jwt from 'jsonwebtoken';
+import config from 'config';
+import { v4 as uuidv4 } from 'uuid';
+import bcrypt from 'bcryptjs';
+import middleware from '../supplemental/middleware';
+
+const { auth } = middleware;
+
+const router = express.Router();
+
+interface IResError {
+  errorBody: string;
+}
 
 // const Food = require("../models/Food");
 
@@ -14,13 +31,20 @@ const { auth } = require('../supplemental/middleware');
 // @desc ------- Check form data of certain type
 // @access ----- Public
 
-router.post('/check/:type', async (req, res) => {
+interface ICheckPostParams {
+  type: 'log_in' | 'sign_up';
+}
+
+type TCheckPostReq = Request<ICheckPostParams>;
+type TCheckPostRes = Response<ICheckResult | IResError>;
+
+router.post('/check/:type', async (req: TCheckPostReq, res: TCheckPostRes) => {
   try {
     const { type } = req.params;
     const errors = await check(req.body, type);
     res.status(200).json(errors);
   } catch (err) {
-    console.error(err.message);
+    console.error(err);
     res.status(500).json({ errorBody: 'Server Error' });
   }
 });
@@ -29,7 +53,26 @@ router.post('/check/:type', async (req, res) => {
 // @desc ------- Entry a user
 // @access ----- Public
 
-router.post('/entry/:type', async (req, res) => {
+interface IEntryPostParams {
+  type: 'log_in' | 'sign_up';
+}
+
+interface IEntryPostReqBody {
+  username: string;
+  email: string;
+  password: string;
+}
+
+type TEntryPostReq = Request<IEntryPostParams, any, IEntryPostReqBody>;
+
+interface IEntryPostResBody {
+  errors: ICheckResult;
+  token?: string;
+}
+
+type TEntryPostRes = Response<IEntryPostResBody | IResError>;
+
+router.post('/entry/:type', async (req: TEntryPostReq, res: TEntryPostRes) => {
   try {
     const { type } = req.params;
 
@@ -37,10 +80,10 @@ router.post('/entry/:type', async (req, res) => {
 
     const { username, email, password } = req.body;
 
-    const res_data = { errors };
+    const res_data: IEntryPostResBody = { errors };
 
     if (errors.ok) {
-      let user;
+      let user: IUser | null = null;
 
       if (type === 'log_in') {
         user = await userModel.findOne({
@@ -52,13 +95,14 @@ router.post('/entry/:type', async (req, res) => {
           username,
           email,
           registration_date: new Date(),
+          password: '',
         };
 
         user_data.password = await bcrypt.hash(password, 10);
 
-        console.log('A new user has been signed up!');
-
         user = await userModel.create(user_data);
+
+        console.log('A new user has been signed up!');
       }
 
       if (!user) throw new Error('The user has not been found.');
@@ -74,7 +118,7 @@ router.post('/entry/:type', async (req, res) => {
 
     res.status(200).json(res_data);
   } catch (err) {
-    console.error(err.message);
+    console.error(err);
     res.status(500).json({ errorBody: 'Server Error' });
   }
 });
@@ -83,18 +127,24 @@ router.post('/entry/:type', async (req, res) => {
 // @desc ------- Authenticate
 // @access ----- Private
 
-router.get('/', auth, async (req, res) => {
+type TAuthGetRes = Response<IUser | IResError | null>;
+
+router.get('/', auth, async (req: Request, res: TAuthGetRes) => {
   try {
-    const server_id = req.user.server_id;
+    const { server_id } = req.user || {};
+
     const user = await userModel.findOne({
       server_id,
     });
-    user.password = undefined;
+
+    if (user) user.password = '';
+
     res.status(200).json(user);
   } catch (err) {
-    console.error(err.message);
+    console.error(err);
     res.status(500).json({ errorBody: 'Server Error' });
   }
 });
 
-module.exports = router;
+// module.exports = router;
+export default router;
