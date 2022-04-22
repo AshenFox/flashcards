@@ -642,14 +642,8 @@ const format_dictionary_result = (result: CodDictResult | UrbanDictResult): stri
 
     // urban
   } else if (type === 'urban') {
-    let term;
     data.map((panel) => {
       let { definition, example } = panel;
-
-      if (!term) {
-        term = panel.term;
-        formatedResult = formatedResult.concat(br, wrap_in(term, 'div'), br);
-      }
 
       formatedResult = formatedResult.concat(
         wrap_in(example, 'div'),
@@ -684,7 +678,6 @@ interface CodDictResult {
 }
 
 interface UrbanPanel {
-  term: string;
   definition: string;
   example: string;
 }

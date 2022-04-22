@@ -1,3 +1,7 @@
+import { IUser } from './../models/user_model';
+// import { AuthRequest } from './../supplemental/middleware';
+import { ICard, ICardBase } from './../models/card_model';
+import { IModule } from './../models/module_model';
 /* const express = require('express');
 const router = express.Router();
 const userModel = require('../models/user_model');
@@ -6,7 +10,7 @@ const moduleModelGenerator = require('../models/module_model');
 const { auth } = require('../supplemental/middleware');
 const { notification_timeout } = require('../supplemental/notifications_control'); */
 
-import express from 'express';
+import express, { Request, Response } from 'express';
 import userModel from '../models/user_model';
 import cardModelGenerator from '../models/card_model';
 import moduleModelGenerator from '../models/module_model';
@@ -17,11 +21,21 @@ const { auth } = middleware;
 const { notification_timeout } = notifications_control;
 const router = express.Router();
 
+interface IResError {
+  errorBody: string;
+}
+
+interface IResMessage {
+  msg: string;
+}
+
 // @route ------ DELETE api/edit/module
 // @desc ------- Delete a module
 // @access ----- Private
 
-router.delete('/module', auth, async (req, res) => {
+type TModuleDeleteRes = Response<IResMessage | IResError>;
+
+router.delete('/module', auth, async (req: Request, res: TModuleDeleteRes) => {
   try {
     let { _id } = req.query;
 
@@ -30,6 +44,8 @@ router.delete('/module', auth, async (req, res) => {
     const user = await userModel.findOne({
       server_id,
     });
+
+    if (!user) throw new Error(`User ${server_id} has not been found.`);
 
     const moduleModel = moduleModelGenerator(user.username);
     const cardModel = cardModelGenerator(user.username);
@@ -41,7 +57,7 @@ router.delete('/module', auth, async (req, res) => {
 
     await notification_timeout(user);
   } catch (err) {
-    console.error(err.message);
+    console.error(err);
     res.status(500).json({ errorBody: 'Server Error' });
   }
 });
@@ -52,7 +68,9 @@ router.delete('/module', auth, async (req, res) => {
 // @desc ------- Delete a card
 // @access ----- Private
 
-router.delete('/card', auth, async (req, res) => {
+type TCardDeleteRes = Response<IResMessage | IResError>;
+
+router.delete('/card', auth, async (req: Request, res: TCardDeleteRes) => {
   try {
     let { _id } = req.query;
 
@@ -62,10 +80,14 @@ router.delete('/card', auth, async (req, res) => {
       server_id,
     });
 
+    if (!user) throw new Error(`User ${server_id} has not been found.`);
+
     const cardModel = cardModelGenerator(user.username);
     const moduleModel = moduleModelGenerator(user.username);
 
     const card = await cardModel.findOne({ _id });
+
+    if (!card) throw new Error(`Card ${_id} has not been found.`);
 
     await cardModel.deleteOne({ _id });
 
@@ -79,7 +101,7 @@ router.delete('/card', auth, async (req, res) => {
 
     await notification_timeout(user);
   } catch (err) {
-    console.error(err.message);
+    console.error(err);
     res.status(500).json({ errorBody: 'Server Error' });
   }
 });
@@ -90,7 +112,11 @@ router.delete('/card', auth, async (req, res) => {
 // @desc ------- Edit a module
 // @access ----- Private
 
-router.put('/module', auth, async (req, res) => {
+type TModulePutReq = Request<any, any, IModule>;
+
+type TModulePutRes = Response<IResMessage | IResError>;
+
+router.put('/module', auth, async (req: TModulePutReq, res: TModulePutRes) => {
   try {
     const module_data = req.body;
 
@@ -102,11 +128,15 @@ router.put('/module', auth, async (req, res) => {
       server_id,
     });
 
+    if (!user) throw new Error(`User ${server_id} has not been found.`);
+
     const moduleModel = moduleModelGenerator(user.username);
 
     const module = await moduleModel.findOne({
       _id,
     });
+
+    if (!module) throw new Error(`Module ${_id} has not been found.`);
 
     module.title = module_data.title;
 
@@ -114,7 +144,7 @@ router.put('/module', auth, async (req, res) => {
 
     res.status(200).json({ msg: 'The module has been edited.' });
   } catch (err) {
-    console.error(err.message);
+    console.error(err);
     res.status(500).json({ errorBody: 'Server Error' });
   }
 });
@@ -125,7 +155,11 @@ router.put('/module', auth, async (req, res) => {
 // @desc ------- Edit a card
 // @access ----- Private
 
-router.put('/card', auth, async (req, res) => {
+type TCardPutReq = Request<any, any, ICard>;
+
+type TCardPutRes = Response<IResMessage | IResError>;
+
+router.put('/card', auth, async (req: TCardPutReq, res: TCardPutRes) => {
   try {
     const card_data = req.body;
 
@@ -137,11 +171,15 @@ router.put('/card', auth, async (req, res) => {
       server_id,
     });
 
+    if (!user) throw new Error(`User ${server_id} has not been found.`);
+
     const cardModel = cardModelGenerator(user.username);
 
     const card = await cardModel.findOne({
       _id,
     });
+
+    if (!card) throw new Error(`Card ${_id} has not been found.`);
 
     card.term = card_data.term;
     card.defenition = card_data.defenition;
@@ -151,7 +189,7 @@ router.put('/card', auth, async (req, res) => {
 
     res.status(200).json({ msg: 'The card has been edited.' });
   } catch (err) {
-    console.error(err.message);
+    console.error(err);
     res.status(500).json({ errorBody: 'Server Error' });
   }
 });
@@ -162,7 +200,15 @@ router.put('/card', auth, async (req, res) => {
 // @desc ------- Create a module
 // @access ----- Private
 
-router.post('/module', auth, async (req, res) => {
+interface IModulePostReqBody {
+  _id_arr: string[];
+}
+
+type TModulePostReq = Request<any, any, IModulePostReqBody>;
+
+type TModulePostRes = Response<IResMessage | IResError>;
+
+router.post('/module', auth, async (req: TModulePostReq, res: TModulePostRes) => {
   try {
     const { _id_arr } = req.body;
 
@@ -172,10 +218,14 @@ router.post('/module', auth, async (req, res) => {
       server_id,
     });
 
+    if (!user) throw new Error(`User ${server_id} has not been found.`);
+
     const moduleModel = moduleModelGenerator(user.username);
     const cardModel = cardModelGenerator(user.username);
 
     const draft = await moduleModel.findOne({ draft: true });
+
+    if (!draft) throw new Error(`Draf for user ${user.username} has not been found.`);
 
     const new_module = await moduleModel.create({
       title: draft.title,
@@ -202,7 +252,7 @@ router.post('/module', auth, async (req, res) => {
 
     res.status(200).json({ msg: 'A new module has been created.' });
   } catch (err) {
-    console.error(err.message);
+    console.error(err);
     res.status(500).json({ errorBody: 'Server Error' });
   }
 });
@@ -213,7 +263,15 @@ router.post('/module', auth, async (req, res) => {
 // @desc ------- Create a card
 // @access ----- Private
 
-router.post('/card', auth, async (req, res) => {
+interface ICardPostReqBody {
+  module: IModule;
+}
+
+type TCardPostReq = Request<any, any, ICardPostReqBody>;
+
+type TCardPostRes = Response<ICard | IResError>;
+
+router.post('/card', auth, async (req: TCardPostReq, res: TCardPostRes) => {
   try {
     const { module } = req.body;
 
@@ -222,6 +280,8 @@ router.post('/card', auth, async (req, res) => {
     const user = await userModel.findOne({
       server_id,
     });
+
+    if (!user) throw new Error(`User ${server_id} has not been found.`);
 
     const cardModel = cardModelGenerator(user.username);
     const moduleModel = moduleModelGenerator(user.username);
@@ -246,7 +306,7 @@ router.post('/card', auth, async (req, res) => {
 
     res.status(200).json(new_card);
   } catch (err) {
-    console.error(err.message);
+    console.error(err);
     res.status(500).json({ errorBody: 'Server Error' });
   }
 });
@@ -257,7 +317,14 @@ router.post('/card', auth, async (req, res) => {
 // @desc ------- Get draft or create and get a new draft
 // @access ----- Private
 
-router.get('/draft', auth, async (req, res) => {
+interface IDraftGetResBody {
+  module: IModule;
+  cards: ICard[];
+}
+
+type TDraftGetRes = Response<IDraftGetResBody | IResError>;
+
+router.get('/draft', auth, async (req: Request, res: TDraftGetRes) => {
   try {
     const server_id = req.user.server_id;
 
@@ -265,10 +332,12 @@ router.get('/draft', auth, async (req, res) => {
       server_id,
     });
 
+    if (!user) throw new Error(`User ${server_id} has not been found.`);
+
     const cardModel = cardModelGenerator(user.username);
     const moduleModel = moduleModelGenerator(user.username);
 
-    let module, cards;
+    let module: IModule | null, cards: ICard[];
 
     module = await moduleModel.findOne({
       draft: true,
@@ -287,7 +356,7 @@ router.get('/draft', auth, async (req, res) => {
         draft: true,
       });
 
-      const cardsData = [];
+      const cardsData: ICardBase[] = [];
 
       for (let i = 0; i < 5; i++) {
         cardsData.push({
@@ -300,6 +369,7 @@ router.get('/draft', auth, async (req, res) => {
           stage: 1,
           nextRep: new Date(),
           prevStage: new Date(),
+          lastRep: new Date(),
         });
       }
 
@@ -308,7 +378,7 @@ router.get('/draft', auth, async (req, res) => {
 
     res.status(200).json({ module, cards });
   } catch (err) {
-    console.error(err.message);
+    console.error(err);
     res.status(500).json({ errorBody: 'Server Error' });
   }
 });

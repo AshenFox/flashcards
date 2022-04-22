@@ -3,8 +3,7 @@ import mongoose from 'mongoose';
 
 const Schema = mongoose.Schema;
 
-export interface ICard {
-  _id: string;
+export interface ICardBase {
   moduleID: string;
   term: string;
   defenition: string;
@@ -15,6 +14,10 @@ export interface ICard {
   nextRep: Date;
   prevStage: Date;
   lastRep: Date;
+}
+
+export interface ICard extends ICardBase {
+  _id: string;
 }
 
 const cardSchema = new Schema<ICard>({
