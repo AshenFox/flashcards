@@ -101,5 +101,6 @@
   "ts-node": {
     "files": true
   },
-  "files": ["./@types/index.d.ts"]
+  "files": ["./@types/index.d.ts"],
+  "include": ["**/*"]
 }

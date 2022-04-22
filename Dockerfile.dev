@@ -14,3 +14,6 @@ CMD ["npm", "run", "dev"]
 
 # docker rm $(docker ps -aq)
 # docker rmi $(docker images -a -q)
+# docker build -f Dockerfile.prod .
+# docker images
+# docker container run -d -p 4000:4000 04829f408cf9

@@ -1,6 +1,6 @@
 // dependencies
 import express from 'express';
-import connectDB from '../config/db';
+import connectDB from './supplemental/db';
 import next from 'next';
 import config from 'config';
 import https, { ServerOptions } from 'https';
