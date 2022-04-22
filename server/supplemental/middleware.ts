@@ -2,14 +2,6 @@ import jwt, { JwtPayload } from 'jsonwebtoken';
 import config from 'config';
 import { NextFunction, Request, Response } from 'express';
 
-/* declare module 'express' {
-  export interface Request {
-    user?: {
-      server_id: string;
-    };
-  }
-} */
-
 declare global {
   namespace Express {
     export interface Request {

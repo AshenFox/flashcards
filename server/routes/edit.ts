@@ -1,15 +1,5 @@
-import { IUser } from './../models/user_model';
-// import { AuthRequest } from './../supplemental/middleware';
 import { ICard, ICardBase } from './../models/card_model';
 import { IModule } from './../models/module_model';
-/* const express = require('express');
-const router = express.Router();
-const userModel = require('../models/user_model');
-const cardModelGenerator = require('../models/card_model');
-const moduleModelGenerator = require('../models/module_model');
-const { auth } = require('../supplemental/middleware');
-const { notification_timeout } = require('../supplemental/notifications_control'); */
-
 import express, { Request, Response } from 'express';
 import userModel from '../models/user_model';
 import cardModelGenerator from '../models/card_model';
@@ -33,9 +23,15 @@ interface IResMessage {
 // @desc ------- Delete a module
 // @access ----- Private
 
+interface IModuleDeleteQuery extends qs.ParsedQs {
+  _id: string;
+}
+
+type TModuleDeleteReq = Request<any, any, any, IModuleDeleteQuery>;
+
 type TModuleDeleteRes = Response<IResMessage | IResError>;
 
-router.delete('/module', auth, async (req: Request, res: TModuleDeleteRes) => {
+router.delete('/module', auth, async (req: TModuleDeleteReq, res: TModuleDeleteRes) => {
   try {
     let { _id } = req.query;
 
@@ -68,9 +64,15 @@ router.delete('/module', auth, async (req: Request, res: TModuleDeleteRes) => {
 // @desc ------- Delete a card
 // @access ----- Private
 
+interface ICardDeleteQuery extends qs.ParsedQs {
+  _id: string;
+}
+
+type TCardDeleteReq = Request<any, any, any, ICardDeleteQuery>;
+
 type TCardDeleteRes = Response<IResMessage | IResError>;
 
-router.delete('/card', auth, async (req: Request, res: TCardDeleteRes) => {
+router.delete('/card', auth, async (req: TCardDeleteReq, res: TCardDeleteRes) => {
   try {
     let { _id } = req.query;
 
@@ -385,5 +387,4 @@ router.get('/draft', auth, async (req: Request, res: TDraftGetRes) => {
 
 // ----------------
 
-// module.exports = router;
 export default router;

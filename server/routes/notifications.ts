@@ -1,9 +1,5 @@
-/* const express = require('express');
-const router = express.Router();
-const userModel = require('../models/user_model');
-const { auth } = require('../supplemental/middleware'); */
-
-import express from 'express';
+import express, { Request, Response } from 'express';
+import { PushSubscription } from 'web-push';
 import userModel from '../models/user_model';
 import middleware from '../supplemental/middleware';
 
@@ -11,11 +7,30 @@ const { auth } = middleware;
 
 const router = express.Router();
 
+interface IResError {
+  errorBody: string;
+}
+
 // @route ------ PUT api/notifications/subscribe
 // @desc ------- Update subscription
 // @access ----- Private
 
-router.put('/subscribe', auth, async (req, res) => {
+// "mobile" | "tablet" | "pc"
+
+interface ISubscribePutBody {
+  device: 'mobile' | 'tablet' | 'pc';
+  subscription: PushSubscription;
+}
+
+type TSubscribePutReq = Request<any, any, ISubscribePutBody>;
+
+interface ISubscribePutResBody {
+  msg: string;
+}
+
+type TSubscribePutRes = Response<ISubscribePutResBody | IResError>;
+
+router.put('/subscribe', auth, async (req: TSubscribePutReq, res: TSubscribePutRes) => {
   try {
     const { device, subscription } = req.body;
 
@@ -24,6 +39,8 @@ router.put('/subscribe', auth, async (req, res) => {
     const user = await userModel.findOne({
       server_id,
     });
+
+    if (!user) throw new Error(`User ${server_id} has not been found.`);
 
     if (
       !user.subscriptions[device] ||
@@ -38,10 +55,9 @@ router.put('/subscribe', auth, async (req, res) => {
 
     res.status(200).json({ msg: 'Subscription is actual' });
   } catch (err) {
-    console.error(err.message);
+    console.error(err);
     res.status(500).json({ errorBody: 'Server Error' });
   }
 });
 
-// module.exports = router;
 export default router;

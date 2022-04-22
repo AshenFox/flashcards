@@ -1,8 +1,3 @@
-/* const express = require('express');
-const router = express.Router();
-const { auth } = require('../supplemental/middleware');
-const client_interface = require('../supplemental/client_interface'); */
-
 import express, { Request, Response } from 'express';
 import middleware from '../supplemental/middleware';
 import client_interface from '../supplemental/client_interface';
@@ -40,5 +35,4 @@ router.get('/', auth, async (req: Request, res: TGetRes) => {
   }
 });
 
-// module.exports = router;
 export default router;
