@@ -1,7 +1,7 @@
 import mongoose from 'mongoose';
 import config from 'config';
 
-const db = config.get('mongoURI');
+const db: string = config.get('mongoURI');
 
 const connectDB = async () => {
   try {
