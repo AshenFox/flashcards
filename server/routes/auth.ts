@@ -1,13 +1,4 @@
 import { IUser } from './../models/user_model';
-/* const express = require('express');
-const { check } = require('../supplemental/checks');
-const userModel = require('../models/user_model');
-const jwt = require('jsonwebtoken');
-const config = require('config');
-const { v4: uuidv4 } = require('uuid');
-const bcrypt = require('bcryptjs');
-const { auth } = require('../supplemental/middleware'); */
-
 import express, { Request, Response } from 'express';
 import { check, ICheckResult } from '../supplemental/checks';
 import userModel from '../models/user_model';
@@ -24,8 +15,6 @@ const router = express.Router();
 interface IResError {
   errorBody: string;
 }
-
-// const Food = require("../models/Food");
 
 // @route ------ POST api/auth/check/:type
 // @desc ------- Check form data of certain type
@@ -146,5 +135,4 @@ router.get('/', auth, async (req: Request, res: TAuthGetRes) => {
   }
 });
 
-// module.exports = router;
 export default router;

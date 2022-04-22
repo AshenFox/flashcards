@@ -1,9 +1,3 @@
-/* const express = require('express');
-const router = express.Router();
-const axios = require('axios');
-const cheerio = require('cheerio');
-const { auth } = require('../supplemental/middleware'); */
-
 import express, { Request, Response } from 'express';
 import axios from 'axios';
 import cheerio from 'cheerio';
@@ -210,5 +204,4 @@ router.get('/urban', auth, async (req: TUrbanGetReq, res: TUrbanGetRes) => {
   }
 });
 
-// module.exports = router;
 export default router;

@@ -1,11 +1,4 @@
 import { IModule } from './../models/module_model';
-/* const express = require('express');
-const router = express.Router();
-const userModel = require('../models/user_model');
-const cardModelGenerator = require('../models/card_model.js');
-const moduleModelGenerator = require('../models/module_model.js');
-const { auth } = require('../supplemental/middleware'); */
-
 import express, { Request, Response } from 'express';
 import userModel from '../models/user_model';
 import cardModelGenerator, { ICard } from '../models/card_model';
@@ -23,15 +16,15 @@ interface IResError {
 // @desc ------- Get user modules
 // @access ----- Private
 
-interface TModulesGetQuery extends qs.ParsedQs {
+interface IModulesGetQuery extends qs.ParsedQs {
   skip: string;
   filter: string;
   created: 'newest' | 'oldest';
 }
 
-type TModulesGetReq = Request<any, any, any, TModulesGetQuery>;
+type TModulesGetReq = Request<any, any, any, IModulesGetQuery>;
 
-interface TModulesGetResBody {
+interface IModulesGetResBody {
   draft: null | IModule;
   modules: IModule[];
   modules_number: number;
@@ -39,7 +32,7 @@ interface TModulesGetResBody {
   all_modules_number: number;
 }
 
-type TModulesGetRes = Response<TModulesGetResBody | IResError>;
+type TModulesGetRes = Response<IModulesGetResBody | IResError>;
 
 router.get('/modules', auth, async (req: TModulesGetReq, res: TModulesGetRes) => {
   try {
@@ -96,7 +89,7 @@ router.get('/modules', auth, async (req: TModulesGetReq, res: TModulesGetRes) =>
 
     const all_modules = all_modules_number <= (skipNum + 1) * 10;
 
-    const result: TModulesGetResBody = {
+    const result: IModulesGetResBody = {
       draft: null,
       modules,
       modules_number,
@@ -117,23 +110,23 @@ router.get('/modules', auth, async (req: TModulesGetReq, res: TModulesGetRes) =>
 // @desc ------- Get user cards
 // @access ----- Private
 
-interface TCardsGetQuery extends qs.ParsedQs {
+interface ICardsGetQuery extends qs.ParsedQs {
   skip: string;
   filter: string;
   by: 'term' | 'definition';
   created: 'newest' | 'oldest';
 }
 
-type TCardsGetReq = Request<any, any, any, TCardsGetQuery>;
+type TCardsGetReq = Request<any, any, any, ICardsGetQuery>;
 
-interface TCardsGetResBody {
+interface ICardsGetResBody {
   cards: ICard[];
   cards_number: number;
   all_cards: boolean;
   all_cards_number: number;
 }
 
-type TCardsGetRes = Response<TCardsGetResBody | IResError>;
+type TCardsGetRes = Response<ICardsGetResBody | IResError>;
 
 router.get('/cards', auth, async (req: TCardsGetReq, res: TCardsGetRes) => {
   try {
@@ -199,18 +192,18 @@ router.get('/cards', auth, async (req: TCardsGetReq, res: TCardsGetRes) => {
 // @desc ------- Get module with cards
 // @access ----- Private
 
-interface TModuleGetQuery extends qs.ParsedQs {
+interface IModuleGetQuery extends qs.ParsedQs {
   _id: string;
 }
 
-type TModuleGetReq = Request<any, any, any, TModuleGetQuery>;
+type TModuleGetReq = Request<any, any, any, IModuleGetQuery>;
 
-interface TModuleGetResBody {
+interface IModuleGetResBody {
   module: IModule;
   cards: ICard[];
 }
 
-type TModuleGetRes = Response<TModuleGetResBody | IResError>;
+type TModuleGetRes = Response<IModuleGetResBody | IResError>;
 
 router.get('/module', auth, async (req: TModuleGetReq, res: TModuleGetRes) => {
   try {
@@ -247,19 +240,19 @@ router.get('/module', auth, async (req: TModuleGetReq, res: TModuleGetRes) => {
 // @desc ------- Get only the module's cards
 // @access ----- Private
 
-interface TModuleCardsGetQuery extends qs.ParsedQs {
+interface IModuleCardsGetQuery extends qs.ParsedQs {
   _id: string;
   filter: string;
   by: 'term' | 'definition';
 }
 
-type TModuleCardsGetReq = Request<any, any, any, TModuleCardsGetQuery>;
+type TModuleCardsGetReq = Request<any, any, any, IModuleCardsGetQuery>;
 
-interface TModuleCardsGetResBody {
+interface IModuleCardsGetResBody {
   cards: ICard[];
 }
 
-type TModuleCardsGetRes = Response<TModuleCardsGetResBody | IResError>;
+type TModuleCardsGetRes = Response<IModuleCardsGetResBody | IResError>;
 
 router.get(
   '/module/cards',
@@ -301,5 +294,4 @@ router.get(
   }
 );
 
-// module.exports = router;
 export default router;
