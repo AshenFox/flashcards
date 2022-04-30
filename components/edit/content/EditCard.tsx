@@ -11,7 +11,7 @@ import { Card } from '../../../store/reducers/main/mainInitState';
 import { useAppDispatch } from '../../../store/store';
 
 interface OwnProps {
-  data?: Card;
+  data: Card;
   loading?: boolean;
   draft?: boolean;
   index?: number;
@@ -26,6 +26,8 @@ const EditCard: FC<Props> = ({ data, loading, draft, index, toggle, game, number
   const dispatch = useAppDispatch();
 
   const { _id, term, defenition, gallery } = data || {};
+
+  const { search } = gallery || {};
 
   const handleCardChange = (type: 'term' | 'defenition') => (e: ContentEditableEvent) => {
     dispatch(control_card(_id, type, e.target.value));
@@ -79,7 +81,7 @@ const EditCard: FC<Props> = ({ data, loading, draft, index, toggle, game, number
         </div>
       </div>
       <Scrape data={data} />
-      <Gallery data={data} active={gallery.search} game={game} />
+      <Gallery data={data} active={search} game={game} />
     </div>
   );
 };

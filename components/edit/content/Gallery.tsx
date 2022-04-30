@@ -21,7 +21,7 @@ type Props = OwnProps;
 const Gallery: FC<Props> = ({ data, active, game = false }) => {
   const dispatch = useAppDispatch();
 
-  const { _id, gallery } = data;
+  const { _id, gallery } = data || {};
   const { loading, query, error } = gallery;
 
   const [uPressed, setUPressed] = useState(false);

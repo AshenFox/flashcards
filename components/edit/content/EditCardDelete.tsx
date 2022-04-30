@@ -13,7 +13,7 @@ type Props = OwnProps;
 const EditCardDelete: FC<Props> = ({ data, active = false }) => {
   const dispatch = useAppDispatch();
 
-  const { _id } = data;
+  const { _id } = data || {};
 
   const clickCardDelete = (e: MouseEvent<HTMLDivElement>) =>
     active && dispatch(delete_card(_id));

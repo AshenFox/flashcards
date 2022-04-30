@@ -48,7 +48,14 @@ const ContentContainer: FC<Props> = () => {
   } else if (activeCard) {
     if (isAnswered) {
       if (activeCardData.edit) {
-        components = <EditCard key={activeCardData._id} toggle={true} game={true} />;
+        components = (
+          <EditCard
+            key={activeCardData._id}
+            toggle={true}
+            game={true}
+            data={activeCardData}
+          />
+        );
       } else {
         components = <Answer data={activeCardData} />;
       }

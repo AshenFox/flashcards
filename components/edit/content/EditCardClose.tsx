@@ -12,7 +12,7 @@ type Props = OwnProps;
 const EditCardClose: FC<Props> = ({ data }) => {
   const dispatch = useAppDispatch();
 
-  const { _id } = data;
+  const { _id } = data || {};
 
   const clickClose = (e: MouseEvent<HTMLDivElement>) => {
     dispatch(set_card_edit(_id, false));
