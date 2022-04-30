@@ -17,7 +17,7 @@ type Props = OwnProps;
 const EditCardAddImg: FC<Props> = ({ data }) => {
   const dispatch = useAppDispatch();
 
-  const { _id, imgurl, gallery } = data;
+  const { _id, imgurl, gallery } = data || {};
 
   const clickImgSearch = (e: MouseEvent<HTMLDivElement>) => {
     if (imgurl && e.target === deleteEl.current) return;

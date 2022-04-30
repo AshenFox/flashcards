@@ -11,10 +11,9 @@ type Props = OwnProps;
 
 const Scrape: FC<Props> = ({ data }) => {
   const dispatch = useAppDispatch();
-  const {
-    _id,
-    scrape: { loading },
-  } = data;
+  const { _id, scrape } = data || {};
+
+  const { loading } = scrape || {};
 
   const clickScrapeButton =
     (value: 'cod' | 'urban') => (e: MouseEvent<HTMLDivElement>) => {

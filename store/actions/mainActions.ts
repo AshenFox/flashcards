@@ -233,8 +233,6 @@ export const get_module_cards = (_id: string) => <ThunkActionApp>(async (
         },
       });
 
-      console.log(data);
-
       dispatch({ type: GET_MODULE_CARDS, payload: { cards: arr_to_obj(data.cards) } });
     } catch (err) {
       console.error(err);
