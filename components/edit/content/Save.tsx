@@ -1,7 +1,6 @@
 import { useRouter } from 'next/router';
 import { FC, MouseEvent } from 'react';
-import { create_module } from '../../../store/actions/editActions';
-import { useAppDispatch, useAppSelector } from '../../../store/store';
+import { useActions, useAppSelector } from '../../../store/hooks';
 import LoadingButton from '../../main/LoadingButton';
 
 interface OwnProps {}
@@ -9,7 +8,7 @@ interface OwnProps {}
 type Props = OwnProps;
 
 const Save: FC<Props> = () => {
-  const dispatch = useAppDispatch();
+  const { create_module } = useActions();
 
   const { module, cards } = useAppSelector(({ main }) => main);
 
@@ -18,7 +17,7 @@ const Save: FC<Props> = () => {
   const router = useRouter();
 
   const clickSave = (e: MouseEvent<HTMLButtonElement>) => {
-    if (active) dispatch(create_module());
+    if (active) create_module();
   };
 
   const clickLink = (e: MouseEvent<HTMLButtonElement>) => {

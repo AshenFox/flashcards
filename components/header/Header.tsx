@@ -1,25 +1,22 @@
-import { FC, MouseEvent, ReactNode, useEffect, useRef } from 'react';
+import { FC, MouseEvent, ReactNode, useEffect, useLayoutEffect, useRef } from 'react';
 import { useRouter } from 'next/router';
-import { change_modal, toggle_modal } from '../../store/actions/modalActions';
-import { set_dropdown } from '../../store/actions/headerActions';
-import { log_out } from '../../store/actions/authActions';
-import { set_header_dimen } from '../../store/actions/dimenActions';
 import Link from 'next/link';
 import Dropdown from './content/Dropdown';
 import ContentWrapper from '../main/ContentWrapper';
-import { useAppDispatch, useAppSelector } from '../../store/store';
+import { useActions, useAppDispatch, useAppSelector } from '../../store/hooks';
 
 interface OwnProps {}
 
 type Props = OwnProps;
 
 const Header: FC<Props> = () => {
-  const dispatch = useAppDispatch();
+  const { change_modal, toggle_modal, set_dropdown, log_out, set_header_dimen } =
+    useActions();
 
   const openModal =
     (value: 'log_in' | 'sign_up') => (e: MouseEvent<HTMLButtonElement>) => {
-      dispatch(change_modal(value));
-      dispatch(toggle_modal());
+      change_modal(value);
+      toggle_modal();
     };
 
   const {
@@ -33,15 +30,13 @@ const Header: FC<Props> = () => {
 
   const isSR = _id === 'sr';
 
-  const activateDropdown = (e: MouseEvent<HTMLButtonElement>) =>
-    dispatch(set_dropdown(true));
+  const activateDropdown = (e: MouseEvent<HTMLButtonElement>) => set_dropdown(true);
 
-  const onSizeChange = (e: UIEvent) => dispatch(set_header_dimen(headerEl.current));
+  const onSizeChange = (e: UIEvent) => set_header_dimen(headerEl.current);
   const onSizeChangeDelayed = (e: Event) =>
-    setTimeout(() => dispatch(set_header_dimen(headerEl.current)), 200);
+    setTimeout(() => set_header_dimen(headerEl.current), 200);
 
   useEffect(() => {
-    dispatch(set_header_dimen(headerEl.current));
     window.addEventListener('resize', onSizeChange);
     window.addEventListener('orientationchange', onSizeChangeDelayed);
 
@@ -51,8 +46,8 @@ const Header: FC<Props> = () => {
     };
   }, []);
 
-  useEffect(() => {
-    dispatch(set_header_dimen(headerEl.current));
+  useLayoutEffect(() => {
+    set_header_dimen(headerEl.current);
   }, [user, loading]);
 
   const headerEl = useRef<HTMLElement>(null);

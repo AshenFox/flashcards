@@ -2,7 +2,7 @@ import Card from './Card';
 import EditCard from '../../edit/content/EditCard';
 import NotFound from './NotFound';
 import ScrollLoading from '../../home/content/ScrollLoading';
-import { useAppSelector } from '../../../store/store';
+import { useAppSelector } from '../../../store/hooks';
 import { FC } from 'react';
 
 interface OwnProps {}

@@ -1,14 +1,9 @@
 import { useState, useEffect, FC, ChangeEvent, KeyboardEvent, MouseEvent } from 'react';
-import {
-  control_gallery_query,
-  search_images,
-  reset_gallery_fields,
-} from '../../../store/actions/editActions';
 import GalleryContainer from './GalleryContainer';
 import GalleryError from './GalleryError';
 import GallerySpinner from './GallerySpinner';
 import { Card } from '../../../store/reducers/main/mainInitState';
-import { useAppDispatch } from '../../../store/store';
+import { useActions } from '../../../store/hooks';
 
 interface OwnProps {
   data: Card;
@@ -19,7 +14,7 @@ interface OwnProps {
 type Props = OwnProps;
 
 const Gallery: FC<Props> = ({ data, active, game = false }) => {
-  const dispatch = useAppDispatch();
+  const { control_gallery_query, search_images, reset_gallery_fields } = useActions();
 
   const { _id, gallery } = data || {};
   const { loading, query, error } = gallery;
@@ -27,14 +22,14 @@ const Gallery: FC<Props> = ({ data, active, game = false }) => {
   const [uPressed, setUPressed] = useState(false);
   const [altPressed, setAltPressed] = useState(false);
 
-  const addUrlFlag = () => dispatch(control_gallery_query(_id, '@url - ' + query));
+  const addUrlFlag = () => control_gallery_query(_id, '@url - ' + query);
 
   useEffect(() => {
     if (uPressed && altPressed) addUrlFlag();
   }, [uPressed, altPressed]);
 
   const changeImgSearchbar = (e: ChangeEvent<HTMLInputElement>) =>
-    dispatch(control_gallery_query(_id, e.target.value));
+    control_gallery_query(_id, e.target.value);
 
   const keyDownImgSearchbar = (e: KeyboardEvent<HTMLInputElement>) => {
     const key = e.key;
@@ -51,14 +46,14 @@ const Gallery: FC<Props> = ({ data, active, game = false }) => {
 
     if (key === 'Enter') {
       e.preventDefault();
-      dispatch(reset_gallery_fields(_id));
-      dispatch(search_images(_id));
+      reset_gallery_fields(_id);
+      search_images(_id);
     }
   };
 
   const clickImgSearchbar = (e: MouseEvent<HTMLDivElement>) => {
-    dispatch(reset_gallery_fields(_id));
-    dispatch(search_images(_id));
+    reset_gallery_fields(_id);
+    search_images(_id);
   };
 
   return (

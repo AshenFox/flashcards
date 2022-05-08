@@ -1,20 +1,18 @@
 import { FC, MouseEvent } from 'react';
-import { set_module_question } from '../../../store/actions/editActions';
-import { useAppDispatch, useAppSelector } from '../../../store/store';
+import { useActions, useAppSelector } from '../../../store/hooks';
 
 interface OwnProps {}
 
 type Props = OwnProps;
 
 const ModuleSRDropControl: FC<Props> = () => {
-  const dispatch = useAppDispatch();
+  const { set_module_question } = useActions();
 
   const { module } = useAppSelector(({ main }) => main);
 
   const { question } = module || {};
 
-  const clickDropSR = (e: MouseEvent<HTMLDivElement>) =>
-    dispatch(set_module_question(true));
+  const clickDropSR = (e: MouseEvent<HTMLDivElement>) => set_module_question(true);
 
   return (
     <div

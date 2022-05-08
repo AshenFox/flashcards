@@ -5,7 +5,7 @@ import EndGame from './EndGame';
 import EditCard from '../../edit/content/EditCard';
 import Results from './Results';
 import { CSSProperties, FC } from 'react';
-import { useAppSelector } from '../../../store/store';
+import { useAppSelector } from '../../../store/hooks';
 
 interface OwnProps {}
 

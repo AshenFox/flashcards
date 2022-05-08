@@ -1,15 +1,14 @@
 import { FC, MouseEvent } from 'react';
-import { create_card } from '../../../store/actions/editActions';
-import { useAppDispatch } from '../../../store/store';
+import { useActions } from '../../../store/hooks';
 
 interface OwnProps {}
 
 type Props = OwnProps;
 
 const AddCard: FC<Props> = () => {
-  const dispatch = useAppDispatch();
+  const { create_card } = useActions();
 
-  const clickAddcard = (e: MouseEvent<HTMLDivElement>) => dispatch(create_card());
+  const clickAddcard = (e: MouseEvent<HTMLDivElement>) => create_card();
 
   return (
     <div className='edit__cards-addcard' onClick={clickAddcard}>

@@ -1,31 +1,28 @@
-import { FC, MouseEvent, useEffect, useRef } from 'react';
+import { FC, MouseEvent, useEffect, useLayoutEffect, useRef } from 'react';
 import { useRouter } from 'next/router';
-import { set_game_controls_dimen } from '../../../store/actions/dimenActions';
-import { prepare_write } from '../../../store/actions/gameActions';
 import Progress from './Progress';
 import Link from 'next/link';
-import { useAppDispatch } from '../../../store/store';
+import { useActions } from '../../../store/hooks';
 
 interface OwnProps {}
 
 type Props = OwnProps;
 
 const Controls: FC<Props> = () => {
-  const dispatch = useAppDispatch();
+  const { set_game_controls_dimen, prepare_write } = useActions();
 
   const router = useRouter();
   const { _id } = router.query;
 
   const isSR = _id === 'sr';
 
-  const clickStartOver = (e: MouseEvent<HTMLButtonElement>) => dispatch(prepare_write());
+  const clickStartOver = (e: MouseEvent<HTMLButtonElement>) => prepare_write();
 
   const onSizeChange = (e: UIEvent) => {
-    dispatch(set_game_controls_dimen(controllsEl.current));
+    set_game_controls_dimen(controllsEl.current);
   };
 
   useEffect(() => {
-    dispatch(set_game_controls_dimen(controllsEl.current));
     window.addEventListener('resize', onSizeChange);
     window.addEventListener('orientationchange', onSizeChange);
 
@@ -33,6 +30,10 @@ const Controls: FC<Props> = () => {
       window.removeEventListener('resize', onSizeChange);
       window.removeEventListener('orientationchange', onSizeChange);
     };
+  }, []);
+
+  useLayoutEffect(() => {
+    set_game_controls_dimen(controllsEl.current);
   }, []);
 
   const controllsEl = useRef<HTMLDivElement>(null);

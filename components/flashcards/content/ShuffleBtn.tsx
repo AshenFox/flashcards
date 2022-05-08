@@ -1,18 +1,17 @@
 import { FC, MouseEvent } from 'react';
-import {
-  set_flashcards_shuffled,
-  sort_flashcards,
-  shuffle_flashcards,
-  reset_flashcards_progress,
-} from '../../../store/actions/gameActions';
-import { useAppDispatch, useAppSelector } from '../../../store/store';
+import { useActions, useAppSelector } from '../../../store/hooks';
 
 interface OwnProps {}
 
 type Props = OwnProps;
 
 const ShuffleBtn: FC<Props> = () => {
-  const dispatch = useAppDispatch();
+  const {
+    set_flashcards_shuffled,
+    sort_flashcards,
+    shuffle_flashcards,
+    reset_flashcards_progress,
+  } = useActions();
 
   const {
     flashcards: { shuffled },
@@ -20,14 +19,14 @@ const ShuffleBtn: FC<Props> = () => {
 
   const clickSuffle = (e: MouseEvent<HTMLButtonElement>) => {
     if (shuffled) {
-      dispatch(sort_flashcards());
-      dispatch(set_flashcards_shuffled(false));
+      sort_flashcards();
+      set_flashcards_shuffled(false);
     } else {
-      dispatch(shuffle_flashcards());
-      dispatch(set_flashcards_shuffled(true));
+      shuffle_flashcards();
+      set_flashcards_shuffled(true);
     }
 
-    dispatch(reset_flashcards_progress());
+    reset_flashcards_progress();
   };
 
   return (

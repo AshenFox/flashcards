@@ -5,11 +5,17 @@ interface OwnProps {
   containerClass?: string;
   imgClass?: string;
   url: string;
+  isHideOnLoading?: boolean;
 }
 
 type Props = OwnProps;
 
-const Img: FC<Props> = ({ containerClass = '', imgClass = '', url }) => {
+const Img: FC<Props> = ({
+  containerClass = '',
+  imgClass = '',
+  url,
+  isHideOnLoading = true,
+}) => {
   const [loaded, setLoaded] = useState(false);
   const [error, setError] = useState(false);
 
@@ -27,7 +33,7 @@ const Img: FC<Props> = ({ containerClass = '', imgClass = '', url }) => {
   return (
     <div
       className={`${containerClass} img__container ${
-        loaded || error ? '' : 'img__container--not-loaded'
+        !error || (loaded && isHideOnLoading) ? '' : 'img__container--not-loaded' // loaded
       } ${error ? 'img__container--error' : ''}`}
     >
       {url && !error && (

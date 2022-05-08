@@ -1,14 +1,13 @@
 import { FC } from 'react';
 import { useEffect, useRef } from 'react';
-import { set_scroll_top } from '../../store/actions/mainActions';
-import { useAppDispatch, useAppSelector } from '../../store/store';
+import { useActions, useAppSelector } from '../../store/hooks';
 
 interface OwnProps {}
 
 type Props = OwnProps;
 
 const ScrollTop: FC<Props> = () => {
-  const dispatch = useAppDispatch();
+  const { set_scroll_top } = useActions();
 
   const { scroll_top } = useAppSelector(({ main }) => main);
 
@@ -17,11 +16,9 @@ const ScrollTop: FC<Props> = () => {
 
   useEffect(() => {
     const onScroll = (e: Event) => {
-      if (window.pageYOffset > 100 && !scroll_top_ref.current)
-        dispatch(set_scroll_top(true));
+      if (window.pageYOffset > 100 && !scroll_top_ref.current) set_scroll_top(true);
 
-      if (window.pageYOffset < 100 && scroll_top_ref.current)
-        dispatch(set_scroll_top(false));
+      if (window.pageYOffset < 100 && scroll_top_ref.current) set_scroll_top(false);
     };
 
     window.addEventListener('scroll', onScroll);

@@ -1,7 +1,7 @@
 import { useRouter } from 'next/router';
 import Link from 'next/link';
 import ContentWrapper from '../../main/ContentWrapper';
-import { useAppSelector } from '../../../store/store';
+import { useAppSelector } from '../../../store/hooks';
 import { FC } from 'react';
 
 interface OwnProps {}

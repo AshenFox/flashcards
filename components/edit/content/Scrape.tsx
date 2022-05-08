@@ -1,7 +1,6 @@
 import { FC, MouseEvent } from 'react';
-import { scrape_dictionary } from '../../../store/actions/editActions';
+import { useActions } from '../../../store/hooks';
 import { Card } from '../../../store/reducers/main/mainInitState';
-import { useAppDispatch } from '../../../store/store';
 
 interface OwnProps {
   data: Card;
@@ -10,14 +9,14 @@ interface OwnProps {
 type Props = OwnProps;
 
 const Scrape: FC<Props> = ({ data }) => {
-  const dispatch = useAppDispatch();
+  const { scrape_dictionary } = useActions();
   const { _id, scrape } = data || {};
 
   const { loading } = scrape || {};
 
   const clickScrapeButton =
     (value: 'cod' | 'urban') => (e: MouseEvent<HTMLDivElement>) => {
-      dispatch(scrape_dictionary(_id, value));
+      scrape_dictionary(_id, value);
     };
 
   return (

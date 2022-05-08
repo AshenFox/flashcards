@@ -1,16 +1,15 @@
 import { FC, useEffect } from 'react';
 import { useRouter } from 'next/router';
-import { next_write_round } from '../../../store/actions/gameActions';
 import FinishItem from './FinishItem';
 import Link from 'next/link';
-import { useAppDispatch, useAppSelector } from '../../../store/store';
+import { useActions, useAppSelector } from '../../../store/hooks';
 
 interface OwnProps {}
 
 type Props = OwnProps;
 
 const Finish: FC<Props> = () => {
-  const dispatch = useAppDispatch();
+  const { next_write_round } = useActions();
 
   const router = useRouter();
   const { _id } = router.query;
@@ -28,7 +27,7 @@ const Finish: FC<Props> = () => {
   };
 
   useEffect(() => {
-    if (all_cards_num) dispatch(next_write_round());
+    if (all_cards_num) next_write_round();
 
     window.addEventListener('keydown', keyDownFinish);
 

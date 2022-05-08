@@ -1,18 +1,17 @@
 import { useRef, useEffect, FC, ChangeEvent, MouseEvent, TouchEvent } from 'react';
-import { set_sr_counter } from '../../../store/actions/srActions';
-import { useAppDispatch, useAppSelector } from '../../../store/store';
+import { useActions, useAppSelector } from '../../../store/hooks';
 
 interface OwnProps {}
 
 type Props = OwnProps;
 
 const SrCounter: FC<Props> = () => {
-  const dispatch = useAppDispatch();
+  const { set_sr_counter } = useActions();
 
   const { counter } = useAppSelector(({ sr }) => sr);
 
   const handleCounterChange = (e: ChangeEvent<HTMLInputElement>) =>
-    dispatch(set_sr_counter(null, e.target.value));
+    set_sr_counter(null, e.target.value);
 
   const intervalRef = useRef<ReturnType<typeof setInterval>>(null);
   const timeoutRef = useRef<ReturnType<typeof setTimeout>>(null);
@@ -20,8 +19,8 @@ const SrCounter: FC<Props> = () => {
 
   const single = (value: 'stepUp' | 'stepDown') => (e: MouseEvent<HTMLDivElement>) => {
     if (blockSingle.current) return;
-    if (value === 'stepUp') dispatch(set_sr_counter(1));
-    if (value === 'stepDown') dispatch(set_sr_counter(-1));
+    if (value === 'stepUp') set_sr_counter(1);
+    if (value === 'stepDown') set_sr_counter(-1);
   };
 
   const multiple =
@@ -32,8 +31,8 @@ const SrCounter: FC<Props> = () => {
         blockSingle.current = true;
 
         intervalRef.current = setInterval(() => {
-          if (value === 'stepUp') dispatch(set_sr_counter(5));
-          if (value === 'stepDown') dispatch(set_sr_counter(-5));
+          if (value === 'stepUp') set_sr_counter(5);
+          if (value === 'stepDown') set_sr_counter(-5);
         }, 100);
       }, 500);
     };

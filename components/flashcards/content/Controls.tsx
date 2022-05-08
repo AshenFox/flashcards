@@ -1,17 +1,16 @@
 import { useRouter } from 'next/router';
-import { FC, useEffect, useRef } from 'react';
-import { set_game_controls_dimen } from '../../../store/actions/dimenActions';
+import { FC, useEffect, useLayoutEffect, useRef } from 'react';
 import Link from 'next/link';
 import Progress from './Progress';
 import ShuffleBtn from './ShuffleBtn';
-import { useAppDispatch } from '../../../store/store';
+import { useActions } from '../../../store/hooks';
 
 interface OwnProps {}
 
 type Props = OwnProps;
 
 const Controls: FC<Props> = () => {
-  const dispatch = useAppDispatch();
+  const { set_game_controls_dimen } = useActions();
 
   const router = useRouter();
   const { _id } = router.query;
@@ -19,10 +18,13 @@ const Controls: FC<Props> = () => {
   const isSR = _id === 'sr';
 
   const onSizeChange = (e: UIEvent | Event) =>
-    dispatch(set_game_controls_dimen(controllsEl.current));
+    set_game_controls_dimen(controllsEl.current);
+
+  useLayoutEffect(() => {
+    set_game_controls_dimen(controllsEl.current);
+  }, []);
 
   useEffect(() => {
-    dispatch(set_game_controls_dimen(controllsEl.current));
     window.addEventListener('resize', onSizeChange);
     window.addEventListener('orientationchange', onSizeChange);
     return () => {

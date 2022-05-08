@@ -1,10 +1,6 @@
 import { FC, MouseEvent, TouchEvent, useRef } from 'react';
-import {
-  set_card_save,
-  set_cards_save_positive,
-} from '../../../store/actions/editActions';
+import { useActions } from '../../../store/hooks';
 import { Card } from '../../../store/reducers/main/mainInitState';
-import { useAppDispatch } from '../../../store/store';
 
 interface OwnProps {
   data: Card;
@@ -13,7 +9,7 @@ interface OwnProps {
 type Props = OwnProps;
 
 const EditCardSave: FC<Props> = ({ data }) => {
-  const dispatch = useAppDispatch();
+  const { set_card_save, set_cards_save_positive } = useActions();
 
   const { _id, save } = data;
 
@@ -22,14 +18,14 @@ const EditCardSave: FC<Props> = ({ data }) => {
     clearTimeout(timer.current);
 
     if (timer.current) {
-      dispatch(set_card_save(_id, !save));
+      set_card_save(_id, !save);
     }
   };
 
   const down = (e: MouseEvent<HTMLLabelElement> | TouchEvent<HTMLLabelElement>) => {
     timer.current = setTimeout(() => {
       timer.current = null;
-      if (!save) dispatch(set_cards_save_positive(_id));
+      if (!save) set_cards_save_positive(_id);
     }, 550);
   };
 

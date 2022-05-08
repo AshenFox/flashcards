@@ -8,7 +8,7 @@ import Card from '../../module/content/Card';
 import EditCard from '../../edit/content/EditCard';
 import ScrollLoading from './ScrollLoading';
 import { FC } from 'react';
-import { useAppSelector } from '../../../store/store';
+import { useAppSelector } from '../../../store/hooks';
 import {
   Card as CardType,
   Module as ModuleType,

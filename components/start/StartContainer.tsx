@@ -1,13 +1,12 @@
 import { FC, CSSProperties, MouseEvent } from 'react';
-import { change_modal, toggle_modal } from '../../store/actions/modalActions';
-import { useAppDispatch, useAppSelector } from '../../store/store';
+import { useActions, useAppSelector } from '../../store/hooks';
 
 interface OwnProps {}
 
 type Props = OwnProps;
 
 const StartContainer: FC<Props> = () => {
-  const dispatch = useAppDispatch();
+  const { change_modal, toggle_modal } = useActions();
 
   const {
     dimen: { header_height },
@@ -15,8 +14,8 @@ const StartContainer: FC<Props> = () => {
   } = useAppSelector((state) => state);
 
   const click = (value: 'log_in') => (e: MouseEvent<HTMLButtonElement>) => {
-    dispatch(change_modal(value));
-    dispatch(toggle_modal());
+    change_modal(value);
+    toggle_modal();
   };
 
   const startStyles: CSSProperties = {

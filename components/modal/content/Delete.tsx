@@ -1,7 +1,5 @@
 import { FC, MouseEvent } from 'react';
-import { delete_module } from '../../../store/actions/editActions';
-import { toggle_modal } from '../../../store/actions/modalActions';
-import { useAppDispatch, useAppSelector } from '../../../store/store';
+import { useActions, useAppSelector } from '../../../store/hooks';
 import LoadingButton from '../../main/LoadingButton';
 
 interface OwnProps {}
@@ -9,15 +7,15 @@ interface OwnProps {}
 type Props = OwnProps;
 
 const Delete: FC<Props> = () => {
-  const dispatch = useAppDispatch();
+  const { delete_module, toggle_modal } = useActions();
 
   const { module } = useAppSelector(({ main }) => main);
 
   const { _id, module_loading, title } = module || {};
 
-  const clickDelete = (e: MouseEvent<HTMLButtonElement>) => dispatch(delete_module(_id));
+  const clickDelete = (e: MouseEvent<HTMLButtonElement>) => delete_module(_id);
 
-  const close = (e: MouseEvent<HTMLButtonElement>) => dispatch(toggle_modal());
+  const close = (e: MouseEvent<HTMLButtonElement>) => toggle_modal();
 
   return (
     <>

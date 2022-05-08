@@ -1,13 +1,12 @@
 import { FC, MouseEvent } from 'react';
-import { set_cards_sr } from '../../../store/actions/srActions';
-import { useAppDispatch, useAppSelector } from '../../../store/store';
+import { useActions, useAppSelector } from '../../../store/hooks';
 
 interface OwnProps {}
 
 type Props = OwnProps;
 
 const ModuleSRControl: FC<Props> = () => {
-  const dispatch = useAppDispatch();
+  const { set_cards_sr } = useActions();
 
   const { cards } = useAppSelector(({ main }) => main);
 
@@ -22,8 +21,7 @@ const ModuleSRControl: FC<Props> = () => {
     }
   }
 
-  const clickToggleSwitch = (e: MouseEvent<HTMLLabelElement>) =>
-    dispatch(set_cards_sr(!active));
+  const clickToggleSwitch = (e: MouseEvent<HTMLLabelElement>) => set_cards_sr(!active);
 
   return (
     <div className='module__study-regime'>

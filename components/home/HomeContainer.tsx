@@ -1,20 +1,12 @@
 import { useEffect, useRef, FC } from 'react';
 import { useRouter } from 'next/router';
-import {
-  get_modules,
-  get_cards,
-  reset_fields_cards,
-  reset_fields_modules,
-  reset_search,
-} from '../../store/actions/mainActions';
-import { get_sr_count } from '../../store/actions/srActions';
 import Skeleton from 'react-loading-skeleton';
 import Navigation from './content/Navigation';
 import ListContainer from './content/ListContainer';
 import Search from './content/Search';
 import Push from '../main/Push';
 import ContentWrapper from '../main/ContentWrapper';
-import { useAppDispatch, useAppSelector } from '../../store/store';
+import { useActions, useAppSelector } from '../../store/hooks';
 
 interface OwnProps {}
 
@@ -24,7 +16,14 @@ const HomeContainer: FC<Props> = () => {
   const router = useRouter();
   const { section } = router.query;
 
-  const dispatch = useAppDispatch();
+  const {
+    get_modules,
+    get_cards,
+    reset_fields_cards,
+    reset_fields_modules,
+    reset_search,
+    get_sr_count,
+  } = useActions();
 
   const {
     main: { modules, cards, all_modules_number, all_cards_number },
@@ -35,7 +34,7 @@ const HomeContainer: FC<Props> = () => {
 
   useEffect(() => {
     if (!user) return;
-    dispatch(reset_search());
+    reset_search();
     loadContent();
   }, [user, section]);
 
@@ -63,25 +62,23 @@ const HomeContainer: FC<Props> = () => {
 
   useEffect(() => {
     return () => {
-      dispatch(reset_fields_cards());
-      dispatch(reset_fields_modules());
-      dispatch(reset_search());
+      reset_fields_cards();
+      reset_fields_modules();
+      reset_search();
     };
   }, []);
 
   const loadContent = () => {
-    if (!modules.length && section === 'modules') dispatch(get_modules(true));
-    if (!cards.length && section === 'cards') dispatch(get_cards(true));
-    if (section === 'sr') dispatch(get_sr_count());
+    if (!modules.length && section === 'modules') get_modules(true);
+    if (!cards.length && section === 'cards') get_cards(true);
+    if (section === 'sr') get_sr_count();
   };
 
   const scrollModules = useRef(
-    (e: Event) =>
-      router.pathname === '/home/[section]' && check_bottom() && dispatch(get_modules())
+    (e: Event) => router.pathname === '/home/[section]' && check_bottom() && get_modules()
   );
   const scrollCards = useRef(
-    (e: Event) =>
-      router.pathname === '/home/[section]' && check_bottom() && dispatch(get_cards())
+    (e: Event) => router.pathname === '/home/[section]' && check_bottom() && get_cards()
   );
 
   const check_bottom = () => {

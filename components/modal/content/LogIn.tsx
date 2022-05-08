@@ -1,16 +1,14 @@
 import { FC, MouseEvent, KeyboardEvent, ChangeEvent } from 'react';
-import { change_modal, control_field } from '../../../store/actions/modalActions';
-import { enter } from '../../../store/actions/authActions';
 import Error from './Error';
 import LoadingButton from '../../main/LoadingButton';
-import { useAppDispatch, useAppSelector } from '../../../store/store';
+import { useActions, useAppSelector } from '../../../store/hooks';
 
 interface OwnProps {}
 
 type Props = OwnProps;
 
 const LogIn: FC<Props> = () => {
-  const dispatch = useAppDispatch();
+  const { change_modal, control_field, enter } = useActions();
 
   const {
     log_in: { username, password },
@@ -19,23 +17,23 @@ const LogIn: FC<Props> = () => {
   } = useAppSelector(({ modal }) => modal);
 
   const onClickChangeModal = (value: 'sign_up') => (e: MouseEvent<HTMLButtonElement>) => {
-    dispatch(change_modal(value));
+    change_modal(value);
   };
 
   const onCLickLoadingButton =
     (value: 'log_in') => (e: MouseEvent<HTMLButtonElement>) => {
-      dispatch(enter(value));
+      enter(value);
     };
 
   const onChange = (e: ChangeEvent<HTMLInputElement>) => {
     // const target = e.target;
     const { value, name } = e.target;
 
-    dispatch(control_field('log_in', name, value));
+    control_field('log_in', name, value);
   };
 
   const onKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === 'Enter') dispatch(enter('log_in'));
+    if (e.key === 'Enter') enter('log_in');
   };
 
   return (

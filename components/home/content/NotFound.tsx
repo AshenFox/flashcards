@@ -1,6 +1,6 @@
-import { FC, ReactNode, useEffect } from 'react';
+import { FC, ReactNode } from 'react';
 import { useRouter } from 'next/router';
-import { useAppSelector } from '../../../store/store';
+import { useAppSelector } from '../../../store/hooks';
 
 interface OwnProps {}
 
@@ -14,10 +14,6 @@ const NotFound: FC<Props> = () => {
   const router = useRouter();
 
   const { section } = router.query;
-
-  useEffect(() => {
-    return () => {};
-  }, []);
 
   let content: ReactNode;
 

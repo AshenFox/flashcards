@@ -258,12 +258,15 @@
     }
   }
 
+  &__card {
+    margin-bottom: 1.5rem;
+  }
+
   &__card-main {
     display: flex;
     background-color: $white;
     padding: 2rem;
     min-height: 10rem;
-    margin-bottom: 1.5rem;
 
     @media (max-width: $tablet-sm) {
       flex-direction: column;

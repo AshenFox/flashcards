@@ -1,12 +1,7 @@
 import { FC, MouseEvent, useRef } from 'react';
-import {
-  set_gallery_search,
-  set_card_imgurl,
-  edit_card,
-} from '../../../store/actions/editActions';
 import Img from '../../main/Img';
 import { Card } from '../../../store/reducers/main/mainInitState';
-import { useAppDispatch } from '../../../store/store';
+import { useActions } from '../../../store/hooks';
 
 interface OwnProps {
   data: Card;
@@ -15,18 +10,18 @@ interface OwnProps {
 type Props = OwnProps;
 
 const EditCardAddImg: FC<Props> = ({ data }) => {
-  const dispatch = useAppDispatch();
+  const { set_gallery_search, set_card_imgurl, edit_card } = useActions();
 
   const { _id, imgurl, gallery } = data || {};
 
   const clickImgSearch = (e: MouseEvent<HTMLDivElement>) => {
     if (imgurl && e.target === deleteEl.current) return;
-    dispatch(set_gallery_search(_id, !gallery.search));
+    set_gallery_search(_id, !gallery.search);
   };
 
   const clickImgDelete = (e: MouseEvent<HTMLDivElement>) => {
-    dispatch(set_card_imgurl(_id, ''));
-    dispatch(edit_card(_id));
+    set_card_imgurl(_id, '');
+    edit_card(_id);
   };
 
   const deleteEl = useRef<HTMLDivElement>(null);

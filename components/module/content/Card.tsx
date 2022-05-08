@@ -12,6 +12,7 @@ import Img from '../../main/Img';
 import DateStr from '../../main/DateSrt';
 import { FC } from 'react';
 import { Card as CardType } from '../../../store/reducers/main/mainInitState';
+import { usePlug } from '../../main/hooks';
 
 interface OwnProps {
   data: CardType;
@@ -41,64 +42,75 @@ const Card: FC<Props> = ({ data, filter = null, filter_type = null }) => {
 
   const isModule = router.pathname === '/module/[_id]';
 
+  const [visible, ref, Plug] = usePlug('module__card');
+
   return (
-    <div className='module__card'>
-      <div className='module__card-header'>
-        <div className='module__card-created'>
-          <span>
-            Created <DateStr date={creation_date} />
-          </span>
-        </div>
-        {!isModule && (
-          <Link href={`/module/${moduleID}`}>
-            <div className='module__card-link'>
-              <svg>
-                <use href='../img/sprite.svg#icon__external-link'></use>
-              </svg>
-              <span>To the card's module</span>
+    <>
+      {visible ? (
+        <div className='module__card' ref={ref}>
+          <div className='module__card-header'>
+            <div className='module__card-created'>
+              <span>
+                Created <DateStr date={creation_date} />
+              </span>
             </div>
-          </Link>
-        )}
-      </div>
-      <div className='module__card-main'>
-        <div className='module__card-term'>
-          <ContentEditable
-            html={filter_type === 'term' && filter ? formatted_term : term}
-            disabled={true}
-            onChange={null}
-          />
-          <div className='module__card-controls'>
-            <CardEditControl data={data} />
-            <CardSRControl data={data} />
-            <CardSRDropControl data={data} />
+            {!isModule && (
+              <Link href={`/module/${moduleID}`}>
+                <div className='module__card-link'>
+                  <svg>
+                    <use href='../img/sprite.svg#icon__external-link'></use>
+                  </svg>
+                  <span>To the card's module</span>
+                </div>
+              </Link>
+            )}
           </div>
-          <CardQuestion data={data} />
-          <Speaker _id={_id} text={term} type={'term'} className='module__speaker' />
-        </div>
-        <div className='module__card-definition-container'>
-          <div className='module__card-definition'>
-            <ContentEditable
-              html={
-                filter_type === 'defenition' && filter ? formatted_definition : defenition
-              }
-              disabled={true}
-              onChange={null}
-            />
-            <Speaker
-              _id={_id}
-              text={defenition}
-              type={'definition'}
-              className='module__speaker'
-            />
+          <div className='module__card-main'>
+            <div className='module__card-term'>
+              <ContentEditable
+                html={filter_type === 'term' && filter ? formatted_term : term}
+                disabled={true}
+                onChange={null}
+              />
+              <div className='module__card-controls'>
+                <CardEditControl data={data} />
+                <CardSRControl data={data} />
+                <CardSRDropControl data={data} />
+              </div>
+              <CardQuestion data={data} />
+              <Speaker _id={_id} text={term} type={'term'} className='module__speaker' />
+            </div>
+            <div className='module__card-definition-container'>
+              <div className='module__card-definition'>
+                <ContentEditable
+                  html={
+                    filter_type === 'defenition' && filter
+                      ? formatted_definition
+                      : defenition
+                  }
+                  disabled={true}
+                  onChange={null}
+                />
+                <Speaker
+                  _id={_id}
+                  text={defenition}
+                  type={'definition'}
+                  className='module__speaker'
+                />
+              </div>
+              <Img
+                containerClass={'module__card-img-container'}
+                imgClass={'module__card-img'}
+                url={imgurl}
+                isHideOnLoading={false}
+              />
+            </div>
           </div>
-          <Img
-            containerClass={'module__card-img-container'}
-            imgClass={'module__card-img'}
-            url={imgurl}
-          />
         </div>
-      </div>
-    </div>
+      ) : (
+        Plug
+      )}
+    </>
   );
 };
 

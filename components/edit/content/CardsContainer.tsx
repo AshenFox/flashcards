@@ -3,7 +3,7 @@ import ScrollLoading from '../../home/content/ScrollLoading';
 import AddCard from './AddCard';
 import Save from './Save';
 import ContentWrapper from '../../main/ContentWrapper';
-import { useAppSelector } from '../../../store/store';
+import { useAppSelector } from '../../../store/hooks';
 import { FC } from 'react';
 
 interface OwnProps {}

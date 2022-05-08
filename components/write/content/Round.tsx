@@ -1,13 +1,12 @@
 import { FC, MouseEvent, useEffect } from 'react';
-import { next_write_round } from '../../../store/actions/gameActions';
-import { useAppDispatch, useAppSelector } from '../../../store/store';
+import { useActions, useAppSelector } from '../../../store/hooks';
 
 interface OwnProps {}
 
 type Props = OwnProps;
 
 const Round: FC<Props> = () => {
-  const dispatch = useAppDispatch();
+  const { next_write_round } = useActions();
 
   const {
     write: { answered, rounds, all_cards_num },
@@ -29,12 +28,12 @@ const Round: FC<Props> = () => {
   const roundNum = rounds.length + 1;
 
   const clickContinue = (e: MouseEvent<HTMLButtonElement>) => {
-    dispatch(next_write_round());
+    next_write_round();
   };
 
   const keyDownContinue = (e: KeyboardEvent) => {
     if (e.key === 'Enter') {
-      dispatch(next_write_round());
+      next_write_round();
     }
   };
 
