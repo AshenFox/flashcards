@@ -6,7 +6,6 @@ import {
   CSSProperties,
 } from 'react';
 import { useRouter } from 'next/router';
-import { set_dropdown } from '../../../store/actions/headerActions';
 import Link from 'next/link';
 import { useActions, useAppSelector } from '../../../store/hooks';
 
@@ -22,6 +21,7 @@ const Dropdown: FC<Props> = () => {
     shuffle_flashcards,
     reset_flashcards_progress,
     prepare_write,
+    set_dropdown,
   } = useActions();
 
   const {
