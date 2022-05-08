@@ -1,7 +1,5 @@
 import { FC, ReactNode, useEffect } from 'react';
-import { authenticate } from '../../store/actions/authActions';
-import { set_is_server } from '../../store/actions/mainActions';
-import { useAppDispatch } from '../../store/store';
+import { useActions } from '../../store/hooks';
 
 interface OwnProps {
   children: ReactNode;
@@ -10,11 +8,11 @@ interface OwnProps {
 type Props = OwnProps;
 
 const AuthWrapper: FC<Props> = ({ children }) => {
-  const dispatch = useAppDispatch();
+  const { authenticate, set_is_server } = useActions();
 
   useEffect(() => {
-    dispatch(set_is_server());
-    dispatch(authenticate());
+    set_is_server();
+    authenticate();
   }, []);
 
   return <>{children}</>;

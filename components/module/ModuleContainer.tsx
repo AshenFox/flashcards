@@ -1,21 +1,15 @@
 import { FC, useEffect } from 'react';
 import { useRouter } from 'next/router';
-import {
-  get_module,
-  clear_module,
-  reset_fields_cards,
-  reset_search,
-} from '../../store/actions/mainActions';
 import ModuleHeader from './content/ModuleHeader';
 import ModuleBody from './content/ModuleBody';
-import { useAppDispatch, useAppSelector } from '../../store/store';
+import { useActions, useAppSelector } from '../../store/hooks';
 
 interface OwnProps {}
 
 type Props = OwnProps;
 
 const ModuleContainer: FC<Props> = () => {
-  const dispatch = useAppDispatch();
+  const { get_module, clear_module, reset_fields_cards, reset_search } = useActions();
 
   const router = useRouter();
   const { _id } = router.query;
@@ -23,14 +17,14 @@ const ModuleContainer: FC<Props> = () => {
   const { user } = useAppSelector(({ auth }) => auth);
 
   useEffect(() => {
-    if (user && typeof _id === 'string') dispatch(get_module(_id));
+    if (user && typeof _id === 'string') get_module(_id);
   }, [user]);
 
   useEffect(() => {
     return () => {
-      dispatch(clear_module());
-      dispatch(reset_fields_cards());
-      dispatch(reset_search());
+      clear_module();
+      reset_fields_cards();
+      reset_search();
     };
   }, []);
 

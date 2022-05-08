@@ -1,4 +1,3 @@
-import { change_modal, toggle_modal } from '../../../store/actions/modalActions';
 import Link from 'next/link';
 import Skeleton from 'react-loading-skeleton';
 import ModuleQuestion from './ModuleQuestion';
@@ -6,22 +5,22 @@ import ModuleSRDropControl from './ModuleSRDropControl';
 import ModuleSRControl from './ModuleSRControl';
 import DateStr from '../../main/DateSrt';
 import { FC, MouseEvent } from 'react';
-import { useAppDispatch, useAppSelector } from '../../../store/store';
+import { useActions, useAppSelector } from '../../../store/hooks';
 
 interface OwnProps {}
 
 type Props = OwnProps;
 
 const Info: FC<Props> = () => {
-  const dispatch = useAppDispatch();
+  const { change_modal, toggle_modal } = useActions();
 
   const { module } = useAppSelector(({ main }) => main);
 
   const { author, _id, creation_date } = module || {};
 
   const openModal = (value: 'delete') => (e: MouseEvent<HTMLDivElement>) => {
-    dispatch(change_modal(value));
-    dispatch(toggle_modal());
+    change_modal(value);
+    toggle_modal();
   };
 
   return (

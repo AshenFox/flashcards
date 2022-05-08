@@ -1,7 +1,6 @@
 import { FC, MouseEvent } from 'react';
-import { set_card_edit } from '../../../store/actions/editActions';
+import { useActions } from '../../../store/hooks';
 import { Card } from '../../../store/reducers/main/mainInitState';
-import { useAppDispatch } from '../../../store/store';
 
 interface OwnProps {
   data: Card;
@@ -10,11 +9,11 @@ interface OwnProps {
 type Props = OwnProps;
 
 const CardEditControl: FC<Props> = ({ data }) => {
-  const dispatch = useAppDispatch();
+  const { set_card_edit } = useActions();
 
   const { _id } = data;
 
-  const clickEdit = (e: MouseEvent<HTMLDivElement>) => dispatch(set_card_edit(_id, true));
+  const clickEdit = (e: MouseEvent<HTMLDivElement>) => set_card_edit(_id, true);
 
   return (
     <div className='module__card-controls-item module__edit-card' onClick={clickEdit}>

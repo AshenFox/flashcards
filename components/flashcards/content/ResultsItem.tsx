@@ -1,7 +1,7 @@
 import ContentEditable from 'react-contenteditable';
 import Img from '../../main/Img';
 import DateStr from '../../main/DateSrt';
-import { useAppSelector } from '../../../store/store';
+import { useAppSelector } from '../../../store/hooks';
 import { FC } from 'react';
 import { FlashcardsAnswer } from '../../../store/reducers/game/gameInitState';
 

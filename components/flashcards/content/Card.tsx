@@ -1,13 +1,11 @@
 import { useRouter } from 'next/router';
-import { set_flashcards_side } from '../../../store/actions/gameActions';
-import { set_card_edit } from '../../../store/actions/editActions';
 import ContentEditable from 'react-contenteditable';
 import Speaker from '../../main/Speaker';
 import Img from '../../main/Img';
 import SRIndicator from '../../main/SRIngicator';
 import { Card as CardType } from '../../../store/reducers/main/mainInitState';
 import { FC, MouseEvent } from 'react';
-import { useAppDispatch } from '../../../store/store';
+import { useActions } from '../../../store/hooks';
 
 interface OwnProps {
   data: CardType;
@@ -18,7 +16,7 @@ interface OwnProps {
 type Props = OwnProps;
 
 const Card: FC<Props> = ({ data, side = 'definition', position = null }) => {
-  const dispatch = useAppDispatch();
+  const { set_flashcards_side, set_card_edit } = useActions();
 
   const router = useRouter();
   const { _id: _id_param } = router.query;
@@ -45,10 +43,10 @@ const Card: FC<Props> = ({ data, side = 'definition', position = null }) => {
     if ((e.target as HTMLElement).closest('.sr-indicator')) return;
     if ((e.target as HTMLElement).closest('.game__definition-hidden')) return;
 
-    dispatch(set_flashcards_side(value));
+    set_flashcards_side(value);
   };
 
-  const clickEdit = (e: MouseEvent<HTMLDivElement>) => dispatch(set_card_edit(_id, true));
+  const clickEdit = (e: MouseEvent<HTMLDivElement>) => set_card_edit(_id, true);
 
   return (
     <div className='game__card'>

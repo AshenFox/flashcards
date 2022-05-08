@@ -1,107 +1,107 @@
-import { FC, MutableRefObject } from 'react';
-import { set_voice_speaking } from '../../store/actions/voiceActions';
-import { useAppDispatch, useAppSelector } from '../../store/store';
+import { FC, forwardRef } from 'react';
+import { useActions, useAppSelector } from '../../store/hooks';
 
 interface OwnProps {
   _id: string;
   text: string;
   type: 'term' | 'definition';
   className: string;
-  refProp?: MutableRefObject<HTMLDivElement>;
 }
 
 type Props = OwnProps;
 
-const Speaker: FC<Props> = ({ _id, text, type, className, refProp }) => {
-  const dispatch = useAppDispatch();
+const Speaker: FC<Props> = forwardRef<HTMLDivElement, OwnProps>(
+  ({ _id, text, type, className }, ref) => {
+    const { set_voice_speaking } = useActions();
 
-  const { voices, working, speaking } = useAppSelector(({ voice }) => voice);
+    const { voices, working, speaking } = useAppSelector(({ voice }) => voice);
 
-  const clickSpeaker = () => {
-    const synth = window.speechSynthesis;
+    const clickSpeaker = () => {
+      const synth = window.speechSynthesis;
 
-    if (!active) return;
+      if (!active) return;
 
-    if (synth.speaking) {
-      stop_speaking();
-    } else {
-      const textForSpeaking = filterLang(filteredText, language);
-      speak(textForSpeaking, language);
-      dispatch(set_voice_speaking(_id, type));
-    }
-  };
-
-  const speak = (text: string, language: 'english' | 'russian') => {
-    const synth = window.speechSynthesis;
-
-    const SSU = new SpeechSynthesisUtterance(text);
-
-    SSU.onend = (e: SpeechSynthesisEvent) => {
-      dispatch(set_voice_speaking());
-      console.log('Done speaking...');
+      if (synth.speaking) {
+        stop_speaking();
+      } else {
+        const textForSpeaking = filterLang(filteredText, language);
+        speak(textForSpeaking, language);
+        set_voice_speaking(_id, type);
+      }
     };
 
-    SSU.onerror = (e: SpeechSynthesisErrorEvent) => {
-      console.log('Something vent wrong...', e);
+    const speak = (text: string, language: 'english' | 'russian') => {
+      const synth = window.speechSynthesis;
+
+      const SSU = new SpeechSynthesisUtterance(text);
+
+      SSU.onend = (e: SpeechSynthesisEvent) => {
+        set_voice_speaking();
+        console.log('Done speaking...');
+      };
+
+      SSU.onerror = (e: SpeechSynthesisErrorEvent) => {
+        console.log('Something vent wrong...', e);
+      };
+
+      if (language === 'english') {
+        if (voices.english) {
+          SSU.voice = voices.english;
+        } else if (voices.engBackup) {
+          SSU.voice = voices.engBackup;
+        } else {
+          return;
+        }
+      } else if (language === 'russian') {
+        if (voices.russian) {
+          SSU.voice = voices.russian;
+        } else if (voices.rusBackup) {
+          SSU.voice = voices.rusBackup;
+        } else {
+          return;
+        }
+      }
+
+      SSU.rate = 0.85;
+      SSU.pitch = 1;
+
+      let int = setInterval(() => {
+        if (!synth.speaking) {
+          clearInterval(int);
+        } else {
+          synth.resume();
+        }
+      }, 10000);
+
+      synth.speak(SSU);
+      console.log('Start speaking...');
     };
 
-    if (language === 'english') {
-      if (voices.english) {
-        SSU.voice = voices.english;
-      } else if (voices.engBackup) {
-        SSU.voice = voices.engBackup;
-      } else {
-        return;
-      }
-    } else if (language === 'russian') {
-      if (voices.russian) {
-        SSU.voice = voices.russian;
-      } else if (voices.rusBackup) {
-        SSU.voice = voices.rusBackup;
-      } else {
-        return;
-      }
-    }
+    const stop_speaking = () => window.speechSynthesis.cancel();
 
-    SSU.rate = 0.85;
-    SSU.pitch = 1;
+    const filteredText = filterText(text);
+    const language = detectLanguage(filteredText);
+    const active = text !== '' && language && working;
 
-    let int = setInterval(() => {
-      if (!synth.speaking) {
-        clearInterval(int);
-      } else {
-        synth.resume();
-      }
-    }, 10000);
+    let speakerSpeaking = false;
 
-    synth.speak(SSU);
-    console.log('Start speaking...');
-  };
+    if (speaking) speakerSpeaking = speaking._id === _id && speaking.type === type;
 
-  const stop_speaking = () => window.speechSynthesis.cancel();
-
-  const filteredText = filterText(text);
-  const language = detectLanguage(filteredText);
-  const active = text !== '' && language && working;
-
-  let speakerSpeaking = false;
-
-  if (speaking) speakerSpeaking = speaking._id === _id && speaking.type === type;
-
-  return (
-    <div
-      className={className}
-      data-active={active}
-      data-speaking={speakerSpeaking}
-      onClick={clickSpeaker}
-      ref={refProp}
-    >
-      <svg>
-        <use href='../img/sprite.svg#icon__speaker'></use>
-      </svg>
-    </div>
-  );
-};
+    return (
+      <div
+        className={className}
+        data-active={active}
+        data-speaking={speakerSpeaking}
+        onClick={clickSpeaker}
+        ref={ref}
+      >
+        <svg>
+          <use href='../img/sprite.svg#icon__speaker'></use>
+        </svg>
+      </div>
+    );
+  }
+);
 
 export default Speaker;
 

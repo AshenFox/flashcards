@@ -1,16 +1,14 @@
 import { ChangeEvent, FC, MouseEvent, useRef } from 'react';
-import { change_modal, control_field } from '../../../store/actions/modalActions';
-import { enter, check_field } from '../../../store/actions/authActions';
 import Error from './Error';
 import LoadingButton from '../../main/LoadingButton';
-import { useAppDispatch, useAppSelector } from '../../../store/store';
+import { useActions, useAppSelector } from '../../../store/hooks';
 
 interface OwnProps {}
 
 type Props = OwnProps;
 
 const SignUp: FC<Props> = () => {
-  const dispatch = useAppDispatch();
+  const { change_modal, control_field, enter, check_field } = useActions();
 
   const {
     sign_up: { username, password, email },
@@ -19,12 +17,12 @@ const SignUp: FC<Props> = () => {
   } = useAppSelector(({ modal }) => modal);
 
   const onClickChangeModal = (value: 'log_in') => (e: MouseEvent<HTMLButtonElement>) => {
-    dispatch(change_modal(value));
+    change_modal(value);
   };
 
   const onCLickLoadingButton =
     (value: 'sign_up') => (e: MouseEvent<HTMLButtonElement>) => {
-      dispatch(enter(value));
+      enter(value);
     };
 
   const onChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -32,14 +30,14 @@ const SignUp: FC<Props> = () => {
     const value = target.value;
     const name = target.name;
 
-    dispatch(control_field('sign_up', name, value));
+    control_field('sign_up', name, value);
 
     // Timer control
     let timer = timers.current[name];
 
     if (timer) clearTimeout(timer);
     timers.current[name] = setTimeout(() => {
-      dispatch(check_field(name));
+      check_field(name);
       timers.current[name] = null;
     }, 500);
   };

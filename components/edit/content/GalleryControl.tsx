@@ -1,6 +1,5 @@
 import { FC, MouseEvent } from 'react';
-import { move_gallery } from '../../../store/actions/editActions';
-import { useAppDispatch, useAppSelector } from '../../../store/store';
+import { useActions, useAppSelector } from '../../../store/hooks';
 
 interface OwnProps {
   direction: 'left' | 'right';
@@ -10,7 +9,7 @@ interface OwnProps {
 type Props = OwnProps;
 
 const GalleryControl: FC<Props> = ({ direction, _id }) => {
-  const dispatch = useAppDispatch();
+  const { move_gallery } = useActions();
 
   const { cards } = useAppSelector(({ main }) => main);
 
@@ -21,7 +20,7 @@ const GalleryControl: FC<Props> = ({ direction, _id }) => {
   } = card;
 
   const clickControl = (e: MouseEvent<HTMLDivElement>) => {
-    if (active) dispatch(move_gallery(_id, direction));
+    if (active) move_gallery(_id, direction);
   };
 
   let active = true;

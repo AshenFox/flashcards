@@ -1,8 +1,7 @@
 import { FC, MouseEvent, TouchEvent, useRef } from 'react';
 import SRIndicator from '../../main/SRIngicator';
-import { set_card_sr, set_cards_sr_positive } from '../../../store/actions/srActions';
 import { Card } from '../../../store/reducers/main/mainInitState';
-import { useAppDispatch } from '../../../store/store';
+import { useActions } from '../../../store/hooks';
 
 interface OwnProps {
   data: Card;
@@ -11,7 +10,7 @@ interface OwnProps {
 type Props = OwnProps;
 
 const CardSRControl: FC<Props> = ({ data }) => {
-  const dispatch = useAppDispatch();
+  const { set_card_sr, set_cards_sr_positive } = useActions();
 
   const { _id, studyRegime } = data;
 
@@ -20,14 +19,14 @@ const CardSRControl: FC<Props> = ({ data }) => {
     clearTimeout(timer.current);
 
     if (timer.current) {
-      dispatch(set_card_sr(_id, !studyRegime));
+      set_card_sr(_id, !studyRegime);
     }
   };
 
   const down = (e: MouseEvent<HTMLLabelElement> | TouchEvent<HTMLLabelElement>) => {
     timer.current = setTimeout(() => {
       timer.current = null;
-      if (!studyRegime) dispatch(set_cards_sr_positive(_id));
+      if (!studyRegime) set_cards_sr_positive(_id);
     }, 550);
   };
 

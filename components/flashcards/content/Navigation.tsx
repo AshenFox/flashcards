@@ -1,19 +1,18 @@
 import { useRouter } from 'next/router';
 import { FC, MouseEvent, useEffect, useRef } from 'react';
-import {
-  set_flashcards_progress,
-  save_flashcards_answer,
-  set_flashcards_side,
-} from '../../../store/actions/gameActions';
-import { put_sr_answer } from '../../../store/actions/srActions';
-import { useAppDispatch, useAppSelector } from '../../../store/store';
+import { useActions, useAppSelector } from '../../../store/hooks';
 
 interface OwnProps {}
 
 type Props = OwnProps;
 
 const Navigation: FC<Props> = () => {
-  const dispatch = useAppDispatch();
+  const {
+    set_flashcards_progress,
+    save_flashcards_answer,
+    set_flashcards_side,
+    put_sr_answer,
+  } = useActions();
 
   const router = useRouter();
   const { _id } = router.query;
@@ -31,12 +30,12 @@ const Navigation: FC<Props> = () => {
     (value: 'next' | 'prev', cardAnswer?: 'correct' | 'incorrect') =>
     (e: MouseEvent<HTMLDivElement>) => {
       if (value === 'next' && isSR) {
-        if (cardAnswer === 'correct') dispatch(put_sr_answer(activeCardData._id, 1));
-        if (cardAnswer === 'incorrect') dispatch(put_sr_answer(activeCardData._id, -1));
+        if (cardAnswer === 'correct') put_sr_answer(activeCardData._id, 1);
+        if (cardAnswer === 'incorrect') put_sr_answer(activeCardData._id, -1);
 
-        dispatch(save_flashcards_answer(activeCardData._id, cardAnswer));
+        save_flashcards_answer(activeCardData._id, cardAnswer);
       }
-      dispatch(set_flashcards_progress(value));
+      set_flashcards_progress(value);
     };
 
   const cardsArr = Object.values(cards);
@@ -55,36 +54,36 @@ const Navigation: FC<Props> = () => {
     const keyDown = (e: KeyboardEvent) => {
       if (e.key === 'ArrowUp' || e.key === 'ArrowDown') {
         if (sideRef.current === 'term') {
-          dispatch(set_flashcards_side('definition'));
+          set_flashcards_side('definition');
           return;
         }
         if (sideRef.current === 'definition') {
-          dispatch(set_flashcards_side('term'));
+          set_flashcards_side('term');
           return;
         }
       }
 
       if (isSR && isTurnedRef.current) {
         if (e.key === 'ArrowRight') {
-          dispatch(put_sr_answer(_idRef.current, 1));
-          dispatch(save_flashcards_answer(_idRef.current, 'correct'));
-          dispatch(set_flashcards_progress('next'));
+          put_sr_answer(_idRef.current, 1);
+          save_flashcards_answer(_idRef.current, 'correct');
+          set_flashcards_progress('next');
         }
 
         if (e.key === 'ArrowLeft') {
-          dispatch(put_sr_answer(_idRef.current, -1));
-          dispatch(save_flashcards_answer(_idRef.current, 'incorrect'));
-          dispatch(set_flashcards_progress('next'));
+          put_sr_answer(_idRef.current, -1);
+          save_flashcards_answer(_idRef.current, 'incorrect');
+          set_flashcards_progress('next');
         }
       }
 
       if (!isSR) {
         if (e.key === 'ArrowLeft') {
-          dispatch(set_flashcards_progress('prev'));
+          set_flashcards_progress('prev');
         }
 
         if (e.key === 'ArrowRight') {
-          dispatch(set_flashcards_progress('next'));
+          set_flashcards_progress('next');
         }
       }
     };

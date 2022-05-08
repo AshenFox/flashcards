@@ -3,7 +3,7 @@ import Link from 'next/link';
 import Study from './Study';
 import Info from './Info';
 import ContentWrapper from '../../main/ContentWrapper';
-import { useAppSelector } from '../../../store/store';
+import { useAppSelector } from '../../../store/hooks';
 import { FC } from 'react';
 
 interface OwnProps {}

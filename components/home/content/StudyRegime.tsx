@@ -2,7 +2,7 @@ import Link from 'next/link';
 import SrInTime from './SrInTime';
 import SrCounter from './SrCounter';
 import Skeleton from 'react-loading-skeleton';
-import { useAppSelector } from '../../../store/store';
+import { useAppSelector } from '../../../store/hooks';
 import { FC } from 'react';
 
 interface OwnProps {}

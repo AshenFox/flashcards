@@ -1,7 +1,6 @@
 import { FC, MouseEvent } from 'react';
-import { delete_card } from '../../../store/actions/editActions';
+import { useActions } from '../../../store/hooks';
 import { Card } from '../../../store/reducers/main/mainInitState';
-import { useAppDispatch } from '../../../store/store';
 
 interface OwnProps {
   data: Card;
@@ -11,12 +10,11 @@ interface OwnProps {
 type Props = OwnProps;
 
 const EditCardDelete: FC<Props> = ({ data, active = false }) => {
-  const dispatch = useAppDispatch();
+  const { delete_card } = useActions();
 
   const { _id } = data || {};
 
-  const clickCardDelete = (e: MouseEvent<HTMLDivElement>) =>
-    active && dispatch(delete_card(_id));
+  const clickCardDelete = (e: MouseEvent<HTMLDivElement>) => active && delete_card(_id);
 
   return (
     <div

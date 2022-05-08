@@ -1,17 +1,16 @@
 import { FC, useEffect } from 'react';
 import { useRouter } from 'next/router';
-import { get_module, get_draft, clear_module } from '../../store/actions/mainActions';
 import EditModule from './content/EditModule';
 import CardsContainer from './content/CardsContainer';
 import EditIntro from './content/EditIntro';
-import { useAppDispatch, useAppSelector } from '../../store/store';
+import { useAppSelector, useActions } from '../../store/hooks';
 
 interface OwnProps {}
 
 type Props = OwnProps;
 
 const EditContainer: FC<Props> = () => {
-  const dispatch = useAppDispatch();
+  const { get_module, get_draft, clear_module } = useActions();
 
   const router = useRouter();
   const { _id } = router.query;
@@ -20,15 +19,15 @@ const EditContainer: FC<Props> = () => {
 
   useEffect(() => {
     if (user) {
-      dispatch(clear_module());
-      if (_id === 'draft') dispatch(get_draft());
-      else if (typeof _id === 'string') dispatch(get_module(_id));
+      clear_module();
+      if (_id === 'draft') get_draft();
+      else if (typeof _id === 'string') get_module(_id);
     }
   }, [user, _id]);
 
   useEffect(() => {
     return () => {
-      dispatch(clear_module());
+      clear_module();
     };
   }, []);
 

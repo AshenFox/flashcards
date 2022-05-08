@@ -1,7 +1,6 @@
 import { FC, MouseEvent } from 'react';
-import { set_card_edit, reset_gallery_fields } from '../../../store/actions/editActions';
+import { useActions } from '../../../store/hooks';
 import { Card } from '../../../store/reducers/main/mainInitState';
-import { useAppDispatch } from '../../../store/store';
 
 interface OwnProps {
   data: Card;
@@ -10,13 +9,13 @@ interface OwnProps {
 type Props = OwnProps;
 
 const EditCardClose: FC<Props> = ({ data }) => {
-  const dispatch = useAppDispatch();
+  const { set_card_edit, reset_gallery_fields } = useActions();
 
   const { _id } = data || {};
 
   const clickClose = (e: MouseEvent<HTMLDivElement>) => {
-    dispatch(set_card_edit(_id, false));
-    dispatch(reset_gallery_fields(_id));
+    set_card_edit(_id, false);
+    reset_gallery_fields(_id);
   };
 
   return (

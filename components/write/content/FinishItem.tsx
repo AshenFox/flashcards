@@ -4,7 +4,7 @@ import Img from '../../main/Img';
 import DateStr from '../../main/DateSrt';
 import { WriteCard } from '../../../store/reducers/game/gameInitState';
 import { FC } from 'react';
-import { useAppSelector } from '../../../store/store';
+import { useAppSelector } from '../../../store/hooks';
 
 interface OwnProps {
   data: WriteCard;

@@ -1,11 +1,6 @@
-import {
-  set_url_ok,
-  set_card_imgurl,
-  edit_card,
-} from '../../../store/actions/editActions';
 import { ImgurlObj } from '../../../store/reducers/main/mainInitState';
 import { FC, SyntheticEvent } from 'react';
-import { useAppDispatch } from '../../../store/store';
+import { useActions } from '../../../store/hooks';
 
 interface OwnProps {
   _id: string;
@@ -16,18 +11,16 @@ interface OwnProps {
 type Props = OwnProps;
 
 const GalleryItem: FC<Props> = ({ _id, index, data }) => {
-  const dispatch = useAppDispatch();
+  const { set_url_ok, set_card_imgurl, edit_card } = useActions();
 
   const { url, ok } = data;
 
-  const error = (e: SyntheticEvent<HTMLImageElement>) =>
-    dispatch(set_url_ok(_id, index, false));
-  const load = (e: SyntheticEvent<HTMLImageElement>) =>
-    dispatch(set_url_ok(_id, index, true));
+  const error = (e: SyntheticEvent<HTMLImageElement>) => set_url_ok(_id, index, false);
+  const load = (e: SyntheticEvent<HTMLImageElement>) => set_url_ok(_id, index, true);
 
   const clickGalleryItem = () => {
-    dispatch(set_card_imgurl(_id, url));
-    dispatch(edit_card(_id));
+    set_card_imgurl(_id, url);
+    edit_card(_id);
   };
 
   return (

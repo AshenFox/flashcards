@@ -1,16 +1,15 @@
 import { FC, useEffect } from 'react';
-import { init_voice } from '../../store/actions/voiceActions';
-import { useAppDispatch } from '../../store/store';
+import { useActions } from '../../store/hooks';
 
 interface OwnProps {}
 
 type Props = OwnProps;
 
 const Voice: FC<Props> = () => {
-  const dispatch = useAppDispatch();
+  const { init_voice } = useActions();
 
   useEffect(() => {
-    dispatch(init_voice());
+    init_voice();
   }, []);
 
   return <></>;

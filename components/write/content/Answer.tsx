@@ -1,18 +1,11 @@
 import { useRouter } from 'next/router';
 import { ChangeEvent, FC, MouseEvent, useEffect, useRef } from 'react';
-import { set_card_edit } from '../../../store/actions/editActions';
-import {
-  set_write_copy_answer_field,
-  next_write_card,
-  override_write_answer,
-} from '../../../store/actions/gameActions';
-import { put_sr_answer } from '../../../store/actions/srActions';
 import ContentEditable from 'react-contenteditable';
 import Speaker from '../../main/Speaker';
 import Img from '../../main/Img';
 import SRIndicator from '../../main/SRIngicator';
 import { Card } from '../../../store/reducers/main/mainInitState';
-import { useAppDispatch, useAppSelector } from '../../../store/store';
+import { useActions, useAppSelector } from '../../../store/hooks';
 
 interface OwnProps {
   data: Card;
@@ -21,7 +14,13 @@ interface OwnProps {
 type Props = OwnProps;
 
 const Answer: FC<Props> = ({ data }) => {
-  const dispatch = useAppDispatch();
+  const {
+    set_card_edit,
+    set_write_copy_answer_field,
+    next_write_card,
+    override_write_answer,
+    put_sr_answer,
+  } = useActions();
 
   const router = useRouter();
   const { _id: _id_param } = router.query;
@@ -61,20 +60,20 @@ const Answer: FC<Props> = ({ data }) => {
   }
 
   const changeCopyAnswer = (e: ChangeEvent<HTMLInputElement>) =>
-    dispatch(set_write_copy_answer_field(e.target.value));
+    set_write_copy_answer_field(e.target.value);
 
-  const clickEdit = (e: MouseEvent<HTMLDivElement>) => dispatch(set_card_edit(_id, true));
+  const clickEdit = (e: MouseEvent<HTMLDivElement>) => set_card_edit(_id, true);
 
   const continueGame = () => {
     if (canContinue.current) {
-      if (isFirstRound.current && isSR) dispatch(put_sr_answer(_id, isCorrect ? 1 : -1));
-      dispatch(next_write_card());
+      if (isFirstRound.current && isSR) put_sr_answer(_id, isCorrect ? 1 : -1);
+      next_write_card();
     }
   };
 
   const overrideAnswer = () => {
-    if (isFirstRound.current && isSR) dispatch(put_sr_answer(_id, 1));
-    dispatch(override_write_answer());
+    if (isFirstRound.current && isSR) put_sr_answer(_id, 1);
+    override_write_answer();
   };
 
   const clickContinue = (e: MouseEvent<HTMLButtonElement>) => {

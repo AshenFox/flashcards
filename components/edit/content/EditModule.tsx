@@ -1,17 +1,16 @@
 import { FC, useRef } from 'react';
 import { useRouter } from 'next/router';
-import { control_module, edit_module } from '../../../store/actions/editActions';
 import ContentEditable from 'react-contenteditable';
 import ModuleSave from './ModuleSave';
 import ContentWrapper from '../../main/ContentWrapper';
-import { useAppDispatch, useAppSelector } from '../../../store/store';
+import { useActions, useAppSelector } from '../../../store/hooks';
 
 interface OwnProps {}
 
 type Props = OwnProps;
 
 const EditModule: FC<Props> = () => {
-  const dispatch = useAppDispatch();
+  const { control_module, edit_module } = useActions();
 
   const router = useRouter();
   const { _id } = router.query;
@@ -23,11 +22,11 @@ const EditModule: FC<Props> = () => {
   const { title, draft } = module || {};
 
   const handleModuleChange = (e) => {
-    dispatch(control_module(e.target.value));
+    control_module(e.target.value);
 
     clearTimeout(timer.current);
     timer.current = setTimeout(async () => {
-      dispatch(edit_module());
+      edit_module();
       timer.current = null;
     }, 500);
   };

@@ -1,8 +1,6 @@
 import { FC, MouseEvent as ReactMouseEvent, useEffect, useRef } from 'react';
-import { set_card_question } from '../../../store/actions/editActions';
-import { drop_card_sr } from '../../../store/actions/srActions';
+import { useActions } from '../../../store/hooks';
 import { Card } from '../../../store/reducers/main/mainInitState';
-import { useAppDispatch } from '../../../store/store';
 
 interface OwnProps {
   data: Card;
@@ -11,7 +9,7 @@ interface OwnProps {
 type Props = OwnProps;
 
 const CardQuestion: FC<Props> = ({ data }) => {
-  const dispatch = useAppDispatch();
+  const { set_card_question, drop_card_sr } = useActions();
 
   const { question, _id } = data;
 
@@ -33,14 +31,14 @@ const CardQuestion: FC<Props> = ({ data }) => {
 
     if (questionEl) {
       if (questionAnswerEl) {
-        dispatch(set_card_question(_id, false));
+        set_card_question(_id, false);
       }
     } else {
-      dispatch(set_card_question(_id, false));
+      set_card_question(_id, false);
     }
   });
 
-  const clickYes = (e: ReactMouseEvent<HTMLDivElement>) => dispatch(drop_card_sr(_id));
+  const clickYes = (e: ReactMouseEvent<HTMLDivElement>) => drop_card_sr(_id);
 
   return (
     <div className='module__question' data-active={question}>

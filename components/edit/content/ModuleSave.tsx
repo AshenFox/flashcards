@@ -1,17 +1,16 @@
 import { FC } from 'react';
-import { set_cards_save } from '../../../store/actions/editActions';
-import { useAppDispatch, useAppSelector } from '../../../store/store';
+import { useActions, useAppSelector } from '../../../store/hooks';
 
 interface OwnProps {}
 
 type Props = OwnProps;
 
 const ModuleSave: FC<Props> = () => {
-  const dispatch = useAppDispatch();
+  const { set_cards_save } = useActions();
 
   const { cards } = useAppSelector(({ main }) => main);
 
-  const clickAllSave = () => dispatch(set_cards_save(!active));
+  const clickAllSave = () => set_cards_save(!active);
 
   const cardsArr = Object.values(cards);
 

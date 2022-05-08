@@ -1,6 +1,6 @@
 import Skeleton from 'react-loading-skeleton';
 import { FC } from 'react';
-import { useAppSelector } from '../../../store/store';
+import { useAppSelector } from '../../../store/hooks';
 
 interface OwnProps {}
 

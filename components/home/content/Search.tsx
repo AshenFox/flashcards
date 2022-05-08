@@ -1,18 +1,7 @@
 import { FC, useRef } from 'react';
 import { useRouter } from 'next/router';
-import {
-  control_search_cards,
-  control_search_modules,
-  reset_fields_cards,
-  reset_fields_modules,
-  set_select_by,
-  set_select_created,
-  get_modules,
-  get_module_cards,
-  get_cards,
-} from '../../../store/actions/mainActions';
 import Select from 'react-select';
-import { useAppDispatch, useAppSelector } from '../../../store/store';
+import { useActions, useAppSelector } from '../../../store/hooks';
 
 const optionsBy = [
   { value: 'term', label: 'Term' },
@@ -51,7 +40,17 @@ const Search: FC<Props> = () => {
   const { pathname } = router;
   const { section } = router.query;
 
-  const dispatch = useAppDispatch();
+  const {
+    control_search_cards,
+    control_search_modules,
+    reset_fields_cards,
+    reset_fields_modules,
+    set_select_by,
+    set_select_created,
+    get_modules,
+    get_module_cards,
+    get_cards,
+  } = useActions();
 
   const { search_cards, search_modules, select_by, select_created, module } =
     useAppSelector(({ main }) => main);
@@ -61,46 +60,46 @@ const Search: FC<Props> = () => {
   const timer = useRef<ReturnType<typeof setTimeout>>(null);
 
   const changeSearchCards = (e) => {
-    dispatch(control_search_cards(e.target.value));
+    control_search_cards(e.target.value);
     clearTimeout(timer.current);
-    dispatch(reset_fields_cards());
+    reset_fields_cards();
     timer.current = setTimeout(() => {
-      isModulePath ? dispatch(get_module_cards(_id)) : dispatch(get_cards());
+      isModulePath ? get_module_cards(_id) : get_cards();
     }, 500);
   };
 
   const controlSearchModules = (e) => {
-    dispatch(control_search_modules(e.target.value));
+    control_search_modules(e.target.value);
     clearTimeout(timer.current);
-    dispatch(reset_fields_modules());
+    reset_fields_modules();
     timer.current = setTimeout(() => {
-      dispatch(get_modules());
+      get_modules();
     }, 500);
   };
 
   const changeSelectBy = (value) => {
-    dispatch(set_select_by(value));
+    set_select_by(value);
     if (search_cards.value) {
-      dispatch(reset_fields_cards());
+      reset_fields_cards();
       console.log('fire!');
-      isModulePath ? dispatch(get_module_cards(_id)) : dispatch(get_cards());
+      isModulePath ? get_module_cards(_id) : get_cards();
     }
   };
 
   const changeSelectCreated = (value) => {
-    dispatch(set_select_created(value));
+    set_select_created(value);
 
     if (isModulePath) {
-      dispatch(reset_fields_cards());
-      dispatch(get_module_cards(_id));
+      reset_fields_cards();
+      get_module_cards(_id);
     } else {
       if (isCards) {
-        dispatch(reset_fields_cards());
-        dispatch(get_cards());
+        reset_fields_cards();
+        get_cards();
       }
       if (isModules) {
-        dispatch(reset_fields_modules());
-        dispatch(get_modules());
+        reset_fields_modules();
+        get_modules();
       }
     }
   };

@@ -1,7 +1,7 @@
 import { FC } from 'react';
 import { useEffect } from 'react';
 import axios from '../../server/supplemental/axios';
-import { useAppSelector } from '../../store/store';
+import { useAppSelector } from '../../store/hooks';
 
 interface OwnProps {}
 

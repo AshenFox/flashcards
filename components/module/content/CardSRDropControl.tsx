@@ -1,7 +1,6 @@
 import { FC, MouseEvent } from 'react';
-import { set_card_question } from '../../../store/actions/editActions';
+import { useActions } from '../../../store/hooks';
 import { Card } from '../../../store/reducers/main/mainInitState';
-import { useAppDispatch } from '../../../store/store';
 
 interface OwnProps {
   data: Card;
@@ -10,12 +9,11 @@ interface OwnProps {
 type Props = OwnProps;
 
 const CardSRDropControl: FC<Props> = ({ data }) => {
-  const dispatch = useAppDispatch();
+  const { set_card_question } = useActions();
 
   const { question, _id } = data;
 
-  const clickDropSR = (e: MouseEvent<HTMLDivElement>) =>
-    dispatch(set_card_question(_id, true));
+  const clickDropSR = (e: MouseEvent<HTMLDivElement>) => set_card_question(_id, true);
 
   return (
     <div

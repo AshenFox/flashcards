@@ -3,7 +3,7 @@ import Answer from './Answer';
 import Round from './Round';
 import Finish from './Finish';
 import EditCard from '../../edit/content/EditCard';
-import { useAppSelector } from '../../../store/store';
+import { useAppSelector } from '../../../store/hooks';
 import { FC, ReactNode } from 'react';
 
 interface OwnProps {}

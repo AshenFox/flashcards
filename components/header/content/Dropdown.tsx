@@ -6,24 +6,23 @@ import {
   CSSProperties,
 } from 'react';
 import { useRouter } from 'next/router';
-import { log_out } from '../../../store/actions/authActions';
-import {
-  set_flashcards_shuffled,
-  sort_flashcards,
-  shuffle_flashcards,
-  reset_flashcards_progress,
-  prepare_write,
-} from '../../../store/actions/gameActions';
 import { set_dropdown } from '../../../store/actions/headerActions';
 import Link from 'next/link';
-import { useAppDispatch, useAppSelector } from '../../../store/store';
+import { useActions, useAppSelector } from '../../../store/hooks';
 
 interface OwnProps {}
 
 type Props = OwnProps;
 
 const Dropdown: FC<Props> = () => {
-  const dispatch = useAppDispatch();
+  const {
+    log_out,
+    set_flashcards_shuffled,
+    sort_flashcards,
+    shuffle_flashcards,
+    reset_flashcards_progress,
+    prepare_write,
+  } = useActions();
 
   const {
     game: {
@@ -46,9 +45,9 @@ const Dropdown: FC<Props> = () => {
     let menuItemEl = (e.target as HTMLElement).closest('.header__menu-item');
 
     if (menuEl) {
-      if (menuItemEl) dispatch(set_dropdown(false));
+      if (menuItemEl) set_dropdown(false);
     } else {
-      dispatch(set_dropdown(false));
+      set_dropdown(false);
     }
   });
 
@@ -65,20 +64,19 @@ const Dropdown: FC<Props> = () => {
 
   const clickSuffle = (e: ReactMouseEvent<HTMLDivElement>) => {
     if (shuffled) {
-      dispatch(sort_flashcards());
-      dispatch(set_flashcards_shuffled(false));
+      sort_flashcards();
+      set_flashcards_shuffled(false);
     } else {
-      dispatch(shuffle_flashcards());
-      dispatch(set_flashcards_shuffled(true));
+      shuffle_flashcards();
+      set_flashcards_shuffled(true);
     }
 
-    dispatch(reset_flashcards_progress());
+    reset_flashcards_progress();
   };
 
-  const clickStartOver = (e: ReactMouseEvent<HTMLDivElement>) =>
-    dispatch(prepare_write());
+  const clickStartOver = (e: ReactMouseEvent<HTMLDivElement>) => prepare_write();
 
-  const logOut = (e: ReactMouseEvent<HTMLDivElement>) => dispatch(log_out());
+  const logOut = (e: ReactMouseEvent<HTMLDivElement>) => log_out();
 
   const stylesHeader: CSSProperties = { paddingTop: `${header_height}px` };
 

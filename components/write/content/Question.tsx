@@ -1,15 +1,11 @@
 import { useRouter } from 'next/router';
 import { ChangeEvent, FC, MouseEvent, useEffect, useRef } from 'react';
-import {
-  set_write_answer_field,
-  check_write_answer,
-} from '../../../store/actions/gameActions';
 import ContentEditable from 'react-contenteditable';
 import Speaker from '../../main/Speaker';
 import Img from '../../main/Img';
 import SRIndicator from '../../main/SRIngicator';
 import { Card } from '../../../store/reducers/main/mainInitState';
-import { useAppDispatch, useAppSelector } from '../../../store/store';
+import { useActions, useAppSelector } from '../../../store/hooks';
 
 interface OwnProps {
   data: Card;
@@ -18,7 +14,7 @@ interface OwnProps {
 type Props = OwnProps;
 
 const Question: FC<Props> = ({ data }) => {
-  const dispatch = useAppDispatch();
+  const { set_write_answer_field, check_write_answer } = useActions();
 
   const router = useRouter();
 
@@ -37,22 +33,22 @@ const Question: FC<Props> = ({ data }) => {
   );
 
   const changeAnswer = (e: ChangeEvent<HTMLInputElement>) =>
-    dispatch(set_write_answer_field(e.target.value));
+    set_write_answer_field(e.target.value);
 
   const keyDownAnswer = (e: KeyboardEvent) => {
     if (e.key === 'Enter') {
       e.preventDefault();
-      dispatch(check_write_answer());
+      check_write_answer();
     }
   };
 
   const clickAnswer = (e: MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
-    dispatch(check_write_answer());
+    check_write_answer();
   };
 
   const clickNotKnow = (e: MouseEvent<HTMLSpanElement>) => {
-    dispatch(check_write_answer(true));
+    check_write_answer(true);
   };
 
   const answerInput = useRef<HTMLInputElement>(null);

@@ -1,14 +1,13 @@
-import { useRef, useEffect, FC, MouseEvent } from 'react';
-import { toggle_modal } from '../../store/actions/modalActions';
+import { useRef, FC, MouseEvent, useLayoutEffect } from 'react';
 import ModalContent from './content/ModalContent';
-import { useAppDispatch, useAppSelector } from '../../store/store';
+import { useActions, useAppSelector } from '../../store/hooks';
 
 interface OwnProps {}
 
 type Props = OwnProps;
 
 const Modal: FC<Props> = () => {
-  const dispatch = useAppDispatch();
+  const { toggle_modal } = useActions();
 
   const { is_modal, active_modal } = useAppSelector(({ modal }) => modal);
 
@@ -18,7 +17,7 @@ const Modal: FC<Props> = () => {
   const transitionModal = 125;
   const transitionDialog = 225;
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     let styleModal = modalEl.current.style;
     let styleDialog = dialogEl.current.style;
 
@@ -48,10 +47,10 @@ const Modal: FC<Props> = () => {
   }, [is_modal]);
 
   const onMouseDown = (e: MouseEvent<HTMLDivElement>) => {
-    if (e.target === modalEl.current) dispatch(toggle_modal());
+    if (e.target === modalEl.current) toggle_modal();
   };
 
-  const closeClick = (e: MouseEvent<HTMLDivElement>) => dispatch(toggle_modal());
+  const closeClick = (e: MouseEvent<HTMLDivElement>) => toggle_modal();
 
   return (
     <div
