@@ -1,7 +1,5 @@
 import { FC, useEffect } from 'react';
 import { useRouter } from 'next/router';
-import { reset_all_game_fields } from '../../store/actions/gameActions';
-import { get_sr_cards } from '../../store/actions/srActions';
 import Controls from './content/Controls';
 import ContentContainer from './content/ContentContainer';
 import { useActions, useAppSelector } from '../../store/hooks';
@@ -11,7 +9,8 @@ interface OwnProps {}
 type Props = OwnProps;
 
 const FlashcardsContainer: FC<Props> = () => {
-  const { get_module_cards, clear_module } = useActions();
+  const { get_module_cards, clear_module, reset_all_game_fields, get_sr_cards } =
+    useActions();
 
   const router = useRouter();
   const { _id, number } = router.query;

@@ -1,6 +1,4 @@
 import { useRouter } from 'next/router';
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
 import Link from 'next/link';
 import ContentEditable from 'react-contenteditable';
 import Speaker from '../../main/Speaker';
