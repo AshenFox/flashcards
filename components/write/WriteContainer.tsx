@@ -2,7 +2,7 @@ import { FC, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import ContentContainer from './content/ContentContainer';
 import Controls from './content/Controls';
-import { useActions, useAppDispatch, useAppSelector } from '../../store/hooks';
+import { useActions, useAppSelector } from '../../store/hooks';
 
 interface OwnProps {}
 
