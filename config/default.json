@@ -1,0 +1,15 @@
+{
+  "mongoURI": "***REMOVED***",
+  "jwtSecret": "***REMOVED***",
+  "publicVapidKey": "***REMOVED***",
+  "privateVapidKey": "***REMOVED***",
+  "webpushSubject": "***REMOVED***",
+  "cse_id": "***REMOVED***",
+  "keyArr": [
+    "***REMOVED***",
+    "***REMOVED***",
+    "***REMOVED***",
+    "***REMOVED***",
+    "***REMOVED***"
+  ]
+}
