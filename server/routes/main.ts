@@ -149,8 +149,6 @@ router.get('/cards', auth, async (req: TCardsGetReq, res: TCardsGetRes) => {
       draft: true,
     });
 
-    if (!draft) throw new Error(`Draft has not been found.`);
-
     const filterObj: {
       moduleID?: { $ne: string };
       term?: { $regex: string };
