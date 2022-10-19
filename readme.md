@@ -1,4 +1,4 @@
-Посмотреть проект можно по ссылке - [Nexter](https://fox-flash-cards.herokuapp.com/)
+Посмотреть проект можно по ссылке - [Flashcards](https://fox-flash-cards.herokuapp.com/)
 
 Для входа можно использовать:
 Логин: Testuser1
