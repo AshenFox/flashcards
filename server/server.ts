@@ -20,12 +20,6 @@ import notifications from './routes/notifications';
 const port = process.env.PORT || 4000;
 const dev = process.env.NODE_ENV !== 'production';
 
-/* interface serverOptions extends ServerOptions {
-  key?: string;
-  cert?: string;
-  passphrase?: string;
-} */
-
 const serverOptions: ServerOptions = {};
 
 if (dev) {
@@ -94,11 +88,13 @@ const start = async () => {
     await nextApp.prepare();
     console.log(`Next.js is ready`);
     // Start server
+
     if (dev) {
       await https.createServer(serverOptions, expressServer).listen(port);
     } else {
       await expressServer.listen(port);
     }
+
     console.log(`Server is ready on https://localhost:${port}`);
   } catch (err) {
     console.error(err);

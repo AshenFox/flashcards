@@ -9,7 +9,9 @@
     "_start": "node server/server.js",
     "start": "node .server/server.js",
     "heroku-postbuild": "npm run build",
-    "build:server": "tsc --p ./server/tsconfig.server.json"
+    "build:server": "tsc --p ./server/tsconfig.server.json",
+    "prod": "docker-compose -f docker-compose.prod.yaml up",
+    "prod-rebuild": "docker-compose -f docker-compose.prod.yaml up -d --no-deps --build app"
   },
   "dependencies": {
     "@types/bcryptjs": "^2.4.2",

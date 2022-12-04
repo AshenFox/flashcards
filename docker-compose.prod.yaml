@@ -1,0 +1,13 @@
+version: '3.8'
+
+services:
+  app:
+    container_name: flashcards-container
+    restart: always
+    build:
+      context: .
+      dockerfile: Dockerfile.prod
+    environment:
+      - NODE_ENV=production
+    ports:
+      - 4000:4000
