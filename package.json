@@ -10,7 +10,7 @@
     "start": "node .server/server.js",
     "heroku-postbuild": "npm run build",
     "build:server": "tsc --p ./server/tsconfig.server.json",
-    "prod": "docker-compose -f docker-compose.prod.yaml up",
+    "prod": "docker-compose -f docker-compose.prod.yaml up -d",
     "prod-rebuild": "docker-compose -f docker-compose.prod.yaml up -d --no-deps --build app"
   },
   "dependencies": {
