@@ -19,7 +19,7 @@ self.addEventListener('notificationclick', (event) => {
   const url =
     location.hostname === 'localhost'
       ? 'http://localhost:3000/home/sr'
-      : 'https://fox-flash-cards.herokuapp.com/home/sr';
+      : 'https://flashcards.ashen-fox.online/home/sr';
 
   event.notification.close();
 
