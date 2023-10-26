@@ -1,6 +1,6 @@
 console.log('Service worker loaded');
 
-self.addEventListener('push', (e) => {
+self.addEventListener('push', e => {
   const data = e.data.json();
   console.log('Push recieved...');
   self.registration.showNotification(data.title, {
@@ -13,13 +13,13 @@ self.addEventListener('push', (e) => {
   });
 });
 
-self.addEventListener('notificationclick', (event) => {
+self.addEventListener('notificationclick', event => {
   console.log(location);
 
   const url =
     location.hostname === 'localhost'
-      ? 'http://localhost:3000/home/sr'
-      : 'https://flashcards.ashen-fox.online/home/sr';
+      ? 'https://localhost:3000/home/sr'
+      : 'https://flashcards-ashenfox.duckdns.org/home/sr';
 
   event.notification.close();
 
@@ -29,7 +29,7 @@ self.addEventListener('notificationclick', (event) => {
         includeUncontrolled: true,
         type: 'window',
       })
-      .then((clientList) => {
+      .then(clientList => {
         for (let i = 0; i < clientList.length; i++) {
           let client = clientList[i];
           if (client.url === url) return client.focus();
