@@ -15,7 +15,7 @@ const EndGame: FC<Props> = ({ active }) => {
     game: {
       flashcards: { progress },
     },
-  } = useAppSelector((state) => state);
+  } = useAppSelector(state => state);
 
   const router = useRouter();
 
@@ -44,7 +44,7 @@ const EndGame: FC<Props> = ({ active }) => {
   }, []);
 
   return (
-    <div className='game__card'>
+    <div className={`game__card ${isEnd ? '' : 'transparent'}`}>
       <div className={`game__card-front unturnable ${!active ? 'next transparent' : ''}`}>
         <h1 className='game__card-message'>Nice work!</h1>
         <p className='game__card-message-info'>{`You've just studied ${length} term${

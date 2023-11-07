@@ -30,12 +30,17 @@ const Card: FC<Props> = ({ data, side = 'definition', position = null }) => {
     (x, match) => `( /<span class="game__definition-hidden">${match}</span>/ )`
   );
 
-  const frontClassName = `game__card-front ${position ? `transparent ${position}` : ''} ${
-    side === 'definition' ? '' : 'rearside'
-  }`;
-  const backClassName = `game__card-back ${position ? `transparent ${position}` : ''} ${
-    position ? position : ''
-  } ${side === 'term' ? '' : 'rearside'}`;
+  const frontClassName = [
+    'game__card-front',
+    position ? `transparent ${position}` : '',
+    side === 'definition' ? '' : 'rearside',
+  ].join(' ');
+  const backClassName = [
+    'game__card-back',
+    position ? `transparent ${position}` : '',
+    side === 'term' ? '' : 'rearside',
+  ].join(' ');
+  const cardClassName = ['game__card', position ? 'transparent' : ''].join(' ');
 
   const clickSide = (value: 'term' | 'definition') => (e: MouseEvent<HTMLDivElement>) => {
     if ((e.target as HTMLElement).closest('.game__speaker-flashcards')) return;
@@ -49,7 +54,7 @@ const Card: FC<Props> = ({ data, side = 'definition', position = null }) => {
   const clickEdit = (e: MouseEvent<HTMLDivElement>) => set_card_edit(_id, true);
 
   return (
-    <div className='game__card'>
+    <div className={cardClassName}>
       <div className={frontClassName} onClick={clickSide('term')}>
         <Img
           containerClass={`game__img-container ${defenition ? '' : 'full'}`}
