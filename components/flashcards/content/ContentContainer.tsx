@@ -23,7 +23,7 @@ const ContentContainer: FC<Props> = () => {
       flashcards: { progress, side },
     },
     main: { cards, loading, is_server },
-  } = useAppSelector((state) => state);
+  } = useAppSelector(state => state);
 
   const flashcardsStyles: CSSProperties = {
     height: `${

@@ -761,7 +761,11 @@
   }
 
   &__card {
-    transition: transform 0.3s ease, opacity 0.12s linear;
+    position: absolute;
+    height: 100%;
+    width: 100%;
+
+    transition: opacity 0.12s linear;
 
     opacity: 1;
 
@@ -769,6 +773,11 @@
 
     perspective: 1000px;
     height: 100%;
+
+    &.transparent {
+      opacity: 0;
+      z-index: -10;
+    }
   }
 
   &__card-front,
@@ -785,14 +794,13 @@
     border-radius: 1rem;
     box-shadow: 0 0 1.25rem -0.1rem rgba(0, 0, 0, 0.28);
     transform-style: preserve-3d;
-    transition: transform 0.3s ease, opacity 0.12s linear;
+    transition: transform 0.3s ease;
     backface-visibility: hidden;
     z-index: 19;
     transform: rotateX(0deg);
     display: flex;
 
     &.transparent {
-      opacity: 0;
       z-index: -10;
       pointer-events: none;
     }
