@@ -4,7 +4,8 @@
   "private": true,
   "scripts": {
     "_dev": "nodemon server/server.js",
-    "dev": "nodemon server/server.ts",
+    "dev": "set NODE_OPTIONS=--openssl-legacy-provider && nodemon server/server.ts",
+    "devd": "docker-compose -f docker-compose.dev.yaml up",
     "build": "next build",
     "_start": "node server/server.js",
     "start": "node .server/server.js",
@@ -27,7 +28,7 @@
     "@types/sanitize-html": "^2.6.2",
     "@types/uuid": "^8.3.4",
     "@types/web-push": "^3.3.2",
-    "axios": "^0.21.0",
+    "axios": "^1.6.7",
     "bcryptjs": "^2.4.3",
     "cheerio": "^1.0.0-rc.3",
     "config": "^3.3.2",
