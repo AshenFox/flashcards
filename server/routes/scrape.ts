@@ -1,3 +1,4 @@
+import { ScrapingHeaders } from './../supplemental/axios';
 import express, { Request, Response } from 'express';
 import axios from 'axios';
 import cheerio from 'cheerio';
@@ -45,11 +46,16 @@ router.get('/cod', auth, async (req: TCodGetReq, res: TCodGetRes) => {
   try {
     const { query } = req.query;
 
-    const respose = await axios.get(
-      `https://dictionary.cambridge.org/dictionary/english/${query}`
+    const response = await axios.get(
+      `https://dictionary.cambridge.org/dictionary/english/${query}`,
+      {
+        headers: ScrapingHeaders,
+      }
     );
 
-    const { data }: { data: string } = respose;
+    console.log({ response });
+
+    const { data }: { data: string } = response;
     const $ = cheerio.load(data);
 
     const result: TCodGetResBody = [];
@@ -155,8 +161,6 @@ type TUrbanGetRes = Response<TUrbanGetResBody | IResError>;
 router.get('/urban', auth, async (req: TUrbanGetReq, res: TUrbanGetRes) => {
   try {
     const { query } = req.query;
-
-    console.log(`https://www.urbandictionary.com/define.php?term=${query}`);
 
     const respose = await axios.get(
       `https://www.urbandictionary.com/define.php?term=${query}`
