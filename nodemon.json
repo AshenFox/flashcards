@@ -1,6 +1,6 @@
 {
   "ignore": ["pages/*", "store/*", "components/*", ".next/*", "styles/"],
   "execMap": {
-    "ts": "npx ts-node --project ./server/tsconfig.server.json"
+    "ts": "npx tsx --tsconfig ./server/tsconfig.server.json"
   }
 }

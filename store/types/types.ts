@@ -594,11 +594,11 @@ export interface SortFlashcardsAction {
 }
 
 // voice
-export const INIT_VOICE = 'INIT_VOICE';
+export const INIT_EASY_SPEECH = 'INIT_EASY_SPEECH';
 export const SET_VOICE_SPEAKING = 'SET_VOICE_SPEAKING';
 
-export interface InitVoiceAction {
-  type: typeof INIT_VOICE;
+export interface InitEasySpeechAction {
+  type: typeof INIT_EASY_SPEECH;
   payload: {
     voices: Voices;
     working: boolean;
@@ -610,7 +610,7 @@ export interface SetVoiceSpeakingAction {
   payload: Speaking;
 }
 
-export type VoiceActions = InitVoiceAction | SetVoiceSpeakingAction;
+export type VoiceActions = InitEasySpeechAction | SetVoiceSpeakingAction;
 
 // falshcards
 export const SET_FLASHCARDS_PROGRESS = 'SET_FLASHCARDS_PROGRESS';

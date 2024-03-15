@@ -1,9 +1,27 @@
-export interface Voices {
+export type EasySpeechStatus = {
+  status: string;
+  initialized: boolean;
+  speechSynthesis: SpeechSynthesis;
+  speechSynthesisUtterance: SpeechSynthesisUtterance;
+  speechSynthesisVoice: SpeechSynthesisVoice;
+  speechSynthesisEvent: SpeechSynthesisEvent;
+  speechSynthesisErrorEvent: SpeechSynthesisErrorEvent;
+  voices: SpeechSynthesisVoice[];
+  defaults: {
+    pitch: number;
+    rate: number;
+    volume: number;
+    voice: SpeechSynthesisVoice | null;
+  };
+  handlers: any;
+};
+
+export type Voices = {
   rusBackup?: SpeechSynthesisVoice;
   engBackup?: SpeechSynthesisVoice;
   english?: SpeechSynthesisVoice;
   russian?: SpeechSynthesisVoice;
-}
+};
 
 export type Speaking =
   | {
@@ -13,7 +31,7 @@ export type Speaking =
   | false;
 
 export interface VoiceState {
-  voices: Voices; // ?????
+  voices: Voices;
   speaking: Speaking;
   working: boolean;
 }
