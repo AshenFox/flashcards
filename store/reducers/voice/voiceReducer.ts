@@ -1,12 +1,12 @@
 import { VoiceActions } from './../../types/types';
-import { INIT_VOICE, SET_VOICE_SPEAKING } from '../../types/types';
+import { INIT_EASY_SPEECH, SET_VOICE_SPEAKING } from '../../types/types';
 import initialState, { VoiceState } from './voiceInitState';
 
 const VoiceReducer = (state = initialState, action: VoiceActions): VoiceState => {
   const { payload, type } = action;
 
   switch (type) {
-    case INIT_VOICE:
+    case INIT_EASY_SPEECH:
       return {
         ...state,
         working: payload.working,

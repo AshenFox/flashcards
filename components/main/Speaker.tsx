@@ -1,5 +1,7 @@
-import { FC, forwardRef } from 'react';
+import { FC, forwardRef, useCallback, useMemo } from 'react';
 import { useActions, useAppSelector } from '../../store/hooks';
+import EasySpeech from 'easy-speech';
+import { EasySpeechStatus } from '../../store/reducers/voice/voiceInitState';
 
 interface OwnProps {
   _id: string;
@@ -16,76 +18,80 @@ const Speaker: FC<Props> = forwardRef<HTMLDivElement, OwnProps>(
 
     const { voices, working, speaking } = useAppSelector(({ voice }) => voice);
 
-    const clickSpeaker = () => {
-      const synth = window.speechSynthesis;
-
-      if (!active) return;
-
-      if (synth.speaking) {
-        stop_speaking();
-      } else {
-        const textForSpeaking = filterLang(filteredText, language);
-        speak(textForSpeaking, language);
-        set_voice_speaking(_id, type);
-      }
-    };
-
-    const speak = (text: string, language: 'english' | 'russian') => {
-      const synth = window.speechSynthesis;
-
-      const SSU = new SpeechSynthesisUtterance(text);
-
-      SSU.onend = (e: SpeechSynthesisEvent) => {
-        set_voice_speaking();
-        console.log('Done speaking...');
-      };
-
-      SSU.onerror = (e: SpeechSynthesisErrorEvent) => {
-        console.log('Something vent wrong...', e);
-      };
-
-      if (language === 'english') {
-        if (voices.english) {
-          SSU.voice = voices.english;
-        } else if (voices.engBackup) {
-          SSU.voice = voices.engBackup;
-        } else {
-          return;
-        }
-      } else if (language === 'russian') {
-        if (voices.russian) {
-          SSU.voice = voices.russian;
-        } else if (voices.rusBackup) {
-          SSU.voice = voices.rusBackup;
-        } else {
-          return;
-        }
-      }
-
-      SSU.rate = 0.85;
-      SSU.pitch = 1;
-
-      let int = setInterval(() => {
-        if (!synth.speaking) {
-          clearInterval(int);
-        } else {
-          synth.resume();
-        }
-      }, 10000);
-
-      synth.speak(SSU);
-      console.log('Start speaking...');
-    };
-
-    const stop_speaking = () => window.speechSynthesis.cancel();
-
-    const filteredText = filterText(text);
-    const language = detectLanguage(filteredText);
+    const filteredText = useMemo(() => filterText(text), [text]);
+    const language = useMemo(() => detectLanguage(filteredText), [filteredText]);
     const active = text !== '' && language && working;
 
     let speakerSpeaking = false;
 
     if (speaking) speakerSpeaking = speaking._id === _id && speaking.type === type;
+
+    const cancel = useCallback(() => EasySpeech.cancel(), []);
+
+    const speak = useCallback(
+      async (text: string, language: 'english' | 'russian') => {
+        let voice: SpeechSynthesisVoice;
+
+        if (language === 'english') {
+          if (voices.english) {
+            voice = voices.english;
+          } else if (voices.engBackup) {
+            voice = voices.engBackup;
+          } else {
+            return;
+          }
+        } else if (language === 'russian') {
+          if (voices.russian) {
+            voice = voices.russian;
+          } else if (voices.rusBackup) {
+            voice = voices.rusBackup;
+          } else {
+            return;
+          }
+        }
+
+        await EasySpeech.speak({
+          text,
+          voice,
+          pitch: 1,
+          rate: 1,
+          volume: 1,
+          start: () => console.info('Start speaking...'),
+          pause: e => {
+            console.info('Pause');
+          },
+          end: () => {
+            console.info('Done speaking...');
+            set_voice_speaking();
+          },
+          error: e => {
+            console.info('Something vent wrong...', e);
+          },
+        });
+      },
+      [
+        set_voice_speaking,
+        voices.engBackup,
+        voices.english,
+        voices.rusBackup,
+        voices.russian,
+      ]
+    );
+
+    const clickSpeaker = useCallback(() => {
+      if (!active) return;
+
+      const status = EasySpeech.status() as EasySpeechStatus;
+
+      if (status.speechSynthesis.speaking) {
+        cancel();
+        set_voice_speaking();
+      } else {
+        const textForSpeaking = filterLang(filteredText, language);
+        speak(textForSpeaking, language);
+        set_voice_speaking(_id, type);
+      }
+    }, [_id, active, filteredText, language, set_voice_speaking, speak, cancel, type]);
 
     return (
       <div
@@ -102,6 +108,8 @@ const Speaker: FC<Props> = forwardRef<HTMLDivElement, OwnProps>(
     );
   }
 );
+
+Speaker.displayName = 'Speaker';
 
 export default Speaker;
 

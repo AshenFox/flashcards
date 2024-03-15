@@ -6,11 +6,11 @@ interface OwnProps {}
 type Props = OwnProps;
 
 const Voice: FC<Props> = () => {
-  const { init_voice } = useActions();
+  const { init_easy_speech } = useActions();
 
   useEffect(() => {
-    init_voice();
-  }, []);
+    init_easy_speech();
+  }, [init_easy_speech]);
 
   return <></>;
 };

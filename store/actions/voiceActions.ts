@@ -1,7 +1,8 @@
-import { Voices } from './../reducers/voice/voiceInitState';
+import { EasySpeechStatus, Voices } from './../reducers/voice/voiceInitState';
 import { AppActions } from './../types/types';
-import { INIT_VOICE, SET_VOICE_SPEAKING } from '../types/types';
+import { INIT_EASY_SPEECH, SET_VOICE_SPEAKING } from '../types/types';
 import { ThunkActionApp } from '../store';
+import EasySpeech from 'easy-speech';
 
 // SET_VOICE_SPEAKING
 export const set_voice_speaking = (
@@ -19,29 +20,37 @@ export const set_voice_speaking = (
   };
 };
 
-// INIT_VOICE
-export const init_voice = () => <ThunkActionApp>(async (dispatch) => {
+// INIT_EASY_SPEECH
+export const init_easy_speech = () => <ThunkActionApp>(async dispatch => {
+    const status = EasySpeech.status() as EasySpeechStatus;
+
+    if (status?.initialized) {
+      return;
+    }
+
     let working = true;
     const voices: Voices = {};
 
     try {
-      const synth = window.speechSynthesis;
+      const res = EasySpeech.detect();
 
-      if (!synth) {
+      if (!res.speechSynthesis || !res.speechSynthesisUtterance) {
         working = false;
-        throw new Error('Speech synthesis has not been found');
+        throw new Error('Your browser is not capable of text to speech');
       }
 
-      const voicesArr: SpeechSynthesisVoice[] = await new Promise((res) => {
-        let int = setInterval(() => {
-          if (synth.getVoices().length !== 0) {
-            res(synth.getVoices());
-            clearInterval(int);
-          }
-        }, 10);
-      });
+      const initialized = await EasySpeech.init({ maxTimeout: 5000, interval: 250 });
 
-      voicesArr.forEach((voice) => {
+      console.log({ res, initialized });
+
+      if (!initialized) {
+        working = false;
+        throw new Error('Easy Speech encountered a problem on initialization');
+      }
+
+      const voicesArr = EasySpeech.voices();
+
+      voicesArr.forEach(voice => {
         if (voice.name === 'Google US English') voices.english = voice;
         if (voice.name === 'Google русский') voices.russian = voice;
         if (/en.+US/.test(voice.lang) && !voices.engBackup) voices.engBackup = voice;
@@ -54,7 +63,7 @@ export const init_voice = () => <ThunkActionApp>(async (dispatch) => {
     }
 
     dispatch({
-      type: INIT_VOICE,
+      type: INIT_EASY_SPEECH,
       payload: {
         voices,
         working,

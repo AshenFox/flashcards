@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, FC, useLayoutEffect } from 'react';
+import React, { useState, useEffect, useRef, FC } from 'react';
 import { useActions } from '../../store/hooks';
 
 interface OwnProps {}
@@ -11,9 +11,11 @@ const ScrollSizeController: FC<Props> = () => {
   const [isHidden, setIsHidden] = useState(false);
   const scrollDiv = useRef<HTMLDivElement>(null);
 
-  useLayoutEffect(() => {
-    set_scroll_width(scrollDiv.current.offsetWidth - scrollDiv.current.clientWidth);
-  }, []);
+  useEffect(() => {
+    if (scrollDiv.current) {
+      set_scroll_width(scrollDiv.current.offsetWidth - scrollDiv.current.clientWidth);
+    }
+  }, [set_scroll_width]);
 
   useEffect(() => {
     setIsHidden(true);

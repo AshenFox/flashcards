@@ -432,6 +432,7 @@
   &__repeat-methods {
     display: flex;
     margin-bottom: 1rem;
+    gap: 1rem;
 
     @media (max-width: $tablet) {
       justify-content: flex-start;
