@@ -46,16 +46,18 @@ const LogIn: FC<Props> = () => {
   return (
     <>
       <Error errObj={userErr} single={true} />
-      <input
-        name='username'
-        type='text'
-        className='input pad5 fz17 height4r br-bottom2 bcc-whiteblue brc-grey f-brc-yellow username'
-        id='username'
-        placeholder='Type your username'
-        value={username}
-        onChange={onChange}
-        onKeyDown={onKeyDown}
-      />
+      <div className='modal__input-container pad5 height4r br-bottom2 bcc-whiteblue brc-grey f-brc-yellow username'>
+        <input
+          name='username'
+          type='text'
+          className='fz17'
+          id='username'
+          placeholder='Type your username'
+          value={username}
+          onChange={onChange}
+          onKeyDown={onKeyDown}
+        />
+      </div>
       <label htmlFor='username' className='label modal__label'>
         USERNAME
       </label>
