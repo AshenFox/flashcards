@@ -22,6 +22,25 @@
     padding: 0;
   }
 
+  &__input-container {
+    display: flex;
+
+    &:focus-within {
+      border-color: $tertiary;
+    }
+
+    input {
+      flex: 1;
+      padding-right: 0.5rem;
+    }
+
+    svg {
+      width: 3rem;
+      fill: $grey;
+      cursor: pointer;
+    }
+  }
+
   &__dialog {
     width: 100%;
     max-width: 600px;
@@ -103,7 +122,9 @@
   }
 
   &__label {
+    cursor: pointer;
     margin-bottom: 1.5rem;
+    user-select: none;
   }
 
   &__options {
