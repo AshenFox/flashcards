@@ -1,4 +1,4 @@
-import { FC, MouseEvent, KeyboardEvent, ChangeEvent } from 'react';
+import { FC, MouseEvent, KeyboardEvent, ChangeEvent, useState } from 'react';
 import Error from './Error';
 import LoadingButton from '../../main/LoadingButton';
 import { useActions, useAppSelector } from '../../../store/hooks';
@@ -10,11 +10,18 @@ type Props = OwnProps;
 const LogIn: FC<Props> = () => {
   const { change_modal, control_field, enter } = useActions();
 
+  const [isPasswordVisible, setIsPasswordVisible] = useState(false);
+
   const {
     log_in: { username, password },
     log_in_errors: { username: userErr, password: passErr },
     loading,
   } = useAppSelector(({ modal }) => modal);
+
+  const onPasswordVisibleButton = (e: MouseEvent<SVGElement>) => {
+    e.preventDefault();
+    setIsPasswordVisible(v => !v);
+  };
 
   const onClickChangeModal = (value: 'sign_up') => (e: MouseEvent<HTMLButtonElement>) => {
     change_modal(value);
@@ -54,16 +61,27 @@ const LogIn: FC<Props> = () => {
       </label>
 
       {userErr.ok && <Error errObj={passErr} single={true} />}
-      <input
-        name='password'
-        type='password'
-        className='input pad5 fz17 height4r br-bottom2 bcc-whiteblue brc-grey f-brc-yellow password'
-        id='password'
-        placeholder='Type your password'
-        value={password}
-        onChange={onChange}
-        onKeyDown={onKeyDown}
-      />
+      <div className='modal__input-container pad5 height4r br-bottom2 bcc-whiteblue brc-grey f-brc-yellow password'>
+        <input
+          name='password'
+          type={isPasswordVisible ? 'text' : 'password'}
+          className='fz17'
+          id='password'
+          placeholder='Type your password'
+          value={password}
+          onChange={onChange}
+          onKeyDown={onKeyDown}
+        />
+        {isPasswordVisible ? (
+          <svg onClick={onPasswordVisibleButton}>
+            <use href={'../img/sprite.svg#icon__eye'}></use>
+          </svg>
+        ) : (
+          <svg onClick={onPasswordVisibleButton}>
+            <use href={'../img/sprite.svg#icon__eye-closed'}></use>
+          </svg>
+        )}
+      </div>
       <label htmlFor='password' className='label modal__label'>
         PASSWORD
       </label>
@@ -81,7 +99,7 @@ const LogIn: FC<Props> = () => {
 
       <div className='modal__options'>
         <p>
-          Don't have an account?{' '}
+          Don&apos;t have an account?{' '}
           <button
             className='btn white fz15 inline-block black h-yellow'
             onClick={onClickChangeModal('sign_up')}
