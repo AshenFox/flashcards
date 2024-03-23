@@ -923,10 +923,15 @@
 
     @media (max-width: $tablet) {
       font-size: 1.8rem;
+      padding-bottom: 10rem;
     }
 
     @media (max-width: $mobile) {
       font-size: 1.7rem;
+    }
+
+    @media (max-width: $mobile-sm) {
+      font-size: 1.6rem;
     }
 
     @media (max-width: $mobile-sm) {

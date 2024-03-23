@@ -14,10 +14,7 @@ const GalleryControl: FC<Props> = ({ direction, _id }) => {
   const { cards } = useAppSelector(({ main }) => main);
 
   const card = cards[_id];
-
-  const {
-    gallery: { position, width },
-  } = card;
+  const { position = 0, width = 0 } = card?.gallery ?? {};
 
   const clickControl = (e: MouseEvent<HTMLDivElement>) => {
     if (active) move_gallery(_id, direction);
