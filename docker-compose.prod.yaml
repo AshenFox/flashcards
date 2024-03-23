@@ -9,5 +9,6 @@ services:
       dockerfile: Dockerfile.prod
     environment:
       - NODE_ENV=production
+      - NODE_OPTIONS=--openssl-legacy-provider
     ports:
       - 4000:4000
