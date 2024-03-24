@@ -5,7 +5,7 @@ import Navigation from './content/Navigation';
 import ListContainer from './content/ListContainer';
 import Search from './content/Search';
 import Push from '../main/Push';
-import ContentWrapper from '../main/ContentWrapper';
+import ContentWrapper from '../main/ContentWrapper/ContentWrapper';
 import { useActions, useAppSelector } from '../../store/hooks';
 
 interface OwnProps {}
@@ -28,7 +28,7 @@ const HomeContainer: FC<Props> = () => {
   const {
     main: { modules, cards, all_modules_number, all_cards_number },
     auth: { user },
-  } = useAppSelector((state) => state);
+  } = useAppSelector(state => state);
 
   const { username } = user || {};
 

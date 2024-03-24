@@ -1,6 +1,6 @@
 import { useRouter } from 'next/router';
 import Link from 'next/link';
-import ContentWrapper from '../../main/ContentWrapper';
+import ContentWrapper from '../../main/ContentWrapper/ContentWrapper';
 import { useAppSelector } from '../../../store/hooks';
 import { FC } from 'react';
 

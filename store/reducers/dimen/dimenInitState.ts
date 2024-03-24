@@ -4,8 +4,6 @@ export interface DimenState {
   scroll_height: number;
   game_controls_height: number;
   game_controls_width: number;
-  scroll_width: number;
-  is_scroll: boolean;
 }
 
 const dimenInitState: DimenState = {
@@ -14,8 +12,6 @@ const dimenInitState: DimenState = {
   scroll_height: 0,
   game_controls_height: 0,
   game_controls_width: 0,
-  scroll_width: 0,
-  is_scroll: false,
 };
 
 export default dimenInitState;

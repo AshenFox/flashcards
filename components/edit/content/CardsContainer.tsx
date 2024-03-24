@@ -2,7 +2,7 @@ import EditCard from './EditCard';
 import ScrollLoading from '../../home/content/ScrollLoading';
 import AddCard from './AddCard';
 import Save from './Save';
-import ContentWrapper from '../../main/ContentWrapper';
+import ContentWrapper from '../../main/ContentWrapper/ContentWrapper';
 import { useAppSelector } from '../../../store/hooks';
 import { FC } from 'react';
 
