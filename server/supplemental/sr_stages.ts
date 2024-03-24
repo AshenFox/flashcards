@@ -1,4 +1,4 @@
-export default [
+const sr_stages = [
   {
     stage: 2,
     nextRep: 900000,
@@ -50,3 +50,5 @@ export default [
     prevStage: 14515200000,
   },
 ];
+
+export default sr_stages;

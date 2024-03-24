@@ -123,7 +123,7 @@ export const check = async (data: ICheckData, type: 'log_in' | 'sign_up') => {
 
   // Username checks
   if (typeof username !== 'undefined') {
-    const errors = [];
+    const errors: string[] = [];
     const length = 5;
 
     if (isEmpty(username)) errors.push('Please enter a username.');
@@ -155,7 +155,7 @@ export const check = async (data: ICheckData, type: 'log_in' | 'sign_up') => {
 
   // Password checks
   if (typeof password !== 'undefined') {
-    const errors = [];
+    const errors: string[] = [];
     const length = 7;
 
     if (isEmpty(password)) errors.push('Please enter a password.');
@@ -190,7 +190,7 @@ export const check = async (data: ICheckData, type: 'log_in' | 'sign_up') => {
 
   // Email checks
   if (typeof email !== 'undefined') {
-    const errors = [];
+    const errors: string[] = [];
 
     if (isEmpty(email)) errors.push('Please enter an email.');
     if (emailFormat(email)) errors.push('Invalid email format.');

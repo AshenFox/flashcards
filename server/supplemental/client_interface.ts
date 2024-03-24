@@ -23,6 +23,22 @@ interface IClientInterface {
   errCheck(client: Client): void;
 }
 
+class Client extends ImageSearch {
+  errorDate: Date | null;
+  error: boolean;
+
+  constructor(id: string, key: string) {
+    super(id, key);
+    this.error = false;
+    this.errorDate = null;
+  }
+
+  createError() {
+    this.error = true;
+    this.errorDate = new Date();
+  }
+}
+
 const client_interface: IClientInterface = {
   clientArr: [],
 
@@ -58,23 +74,7 @@ const client_interface: IClientInterface = {
   },
 };
 
-class Client extends ImageSearch {
-  errorDate: Date | null;
-  error: boolean;
-
-  constructor(id: string, key: string) {
-    super(id, key);
-    this.error = false;
-    this.errorDate = null;
-  }
-
-  createError() {
-    this.error = true;
-    this.errorDate = new Date();
-  }
-}
-
-keyArr.forEach((key) => {
+keyArr.forEach(key => {
   client_interface.clientArr.push(new Client(cse_id, key));
 });
 
