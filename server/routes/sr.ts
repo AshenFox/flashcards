@@ -1,7 +1,7 @@
 import express, { Request, Response } from 'express';
 import userModel from '../models/user_model';
 import notificationModel from '../models//notification_model';
-import cardModelGenerator, { ICard } from '../models/card_model';
+import cardModelGenerator, { ICard, ICardSortObj } from '../models/card_model';
 import middleware from '../supplemental/middleware';
 import sr_stages from '../supplemental/sr_stages';
 import notifications_control from '../supplemental/notifications_control';
@@ -56,7 +56,7 @@ router.get('/cards', auth, async (req: TCardsGetReq, res: TCardsGetRes) => {
       studyRegime: true,
       nextRep: { $lte: new Date() },
     };
-    const sortObj = { creation_date: -1 };
+    const sortObj: ICardSortObj = { creation_date: -1 };
 
     const cards = await cardModel.find(filterObj).sort(sortObj).limit(numCards);
 

@@ -1,4 +1,4 @@
-import mongoose from 'mongoose';
+import mongoose, { SortOrder } from 'mongoose';
 
 const Schema = mongoose.Schema;
 
@@ -18,6 +18,8 @@ export interface ICardBase {
 export interface ICard extends ICardBase {
   _id: string;
 }
+
+export type ICardSortObj = { [key in keyof ICard]?: SortOrder };
 
 const cardSchema = new Schema<ICard>({
   moduleID: String,

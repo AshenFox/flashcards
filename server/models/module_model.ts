@@ -1,4 +1,4 @@
-import mongoose from 'mongoose';
+import mongoose, { SortOrder } from 'mongoose';
 
 const Schema = mongoose.Schema;
 
@@ -12,6 +12,8 @@ export interface IModule {
   creation_date: Date;
   draft: boolean;
 }
+
+export type IModuleSortObj = { [key in keyof IModule]?: SortOrder };
 
 const moduleSchema = new Schema<IModule>({
   title: String,

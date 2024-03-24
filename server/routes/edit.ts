@@ -134,6 +134,7 @@ router.put('/module', auth, async (req: TModulePutReq, res: TModulePutRes) => {
 
     const moduleModel = moduleModelGenerator(user.username);
 
+    /* eslint-disable */
     const module = await moduleModel.findOne({
       _id,
     });

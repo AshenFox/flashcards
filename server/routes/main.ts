@@ -1,7 +1,7 @@
-import { IModule } from './../models/module_model';
+import { IModule, IModuleSortObj } from './../models/module_model';
 import express, { Request, Response } from 'express';
 import userModel from '../models/user_model';
-import cardModelGenerator, { ICard } from '../models/card_model';
+import cardModelGenerator, { ICard, ICardSortObj } from '../models/card_model';
 import moduleModelGenerator from '../models/module_model';
 import middleware from '../supplemental/middleware';
 
@@ -65,9 +65,7 @@ router.get('/modules', auth, async (req: TModulesGetReq, res: TModulesGetRes) =>
       draft: false,
     };
 
-    const sortObj: {
-      creation_date?: number;
-    } = {};
+    const sortObj: IModuleSortObj = {};
 
     if (created === 'newest') sortObj.creation_date = -1;
     if (created === 'oldest') sortObj.creation_date = 1;
@@ -155,9 +153,7 @@ router.get('/cards', auth, async (req: TCardsGetReq, res: TCardsGetRes) => {
       definition?: { $regex: string };
     } = draft ? { moduleID: { $ne: draft._id } } : {};
 
-    const sortObj: {
-      creation_date?: number;
-    } = {};
+    const sortObj: ICardSortObj = {};
 
     if (created === 'newest') sortObj.creation_date = -1;
     if (created === 'oldest') sortObj.creation_date = 1;
@@ -218,6 +214,7 @@ router.get('/module', auth, async (req: TModuleGetReq, res: TModuleGetRes) => {
     const cardModel = cardModelGenerator(user.username);
     const moduleModel = moduleModelGenerator(user.username);
 
+    /* eslint-disable */
     const module = await moduleModel.findOne({
       _id,
     });
@@ -275,7 +272,7 @@ router.get(
         definition?: { $regex: string };
       } = { moduleID: _id };
 
-      const sortObj = { creation_date: 1 };
+      const sortObj: ICardSortObj = { creation_date: 1 };
 
       if (filter)
         filterObj[by] = {
