@@ -1,19 +1,21 @@
 import { FC, useRef } from 'react';
 import { useRouter } from 'next/router';
-import Select from 'react-select';
+import Select, { Options } from 'react-select';
 import { useActions, useAppSelector } from '../../../store/hooks';
 
-const optionsBy = [
+type Option = { value: string; label: string };
+
+const optionsBy: Options<Option> = [
   { value: 'term', label: 'Term' },
   { value: 'defenition', label: 'Definition' },
 ];
 
-const optionsCreated = [
+const optionsCreated: Options<Option> = [
   { value: 'newest', label: 'Newest' },
   { value: 'oldest', label: 'Oldest' },
 ];
 
-const createCustomTheme = (theme) => ({
+const createCustomTheme = theme => ({
   ...theme,
   colors: {
     ...theme.colors,
@@ -23,7 +25,7 @@ const createCustomTheme = (theme) => ({
 });
 
 const customStyles = {
-  dropdownIndicator: (provided) => ({
+  dropdownIndicator: provided => ({
     ...provided,
     paddingLeft: 3,
     paddingRight: 3,
@@ -59,7 +61,7 @@ const Search: FC<Props> = () => {
 
   const timer = useRef<ReturnType<typeof setTimeout>>(null);
 
-  const changeSearchCards = (e) => {
+  const changeSearchCards = e => {
     control_search_cards(e.target.value);
     clearTimeout(timer.current);
     reset_fields_cards();
@@ -68,7 +70,7 @@ const Search: FC<Props> = () => {
     }, 500);
   };
 
-  const controlSearchModules = (e) => {
+  const controlSearchModules = e => {
     control_search_modules(e.target.value);
     clearTimeout(timer.current);
     reset_fields_modules();
@@ -77,7 +79,7 @@ const Search: FC<Props> = () => {
     }, 500);
   };
 
-  const changeSelectBy = (value) => {
+  const changeSelectBy = value => {
     set_select_by(value);
     if (search_cards.value) {
       reset_fields_cards();
@@ -86,7 +88,7 @@ const Search: FC<Props> = () => {
     }
   };
 
-  const changeSelectCreated = (value) => {
+  const changeSelectCreated = value => {
     set_select_created(value);
 
     if (isModulePath) {
@@ -124,7 +126,7 @@ const Search: FC<Props> = () => {
         />
         <div className={isModulePath ? 'module__select-group' : 'home__select-group'}>
           {(isModulePath || isCards) && (
-            <Select
+            <Select<Option>
               className={
                 isModulePath
                   ? 'module__select module__select--1'
@@ -140,7 +142,7 @@ const Search: FC<Props> = () => {
             />
           )}
           {!isModulePath && (
-            <Select
+            <Select<Option>
               className={'home__select home__select--2'}
               theme={createCustomTheme}
               options={optionsCreated}

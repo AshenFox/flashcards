@@ -9,7 +9,7 @@ export const usePlug = (
   const [heightDimen, setHeightDimen] = useState(0);
 
   useEffect(() => {
-    const observer = new IntersectionObserver((entry) => {
+    const observer = new IntersectionObserver(entry => {
       setVisible(entry[0].isIntersecting); // is there some way to optimize that
     });
 
@@ -28,9 +28,3 @@ export const usePlug = (
 
   return [visible, ref, Plug];
 };
-
-/* const options = {
-        root: ,
-        rootMargin: '0px',
-        threshold: 1.0,
-      }; */

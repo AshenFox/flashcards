@@ -2,7 +2,7 @@ import { FC, useRef } from 'react';
 import { useRouter } from 'next/router';
 import ContentEditable from 'react-contenteditable';
 import ModuleSave from './ModuleSave';
-import ContentWrapper from '../../main/ContentWrapper';
+import ContentWrapper from '../../main/ContentWrapper/ContentWrapper';
 import { useActions, useAppSelector } from '../../../store/hooks';
 
 interface OwnProps {}
@@ -21,7 +21,7 @@ const EditModule: FC<Props> = () => {
 
   const { title, draft } = module || {};
 
-  const handleModuleChange = (e) => {
+  const handleModuleChange = e => {
     control_module(e.target.value);
 
     clearTimeout(timer.current);

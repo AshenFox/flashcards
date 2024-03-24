@@ -2,7 +2,7 @@ import Skeleton from 'react-loading-skeleton';
 import Link from 'next/link';
 import Study from './Study';
 import Info from './Info';
-import ContentWrapper from '../../main/ContentWrapper';
+import ContentWrapper from '../../main/ContentWrapper/ContentWrapper';
 import { useAppSelector } from '../../../store/hooks';
 import { FC } from 'react';
 

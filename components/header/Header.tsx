@@ -2,7 +2,7 @@ import { FC, MouseEvent, ReactNode, useEffect, useLayoutEffect, useRef } from 'r
 import { useRouter } from 'next/router';
 import Link from 'next/link';
 import Dropdown from './content/Dropdown';
-import ContentWrapper from '../main/ContentWrapper';
+import ContentWrapper from '../main/ContentWrapper/ContentWrapper';
 import { useActions, useAppDispatch, useAppSelector } from '../../store/hooks';
 
 interface OwnProps {}
@@ -23,7 +23,7 @@ const Header: FC<Props> = () => {
     auth: { user, loading },
     dimen: { header_width },
     header: { dropdown_active },
-  } = useAppSelector((state) => state);
+  } = useAppSelector(state => state);
 
   const router = useRouter();
   const { _id } = router.query;
