@@ -13,7 +13,8 @@
     "build:server": "tsc --p ./server/tsconfig.server.json",
     "prod": "docker-compose -f docker-compose.prod.yaml up -d",
     "prod-rebuild": "docker-compose -f docker-compose.prod.yaml up -d --no-deps --build app",
-    "lint": "next lint"
+    "lint": "next lint",
+    "scp-config": "scp -r ./config/ user@host:~/apps/flashcards"
   },
   "dependencies": {
     "@types/bcryptjs": "^2.4.2",

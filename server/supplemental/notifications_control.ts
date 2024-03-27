@@ -6,13 +6,14 @@ import sr_stages from './sr_stages';
 import webpush from 'web-push';
 
 // Tests
+// unsafely-treat-insecure-origin-as-secure flag allows to send notifications without ssl
 
 /* const newNotif = async () => {
   try {
     let notif = await notificationModel.create({
       time: new Date(Date.now() - 5000),
       number: 5,
-      user_id: '5fb4db2f7167e40004811126',
+      user_id: '66033412798e253851f14ea4',
     });
 
     console.log(notif);
@@ -20,13 +21,13 @@ import webpush from 'web-push';
     console.log(err);
     return false;
   }
-}; */
+};
 
-// newNotif();
+newNotif(); */
 
 // ========================
 
-const send_notifications = async () => {
+export const send_notifications = async () => {
   try {
     const users: {
       [key: string]: IUser;
@@ -89,7 +90,7 @@ const usersNotifTimers: {
   [key: string]: ReturnType<typeof setTimeout>;
 } = {};
 
-const notification_timeout = async (user: IUser) => {
+export const notification_timeout = async (user: IUser) => {
   try {
     if (usersNotifTimers[user._id]) clearTimeout(usersNotifTimers[user._id]);
 
@@ -215,9 +216,4 @@ const create_notifications = async (user: IUser) => {
   } catch (err) {
     console.error(err);
   }
-};
-
-export default {
-  notification_timeout,
-  send_notifications,
 };
