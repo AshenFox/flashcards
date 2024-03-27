@@ -5,10 +5,9 @@ import userModel from '../models/user_model';
 import cardModelGenerator from '../models/card_model';
 import moduleModelGenerator from '../models/module_model';
 import middleware from '../supplemental/middleware';
-import notifications_control from '../supplemental/notifications_control';
+import { notification_timeout } from '../supplemental/notifications_control';
 
 const { auth } = middleware;
-const { notification_timeout } = notifications_control;
 const router = express.Router();
 
 interface IResError {

@@ -4,9 +4,9 @@ import connectDB from './supplemental/db';
 import next from 'next';
 import config from 'config';
 import https, { ServerOptions } from 'https';
+import http from 'http';
 import fs from 'fs';
 import webpush from 'web-push';
-import notifications_control from './supplemental/notifications_control';
 
 // import routes
 import auth from './routes/auth';
@@ -16,13 +16,15 @@ import scrape from './routes/scrape';
 import edit from './routes/edit';
 import sr from './routes/sr';
 import notifications from './routes/notifications';
+import { send_notifications } from './supplemental/notifications_control';
 
 const port = process.env.PORT || 4000;
 const dev = process.env.NODE_ENV !== 'production';
+const isHTTPS = false;
 
 const serverOptions: ServerOptions = {};
 
-if (dev) {
+if (dev && isHTTPS) {
   serverOptions.key = fs.readFileSync('.cert/key.pem', 'utf8');
   serverOptions.cert = fs.readFileSync('.cert/cert.pem', 'utf8');
   serverOptions.passphrase = 'cats';
@@ -66,8 +68,6 @@ expressServer.all('*', (req, res) => {
 
 // Push notifications
 
-const { send_notifications } = notifications_control;
-
 const publicVapidKey = config.get('publicVapidKey') as string;
 const privateVapidKey = config.get('privateVapidKey') as string;
 const webpushSubject = config.get('webpushSubject') as string;
@@ -90,12 +90,16 @@ const start = async () => {
     // Start server
 
     if (dev) {
-      await https.createServer(serverOptions, expressServer).listen(port);
+      if (isHTTPS) {
+        https.createServer(serverOptions, expressServer).listen(port);
+      } else {
+        http.createServer(expressServer).listen(port);
+      }
     } else {
-      await expressServer.listen(port);
+      expressServer.listen(port);
     }
 
-    console.log(`Server is ready on https://localhost:${port}`);
+    console.log(`Server is ready on http${isHTTPS ? 's' : ''}://localhost:${port}`);
   } catch (err) {
     console.error(err);
     process.exit(1);

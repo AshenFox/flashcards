@@ -4,10 +4,9 @@ import notificationModel from '../models//notification_model';
 import cardModelGenerator, { ICard, ICardSortObj } from '../models/card_model';
 import middleware from '../supplemental/middleware';
 import sr_stages from '../supplemental/sr_stages';
-import notifications_control from '../supplemental/notifications_control';
+import { notification_timeout } from '../supplemental/notifications_control';
 
 const { auth } = middleware;
-const { notification_timeout } = notifications_control;
 const router = express.Router();
 
 interface IResError {
