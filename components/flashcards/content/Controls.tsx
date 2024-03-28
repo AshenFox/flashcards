@@ -1,5 +1,5 @@
 import { useRouter } from 'next/router';
-import { FC, useEffect, useLayoutEffect, useRef } from 'react';
+import { FC, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import Progress from './Progress';
 import ShuffleBtn from './ShuffleBtn';
@@ -20,7 +20,7 @@ const Controls: FC<Props> = () => {
   const onSizeChange = (e: UIEvent | Event) =>
     set_game_controls_dimen(controllsEl.current);
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     set_game_controls_dimen(controllsEl.current);
   }, []);
 

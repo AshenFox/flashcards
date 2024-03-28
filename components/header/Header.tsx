@@ -1,4 +1,4 @@
-import { FC, MouseEvent, ReactNode, useEffect, useLayoutEffect, useRef } from 'react';
+import { FC, MouseEvent, ReactNode, useEffect, useRef } from 'react';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
 import Dropdown from './content/Dropdown';
@@ -46,7 +46,7 @@ const Header: FC<Props> = () => {
     };
   }, []);
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     set_header_dimen(headerEl.current);
   }, [user, loading]);
 

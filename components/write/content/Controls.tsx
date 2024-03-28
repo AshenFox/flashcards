@@ -1,4 +1,4 @@
-import { FC, MouseEvent, useEffect, useLayoutEffect, useRef } from 'react';
+import { FC, MouseEvent, useEffect, useRef } from 'react';
 import { useRouter } from 'next/router';
 import Progress from './Progress';
 import Link from 'next/link';
@@ -32,7 +32,7 @@ const Controls: FC<Props> = () => {
     };
   }, []);
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     set_game_controls_dimen(controllsEl.current);
   }, []);
 

@@ -1,4 +1,4 @@
-import { useRef, FC, MouseEvent, useLayoutEffect } from 'react';
+import { useRef, FC, MouseEvent, useEffect } from 'react';
 import ModalContent from './content/ModalContent';
 import { useActions, useAppSelector } from '../../store/hooks';
 
@@ -17,7 +17,7 @@ const Modal: FC<Props> = () => {
   const transitionModal = 125;
   const transitionDialog = 225;
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     let styleModal = modalEl.current.style;
     let styleDialog = dialogEl.current.style;
 
