@@ -1,4 +1,4 @@
-import { MutableRefObject, useEffect, useLayoutEffect, useRef, useState } from 'react';
+import { MutableRefObject, useEffect, useRef, useState } from 'react';
 
 export const usePlug = (
   classStr: string
@@ -20,7 +20,7 @@ export const usePlug = (
     };
   }, []);
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     if (ref.current) setHeightDimen(ref.current.offsetHeight);
   }, [visible, classStr]);
 
