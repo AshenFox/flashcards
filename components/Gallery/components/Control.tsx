@@ -1,14 +1,14 @@
-import { FC, MouseEvent } from 'react';
-import { useActions, useAppSelector } from '../../../store/hooks';
+import { MouseEvent, memo } from 'react';
+import { useActions, useAppSelector } from '@store/hooks';
+import { clsx } from 'clsx';
+import s from '../styles.module.scss';
 
-interface OwnProps {
+type ControlProps = {
   direction: 'left' | 'right';
   _id: string;
-}
+};
 
-type Props = OwnProps;
-
-const GalleryControl: FC<Props> = ({ direction, _id }) => {
+const Control = ({ direction, _id }: ControlProps) => {
   const { move_gallery } = useActions();
 
   const { cards } = useAppSelector(({ main }) => main);
@@ -42,7 +42,7 @@ const GalleryControl: FC<Props> = ({ direction, _id }) => {
 
   return (
     <div
-      className={`edit__gallery-control--${direction}`}
+      className={clsx(s.gallery_control, s[direction])}
       data-control_el='true'
       data-active={active}
       onClick={clickControl}
@@ -60,4 +60,4 @@ const GalleryControl: FC<Props> = ({ direction, _id }) => {
   );
 };
 
-export default GalleryControl;
+export default memo(Control);

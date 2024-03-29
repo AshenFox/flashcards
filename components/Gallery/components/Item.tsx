@@ -1,16 +1,16 @@
-import { ImgurlObj } from '../../../store/reducers/main/mainInitState';
-import { FC, SyntheticEvent } from 'react';
-import { useActions } from '../../../store/hooks';
+import { SyntheticEvent, memo } from 'react';
+import { ImgurlObj } from '@store/reducers/main/mainInitState';
+import { useActions } from '@store/hooks';
+import s from '../styles.module.scss';
+import clsx from 'clsx';
 
-interface OwnProps {
+type ItemProps = {
   _id: string;
   index: string;
   data: ImgurlObj;
-}
+};
 
-type Props = OwnProps;
-
-const GalleryItem: FC<Props> = ({ _id, index, data }) => {
+const Item = ({ _id, index, data }: ItemProps) => {
   const { set_url_ok, set_card_imgurl, edit_card } = useActions();
 
   const { url, ok } = data;
@@ -25,7 +25,7 @@ const GalleryItem: FC<Props> = ({ _id, index, data }) => {
 
   return (
     <figcaption
-      className={`edit__gallery-item ${ok ? '' : 'hidden'}`}
+      className={clsx(s.gallery_item, !ok && 'hidden')}
       onClick={clickGalleryItem}
     >
       <img src={url} alt='Gallery img' onLoad={load} onError={error} />
@@ -33,4 +33,4 @@ const GalleryItem: FC<Props> = ({ _id, index, data }) => {
   );
 };
 
-export default GalleryItem;
+export default memo(Item);

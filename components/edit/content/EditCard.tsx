@@ -1,6 +1,6 @@
 import { FC, useRef } from 'react';
 import ContentEditable, { ContentEditableEvent } from 'react-contenteditable';
-import Gallery from './Gallery';
+import Gallery from '@components/Gallery';
 import Scrape from './Scrape';
 import EditCardSave from './EditCardSave';
 import EditCardClose from './EditCardClose';
