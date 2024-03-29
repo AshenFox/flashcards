@@ -1,0 +1,265 @@
+@import '@styles/vars.scss';
+
+.search {
+  display: block;
+  padding: 2rem;
+  transition: all 0.3s;
+  transform: translateY(-100%);
+  transform-origin: top;
+}
+
+.search_container {
+  border-top: 2px solid $grey-light;
+  overflow: hidden;
+  height: 0;
+  transition: all 0.3s;
+  display: block;
+  visibility: hidden;
+
+  &.active {
+    height: 25.5rem;
+    visibility: inherit;
+
+    & .search {
+      transform: translateY(0);
+    }
+  }
+}
+
+.form {
+  min-width: 40rem;
+  width: 45%;
+
+  @media (max-width: $mobile) {
+    min-width: 100%;
+    width: 100%;
+  }
+}
+
+.label {
+  padding: 0.5rem 0 0.5rem 1rem;
+  display: flex;
+  align-items: center;
+  position: relative;
+  transition: all 0.2s;
+
+  border-bottom: 2px solid $black;
+
+  &:focus-within {
+    &::after {
+      bottom: -4px;
+      height: 4px;
+      background-color: $tertiary;
+    }
+  }
+
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    display: inline-block;
+    background-color: $black;
+    height: 2px;
+    width: 100%;
+    transition: all 0.2s;
+  }
+}
+
+.input {
+  font-family: inherit;
+  font-size: 1.7rem;
+  text-align: left;
+  line-height: 2.6rem;
+  overflow-wrap: break-word;
+
+  &::placeholder {
+    color: $grey-medium;
+  }
+
+  &:not(:placeholder-shown) {
+    & ~ .icon {
+      svg {
+        fill: $secondary;
+      }
+    }
+  }
+}
+
+.icon {
+  cursor: pointer;
+  padding: 0 1rem;
+
+  svg {
+    width: 15px;
+    height: 15px;
+  }
+}
+
+.results {
+  margin-top: 2rem;
+  position: relative;
+}
+
+.gallery_container {
+  display: flex;
+  justify-content: center;
+
+  height: 15rem;
+
+  transition: all 0.2s;
+  transition-delay: 0.2s;
+
+  z-index: 20;
+
+  &.hide {
+    visibility: hidden;
+    opacity: 0;
+    transition-delay: 0;
+  }
+}
+
+.gallery_window {
+  width: 68rem;
+  overflow: hidden;
+
+  &.game {
+    width: 51rem;
+  }
+
+  @media screen and (max-width: 62.5em) {
+    width: 51rem;
+    min-width: 51rem;
+  }
+
+  @media screen and (max-width: 50em) {
+    width: 34rem;
+    min-width: 34rem;
+  }
+
+  @media screen and (max-width: 37.5em) {
+    width: 17rem;
+    min-width: 17rem;
+  }
+}
+
+.gallery {
+  display: flex;
+  width: 0;
+  height: 100%;
+  padding: 0 1rem;
+
+  transition: all 0.3s;
+
+  transform: translateX(0);
+}
+
+.gallery_item {
+  min-width: 15rem;
+  height: 15rem;
+  cursor: pointer;
+  transition: all 0.3s;
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  &:not(:last-child) {
+    margin-right: 2rem;
+  }
+
+  &:hover {
+    border: 5px solid $tertiary;
+  }
+}
+
+.gallery_control {
+  &.left {
+    margin-right: 1rem;
+  }
+
+  &.right {
+    margin-left: 1rem;
+  }
+
+  &.left,
+  &.right {
+    position: relative;
+    align-self: center;
+
+    button {
+      width: 4rem;
+      height: 4rem;
+      background-color: $secondary;
+
+      svg {
+        top: 50%;
+        left: 50%;
+        position: absolute;
+        height: 2rem;
+        width: 2rem;
+        fill: $white;
+        transition: all 0.2s;
+      }
+    }
+
+    &[data-active='false'] {
+      button {
+        cursor: auto;
+        background-color: $grey-medium;
+
+        svg {
+          fill: $grey-light;
+        }
+
+        &:hover {
+          svg {
+            fill: $grey-light;
+          }
+        }
+      }
+    }
+
+    button:hover {
+      svg {
+        fill: $black;
+      }
+    }
+  }
+
+  &.left button svg {
+    transform: translate(-12px, -10px);
+  }
+
+  &.right button svg {
+    transform: translate(-7.5px, -10px);
+  }
+}
+
+.error_container,
+.spinner_container {
+  position: absolute;
+  opacity: 1;
+  height: 100%;
+  width: 100%;
+  transition: all 0.2s;
+  transition-delay: 0.2s;
+  top: 0;
+  left: 0;
+
+  z-index: 10;
+
+  &.hide {
+    visibility: hidden;
+    opacity: 0;
+    transition-delay: 0;
+  }
+}
+
+.error_container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

@@ -1,19 +1,19 @@
-import { useState, useEffect, FC, ChangeEvent, KeyboardEvent, MouseEvent } from 'react';
-import GalleryContainer from './GalleryContainer';
-import GalleryError from './GalleryError';
-import GallerySpinner from './GallerySpinner';
-import { Card } from '../../../store/reducers/main/mainInitState';
-import { useActions } from '../../../store/hooks';
+import { useState, useEffect, ChangeEvent, KeyboardEvent, MouseEvent, memo } from 'react';
+import Container from './components/Container';
+import Error from './components/Error';
+import Spinner from './components/Spinner';
+import { Card } from '@store/reducers/main/mainInitState';
+import { useActions } from '@store/hooks';
+import s from './styles.module.scss';
+import clsx from 'clsx';
 
-interface OwnProps {
+type GalleryProps = {
   data: Card;
   active: boolean;
   game?: boolean;
-}
+};
 
-type Props = OwnProps;
-
-const Gallery: FC<Props> = ({ data, active, game = false }) => {
+const Gallery = ({ data, active, game = false }: GalleryProps) => {
   const { control_gallery_query, search_images, reset_gallery_fields } = useActions();
 
   const { _id, gallery } = data || {};
@@ -57,28 +57,20 @@ const Gallery: FC<Props> = ({ data, active, game = false }) => {
   };
 
   return (
-    <div
-      className={`edit__img-search-container ${
-        active ? 'edit__img-search-container--active' : ''
-      }`}
-    >
-      <div className='edit__img-search'>
-        <div className='edit__searchbar'>
-          <form action='' className='edit__searchbar-form'>
-            <label className='edit__searchbar-input-label'>
+    <div className={clsx(s.search_container, active && s.active)}>
+      <div className={s.search}>
+        <div>
+          <form action='' className={s.form}>
+            <label className={s.label}>
               <input
                 type='text'
-                className='edit__searchbar-input'
+                className={s.input}
                 placeholder='Search images...'
                 onChange={changeImgSearchbar}
                 onKeyDown={keyDownImgSearchbar}
                 value={query}
               />
-              <div
-                className='edit__searchbar-icon'
-                data-searching='false'
-                onClick={clickImgSearchbar}
-              >
+              <div className={s.icon} data-searching='false' onClick={clickImgSearchbar}>
                 <svg>
                   <use href='../img/sprite.svg#icon__arrow_right'></use>
                 </svg>
@@ -86,14 +78,14 @@ const Gallery: FC<Props> = ({ data, active, game = false }) => {
             </label>
           </form>
         </div>
-        <div className='edit__search-results'>
-          <GallerySpinner active={loading} />
-          <GalleryContainer data={data} game={game} />
-          <GalleryError active={error} />
+        <div className={s.results}>
+          <Spinner active={loading} />
+          <Container data={data} game={game} />
+          <Error active={error} />
         </div>
       </div>
     </div>
   );
 };
 
-export default Gallery;
+export default memo(Gallery);
