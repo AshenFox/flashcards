@@ -41,21 +41,19 @@ const Save: FC<Props> = () => {
 
   const active = !!(twoSaved && title);
 
-  let btn = (
-    <LoadingButton
-      active={active || !draft ? true : false}
-      loading={module_loading}
-      onClickHandler={draft ? clickSave : clickLink}
-      classStr='btn bcc-lightblue pad30-70 brr15 white fz20 fw-bold h-grey h-bcc-yellow'
-    >
-      {draft ? 'Save' : 'Return'}
-    </LoadingButton>
-  );
-
   return (
     <div className='edit__save'>
       <div className='container'>
-        <div className='edit__save-module'>{btn}</div>
+        <div className='edit__save-module'>
+          <LoadingButton
+            active={active || !draft ? true : false}
+            loading={module_loading}
+            onClickHandler={draft ? clickSave : clickLink}
+            classStr='btn bcc-lightblue pad30-70 brr15 white fz20 fw-bold h-grey h-bcc-yellow'
+          >
+            {draft ? 'Save' : 'Return'}
+          </LoadingButton>
+        </div>
       </div>
     </div>
   );

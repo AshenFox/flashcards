@@ -5,7 +5,7 @@ import NotFound from './NotFound';
 import StudyRegime from './StudyRegime';
 import ListItem from './ListItem';
 import Card from '../../module/content/Card';
-import EditCard from '../../edit/content/EditCard';
+import EditCard from '@components/EditCard';
 import ScrollLoading from './ScrollLoading';
 import { FC } from 'react';
 import { useAppSelector } from '../../../store/hooks';

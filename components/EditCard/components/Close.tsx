@@ -1,14 +1,13 @@
-import { FC, MouseEvent } from 'react';
-import { useActions } from '../../../store/hooks';
-import { Card } from '../../../store/reducers/main/mainInitState';
+import { MouseEvent } from 'react';
+import { useActions } from '@store/hooks';
+import { Card } from '@store/reducers/main/mainInitState';
+import s from '../styles.module.scss';
 
-interface OwnProps {
+type CloseProps = {
   data: Card;
-}
+};
 
-type Props = OwnProps;
-
-const EditCardClose: FC<Props> = ({ data }) => {
+const Close = ({ data }: CloseProps) => {
   const { set_card_edit, reset_gallery_fields } = useActions();
 
   const { _id } = data || {};
@@ -19,7 +18,7 @@ const EditCardClose: FC<Props> = ({ data }) => {
   };
 
   return (
-    <div className='edit__cards-close' onClick={clickClose}>
+    <div className={s.close} onClick={clickClose}>
       <svg width='17' height='17'>
         <use href='../img/sprite.svg#icon__close'></use>
       </svg>
@@ -27,4 +26,4 @@ const EditCardClose: FC<Props> = ({ data }) => {
   );
 };
 
-export default EditCardClose;
+export default Close;

@@ -2,13 +2,9 @@ import { useRouter } from 'next/router';
 import Link from 'next/link';
 import ContentWrapper from '../../main/ContentWrapper/ContentWrapper';
 import { useAppSelector } from '../../../store/hooks';
-import { FC } from 'react';
+import { memo } from 'react';
 
-interface OwnProps {}
-
-type Props = OwnProps;
-
-const EditContainer: FC<Props> = () => {
+const EditIntro = () => {
   const router = useRouter();
 
   const { _id } = router.query;
@@ -42,4 +38,4 @@ const EditContainer: FC<Props> = () => {
   );
 };
 
-export default EditContainer;
+export default memo(EditIntro);

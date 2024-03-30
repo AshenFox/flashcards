@@ -1,4 +1,4 @@
-import EditCard from './EditCard';
+import EditCard from '@components/EditCard';
 import ScrollLoading from '../../home/content/ScrollLoading';
 import AddCard from './AddCard';
 import Save from './Save';
