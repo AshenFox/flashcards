@@ -1,5 +1,5 @@
 import Card from './Card';
-import EditCard from '../../edit/content/EditCard';
+import EditCard from '@components/EditCard';
 import NotFound from './NotFound';
 import ScrollLoading from '../../home/content/ScrollLoading';
 import { useAppSelector } from '../../../store/hooks';
@@ -16,7 +16,7 @@ const CardsContainer: FC<Props> = () => {
 
   return (
     <div className='module__card-cont'>
-      {formatted_cards.map((card) =>
+      {formatted_cards.map(card =>
         card.edit ? (
           <EditCard key={card._id} data={card} toggle={true} loading={loading} />
         ) : (

@@ -2,7 +2,7 @@ import { useRouter } from 'next/router';
 import Navigation from './Navigation';
 import Card from './Card';
 import EndGame from './EndGame';
-import EditCard from '../../edit/content/EditCard';
+import EditCard from '@components/EditCard';
 import Results from './Results';
 import { CSSProperties, FC } from 'react';
 import { useAppSelector } from '../../../store/hooks';

@@ -2,7 +2,7 @@ import Question from './Question';
 import Answer from './Answer';
 import Round from './Round';
 import Finish from './Finish';
-import EditCard from '../../edit/content/EditCard';
+import EditCard from '@components/EditCard';
 import { useAppSelector } from '../../../store/hooks';
 import { FC, ReactNode } from 'react';
 
@@ -17,7 +17,7 @@ const ContentContainer: FC<Props> = () => {
     game: {
       write: { is_init, remaining, answered, rounds },
     },
-  } = useAppSelector((state) => state);
+  } = useAppSelector(state => state);
 
   const writeStyles = {
     height: `${
@@ -36,7 +36,7 @@ const ContentContainer: FC<Props> = () => {
   const isRoundFinished = !remaining.length && is_init;
   const isGameFinished =
     !remaining.length &&
-    !answered.filter((item) => item.answer === 'incorrect').length &&
+    !answered.filter(item => item.answer === 'incorrect').length &&
     is_init;
 
   let components: ReactNode = null;

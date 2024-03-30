@@ -1,15 +1,14 @@
-import { FC, MouseEvent, useRef } from 'react';
+import { MouseEvent, memo, useRef } from 'react';
 import Img from '../../main/Img';
-import { Card } from '../../../store/reducers/main/mainInitState';
-import { useActions } from '../../../store/hooks';
+import { Card } from '@store/reducers/main/mainInitState';
+import { useActions } from '@store/hooks';
+import s from '../styles.module.scss';
 
-interface OwnProps {
+type AddImgProps = {
   data: Card;
-}
+};
 
-type Props = OwnProps;
-
-const EditCardAddImg: FC<Props> = ({ data }) => {
+const AddImg = ({ data }: AddImgProps) => {
   const { set_gallery_search, set_card_imgurl, edit_card } = useActions();
 
   const { _id, imgurl, gallery } = data || {};
@@ -27,14 +26,14 @@ const EditCardAddImg: FC<Props> = ({ data }) => {
   const deleteEl = useRef<HTMLDivElement>(null);
 
   return (
-    <div className='edit__addimg' onClick={clickImgSearch} data-imgurl={!!imgurl}>
-      <Img containerClass={'edit__img-container'} imgClass={'edit__img'} url={imgurl} />
-      <div className='edit__img-logo'>
+    <div className={s.img} onClick={clickImgSearch} data-imgurl={!!imgurl}>
+      <Img containerClass={s.img_container} imgClass={s.img_element} url={imgurl} />
+      <div className={s.img_logo}>
         <svg>
           <use href='../img/sprite.svg#icon__img'></use>
         </svg>
       </div>
-      <div className='edit__img-delete' onClick={clickImgDelete} ref={deleteEl}>
+      <div className={s.img_delete} onClick={clickImgDelete} ref={deleteEl}>
         <svg>
           <use href='../img/sprite.svg#icon__delete'></use>
         </svg>
@@ -44,4 +43,4 @@ const EditCardAddImg: FC<Props> = ({ data }) => {
   );
 };
 
-export default EditCardAddImg;
+export default memo(AddImg);

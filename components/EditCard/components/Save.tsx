@@ -1,14 +1,14 @@
-import { FC, MouseEvent, TouchEvent, useRef } from 'react';
-import { useActions } from '../../../store/hooks';
-import { Card } from '../../../store/reducers/main/mainInitState';
+import { MouseEvent, TouchEvent, memo, useRef } from 'react';
+import { useActions } from '@store/hooks';
+import { Card } from '@store/reducers/main/mainInitState';
+import s from '../styles.module.scss';
+import clsx from 'clsx';
 
-interface OwnProps {
+type SaveProps = {
   data: Card;
-}
+};
 
-type Props = OwnProps;
-
-const EditCardSave: FC<Props> = ({ data }) => {
+const Save = ({ data }: SaveProps) => {
   const { set_card_save, set_cards_save_positive } = useActions();
 
   const { _id, save } = data;
@@ -32,11 +32,11 @@ const EditCardSave: FC<Props> = ({ data }) => {
   const timer = useRef<ReturnType<typeof setTimeout>>(null);
 
   return (
-    <div className='edit__save-include'>
+    <div className={s.save_include}>
       <input
-        className='edit__checkbox edit__checkbox--save'
+        className={clsx(s.checkbox, s.save)}
         type='checkbox'
-        id={`togglesave${_id}`}
+        id={`toggle-save${_id}`}
         checked={save}
         readOnly
       />
@@ -45,8 +45,8 @@ const EditCardSave: FC<Props> = ({ data }) => {
       </svg>
       <span>Save the card</span>
       <label
-        className='edit__toggle-switch sm'
-        htmlFor={`togglesave${_id}`}
+        className={clsx(s.toggle, s.small)}
+        htmlFor={`toggle-save${_id}`}
         onMouseDown={down}
         onMouseUp={up}
         onTouchStart={down}
@@ -56,4 +56,4 @@ const EditCardSave: FC<Props> = ({ data }) => {
   );
 };
 
-export default EditCardSave;
+export default memo(Save);

@@ -22,6 +22,7 @@
   }
 
   &.sm {
+    // delete sm and leave small mixin
     height: 20px;
     width: 3.5rem;
     border-radius: 1rem;
@@ -34,6 +35,21 @@
       height: 14px;
       width: 14px;
     }
+  }
+}
+
+@mixin toggle-switch-small {
+  height: 20px;
+  width: 3.5rem;
+  border-radius: 1rem;
+  border: 1.5px solid $grey;
+
+  &:after {
+    top: 50%;
+    transform: translateY(-50%);
+    left: 1.5px;
+    height: 14px;
+    width: 14px;
   }
 }
 
