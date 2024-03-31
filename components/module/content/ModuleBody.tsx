@@ -1,6 +1,6 @@
 import Param from './Param';
 import CardsContainer from './CardsContainer';
-import ContentWrapper from '../../main/ContentWrapper/ContentWrapper';
+import ContentWrapper from '@components/ContentWrapper';
 import { FC } from 'react';
 
 interface OwnProps {}

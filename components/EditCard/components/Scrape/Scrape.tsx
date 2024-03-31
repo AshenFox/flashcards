@@ -1,4 +1,4 @@
-import { MouseEvent, memo } from 'react';
+import { MouseEvent, memo, useCallback } from 'react';
 import { useActions } from '@store/hooks';
 import { Card } from '@store/reducers/main/mainInitState';
 import s from './styles.module.scss';
@@ -14,10 +14,12 @@ const Scrape = ({ data }: ScrapeProps) => {
 
   const { loading } = scrape || {};
 
-  const clickScrapeButton =
+  const clickScrapeButton = useCallback(
     (value: 'cod' | 'urban') => (e: MouseEvent<HTMLDivElement>) => {
       scrape_dictionary(_id, value);
-    };
+    },
+    [_id, scrape_dictionary]
+  );
 
   return (
     <div className={s.scrape} data-loading={loading}>

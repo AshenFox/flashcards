@@ -1,4 +1,4 @@
-import { MouseEvent, memo } from 'react';
+import { MouseEvent, memo, useCallback } from 'react';
 import { useActions } from '@store/hooks';
 import { Card } from '@store/reducers/main/mainInitState';
 import s from '../styles.module.scss';
@@ -12,10 +12,13 @@ const Close = ({ data }: CloseProps) => {
 
   const { _id } = data || {};
 
-  const clickClose = (e: MouseEvent<HTMLDivElement>) => {
-    set_card_edit(_id, false);
-    reset_gallery_fields(_id);
-  };
+  const clickClose = useCallback(
+    (e: MouseEvent<HTMLDivElement>) => {
+      set_card_edit(_id, false);
+      reset_gallery_fields(_id);
+    },
+    [_id, reset_gallery_fields, set_card_edit]
+  );
 
   return (
     <div className={s.close} onClick={clickClose}>

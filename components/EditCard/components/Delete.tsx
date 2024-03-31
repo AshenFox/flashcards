@@ -1,4 +1,4 @@
-import { MouseEvent, memo } from 'react';
+import { MouseEvent, memo, useCallback } from 'react';
 import { useActions } from '@store/hooks';
 import { Card } from '@store/reducers/main/mainInitState';
 import s from '../styles.module.scss';
@@ -14,7 +14,10 @@ const Delete = ({ data, active = false }: DeleteProps) => {
 
   const { _id } = data || {};
 
-  const clickCardDelete = (e: MouseEvent<HTMLDivElement>) => active && delete_card(_id);
+  const clickCardDelete = useCallback(
+    (e: MouseEvent<HTMLDivElement>) => active && delete_card(_id),
+    [_id, active, delete_card]
+  );
 
   return (
     <div className={clsx(s.delete, !active && s.inactive)} onClick={clickCardDelete}>

@@ -1,4 +1,12 @@
-import { useState, useEffect, ChangeEvent, KeyboardEvent, MouseEvent, memo } from 'react';
+import {
+  useState,
+  useEffect,
+  ChangeEvent,
+  KeyboardEvent,
+  MouseEvent,
+  memo,
+  useCallback,
+} from 'react';
 import Container from './components/Container';
 import Error from './components/Error';
 import Spinner from './components/Spinner';
@@ -22,39 +30,52 @@ const Gallery = ({ data, active, game = false }: GalleryProps) => {
   const [uPressed, setUPressed] = useState(false);
   const [altPressed, setAltPressed] = useState(false);
 
-  const addUrlFlag = () => control_gallery_query(_id, '@url - ' + query);
+  const addUrlFlag = useCallback(
+    () => control_gallery_query(_id, '@url - ' + query),
+    [_id, control_gallery_query, query]
+  );
 
   useEffect(() => {
-    if (uPressed && altPressed) addUrlFlag();
-  }, [uPressed, altPressed]);
-
-  const changeImgSearchbar = (e: ChangeEvent<HTMLInputElement>) =>
-    control_gallery_query(_id, e.target.value);
-
-  const keyDownImgSearchbar = (e: KeyboardEvent<HTMLInputElement>) => {
-    const key = e.key;
-
-    if (key === 'u') {
-      setUPressed(true);
-      setTimeout(() => setUPressed(false), 250);
+    if (uPressed && altPressed) {
+      addUrlFlag();
     }
+  }, [uPressed, altPressed, addUrlFlag]);
 
-    if (key === 'Alt') {
-      setAltPressed(true);
-      setTimeout(() => setAltPressed(false), 250);
-    }
+  const changeImgSearchbar = useCallback(
+    (e: ChangeEvent<HTMLInputElement>) => control_gallery_query(_id, e.target.value),
+    [_id, control_gallery_query]
+  );
 
-    if (key === 'Enter') {
-      e.preventDefault();
+  const keyDownImgSearchbar = useCallback(
+    (e: KeyboardEvent<HTMLInputElement>) => {
+      const key = e.key;
+
+      if (key === 'u') {
+        setUPressed(true);
+        setTimeout(() => setUPressed(false), 250);
+      }
+
+      if (key === 'Alt') {
+        setAltPressed(true);
+        setTimeout(() => setAltPressed(false), 250);
+      }
+
+      if (key === 'Enter') {
+        e.preventDefault();
+        reset_gallery_fields(_id);
+        search_images(_id);
+      }
+    },
+    [_id, reset_gallery_fields, search_images]
+  );
+
+  const clickImgSearchbar = useCallback(
+    (e: MouseEvent<HTMLDivElement>) => {
       reset_gallery_fields(_id);
       search_images(_id);
-    }
-  };
-
-  const clickImgSearchbar = (e: MouseEvent<HTMLDivElement>) => {
-    reset_gallery_fields(_id);
-    search_images(_id);
-  };
+    },
+    [_id, reset_gallery_fields, search_images]
+  );
 
   return (
     <div className={clsx(s.search_container, active && s.active)}>

@@ -1,17 +1,15 @@
-import { FC, ReactNode } from 'react';
+import { ReactNode, memo } from 'react';
 import s from './styles.module.scss';
 
-interface OwnProps {
+type ContentWrapperProps = {
   children: ReactNode;
   tagType?: keyof JSX.IntrinsicElements;
-}
+};
 
-type Props = OwnProps;
-
-const ContentWrapper: FC<Props> = ({ children, tagType = 'main' }) => {
+const ContentWrapper = ({ children, tagType = 'main' }: ContentWrapperProps) => {
   const WrapperTag = tagType;
 
   return <WrapperTag className={s.wrapper}>{children}</WrapperTag>;
 };
 
-export default ContentWrapper;
+export default memo(ContentWrapper);

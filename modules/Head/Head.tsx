@@ -1,11 +1,7 @@
-import { FC } from 'react';
 import NextHead from 'next/head';
+import { memo } from 'react';
 
-interface OwnProps {}
-
-type Props = OwnProps;
-
-const Head: FC<Props> = () => {
+const Head = () => {
   return (
     <NextHead>
       <meta name='viewport' content='width=device-width initial-scale=1' />
@@ -14,4 +10,4 @@ const Head: FC<Props> = () => {
   );
 };
 
-export default Head;
+export default memo(Head);

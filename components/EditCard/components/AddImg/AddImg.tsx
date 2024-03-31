@@ -1,4 +1,4 @@
-import { MouseEvent, memo, useRef } from 'react';
+import { MouseEvent, memo, useCallback, useRef } from 'react';
 import Img from '@ui/Img';
 import { Card } from '@store/reducers/main/mainInitState';
 import { useActions } from '@store/hooks';
@@ -13,15 +13,21 @@ const AddImg = ({ data }: AddImgProps) => {
 
   const { _id, imgurl, gallery } = data || {};
 
-  const clickImgSearch = (e: MouseEvent<HTMLDivElement>) => {
-    if (imgurl && e.target === deleteEl.current) return;
-    set_gallery_search(_id, !gallery.search);
-  };
+  const clickImgSearch = useCallback(
+    (e: MouseEvent<HTMLDivElement>) => {
+      if (imgurl && e.target === deleteEl.current) return;
+      set_gallery_search(_id, !gallery.search);
+    },
+    [_id, gallery.search, imgurl, set_gallery_search]
+  );
 
-  const clickImgDelete = (e: MouseEvent<HTMLDivElement>) => {
-    set_card_imgurl(_id, '');
-    edit_card(_id);
-  };
+  const clickImgDelete = useCallback(
+    (e: MouseEvent<HTMLDivElement>) => {
+      set_card_imgurl(_id, '');
+      edit_card(_id);
+    },
+    [_id, edit_card, set_card_imgurl]
+  );
 
   const deleteEl = useRef<HTMLDivElement>(null);
 

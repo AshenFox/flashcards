@@ -1,8 +1,8 @@
 import '../styles/main.scss';
 import { Provider } from 'react-redux';
-import Head from '../components/main/Head';
+import Head from '@modules/Head';
+import AuthWrapper from '@modules/AuthWrapper';
 import store from '../store/store';
-import AuthWrapper from '../components/main/AuthWrapper';
 import PasteControl from '../components/main/PasteControl';
 import Voice from '../components/main/Voice';
 import RouterConfiguration from '../components/main/RouterConfiguration';

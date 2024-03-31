@@ -5,7 +5,7 @@ import Navigation from './content/Navigation';
 import ListContainer from './content/ListContainer';
 import Search from './content/Search';
 import Push from '../main/Push';
-import ContentWrapper from '../main/ContentWrapper/ContentWrapper';
+import ContentWrapper from '@components/ContentWrapper';
 import { useActions, useAppSelector } from '../../store/hooks';
 
 interface OwnProps {}
