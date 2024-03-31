@@ -1,4 +1,4 @@
-import { MouseEvent } from 'react';
+import { MouseEvent, memo } from 'react';
 import { useActions } from '@store/hooks';
 import { Card } from '@store/reducers/main/mainInitState';
 import s from '../styles.module.scss';
@@ -26,4 +26,4 @@ const Close = ({ data }: CloseProps) => {
   );
 };
 
-export default Close;
+export default memo(Close);

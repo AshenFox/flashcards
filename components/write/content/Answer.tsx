@@ -2,7 +2,7 @@ import { useRouter } from 'next/router';
 import { ChangeEvent, FC, MouseEvent, useEffect, useRef } from 'react';
 import ContentEditable from 'react-contenteditable';
 import Speaker from '../../main/Speaker';
-import Img from '../../main/Img';
+import Img from '@ui/Img';
 import SRIndicator from '../../main/SRIngicator';
 import { Card } from '../../../store/reducers/main/mainInitState';
 import { useActions, useAppSelector } from '../../../store/hooks';

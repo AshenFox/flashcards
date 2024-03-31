@@ -1,4 +1,4 @@
-import { MouseEvent } from 'react';
+import { MouseEvent, memo } from 'react';
 import { useActions } from '@store/hooks';
 import { Card } from '@store/reducers/main/mainInitState';
 import s from '../styles.module.scss';
@@ -25,4 +25,4 @@ const Delete = ({ data, active = false }: DeleteProps) => {
   );
 };
 
-export default Delete;
+export default memo(Delete);

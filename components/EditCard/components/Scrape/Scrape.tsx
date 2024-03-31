@@ -1,7 +1,7 @@
-import { MouseEvent } from 'react';
+import { MouseEvent, memo } from 'react';
 import { useActions } from '@store/hooks';
 import { Card } from '@store/reducers/main/mainInitState';
-import s from '../styles.module.scss';
+import s from './styles.module.scss';
 import clsx from 'clsx';
 
 type ScrapeProps = {
@@ -20,20 +20,17 @@ const Scrape = ({ data }: ScrapeProps) => {
     };
 
   return (
-    <div className={s.scrape_panel} data-loading={loading}>
-      <div className={clsx(s.scrape_button, s.cod)} onClick={clickScrapeButton('cod')}>
-        <div className={s.scrape_background}></div>
+    <div className={s.scrape} data-loading={loading}>
+      <div className={clsx(s.button, s.cod)} onClick={clickScrapeButton('cod')}>
+        <div className={s.background}></div>
         <span>Search in Cambridge Online Dictionary</span>
       </div>
-      <div
-        className={clsx(s.scrape_button, s.urban)}
-        onClick={clickScrapeButton('urban')}
-      >
-        <div className={s.scrape_background}></div>
+      <div className={clsx(s.button, s.urban)} onClick={clickScrapeButton('urban')}>
+        <div className={s.background}></div>
         <span>Search in Urban Dictionary</span>
       </div>
     </div>
   );
 };
 
-export default Scrape;
+export default memo(Scrape);

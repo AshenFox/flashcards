@@ -1,6 +1,6 @@
 import { useRouter } from 'next/router';
 import ContentEditable from 'react-contenteditable';
-import Img from '../../main/Img';
+import Img from '@ui/Img';
 import DateStr from '../../main/DateSrt';
 import { WriteCard } from '../../../store/reducers/game/gameInitState';
 import { FC } from 'react';

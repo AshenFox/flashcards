@@ -1,0 +1,21 @@
+@import '@styles/vars.scss';
+
+.img {
+  object-fit: contain;
+}
+
+.container {
+  &.not_loaded {
+    display: none;
+  }
+}
+
+.error {
+  padding: 1.25rem;
+
+  svg {
+    fill: $black;
+    height: 2.5rem;
+    width: 2.5rem;
+  }
+}
