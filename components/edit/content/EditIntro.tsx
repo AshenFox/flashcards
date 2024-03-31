@@ -1,6 +1,6 @@
 import { useRouter } from 'next/router';
 import Link from 'next/link';
-import ContentWrapper from '../../main/ContentWrapper/ContentWrapper';
+import ContentWrapper from '@components/ContentWrapper';
 import { useAppSelector } from '../../../store/hooks';
 import { memo } from 'react';
 

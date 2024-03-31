@@ -1,13 +1,11 @@
-import { FC, ReactNode, useEffect } from 'react';
+import { ReactNode, memo, useEffect } from 'react';
 import { useActions } from '../../store/hooks';
 
-interface OwnProps {
+type AuthWrapperProps = {
   children: ReactNode;
-}
+};
 
-type Props = OwnProps;
-
-const AuthWrapper: FC<Props> = ({ children }) => {
+const AuthWrapper = ({ children }: AuthWrapperProps) => {
   const { authenticate, set_is_server } = useActions();
 
   useEffect(() => {
@@ -18,4 +16,4 @@ const AuthWrapper: FC<Props> = ({ children }) => {
   return <>{children}</>;
 };
 
-export default AuthWrapper;
+export default memo(AuthWrapper);

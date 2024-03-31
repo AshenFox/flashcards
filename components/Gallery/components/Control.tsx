@@ -1,4 +1,4 @@
-import { MouseEvent, memo } from 'react';
+import { MouseEvent, memo, useCallback } from 'react';
 import { useActions, useAppSelector } from '@store/hooks';
 import { clsx } from 'clsx';
 import s from '../styles.module.scss';
@@ -11,16 +11,19 @@ type ControlProps = {
 const Control = ({ direction, _id }: ControlProps) => {
   const { move_gallery } = useActions();
 
-  const { cards } = useAppSelector(({ main }) => main);
+  const cards = useAppSelector(s => s.main.cards);
 
   const card = cards[_id];
   const { position = 0, width = 0 } = card?.gallery ?? {};
 
-  const clickControl = (e: MouseEvent<HTMLDivElement>) => {
-    if (active) move_gallery(_id, direction);
-  };
-
   let active = true;
+
+  const clickControl = useCallback(
+    (e: MouseEvent<HTMLDivElement>) => {
+      if (active) move_gallery(_id, direction);
+    },
+    [_id, active, direction, move_gallery]
+  );
 
   if (direction === 'left') {
     if (Math.abs(position) <= 0) active = false;

@@ -1,14 +1,11 @@
-import { FC } from 'react';
+import { memo } from 'react';
 import { useEffect } from 'react';
 import axios from '../../server/supplemental/axios';
 import { useAppSelector } from '../../store/hooks';
+import { publicVapidKey } from '@config/default.json';
 
-interface OwnProps {}
-
-type Props = OwnProps;
-
-const Push: FC<Props> = () => {
-  const { user } = useAppSelector(({ auth }) => auth);
+const Push = () => {
+  const user = useAppSelector(s => s.auth.user);
 
   useEffect(() => {
     let device: 'mobile' | 'tablet' | 'pc';
@@ -30,14 +27,11 @@ const Push: FC<Props> = () => {
   return <></>;
 };
 
-export default Push;
+export default memo(Push);
 
 // ==========
 
 let subscriptionSent: boolean = false;
-
-const publicVapidKey: string =
-  '***REMOVED***'; // ???
 
 const urlBase64ToUint8Array = (base64String: string) => {
   const padding = '='.repeat((4 - (base64String.length % 4)) % 4);
@@ -55,8 +49,6 @@ const urlBase64ToUint8Array = (base64String: string) => {
 const preparePush = async (device: 'mobile' | 'tablet' | 'pc') => {
   if ('serviceWorker' in navigator) {
     if (subscriptionSent) return;
-
-    // console.log('preparing push...');
 
     try {
       const register = await navigator.serviceWorker.register('/scripts/Worker.js');

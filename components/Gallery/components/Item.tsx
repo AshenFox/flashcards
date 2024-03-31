@@ -1,4 +1,4 @@
-import { SyntheticEvent, memo } from 'react';
+import { SyntheticEvent, memo, useCallback } from 'react';
 import { ImgurlObj } from '@store/reducers/main/mainInitState';
 import { useActions } from '@store/hooks';
 import s from '../styles.module.scss';
@@ -15,8 +15,14 @@ const Item = ({ _id, index, data }: ItemProps) => {
 
   const { url, ok } = data;
 
-  const error = (e: SyntheticEvent<HTMLImageElement>) => set_url_ok(_id, index, false);
-  const load = (e: SyntheticEvent<HTMLImageElement>) => set_url_ok(_id, index, true);
+  const error = useCallback(
+    (e: SyntheticEvent<HTMLImageElement>) => set_url_ok(_id, index, false),
+    [_id, index, set_url_ok]
+  );
+  const load = useCallback(
+    (e: SyntheticEvent<HTMLImageElement>) => set_url_ok(_id, index, true),
+    [_id, index, set_url_ok]
+  );
 
   const clickGalleryItem = () => {
     set_card_imgurl(_id, url);

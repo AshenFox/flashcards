@@ -2,8 +2,8 @@ import { FC, MouseEvent, ReactNode, useEffect, useRef } from 'react';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
 import Dropdown from './content/Dropdown';
-import ContentWrapper from '../main/ContentWrapper/ContentWrapper';
-import { useActions, useAppDispatch, useAppSelector } from '../../store/hooks';
+import ContentWrapper from '@components/ContentWrapper';
+import { useActions, useAppSelector } from '../../store/hooks';
 
 interface OwnProps {}
 

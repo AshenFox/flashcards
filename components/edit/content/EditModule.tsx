@@ -2,7 +2,7 @@ import { FC, useRef } from 'react';
 import { useRouter } from 'next/router';
 import ContentEditable from 'react-contenteditable';
 import ModuleSave from './ModuleSave';
-import ContentWrapper from '../../main/ContentWrapper/ContentWrapper';
+import ContentWrapper from '@components/ContentWrapper';
 import { useActions, useAppSelector } from '../../../store/hooks';
 
 interface OwnProps {}

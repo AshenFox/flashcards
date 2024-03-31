@@ -1,4 +1,4 @@
-import { memo, useRef } from 'react';
+import { memo, useCallback, useRef } from 'react';
 import ContentEditable, { ContentEditableEvent } from 'react-contenteditable';
 import Gallery from '@components/Gallery';
 import Scrape from './components/Scrape';
@@ -37,14 +37,17 @@ const EditCard = ({
 
   const { search } = gallery || {};
 
-  const handleCardChange = (type: 'term' | 'defenition') => (e: ContentEditableEvent) => {
-    control_card(_id, type, e.target.value);
-    clearTimeout(timer.current);
-    timer.current = setTimeout(async () => {
-      edit_card(_id);
-      timer.current = null;
-    }, 500);
-  };
+  const handleCardChange = useCallback(
+    (type: 'term' | 'defenition') => (e: ContentEditableEvent) => {
+      control_card(_id, type, e.target.value);
+      clearTimeout(timer.current);
+      timer.current = setTimeout(async () => {
+        edit_card(_id);
+        timer.current = null;
+      }, 500);
+    },
+    [_id, control_card, edit_card]
+  );
 
   const timer = useRef<ReturnType<typeof setTimeout>>(null);
 
