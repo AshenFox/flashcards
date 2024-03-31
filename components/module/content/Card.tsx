@@ -6,7 +6,7 @@ import CardEditControl from './CardEditControl';
 import CardQuestion from './CardQuestion';
 import CardSRDropControl from './CardSRDropControl';
 import CardSRControl from './CardSRControl';
-import Img from '../../main/Img';
+import Img from '@ui/Img';
 import DateStr from '../../main/DateSrt';
 import { FC } from 'react';
 import { Card as CardType } from '../../../store/reducers/main/mainInitState';
@@ -58,7 +58,7 @@ const Card: FC<Props> = ({ data, filter = null, filter_type = null }) => {
                   <svg>
                     <use href='../img/sprite.svg#icon__external-link'></use>
                   </svg>
-                  <span>To the card's module</span>
+                  <span>To the card&apos;s module</span>
                 </div>
               </Link>
             )}

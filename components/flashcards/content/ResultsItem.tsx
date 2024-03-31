@@ -1,5 +1,5 @@
 import ContentEditable from 'react-contenteditable';
-import Img from '../../main/Img';
+import Img from '@ui/Img';
 import DateStr from '../../main/DateSrt';
 import { useAppSelector } from '../../../store/hooks';
 import { FC } from 'react';

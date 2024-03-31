@@ -1,8 +1,8 @@
 import { MouseEvent, memo, useRef } from 'react';
-import Img from '../../main/Img';
+import Img from '@ui/Img';
 import { Card } from '@store/reducers/main/mainInitState';
 import { useActions } from '@store/hooks';
-import s from '../styles.module.scss';
+import s from './styles.module.scss';
 
 type AddImgProps = {
   data: Card;
@@ -26,14 +26,14 @@ const AddImg = ({ data }: AddImgProps) => {
   const deleteEl = useRef<HTMLDivElement>(null);
 
   return (
-    <div className={s.img} onClick={clickImgSearch} data-imgurl={!!imgurl}>
-      <Img containerClass={s.img_container} imgClass={s.img_element} url={imgurl} />
-      <div className={s.img_logo}>
+    <div className={s.add_img} onClick={clickImgSearch} data-imgurl={!!imgurl}>
+      <Img containerClass={s.container} imgClass={s.img} url={imgurl} />
+      <div className={s.logo}>
         <svg>
           <use href='../img/sprite.svg#icon__img'></use>
         </svg>
       </div>
-      <div className={s.img_delete} onClick={clickImgDelete} ref={deleteEl}>
+      <div className={s.delete} onClick={clickImgDelete} ref={deleteEl}>
         <svg>
           <use href='../img/sprite.svg#icon__delete'></use>
         </svg>

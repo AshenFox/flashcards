@@ -1,0 +1,59 @@
+@import '@styles/vars.scss';
+@import '@styles/mixins.scss';
+
+.save {
+  @include tooltip-container;
+
+  & span {
+    @include tooltip;
+  }
+
+  position: relative;
+  padding-right: 1.5rem;
+  border-right: 2px solid $grey-light;
+
+  & span {
+    top: -3rem;
+    right: 1.5rem;
+    width: max-content;
+  }
+}
+
+.checkbox {
+  display: none;
+}
+
+.checkbox {
+  &:checked {
+    & ~ .toggle {
+      &:after {
+        left: 16.5px;
+      }
+    }
+  }
+
+  &.save {
+    &:checked {
+      & ~ span {
+        color: $green;
+        border-color: $green;
+      }
+
+      & ~ .toggle {
+        border-color: $green;
+        &:after {
+          background-color: $green;
+        }
+      }
+
+      & ~ svg {
+        fill: $green;
+      }
+    }
+  }
+}
+
+.toggle {
+  @include toggle-switch;
+  @include toggle-switch-small;
+}
