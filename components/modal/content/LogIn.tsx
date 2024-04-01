@@ -1,6 +1,6 @@
 import { FC, MouseEvent, KeyboardEvent, ChangeEvent, useState } from 'react';
 import Error from './Error';
-import LoadingButton from '../../main/LoadingButton';
+import LoadingBtn from '@ui/LoadingBtn';
 import { useActions, useAppSelector } from '../../../store/hooks';
 
 interface OwnProps {}
@@ -88,7 +88,7 @@ const LogIn: FC<Props> = () => {
         PASSWORD
       </label>
 
-      <LoadingButton
+      <LoadingBtn
         active={true}
         loading={loading}
         onClickHandler={onCLickLoadingButton('log_in')}
@@ -97,7 +97,7 @@ const LogIn: FC<Props> = () => {
         }
       >
         Log in
-      </LoadingButton>
+      </LoadingBtn>
 
       <div className='modal__options'>
         <p>

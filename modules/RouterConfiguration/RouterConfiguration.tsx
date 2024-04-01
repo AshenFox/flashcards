@@ -1,13 +1,9 @@
-import { FC } from 'react';
+import { memo } from 'react';
 import { useEffect, useRef } from 'react';
 import Router from 'next/router';
 import { useActions } from '../../store/hooks';
 
-interface OwnProps {}
-
-type Props = OwnProps;
-
-const RouterConfiguration: FC<Props> = () => {
+const RouterConfiguration = () => {
   const { set_main_loading } = useActions();
 
   const baseRef = useRef<string>(null);
@@ -25,4 +21,4 @@ const RouterConfiguration: FC<Props> = () => {
   return <></>;
 };
 
-export default RouterConfiguration;
+export default memo(RouterConfiguration);

@@ -1,19 +1,18 @@
 import Spinner from '../../components/main/Spinner';
 import HomeContainer from '../../components/home/HomeContainer';
 import ScrollTop from '../../components/main/ScrollTop';
+import Push from '@modules/Push';
+import { memo } from 'react';
 
-interface OwnProps {}
-
-type Props = OwnProps;
-
-const Home: React.FC<Props> = () => {
+const Home = () => {
   return (
     <>
       <HomeContainer />
       <Spinner />
       <ScrollTop />
+      <Push />
     </>
   );
 };
 
-export default Home;
+export default memo(Home);

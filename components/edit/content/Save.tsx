@@ -1,7 +1,8 @@
 import { useRouter } from 'next/router';
 import { FC, MouseEvent } from 'react';
 import { useActions, useAppSelector } from '../../../store/hooks';
-import LoadingButton from '../../main/LoadingButton';
+import LoadingBtn from '@ui/LoadingBtn';
+import Container from '@components/Container';
 
 interface OwnProps {}
 
@@ -43,18 +44,18 @@ const Save: FC<Props> = () => {
 
   return (
     <div className='edit__save'>
-      <div className='container'>
+      <Container>
         <div className='edit__save-module'>
-          <LoadingButton
+          <LoadingBtn
             active={active || !draft ? true : false}
             loading={module_loading}
             onClickHandler={draft ? clickSave : clickLink}
             classStr='btn bcc-lightblue pad30-70 brr15 white fz20 fw-bold h-grey h-bcc-yellow'
           >
             {draft ? 'Save' : 'Return'}
-          </LoadingButton>
+          </LoadingBtn>
         </div>
-      </div>
+      </Container>
     </div>
   );
 };

@@ -1,6 +1,6 @@
 import { ChangeEvent, FC, MouseEvent, useRef } from 'react';
 import Error from './Error';
-import LoadingButton from '../../main/LoadingButton';
+import LoadingBtn from '@ui/LoadingBtn';
 import { useActions, useAppSelector } from '../../../store/hooks';
 
 interface OwnProps {}
@@ -100,7 +100,7 @@ const SignUp: FC<Props> = () => {
         onChange={onChange}
       />
 
-      <LoadingButton
+      <LoadingBtn
         active={ok}
         loading={loading}
         onClickHandler={onCLickLoadingButton('sign_up')}
@@ -109,7 +109,7 @@ const SignUp: FC<Props> = () => {
         }
       >
         Sign up
-      </LoadingButton>
+      </LoadingBtn>
 
       <div className='modal__options'>
         <p>

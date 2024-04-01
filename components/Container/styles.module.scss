@@ -1,0 +1,20 @@
+@import '@styles/vars.scss';
+
+.container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 3rem 0 1.5rem;
+
+  &.noPadding {
+    padding: 0;
+  }
+
+  @media (hover: none) {
+    padding: 0 1.5rem;
+
+    &.noPadding {
+      padding: 0;
+    }
+  }
+}

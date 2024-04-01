@@ -4,6 +4,7 @@ import ContentEditable from 'react-contenteditable';
 import ModuleSave from './ModuleSave';
 import ContentWrapper from '@components/ContentWrapper';
 import { useActions, useAppSelector } from '../../../store/hooks';
+import Container from '@components/Container';
 
 interface OwnProps {}
 
@@ -60,7 +61,7 @@ const EditModule: FC<Props> = () => {
   return (
     <div className='edit__module'>
       <ContentWrapper tagType='section'>
-        <div className='container'>
+        <Container>
           <div className='edit__module-content'>
             <div className='edit__module-title'>
               <ContentEditable
@@ -79,7 +80,7 @@ const EditModule: FC<Props> = () => {
               <ModuleSave />
             </div>
           )}
-        </div>
+        </Container>
       </ContentWrapper>
     </div>
   );

@@ -5,6 +5,7 @@ import Info from './Info';
 import ContentWrapper from '@components/ContentWrapper';
 import { useAppSelector } from '../../../store/hooks';
 import { FC } from 'react';
+import Container from '@components/Container';
 
 interface OwnProps {}
 
@@ -18,7 +19,7 @@ const ModuleContainer: FC<Props> = () => {
   return (
     <div className='module__header'>
       <ContentWrapper tagType='section'>
-        <div className='container'>
+        <Container>
           <div className='module__header-top'>
             <div className='module__title'>
               <h1 className={`${title ? '' : 'blue'}`}>
@@ -35,7 +36,7 @@ const ModuleContainer: FC<Props> = () => {
           </div>
           <Study />
           <Info />
-        </div>
+        </Container>
       </ContentWrapper>
     </div>
   );

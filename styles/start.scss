@@ -1,10 +1,6 @@
 .start {
   background-color: $white;
 
-  & .container {
-    padding: 0;
-  }
-
   &__content {
     display: flex;
     justify-content: flex-end;
