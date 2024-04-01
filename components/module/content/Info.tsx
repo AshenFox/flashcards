@@ -3,7 +3,7 @@ import Skeleton from 'react-loading-skeleton';
 import ModuleQuestion from './ModuleQuestion';
 import ModuleSRDropControl from './ModuleSRDropControl';
 import ModuleSRControl from './ModuleSRControl';
-import DateStr from '../../main/DateSrt';
+import DateStr from '@ui/DateStr';
 import { FC, MouseEvent } from 'react';
 import { useActions, useAppSelector } from '../../../store/hooks';
 

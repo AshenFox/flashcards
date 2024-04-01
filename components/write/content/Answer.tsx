@@ -3,7 +3,7 @@ import { ChangeEvent, FC, MouseEvent, useEffect, useRef } from 'react';
 import ContentEditable from 'react-contenteditable';
 import Speaker from '../../main/Speaker';
 import Img from '@ui/Img';
-import SRIndicator from '../../main/SRIngicator';
+import SRIndicator from '@components/SRIndicator';
 import { Card } from '../../../store/reducers/main/mainInitState';
 import { useActions, useAppSelector } from '../../../store/hooks';
 
@@ -112,12 +112,7 @@ const Answer: FC<Props> = ({ data }) => {
 
   return (
     <div className='game__answer' tabIndex={0} ref={gameAnswer}>
-      {isSR && (
-        <SRIndicator
-          data={data}
-          classStr={'sr-indicator--write sr-indicator--write--2'}
-        />
-      )}
+      {isSR && <SRIndicator data={data} classStr={'write write_answer'} />}
       <div
         className={`game__edit game__edit--write${isSR ? '-sr' : ''}`}
         onClick={clickEdit}

@@ -8,7 +8,7 @@ import Delete from './components/Delete';
 import AddImg from './components/AddImg';
 import { Card } from '@store/reducers/main/mainInitState';
 import { useActions } from '@store/hooks';
-import { usePlug } from '@components/main/hooks';
+import { usePlug } from '@helpers/hooks/usePlug';
 import s from './styles.module.scss';
 import clsx from 'clsx';
 

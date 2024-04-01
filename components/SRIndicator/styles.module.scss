@@ -1,38 +1,12 @@
-.sr-indicator {
+@import '@styles/vars.scss';
+@import '@styles/mixins.scss';
+@import '@styles/animations.scss';
+
+.indicator {
   position: relative;
 
-  &__dots {
-    position: absolute;
-
-    transition: all 0.2s;
-    transform-origin: center;
-    animation: rotate 35s linear infinite;
-  }
-
-  &__dot {
-    position: absolute;
-    background-color: $secondary;
-    border-radius: 50%;
-    transform: translate(-50%, -50%);
-  }
-
-  &__tooltip {
-    @include tooltip;
-    width: max-content;
-    border-radius: 1.5rem;
-
-    span {
-      display: block;
-      margin: 0;
-
-      &:not(:last-child) {
-        margin-bottom: 0.25rem;
-      }
-    }
-  }
-
-  &--module {
-    .sr-indicator__dots {
+  &.module {
+    .dots {
       opacity: 0;
       top: -0.5rem;
       left: -0.5rem;
@@ -40,12 +14,12 @@
       width: 2.7rem;
     }
 
-    .sr-indicator__dot {
+    .dot {
       height: 0.4rem;
       width: 0.4rem;
     }
 
-    .sr-indicator__tooltip {
+    .tooltip {
       opacity: 0;
       left: -1rem;
       top: -6rem;
@@ -58,23 +32,23 @@
     }
   }
 
-  &--flashcards,
-  &--write {
+  &.flashcards,
+  &.write {
     position: absolute;
 
-    .sr-indicator__dots {
+    .dots {
       top: -0.6rem;
       left: -0.6rem;
       height: 3.4rem;
       width: 3.4rem;
     }
 
-    .sr-indicator__dot {
+    .dot {
       height: 0.4rem;
       width: 0.4rem;
     }
 
-    .sr-indicator__tooltip {
+    .tooltip {
       color: $green;
       left: 4rem;
       top: -1rem;
@@ -87,28 +61,28 @@
     }
 
     &:hover {
-      .sr-indicator__tooltip {
+      .tooltip {
         opacity: 1;
       }
     }
   }
 
-  &--flashcards {
+  &.flashcards {
     left: 2rem;
     top: 2rem;
   }
 
-  &--write {
-    &--1 {
+  &.write {
+    &_question {
       left: 1rem;
       top: 1rem;
     }
 
-    &--2 {
+    &_answer {
       right: 4rem;
       top: 2.5rem;
 
-      .sr-indicator__tooltip {
+      .tooltip {
         left: -21rem;
         top: -1rem;
       }
@@ -117,6 +91,36 @@
         top: 2rem;
         right: 3rem;
       }
+    }
+  }
+}
+
+.dots {
+  position: absolute;
+
+  transition: all 0.2s;
+  transform-origin: center;
+  animation: rotate 35s linear infinite;
+}
+
+.dot {
+  position: absolute;
+  background-color: $secondary;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.tooltip {
+  @include tooltip;
+  width: max-content;
+  border-radius: 1.5rem;
+
+  span {
+    display: block;
+    margin: 0;
+
+    &:not(:last-child) {
+      margin-bottom: 0.25rem;
     }
   }
 }

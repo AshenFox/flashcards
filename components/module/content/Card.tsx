@@ -7,10 +7,10 @@ import CardQuestion from './CardQuestion';
 import CardSRDropControl from './CardSRDropControl';
 import CardSRControl from './CardSRControl';
 import Img from '@ui/Img';
-import DateStr from '../../main/DateSrt';
+import DateStr from '@ui/DateStr';
 import { FC } from 'react';
 import { Card as CardType } from '../../../store/reducers/main/mainInitState';
-import { usePlug } from '../../main/hooks';
+import { usePlug } from '@helpers/hooks/usePlug';
 
 interface OwnProps {
   data: CardType;

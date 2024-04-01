@@ -3,7 +3,7 @@ import { ChangeEvent, FC, MouseEvent, useEffect, useRef } from 'react';
 import ContentEditable from 'react-contenteditable';
 import Speaker from '../../main/Speaker';
 import Img from '@ui/Img';
-import SRIndicator from '../../main/SRIngicator';
+import SRIndicator from '@components/SRIndicator';
 import { Card } from '../../../store/reducers/main/mainInitState';
 import { useActions, useAppSelector } from '../../../store/hooks';
 
@@ -65,12 +65,7 @@ const Question: FC<Props> = ({ data }) => {
   return (
     <div className='game__question'>
       <div className='game__question-container'>
-        {isSR && (
-          <SRIndicator
-            data={data}
-            classStr={'sr-indicator--write sr-indicator--write--1'}
-          />
-        )}
+        {isSR && <SRIndicator data={data} classStr={'write write_question'} />}
         {term && (
           <div className='game__question-dontknow'>
             <span onClick={clickNotKnow}>Don&apos;t know</span>
