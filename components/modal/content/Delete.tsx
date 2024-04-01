@@ -1,6 +1,6 @@
 import { FC, MouseEvent } from 'react';
 import { useActions, useAppSelector } from '../../../store/hooks';
-import LoadingButton from '../../main/LoadingButton';
+import LoadingBtn from '@ui/LoadingBtn';
 
 interface OwnProps {}
 
@@ -25,13 +25,13 @@ const Delete: FC<Props> = () => {
 
       <div className='modal__warning'>
         <p>
-          You are about to delete this set and all of its data. You won't be able to
+          You are about to delete this set and all of its data. You won&apos;t be able to
           access this set ever again.
         </p>
       </div>
 
       <div className='modal__question'>
-        <p>Are you absolutely positive? There's no undo.</p>
+        <p>Are you absolutely positive? There&apos;s no undo.</p>
       </div>
 
       <div className='modal__choice'>
@@ -45,14 +45,14 @@ const Delete: FC<Props> = () => {
         </div>
 
         <div className='modal__choice-item'>
-          <LoadingButton
+          <LoadingBtn
             active={true}
             loading={module_loading}
             onClickHandler={clickDelete}
             classStr='btn width100 bcc-coral pad15-30 brr15 fz175 white h-opacity09'
           >
             Yes, delete set
-          </LoadingButton>
+          </LoadingBtn>
         </div>
       </div>
     </>

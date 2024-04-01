@@ -1,13 +1,8 @@
-import { FC } from 'react';
-import { useEffect } from 'react';
+import { memo, useEffect } from 'react';
 import sanitize from 'sanitize-html';
-import sanConfig from '../../config/sanitize-config.json';
+import sanConfig from '@config/sanitize-config.json';
 
-interface OwnProps {}
-
-type Props = OwnProps;
-
-const PasteControl: FC<Props> = () => {
+const PasteControl = () => {
   useEffect(() => {
     const pasteControl = (e: ClipboardEvent) => {
       // Influences paste on the page
@@ -25,4 +20,4 @@ const PasteControl: FC<Props> = () => {
   return <></>;
 };
 
-export default PasteControl;
+export default memo(PasteControl);

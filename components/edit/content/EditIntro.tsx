@@ -3,6 +3,7 @@ import Link from 'next/link';
 import ContentWrapper from '@components/ContentWrapper';
 import { useAppSelector } from '../../../store/hooks';
 import { memo } from 'react';
+import Container from '@components/Container';
 
 const EditIntro = () => {
   const router = useRouter();
@@ -16,7 +17,7 @@ const EditIntro = () => {
   return (
     <div className='edit__intro'>
       <ContentWrapper tagType='section'>
-        <div className='container'>
+        <Container>
           <div className='edit__intro-content'>
             <div className='edit__intro-info'>
               <h2>Edit the study set! :)</h2>
@@ -32,7 +33,7 @@ const EditIntro = () => {
               </Link>
             </div>
           </div>
-        </div>
+        </Container>
       </ContentWrapper>
     </div>
   );

@@ -5,6 +5,7 @@ import Save from './Save';
 import ContentWrapper from '@components/ContentWrapper';
 import { useAppSelector } from '../../../store/hooks';
 import { FC } from 'react';
+import Container from '@components/Container';
 
 interface OwnProps {}
 
@@ -20,7 +21,7 @@ const CardsContainer: FC<Props> = () => {
   return (
     <ContentWrapper>
       <div className='edit__cards'>
-        <div className='container'>
+        <Container>
           <div className='edit__cards-container'>
             {formatted_cards.map((card, i, arr) => (
               <EditCard
@@ -35,7 +36,7 @@ const CardsContainer: FC<Props> = () => {
             {loading && <ScrollLoading loading={loading} />}
           </div>
           {!!formatted_cards.length && <AddCard />}
-        </div>
+        </Container>
       </div>
       {!!formatted_cards.length && <Save />}
     </ContentWrapper>

@@ -4,9 +4,9 @@ import Skeleton from 'react-loading-skeleton';
 import Navigation from './content/Navigation';
 import ListContainer from './content/ListContainer';
 import Search from './content/Search';
-import Push from '../main/Push';
 import ContentWrapper from '@components/ContentWrapper';
 import { useActions, useAppSelector } from '../../store/hooks';
+import Container from '@components/Container';
 
 interface OwnProps {}
 
@@ -103,7 +103,7 @@ const HomeContainer: FC<Props> = () => {
   return (
     <ContentWrapper>
       <div className='home'>
-        <div className='container'>
+        <Container>
           <div className='home__content'>
             <div className='home__content-header'>
               <div className='home__user-info'>
@@ -125,8 +125,7 @@ const HomeContainer: FC<Props> = () => {
               <ListContainer />
             </div>
           </div>
-        </div>
-        <Push />
+        </Container>
       </div>
     </ContentWrapper>
   );

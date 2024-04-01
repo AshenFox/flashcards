@@ -4,6 +4,7 @@ import Link from 'next/link';
 import Dropdown from './content/Dropdown';
 import ContentWrapper from '@components/ContentWrapper';
 import { useActions, useAppSelector } from '../../store/hooks';
+import Container from '@components/Container';
 
 interface OwnProps {}
 
@@ -135,13 +136,13 @@ const Header: FC<Props> = () => {
     <>
       <header className='header' ref={headerEl}>
         <ContentWrapper tagType='section'>
-          <div className='container'>
+          <Container>
             <div className='header__content'>
               <div className='header__buttons-left'>{buttonsLeft}</div>
 
               <div className='header__buttons-right'>{!loading && buttonsRight}</div>
             </div>
-          </div>
+          </Container>
         </ContentWrapper>
       </header>
       <Dropdown />

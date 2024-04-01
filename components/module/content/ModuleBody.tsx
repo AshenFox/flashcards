@@ -2,6 +2,7 @@ import Param from './Param';
 import CardsContainer from './CardsContainer';
 import ContentWrapper from '@components/ContentWrapper';
 import { FC } from 'react';
+import Container from '@components/Container';
 
 interface OwnProps {}
 
@@ -10,10 +11,10 @@ type Props = OwnProps;
 const ModuleContainer: FC<Props> = () => (
   <ContentWrapper>
     <div className='module__body'>
-      <div className='container'>
+      <Container>
         <Param />
         <CardsContainer />
-      </div>
+      </Container>
     </div>
   </ContentWrapper>
 );
