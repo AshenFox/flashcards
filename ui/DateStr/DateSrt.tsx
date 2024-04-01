@@ -1,12 +1,10 @@
-import { FC } from 'react';
+import { memo } from 'react';
 
-interface OwnProps {
+type DateStrProps = {
   date?: string;
-}
+};
 
-type Props = OwnProps;
-
-const DateStr: FC<Props> = ({ date }) => {
+const DateStr = ({ date }: DateStrProps) => {
   if (!date) return <></>;
 
   const creationDate = new Date(date);
@@ -24,4 +22,4 @@ const DateStr: FC<Props> = ({ date }) => {
   return <>{`${day}-${month}-${year} ${hours}:${minutes}`}</>;
 };
 
-export default DateStr;
+export default memo(DateStr);

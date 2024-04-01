@@ -2,7 +2,7 @@ import { useRouter } from 'next/router';
 import ContentEditable from 'react-contenteditable';
 import Speaker from '../../main/Speaker';
 import Img from '@ui/Img';
-import SRIndicator from '../../main/SRIngicator';
+import SRIndicator from '@components/SRIndicator';
 import { Card as CardType } from '../../../store/reducers/main/mainInitState';
 import { FC, MouseEvent } from 'react';
 import { useActions } from '../../../store/hooks';
@@ -61,7 +61,7 @@ const Card: FC<Props> = ({ data, side = 'definition', position = null }) => {
           imgClass={'game__img'}
           url={imgurl}
         />
-        {isSR && <SRIndicator data={data} classStr={'sr-indicator--flashcards'} />}
+        {isSR && <SRIndicator data={data} classStr={'flashcards'} />}
 
         {defenition && (
           <div className={`game__definition-container ${imgurl ? '' : 'full'}`}>
@@ -86,7 +86,7 @@ const Card: FC<Props> = ({ data, side = 'definition', position = null }) => {
         </div>
       </div>
       <div className={backClassName} onClick={clickSide('definition')}>
-        {isSR && <SRIndicator data={data} classStr={'sr-indicator--flashcards'} />}
+        {isSR && <SRIndicator data={data} classStr={'flashcards'} />}
         <div className='game__term-container '>
           <ContentEditable
             html={term}

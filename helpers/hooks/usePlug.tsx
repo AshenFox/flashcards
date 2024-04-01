@@ -1,4 +1,4 @@
-import { MutableRefObject, useEffect, useRef, useState } from 'react';
+import { MutableRefObject, useEffect, useMemo, useRef, useState } from 'react';
 
 export const usePlug = (
   classStr: string
@@ -24,7 +24,10 @@ export const usePlug = (
     if (ref.current) setHeightDimen(ref.current.offsetHeight);
   }, [visible, classStr]);
 
-  const Plug = <div className={classStr} style={{ height: `${heightDimen}px` }}></div>;
+  const Plug = useMemo(
+    () => <div className={classStr} style={{ height: `${heightDimen}px` }}></div>,
+    [classStr, heightDimen]
+  );
 
   return [visible, ref, Plug];
 };

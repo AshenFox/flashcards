@@ -1,5 +1,5 @@
 import { FC, MouseEvent, TouchEvent, useRef } from 'react';
-import SRIndicator from '../../main/SRIngicator';
+import SRIndicator from '@components/SRIndicator';
 import { Card } from '../../../store/reducers/main/mainInitState';
 import { useActions } from '../../../store/hooks';
 
@@ -41,7 +41,7 @@ const CardSRControl: FC<Props> = ({ data }) => {
         checked={studyRegime}
         readOnly
       />
-      <SRIndicator data={data} classStr={'sr-indicator--module'} />
+      <SRIndicator data={data} classStr={'module'} />
       <label
         className='module__toggle-switch sm'
         htmlFor={`card_sr_${_id}`}

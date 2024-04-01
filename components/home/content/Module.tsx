@@ -1,9 +1,9 @@
 import Link from 'next/link';
 import ContentEditable from 'react-contenteditable';
-import DateStr from '../../main/DateSrt';
+import DateStr from '@ui/DateStr';
 import { Module as ModuleType } from '../../../store/reducers/main/mainInitState';
 import { FC } from 'react';
-import { usePlug } from '../../main/hooks';
+import { usePlug } from '@helpers/hooks/usePlug';
 
 interface OwnProps {
   data: ModuleType;
