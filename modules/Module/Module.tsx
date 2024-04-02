@@ -1,14 +1,10 @@
-import { FC, useEffect } from 'react';
+import { memo, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import ModuleHeader from './content/ModuleHeader';
 import ModuleBody from './content/ModuleBody';
 import { useActions, useAppSelector } from '../../store/hooks';
 
-interface OwnProps {}
-
-type Props = OwnProps;
-
-const ModuleContainer: FC<Props> = () => {
+const Module = () => {
   const { get_module, clear_module, reset_fields_cards, reset_search } = useActions();
 
   const router = useRouter();
@@ -36,4 +32,4 @@ const ModuleContainer: FC<Props> = () => {
   );
 };
 
-export default ModuleContainer;
+export default memo(Module);

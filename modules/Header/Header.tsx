@@ -1,4 +1,4 @@
-import { FC, MouseEvent, ReactNode, useEffect, useRef } from 'react';
+import { MouseEvent, ReactNode, memo, useEffect, useRef } from 'react';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
 import Dropdown from './content/Dropdown';
@@ -6,11 +6,7 @@ import ContentWrapper from '@components/ContentWrapper';
 import { useActions, useAppSelector } from '../../store/hooks';
 import Container from '@components/Container';
 
-interface OwnProps {}
-
-type Props = OwnProps;
-
-const Header: FC<Props> = () => {
+const Header = () => {
   const { change_modal, toggle_modal, set_dropdown, log_out, set_header_dimen } =
     useActions();
 
@@ -150,4 +146,4 @@ const Header: FC<Props> = () => {
   );
 };
 
-export default Header;
+export default memo(Header);

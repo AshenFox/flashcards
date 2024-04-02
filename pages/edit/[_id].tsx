@@ -1,17 +1,14 @@
-import ModuleEdit from '@modules/Edit';
+import Edit from '@modules/Edit';
 import ScrollTop from '@modules/ScrollTop';
+import { memo } from 'react';
 
-interface OwnProps {}
-
-type Props = OwnProps;
-
-const Edit: React.FC<Props> = () => {
+const EditPage = () => {
   return (
     <>
-      <ModuleEdit />
+      <Edit />
       <ScrollTop />
     </>
   );
 };
 
-export default Edit;
+export default memo(EditPage);
