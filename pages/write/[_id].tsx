@@ -1,4 +1,3 @@
-import Spinner from '../../components/main/Spinner';
 import WriteContainer from '../../components/write/WriteContainer';
 
 interface OwnProps {}
@@ -9,7 +8,6 @@ const Write: React.FC<Props> = () => {
   return (
     <>
       <WriteContainer />
-      <Spinner />
     </>
   );
 };

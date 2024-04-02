@@ -1,10 +1,6 @@
-import React, { useEffect, FC } from 'react';
+import React, { useEffect, memo } from 'react';
 
-interface OwnProps {}
-
-type Props = OwnProps;
-
-const TabUpdateController: FC<Props> = () => {
+const TabUpdateController = () => {
   useEffect(() => {
     const reload = (e: StorageEvent) => window.location.reload();
 
@@ -16,4 +12,4 @@ const TabUpdateController: FC<Props> = () => {
   return <></>;
 };
 
-export default TabUpdateController;
+export default memo(TabUpdateController);

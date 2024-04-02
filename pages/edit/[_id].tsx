@@ -1,6 +1,5 @@
-import Spinner from '../../components/main/Spinner';
 import EditContainer from '../../components/edit/EditContainer';
-import ScrollTop from '../../components/main/ScrollTop';
+import ScrollTop from '@modules/ScrollTop';
 
 interface OwnProps {}
 
@@ -10,7 +9,6 @@ const Edit: React.FC<Props> = () => {
   return (
     <>
       <EditContainer />
-      <Spinner />
       <ScrollTop />
     </>
   );

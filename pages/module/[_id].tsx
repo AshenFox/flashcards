@@ -1,7 +1,6 @@
-import Spinner from '../../components/main/Spinner';
 import Modal from '../../components/modal/Modal';
 import ModuleContainer from '../../components/module/ModuleContainer';
-import ScrollTop from '../../components/main/ScrollTop';
+import ScrollTop from '@modules/ScrollTop';
 
 interface OwnProps {}
 
@@ -11,7 +10,6 @@ const Module: React.FC<Props> = () => {
   return (
     <>
       <ModuleContainer />
-      <Spinner />
       <ScrollTop />
       <Modal />
     </>

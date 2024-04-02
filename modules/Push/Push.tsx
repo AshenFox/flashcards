@@ -1,7 +1,7 @@
 import { memo } from 'react';
 import { useEffect } from 'react';
-import axios from '../../server/supplemental/axios';
-import { useAppSelector } from '../../store/hooks';
+import axios from '@server/supplemental/axios';
+import { useAppSelector } from '@store/hooks';
 import { publicVapidKey } from '@config/default.json';
 
 const Push = () => {

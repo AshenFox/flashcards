@@ -1,11 +1,7 @@
-import { FC, useEffect } from 'react';
+import { memo, useEffect } from 'react';
 import { useActions } from '../../store/hooks';
 
-interface OwnProps {}
-
-type Props = OwnProps;
-
-const Voice: FC<Props> = () => {
+const Voice = () => {
   const { init_easy_speech } = useActions();
 
   useEffect(() => {
@@ -15,4 +11,4 @@ const Voice: FC<Props> = () => {
   return <></>;
 };
 
-export default Voice;
+export default memo(Voice);

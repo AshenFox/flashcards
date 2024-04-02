@@ -1,7 +1,7 @@
 import { useRouter } from 'next/router';
 import { ChangeEvent, FC, MouseEvent, useEffect, useRef } from 'react';
 import ContentEditable from 'react-contenteditable';
-import Speaker from '../../main/Speaker';
+import Speaker from '@components/Speaker';
 import Img from '@ui/Img';
 import SRIndicator from '@components/SRIndicator';
 import { Card } from '../../../store/reducers/main/mainInitState';
