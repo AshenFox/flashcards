@@ -1,6 +1,6 @@
 import { useRouter } from 'next/router';
 import ContentEditable from 'react-contenteditable';
-import Speaker from '../../main/Speaker';
+import Speaker from '@components/Speaker';
 import Img from '@ui/Img';
 import SRIndicator from '@components/SRIndicator';
 import { Card as CardType } from '../../../store/reducers/main/mainInitState';

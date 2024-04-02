@@ -1,15 +1,16 @@
 import { memo } from 'react';
 import { clsx } from 'clsx';
 import s from '../styles.module.scss';
+import Spinner from '@ui/Spinner';
 
 type SpinnerProps = {
   active: boolean;
 };
 
-const Spinner = ({ active }: SpinnerProps) => (
+const LoadingSpinner = ({ active }: SpinnerProps) => (
   <div className={clsx(s.spinner_container, !active && s.hide)}>
-    <div className='spinner spinner--small'></div>
+    <Spinner small />
   </div>
 );
 
-export default memo(Spinner);
+export default memo(LoadingSpinner);

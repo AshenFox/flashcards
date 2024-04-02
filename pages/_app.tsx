@@ -4,11 +4,12 @@ import Head from '@modules/Head';
 import AuthWrapper from '@modules/AuthWrapper';
 import PasteControl from '@modules/PasteControl';
 import RouterConfiguration from '@modules/RouterConfiguration';
-import store from '../store/store';
-import Voice from '../components/main/Voice';
+import store from '@store/store';
+import Voice from '@modules/Voice';
 import Header from '../components/header/Header';
-import TabUpdateController from '../components/main/TabUpdateController';
+import TabUpdateController from '@modules/TabUpdateController';
 import type { AppProps } from 'next/app';
+import AuthSpinner from '@modules/AuthSpinner';
 
 const MyApp: React.FC<AppProps> = ({ Component, pageProps }) => (
   <>
@@ -18,9 +19,10 @@ const MyApp: React.FC<AppProps> = ({ Component, pageProps }) => (
         <Header />
         <Component {...pageProps} />
       </AuthWrapper>
-      <TabUpdateController />
+      <AuthSpinner />
       <Voice />
       <RouterConfiguration />
+      <TabUpdateController />
     </Provider>
     <PasteControl />
   </>

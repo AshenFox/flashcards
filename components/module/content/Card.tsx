@@ -1,7 +1,7 @@
 import { useRouter } from 'next/router';
 import Link from 'next/link';
 import ContentEditable from 'react-contenteditable';
-import Speaker from '../../main/Speaker';
+import Speaker from '@components/Speaker';
 import CardEditControl from './CardEditControl';
 import CardQuestion from './CardQuestion';
 import CardSRDropControl from './CardSRDropControl';

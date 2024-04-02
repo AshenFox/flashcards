@@ -1,6 +1,5 @@
 import StartContainer from '../components/start/StartContainer';
 import Modal from '../components/modal/Modal';
-import Spinner from '../components/main/Spinner';
 
 interface OwnProps {}
 
@@ -11,7 +10,6 @@ const Start: React.FC<Props> = () => {
     <>
       <StartContainer />
       <Modal />
-      <Spinner />
     </>
   );
 };

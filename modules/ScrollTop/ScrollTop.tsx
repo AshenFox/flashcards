@@ -1,12 +1,8 @@
-import { FC } from 'react';
+import { memo } from 'react';
 import { useEffect, useRef } from 'react';
-import { useActions, useAppSelector } from '../../store/hooks';
+import { useActions, useAppSelector } from '@store/hooks';
 
-interface OwnProps {}
-
-type Props = OwnProps;
-
-const ScrollTop: FC<Props> = () => {
+const ScrollTop = () => {
   const { set_scroll_top } = useActions();
 
   const { scroll_top } = useAppSelector(({ main }) => main);
@@ -16,9 +12,9 @@ const ScrollTop: FC<Props> = () => {
 
   useEffect(() => {
     const onScroll = (e: Event) => {
-      if (window.pageYOffset > 100 && !scroll_top_ref.current) set_scroll_top(true);
+      if (window.scrollY > 100 && !scroll_top_ref.current) set_scroll_top(true);
 
-      if (window.pageYOffset < 100 && scroll_top_ref.current) set_scroll_top(false);
+      if (window.scrollY < 100 && scroll_top_ref.current) set_scroll_top(false);
     };
 
     window.addEventListener('scroll', onScroll);
@@ -37,7 +33,7 @@ const ScrollTop: FC<Props> = () => {
   );
 };
 
-export default ScrollTop;
+export default memo(ScrollTop);
 
 let startTime: number = null;
 

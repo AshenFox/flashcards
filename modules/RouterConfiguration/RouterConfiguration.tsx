@@ -1,7 +1,7 @@
 import { memo } from 'react';
 import { useEffect, useRef } from 'react';
 import Router from 'next/router';
-import { useActions } from '../../store/hooks';
+import { useActions } from '@store/hooks';
 
 const RouterConfiguration = () => {
   const { set_main_loading } = useActions();

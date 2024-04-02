@@ -9,7 +9,7 @@ import {
 } from 'react';
 import Container from './components/Container';
 import Error from './components/Error';
-import Spinner from './components/Spinner';
+import LoadingSpinner from './components/LoadingSpinner';
 import { Card } from '@store/reducers/main/mainInitState';
 import { useActions } from '@store/hooks';
 import s from './styles.module.scss';
@@ -100,7 +100,7 @@ const Gallery = ({ data, active, game = false }: GalleryProps) => {
           </form>
         </div>
         <div className={s.results}>
-          <Spinner active={loading} />
+          <LoadingSpinner active={loading} />
           <Container data={data} game={game} />
           <Error active={error} />
         </div>
