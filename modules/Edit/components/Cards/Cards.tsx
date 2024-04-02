@@ -1,28 +1,26 @@
 import EditCard from '@components/EditCard';
-import ScrollLoading from '../../home/content/ScrollLoading';
-import AddCard from './AddCard';
-import Save from './Save';
+import ScrollLoading from '@components/home/content/ScrollLoading';
+import { AddCard, Save } from './components';
 import ContentWrapper from '@components/ContentWrapper';
-import { useAppSelector } from '../../../store/hooks';
-import { FC } from 'react';
+import { useAppSelector } from '@store/hooks';
+import { memo } from 'react';
 import Container from '@components/Container';
+import s from './styles.module.scss';
 
-interface OwnProps {}
+const Cards = () => {
+  const cards = useAppSelector(s => s.main.cards);
+  const currentModule = useAppSelector(s => s.main.module);
+  const loading = useAppSelector(s => s.main.loading);
 
-type Props = OwnProps;
-
-const CardsContainer: FC<Props> = () => {
-  const { cards, loading, module } = useAppSelector(({ main }) => main);
-
-  const { draft } = module || {};
+  const { draft } = currentModule || {};
 
   const formatted_cards = Object.values(cards);
 
   return (
     <ContentWrapper>
-      <div className='edit__cards'>
+      <div className={s.cards}>
         <Container>
-          <div className='edit__cards-container'>
+          <div className={s.container}>
             {formatted_cards.map((card, i, arr) => (
               <EditCard
                 key={card._id}
@@ -43,4 +41,4 @@ const CardsContainer: FC<Props> = () => {
   );
 };
 
-export default CardsContainer;
+export default memo(Cards);

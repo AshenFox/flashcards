@@ -1,16 +1,16 @@
 import { CSSProperties, useMemo, memo } from 'react';
 import { Card } from '@store/reducers/main/mainInitState';
-import s from '../styles.module.scss';
-import Control from './Control';
-import Item from './Item';
+import s from './styles.module.scss';
+import Control from './components/Control';
+import Item from './components/Item';
 import clsx from 'clsx';
 
-type ContainerProps = {
+type CarouselProps = {
   data: Card;
   game: boolean;
 };
 
-const Container = ({ data, game = false }: ContainerProps) => {
+const Carousel = ({ data, game = false }: CarouselProps) => {
   const { _id, gallery } = data;
   const { imgurl_obj, position, width, loading, error } = gallery;
 
@@ -25,10 +25,10 @@ const Container = ({ data, game = false }: ContainerProps) => {
   );
 
   return (
-    <div className={clsx(s.gallery_container, (loading || error) && s.hide)}>
+    <div className={clsx(s.carousel, (loading || error) && s.hide)}>
       <Control _id={_id} direction={'left'} />
-      <div className={clsx(s.gallery_window, game && s.game)}>
-        <div className={s.gallery} data-animated='false' style={windowStyles}>
+      <div className={clsx(s.window, game && s.game)}>
+        <div className={s.track} data-animated='false' style={windowStyles}>
           {imgurl_arr.map((item, i) => {
             return <Item key={i} index={`${i}`} data={item} _id={_id} />;
           })}
@@ -39,4 +39,4 @@ const Container = ({ data, game = false }: ContainerProps) => {
   );
 };
 
-export default memo(Container);
+export default memo(Carousel);

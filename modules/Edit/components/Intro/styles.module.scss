@@ -1,0 +1,32 @@
+@import '@styles/vars.scss';
+
+.intro {
+  padding: 2rem 0;
+  background-color: $white;
+}
+
+.content {
+  display: flex;
+  justify-content: space-between;
+  font-size: 2rem;
+
+  @media (max-width: $tablet) {
+    flex-direction: column-reverse;
+  }
+}
+
+.info {
+  color: $grey;
+
+  @media (max-width: $tablet) {
+    font-size: 1.7rem;
+  }
+}
+
+.return {
+  text-align: right;
+
+  @media (max-width: $tablet) {
+    margin-bottom: 1.5rem;
+  }
+}

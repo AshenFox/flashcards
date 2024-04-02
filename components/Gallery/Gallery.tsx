@@ -7,9 +7,8 @@ import {
   memo,
   useCallback,
 } from 'react';
-import Container from './components/Container';
-import Error from './components/Error';
-import LoadingSpinner from './components/LoadingSpinner';
+import Container from './components/Carousel';
+import { Error, LoadingSpinner } from './components/States';
 import { Card } from '@store/reducers/main/mainInitState';
 import { useActions } from '@store/hooks';
 import s from './styles.module.scss';
@@ -78,8 +77,8 @@ const Gallery = ({ data, active, game = false }: GalleryProps) => {
   );
 
   return (
-    <div className={clsx(s.search_container, active && s.active)}>
-      <div className={s.search}>
+    <div className={clsx(s.container, active && s.active)}>
+      <div className={s.gallery}>
         <div>
           <form action='' className={s.form}>
             <label className={s.label}>
@@ -100,8 +99,8 @@ const Gallery = ({ data, active, game = false }: GalleryProps) => {
           </form>
         </div>
         <div className={s.results}>
-          <LoadingSpinner active={loading} />
           <Container data={data} game={game} />
+          <LoadingSpinner active={loading} />
           <Error active={error} />
         </div>
       </div>

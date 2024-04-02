@@ -1,16 +1,13 @@
-import { FC, useRef } from 'react';
+import { memo, useCallback, useRef } from 'react';
 import { useRouter } from 'next/router';
-import ContentEditable from 'react-contenteditable';
-import ModuleSave from './ModuleSave';
+import ContentEditable, { ContentEditableEvent } from 'react-contenteditable';
+import { Save } from './components';
 import ContentWrapper from '@components/ContentWrapper';
-import { useActions, useAppSelector } from '../../../store/hooks';
+import { useActions, useAppSelector } from '@store/hooks';
 import Container from '@components/Container';
+import s from './styles.module.scss';
 
-interface OwnProps {}
-
-type Props = OwnProps;
-
-const EditModule: FC<Props> = () => {
+const Module = () => {
   const { control_module, edit_module } = useActions();
 
   const router = useRouter();
@@ -18,19 +15,24 @@ const EditModule: FC<Props> = () => {
 
   const isDraft = _id === 'draft';
 
-  const { module, loading, cards } = useAppSelector(({ main }) => main);
+  const currentModule = useAppSelector(s => s.main.module);
+  const cards = useAppSelector(s => s.main.cards);
+  const loading = useAppSelector(s => s.main.loading);
 
-  const { title, draft } = module || {};
+  const { title, draft } = currentModule || {};
 
-  const handleModuleChange = e => {
-    control_module(e.target.value);
+  const handleModuleChange = useCallback(
+    (e: ContentEditableEvent) => {
+      control_module(e.target.value);
 
-    clearTimeout(timer.current);
-    timer.current = setTimeout(async () => {
-      edit_module();
-      timer.current = null;
-    }, 500);
-  };
+      clearTimeout(timer.current);
+      timer.current = setTimeout(async () => {
+        edit_module();
+        timer.current = null;
+      }, 500);
+    },
+    [control_module, edit_module]
+  );
 
   const timer = useRef<ReturnType<typeof setTimeout>>(null);
 
@@ -59,11 +61,11 @@ const EditModule: FC<Props> = () => {
     : 'PLEASE ENTER A TITLE';
 
   return (
-    <div className='edit__module'>
+    <div className={s.module}>
       <ContentWrapper tagType='section'>
         <Container>
-          <div className='edit__module-content'>
-            <div className='edit__module-title'>
+          <div className={s.content}>
+            <div className={s.title}>
               <ContentEditable
                 html={title ? title : ''}
                 disabled={loading}
@@ -76,8 +78,8 @@ const EditModule: FC<Props> = () => {
             </div>
           </div>
           {(draft || isDraft) && (
-            <div className='edit__module-control'>
-              <ModuleSave />
+            <div className={s.control}>
+              <Save />
             </div>
           )}
         </Container>
@@ -86,4 +88,4 @@ const EditModule: FC<Props> = () => {
   );
 };
 
-export default EditModule;
+export default memo(Module);

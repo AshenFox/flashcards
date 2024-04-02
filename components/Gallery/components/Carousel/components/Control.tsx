@@ -45,15 +45,16 @@ const Control = ({ direction, _id }: ControlProps) => {
 
   return (
     <div
-      className={clsx(s.gallery_control, s[direction])}
+      className={clsx(s.control, s[direction])}
       data-control_el='true'
       data-active={active}
       onClick={clickControl}
     >
       <button
-        className={`btn pad15 bcc-white brr50p d-f h-bcc-yellow p-r ${
+        className={clsx(
+          'btn pad15 bcc-white brr50p d-f h-bcc-yellow p-r',
           direction === 'left' ? 'mar-left-a' : ''
-        }`}
+        )}
       >
         <svg>
           <use href={`../img/sprite.svg#icon__triangle_${direction}`}></use>

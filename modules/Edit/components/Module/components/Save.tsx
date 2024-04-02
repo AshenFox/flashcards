@@ -1,16 +1,10 @@
-import { FC } from 'react';
-import { useActions, useAppSelector } from '../../../store/hooks';
+import { memo, useCallback } from 'react';
+import { useActions, useAppSelector } from '@store/hooks';
 
-interface OwnProps {}
-
-type Props = OwnProps;
-
-const ModuleSave: FC<Props> = () => {
+const Save = () => {
   const { set_cards_save } = useActions();
 
-  const { cards } = useAppSelector(({ main }) => main);
-
-  const clickAllSave = () => set_cards_save(!active);
+  const cards = useAppSelector(s => s.main.cards);
 
   const cardsArr = Object.values(cards);
 
@@ -22,6 +16,11 @@ const ModuleSave: FC<Props> = () => {
       break;
     }
   }
+
+  const clickAllSave = useCallback(
+    () => set_cards_save(!active),
+    [active, set_cards_save]
+  );
 
   return (
     <div className='edit__all-cards-save-include'>
@@ -45,4 +44,4 @@ const ModuleSave: FC<Props> = () => {
   );
 };
 
-export default ModuleSave;
+export default memo(Save);

@@ -1,28 +1,29 @@
 import { useRouter } from 'next/router';
 import Link from 'next/link';
 import ContentWrapper from '@components/ContentWrapper';
-import { useAppSelector } from '../../../store/hooks';
+import { useAppSelector } from '@store/hooks';
 import { memo } from 'react';
 import Container from '@components/Container';
+import s from './styles.module.scss';
 
-const EditIntro = () => {
+const Intro = () => {
   const router = useRouter();
 
   const { _id } = router.query;
 
-  const { module } = useAppSelector(({ main }) => main);
+  const currentModule = useAppSelector(s => s.main.module);
 
-  const { draft } = module || {};
+  const { draft } = currentModule || {};
 
   return (
-    <div className='edit__intro'>
+    <div className={s.intro}>
       <ContentWrapper tagType='section'>
         <Container>
-          <div className='edit__intro-content'>
-            <div className='edit__intro-info'>
-              <h2>Edit the study set! :)</h2>
+          <div className={s.content}>
+            <div className={s.info}>
+              <h2>Edit the study set</h2>
             </div>
-            <div className='edit__intro-return'>
+            <div className={s.return}>
               <Link href={draft ? '/home/modules' : `/module/${_id}`}>
                 <button
                   className='btn bcc-lightblue pad12-30 brr15 white fz15 fw-normal h-grey h-bcc-yellow'
@@ -39,4 +40,4 @@ const EditIntro = () => {
   );
 };
 
-export default memo(EditIntro);
+export default memo(Intro);
