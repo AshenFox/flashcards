@@ -1,5 +1,5 @@
 import EditCard from '@components/EditCard';
-import ScrollLoading from '@components/home/content/ScrollLoading';
+import ScrollLoading from '@modules/Home/content/ScrollLoading';
 import { AddCard, Save } from './components';
 import ContentWrapper from '@components/ContentWrapper';
 import { useAppSelector } from '@store/hooks';

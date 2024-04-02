@@ -1,15 +1,12 @@
-import FlashcardsContainer from '../../components/flashcards/FlashcardsContainer';
+import { memo } from 'react';
+import Flashcards from '@modules/Flashcards';
 
-interface OwnProps {}
-
-type Props = OwnProps;
-
-const Flashcards: React.FC<Props> = () => {
+const FlashcardsPage = () => {
   return (
     <>
-      <FlashcardsContainer />
+      <Flashcards />
     </>
   );
 };
 
-export default Flashcards;
+export default memo(FlashcardsPage);

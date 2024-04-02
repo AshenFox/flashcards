@@ -1,4 +1,4 @@
-import { useEffect, useRef, FC } from 'react';
+import { useEffect, useRef, memo } from 'react';
 import { useRouter } from 'next/router';
 import Skeleton from 'react-loading-skeleton';
 import Navigation from './content/Navigation';
@@ -8,11 +8,7 @@ import ContentWrapper from '@components/ContentWrapper';
 import { useActions, useAppSelector } from '../../store/hooks';
 import Container from '@components/Container';
 
-interface OwnProps {}
-
-type Props = OwnProps;
-
-const HomeContainer: FC<Props> = () => {
+const Home = () => {
   const router = useRouter();
   const { section } = router.query;
 
@@ -131,4 +127,4 @@ const HomeContainer: FC<Props> = () => {
   );
 };
 
-export default HomeContainer;
+export default memo(Home);

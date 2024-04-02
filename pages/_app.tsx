@@ -6,7 +6,7 @@ import PasteControl from '@modules/PasteControl';
 import RouterConfiguration from '@modules/RouterConfiguration';
 import store from '@store/store';
 import Voice from '@modules/Voice';
-import Header from '../components/header/Header';
+import Header from '@modules/Header';
 import TabUpdateController from '@modules/TabUpdateController';
 import type { AppProps } from 'next/app';
 import AuthSpinner from '@modules/AuthSpinner';

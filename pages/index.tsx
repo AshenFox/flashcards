@@ -1,17 +1,14 @@
-import StartContainer from '../components/start/StartContainer';
+import { memo } from 'react';
 import Modal from '../components/modal/Modal';
+import Start from '@modules/Start';
 
-interface OwnProps {}
-
-type Props = OwnProps;
-
-const Start: React.FC<Props> = () => {
+const StartPage = () => {
   return (
     <>
-      <StartContainer />
+      <Start />
       <Modal />
     </>
   );
 };
 
-export default Start;
+export default memo(StartPage);

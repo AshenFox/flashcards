@@ -1,19 +1,16 @@
-import Modal from '../../components/modal/Modal';
-import ModuleContainer from '../../components/module/ModuleContainer';
+import Modal from '@modules/Modal';
+import Module from '@modules/Module';
 import ScrollTop from '@modules/ScrollTop';
+import { memo } from 'react';
 
-interface OwnProps {}
-
-type Props = OwnProps;
-
-const Module: React.FC<Props> = () => {
+const ModulePage = () => {
   return (
     <>
-      <ModuleContainer />
-      <ScrollTop />
+      <Module />
       <Modal />
+      <ScrollTop />
     </>
   );
 };
 
-export default Module;
+export default memo(ModulePage);

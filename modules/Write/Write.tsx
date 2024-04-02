@@ -1,14 +1,10 @@
-import { FC, useEffect } from 'react';
+import { memo, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import ContentContainer from './content/ContentContainer';
 import Controls from './content/Controls';
 import { useActions, useAppSelector } from '../../store/hooks';
 
-interface OwnProps {}
-
-type Props = OwnProps;
-
-const WriteContainer: FC<Props> = () => {
+const Write = () => {
   const {
     get_module_cards,
     clear_module,
@@ -20,7 +16,7 @@ const WriteContainer: FC<Props> = () => {
   const {
     main: { cards },
     auth: { user },
-  } = useAppSelector((state) => state);
+  } = useAppSelector(state => state);
 
   const router = useRouter();
   const { _id, number } = router.query;
@@ -59,4 +55,4 @@ const WriteContainer: FC<Props> = () => {
   );
 };
 
-export default WriteContainer;
+export default memo(Write);

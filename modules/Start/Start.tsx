@@ -1,17 +1,13 @@
-import { FC, CSSProperties, MouseEvent } from 'react';
+import { CSSProperties, MouseEvent, memo } from 'react';
 import { useActions, useAppSelector } from '../../store/hooks';
 
-interface OwnProps {}
-
-type Props = OwnProps;
-
-const StartContainer: FC<Props> = () => {
+const Start = () => {
   const { change_modal, toggle_modal } = useActions();
 
   const {
     dimen: { header_height },
     main: { is_server },
-  } = useAppSelector((state) => state);
+  } = useAppSelector(state => state);
 
   const click = (value: 'log_in') => (e: MouseEvent<HTMLButtonElement>) => {
     change_modal(value);
@@ -48,4 +44,4 @@ const StartContainer: FC<Props> = () => {
   );
 };
 
-export default StartContainer;
+export default memo(Start);

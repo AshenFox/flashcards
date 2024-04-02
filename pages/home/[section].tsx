@@ -1,16 +1,16 @@
-import HomeContainer from '../../components/home/HomeContainer';
+import Home from '@modules/Home';
 import ScrollTop from '@modules/ScrollTop';
 import Push from '@modules/Push';
 import { memo } from 'react';
 
-const Home = () => {
+const HomePage = () => {
   return (
     <>
-      <HomeContainer />
+      <Home />
       <ScrollTop />
       <Push />
     </>
   );
 };
 
-export default memo(Home);
+export default memo(HomePage);

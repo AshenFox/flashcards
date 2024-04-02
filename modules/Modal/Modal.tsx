@@ -1,12 +1,8 @@
-import { useRef, FC, MouseEvent, useEffect } from 'react';
+import { useRef, MouseEvent, useEffect, memo } from 'react';
 import ModalContent from './content/ModalContent';
 import { useActions, useAppSelector } from '../../store/hooks';
 
-interface OwnProps {}
-
-type Props = OwnProps;
-
-const Modal: FC<Props> = () => {
+const Modal = () => {
   const { toggle_modal } = useActions();
 
   const { is_modal, active_modal } = useAppSelector(({ modal }) => modal);
@@ -85,4 +81,4 @@ const Modal: FC<Props> = () => {
   );
 };
 
-export default Modal;
+export default memo(Modal);

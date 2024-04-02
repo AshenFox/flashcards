@@ -1,14 +1,10 @@
-import { FC, useEffect } from 'react';
+import { memo, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import Controls from './content/Controls';
 import ContentContainer from './content/ContentContainer';
 import { useActions, useAppSelector } from '../../store/hooks';
 
-interface OwnProps {}
-
-type Props = OwnProps;
-
-const FlashcardsContainer: FC<Props> = () => {
+const Flashcards = () => {
   const { get_module_cards, clear_module, reset_all_game_fields, get_sr_cards } =
     useActions();
 
@@ -41,4 +37,4 @@ const FlashcardsContainer: FC<Props> = () => {
   );
 };
 
-export default FlashcardsContainer;
+export default memo(Flashcards);

@@ -1,15 +1,12 @@
-import WriteContainer from '../../components/write/WriteContainer';
+import Write from '@modules/Write';
+import { memo } from 'react';
 
-interface OwnProps {}
-
-type Props = OwnProps;
-
-const Write: React.FC<Props> = () => {
+const WritePage = () => {
   return (
     <>
-      <WriteContainer />
+      <Write />
     </>
   );
 };
 
-export default Write;
+export default memo(WritePage);
