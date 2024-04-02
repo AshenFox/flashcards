@@ -1,0 +1,27 @@
+@import '@styles/vars.scss';
+
+.error_container,
+.spinner_container {
+  position: absolute;
+  opacity: 1;
+  height: 100%;
+  width: 100%;
+  transition: all 0.2s;
+  transition-delay: 0.2s;
+  top: 0;
+  left: 0;
+
+  z-index: 10;
+
+  &.hide {
+    visibility: hidden;
+    opacity: 0;
+    transition-delay: 0;
+  }
+}
+
+.error_container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

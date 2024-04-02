@@ -30,10 +30,7 @@ const Item = ({ _id, index, data }: ItemProps) => {
   };
 
   return (
-    <figcaption
-      className={clsx(s.gallery_item, !ok && 'hidden')}
-      onClick={clickGalleryItem}
-    >
+    <figcaption className={clsx(s.item, !ok && 'hidden')} onClick={clickGalleryItem}>
       <img src={url} alt='Gallery img' onLoad={load} onError={error} />
     </figcaption>
   );

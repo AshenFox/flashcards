@@ -1,0 +1,19 @@
+@import '@styles/vars.scss';
+
+.addcard {
+  padding: 3rem 2rem;
+  background-color: $white;
+  text-align: center;
+}
+
+.save {
+  padding-bottom: 2rem;
+}
+
+.save_module {
+  text-align: center;
+
+  @media (max-width: $mobile-sm) {
+    text-align: left;
+  }
+}

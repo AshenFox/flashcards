@@ -1,6 +1,6 @@
 import { memo } from 'react';
 import { clsx } from 'clsx';
-import s from '../styles.module.scss';
+import s from './styles.module.scss';
 
 type ErrorProps = {
   active: boolean;

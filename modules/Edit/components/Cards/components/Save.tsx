@@ -1,29 +1,19 @@
 import { useRouter } from 'next/router';
-import { FC, MouseEvent } from 'react';
-import { useActions, useAppSelector } from '../../../store/hooks';
+import { MouseEvent, memo, useCallback } from 'react';
+import { useActions, useAppSelector } from '@store/hooks';
 import LoadingBtn from '@ui/LoadingBtn';
 import Container from '@components/Container';
+import s from './styles.module.scss';
 
-interface OwnProps {}
-
-type Props = OwnProps;
-
-const Save: FC<Props> = () => {
+const Save = () => {
   const { create_module } = useActions();
 
-  const { module, cards } = useAppSelector(({ main }) => main);
+  const currentModule = useAppSelector(s => s.main.module);
+  const cards = useAppSelector(s => s.main.cards);
 
-  const { _id, draft, title, module_loading } = module || {};
+  const { _id, draft, title, module_loading } = currentModule || {};
 
   const router = useRouter();
-
-  const clickSave = (e: MouseEvent<HTMLButtonElement>) => {
-    if (active) create_module();
-  };
-
-  const clickLink = (e: MouseEvent<HTMLButtonElement>) => {
-    router.replace(`/module/${_id}`);
-  };
 
   const cardsArr = Object.values(cards);
 
@@ -42,10 +32,24 @@ const Save: FC<Props> = () => {
 
   const active = !!(twoSaved && title);
 
+  const clickSave = useCallback(
+    (e: MouseEvent<HTMLButtonElement>) => {
+      if (active) create_module();
+    },
+    [active, create_module]
+  );
+
+  const clickLink = useCallback(
+    (e: MouseEvent<HTMLButtonElement>) => {
+      router.replace(`/module/${_id}`);
+    },
+    [_id, router]
+  );
+
   return (
-    <div className='edit__save'>
+    <div className={s.save}>
       <Container>
-        <div className='edit__save-module'>
+        <div className={s.save_module}>
           <LoadingBtn
             active={active || !draft ? true : false}
             loading={module_loading}
@@ -60,4 +64,4 @@ const Save: FC<Props> = () => {
   );
 };
 
-export default Save;
+export default memo(Save);
