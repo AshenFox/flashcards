@@ -2,7 +2,7 @@ import { memo } from 'react';
 import { useEffect } from 'react';
 import axios from '@server/supplemental/axios';
 import { useAppSelector } from '@store/hooks';
-import { publicVapidKey } from '@config/default.json';
+import config from '@config/default.json';
 
 const Push = () => {
   const user = useAppSelector(s => s.auth.user);
@@ -55,7 +55,7 @@ const preparePush = async (device: 'mobile' | 'tablet' | 'pc') => {
 
       const subscription = await register.pushManager.subscribe({
         userVisibleOnly: true,
-        applicationServerKey: urlBase64ToUint8Array(publicVapidKey),
+        applicationServerKey: urlBase64ToUint8Array(config.publicVapidKey),
       });
 
       await sendSubscription(device, subscription);
