@@ -49,22 +49,6 @@
   }
 }
 
-// =========== BTN
-
-.btn {
-  background: none;
-  border: none;
-  padding: 0;
-  margin: 0;
-  font-family: inherit;
-  cursor: pointer;
-  transition: all 0.1s linear;
-
-  &:focus {
-    outline: none;
-  }
-}
-
 .hidden {
   display: none;
 

@@ -10,6 +10,7 @@ import Header from '@modules/Header';
 import TabUpdateController from '@modules/TabUpdateController';
 import type { AppProps } from 'next/app';
 import AuthSpinner from '@modules/AuthSpinner';
+import Dropdown from '@modules/Dropdown';
 
 const MyApp: React.FC<AppProps> = ({ Component, pageProps }) => (
   <>
@@ -17,6 +18,7 @@ const MyApp: React.FC<AppProps> = ({ Component, pageProps }) => (
     <Provider store={store}>
       <AuthWrapper>
         <Header />
+        <Dropdown />
         <Component {...pageProps} />
       </AuthWrapper>
       <AuthSpinner />
