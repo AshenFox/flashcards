@@ -1,5 +1,5 @@
 import { memo } from 'react';
-import Modal from '../components/modal/Modal';
+import Modal from '@modules/Modal';
 import Start from '@modules/Start';
 
 const StartPage = () => {

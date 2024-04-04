@@ -1,0 +1,188 @@
+@import '@styles/vars.scss';
+
+.title {
+  font-family: 'Fredoka One';
+  font-weight: 400;
+  font-size: 4rem;
+  color: #ffffff;
+  cursor: pointer;
+
+  &.hidden {
+    @media (max-width: $tablet) {
+      display: none;
+    }
+  }
+
+  @media (max-width: $mobile) {
+    font-size: 3rem;
+  }
+}
+
+.title_link {
+  text-decoration: none;
+}
+
+.left,
+.right {
+  display: flex;
+  align-items: center;
+}
+
+.right {
+  transition: all 0.2s;
+
+  & button {
+    margin-left: 2rem;
+
+    svg {
+      fill: $white;
+      transition: all 0.1s linear;
+      margin-right: 0.5rem;
+    }
+  }
+}
+
+.btn {
+  display: none;
+
+  @media (max-width: $tablet) {
+    display: block;
+  }
+
+  & button svg {
+    fill: $white;
+    transition: all 0.1s linear;
+  }
+
+  &.back {
+    button svg {
+      margin: 1rem 0rem;
+
+      @media (max-width: $mobile) {
+        margin: 0.5rem 0rem;
+      }
+
+      @media (max-width: $mobile-sm) {
+        margin: 0.25rem 0rem;
+      }
+    }
+  }
+}
+
+.btn_menu {
+  display: none;
+
+  @media (max-width: $mobile) {
+    display: inline-block;
+  }
+}
+
+.hamburger {
+  user-select: none;
+  display: inline-block;
+  cursor: pointer;
+  transition-property: opacity, filter;
+  transition-duration: 0.15s;
+  transition-timing-function: linear;
+  font: inherit;
+  color: inherit;
+  text-transform: none;
+  background-color: transparent;
+  border: 0;
+  margin: 0;
+  overflow: visible;
+
+  &.hide_mobile {
+    @media (min-width: $mobile) {
+      display: none;
+    }
+  }
+
+  &.hide_tablet {
+    @media (min-width: $tablet) {
+      display: none;
+    }
+  }
+
+  &:hover {
+    opacity: 0.7;
+  }
+
+  &.spring {
+    .hamburger_inner {
+      top: 2px;
+      transition: background-color 0s 0.13s linear;
+
+      &::before {
+        top: 10px;
+        transition: top 0.1s 0.2s cubic-bezier(0.33333, 0.66667, 0.66667, 1),
+          transform 0.13s cubic-bezier(0.55, 0.055, 0.675, 0.19);
+      }
+
+      &::after {
+        top: 20px;
+        transition: top 0.2s 0.2s cubic-bezier(0.33333, 0.66667, 0.66667, 1),
+          transform 0.13s cubic-bezier(0.55, 0.055, 0.675, 0.19);
+      }
+    }
+
+    &.active {
+      .hamburger_inner {
+        transition-delay: 0.22s;
+        background-color: transparent !important;
+
+        &::before {
+          top: 0;
+          transition: top 0.1s 0.15s cubic-bezier(0.33333, 0, 0.66667, 0.33333),
+            transform 0.13s 0.22s cubic-bezier(0.215, 0.61, 0.355, 1);
+          transform: translate3d(0, 10px, 0) rotate(45deg);
+        }
+
+        &::after {
+          top: 0;
+          transition: top 0.2s cubic-bezier(0.33333, 0, 0.66667, 0.33333),
+            transform 0.13s 0.22s cubic-bezier(0.215, 0.61, 0.355, 1);
+          transform: translate3d(0, 10px, 0) rotate(-45deg);
+        }
+      }
+    }
+  }
+}
+
+.hamburger_box {
+  width: 40px;
+  height: 24px;
+  display: inline-block;
+  position: relative;
+}
+
+.hamburger_inner {
+  display: block;
+  top: 50%;
+
+  &,
+  &::before,
+  &::after {
+    width: 35px;
+    height: 4px;
+    background-color: $white;
+    border-radius: 4px;
+    position: absolute;
+    transition-property: transform;
+    transition-duration: 0.15s;
+    transition-timing-function: ease;
+  }
+
+  &::before,
+  &::after {
+    content: '';
+    display: block;
+  }
+
+  &::before {
+    top: -10px;
+  }
+  &::after {
+    bottom: -10px;
+  }
+}

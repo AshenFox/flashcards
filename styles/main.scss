@@ -52,7 +52,20 @@ a {
   color: inherit;
 }
 
-@import 'header';
+button {
+  background: none;
+  border: none;
+  padding: 0;
+  margin: 0;
+  font-family: inherit;
+  cursor: pointer;
+  transition: all 0.1s linear;
+
+  &:focus {
+    outline: none;
+  }
+}
+
 @import 'start';
 @import 'modal';
 @import 'home';
