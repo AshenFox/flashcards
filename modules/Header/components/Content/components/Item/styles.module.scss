@@ -1,0 +1,46 @@
+@import '@styles/vars.scss';
+
+.item {
+  display: flex;
+  align-items: center;
+  transition: all 0.1s;
+  gap: 0.5rem;
+  color: $white;
+  font-size: 1.75rem;
+
+  @media (max-width: $mobile) {
+    font-size: 1.5rem;
+  }
+
+  &:hover {
+    color: $primary-pale;
+
+    svg {
+      fill: $primary-pale;
+    }
+  }
+
+  svg {
+    fill: $white;
+    transition: all 0.1s linear;
+  }
+
+  &.padded {
+    padding: 1.5rem 3rem;
+    background-color: $secondary;
+    border-radius: 1.5rem;
+
+    @media (max-width: $mobile) {
+      padding: 1rem 2rem;
+    }
+
+    &:hover {
+      color: $grey;
+      background-color: $tertiary;
+
+      svg {
+        fill: $grey;
+      }
+    }
+  }
+}

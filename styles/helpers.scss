@@ -51,30 +51,6 @@
 
 .hidden {
   display: none;
-
-  &__media-tablet {
-    @media (max-width: $tablet) {
-      display: none;
-    }
-  }
-
-  &__media-mobile {
-    @media (max-width: $mobile) {
-      display: none;
-    }
-  }
-
-  &__media-min-tablet {
-    @media (min-width: $tablet) {
-      display: none;
-    }
-  }
-
-  &__media-min-mobile {
-    @media (min-width: $mobile) {
-      display: none;
-    }
-  }
 }
 
 .ai-c {

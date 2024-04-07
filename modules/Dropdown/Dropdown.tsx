@@ -81,15 +81,14 @@ const Dropdown = () => {
 
   const stylesHeader: CSSProperties = { paddingTop: `${header_height}px` };
 
+  const className = clsx(
+    s.dropdown,
+    dropdown_active && s.active,
+    isFlashcards || isWrite ? s.hide_min_tablet : s.hide_min_mobile
+  );
+
   return (
-    <div
-      className={clsx(
-        s.dropdown,
-        dropdown_active && s.active,
-        isFlashcards || isWrite ? 'hidden__media-min-tablet' : 'hidden__media-min-mobile'
-      )}
-      style={stylesHeader}
-    >
+    <div className={className} style={stylesHeader}>
       {!isDraft && (
         <Item href='/edit/draft' icon='icon__new_module'>
           Create new module

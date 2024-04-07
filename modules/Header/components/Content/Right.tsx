@@ -1,11 +1,11 @@
 import { useActions } from '@store/hooks';
 import { useAppSelector } from '@store/store';
-import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { MouseEvent, memo, useCallback } from 'react';
 import s from './styles.module.scss';
-import clsx from 'clsx';
 import { getIsDraft, getIsGame } from '@helpers/functions/determinePath';
+import Item from './components/Item';
+import Hamburger from './components/Hamburger';
 
 const Right = () => {
   const { change_modal, toggle_modal, set_dropdown, log_out } = useActions();
@@ -19,7 +19,9 @@ const Right = () => {
   const isGame = getIsGame(router.pathname);
 
   const activateDropdown = useCallback(
-    (e: MouseEvent<HTMLButtonElement>) => set_dropdown(true),
+    (e: MouseEvent<HTMLButtonElement>) => {
+      set_dropdown(true);
+    },
     [set_dropdown]
   );
 
@@ -36,58 +38,35 @@ const Right = () => {
       {user ? (
         <>
           {!isDraft && (
-            <Link href='/edit/draft'>
-              <button
-                className={clsx(
-                  'white fz175 h-primary-pale',
-                  isGame ? 'hidden__media-tablet' : 'hidden__media-mobile'
-                )}
-              >
-                <svg width='20' height='20'>
-                  <use href='../img/sprite.svg#icon__new_module'></use>
-                </svg>
-                Create new module
-              </button>
-            </Link>
+            <Item
+              href='/edit/draft'
+              icon='icon__new_module'
+              className={isGame ? s.hide_max_tablet : s.hide_max_mobile}
+            >
+              Create new module
+            </Item>
           )}
 
-          <button
-            className={clsx(
-              'white fz175 h-primary-pale',
-              isGame ? 'hidden__media-tablet' : 'hidden__media-mobile'
-            )}
+          <Item
             onClick={log_out}
+            className={isGame ? s.hide_max_tablet : s.hide_max_mobile}
           >
             Log out
-          </button>
+          </Item>
 
-          <button
-            className={clsx(
-              s.hamburger,
-              s.spring,
-              isGame ? s.hide_tablet : s.hide_mobile,
-              dropdown_active ? s.active : ''
-            )}
-            type='button'
-            onClick={!dropdown_active && activateDropdown}
-          >
-            <span className={s.hamburger_box}>
-              <span className={s.hamburger_inner}></span>
-            </span>
-          </button>
+          <Hamburger
+            active={dropdown_active}
+            onClick={activateDropdown}
+            className={isGame ? s.hide_min_tablet : s.hide_min_mobile}
+          />
         </>
       ) : (
         <>
-          <button onClick={openModal('log_in')} className='white fz175 h-primary-pale'>
-            Log in
-          </button>
+          <Item onClick={openModal('log_in')}>Log in</Item>
 
-          <button
-            onClick={openModal('sign_up')}
-            className='bcc-lightblue pad15-30 brr15 white fz175 h-grey h-bcc-yellow'
-          >
+          <Item onClick={openModal('sign_up')} padded>
             Sign up
-          </button>
+          </Item>
         </>
       )}
     </div>
