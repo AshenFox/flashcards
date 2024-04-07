@@ -16,3 +16,15 @@
     right: 0;
   }
 }
+
+.hide_min_tablet {
+  @media (min-width: $tablet) {
+    display: none;
+  }
+}
+
+.hide_min_mobile {
+  @media (min-width: $mobile) {
+    display: none;
+  }
+}

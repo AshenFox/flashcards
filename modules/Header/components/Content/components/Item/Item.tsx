@@ -4,44 +4,53 @@ import { MouseEventHandler, memo, useMemo } from 'react';
 import s from './styles.module.scss';
 
 type ItemProps = {
-  children: string;
+  children?: string;
   href?: string;
   onClick?: MouseEventHandler<HTMLButtonElement>;
   icon?: string;
-  caution?: boolean;
-  active?: boolean;
+  iconSize?: number;
+  padded?: boolean;
+  className?: string;
 };
 
-const Item = ({ href, children, icon, onClick, caution, active }: ItemProps) => {
+const Item = ({
+  children,
+  href,
+  onClick,
+  padded,
+  icon,
+  iconSize = 20,
+  className = '',
+}: ItemProps) => {
   const InnerElements = useMemo(
     () => (
       <>
         {icon && (
-          <svg width='20' height='20'>
+          <svg width={iconSize} height={iconSize}>
             <use href={`../img/sprite.svg#${icon}`}></use>
           </svg>
         )}
-        <span>{children}</span>
+        {children && <span>{children}</span>}
       </>
     ),
-    [children, icon]
+    [children, icon, iconSize]
   );
 
-  const className = useMemo(
-    () => clsx(s.item, caution && s.caution, active && s.active),
-    [active, caution]
+  const innerClassName = useMemo(
+    () => clsx(s.item, padded && s.padded, className),
+    [padded, className]
   );
 
   if (onClick) {
     return (
-      <button className={className} onClick={onClick}>
+      <button className={innerClassName} onClick={onClick}>
         {InnerElements}
       </button>
     );
   }
 
   return (
-    <Link className={className} href={href}>
+    <Link href={href} className={innerClassName}>
       {InnerElements}
     </Link>
   );
