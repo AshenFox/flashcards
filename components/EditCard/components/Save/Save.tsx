@@ -2,7 +2,7 @@ import { MouseEvent, TouchEvent, memo, useCallback, useRef } from 'react';
 import { useActions } from '@store/hooks';
 import { Card } from '@store/reducers/main/mainInitState';
 import s from './styles.module.scss';
-import clsx from 'clsx';
+import Toggle from '@ui/Toggle';
 
 type SaveProps = {
   data: Card;
@@ -38,27 +38,18 @@ const Save = ({ data }: SaveProps) => {
   const timer = useRef<ReturnType<typeof setTimeout>>(null);
 
   return (
-    <div className={s.save}>
-      <input
-        className={clsx(s.checkbox, s.save)}
-        type='checkbox'
-        id={`toggle-save${_id}`}
-        checked={save}
-        readOnly
-      />
-      <svg height='17' width='17'>
-        <use href='../img/sprite.svg#icon__save'></use>
-      </svg>
-      <span>Save the card</span>
-      <label
-        className={clsx(s.toggle)}
-        htmlFor={`toggle-save${_id}`}
-        onMouseDown={down}
-        onMouseUp={up}
-        onTouchStart={down}
-        onTouchEnd={up}
-      ></label>
-    </div>
+    <Toggle
+      id={`toggle-save${_id}`}
+      className={s.save}
+      active={save}
+      small
+      icon={'icon__save'}
+      tooltip='Save the card'
+      onMouseDown={down}
+      onMouseUp={up}
+      onTouchStart={down}
+      onTouchEnd={up}
+    />
   );
 };
 
