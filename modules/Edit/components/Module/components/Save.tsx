@@ -1,5 +1,7 @@
 import { memo, useCallback } from 'react';
 import { useActions, useAppSelector } from '@store/hooks';
+import Toggle from '@ui/Toggle';
+import s from './styles.module.scss';
 
 const Save = () => {
   const { set_cards_save } = useActions();
@@ -23,24 +25,14 @@ const Save = () => {
   );
 
   return (
-    <div className='edit__all-cards-save-include'>
-      <input
-        className='edit__checkbox edit__checkbox--save'
-        type='checkbox'
-        id='togglesave-main'
-        checked={active}
-        readOnly
-      />
-      <svg height='28' width='28'>
-        <use href='../img/sprite.svg#icon__save'></use>
-      </svg>
-      <span>Save all cards</span>
-      <label
-        className='edit__toggle-switch'
-        htmlFor='togglesave-main'
-        onClick={clickAllSave}
-      ></label>
-    </div>
+    <Toggle
+      id={'toggle-save-main'}
+      className={s.save}
+      active={active}
+      icon={'icon__save'}
+      tooltip='Save the card'
+      onClick={clickAllSave}
+    />
   );
 };
 

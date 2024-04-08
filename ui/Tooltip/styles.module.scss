@@ -1,0 +1,26 @@
+@import '@styles/vars.scss';
+
+.container {
+  position: relative;
+
+  &:hover span {
+    opacity: 1;
+  }
+}
+
+.tooltip {
+  line-height: 1;
+  font-size: 1.2rem;
+  z-index: 30;
+  position: absolute;
+  transition: all 0.2s;
+  margin: 0;
+  background-color: $white;
+  padding: 0.5rem 1rem;
+  box-shadow: 0 0 1.25rem 0 rgba($grey, 0.28);
+  border-radius: 2rem;
+  transition: all 0.2s;
+  opacity: 0;
+  pointer-events: none;
+  color: $grey-lighter;
+}

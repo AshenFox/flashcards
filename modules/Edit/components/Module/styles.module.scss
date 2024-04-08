@@ -39,15 +39,3 @@
     padding-top: 1.25rem;
   }
 }
-
-.save {
-  padding-bottom: 2rem;
-}
-
-.save_module {
-  text-align: center;
-
-  @media (max-width: $mobile-sm) {
-    text-align: left;
-  }
-}
