@@ -5,7 +5,7 @@ import Speaker from '@components/Speaker';
 import CardEditControl from './CardEditControl';
 import CardQuestion from './CardQuestion';
 import CardSRDropControl from './CardSRDropControl';
-import CardSRControl from './CardSRControl';
+import CardSRControl from './components/CardSRControl';
 import Img from '@ui/Img';
 import DateStr from '@ui/DateStr';
 import { FC } from 'react';

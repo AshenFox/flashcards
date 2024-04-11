@@ -1,0 +1,19 @@
+@import '@styles/vars.scss';
+
+.sr_control {
+  margin-left: 0.5rem;
+
+  & svg {
+    margin-right: 1.3rem;
+  }
+
+  :global(.checkbox):checked {
+    & ~ :global(.toggle) {
+      border-color: $green;
+
+      &:after {
+        background-color: $green;
+      }
+    }
+  }
+}

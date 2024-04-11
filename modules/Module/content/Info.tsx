@@ -2,10 +2,10 @@ import Link from 'next/link';
 import Skeleton from 'react-loading-skeleton';
 import ModuleQuestion from './ModuleQuestion';
 import ModuleSRDropControl from './ModuleSRDropControl';
-import ModuleSRControl from './ModuleSRControl';
+import ModuleSRControl from './components/ModuleSRControl';
 import DateStr from '@ui/DateStr';
 import { FC, MouseEvent } from 'react';
-import { useActions, useAppSelector } from '../../../store/hooks';
+import { useActions, useAppSelector } from '@store/hooks';
 
 interface OwnProps {}
 

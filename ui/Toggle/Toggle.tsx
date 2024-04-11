@@ -1,4 +1,4 @@
-import { MouseEventHandler, TouchEventHandler, memo } from 'react';
+import { MouseEventHandler, ReactNode, TouchEventHandler, memo } from 'react';
 import s from './styles.module.scss';
 import clsx from 'clsx';
 import Tooltip, { tooltipContainer } from '@ui/Tooltip';
@@ -8,7 +8,7 @@ type ToggleProps = {
   active: boolean;
   className?: string;
   small?: boolean;
-  icon?: string;
+  icon?: ReactNode;
   iconSize?: number;
   tooltip?: string;
   onClick?: MouseEventHandler<HTMLLabelElement>;
@@ -36,15 +36,17 @@ const Toggle = ({
 
   return (
     <div className={clsx(s.container, tooltipContainer, className)}>
-      <input className={s.checkbox} type='checkbox' id={id} checked={active} readOnly />
-      {icon && (
+      <input className={'checkbox'} type='checkbox' id={id} checked={active} readOnly />
+      {typeof icon === 'string' ? (
         <svg height={innerIconSize} width={innerIconSize}>
           <use href={`../img/sprite.svg#${icon}`}></use>
         </svg>
+      ) : (
+        icon
       )}
       {tooltip && <Tooltip>{tooltip}</Tooltip>}
       <label
-        className={clsx(s.toggle, small && s.small)}
+        className={clsx('toggle', small && s.small)}
         htmlFor={id}
         onClick={onClick}
         onMouseDown={onMouseDown}
