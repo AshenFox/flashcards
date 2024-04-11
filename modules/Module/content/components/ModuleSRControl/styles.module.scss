@@ -1,13 +1,17 @@
 @import '@styles/vars.scss';
 
-.save {
-  padding-right: 1.5rem;
+.sr_control {
   border-right: 2px solid $grey-light;
+  padding-right: 1.5rem;
+  padding-left: 1.5rem;
+
+  :global(.tooltip) {
+    left: 1.5rem;
+  }
 
   :global(.checkbox):checked {
     & ~ :global(.tooltip) {
       color: $green;
-      border-color: $green;
     }
 
     & ~ :global(.toggle) {

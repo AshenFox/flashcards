@@ -3,7 +3,7 @@
 .container {
   position: relative;
 
-  &:hover span {
+  &:hover .tooltip {
     opacity: 1;
   }
 }

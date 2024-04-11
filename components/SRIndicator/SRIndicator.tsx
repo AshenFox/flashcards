@@ -2,6 +2,7 @@ import { ReactElement, memo, useMemo } from 'react';
 import DateStr from '@ui/DateStr';
 import clsx from 'clsx';
 import s from './styles.module.scss';
+import Tooltip from '@ui/Tooltip';
 
 type SRIndicatorProps = {
   data: {
@@ -9,7 +10,9 @@ type SRIndicatorProps = {
     nextRep: string;
     prevStage: string;
   };
-  classStr?: string;
+  active?: boolean;
+  small?: boolean;
+  className?: string;
 };
 
 const full = 360;
@@ -18,7 +21,12 @@ const part = full / num;
 const radius = 2;
 const diameter = radius * 2;
 
-const SRIndicator = ({ data, classStr }: SRIndicatorProps) => {
+const SRIndicator = ({
+  data,
+  active = true,
+  small = false,
+  className,
+}: SRIndicatorProps) => {
   const { stage, nextRep, prevStage } = data;
 
   const dots = useMemo(() => {
@@ -37,7 +45,7 @@ const SRIndicator = ({ data, classStr }: SRIndicatorProps) => {
       dots.push(
         <div
           key={angle}
-          className={s.dot}
+          className={'dot'}
           style={{
             top: `${y_percent}%`,
             left: `${x_percent}%`,
@@ -51,24 +59,12 @@ const SRIndicator = ({ data, classStr }: SRIndicatorProps) => {
     return dots;
   }, [stage]);
 
-  const className = useMemo(
-    () =>
-      clsx(
-        s.indicator,
-        classStr.split(' ').map(el => {
-          const styleClass = s[el];
-          return styleClass ?? el;
-        })
-      ),
-    [classStr]
-  );
-
   return (
-    <div className={className}>
+    <div className={clsx(s.indicator, active && s.active, small && s.small, className)}>
       <svg>
         <use href='../img/sprite.svg#icon__studyregime'></use>
       </svg>
-      <div className={s.tooltip}>
+      <Tooltip>
         <span>SR Stage: {stage}</span>
         <span>
           Next repeat: <DateStr date={nextRep} />
@@ -76,8 +72,8 @@ const SRIndicator = ({ data, classStr }: SRIndicatorProps) => {
         <span>
           Drop stage: <DateStr date={prevStage} />
         </span>
-      </div>
-      <div className={s.dots}>{dots}</div>
+      </Tooltip>
+      <div className={'dots'}>{dots}</div>
     </div>
   );
 };

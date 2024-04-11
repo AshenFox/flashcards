@@ -3,13 +3,13 @@
 .save {
   padding-right: 1.5rem;
 
-  input:checked {
-    & ~ span {
+  :global(.checkbox):checked {
+    & ~ :global(.tooltip) {
       color: $green;
       border-color: $green;
     }
 
-    & ~ label {
+    & ~ :global(.toggle) {
       border-color: $green;
 
       &:after {

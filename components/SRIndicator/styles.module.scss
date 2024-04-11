@@ -4,10 +4,101 @@
 
 .indicator {
   position: relative;
+  display: flex;
+  align-items: center;
 
-  &.module {
+  svg {
+    fill: $grey;
+    height: 22px;
+    width: 22px;
+  }
+
+  :global(.dots) {
+    position: absolute;
+
+    transition: all 0.2s;
+    transform-origin: center;
+    animation: rotate 35s linear infinite;
+
+    opacity: 0;
+    top: -0.6rem;
+    left: -0.6rem;
+    height: 3.4rem;
+    width: 3.4rem;
+  }
+
+  :global(.dot) {
+    position: absolute;
+    background-color: $secondary;
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+
+    height: 0.4rem;
+    width: 0.4rem;
+  }
+
+  :global(.tooltip) {
+    @include tooltip;
+
+    width: max-content;
+    border-radius: 1.5rem;
+
+    color: $grey;
+    left: 4rem;
+    top: -1rem;
+
+    span {
+      display: block;
+      margin: 0;
+
+      &:not(:last-child) {
+        margin-bottom: 0.25rem;
+      }
+    }
+  }
+
+  &.small {
+    :global(.dots) {
+      top: -0.5rem;
+      left: -0.5rem;
+      height: 2.7rem;
+      width: 2.7rem;
+    }
+
+    :global(.dot) {
+      height: 0.4rem;
+      width: 0.4rem;
+    }
+
+    :global(.tooltip) {
+      left: -1rem;
+      top: -6rem;
+    }
+
+    svg {
+      fill: $grey;
+      height: 17px;
+      width: 17px;
+    }
+  }
+
+  &.active {
+    svg {
+      fill: $green;
+    }
+
+    :global(.dots) {
+      opacity: 1;
+    }
+
+    :global(.tooltip) {
+      color: $green;
+    }
+  }
+
+  /* &.module {
     .dots {
-      opacity: 0;
+      // opacity: 0;
       top: -0.5rem;
       left: -0.5rem;
       height: 2.7rem;
@@ -92,35 +183,5 @@
         right: 3rem;
       }
     }
-  }
-}
-
-.dots {
-  position: absolute;
-
-  transition: all 0.2s;
-  transform-origin: center;
-  animation: rotate 35s linear infinite;
-}
-
-.dot {
-  position: absolute;
-  background-color: $secondary;
-  border-radius: 50%;
-  transform: translate(-50%, -50%);
-}
-
-.tooltip {
-  @include tooltip;
-  width: max-content;
-  border-radius: 1.5rem;
-
-  span {
-    display: block;
-    margin: 0;
-
-    &:not(:last-child) {
-      margin-bottom: 0.25rem;
-    }
-  }
+  } */
 }
