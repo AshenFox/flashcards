@@ -3,9 +3,12 @@ import ContentEditable from 'react-contenteditable';
 import Speaker from '@components/Speaker';
 import Img from '@ui/Img';
 import SRIndicator from '@components/SRIndicator';
-import { Card as CardType } from '../../../store/reducers/main/mainInitState';
+import { Card as CardType } from '@store/reducers/main/mainInitState';
 import { FC, MouseEvent } from 'react';
-import { useActions } from '../../../store/hooks';
+import { useActions } from '@store/hooks';
+import { tooltipContainer } from '@ui/Tooltip';
+import s from './styles.module.scss';
+import clsx from 'clsx';
 
 interface OwnProps {
   data: CardType;
@@ -61,7 +64,9 @@ const Card: FC<Props> = ({ data, side = 'definition', position = null }) => {
           imgClass={'game__img'}
           url={imgurl}
         />
-        {isSR && <SRIndicator data={data} classStr={'flashcards'} />}
+        {isSR && (
+          <SRIndicator data={data} className={clsx(s.sr_indicator, tooltipContainer)} />
+        )}
 
         {defenition && (
           <div className={`game__definition-container ${imgurl ? '' : 'full'}`}>
@@ -86,7 +91,9 @@ const Card: FC<Props> = ({ data, side = 'definition', position = null }) => {
         </div>
       </div>
       <div className={backClassName} onClick={clickSide('definition')}>
-        {isSR && <SRIndicator data={data} classStr={'flashcards'} />}
+        {isSR && (
+          <SRIndicator data={data} className={clsx(s.sr_indicator, tooltipContainer)} />
+        )}
         <div className='game__term-container '>
           <ContentEditable
             html={term}

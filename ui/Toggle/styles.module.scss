@@ -1,5 +1,4 @@
 @import '@styles/vars.scss';
-@import '@styles/mixins.scss';
 
 .container {
   display: flex;
@@ -18,7 +17,7 @@
     transition: all 0.2s;
   }
 
-  :global(.toggle) {
+  :global(.toggle__toggle) {
     cursor: pointer;
     position: relative;
     display: inline-block;
@@ -57,19 +56,19 @@
     }
   }
 
-  :global(.checkbox) {
+  :global(.toggle__checkbox) {
     display: none;
   }
 
-  :global(.checkbox) {
+  :global(.toggle__checkbox) {
     &:checked {
-      & ~ :global(.toggle) {
+      & ~ :global(.toggle__toggle) {
         &:after {
           left: 26px;
         }
       }
 
-      & ~ :global(.toggle).small {
+      & ~ :global(.toggle__toggle).small {
         &:after {
           left: 16.5px;
         }

@@ -45,7 +45,7 @@ const SRIndicator = ({
       dots.push(
         <div
           key={angle}
-          className={'dot'}
+          className={'indicator__dot'}
           style={{
             top: `${y_percent}%`,
             left: `${x_percent}%`,
@@ -73,7 +73,7 @@ const SRIndicator = ({
           Drop stage: <DateStr date={prevStage} />
         </span>
       </Tooltip>
-      <div className={'dots'}>{dots}</div>
+      <div className={'indicator__dots'}>{dots}</div>
     </div>
   );
 };

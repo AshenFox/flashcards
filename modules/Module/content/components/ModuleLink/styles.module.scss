@@ -1,0 +1,27 @@
+@import '@styles/vars.scss';
+
+.module_link {
+  cursor: pointer;
+  position: relative;
+  font-size: 1.2rem;
+
+  svg {
+    fill: $grey-lighter;
+    width: 1.8rem;
+    height: 1.8rem;
+    transition: all 0.1s linear;
+  }
+
+  &:hover {
+    svg {
+      fill: $tertiary;
+    }
+  }
+
+  :global(.tooltip__tooltip) {
+    width: max-content;
+    right: 0;
+    top: -3.25rem;
+    color: $tertiary;
+  }
+}

@@ -1,5 +1,4 @@
 @import '@styles/vars.scss';
-@import '@styles/mixins.scss';
 
 .scrape {
   display: flex;
@@ -59,12 +58,11 @@
     }
   }
 
-  span {
-    @include tooltip;
+  :global(.tooltip__tooltip) {
     color: $primary;
-    width: max-content !important;
+    width: max-content;
 
-    top: -30px;
+    top: -3rem;
   }
 
   &:hover span {

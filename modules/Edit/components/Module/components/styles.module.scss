@@ -3,13 +3,13 @@
 .save {
   padding-right: 1.5rem;
 
-  :global(.checkbox):checked {
-    & ~ :global(.tooltip) {
+  :global(.toggle__checkbox):checked {
+    & ~ :global(.tooltip__tooltip) {
       color: $green;
       border-color: $green;
     }
 
-    & ~ :global(.toggle) {
+    & ~ :global(.toggle__toggle) {
       border-color: $green;
 
       &:after {

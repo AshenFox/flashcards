@@ -1,11 +1,10 @@
-import { FC, MouseEvent } from 'react';
-import { useActions, useAppSelector } from '../../../store/hooks';
+import { MouseEvent, memo } from 'react';
+import { useActions, useAppSelector } from '@store/hooks';
+import Tooltip, { tooltipContainer } from '@ui/Tooltip';
+import clsx from 'clsx';
+import s from './styles.module.scss';
 
-interface OwnProps {}
-
-type Props = OwnProps;
-
-const ModuleSRDropControl: FC<Props> = () => {
+const ModuleSRDropControl = () => {
   const { set_module_question } = useActions();
 
   const { module } = useAppSelector(({ main }) => main);
@@ -16,16 +15,16 @@ const ModuleSRDropControl: FC<Props> = () => {
 
   return (
     <div
-      className='module__drop-studyregime'
+      className={clsx(s.drop, tooltipContainer)}
       data-active={question}
       onClick={clickDropSR}
     >
-      <span>Drop all cards study progress</span>
       <svg width='30' height='30'>
         <use href='../img/sprite.svg#icon__drop_studyregime'></use>
       </svg>
+      <Tooltip>Drop all cards study progress</Tooltip>
     </div>
   );
 };
 
-export default ModuleSRDropControl;
+export default memo(ModuleSRDropControl);

@@ -1,0 +1,43 @@
+@import '@styles/vars.scss';
+@import '@styles/animations.scss';
+
+.speaker {
+  cursor: pointer;
+  display: flex;
+
+  animation-duration: 1.5s;
+  animation-iteration-count: infinite;
+
+  svg {
+    transition: all 0.2s;
+    fill: $grey;
+  }
+
+  &:hover {
+    svg {
+      fill: $tertiary;
+    }
+  }
+
+  &[data-active='false'] {
+    cursor: initial;
+
+    svg {
+      fill: $grey-medium;
+    }
+
+    &:hover {
+      svg {
+        fill: $grey-medium;
+      }
+    }
+  }
+
+  &[data-speaking='true'] {
+    svg {
+      fill: $tertiary;
+    }
+
+    animation-name: example;
+  }
+}

@@ -5,16 +5,16 @@
   padding-right: 1.5rem;
   padding-left: 1.5rem;
 
-  :global(.tooltip) {
+  :global(.tooltip__tooltip) {
     left: 1.5rem;
   }
 
-  :global(.checkbox):checked {
-    & ~ :global(.tooltip) {
+  :global(.toggle__checkbox):checked {
+    & ~ :global(.tooltip__tooltip) {
       color: $green;
     }
 
-    & ~ :global(.toggle) {
+    & ~ :global(.toggle__toggle) {
       border-color: $green;
 
       &:after {
