@@ -1,16 +1,16 @@
 import { useRouter } from 'next/router';
-import Link from 'next/link';
 import ContentEditable from 'react-contenteditable';
 import Speaker from '@components/Speaker';
 import CardEditControl from './CardEditControl';
 import CardQuestion from './CardQuestion';
-import CardSRDropControl from './CardSRDropControl';
+import CardSRDropControl from './components/CardSRDropControl/CardSRDropControl';
 import CardSRControl from './components/CardSRControl';
 import Img from '@ui/Img';
 import DateStr from '@ui/DateStr';
 import { FC } from 'react';
 import { Card as CardType } from '../../../store/reducers/main/mainInitState';
 import { usePlug } from '@helpers/hooks/usePlug';
+import ModuleLink from './components/ModuleLink';
 
 interface OwnProps {
   data: CardType;
@@ -52,16 +52,7 @@ const Card: FC<Props> = ({ data, filter = null, filter_type = null }) => {
                 Created <DateStr date={creation_date} />
               </span>
             </div>
-            {!isModule && (
-              <Link href={`/module/${moduleID}`}>
-                <div className='module__card-link'>
-                  <svg>
-                    <use href='../img/sprite.svg#icon__external-link'></use>
-                  </svg>
-                  <span>To the card&apos;s module</span>
-                </div>
-              </Link>
-            )}
+            {!isModule && <ModuleLink moduleId={moduleID} />}
           </div>
           <div className='module__card-main'>
             <div className='module__card-term'>

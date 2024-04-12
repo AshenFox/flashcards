@@ -36,7 +36,13 @@ const Toggle = ({
 
   return (
     <div className={clsx(s.container, tooltipContainer, className)}>
-      <input className={'checkbox'} type='checkbox' id={id} checked={active} readOnly />
+      <input
+        className={'toggle__checkbox'}
+        type='checkbox'
+        id={id}
+        checked={active}
+        readOnly
+      />
       {typeof icon === 'string' ? (
         <svg height={innerIconSize} width={innerIconSize}>
           <use href={`../img/sprite.svg#${icon}`}></use>
@@ -46,7 +52,7 @@ const Toggle = ({
       )}
       {tooltip && <Tooltip>{tooltip}</Tooltip>}
       <label
-        className={clsx('toggle', small && s.small)}
+        className={clsx('toggle__toggle', small && s.small)}
         htmlFor={id}
         onClick={onClick}
         onMouseDown={onMouseDown}

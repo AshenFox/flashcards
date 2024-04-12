@@ -3,6 +3,7 @@ import { useActions } from '@store/hooks';
 import { Card } from '@store/reducers/main/mainInitState';
 import s from './styles.module.scss';
 import clsx from 'clsx';
+import Tooltip, { tooltipContainer } from '@ui/Tooltip';
 
 type ScrapeProps = {
   data: Card;
@@ -23,13 +24,19 @@ const Scrape = ({ data }: ScrapeProps) => {
 
   return (
     <div className={s.scrape} data-loading={loading}>
-      <div className={clsx(s.button, s.cod)} onClick={clickScrapeButton('cod')}>
+      <div
+        className={clsx(s.button, s.cod, tooltipContainer)}
+        onClick={clickScrapeButton('cod')}
+      >
         <div className={s.background}></div>
-        <span>Search in Cambridge Online Dictionary</span>
+        <Tooltip>Search in Cambridge Online Dictionary</Tooltip>
       </div>
-      <div className={clsx(s.button, s.urban)} onClick={clickScrapeButton('urban')}>
+      <div
+        className={clsx(s.button, s.urban, tooltipContainer)}
+        onClick={clickScrapeButton('urban')}
+      >
         <div className={s.background}></div>
-        <span>Search in Urban Dictionary</span>
+        <Tooltip>Search in Urban Dictionary</Tooltip>
       </div>
     </div>
   );

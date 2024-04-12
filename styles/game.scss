@@ -1271,7 +1271,7 @@
 .game {
   &__speaker-flashcards,
   &__speaker-write {
-    @include speaker;
+    position: absolute;
   }
 
   &__speaker-flashcards {

@@ -4,8 +4,11 @@ import ContentEditable from 'react-contenteditable';
 import Speaker from '@components/Speaker';
 import Img from '@ui/Img';
 import SRIndicator from '@components/SRIndicator';
-import { Card } from '../../../store/reducers/main/mainInitState';
-import { useActions, useAppSelector } from '../../../store/hooks';
+import { Card } from '@store/reducers/main/mainInitState';
+import { useActions, useAppSelector } from '@store/hooks';
+import s from './styles.module.scss';
+import clsx from 'clsx';
+import { tooltipContainer } from '@ui/Tooltip';
 
 interface OwnProps {
   data: Card;
@@ -65,7 +68,12 @@ const Question: FC<Props> = ({ data }) => {
   return (
     <div className='game__question'>
       <div className='game__question-container'>
-        {isSR && <SRIndicator data={data} classStr={'write write_question'} />}
+        {isSR && (
+          <SRIndicator
+            data={data}
+            className={clsx(s.indicator_question, tooltipContainer)}
+          />
+        )}
         {term && (
           <div className='game__question-dontknow'>
             <span onClick={clickNotKnow}>Don&apos;t know</span>

@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import Skeleton from 'react-loading-skeleton';
 import ModuleQuestion from './ModuleQuestion';
-import ModuleSRDropControl from './ModuleSRDropControl';
+import ModuleSRDropControl from './components/ModuleSRDropControl';
 import ModuleSRControl from './components/ModuleSRControl';
 import DateStr from '@ui/DateStr';
 import { FC, MouseEvent } from 'react';

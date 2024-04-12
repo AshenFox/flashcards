@@ -1,0 +1,26 @@
+@import '@styles/vars.scss';
+
+.indicator_question,
+.indicator_answer {
+  position: absolute;
+}
+
+.indicator_question {
+  left: 1rem;
+  top: 1rem;
+}
+
+.indicator_answer {
+  right: 4rem;
+  top: 2.5rem;
+
+  @media (max-width: $mobile) {
+    top: 2rem;
+    right: 3rem;
+  }
+
+  :global(.tooltip__tooltip) {
+    left: -21rem;
+    top: -1rem;
+  }
+}

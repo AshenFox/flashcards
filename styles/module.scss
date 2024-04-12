@@ -229,35 +229,6 @@
     align-items: center;
   }
 
-  &__card-link {
-    @include tooltip-container;
-
-    cursor: pointer;
-    position: relative;
-    font-size: 1.2rem;
-
-    svg {
-      fill: $grey-lighter;
-      width: 1.8rem;
-      height: 1.8rem;
-      transition: all 0.1s linear;
-    }
-
-    &:hover {
-      svg {
-        fill: $tertiary;
-      }
-    }
-
-    span {
-      @include tooltip;
-      width: max-content;
-      right: 0;
-      top: -3.25rem;
-      color: $tertiary;
-    }
-  }
-
   &__card {
     margin-bottom: 1.5rem;
   }
@@ -378,69 +349,8 @@
 }
 
 .module {
-  &__drop-studyregime,
-  &__study-regime,
-  &__drop-card-study-regime {
-    @include tooltip-container;
-
-    & span {
-      @include tooltip;
-    }
-  }
-
-  &__card-study-regime {
-    @include tooltip-container;
-  }
-
-  &__checkbox {
-    display: none;
-  }
-
-  &__checkbox {
-    &:checked {
-      & ~ span {
-        color: $green;
-        border-color: $green;
-      }
-
-      & ~ .module__toggle-switch {
-        border-color: $green;
-        &:after {
-          left: 26px;
-          background-color: $green;
-        }
-      }
-
-      & ~ .module__toggle-switch.sm {
-        &:after {
-          left: 16px;
-        }
-      }
-
-      & ~ .sr-indicator {
-        svg {
-          fill: $green;
-        }
-      }
-
-      & ~ .sr-indicator {
-        .sr-indicator__dots {
-          opacity: 1;
-        }
-      }
-
-      & ~ svg {
-        fill: $green;
-      }
-    }
-  }
-
-  &__toggle-switch {
-    @include toggle-switch;
-  }
-
   &__speaker {
-    @include speaker;
+    position: absolute;
   }
 
   &__speaker {
@@ -455,109 +365,6 @@
 }
 
 .module {
-  &__study-regime,
-  &__drop-studyregime {
-    position: relative;
-    border-right: 2px solid $grey-light;
-
-    & span {
-      top: -3rem;
-      width: max-content;
-    }
-  }
-
-  &__study-regime {
-    padding-right: 1.5rem;
-    padding-left: 1.5rem;
-  }
-
-  &__drop-studyregime {
-    cursor: pointer;
-    padding-right: 0.65rem;
-
-    span {
-      color: $red !important;
-    }
-
-    &:hover {
-      svg {
-        fill: $red;
-      }
-    }
-
-    &[data-active='true'] {
-      span {
-        opacity: 0 !important;
-      }
-
-      svg {
-        fill: $red;
-      }
-    }
-  }
-
-  &__card-study-regime,
-  &__drop-card-study-regime {
-    position: relative;
-
-    border: none;
-
-    & span {
-      margin-right: 1rem;
-      top: -3rem;
-      width: max-content;
-    }
-  }
-
-  &__card-study-regime {
-    margin-left: 0.5rem;
-
-    & svg {
-      margin-right: 1.3rem !important;
-    }
-
-    &:hover {
-      .sr-indicator__tooltip {
-        opacity: 1;
-      }
-    }
-
-    & .module__checkbox {
-      &:checked {
-        & ~ .sr-indicator {
-          .sr-indicator__tooltip {
-            color: $green;
-          }
-        }
-      }
-    }
-  }
-
-  &__drop-card-study-regime {
-    cursor: pointer;
-
-    & span {
-      left: -1rem;
-      color: $red !important;
-    }
-
-    &:hover {
-      svg {
-        fill: $red;
-      }
-    }
-
-    &[data-active='true'] {
-      span {
-        opacity: 0 !important;
-      }
-
-      svg {
-        fill: $red;
-      }
-    }
-  }
-
   &__question {
     position: absolute;
     top: -10.5rem;

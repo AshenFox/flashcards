@@ -1,7 +1,9 @@
-import { ForwardedRef, useCallback, useMemo } from 'react';
+import { ForwardedRef, memo, useCallback, useMemo } from 'react';
 import { useActions, useAppSelector } from '@store/hooks';
 import EasySpeech from 'easy-speech';
 import { EasySpeechStatus } from '@store/reducers/voice/voiceInitState';
+import clsx from 'clsx';
+import s from './styles.module.scss';
 
 type SpeakerProps = {
   _id: string;
@@ -93,7 +95,7 @@ const Speaker = ({ _id, text, type, className, ref }: SpeakerProps) => {
 
   return (
     <div
-      className={className}
+      className={clsx(s.speaker, className)}
       data-active={active}
       data-speaking={speakerSpeaking}
       onClick={clickSpeaker}
@@ -106,7 +108,7 @@ const Speaker = ({ _id, text, type, className, ref }: SpeakerProps) => {
   );
 };
 
-export default Speaker;
+export default memo(Speaker);
 
 // Supplemental functions
 // ==============================

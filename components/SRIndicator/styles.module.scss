@@ -1,5 +1,4 @@
 @import '@styles/vars.scss';
-@import '@styles/mixins.scss';
 @import '@styles/animations.scss';
 
 .indicator {
@@ -13,7 +12,7 @@
     width: 22px;
   }
 
-  :global(.dots) {
+  :global(.indicator__dots) {
     position: absolute;
 
     transition: all 0.2s;
@@ -27,7 +26,7 @@
     width: 3.4rem;
   }
 
-  :global(.dot) {
+  :global(.indicator__dot) {
     position: absolute;
     background-color: $secondary;
     border-radius: 50%;
@@ -37,9 +36,7 @@
     width: 0.4rem;
   }
 
-  :global(.tooltip) {
-    @include tooltip;
-
+  :global(.tooltip__tooltip) {
     width: max-content;
     border-radius: 1.5rem;
 
@@ -58,19 +55,19 @@
   }
 
   &.small {
-    :global(.dots) {
+    :global(.indicator__dots) {
       top: -0.5rem;
       left: -0.5rem;
       height: 2.7rem;
       width: 2.7rem;
     }
 
-    :global(.dot) {
+    :global(.indicator__dot) {
       height: 0.4rem;
       width: 0.4rem;
     }
 
-    :global(.tooltip) {
+    :global(.tooltip__tooltip) {
       left: -1rem;
       top: -6rem;
     }
@@ -87,101 +84,12 @@
       fill: $green;
     }
 
-    :global(.dots) {
+    :global(.indicator__dots) {
       opacity: 1;
     }
 
-    :global(.tooltip) {
+    :global(.tooltip__tooltip) {
       color: $green;
     }
   }
-
-  /* &.module {
-    .dots {
-      // opacity: 0;
-      top: -0.5rem;
-      left: -0.5rem;
-      height: 2.7rem;
-      width: 2.7rem;
-    }
-
-    .dot {
-      height: 0.4rem;
-      width: 0.4rem;
-    }
-
-    .tooltip {
-      opacity: 0;
-      left: -1rem;
-      top: -6rem;
-    }
-
-    svg {
-      fill: $grey;
-      height: 17px;
-      width: 17px;
-    }
-  }
-
-  &.flashcards,
-  &.write {
-    position: absolute;
-
-    .dots {
-      top: -0.6rem;
-      left: -0.6rem;
-      height: 3.4rem;
-      width: 3.4rem;
-    }
-
-    .dot {
-      height: 0.4rem;
-      width: 0.4rem;
-    }
-
-    .tooltip {
-      color: $green;
-      left: 4rem;
-      top: -1rem;
-    }
-
-    svg {
-      fill: $green;
-      height: 22px;
-      width: 22px;
-    }
-
-    &:hover {
-      .tooltip {
-        opacity: 1;
-      }
-    }
-  }
-
-  &.flashcards {
-    left: 2rem;
-    top: 2rem;
-  }
-
-  &.write {
-    &_question {
-      left: 1rem;
-      top: 1rem;
-    }
-
-    &_answer {
-      right: 4rem;
-      top: 2.5rem;
-
-      .tooltip {
-        left: -21rem;
-        top: -1rem;
-      }
-
-      @media (max-width: $mobile) {
-        top: 2rem;
-        right: 3rem;
-      }
-    }
-  } */
 }

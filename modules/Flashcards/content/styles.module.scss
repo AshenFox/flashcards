@@ -1,0 +1,13 @@
+@import '@styles/vars.scss';
+
+.sr_indicator {
+  position: absolute;
+  left: 2rem;
+  top: 2rem;
+
+  :global(.tooltip__tooltip) {
+    color: $green;
+    left: 4rem;
+    top: -1rem;
+  }
+}
