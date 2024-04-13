@@ -7,8 +7,8 @@
     margin-right: 1.3rem;
   }
 
-  :global(.toggle__checkbox):checked {
-    & ~ :global(.toggle__toggle) {
+  :global(.switch__checkbox):checked {
+    & ~ :global(.switch__switch) {
       border-color: $green;
 
       &:after {

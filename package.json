@@ -44,7 +44,7 @@
     "normalize.css": "^8.0.1",
     "npm": "^8.6.0",
     "react": "^18.2.0",
-    "react-contenteditable": "^3.3.5",
+    "react-contenteditable": "^3.3.7",
     "react-dom": "^18.2.0",
     "react-loading-skeleton": "^2.1.1",
     "react-redux": "^7.2.2",

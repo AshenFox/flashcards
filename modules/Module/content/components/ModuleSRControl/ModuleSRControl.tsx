@@ -1,6 +1,6 @@
 import { MouseEvent, memo } from 'react';
 import { useActions, useAppSelector } from '@store/hooks';
-import Toggle from '@ui/Toggle';
+import Switch from '@ui/Switch';
 import clsx from 'clsx';
 import s from './styles.module.scss';
 
@@ -20,15 +20,15 @@ const ModuleSRControl = () => {
     }
   }
 
-  const clickToggleSwitch = (e: MouseEvent<HTMLLabelElement>) => set_cards_sr(!active);
+  const clickSwitch = (e: MouseEvent<HTMLLabelElement>) => set_cards_sr(!active);
 
   return (
-    <Toggle
+    <Switch
       id={`module-sr-control`}
       className={clsx(s.sr_control)}
       active={active}
       icon={'icon__studyregime'}
-      onClick={clickToggleSwitch}
+      onClick={clickSwitch}
       tooltip={'All cards study regime'}
     />
   );

@@ -2,7 +2,7 @@ import { MouseEvent, TouchEvent, memo, useCallback, useRef } from 'react';
 import SRIndicator from '@components/SRIndicator';
 import { Card } from '@store/reducers/main/mainInitState';
 import { useActions } from '@store/hooks';
-import Toggle from '@ui/Toggle';
+import Switch from '@ui/Switch';
 import s from './styles.module.scss';
 import clsx from 'clsx';
 
@@ -40,7 +40,7 @@ const CardSRControl = ({ data }: CardSRControlProps) => {
   const timer = useRef<ReturnType<typeof setTimeout>>(null);
 
   return (
-    <Toggle
+    <Switch
       id={`card_sr_${_id}`}
       className={clsx('module__card-controls-item', s.sr_control)}
       active={studyRegime}

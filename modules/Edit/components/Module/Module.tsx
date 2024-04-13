@@ -1,11 +1,12 @@
 import { memo, useCallback, useRef } from 'react';
 import { useRouter } from 'next/router';
-import ContentEditable, { ContentEditableEvent } from 'react-contenteditable';
+import { ContentEditableEvent } from 'react-contenteditable';
 import { Save } from './components';
 import ContentWrapper from '@components/ContentWrapper';
 import { useActions, useAppSelector } from '@store/hooks';
 import Container from '@components/Container';
 import s from './styles.module.scss';
+import Textarea from '@ui/Textarea';
 
 const Module = () => {
   const { control_module, edit_module } = useActions();
@@ -66,11 +67,13 @@ const Module = () => {
         <Container>
           <div className={s.content}>
             <div className={s.title}>
-              <ContentEditable
-                html={title ? title : ''}
+              <Textarea
+                html={title ?? ''}
                 disabled={loading}
-                className={`textarea textarea--module ${active ? '' : 'error'}`}
+                className={s.textarea}
                 onChange={handleModuleChange}
+                isStyled
+                error={!active}
               />
               <div className={`label ${active ? '' : 'error'}`} id='title-error'>
                 {active ? 'TITLE' : errMessage}

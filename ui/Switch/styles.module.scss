@@ -4,7 +4,7 @@
   display: flex;
   align-items: center;
 
-  & span {
+  :global(.tooltip__tooltip) {
     top: -3rem;
     right: 1.5rem;
     width: max-content;
@@ -17,24 +17,30 @@
     transition: all 0.2s;
   }
 
-  :global(.toggle__toggle) {
+  :global(.switch__switch) {
     cursor: pointer;
     position: relative;
-    display: inline-block;
-    height: 2.8rem;
-    width: 5rem;
-    border-radius: 1.4rem;
+    display: inline-flex;
+    align-items: center;
+    height: 28px;
+    width: 50px;
+    border-radius: 14px;
     border: 2px solid $grey;
     transition: all 0.2s;
+    padding: 0 2px;
+
+    &:before {
+      content: '';
+      display: inline-block;
+      transition: all 0.2s;
+      flex-grow: 0;
+    }
 
     &:after {
       content: '';
       display: inline-block;
-      position: absolute;
-      top: 3px;
-      left: 2px;
-      height: 1.8rem;
-      width: 1.8rem;
+      height: 18px;
+      width: 18px;
       background-color: $grey;
       border-radius: 50%;
       transition: all 0.2s;
@@ -42,35 +48,26 @@
 
     &.small {
       height: 20px;
-      width: 3.5rem;
-      border-radius: 1rem;
+      width: 35px;
+      border-radius: 10px;
       border: 1.5px solid $grey;
 
       &:after {
-        top: 50%;
-        transform: translateY(-50%);
-        left: 1.5px;
         height: 14px;
         width: 14px;
       }
     }
   }
 
-  :global(.toggle__checkbox) {
+  :global(.switch__checkbox) {
     display: none;
   }
 
-  :global(.toggle__checkbox) {
+  :global(.switch__checkbox) {
     &:checked {
-      & ~ :global(.toggle__toggle) {
-        &:after {
-          left: 26px;
-        }
-      }
-
-      & ~ :global(.toggle__toggle).small {
-        &:after {
-          left: 16.5px;
+      & ~ :global(.switch__switch) {
+        &:before {
+          flex-grow: 1;
         }
       }
     }
