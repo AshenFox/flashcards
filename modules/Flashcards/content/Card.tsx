@@ -1,5 +1,4 @@
 import { useRouter } from 'next/router';
-import ContentEditable from 'react-contenteditable';
 import Speaker from '@components/Speaker';
 import Img from '@ui/Img';
 import SRIndicator from '@components/SRIndicator';
@@ -9,6 +8,7 @@ import { useActions } from '@store/hooks';
 import { tooltipContainer } from '@ui/Tooltip';
 import s from './styles.module.scss';
 import clsx from 'clsx';
+import Textarea from '@ui/Textarea';
 
 interface OwnProps {
   data: CardType;
@@ -70,12 +70,7 @@ const Card: FC<Props> = ({ data, side = 'definition', position = null }) => {
 
         {defenition && (
           <div className={`game__definition-container ${imgurl ? '' : 'full'}`}>
-            <ContentEditable
-              html={hidTranscrDefenition}
-              disabled={true}
-              className='game__definition'
-              onChange={null}
-            />
+            <Textarea html={hidTranscrDefenition} className='game__definition' />
           </div>
         )}
         <Speaker
@@ -95,12 +90,7 @@ const Card: FC<Props> = ({ data, side = 'definition', position = null }) => {
           <SRIndicator data={data} className={clsx(s.sr_indicator, tooltipContainer)} />
         )}
         <div className='game__term-container '>
-          <ContentEditable
-            html={term}
-            disabled={true}
-            className='game__term'
-            onChange={null}
-          />
+          <Textarea html={term} className='game__term' />
         </div>
         <Speaker
           _id={_id}

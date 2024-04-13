@@ -2,7 +2,7 @@ import { MouseEvent, TouchEvent, memo, useCallback, useRef } from 'react';
 import { useActions } from '@store/hooks';
 import { Card } from '@store/reducers/main/mainInitState';
 import s from './styles.module.scss';
-import Toggle from '@ui/Toggle';
+import Switch from '@ui/Switch';
 
 type SaveProps = {
   data: Card;
@@ -38,8 +38,8 @@ const Save = ({ data }: SaveProps) => {
   const timer = useRef<ReturnType<typeof setTimeout>>(null);
 
   return (
-    <Toggle
-      id={`toggle-save${_id}`}
+    <Switch
+      id={`switch-save${_id}`}
       className={s.save}
       active={save}
       small

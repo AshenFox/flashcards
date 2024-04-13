@@ -1,6 +1,6 @@
 import { memo, useCallback } from 'react';
 import { useActions, useAppSelector } from '@store/hooks';
-import Toggle from '@ui/Toggle';
+import Switch from '@ui/Switch';
 import s from './styles.module.scss';
 
 const Save = () => {
@@ -25,8 +25,8 @@ const Save = () => {
   );
 
   return (
-    <Toggle
-      id={'toggle-save-main'}
+    <Switch
+      id={'switch-save-main'}
       className={s.save}
       active={active}
       icon={'icon__save'}

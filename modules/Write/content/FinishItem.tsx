@@ -1,10 +1,10 @@
 import { useRouter } from 'next/router';
-import ContentEditable from 'react-contenteditable';
 import Img from '@ui/Img';
 import DateStr from '@ui/DateStr';
 import { WriteCard } from '../../../store/reducers/game/gameInitState';
 import { FC } from 'react';
 import { useAppSelector } from '../../../store/hooks';
+import Textarea from '@ui/Textarea';
 
 interface OwnProps {
   data: WriteCard;
@@ -55,13 +55,13 @@ const FinishItem: FC<Props> = ({ data, i, stats }) => {
           </div>
           <div className={`game__finish-term game__finish-term--${data.answer}`}>
             <span>{i}.</span>
-            <ContentEditable html={term} disabled={true} onChange={null} />
+            <Textarea html={term} />
           </div>
         </div>
 
         <div className='game__finish-body-right'>
           <div className='game__finish-definition'>
-            <ContentEditable html={defenition} disabled={true} onChange={null} />
+            <Textarea html={defenition} />
             <Img
               containerClass={'game__finish-img-container'}
               imgClass={'game__finish-img'}

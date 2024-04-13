@@ -4,13 +4,13 @@
   padding-right: 1.5rem;
   border-right: 2px solid $grey-light;
 
-  :global(.toggle__checkbox):checked {
+  :global(.switch__checkbox):checked {
     & ~ :global(.tooltip__tooltip) {
       color: $green;
       border-color: $green;
     }
 
-    & ~ :global(.toggle__toggle) {
+    & ~ :global(.switch__switch) {
       border-color: $green;
 
       &:after {

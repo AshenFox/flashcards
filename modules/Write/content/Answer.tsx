@@ -1,6 +1,5 @@
 import { useRouter } from 'next/router';
 import { ChangeEvent, FC, MouseEvent, useEffect, useRef } from 'react';
-import ContentEditable from 'react-contenteditable';
 import Speaker from '@components/Speaker';
 import Img from '@ui/Img';
 import SRIndicator from '@components/SRIndicator';
@@ -9,6 +8,7 @@ import { useActions, useAppSelector } from '@store/hooks';
 import s from './styles.module.scss';
 import clsx from 'clsx';
 import { tooltipContainer } from '@ui/Tooltip';
+import Textarea from '@ui/Textarea';
 
 interface OwnProps {
   data: Card;
@@ -139,7 +139,7 @@ const Answer: FC<Props> = ({ data }) => {
             url={imgurl}
           />
           <div className='game__section-body '>
-            <ContentEditable html={defenition} disabled={true} onChange={null} />
+            <Textarea html={defenition} />
             <Speaker
               _id={_id}
               text={defenition}
@@ -168,7 +168,7 @@ const Answer: FC<Props> = ({ data }) => {
         <div className='game__answer-section'>
           <span className='game__section-title'>Correct</span>
           <div className='game__section-body '>
-            <ContentEditable html={term} disabled={true} onChange={null} />
+            <Textarea html={term} />
             <Speaker
               _id={_id}
               text={term}

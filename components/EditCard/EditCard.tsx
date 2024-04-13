@@ -1,5 +1,5 @@
 import { memo, useCallback, useRef } from 'react';
-import ContentEditable, { ContentEditableEvent } from 'react-contenteditable';
+import { ContentEditableEvent } from 'react-contenteditable';
 import Gallery from '@components/Gallery';
 import Scrape from './components/Scrape';
 import Save from './components/Save';
@@ -11,6 +11,7 @@ import { useActions } from '@store/hooks';
 import { usePlug } from '@helpers/hooks/usePlug';
 import s from './styles.module.scss';
 import clsx from 'clsx';
+import Textarea from '@ui/Textarea';
 
 type EditCardProps = {
   data: Card;
@@ -67,22 +68,22 @@ const EditCard = ({
 
       <div className={s.items}>
         <div className={s.term}>
-          <ContentEditable
+          <Textarea
             html={term}
             disabled={loading}
-            className='textarea'
             onChange={handleCardChange('term')}
+            isStyled
           />
           <label className={s.label}>TERM</label>
         </div>
 
         <div className={s.definition}>
           <div className={s.definition_input}>
-            <ContentEditable
+            <Textarea
               html={defenition}
               disabled={loading}
-              className='textarea'
               onChange={handleCardChange('defenition')}
+              isStyled
             />
             <label className={s.label}>DEFINITION</label>
           </div>

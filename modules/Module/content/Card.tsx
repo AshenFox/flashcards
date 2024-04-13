@@ -1,5 +1,4 @@
 import { useRouter } from 'next/router';
-import ContentEditable from 'react-contenteditable';
 import Speaker from '@components/Speaker';
 import CardEditControl from './CardEditControl';
 import CardQuestion from './CardQuestion';
@@ -11,6 +10,7 @@ import { FC } from 'react';
 import { Card as CardType } from '../../../store/reducers/main/mainInitState';
 import { usePlug } from '@helpers/hooks/usePlug';
 import ModuleLink from './components/ModuleLink';
+import Textarea from '@ui/Textarea';
 
 interface OwnProps {
   data: CardType;
@@ -56,11 +56,7 @@ const Card: FC<Props> = ({ data, filter = null, filter_type = null }) => {
           </div>
           <div className='module__card-main'>
             <div className='module__card-term'>
-              <ContentEditable
-                html={filter_type === 'term' && filter ? formatted_term : term}
-                disabled={true}
-                onChange={null}
-              />
+              <Textarea html={filter_type === 'term' && filter ? formatted_term : term} />
               <div className='module__card-controls'>
                 <CardEditControl data={data} />
                 <CardSRControl data={data} />
@@ -71,14 +67,12 @@ const Card: FC<Props> = ({ data, filter = null, filter_type = null }) => {
             </div>
             <div className='module__card-definition-container'>
               <div className='module__card-definition'>
-                <ContentEditable
+                <Textarea
                   html={
                     filter_type === 'defenition' && filter
                       ? formatted_definition
                       : defenition
                   }
-                  disabled={true}
-                  onChange={null}
                 />
                 <Speaker
                   _id={_id}

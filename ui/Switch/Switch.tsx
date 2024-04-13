@@ -3,7 +3,7 @@ import s from './styles.module.scss';
 import clsx from 'clsx';
 import Tooltip, { tooltipContainer } from '@ui/Tooltip';
 
-type ToggleProps = {
+type SwitchProps = {
   id: string;
   active: boolean;
   className?: string;
@@ -18,7 +18,7 @@ type ToggleProps = {
   onTouchEnd?: TouchEventHandler<HTMLLabelElement>;
 };
 
-const Toggle = ({
+const Switch = ({
   id,
   active,
   small = false,
@@ -31,13 +31,13 @@ const Toggle = ({
   onMouseUp,
   onTouchStart,
   onTouchEnd,
-}: ToggleProps) => {
+}: SwitchProps) => {
   const innerIconSize = iconSize ?? small ? 17 : 28;
 
   return (
     <div className={clsx(s.container, tooltipContainer, className)}>
       <input
-        className={'toggle__checkbox'}
+        className={'switch__checkbox'}
         type='checkbox'
         id={id}
         checked={active}
@@ -52,7 +52,7 @@ const Toggle = ({
       )}
       {tooltip && <Tooltip>{tooltip}</Tooltip>}
       <label
-        className={clsx('toggle__toggle', small && s.small)}
+        className={clsx('switch__switch', small && s.small)}
         htmlFor={id}
         onClick={onClick}
         onMouseDown={onMouseDown}
@@ -64,4 +64,4 @@ const Toggle = ({
   );
 };
 
-export default memo(Toggle);
+export default memo(Switch);
