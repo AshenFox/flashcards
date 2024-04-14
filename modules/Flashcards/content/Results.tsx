@@ -32,7 +32,7 @@ const Finish: FC<Props> = () => {
     };
   }, []);
 
-  const correctNum = answers.filter((item) => item.answer === 'correct').length;
+  const correctNum = answers.filter(item => item.answer === 'correct').length;
 
   return (
     <div className='game__finish'>
@@ -47,7 +47,10 @@ const Finish: FC<Props> = () => {
         <div className='game__finish-header-item '>
           {' '}
           <Link href={isSR ? `/home/sr` : `/module/${_id}`}>
-            <button className='btn bcc-lightblue pad10-30 brr15 white fz15 fw-normal h-grey h-bcc-yellow'>
+            <button
+              //helpers-delete
+              className='bcc-lightblue pad10-30 brr15 white fz15 fw-normal h-grey h-bcc-yellow'
+            >
               Finish game
             </button>
           </Link>

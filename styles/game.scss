@@ -416,12 +416,10 @@
     border: none;
     flex: 1;
 
-    & label {
-      text-transform: uppercase;
+    & .text_label__label {
       color: $grey-lighter;
       font-size: 1.2rem;
       letter-spacing: 0.2rem;
-      transition: all 0.2s;
     }
   }
 

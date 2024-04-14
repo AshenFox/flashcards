@@ -6,7 +6,8 @@ import ContentWrapper from '@components/ContentWrapper';
 import { useActions, useAppSelector } from '@store/hooks';
 import Container from '@components/Container';
 import s from './styles.module.scss';
-import Textarea from '@ui/Textarea';
+import TextArea from '@ui/TextArea';
+import TextLabel from '@ui/TextLabel';
 
 const Module = () => {
   const { control_module, edit_module } = useActions();
@@ -20,7 +21,7 @@ const Module = () => {
   const cards = useAppSelector(s => s.main.cards);
   const loading = useAppSelector(s => s.main.loading);
 
-  const { title, draft } = currentModule || {};
+  const { title, draft, _id: moduleId } = currentModule || {};
 
   const handleModuleChange = useCallback(
     (e: ContentEditableEvent) => {
@@ -61,23 +62,26 @@ const Module = () => {
     ? 'PLEASE ENTER A TITLE AND ENSURE SAVING OF AT LEAST 2 CARDS'
     : 'PLEASE ENTER A TITLE';
 
+  const textAreaId = `module${moduleId}`;
+
   return (
     <div className={s.module}>
       <ContentWrapper tagType='section'>
         <Container>
           <div className={s.content}>
             <div className={s.title}>
-              <Textarea
+              <TextArea
                 html={title ?? ''}
                 disabled={loading}
                 className={s.textarea}
                 onChange={handleModuleChange}
                 isStyled
                 error={!active}
+                id={textAreaId}
               />
-              <div className={`label ${active ? '' : 'error'}`} id='title-error'>
-                {active ? 'TITLE' : errMessage}
-              </div>
+              <TextLabel htmlFor={textAreaId} errorMessage={errMessage} error={!active}>
+                TITLE
+              </TextLabel>
             </div>
           </div>
           {(draft || isDraft) && (

@@ -16,7 +16,7 @@ const Study: FC<Props> = () => {
 
       <div className='module__study-item' id='write-game'>
         <Link href={`/flashcards/${_id}`}>
-          <button className='btn'>
+          <button>
             <svg height='31' width='31'>
               <use href='../img/sprite.svg#icon__cards'></use>
             </svg>
@@ -27,7 +27,7 @@ const Study: FC<Props> = () => {
 
       <div className='module__study-item' id='write-game'>
         <Link href={`/write/${_id}`}>
-          <button className='btn'>
+          <button>
             <svg height='30' width='30'>
               <use href='../img/sprite.svg#icon__write'></use>
             </svg>

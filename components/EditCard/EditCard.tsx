@@ -11,7 +11,8 @@ import { useActions } from '@store/hooks';
 import { usePlug } from '@helpers/hooks/usePlug';
 import s from './styles.module.scss';
 import clsx from 'clsx';
-import Textarea from '@ui/Textarea';
+import TextArea from '@ui/TextArea';
+import TextLabel from '@ui/TextLabel';
 
 type EditCardProps = {
   data: Card;
@@ -68,24 +69,26 @@ const EditCard = ({
 
       <div className={s.items}>
         <div className={s.term}>
-          <Textarea
+          <TextArea
             html={term}
             disabled={loading}
             onChange={handleCardChange('term')}
+            id={`term${data._id}`}
             isStyled
           />
-          <label className={s.label}>TERM</label>
+          <TextLabel htmlFor={`term${data._id}`}>TERM</TextLabel>
         </div>
 
         <div className={s.definition}>
           <div className={s.definition_input}>
-            <Textarea
+            <TextArea
               html={defenition}
               disabled={loading}
               onChange={handleCardChange('defenition')}
+              id={`definition${data._id}`}
               isStyled
             />
-            <label className={s.label}>DEFINITION</label>
+            <TextLabel htmlFor={`definition${data._id}`}>DEFINITION</TextLabel>
           </div>
           <AddImg data={data} />
         </div>

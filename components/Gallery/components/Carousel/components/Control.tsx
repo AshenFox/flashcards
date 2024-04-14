@@ -51,8 +51,9 @@ const Control = ({ direction, _id }: ControlProps) => {
       onClick={clickControl}
     >
       <button
+        //helpers-delete
         className={clsx(
-          'btn pad15 bcc-white brr50p d-f h-bcc-yellow p-r',
+          'pad15 bcc-white brr50p d-f h-bcc-yellow p-r',
           direction === 'left' ? 'mar-left-a' : ''
         )}
       >

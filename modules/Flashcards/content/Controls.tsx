@@ -41,7 +41,10 @@ const Controls: FC<Props> = () => {
         <div className='game__controls'>
           <div className='game__back'>
             <Link href={isSR ? '/home/sr' : `/module/${_id}`}>
-              <button className='btn grey ai-c ta-l fz17 width100 pad15-20 h-bcc-yellow'>
+              <button
+                //helpers-delete
+                className='grey ai-c ta-l fz17 width100 pad15-20 h-bcc-yellow'
+              >
                 {' '}
                 <svg height='15' width='15'>
                   <use href='../img/sprite.svg#icon__triangle_left'></use>

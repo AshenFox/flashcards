@@ -10,7 +10,7 @@ import { FC } from 'react';
 import { Card as CardType } from '../../../store/reducers/main/mainInitState';
 import { usePlug } from '@helpers/hooks/usePlug';
 import ModuleLink from './components/ModuleLink';
-import Textarea from '@ui/Textarea';
+import TextArea from '@ui/TextArea';
 
 interface OwnProps {
   data: CardType;
@@ -30,6 +30,7 @@ const Card: FC<Props> = ({ data, filter = null, filter_type = null }) => {
     'g'
   );
 
+  //helpers-delete
   const replacement = `<span class='bcc-yellow'>${filter}</span>`;
 
   let formatted_term: string, formatted_definition: string;
@@ -56,7 +57,7 @@ const Card: FC<Props> = ({ data, filter = null, filter_type = null }) => {
           </div>
           <div className='module__card-main'>
             <div className='module__card-term'>
-              <Textarea html={filter_type === 'term' && filter ? formatted_term : term} />
+              <TextArea html={filter_type === 'term' && filter ? formatted_term : term} />
               <div className='module__card-controls'>
                 <CardEditControl data={data} />
                 <CardSRControl data={data} />
@@ -67,7 +68,7 @@ const Card: FC<Props> = ({ data, filter = null, filter_type = null }) => {
             </div>
             <div className='module__card-definition-container'>
               <div className='module__card-definition'>
-                <Textarea
+                <TextArea
                   html={
                     filter_type === 'defenition' && filter
                       ? formatted_definition

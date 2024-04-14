@@ -1,7 +1,8 @@
 import { FC, MouseEvent, KeyboardEvent, ChangeEvent, useState } from 'react';
 import Error from './Error';
 import LoadingBtn from '@ui/LoadingBtn';
-import { useActions, useAppSelector } from '../../../store/hooks';
+import { useActions, useAppSelector } from '@store/hooks';
+import TextLabel from '@ui/TextLabel';
 
 interface OwnProps {}
 
@@ -46,10 +47,14 @@ const LogIn: FC<Props> = () => {
   return (
     <>
       <Error errObj={userErr} single={true} />
-      <div className='modal__input-container pad5 height4r br-bottom2 bcc-whiteblue brc-grey f-brc-yellow username'>
+      <div
+        //helpers-delete
+        className='modal__input-container pad5 height4r br-bottom2 bcc-whiteblue brc-grey f-brc-yellow username'
+      >
         <input
           name='username'
           type='text'
+          //helpers-delete
           className='fz17'
           id='username'
           placeholder='Type your username'
@@ -58,15 +63,19 @@ const LogIn: FC<Props> = () => {
           onKeyDown={onKeyDown}
         />
       </div>
-      <label htmlFor='username' className='label modal__label'>
+      <TextLabel htmlFor='username' className='modal__label'>
         USERNAME
-      </label>
+      </TextLabel>
 
       {userErr.ok && <Error errObj={passErr} single={true} />}
-      <div className='modal__input-container pad5 height4r br-bottom2 bcc-whiteblue brc-grey f-brc-yellow password'>
+      <div
+        //helpers-delete
+        className='modal__input-container pad5 height4r br-bottom2 bcc-whiteblue brc-grey f-brc-yellow password'
+      >
         <input
           name='password'
           type={isPasswordVisible ? 'text' : 'password'}
+          //helpers-delete
           className='fz17'
           id='password'
           placeholder='Type your password'
@@ -84,17 +93,16 @@ const LogIn: FC<Props> = () => {
           </svg>
         )}
       </div>
-      <label htmlFor='password' className='label modal__label'>
+      <TextLabel htmlFor='password' className='modal__label'>
         PASSWORD
-      </label>
+      </TextLabel>
 
       <LoadingBtn
         active={true}
         loading={loading}
         onClickHandler={onCLickLoadingButton('log_in')}
-        classStr={
-          'btn width100 bcc-lightblue pad15-30 brr15 fz175 white h-grey h-bcc-yellow'
-        }
+        //helpers-delete
+        classStr={'width100 bcc-lightblue pad15-30 brr15 fz175 white h-grey h-bcc-yellow'}
       >
         Log in
       </LoadingBtn>
@@ -103,7 +111,8 @@ const LogIn: FC<Props> = () => {
         <p>
           Don&apos;t have an account?{' '}
           <button
-            className='btn white fz15 inline-block black h-yellow'
+            //helpers-delete
+            className='white fz15 inline-block black h-yellow'
             onClick={onClickChangeModal('sign_up')}
           >
             Sign up!

@@ -44,7 +44,10 @@ const Controls: FC<Props> = () => {
         <div className='game__controls'>
           <div className='game__back'>
             <Link href={isSR ? '/home/sr' : `/module/${_id}`}>
-              <button className='btn grey ai-c ta-l fz17 width100 pad15-20 h-bcc-yellow'>
+              <button
+                //helpers-delete
+                className='grey ai-c ta-l fz17 width100 pad15-20 h-bcc-yellow'
+              >
                 <svg height='15' width='15'>
                   <use href='../img/sprite.svg#icon__triangle_left'></use>
                 </svg>
@@ -66,7 +69,8 @@ const Controls: FC<Props> = () => {
             {!isSR && (
               <div className='game__startover'>
                 <button
-                  className='btn width100 fz15 pad7 br2 brc-grey-medium brr15 lightblue h-red h-brc-red'
+                  //helpers-delete
+                  className='width100 fz15 pad7 br2 brc-grey-medium brr15 lightblue h-red h-brc-red'
                   onClick={clickStartOver}
                 >
                   <span>Start over</span>

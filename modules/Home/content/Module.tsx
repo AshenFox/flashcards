@@ -3,7 +3,7 @@ import DateStr from '@ui/DateStr';
 import { Module as ModuleType } from '../../../store/reducers/main/mainInitState';
 import { FC } from 'react';
 import { usePlug } from '@helpers/hooks/usePlug';
-import Textarea from '@ui/Textarea';
+import TextArea from '@ui/TextArea';
 
 interface OwnProps {
   data: ModuleType;
@@ -51,7 +51,7 @@ const Module: FC<Props> = ({ data, filter = null }) => {
               <div className='home__term-number'>{number} Terms</div>
               {!draft && <div className='home__module-author'>{author}</div>}
             </div>
-            <Textarea
+            <TextArea
               html={html}
               className={`home__module-title ${draft || !title ? 'blue' : ''}`}
             />

@@ -5,10 +5,9 @@ import ContentEditable, {
 } from 'react-contenteditable';
 import s from './styles.module.scss';
 import { clsx } from 'clsx';
-import { noop } from '@helpers/functions/noop';
 import { Override } from '@helpers/types';
 
-type TextareaProps = Override<
+type TextAreaProps = Override<
   ContentEditableProps,
   {
     ref?: LegacyRef<ContentEditable> & LegacyRef<HTMLDivElement>;
@@ -18,7 +17,7 @@ type TextareaProps = Override<
   }
 >;
 
-const Textarea = ({
+const TextArea = ({
   ref,
   disabled = true,
   error,
@@ -26,16 +25,16 @@ const Textarea = ({
   isStyled,
   onChange = null,
   ...rest
-}: TextareaProps) => {
+}: TextAreaProps) => {
   return (
     <ContentEditable
+      {...rest}
       disabled={disabled}
       className={clsx(isStyled && s.textarea, error && s.error, className)}
       onChange={onChange}
       ref={ref}
-      {...rest}
     />
   );
 };
 
-export default memo(Textarea);
+export default memo(TextArea);

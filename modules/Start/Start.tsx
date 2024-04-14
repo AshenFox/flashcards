@@ -34,7 +34,8 @@ const Start = () => {
           </div>
           <button
             onClick={click('log_in')}
-            className='btn bcc-lightblue pad15-60 brr15 white fz175 h-grey h-bcc-yellow'
+            //helpers-delete
+            className='bcc-lightblue pad15-60 brr15 white fz175 h-grey h-bcc-yellow'
           >
             Get started
           </button>
