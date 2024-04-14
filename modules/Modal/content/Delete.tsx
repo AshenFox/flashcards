@@ -37,7 +37,8 @@ const Delete: FC<Props> = () => {
       <div className='modal__choice'>
         <div className='modal__choice-item'>
           <button
-            className='btn width100 bcc-mudblue pad15-30 brr15 fz175 white h-opacity09'
+            //helpers-delete
+            className='width100 bcc-mudblue pad15-30 brr15 fz175 white h-opacity09'
             onClick={close}
           >
             Cancel
@@ -49,7 +50,8 @@ const Delete: FC<Props> = () => {
             active={true}
             loading={module_loading}
             onClickHandler={clickDelete}
-            classStr='btn width100 bcc-coral pad15-30 brr15 fz175 white h-opacity09'
+            //helpers-delete
+            classStr='width100 bcc-coral pad15-30 brr15 fz175 white h-opacity09'
           >
             Yes, delete set
           </LoadingBtn>

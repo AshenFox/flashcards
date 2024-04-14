@@ -51,7 +51,10 @@ const EndGame: FC<Props> = ({ active }) => {
           length > 1 ? 's' : ''
         }!`}</p>
         <Link href={`/module/${_id}`}>
-          <button className='btn bcc-lightblue pad30 brr15 white fz175 h-grey h-bcc-yellow width50'>
+          <button
+            //helpers-delete
+            className='bcc-lightblue pad30 brr15 white fz175 h-grey h-bcc-yellow width50'
+          >
             Finish up
           </button>
         </Link>

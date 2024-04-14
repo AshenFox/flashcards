@@ -1,7 +1,7 @@
 import { FC, useRef } from 'react';
 import { useRouter } from 'next/router';
 import Select, { Options } from 'react-select';
-import { useActions, useAppSelector } from '../../../store/hooks';
+import { useActions, useAppSelector } from '@store/hooks';
 
 type Option = { value: string; label: string };
 
@@ -117,7 +117,8 @@ const Search: FC<Props> = () => {
       >
         <input
           type='text'
-          className='input pad5 fz17 height4r br-bottom2 bc-none brc-grey f-brc-yellow'
+          //helpers-delete
+          className='pad5 fz17 height4r br-bottom2 bc-none brc-grey f-brc-yellow'
           placeholder={
             isCards || isModulePath ? 'Type to filter by ...' : 'Type to filter...'
           }

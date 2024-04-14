@@ -8,7 +8,7 @@ import { useActions } from '@store/hooks';
 import { tooltipContainer } from '@ui/Tooltip';
 import s from './styles.module.scss';
 import clsx from 'clsx';
-import Textarea from '@ui/Textarea';
+import TextArea from '@ui/TextArea';
 
 interface OwnProps {
   data: CardType;
@@ -70,7 +70,7 @@ const Card: FC<Props> = ({ data, side = 'definition', position = null }) => {
 
         {defenition && (
           <div className={`game__definition-container ${imgurl ? '' : 'full'}`}>
-            <Textarea html={hidTranscrDefenition} className='game__definition' />
+            <TextArea html={hidTranscrDefenition} className='game__definition' />
           </div>
         )}
         <Speaker
@@ -90,7 +90,7 @@ const Card: FC<Props> = ({ data, side = 'definition', position = null }) => {
           <SRIndicator data={data} className={clsx(s.sr_indicator, tooltipContainer)} />
         )}
         <div className='game__term-container '>
-          <Textarea html={term} className='game__term' />
+          <TextArea html={term} className='game__term' />
         </div>
         <Speaker
           _id={_id}

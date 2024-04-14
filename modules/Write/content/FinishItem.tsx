@@ -4,7 +4,7 @@ import DateStr from '@ui/DateStr';
 import { WriteCard } from '../../../store/reducers/game/gameInitState';
 import { FC } from 'react';
 import { useAppSelector } from '../../../store/hooks';
-import Textarea from '@ui/Textarea';
+import TextArea from '@ui/TextArea';
 
 interface OwnProps {
   data: WriteCard;
@@ -28,6 +28,7 @@ const FinishItem: FC<Props> = ({ data, i, stats }) => {
     <div className='game__finish-body-item'>
       {isSR && (
         <div
+          //helpers-delete
           className={`game__finish-body-header game__finish-body-header--${data.answer} ${
             stats ? '' : 'hidden'
           }`}
@@ -55,13 +56,13 @@ const FinishItem: FC<Props> = ({ data, i, stats }) => {
           </div>
           <div className={`game__finish-term game__finish-term--${data.answer}`}>
             <span>{i}.</span>
-            <Textarea html={term} />
+            <TextArea html={term} />
           </div>
         </div>
 
         <div className='game__finish-body-right'>
           <div className='game__finish-definition'>
-            <Textarea html={defenition} />
+            <TextArea html={defenition} />
             <Img
               containerClass={'game__finish-img-container'}
               imgClass={'game__finish-img'}

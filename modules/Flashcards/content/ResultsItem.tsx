@@ -3,7 +3,7 @@ import DateStr from '@ui/DateStr';
 import { useAppSelector } from '../../../store/hooks';
 import { FC } from 'react';
 import { FlashcardsAnswer } from '../../../store/reducers/game/gameInitState';
-import Textarea from '@ui/Textarea';
+import TextArea from '@ui/TextArea';
 
 interface OwnProps {
   data: FlashcardsAnswer;
@@ -43,13 +43,13 @@ const FinishItem: FC<Props> = ({ data, i }) => {
           </div>
           <div className={`game__finish-term game__finish-term--${data.answer}`}>
             <span>{i}.</span>
-            <Textarea html={term} />
+            <TextArea html={term} />
           </div>
         </div>
 
         <div className='game__finish-body-right'>
           <div className='game__finish-definition'>
-            <Textarea html={defenition} />
+            <TextArea html={defenition} />
             <Img
               containerClass={'game__finish-img-container'}
               imgClass={'game__finish-img'}

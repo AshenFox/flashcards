@@ -24,7 +24,7 @@ const Navigation: FC<Props> = () => {
     game: {
       flashcards: { progress, is_turned, side },
     },
-  } = useAppSelector((state) => state);
+  } = useAppSelector(state => state);
 
   const clickNavItem =
     (value: 'next' | 'prev', cardAnswer?: 'correct' | 'incorrect') =>
@@ -122,7 +122,10 @@ const Navigation: FC<Props> = () => {
         }`}
         onClick={clickNavItem('prev')}
       >
-        <button className='btn pad15 bcc-white brr50p d-f h-bcc-yellow mar-left-a p-r'>
+        <button
+          //helpers-delete
+          className='pad15 bcc-white brr50p d-f h-bcc-yellow mar-left-a p-r'
+        >
           <svg>
             <use href='../img/sprite.svg#icon__triangle_left'></use>
           </svg>
@@ -130,12 +133,16 @@ const Navigation: FC<Props> = () => {
       </div>
 
       <div
+        //helpers-delete
         className={`game__nav-item next ${isSR ? 'hidden' : ''} ${
           progress >= cardsArr.length ? 'game__nav-item--inactive' : ''
         }`}
         onClick={clickNavItem('next')}
       >
-        <button className='btn pad15 bcc-white brr50p d-f h-bcc-yellow p-r'>
+        <button
+          //helpers-delete
+          className='pad15 bcc-white brr50p d-f h-bcc-yellow p-r'
+        >
           <svg>
             <use href='../img/sprite.svg#icon__triangle_right'></use>
           </svg>

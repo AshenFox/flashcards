@@ -1,7 +1,8 @@
 import { ChangeEvent, FC, MouseEvent, useRef } from 'react';
 import Error from './Error';
 import LoadingBtn from '@ui/LoadingBtn';
-import { useActions, useAppSelector } from '../../../store/hooks';
+import { useActions, useAppSelector } from '@store/hooks';
+import TextLabel from '@ui/TextLabel';
 
 interface OwnProps {}
 
@@ -55,12 +56,11 @@ const SignUp: FC<Props> = () => {
   return (
     <>
       <Error errObj={userErr} />
-      <label htmlFor='username' className='label'>
-        USERNAME:
-      </label>
+      <TextLabel htmlFor='username'>USERNAME:</TextLabel>
       <input
         name='username'
         type='text'
+        //helpers-delete
         className={`pad20-15 fz17 height4r br2 bc-none brc-grey f-brc-yellow mar-bottom20 username ${
           username && userErr.ok && !timers.current.username ? 'border-green' : ''
         }`}
@@ -69,13 +69,13 @@ const SignUp: FC<Props> = () => {
         value={username}
         onChange={onChange}
       />
+
       <Error errObj={emailErr} />
-      <label htmlFor='email' className='label'>
-        EMAIL:
-      </label>
+      <TextLabel htmlFor='email'>EMAIL:</TextLabel>
       <input
         name='email'
         type='email'
+        //helpers-delete
         className={`pad20-15 fz17 height4r br2 bc-none brc-grey f-brc-yellow mar-bottom20 email ${
           email && emailErr.ok && !timers.current.email ? 'border-green' : ''
         }`}
@@ -84,13 +84,14 @@ const SignUp: FC<Props> = () => {
         value={email}
         onChange={onChange}
       />
+
       <Error errObj={passErr} />
-      <label htmlFor='password' className='label'>
-        PASSWORD:
-      </label>
+
+      <TextLabel htmlFor='password'>PASSWORD:</TextLabel>
       <input
         name='password'
         type='password'
+        //helpers-delete
         className={`pad20-15 fz17 height4r br2 bc-none brc-grey f-brc-yellow mar-bottom20 password ${
           password && passErr.ok && !timers.current.password ? 'border-green' : ''
         }`}
@@ -104,9 +105,8 @@ const SignUp: FC<Props> = () => {
         active={ok}
         loading={loading}
         onClickHandler={onCLickLoadingButton('sign_up')}
-        classStr={
-          'btn width100 bcc-lightblue pad15-30 brr15 fz175 white h-grey h-bcc-yellow'
-        }
+        //helpers-delete
+        classStr={'width100 bcc-lightblue pad15-30 brr15 fz175 white h-grey h-bcc-yellow'}
       >
         Sign up
       </LoadingBtn>
@@ -115,7 +115,8 @@ const SignUp: FC<Props> = () => {
         <p>
           Already have an account?{' '}
           <button
-            className='btn white fz15 inline-block black h-yellow'
+            //helpers-delete
+            className='white fz15 inline-block black h-yellow'
             onClick={onClickChangeModal('log_in')}
           >
             Log in!

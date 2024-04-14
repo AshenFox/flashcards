@@ -39,7 +39,7 @@ const Finish: FC<Props> = () => {
   return (
     <>
       {rounds.map((round, i) => {
-        const correctNum = round.filter((item) => item.answer === 'correct').length;
+        const correctNum = round.filter(item => item.answer === 'correct').length;
 
         return (
           <div className='game__finish' key={i}>
@@ -51,10 +51,17 @@ const Finish: FC<Props> = () => {
                   {Math.round((correctNum / round.length) * 100)}%
                 </h3>
               </div>
-              <div className={`game__finish-header-item ${i !== 0 ? 'hidden' : ''}`}>
+
+              <div
+                //helpers-delete
+                className={`game__finish-header-item ${i !== 0 ? 'hidden' : ''}`}
+              >
                 {' '}
                 <Link href={isSR ? '/home/sr' : `/module/${_id}`}>
-                  <button className='btn bcc-lightblue pad10-30 brr15 white fz15 fw-normal h-grey h-bcc-yellow'>
+                  <button
+                    //helpers-delete
+                    className='bcc-lightblue pad10-30 brr15 white fz15 fw-normal h-grey h-bcc-yellow'
+                  >
                     Finish game
                   </button>
                 </Link>

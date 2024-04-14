@@ -8,7 +8,8 @@ import { useActions, useAppSelector } from '@store/hooks';
 import s from './styles.module.scss';
 import clsx from 'clsx';
 import { tooltipContainer } from '@ui/Tooltip';
-import Textarea from '@ui/Textarea';
+import TextArea from '@ui/TextArea';
+import TextLabel from '@ui/TextLabel';
 
 interface OwnProps {
   data: Card;
@@ -139,7 +140,7 @@ const Answer: FC<Props> = ({ data }) => {
             url={imgurl}
           />
           <div className='game__section-body '>
-            <Textarea html={defenition} />
+            <TextArea html={defenition} />
             <Speaker
               _id={_id}
               text={defenition}
@@ -155,7 +156,8 @@ const Answer: FC<Props> = ({ data }) => {
               <div className='game__section-text'>{answer}</div>
               <div className='game__override'>
                 <button
-                  className='btn fz15 fw-normal lightblue h-yellow'
+                  //helpers-delete
+                  className='fz15 fw-normal lightblue h-yellow'
                   onClick={clickOverride}
                 >
                   Override: I was right
@@ -168,7 +170,7 @@ const Answer: FC<Props> = ({ data }) => {
         <div className='game__answer-section'>
           <span className='game__section-title'>Correct</span>
           <div className='game__section-body '>
-            <Textarea html={term} />
+            <TextArea html={term} />
             <Speaker
               _id={_id}
               text={term}
@@ -191,7 +193,7 @@ const Answer: FC<Props> = ({ data }) => {
                   ref={copyAnswerInput}
                 />
               </div>
-              <label htmlFor='write-input'>copy answer</label>
+              <TextLabel htmlFor='write-input'>copy answer</TextLabel>
             </fieldset>
           </form>
         )}
@@ -199,7 +201,8 @@ const Answer: FC<Props> = ({ data }) => {
 
       <div className='game__answer-continue' data-correct={canContinue.current}>
         <button
-          className='btn bcc-lightblue pad10-30 brr15 white fz15 fw-normal h-grey h-bcc-yellow'
+          //helpers-delete
+          className='bcc-lightblue pad10-30 brr15 white fz15 fw-normal h-grey h-bcc-yellow'
           onClick={clickContinue}
         >
           Click to continue

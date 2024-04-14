@@ -13,7 +13,8 @@ const AddCard = () => {
   return (
     <div className={s.addcard} onClick={clickAddcard}>
       <button
-        className='btn fz15 uppercase grey h-yellow pad-bot10 br-bottom5 brc-lightblue h-brc-yellow'
+        //helpers-delete
+        className='fz15 uppercase grey h-yellow pad-bot10 br-bottom5 brc-lightblue h-brc-yellow'
         type='button'
       >
         + add card

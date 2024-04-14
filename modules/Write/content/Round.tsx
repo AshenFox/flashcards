@@ -12,17 +12,17 @@ const Round: FC<Props> = () => {
     write: { answered, rounds, all_cards_num },
   } = useAppSelector(({ game }) => game);
 
-  const correctAnswered = answered.filter((item) => item.answer === 'correct').length;
+  const correctAnswered = answered.filter(item => item.answer === 'correct').length;
 
   let correctRounds = 0;
 
   for (const round of rounds) {
-    let correctRound = round.filter((item) => item.answer === 'correct').length;
+    let correctRound = round.filter(item => item.answer === 'correct').length;
     correctRounds += correctRound;
   }
 
   const correctNum = correctAnswered + correctRounds;
-  const incorrectNum = answered.filter((item) => item.answer === 'incorrect').length;
+  const incorrectNum = answered.filter(item => item.answer === 'incorrect').length;
   const roundCardsNum = answered.length;
 
   const roundNum = rounds.length + 1;
@@ -81,7 +81,8 @@ const Round: FC<Props> = () => {
 
       <div className='game__round-continue'>
         <button
-          className='btn bcc-lightblue pad10-30 brr15 white fz15 fw-normal h-grey h-bcc-yellow'
+          //helpers-delete
+          className='bcc-lightblue pad10-30 brr15 white fz15 fw-normal h-grey h-bcc-yellow'
           onClick={clickContinue}
         >
           Continue

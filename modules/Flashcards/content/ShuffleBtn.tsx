@@ -32,7 +32,8 @@ const ShuffleBtn: FC<Props> = () => {
   return (
     <div className={`game__shuffle ${shuffled ? 'active' : ''}`}>
       <button
-        className='btn width100 fz15 pad7 br2 brc-grey-medium brr15 lightblue h-yellow'
+        //helpers-delete
+        className='width100 fz15 pad7 br2 brc-grey-medium brr15 lightblue h-yellow'
         onClick={clickSuffle}
       >
         <svg height='20' width='20'>
