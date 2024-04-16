@@ -1,21 +1,22 @@
-import { ChangeEvent, FC, MouseEvent, useRef } from 'react';
+import { ChangeEvent, MouseEvent, memo, useRef } from 'react';
 import Error from './Error';
 import LoadingBtn from '@ui/LoadingBtn';
 import { useActions, useAppSelector } from '@store/hooks';
 import TextLabel from '@ui/TextLabel';
+import Input from '@ui/Input';
+import clsx from 'clsx';
 
-interface OwnProps {}
-
-type Props = OwnProps;
-
-const SignUp: FC<Props> = () => {
+const SignUp = () => {
   const { change_modal, control_field, enter, check_field } = useActions();
 
-  const {
-    sign_up: { username, password, email },
-    sign_up_errors: { username: userErr, password: passErr, email: emailErr, ok },
-    loading,
-  } = useAppSelector(({ modal }) => modal);
+  const username = useAppSelector(s => s.modal.sign_up.username);
+  const password = useAppSelector(s => s.modal.sign_up.password);
+  const email = useAppSelector(s => s.modal.sign_up.email);
+  const userErr = useAppSelector(s => s.modal.sign_up_errors.username);
+  const passErr = useAppSelector(s => s.modal.sign_up_errors.password);
+  const emailErr = useAppSelector(s => s.modal.sign_up_errors.email);
+  const ok = useAppSelector(s => s.modal.sign_up_errors.ok);
+  const loading = useAppSelector(s => s.modal.loading);
 
   const onClickChangeModal = (value: 'log_in') => (e: MouseEvent<HTMLButtonElement>) => {
     change_modal(value);
@@ -57,13 +58,13 @@ const SignUp: FC<Props> = () => {
     <>
       <Error errObj={userErr} />
       <TextLabel htmlFor='username'>USERNAME:</TextLabel>
-      <input
+      <Input
         name='username'
         type='text'
-        //helpers-delete
-        className={`pad20-15 fz17 height4r br2 bc-none brc-grey f-brc-yellow mar-bottom20 username ${
-          username && userErr.ok && !timers.current.username ? 'border-green' : ''
-        }`}
+        className={clsx(
+          'modal__input-signup',
+          !!username && userErr.ok && !timers.current.username && 'success'
+        )}
         id='username'
         placeholder='Enter a user name'
         value={username}
@@ -72,13 +73,13 @@ const SignUp: FC<Props> = () => {
 
       <Error errObj={emailErr} />
       <TextLabel htmlFor='email'>EMAIL:</TextLabel>
-      <input
+      <Input
         name='email'
         type='email'
-        //helpers-delete
-        className={`pad20-15 fz17 height4r br2 bc-none brc-grey f-brc-yellow mar-bottom20 email ${
-          email && emailErr.ok && !timers.current.email ? 'border-green' : ''
-        }`}
+        className={clsx(
+          'modal__input-signup',
+          !!email && emailErr.ok && !timers.current.email && 'success'
+        )}
         id='email'
         placeholder='Enter an email'
         value={email}
@@ -86,15 +87,14 @@ const SignUp: FC<Props> = () => {
       />
 
       <Error errObj={passErr} />
-
       <TextLabel htmlFor='password'>PASSWORD:</TextLabel>
-      <input
+      <Input
         name='password'
         type='password'
-        //helpers-delete
-        className={`pad20-15 fz17 height4r br2 bc-none brc-grey f-brc-yellow mar-bottom20 password ${
-          password && passErr.ok && !timers.current.password ? 'border-green' : ''
-        }`}
+        className={clsx(
+          'modal__input-signup',
+          !!password && passErr.ok && !timers.current.password && 'success'
+        )}
         id='password'
         placeholder='Enter a password'
         value={password}
@@ -127,4 +127,4 @@ const SignUp: FC<Props> = () => {
   );
 };
 
-export default SignUp;
+export default memo(SignUp);

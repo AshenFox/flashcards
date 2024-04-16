@@ -1,4 +1,4 @@
-import React, { memo, HTMLAttributes, useCallback, MouseEventHandler } from 'react';
+import React, { memo, useCallback, MouseEventHandler, LabelHTMLAttributes } from 'react';
 import s from './styles.module.scss';
 import clsx from 'clsx';
 
@@ -13,7 +13,7 @@ const getLastNode = (nodes: NodeListOf<ChildNode>) => {
   return lastNode;
 };
 
-type TextLabelProps = HTMLAttributes<HTMLLabelElement> & {
+type TextLabelProps = LabelHTMLAttributes<HTMLLabelElement> & {
   children: string;
   error?: boolean;
   errorMessage?: string;
