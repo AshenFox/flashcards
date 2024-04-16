@@ -22,22 +22,31 @@
     padding: 0;
   }
 
-  &__input-container {
+  &__input-login {
+    background-color: #e8f0fd;
     display: flex;
-
-    &:focus-within {
-      border-color: $tertiary;
-    }
-
-    input {
-      flex: 1;
-      padding-right: 0.5rem;
-    }
 
     svg {
       width: 3rem;
       fill: $grey;
       cursor: pointer;
+    }
+  }
+
+  &__input-signup {
+    &.input__container {
+      padding: 0.5rem 1.5rem;
+      margin-bottom: 2rem;
+      border: 2px solid $grey;
+      height: 4.4rem;
+    }
+
+    &.success {
+      border: 2px solid rgb(35, 200, 35);
+
+      &:focus-within {
+        border: 2px solid rgb(35, 200, 35);
+      }
     }
   }
 

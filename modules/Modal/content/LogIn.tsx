@@ -1,23 +1,21 @@
-import { FC, MouseEvent, KeyboardEvent, ChangeEvent, useState } from 'react';
+import { MouseEvent, KeyboardEvent, ChangeEvent, useState, memo } from 'react';
 import Error from './Error';
 import LoadingBtn from '@ui/LoadingBtn';
 import { useActions, useAppSelector } from '@store/hooks';
 import TextLabel from '@ui/TextLabel';
+import Input from '@ui/Input';
+import Svg from '@ui/Svg';
 
-interface OwnProps {}
-
-type Props = OwnProps;
-
-const LogIn: FC<Props> = () => {
+const LogIn = () => {
   const { change_modal, control_field, enter } = useActions();
 
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
 
-  const {
-    log_in: { username, password },
-    log_in_errors: { username: userErr, password: passErr },
-    loading,
-  } = useAppSelector(({ modal }) => modal);
+  const username = useAppSelector(s => s.modal.log_in.username);
+  const password = useAppSelector(s => s.modal.log_in.password);
+  const userErr = useAppSelector(s => s.modal.log_in_errors.username);
+  const passErr = useAppSelector(s => s.modal.log_in_errors.password);
+  const loading = useAppSelector(s => s.modal.loading);
 
   const onPasswordVisibleButton = (e: MouseEvent<SVGElement>) => {
     e.preventDefault();
@@ -47,52 +45,36 @@ const LogIn: FC<Props> = () => {
   return (
     <>
       <Error errObj={userErr} single={true} />
-      <div
-        //helpers-delete
-        className='modal__input-container pad5 height4r br-bottom2 bcc-whiteblue brc-grey f-brc-yellow username'
-      >
-        <input
-          name='username'
-          type='text'
-          //helpers-delete
-          className='fz17'
-          id='username'
-          placeholder='Type your username'
-          value={username}
-          onChange={onChange}
-          onKeyDown={onKeyDown}
-        />
-      </div>
+      <Input
+        name='username'
+        id='username'
+        className='modal__input-login'
+        placeholder='Type your username'
+        value={username}
+        onChange={onChange}
+        onKeyDown={onKeyDown}
+      />
       <TextLabel htmlFor='username' className='modal__label'>
         USERNAME
       </TextLabel>
 
       {userErr.ok && <Error errObj={passErr} single={true} />}
-      <div
-        //helpers-delete
-        className='modal__input-container pad5 height4r br-bottom2 bcc-whiteblue brc-grey f-brc-yellow password'
-      >
-        <input
-          name='password'
-          type={isPasswordVisible ? 'text' : 'password'}
-          //helpers-delete
-          className='fz17'
-          id='password'
-          placeholder='Type your password'
-          value={password}
-          onChange={onChange}
-          onKeyDown={onKeyDown}
-        />
-        {isPasswordVisible ? (
-          <svg onClick={onPasswordVisibleButton}>
-            <use href={'../img/sprite.svg#icon__eye'}></use>
-          </svg>
-        ) : (
-          <svg onClick={onPasswordVisibleButton}>
-            <use href={'../img/sprite.svg#icon__eye-closed'}></use>
-          </svg>
-        )}
-      </div>
+      <Input
+        type={isPasswordVisible ? 'text' : 'password'}
+        name='password'
+        id='password'
+        className='modal__input-login'
+        placeholder='Type your password'
+        value={password}
+        onChange={onChange}
+        onKeyDown={onKeyDown}
+        after={
+          <Svg
+            onClick={onPasswordVisibleButton}
+            icon={isPasswordVisible ? 'eye' : 'eye-closed'}
+          />
+        }
+      />
       <TextLabel htmlFor='password' className='modal__label'>
         PASSWORD
       </TextLabel>
@@ -123,4 +105,4 @@ const LogIn: FC<Props> = () => {
   );
 };
 
-export default LogIn;
+export default memo(LogIn);
