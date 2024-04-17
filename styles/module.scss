@@ -188,17 +188,8 @@
     justify-content: flex-end;
     transition: all 0.2s;
 
-    input {
-      max-width: 30rem;
-      margin-right: 1.5rem;
-    }
-
     @media (max-width: $tablet) {
       flex-direction: column;
-
-      input {
-        margin-right: 0;
-      }
     }
   }
 

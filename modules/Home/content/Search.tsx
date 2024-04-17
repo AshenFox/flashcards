@@ -2,6 +2,7 @@ import { FC, useRef } from 'react';
 import { useRouter } from 'next/router';
 import Select, { Options } from 'react-select';
 import { useActions, useAppSelector } from '@store/hooks';
+import Input from '@ui/Input';
 
 type Option = { value: string; label: string };
 
@@ -83,7 +84,6 @@ const Search: FC<Props> = () => {
     set_select_by(value);
     if (search_cards.value) {
       reset_fields_cards();
-      console.log('fire!');
       isModulePath ? get_module_cards(_id) : get_cards();
     }
   };
@@ -115,10 +115,8 @@ const Search: FC<Props> = () => {
       <div
         className={isModulePath ? 'module__search-container' : 'home__search-container'}
       >
-        <input
-          type='text'
-          //helpers-delete
-          className='pad5 fz17 height4r br-bottom2 bc-none brc-grey f-brc-yellow'
+        <Input
+          className='home__search-input'
           placeholder={
             isCards || isModulePath ? 'Type to filter by ...' : 'Type to filter...'
           }

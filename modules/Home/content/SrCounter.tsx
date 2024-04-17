@@ -1,5 +1,6 @@
 import { useRef, useEffect, FC, ChangeEvent, MouseEvent, TouchEvent } from 'react';
 import { useActions, useAppSelector } from '../../../store/hooks';
+import Input from '@ui/Input';
 
 interface OwnProps {}
 
@@ -66,7 +67,7 @@ const SrCounter: FC<Props> = () => {
           onTouchStart={multiple('stepDown')}
           onMouseUp={single('stepDown')}
         />
-        <input
+        <Input
           type='number'
           className='home__counter-number'
           onChange={handleCounterChange}

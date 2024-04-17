@@ -116,17 +116,18 @@
     justify-content: flex-end;
     transition: all 0.2s;
 
-    input {
-      max-width: 30rem;
-      margin-right: 1.5rem;
-    }
-
     @media (max-width: $mobile) {
       flex-direction: column;
+    }
+  }
 
-      input {
-        margin-right: 0;
-      }
+  &__search-input {
+    width: 100%;
+    max-width: 30rem;
+    margin-right: 1.5rem;
+
+    @media (max-width: $mobile) {
+      margin-right: 0;
     }
   }
 
@@ -389,15 +390,21 @@
   }
 
   &__counter-number {
-    border-bottom: 2px solid $primary;
-    appearance: textfield;
-    height: 100%;
-    width: 4rem;
-    font-size: 1.75rem;
-    text-align: center;
+    &.input__container {
+      border-bottom: 2px solid $primary;
+      width: 4rem;
+      height: 3.5rem;
+    }
 
-    &::-webkit-inner-spin-button,
-    &::-webkit-outer-spin-button {
+    .input__input {
+      appearance: textfield;
+      height: 100%;
+      font-size: 1.75rem;
+      text-align: center;
+    }
+
+    .input__input::-webkit-inner-spin-button,
+    .input__input::-webkit-outer-spin-button {
       appearance: none;
     }
   }

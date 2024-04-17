@@ -15,16 +15,13 @@ export const set_header_dimen = (el: HTMLElement): AppActions => ({
 });
 
 // SET_GAME_CONTROLS_DIMEN
-export const set_game_controls_dimen = (el: HTMLDivElement): AppActions => {
-  // console.log(el);
-  return {
-    type: SET_GAME_CONTROLS_DIMEN,
-    payload: {
-      game_controls_height: el.offsetHeight,
-      game_controls_width: el.offsetWidth,
-    },
-  };
-};
+export const set_game_controls_dimen = (el: HTMLDivElement): AppActions => ({
+  type: SET_GAME_CONTROLS_DIMEN,
+  payload: {
+    game_controls_height: el.offsetHeight,
+    game_controls_width: el.offsetWidth,
+  },
+});
 
 // SET_SCROLL_HEIGHT
 export const set_scroll_height = (value: number): AppActions => ({

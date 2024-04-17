@@ -13,6 +13,8 @@ import { Card } from '@store/reducers/main/mainInitState';
 import { useActions } from '@store/hooks';
 import s from './styles.module.scss';
 import clsx from 'clsx';
+import Svg from '@ui/Svg';
+import Input from '@ui/Input';
 
 type GalleryProps = {
   data: Card;
@@ -81,21 +83,23 @@ const Gallery = ({ data, active, game = false }: GalleryProps) => {
       <div className={s.gallery}>
         <div>
           <form action='' className={s.form}>
-            <label className={s.label}>
-              <input
-                type='text'
-                className={s.input}
-                placeholder='Search images...'
-                onChange={changeImgSearchbar}
-                onKeyDown={keyDownImgSearchbar}
-                value={query}
-              />
-              <div className={s.icon} data-searching='false' onClick={clickImgSearchbar}>
-                <svg>
-                  <use href='../img/sprite.svg#icon__arrow_right'></use>
-                </svg>
-              </div>
-            </label>
+            <Input
+              className={s.input}
+              movingBorder
+              placeholder='Search images...'
+              onChange={changeImgSearchbar}
+              onKeyDown={keyDownImgSearchbar}
+              value={query}
+              after={
+                <Svg
+                  className={s.icon}
+                  width={15}
+                  height={15}
+                  icon='arrow_right'
+                  onClick={clickImgSearchbar}
+                />
+              }
+            />
           </form>
         </div>
         <div className={s.results}>
