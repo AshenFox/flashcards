@@ -424,53 +424,33 @@
   }
 
   &__form-input {
-    padding: 0.2rem 1rem;
-    position: relative;
-    transition: all 0.2s;
-    margin-bottom: 0.5rem;
-
-    border-bottom: 2px solid $black;
-
-    & input {
-      font-size: 1.5rem;
-    }
-
-    &:focus-within {
-      &:after {
-        bottom: -4px;
-        height: 4px;
-        background-color: $tertiary;
-      }
-    }
-
-    &:after {
-      content: '';
-      position: absolute;
-      bottom: -2px;
-      left: 0;
-      display: inline-block;
-      background-color: $black;
-      height: 2px;
-      width: 100%;
+    &.input__container {
+      padding: 0.2rem 1rem;
       transition: all 0.2s;
-    }
+      margin-bottom: 0.5rem;
+      border-bottom: 2px solid $black;
 
-    &[data-correct='true'] {
-      border-color: $green;
+      &.correct {
+        border-color: $green;
 
-      & + label {
-        color: $green;
-      }
+        & + .label__label {
+          color: $green;
+        }
 
-      &:focus-within {
         &:after {
           background-color: $green;
         }
-      }
 
-      &:after {
-        background-color: $green;
+        &:focus-within {
+          &:after {
+            background-color: $green;
+          }
+        }
       }
+    }
+
+    & .input__input {
+      font-size: 1.5rem;
     }
   }
 

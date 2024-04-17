@@ -10,6 +10,7 @@ import clsx from 'clsx';
 import { tooltipContainer } from '@ui/Tooltip';
 import TextArea from '@ui/TextArea';
 import TextLabel from '@ui/TextLabel';
+import Input from '@ui/Input';
 
 interface OwnProps {
   data: Card;
@@ -183,16 +184,15 @@ const Answer: FC<Props> = ({ data }) => {
         {!isCorrect && isEmpty && (
           <form action='' className='game__form' autoComplete='off'>
             <fieldset className='game__form-fieldset'>
-              <div className='game__form-input' data-correct='false'>
-                <input
-                  type='text'
-                  id='write-input'
-                  autoComplete='off'
-                  value={copy_answer}
-                  onChange={changeCopyAnswer}
-                  ref={copyAnswerInput}
-                />
-              </div>
+              <Input
+                className={clsx('game__form-input', copiedCorrectly && 'correct')}
+                id='write-input'
+                autoComplete='off'
+                value={copy_answer}
+                onChange={changeCopyAnswer}
+                inputRef={copyAnswerInput}
+                movingBorder
+              />
               <TextLabel htmlFor='write-input'>copy answer</TextLabel>
             </fieldset>
           </form>

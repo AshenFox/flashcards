@@ -41,8 +41,6 @@ export const init_easy_speech = () => <ThunkActionApp>(async dispatch => {
 
       const initialized = await EasySpeech.init({ maxTimeout: 5000, interval: 250 });
 
-      console.log({ res, initialized });
-
       if (!initialized) {
         working = false;
         throw new Error('Easy Speech encountered a problem on initialization');

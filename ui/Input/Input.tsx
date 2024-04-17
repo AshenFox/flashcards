@@ -1,26 +1,55 @@
-import React, { InputHTMLAttributes, ReactNode, memo, useCallback, useRef } from 'react';
+import React, {
+  InputHTMLAttributes,
+  MutableRefObject,
+  ReactNode,
+  memo,
+  useCallback,
+  useRef,
+} from 'react';
 import clsx from 'clsx';
 import s from './styles.module.scss';
 
 type InputProps = InputHTMLAttributes<HTMLInputElement> & {
+  movingBorder?: boolean;
   before?: ReactNode;
   after?: ReactNode;
+  inputRef?: MutableRefObject<HTMLInputElement>;
 };
 
-const Input = ({ children, className, id, before, after, ...rest }: InputProps) => {
-  const inputRef = useRef<HTMLInputElement>(null);
+const Input = ({
+  children,
+  className,
+  id,
+  before,
+  after,
+  inputRef,
+  movingBorder,
+  ...rest
+}: InputProps) => {
+  const innerInputRef = useRef<HTMLInputElement>(null);
 
   const onContainerClick = useCallback(() => {
-    inputRef.current.focus();
-  }, []);
+    innerInputRef.current?.focus();
+    inputRef.current?.focus();
+  }, [inputRef]);
 
   return (
     <div
-      className={clsx(s.container, 'input__container', className)}
+      className={clsx(
+        s.container,
+        movingBorder && s.movingBorder,
+        'input__container',
+        className
+      )}
       onClick={onContainerClick}
     >
       {before}
-      <input {...rest} className={clsx(s.input, 'input__input')} id={id} ref={inputRef} />
+      <input
+        {...rest}
+        className={clsx(s.input, 'input__input')}
+        id={id}
+        ref={inputRef ?? innerInputRef}
+      />
       {after}
     </div>
   );

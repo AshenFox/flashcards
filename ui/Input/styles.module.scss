@@ -12,10 +12,33 @@
   &:focus-within {
     border-color: $tertiary;
   }
+
+  &.movingBorder {
+    position: relative;
+
+    &::after {
+      content: '';
+      position: absolute;
+      bottom: -2px;
+      left: 0;
+      display: inline-block;
+      background-color: $black;
+      height: 2px;
+      width: 100%;
+      transition: all 0.2s;
+    }
+
+    &:focus-within {
+      &::after {
+        bottom: -4px;
+        height: 4px;
+        background-color: $tertiary;
+      }
+    }
+  }
 }
 
 .input {
   flex: 1;
-  padding-right: 0.5rem;
   font-size: 1.7rem;
 }

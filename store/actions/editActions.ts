@@ -340,8 +340,6 @@ export const search_images = (_id: string) => <ThunkActionApp>(async (
 
         if (!url) return console.error('Query can not be empty.');
 
-        // console.log(queryURL);
-
         dispatch({
           type: SEARCH_IMAGES,
           payload: {
@@ -381,7 +379,7 @@ export const search_images = (_id: string) => <ThunkActionApp>(async (
 
 // DELETE_MODULE
 
-export const delete_module = (_id) => <ThunkActionApp>(async (dispatch, getState) => {
+export const delete_module = _id => <ThunkActionApp>(async (dispatch, getState) => {
     try {
       const {
         auth: { user },
@@ -608,17 +606,17 @@ const format_dictionary_result = (result: CodDictResult | UrbanDictResult): stri
 
   // cod
   if (type === 'cod') {
-    data.map((sect) => {
+    data.map(sect => {
       let { part_of_speech, transcr_uk, transcr_us, sub_sections } = sect;
 
-      sub_sections.map((sub_sect) => {
+      sub_sections.map(sub_sect => {
         let { guideword, blocks } = sub_sect;
 
-        blocks.map((block) => {
+        blocks.map(block => {
           let { definition, examples } = block;
 
           let examplesHtml = '';
-          examples.map((example) => {
+          examples.map(example => {
             examplesHtml = examplesHtml + wrap_in(example, 'div');
           });
 
@@ -642,7 +640,7 @@ const format_dictionary_result = (result: CodDictResult | UrbanDictResult): stri
 
     // urban
   } else if (type === 'urban') {
-    data.map((panel) => {
+    data.map(panel => {
       let { definition, example } = panel;
 
       formatedResult = formatedResult.concat(

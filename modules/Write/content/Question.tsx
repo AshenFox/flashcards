@@ -10,6 +10,7 @@ import clsx from 'clsx';
 import { tooltipContainer } from '@ui/Tooltip';
 import TextArea from '@ui/TextArea';
 import TextLabel from '@ui/TextLabel';
+import Input from '@ui/Input';
 
 interface OwnProps {
   data: Card;
@@ -98,16 +99,15 @@ const Question: FC<Props> = ({ data }) => {
       </div>
       <form action='' className='game__form' autoComplete='off'>
         <fieldset className='game__form-fieldset'>
-          <div className='game__form-input'>
-            <input
-              type='text'
-              id='write-input'
-              autoComplete='off'
-              onChange={changeAnswer}
-              value={answer}
-              ref={answerInput}
-            />
-          </div>
+          <Input
+            id='write-input'
+            className='game__form-input'
+            movingBorder
+            autoComplete='off'
+            onChange={changeAnswer}
+            value={answer}
+            inputRef={answerInput}
+          />
           <TextLabel htmlFor='write-input'>type the answer</TextLabel>
         </fieldset>
         <div className='game__form-btn-container'>
