@@ -29,8 +29,8 @@ const Input = ({
   const innerInputRef = useRef<HTMLInputElement>(null);
 
   const onContainerClick = useCallback(() => {
-    innerInputRef.current?.focus();
-    inputRef.current?.focus();
+    innerInputRef?.current?.focus();
+    inputRef?.current?.focus();
   }, [inputRef]);
 
   return (
