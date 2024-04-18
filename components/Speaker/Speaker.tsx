@@ -4,6 +4,7 @@ import EasySpeech from 'easy-speech';
 import { EasySpeechStatus } from '@store/reducers/voice/voiceInitState';
 import clsx from 'clsx';
 import s from './styles.module.scss';
+import { SpeakerIcon } from '@ui/Icons';
 
 type SpeakerProps = {
   _id: string;
@@ -101,9 +102,7 @@ const Speaker = ({ _id, text, type, className, ref }: SpeakerProps) => {
       onClick={clickSpeaker}
       ref={ref}
     >
-      <svg>
-        <use href='../img/sprite.svg#icon__speaker'></use>
-      </svg>
+      <SpeakerIcon />
     </div>
   );
 };

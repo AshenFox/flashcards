@@ -3,6 +3,7 @@ import Img from '@ui/Img';
 import { Card } from '@store/reducers/main/mainInitState';
 import { useActions } from '@store/hooks';
 import s from './styles.module.scss';
+import { DeleteIcon, ImgIcon } from '@ui/Icons';
 
 type AddImgProps = {
   data: Card;
@@ -35,14 +36,10 @@ const AddImg = ({ data }: AddImgProps) => {
     <div className={s.add_img} onClick={clickImgSearch} data-imgurl={!!imgurl}>
       <Img containerClass={s.container} imgClass={s.img} url={imgurl} />
       <div className={s.logo}>
-        <svg>
-          <use href='../img/sprite.svg#icon__img'></use>
-        </svg>
+        <ImgIcon />
       </div>
       <div className={s.delete} onClick={clickImgDelete} ref={deleteEl}>
-        <svg>
-          <use href='../img/sprite.svg#icon__delete'></use>
-        </svg>
+        <DeleteIcon />
       </div>
       <span>IMAGE</span>
     </div>

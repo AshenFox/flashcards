@@ -9,6 +9,7 @@ import { tooltipContainer } from '@ui/Tooltip';
 import s from './styles.module.scss';
 import clsx from 'clsx';
 import TextArea from '@ui/TextArea';
+import { EditIcon } from '@ui/Icons';
 
 interface OwnProps {
   data: CardType;
@@ -80,9 +81,7 @@ const Card: FC<Props> = ({ data, side = 'definition', position = null }) => {
           className='game__speaker-flashcards'
         />
         <div className='game__edit' onClick={clickEdit}>
-          <svg width='21' height='21'>
-            <use href='../img/sprite.svg#icon__edit'></use>
-          </svg>
+          <EditIcon width='21' height='21' />
         </div>
       </div>
       <div className={backClassName} onClick={clickSide('definition')}>
@@ -99,9 +98,7 @@ const Card: FC<Props> = ({ data, side = 'definition', position = null }) => {
           className='game__speaker-flashcards'
         />
         <div className='game__edit' onClick={clickEdit}>
-          <svg width='21' height='21'>
-            <use href='../img/sprite.svg#icon__edit'></use>
-          </svg>
+          <EditIcon width='21' height='21' />
         </div>
       </div>
     </div>

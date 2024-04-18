@@ -1,6 +1,7 @@
 import { useRef, MouseEvent, useEffect, memo } from 'react';
 import ModalContent from './content/ModalContent';
 import { useActions, useAppSelector } from '../../store/hooks';
+import { CloseIcon } from '@ui/Icons';
 
 const Modal = () => {
   const { toggle_modal } = useActions();
@@ -69,9 +70,7 @@ const Modal = () => {
             </h3>
           </div>
           <div className='modal__close' onClick={closeClick}>
-            <svg>
-              <use href='../img/sprite.svg#icon__close'></use>
-            </svg>
+            <CloseIcon />
           </div>
         </div>
 

@@ -3,6 +3,7 @@ import { useRouter } from 'next/router';
 import Progress from './Progress';
 import Link from 'next/link';
 import { useActions } from '../../../store/hooks';
+import { TriangleLeftIcon, WriteIcon } from '@ui/Icons';
 
 interface OwnProps {}
 
@@ -48,18 +49,14 @@ const Controls: FC<Props> = () => {
                 //helpers-delete
                 className='grey ai-c ta-l fz17 width100 pad15-20 h-bcc-yellow'
               >
-                <svg height='15' width='15'>
-                  <use href='../img/sprite.svg#icon__triangle_left'></use>
-                </svg>
+                <TriangleLeftIcon height='15' width='15' />
                 <span>Back</span>
               </button>
             </Link>
           </div>
 
           <div className='game__title'>
-            <svg height='40' width='40'>
-              <use href='../img/sprite.svg#icon__write'></use>
-            </svg>
+            <WriteIcon height='40' width='40' />
             <span>Write</span>
           </div>
 

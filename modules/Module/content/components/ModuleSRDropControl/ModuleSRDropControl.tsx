@@ -3,6 +3,7 @@ import { useActions, useAppSelector } from '@store/hooks';
 import Tooltip, { tooltipContainer } from '@ui/Tooltip';
 import clsx from 'clsx';
 import s from './styles.module.scss';
+import { StudyRegimeIcon } from '@ui/Icons';
 
 const ModuleSRDropControl = () => {
   const { set_module_question } = useActions();
@@ -19,9 +20,7 @@ const ModuleSRDropControl = () => {
       data-active={question}
       onClick={clickDropSR}
     >
-      <svg width='30' height='30'>
-        <use href='../img/sprite.svg#icon__drop_studyregime'></use>
-      </svg>
+      <StudyRegimeIcon width='30' height='30' />
       <Tooltip>Drop all cards study progress</Tooltip>
     </div>
   );

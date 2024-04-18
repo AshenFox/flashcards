@@ -4,6 +4,7 @@ import SrCounter from './SrCounter';
 import Skeleton from 'react-loading-skeleton';
 import { useAppSelector } from '../../../store/hooks';
 import { FC } from 'react';
+import { CardsIcon, WriteIcon } from '@ui/Icons';
 
 interface OwnProps {}
 
@@ -13,7 +14,7 @@ const StudyRegime: FC<Props> = () => {
   const {
     sr: { all_num, repeat_num, counter },
     main: { loading },
-  } = useAppSelector((state) => state);
+  } = useAppSelector(state => state);
 
   return (
     <div className='home__module home__module--v2'>
@@ -49,16 +50,12 @@ const StudyRegime: FC<Props> = () => {
               <SrCounter />
               <Link href={'/flashcards/sr' + (counter ? `?number=${counter}` : '')}>
                 <div className='home__repeat-item'>
-                  <svg height='35' width='35'>
-                    <use href='../img/sprite.svg#icon__cards'></use>
-                  </svg>
+                  <CardsIcon height='35' width='35' />
                 </div>
               </Link>
               <Link href={'/write/sr' + (counter ? `?number=${counter}` : '')}>
                 <div className='home__repeat-item'>
-                  <svg height='35' width='35'>
-                    <use href='../img/sprite.svg#icon__write'></use>
-                  </svg>
+                  <WriteIcon height='35' width='35' />
                 </div>
               </Link>
             </div>

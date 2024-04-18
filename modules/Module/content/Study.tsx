@@ -1,6 +1,7 @@
 import { useRouter } from 'next/router';
 import Link from 'next/link';
 import { FC } from 'react';
+import { CardsIcon, WriteIcon } from '@ui/Icons';
 
 interface OwnProps {}
 
@@ -17,9 +18,7 @@ const Study: FC<Props> = () => {
       <div className='module__study-item' id='write-game'>
         <Link href={`/flashcards/${_id}`}>
           <button>
-            <svg height='31' width='31'>
-              <use href='../img/sprite.svg#icon__cards'></use>
-            </svg>
+            <CardsIcon height='31' width='31' />
             <span>Flashcards</span>
           </button>
         </Link>
@@ -28,9 +27,7 @@ const Study: FC<Props> = () => {
       <div className='module__study-item' id='write-game'>
         <Link href={`/write/${_id}`}>
           <button>
-            <svg height='30' width='30'>
-              <use href='../img/sprite.svg#icon__write'></use>
-            </svg>
+            <WriteIcon height='30' width='30' />
             <span>Write</span>
           </button>
         </Link>

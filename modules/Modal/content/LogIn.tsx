@@ -4,7 +4,7 @@ import LoadingBtn from '@ui/LoadingBtn';
 import { useActions, useAppSelector } from '@store/hooks';
 import TextLabel from '@ui/TextLabel';
 import Input from '@ui/Input';
-import Svg from '@ui/Svg';
+import { EyeClosedIcon, EyeIcon } from '@ui/Icons';
 
 const LogIn = () => {
   const { change_modal, control_field, enter } = useActions();
@@ -69,10 +69,11 @@ const LogIn = () => {
         onChange={onChange}
         onKeyDown={onKeyDown}
         after={
-          <Svg
-            onClick={onPasswordVisibleButton}
-            icon={isPasswordVisible ? 'eye' : 'eye-closed'}
-          />
+          isPasswordVisible ? (
+            <EyeIcon onClick={onPasswordVisibleButton} />
+          ) : (
+            <EyeClosedIcon onClick={onPasswordVisibleButton} />
+          )
         }
       />
       <TextLabel htmlFor='password' className='modal__label'>

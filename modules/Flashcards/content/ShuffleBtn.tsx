@@ -1,5 +1,6 @@
 import { FC, MouseEvent } from 'react';
 import { useActions, useAppSelector } from '../../../store/hooks';
+import { ShuffleIcon } from '@ui/Icons';
 
 interface OwnProps {}
 
@@ -36,9 +37,7 @@ const ShuffleBtn: FC<Props> = () => {
         className='width100 fz15 pad7 br2 brc-grey-medium brr15 lightblue h-yellow'
         onClick={clickSuffle}
       >
-        <svg height='20' width='20'>
-          <use href='../img/sprite.svg#icon__shuffle'></use>
-        </svg>
+        <ShuffleIcon height='20' width='20' />
         <span>Shuffle</span>
       </button>
     </div>

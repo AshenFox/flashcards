@@ -6,6 +6,7 @@ import s from './styles.module.scss';
 import { getIsDraft, getIsGame } from '@helpers/functions/determinePath';
 import Item from './components/Item';
 import Hamburger from './components/Hamburger';
+import { NewModuleIcon } from '@ui/Icons';
 
 const Right = () => {
   const { change_modal, toggle_modal, set_dropdown, log_out } = useActions();
@@ -40,7 +41,7 @@ const Right = () => {
           {!isDraft && (
             <Item
               href='/edit/draft'
-              icon='icon__new_module'
+              icon={<NewModuleIcon />}
               className={isGame ? s.hide_max_tablet : s.hide_max_mobile}
             >
               Create new module

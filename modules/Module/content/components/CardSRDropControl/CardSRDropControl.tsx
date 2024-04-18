@@ -4,6 +4,7 @@ import { Card } from '@store/reducers/main/mainInitState';
 import Tooltip, { tooltipContainer } from '@ui/Tooltip';
 import clsx from 'clsx';
 import s from './styles.module.scss';
+import { StudyRegimeIcon } from '@ui/Icons';
 
 type CardSRDropControlProps = {
   data: Card;
@@ -22,9 +23,7 @@ const CardSRDropControl = ({ data }: CardSRDropControlProps) => {
       onClick={clickDropSR}
       data-active={question}
     >
-      <svg height='19' width='19'>
-        <use href='../img/sprite.svg#icon__drop_studyregime'></use>
-      </svg>
+      <StudyRegimeIcon height='19' width='19' />
       <Tooltip>Drop card study progress</Tooltip>
     </div>
   );

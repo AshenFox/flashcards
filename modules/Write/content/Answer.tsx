@@ -11,6 +11,7 @@ import { tooltipContainer } from '@ui/Tooltip';
 import TextArea from '@ui/TextArea';
 import TextLabel from '@ui/TextLabel';
 import Input from '@ui/Input';
+import { EditIcon } from '@ui/Icons';
 
 interface OwnProps {
   data: Card;
@@ -124,9 +125,7 @@ const Answer: FC<Props> = ({ data }) => {
         className={`game__edit game__edit--write${isSR ? '-sr' : ''}`}
         onClick={clickEdit}
       >
-        <svg width='21' height='21'>
-          <use href='../img/sprite.svg#icon__edit'></use>
-        </svg>
+        <EditIcon width='21' height='21' />
       </div>
       <h1 className={`game__answer-type ${activeCard.answer}`}>
         {activeCard.answer && activeCard.answer}

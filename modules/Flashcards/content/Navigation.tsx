@@ -1,6 +1,7 @@
 import { useRouter } from 'next/router';
 import { FC, MouseEvent, useEffect, useRef } from 'react';
 import { useActions, useAppSelector } from '../../../store/hooks';
+import { TriangleLeftIcon, TriangleRightIcon } from '@ui/Icons';
 
 interface OwnProps {}
 
@@ -126,9 +127,7 @@ const Navigation: FC<Props> = () => {
           //helpers-delete
           className='pad15 bcc-white brr50p d-f h-bcc-yellow mar-left-a p-r'
         >
-          <svg>
-            <use href='../img/sprite.svg#icon__triangle_left'></use>
-          </svg>
+          <TriangleLeftIcon />
         </button>
       </div>
 
@@ -143,9 +142,7 @@ const Navigation: FC<Props> = () => {
           //helpers-delete
           className='pad15 bcc-white brr50p d-f h-bcc-yellow p-r'
         >
-          <svg>
-            <use href='../img/sprite.svg#icon__triangle_right'></use>
-          </svg>
+          <TriangleRightIcon />
         </button>
       </div>
     </div>
