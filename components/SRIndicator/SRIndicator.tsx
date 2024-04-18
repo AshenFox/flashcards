@@ -3,6 +3,7 @@ import DateStr from '@ui/DateStr';
 import clsx from 'clsx';
 import s from './styles.module.scss';
 import Tooltip from '@ui/Tooltip';
+import { StudyRegimeIcon } from '@ui/Icons';
 
 type SRIndicatorProps = {
   data: {
@@ -61,9 +62,7 @@ const SRIndicator = ({
 
   return (
     <div className={clsx(s.indicator, active && s.active, small && s.small, className)}>
-      <svg>
-        <use href='../img/sprite.svg#icon__studyregime'></use>
-      </svg>
+      <StudyRegimeIcon />
       <Tooltip>
         <span>SR Stage: {stage}</span>
         <span>

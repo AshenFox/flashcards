@@ -4,6 +4,7 @@ import Link from 'next/link';
 import Progress from './Progress';
 import ShuffleBtn from './ShuffleBtn';
 import { useActions } from '../../../store/hooks';
+import { CardsIcon, TriangleLeftIcon } from '@ui/Icons';
 
 interface OwnProps {}
 
@@ -46,18 +47,14 @@ const Controls: FC<Props> = () => {
                 className='grey ai-c ta-l fz17 width100 pad15-20 h-bcc-yellow'
               >
                 {' '}
-                <svg height='15' width='15'>
-                  <use href='../img/sprite.svg#icon__triangle_left'></use>
-                </svg>
+                <TriangleLeftIcon height='15' width='15' />
                 <span>Back</span>
               </button>
             </Link>
           </div>
 
           <div className='game__title'>
-            <svg height='40' width='40'>
-              <use href='../img/sprite.svg#icon__cards'></use>
-            </svg>
+            <CardsIcon height='40' width='40' />
             <span>Flashcards</span>
           </div>
 

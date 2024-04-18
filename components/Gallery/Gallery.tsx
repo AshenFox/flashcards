@@ -13,8 +13,8 @@ import { Card } from '@store/reducers/main/mainInitState';
 import { useActions } from '@store/hooks';
 import s from './styles.module.scss';
 import clsx from 'clsx';
-import Svg from '@ui/Svg';
 import Input from '@ui/Input';
+import { ArrowRightIcon } from '@ui/Icons';
 
 type GalleryProps = {
   data: Card;
@@ -71,7 +71,7 @@ const Gallery = ({ data, active, game = false }: GalleryProps) => {
   );
 
   const clickImgSearchbar = useCallback(
-    (e: MouseEvent<HTMLDivElement>) => {
+    (e: MouseEvent<SVGSVGElement>) => {
       reset_gallery_fields(_id);
       search_images(_id);
     },
@@ -91,11 +91,10 @@ const Gallery = ({ data, active, game = false }: GalleryProps) => {
               onKeyDown={keyDownImgSearchbar}
               value={query}
               after={
-                <Svg
+                <ArrowRightIcon
                   className={s.icon}
                   width={15}
                   height={15}
-                  icon='arrow_right'
                   onClick={clickImgSearchbar}
                 />
               }

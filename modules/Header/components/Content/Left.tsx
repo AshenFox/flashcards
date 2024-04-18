@@ -5,6 +5,7 @@ import s from './styles.module.scss';
 import { getIsGame, getIsSR } from '@helpers/functions/determinePath';
 import Title from './components/Title';
 import Item from './components/Item';
+import { GameBackIcon } from '@ui/Icons';
 
 const Left = () => {
   const router = useRouter();
@@ -23,7 +24,7 @@ const Left = () => {
           {user && isGame && (
             <Item
               href={isSR ? '/home/sr' : `/module/${_id}`}
-              icon='icon__game_back'
+              icon={<GameBackIcon />}
               iconSize={25}
               className={s.back}
             />

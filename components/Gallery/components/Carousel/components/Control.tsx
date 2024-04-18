@@ -2,6 +2,7 @@ import { MouseEvent, memo, useCallback } from 'react';
 import { useActions, useAppSelector } from '@store/hooks';
 import { clsx } from 'clsx';
 import s from '../styles.module.scss';
+import { TriangleLeftIcon, TriangleRightIcon } from '@ui/Icons';
 
 type ControlProps = {
   direction: 'left' | 'right';
@@ -57,9 +58,8 @@ const Control = ({ direction, _id }: ControlProps) => {
           direction === 'left' ? 'mar-left-a' : ''
         )}
       >
-        <svg>
-          <use href={`../img/sprite.svg#icon__triangle_${direction}`}></use>
-        </svg>
+        {direction === 'left' && <TriangleLeftIcon />}
+        {direction === 'right' && <TriangleRightIcon />}
       </button>
     </div>
   );

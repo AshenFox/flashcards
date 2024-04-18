@@ -1,9 +1,10 @@
 import Img from '@ui/Img';
 import DateStr from '@ui/DateStr';
-import { useAppSelector } from '../../../store/hooks';
+import { useAppSelector } from '@store/hooks';
 import { FC } from 'react';
-import { FlashcardsAnswer } from '../../../store/reducers/game/gameInitState';
+import { FlashcardsAnswer } from '@store/reducers/game/gameInitState';
 import TextArea from '@ui/TextArea';
+import { CloseIcon, TickIcon } from '@ui/Icons';
 
 interface OwnProps {
   data: FlashcardsAnswer;
@@ -33,13 +34,7 @@ const FinishItem: FC<Props> = ({ data, i }) => {
       <div className='game__finish-body-main'>
         <div className='game__finish-body-left'>
           <div className={`game__finish-icon game__finish-icon--${data.answer}`}>
-            <svg height='22' width='22'>
-              <use
-                href={`../img/sprite.svg#icon__${
-                  data.answer === 'correct' ? 'tick' : 'close'
-                }`}
-              ></use>
-            </svg>
+            {data.answer === 'correct' ? <TickIcon /> : <CloseIcon />}
           </div>
           <div className={`game__finish-term game__finish-term--${data.answer}`}>
             <span>{i}.</span>

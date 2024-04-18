@@ -6,6 +6,7 @@ import ModuleSRControl from './components/ModuleSRControl';
 import DateStr from '@ui/DateStr';
 import { FC, MouseEvent } from 'react';
 import { useActions, useAppSelector } from '@store/hooks';
+import { DeleteIcon, EditIcon } from '@ui/Icons';
 
 interface OwnProps {}
 
@@ -40,15 +41,11 @@ const Info: FC<Props> = () => {
         <ModuleSRControl />
         <Link href={`/edit/${_id}`}>
           <div className='module__nav-item'>
-            <svg width='25' height='25'>
-              <use href='../img/sprite.svg#icon__edit'></use>
-            </svg>
+            <EditIcon width='25' height='25' />
           </div>
         </Link>
         <div className='module__nav-item' onClick={openModal('delete')}>
-          <svg width='25' height='25'>
-            <use href='../img/sprite.svg#icon__delete'></use>
-          </svg>
+          <DeleteIcon width='25' height='25' />
         </div>
       </div>
     </div>

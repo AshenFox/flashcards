@@ -1,6 +1,7 @@
 import { memo } from 'react';
 import { useEffect, useRef } from 'react';
 import { useActions, useAppSelector } from '@store/hooks';
+import { ArrowUpIcon } from '@ui/Icons';
 
 const ScrollTop = () => {
   const { set_scroll_top } = useActions();
@@ -26,9 +27,7 @@ const ScrollTop = () => {
 
   return (
     <div className={`scroll ${scroll_top ? 'active' : ''}`} onClick={clickScroll}>
-      <svg height='20' width='20'>
-        <use href='../img/sprite.svg#icon__arrow_up'></use>
-      </svg>
+      <ArrowUpIcon height='20' width='20' />
     </div>
   );
 };

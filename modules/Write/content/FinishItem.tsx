@@ -1,10 +1,11 @@
 import { useRouter } from 'next/router';
 import Img from '@ui/Img';
 import DateStr from '@ui/DateStr';
-import { WriteCard } from '../../../store/reducers/game/gameInitState';
+import { WriteCard } from '@store/reducers/game/gameInitState';
 import { FC } from 'react';
-import { useAppSelector } from '../../../store/hooks';
+import { useAppSelector } from '@store/hooks';
 import TextArea from '@ui/TextArea';
+import { CloseIcon, TickIcon } from '@ui/Icons';
 
 interface OwnProps {
   data: WriteCard;
@@ -46,13 +47,7 @@ const FinishItem: FC<Props> = ({ data, i, stats }) => {
       <div className='game__finish-body-main'>
         <div className='game__finish-body-left'>
           <div className={`game__finish-icon game__finish-icon--${data.answer}`}>
-            <svg height='22' width='22'>
-              <use
-                href={`../img/sprite.svg#icon__${
-                  data.answer === 'correct' ? 'tick' : 'close'
-                }`}
-              ></use>
-            </svg>
+            {data.answer === 'correct' ? <TickIcon /> : <CloseIcon />}
           </div>
           <div className={`game__finish-term game__finish-term--${data.answer}`}>
             <span>{i}.</span>

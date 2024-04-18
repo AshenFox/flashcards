@@ -1,6 +1,7 @@
 import { FC, MouseEvent } from 'react';
 import { useActions } from '../../../store/hooks';
 import { Card } from '../../../store/reducers/main/mainInitState';
+import { EditIcon } from '@ui/Icons';
 
 interface OwnProps {
   data: Card;
@@ -17,9 +18,7 @@ const CardEditControl: FC<Props> = ({ data }) => {
 
   return (
     <div className='module__card-controls-item module__edit-card' onClick={clickEdit}>
-      <svg width='19' height='19'>
-        <use href='../img/sprite.svg#icon__edit'></use>
-      </svg>
+      <EditIcon width='19' height='19' />
     </div>
   );
 };

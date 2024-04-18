@@ -1,13 +1,20 @@
 import clsx from 'clsx';
 import Link from 'next/link';
-import { MouseEventHandler, memo, useMemo } from 'react';
+import {
+  MouseEventHandler,
+  ReactElement,
+  SVGProps,
+  cloneElement,
+  memo,
+  useMemo,
+} from 'react';
 import s from './styles.module.scss';
 
 type ItemProps = {
   children?: string;
   href?: string;
   onClick?: MouseEventHandler<HTMLButtonElement>;
-  icon?: string;
+  icon?: ReactElement<SVGProps<SVGSVGElement>>;
   iconSize?: number;
   padded?: boolean;
   className?: string;
@@ -25,11 +32,7 @@ const Item = ({
   const InnerElements = useMemo(
     () => (
       <>
-        {icon && (
-          <svg width={iconSize} height={iconSize}>
-            <use href={`../img/sprite.svg#${icon}`}></use>
-          </svg>
-        )}
+        {!!icon && cloneElement(icon, { width: iconSize, height: iconSize })}
         {children && <span>{children}</span>}
       </>
     ),

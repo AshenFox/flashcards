@@ -3,6 +3,7 @@ import { useActions } from '@store/hooks';
 import { Card } from '@store/reducers/main/mainInitState';
 import s from '../styles.module.scss';
 import clsx from 'clsx';
+import { DeleteIcon } from '@ui/Icons';
 
 type DeleteProps = {
   data: Card;
@@ -21,9 +22,7 @@ const Delete = ({ data, active = false }: DeleteProps) => {
 
   return (
     <div className={clsx(s.delete, !active && s.inactive)} onClick={clickCardDelete}>
-      <svg width='17' height='17'>
-        <use href='../img/sprite.svg#icon__delete'></use>
-      </svg>
+      <DeleteIcon width='17' height='17' />
     </div>
   );
 };

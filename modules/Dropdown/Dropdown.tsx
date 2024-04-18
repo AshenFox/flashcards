@@ -16,6 +16,7 @@ import {
   getIsFlashcards,
   getIsWrite,
 } from '@helpers/functions/determinePath';
+import { NewModuleIcon, ShuffleIcon } from '@ui/Icons';
 
 const Dropdown = () => {
   const {
@@ -90,7 +91,7 @@ const Dropdown = () => {
   return (
     <div className={className} style={stylesHeader}>
       {!isDraft && (
-        <Item href='/edit/draft' icon='icon__new_module'>
+        <Item href='/edit/draft' icon={<NewModuleIcon />}>
           Create new module
         </Item>
       )}
@@ -99,7 +100,7 @@ const Dropdown = () => {
       {(isFlashcards || isWrite) && !isSR && <Divider>Options:</Divider>}
 
       {isFlashcards && !isSR && (
-        <Item onClick={clickSuffle} icon='icon__shuffle' active={shuffled}>
+        <Item onClick={clickSuffle} icon={<ShuffleIcon />} active={shuffled}>
           Shuffle
         </Item>
       )}

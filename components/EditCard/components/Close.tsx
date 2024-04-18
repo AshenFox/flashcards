@@ -2,6 +2,7 @@ import { MouseEvent, memo, useCallback } from 'react';
 import { useActions } from '@store/hooks';
 import { Card } from '@store/reducers/main/mainInitState';
 import s from '../styles.module.scss';
+import { CloseIcon } from '@ui/Icons';
 
 type CloseProps = {
   data: Card;
@@ -22,9 +23,7 @@ const Close = ({ data }: CloseProps) => {
 
   return (
     <div className={s.close} onClick={clickClose}>
-      <svg width='17' height='17'>
-        <use href='../img/sprite.svg#icon__close'></use>
-      </svg>
+      <CloseIcon width='17' height='17' />
     </div>
   );
 };
