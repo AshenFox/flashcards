@@ -2,6 +2,7 @@ import { memo, useCallback } from 'react';
 import { useActions, useAppSelector } from '@store/hooks';
 import Switch from '@ui/Switch';
 import s from './styles.module.scss';
+import { SaveIcon } from '@ui/Icons';
 
 const Save = () => {
   const { set_cards_save } = useActions();
@@ -29,7 +30,7 @@ const Save = () => {
       id={'switch-save-main'}
       className={s.save}
       active={active}
-      icon={'icon__save'}
+      icon={<SaveIcon />}
       tooltip='Save the card'
       onClick={clickAllSave}
     />

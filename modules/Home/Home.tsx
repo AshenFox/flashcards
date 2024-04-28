@@ -1,12 +1,30 @@
 import { useEffect, useRef, memo } from 'react';
 import { useRouter } from 'next/router';
-import Skeleton from 'react-loading-skeleton';
-import Navigation from './content/Navigation';
-import ListContainer from './content/ListContainer';
-import Search from './content/Search';
 import ContentWrapper from '@components/ContentWrapper';
-import { useActions, useAppSelector } from '../../store/hooks';
+import { useActions, useAppSelector } from '@store/hooks';
 import Container from '@components/Container';
+import Header from './components/Header';
+import s from './styles.module.scss';
+import Sections from './components/Sections';
+
+const checkBottom = () => {
+  const windowHeight = document.documentElement.clientHeight;
+
+  const scrollHeight = Math.max(
+    document.body.scrollHeight,
+    document.documentElement.scrollHeight,
+    document.body.offsetHeight,
+    document.documentElement.offsetHeight,
+    document.body.clientHeight,
+    document.documentElement.clientHeight
+  );
+
+  const currentScroll = window.scrollY;
+
+  const bottomOffset = scrollHeight - windowHeight - currentScroll;
+
+  return bottomOffset <= 75;
+};
 
 const Home = () => {
   const router = useRouter();
@@ -22,11 +40,9 @@ const Home = () => {
   } = useActions();
 
   const {
-    main: { modules, cards, all_modules_number, all_cards_number },
+    main: { modules, cards },
     auth: { user },
   } = useAppSelector(state => state);
-
-  const { username } = user || {};
 
   useEffect(() => {
     if (!user) return;
@@ -71,58 +87,20 @@ const Home = () => {
   };
 
   const scrollModules = useRef(
-    (e: Event) => router.pathname === '/home/[section]' && check_bottom() && get_modules()
+    () => router.pathname === '/home/[section]' && checkBottom() && get_modules()
   );
   const scrollCards = useRef(
-    (e: Event) => router.pathname === '/home/[section]' && check_bottom() && get_cards()
+    () => router.pathname === '/home/[section]' && checkBottom() && get_cards()
   );
-
-  const check_bottom = () => {
-    const windowHeight = document.documentElement.clientHeight;
-
-    const scrollHeight = Math.max(
-      document.body.scrollHeight,
-      document.documentElement.scrollHeight,
-      document.body.offsetHeight,
-      document.documentElement.offsetHeight,
-      document.body.clientHeight,
-      document.documentElement.clientHeight
-    );
-
-    const currentScroll = window.pageYOffset;
-
-    const bottomOffset = scrollHeight - windowHeight - currentScroll;
-
-    return bottomOffset <= 75;
-  };
 
   return (
     <ContentWrapper>
-      <div className='home'>
-        <Container>
-          <div className='home__content'>
-            <div className='home__content-header'>
-              <div className='home__user-info'>
-                <div className='home__nickname'>
-                  <h1>{username ? username : <Skeleton width={250} />}</h1>
-                </div>
-                <Navigation />
-                <div className='home__all-items-number'>
-                  {section === 'cards' &&
-                    `All cards: ${all_cards_number ? all_cards_number : '0'}`}
-                  {section === 'modules' &&
-                    `All modules: ${all_modules_number ? all_modules_number : '0'}`}
-                </div>
-              </div>
-            </div>
-
-            <div className='home__content-items-cont'>
-              {(section === 'cards' || section === 'modules') && <Search />}
-              <ListContainer />
-            </div>
-          </div>
-        </Container>
-      </div>
+      <Container>
+        <div className={s.content}>
+          <Header />
+          <Sections />
+        </div>
+      </Container>
     </ContentWrapper>
   );
 };

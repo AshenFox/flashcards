@@ -1,10 +1,11 @@
 import Link from 'next/link';
-import SrInTime from './SrInTime';
-import SrCounter from './SrCounter';
+import InTime from './components/InTime';
+import SrCounter from './components/Counter/Counter';
 import Skeleton from 'react-loading-skeleton';
-import { useAppSelector } from '../../../store/hooks';
-import { FC } from 'react';
+import { useAppSelector } from '@store/hooks';
+import { FC, memo } from 'react';
 import { CardsIcon, WriteIcon } from '@ui/Icons';
+import s from './styles.module.scss';
 
 interface OwnProps {}
 
@@ -17,10 +18,10 @@ const StudyRegime: FC<Props> = () => {
   } = useAppSelector(state => state);
 
   return (
-    <div className='home__module home__module--v2'>
-      <div className='home__module-container'>
-        <div className='home__module-title home__module-title--v2'>Study Regime</div>
-        <ul className='home__study-regime-info'>
+    <div className={s.study_regime}>
+      <div className={s.description}>
+        <div className={s.title}>Study Regime</div>
+        <ul className={s.info}>
           <li>
             <span>
               {loading ? <Skeleton width={25} /> : all_num} card
@@ -29,12 +30,12 @@ const StudyRegime: FC<Props> = () => {
             in the regime.
           </li>
           <li>
-            <SrInTime />
+            <InTime />
           </li>
         </ul>
       </div>
 
-      <div className='home__repeat'>
+      <div className={s.repeat}>
         <p>
           Currently you have{' '}
           <span>
@@ -45,16 +46,16 @@ const StudyRegime: FC<Props> = () => {
         </p>
         {!!repeat_num && (
           <>
-            <p className=''>Repeat with:</p>
-            <div className='home__repeat-methods'>
+            <p>Repeat with:</p>
+            <div className={s.methods}>
               <SrCounter />
               <Link href={'/flashcards/sr' + (counter ? `?number=${counter}` : '')}>
-                <div className='home__repeat-item'>
+                <div className={s.item}>
                   <CardsIcon height='35' width='35' />
                 </div>
               </Link>
               <Link href={'/write/sr' + (counter ? `?number=${counter}` : '')}>
-                <div className='home__repeat-item'>
+                <div className={s.item}>
                   <WriteIcon height='35' width='35' />
                 </div>
               </Link>
@@ -66,4 +67,4 @@ const StudyRegime: FC<Props> = () => {
   );
 };
 
-export default StudyRegime;
+export default memo(StudyRegime);

@@ -3,6 +3,7 @@ import { useActions, useAppSelector } from '@store/hooks';
 import Switch from '@ui/Switch';
 import clsx from 'clsx';
 import s from './styles.module.scss';
+import { StudyRegimeIcon } from '@ui/Icons';
 
 const ModuleSRControl = () => {
   const { set_cards_sr } = useActions();
@@ -27,7 +28,7 @@ const ModuleSRControl = () => {
       id={`module-sr-control`}
       className={clsx(s.sr_control)}
       active={active}
-      icon={'icon__studyregime'}
+      icon={<StudyRegimeIcon />}
       onClick={clickSwitch}
       tooltip={'All cards study regime'}
     />

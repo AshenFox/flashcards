@@ -3,6 +3,7 @@ import { useActions } from '@store/hooks';
 import { Card } from '@store/reducers/main/mainInitState';
 import s from './styles.module.scss';
 import Switch from '@ui/Switch';
+import { SaveIcon } from '@ui/Icons';
 
 type SaveProps = {
   data: Card;
@@ -43,7 +44,7 @@ const Save = ({ data }: SaveProps) => {
       className={s.save}
       active={save}
       small
-      icon={'icon__save'}
+      icon={<SaveIcon />}
       tooltip='Save the card'
       onMouseDown={down}
       onMouseUp={up}

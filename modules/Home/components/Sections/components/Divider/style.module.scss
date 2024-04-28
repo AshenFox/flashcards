@@ -1,0 +1,27 @@
+@import '@styles/vars.scss';
+
+.divider {
+  display: flex;
+  margin: 0 1rem 2rem 0;
+  margin-top: 2rem;
+
+  &:first-child {
+    margin-top: 0rem;
+  }
+}
+
+.text {
+  flex-grow: 0;
+  margin-right: 2rem;
+  text-align: left;
+  text-transform: uppercase;
+  color: black;
+}
+
+.line {
+  background-color: #b6b6b6;
+  flex-grow: 10;
+  margin: auto;
+  text-align: center;
+  height: 1px;
+}
