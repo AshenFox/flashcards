@@ -1,0 +1,117 @@
+@import '@styles/vars.scss';
+
+.study_regime {
+  cursor: auto;
+  display: flex;
+  justify-content: space-between;
+  background-color: $white;
+  border-radius: 5px;
+  margin-bottom: 1rem;
+  padding: 1.4rem 2.4rem;
+
+  @media (max-width: $mobile) {
+    padding: 1.4rem 1.4rem;
+  }
+
+  @media (max-width: $tablet) {
+    flex-direction: column;
+  }
+}
+
+.description {
+  display: flex;
+  flex-direction: column;
+
+  @media (max-width: $tablet) {
+    padding-bottom: 1rem;
+    border-bottom: 2px solid $grey-light;
+  }
+}
+
+.title {
+  font-size: 2.5rem;
+  font-weight: bold;
+  color: $primary;
+
+  @media (max-width: $mobile-sm) {
+    font-size: 2.5rem;
+  }
+}
+
+.info {
+  margin-top: 0.5rem;
+  list-style: none;
+
+  span {
+    color: $primary;
+    font-weight: bold;
+  }
+}
+
+.repeat {
+  text-align: right;
+  color: $grey;
+
+  @media (max-width: $tablet) {
+    text-align: left;
+    margin-top: 1rem;
+    align-self: flex-start;
+  }
+
+  p {
+    span {
+      color: $primary;
+    }
+  }
+
+  p:nth-child(1) {
+    margin-bottom: 1rem;
+    line-height: 1;
+    font-size: 1.75rem;
+    font-weight: bold;
+  }
+
+  p:nth-child(2) {
+    margin-bottom: 1rem;
+    line-height: 1;
+  }
+}
+
+.item {
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  height: 6rem;
+  width: 6rem;
+  border-radius: 100%;
+  border: 2px solid $primary;
+  transition: all 0.2s;
+
+  svg {
+    fill: $primary;
+    transition: all 0.2s;
+  }
+
+  &:hover {
+    border: 2px solid $tertiary;
+
+    svg {
+      fill: $tertiary;
+    }
+  }
+
+  &:not(:last-child) {
+    margin-right: 0.75rem;
+  }
+}
+
+.methods {
+  display: flex;
+  margin-bottom: 1rem;
+  gap: 1rem;
+
+  @media (max-width: $tablet) {
+    justify-content: flex-start;
+  }
+}

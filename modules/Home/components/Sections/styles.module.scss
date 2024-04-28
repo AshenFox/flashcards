@@ -1,0 +1,11 @@
+@import '@styles/vars.scss';
+
+.content {
+  background-color: $grey-light;
+  padding: 2rem;
+  padding-bottom: 4rem;
+
+  @media (max-width: $mobile) {
+    padding: 2rem 0;
+  }
+}

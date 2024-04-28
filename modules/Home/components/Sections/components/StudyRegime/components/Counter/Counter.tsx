@@ -1,15 +1,12 @@
-import { useRef, useEffect, FC, ChangeEvent, MouseEvent, TouchEvent } from 'react';
-import { useActions, useAppSelector } from '../../../store/hooks';
+import { useRef, useEffect, ChangeEvent, MouseEvent, TouchEvent, memo } from 'react';
+import { useActions, useAppSelector } from '@store/hooks';
 import Input from '@ui/Input';
+import s from './styles.module.scss';
 
-interface OwnProps {}
-
-type Props = OwnProps;
-
-const SrCounter: FC<Props> = () => {
+const Counter = () => {
   const { set_sr_counter } = useActions();
 
-  const { counter } = useAppSelector(({ sr }) => sr);
+  const counter = useAppSelector(s => s.sr.counter);
 
   const handleCounterChange = (e: ChangeEvent<HTMLInputElement>) =>
     set_sr_counter(null, e.target.value);
@@ -59,22 +56,22 @@ const SrCounter: FC<Props> = () => {
   }, []);
 
   return (
-    <div className='home__counter-container'>
-      <div className='home__counter'>
+    <div className={s.container}>
+      <div className={s.counter}>
         <div
-          className='home__counter-subtract'
+          className={s.subtract}
           onMouseDown={multiple('stepDown')}
           onTouchStart={multiple('stepDown')}
           onMouseUp={single('stepDown')}
         />
         <Input
           type='number'
-          className='home__counter-number'
+          className={s.number}
           onChange={handleCounterChange}
           value={counter}
         />
         <div
-          className='home__counter-add'
+          className={s.add}
           onMouseDown={multiple('stepUp')}
           onTouchStart={multiple('stepUp')}
           onMouseUp={single('stepUp')}
@@ -84,4 +81,4 @@ const SrCounter: FC<Props> = () => {
   );
 };
 
-export default SrCounter;
+export default memo(Counter);

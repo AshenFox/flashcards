@@ -1,4 +1,10 @@
-import { MouseEventHandler, ReactNode, TouchEventHandler, memo } from 'react';
+import {
+  MouseEventHandler,
+  ReactElement,
+  TouchEventHandler,
+  cloneElement,
+  memo,
+} from 'react';
 import s from './styles.module.scss';
 import clsx from 'clsx';
 import Tooltip, { tooltipContainer } from '@ui/Tooltip';
@@ -8,7 +14,7 @@ type SwitchProps = {
   active: boolean;
   className?: string;
   small?: boolean;
-  icon?: ReactNode;
+  icon?: ReactElement;
   iconSize?: number;
   tooltip?: string;
   onClick?: MouseEventHandler<HTMLLabelElement>;
@@ -43,13 +49,7 @@ const Switch = ({
         checked={active}
         readOnly
       />
-      {typeof icon === 'string' ? (
-        <svg height={innerIconSize} width={innerIconSize}>
-          <use href={`../img/sprite.svg#${icon}`}></use>
-        </svg>
-      ) : (
-        icon
-      )}
+      {!!icon && cloneElement(icon, { width: innerIconSize, height: innerIconSize })}
       {tooltip && <Tooltip>{tooltip}</Tooltip>}
       <label
         className={clsx('switch__switch', small && s.small)}

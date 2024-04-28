@@ -1,0 +1,109 @@
+@import '@styles/vars.scss';
+
+.container {
+  display: flex;
+  justify-content: flex-end;
+  align-self: flex-end;
+
+  margin-right: auto;
+
+  @media (max-width: $tablet) {
+    margin-right: 0;
+    margin-left: auto;
+    order: 3;
+    justify-content: flex-start;
+  }
+}
+
+.counter {
+  display: flex;
+  align-items: stretch;
+  text-align: center;
+  line-height: 1;
+  height: 3.5rem;
+  font-size: 2rem;
+  border-radius: 5px;
+
+  div {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+}
+
+.number {
+  &:global(.input__container) {
+    border-bottom: 2px solid $primary;
+    width: 4rem;
+    height: 3.5rem;
+  }
+
+  :global(.input__input) {
+    appearance: textfield;
+    height: 100%;
+    font-size: 1.75rem;
+    text-align: center;
+  }
+
+  :global(.input__input)::-webkit-inner-spin-button,
+  :global(.input__input)::-webkit-outer-spin-button {
+    appearance: none;
+  }
+}
+
+.subtract,
+.add {
+  user-select: none;
+  position: relative;
+  cursor: pointer;
+  width: 3.5rem;
+  height: 3.5rem;
+  font-weight: bold;
+  color: $white;
+  background-color: $primary;
+  transition: all 0.2s;
+  border-radius: 50%;
+
+  &::before,
+  &::after {
+    content: '';
+    position: absolute;
+    background-color: $white;
+    border-radius: 0.25rem;
+    transition: all 0.2s;
+  }
+
+  &:hover {
+    color: $black;
+    background-color: $tertiary;
+    border-color: $tertiary;
+
+    &::before,
+    &::after {
+      background-color: $grey;
+    }
+  }
+}
+
+.subtract {
+  margin-right: 0.5rem;
+
+  &::after {
+    height: 0.4rem;
+    width: 1.8rem;
+  }
+}
+
+.add {
+  margin-left: 0.5rem;
+
+  &::before {
+    height: 1.8rem;
+    width: 0.4rem;
+  }
+
+  &::after {
+    height: 0.4rem;
+    width: 1.8rem;
+  }
+}

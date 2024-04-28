@@ -1,5 +1,5 @@
 import EditCard from '@components/EditCard';
-import ScrollLoading from '@modules/Home/content/ScrollLoading';
+import ScrollLoader from '@ui/ScrollLoader';
 import { AddCard, Save } from './components';
 import ContentWrapper from '@components/ContentWrapper';
 import { useAppSelector } from '@store/hooks';
@@ -31,7 +31,7 @@ const Cards = () => {
                 number={arr.length}
               />
             ))}
-            {loading && <ScrollLoading loading={loading} />}
+            {loading && <ScrollLoader active={loading} />}
           </div>
           {!!formatted_cards.length && <AddCard />}
         </Container>

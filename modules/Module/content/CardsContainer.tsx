@@ -1,7 +1,7 @@
 import Card from './Card';
 import EditCard from '@components/EditCard';
 import NotFound from './NotFound';
-import ScrollLoading from '../../home/content/ScrollLoading';
+import ScrollLoader from '@ui/ScrollLoader';
 import { useAppSelector } from '../../../store/hooks';
 import { FC } from 'react';
 
@@ -28,7 +28,7 @@ const CardsContainer: FC<Props> = () => {
           />
         )
       )}
-      {loading && <ScrollLoading loading={loading} />}
+      {loading && <ScrollLoader active={loading} />}
       {!loading && <NotFound />}
     </div>
   );

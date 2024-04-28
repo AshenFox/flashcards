@@ -1,16 +1,12 @@
+import { memo } from 'react';
 import Skeleton from 'react-loading-skeleton';
-import { FC } from 'react';
-import { useAppSelector } from '../../../store/hooks';
+import { useAppSelector } from '@store/hooks';
 
-interface OwnProps {}
-
-type Props = OwnProps;
-
-const SrInTime: FC<Props> = () => {
+const InTime = () => {
   const {
     sr: { next_num, next_date },
     main: { loading },
-  } = useAppSelector((state) => state);
+  } = useAppSelector(state => state);
 
   return (
     <>
@@ -27,7 +23,7 @@ const SrInTime: FC<Props> = () => {
   );
 };
 
-export default SrInTime;
+export default memo(InTime);
 
 const getTimeIntervalStr = (dateStr: string) => {
   const mil = new Date(dateStr).getTime();
