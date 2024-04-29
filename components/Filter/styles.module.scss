@@ -1,0 +1,39 @@
+@import '@styles/vars.scss';
+
+.filter {
+  position: static;
+}
+
+.container {
+  display: flex;
+  justify-content: flex-end;
+  transition: all 0.2s;
+
+  @media (max-width: $mobile) {
+    flex-direction: column;
+  }
+}
+
+.search {
+  width: 100%;
+  max-width: 30rem;
+  margin-right: 1.5rem;
+
+  @media (max-width: $mobile) {
+    margin-right: 0;
+  }
+}
+
+.select_group {
+  display: flex;
+  gap: 1rem;
+}
+
+.select {
+  height: 4rem;
+  width: 11.5rem;
+
+  @media (max-width: $mobile) {
+    margin-top: 1.5rem;
+  }
+}

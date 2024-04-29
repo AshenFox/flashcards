@@ -1,18 +1,52 @@
 import { useAppSelector } from '@store/store';
 import React, { Fragment, memo } from 'react';
 import Divider from '../Divider';
-import Module from '@modules/Home/content/Module';
+import Module from './components/Module';
 import ScrollLoader from '@ui/ScrollLoader';
 import NotFound from '@components/NotFound';
+import Filter, { Option } from '@components/Filter';
+import { useActions } from '@store/hooks';
+import s from '../../styles.module.scss';
+
+const optionsBy: Option[] = [
+  { value: 'newest', label: 'Newest' },
+  { value: 'oldest', label: 'Oldest' },
+];
 
 const Modules = () => {
   const modules = useAppSelector(s => s.main.modules);
   const draft = useAppSelector(s => s.main.draft);
-  const search_modules = useAppSelector(s => s.main.search_modules);
   const loading = useAppSelector(s => s.main.loading);
+  const search_modules = useAppSelector(s => s.main.search_modules);
+  const select_created = useAppSelector(s => s.main.select_created);
+
+  const {
+    get_modules,
+    control_search_modules,
+    reset_fields_modules,
+    set_select_created,
+  } = useActions();
 
   return (
     <>
+      <Filter
+        className={s.filter}
+        getData={get_modules}
+        resetData={reset_fields_modules}
+        search={{
+          value: search_modules.value,
+          setValue: control_search_modules,
+          placeholder: 'Type to filter...',
+        }}
+        selects={[
+          {
+            id: 'created',
+            value: select_created,
+            options: optionsBy,
+            setValue: set_select_created,
+          },
+        ]}
+      />
       {draft && (
         <Fragment>
           <Divider draft={!!draft} />

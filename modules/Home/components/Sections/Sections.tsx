@@ -1,4 +1,3 @@
-import Search from '@modules/Home/content/Search';
 import { useRouter } from 'next/router';
 import React, { memo } from 'react';
 import s from './styles.module.scss';
@@ -12,8 +11,6 @@ const Sections = () => {
 
   return (
     <div className={s.content}>
-      {(section === 'cards' || section === 'modules') && <Search />}
-
       <div>
         {section === 'cards' && <Cards />}
         {section === 'modules' && <Modules />}

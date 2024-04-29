@@ -167,32 +167,6 @@
     }
   }
 
-  &__select-group {
-    display: flex;
-  }
-
-  &__select {
-    height: 4rem;
-
-    &--1 {
-      width: 11.5rem;
-    }
-
-    @media (max-width: $tablet) {
-      margin-top: 1.5rem;
-    }
-  }
-
-  &__search-container {
-    display: flex;
-    justify-content: flex-end;
-    transition: all 0.2s;
-
-    @media (max-width: $tablet) {
-      flex-direction: column;
-    }
-  }
-
   &__none-found {
     text-align: center;
     font-size: 1.7rem;
