@@ -1,15 +1,25 @@
-import { FC } from 'react';
-import { useAppSelector } from '../../../store/hooks';
-import Search from '../../home/content/Search';
+import { memo } from 'react';
+import { useActions, useAppSelector } from '@store/hooks';
+import Filter, { Option } from '@components/Filter';
 
-interface OwnProps {}
+const optionsBy: Option[] = [
+  { value: 'term', label: 'Term' },
+  { value: 'defenition', label: 'Definition' },
+];
 
-type Props = OwnProps;
+const Param = () => {
+  const search_cards = useAppSelector(s => s.main.search_cards);
+  const select_by = useAppSelector(s => s.main.select_by);
+  const currentModule = useAppSelector(s => s.main.module);
 
-const Param: FC<Props> = () => {
-  const { module } = useAppSelector(({ main }) => main);
+  const { _id, number } = currentModule || {};
 
-  const { number } = module || {};
+  const { control_search_cards, reset_fields_cards, set_select_by, get_module_cards } =
+    useActions();
+
+  const getData = () => {
+    get_module_cards(_id);
+  };
 
   return (
     <div className='module__param'>
@@ -18,9 +28,26 @@ const Param: FC<Props> = () => {
         <span id='module__counter'>{number ? number : 0}</span>
         <span>{' )'}</span>
       </div>
-      <Search />
+      <Filter
+        className={'module__search'}
+        getData={getData}
+        resetData={reset_fields_cards}
+        search={{
+          value: search_cards.value,
+          setValue: control_search_cards,
+          placeholder: 'Type to filter by ...',
+        }}
+        selects={[
+          {
+            id: 'by',
+            value: select_by,
+            options: optionsBy,
+            setValue: set_select_by,
+          },
+        ]}
+      />
     </div>
   );
 };
 
-export default Param;
+export default memo(Param);
