@@ -4,21 +4,21 @@ import s from './styles.module.scss';
 type NotFoundProps = {
   resultsFound: number;
   filterValue: string;
-  notFoundMsg: (filterValue: string) => ReactNode;
-  nothingMsg: ReactNode;
+  nothingMsg?: ReactNode;
+  notFoundMsg?: (filterValue: string) => ReactNode;
 };
 
 const NotFound = ({
   resultsFound,
   filterValue,
-  notFoundMsg,
   nothingMsg,
+  notFoundMsg,
 }: NotFoundProps) => {
   let content: ReactNode;
 
-  if (!resultsFound) content = <p>{notFoundMsg(filterValue)}</p>;
+  if (notFoundMsg && !resultsFound) content = <p>{notFoundMsg(filterValue)}</p>;
 
-  if (!resultsFound && filterValue === '') content = <p>{nothingMsg}</p>;
+  if (nothingMsg && !resultsFound && filterValue === '') content = <p>{nothingMsg}</p>;
 
   return <div className={s.not_found}>{content}</div>;
 };
