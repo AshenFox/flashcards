@@ -59,6 +59,7 @@ const Cards = () => {
             value: select_created,
             options: optionsCreated,
             setValue: set_select_created,
+            alwaysReload: true,
           },
         ]}
       />

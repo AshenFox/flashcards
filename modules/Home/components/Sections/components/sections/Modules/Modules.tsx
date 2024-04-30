@@ -44,6 +44,7 @@ const Modules = () => {
             value: select_created,
             options: optionsBy,
             setValue: set_select_created,
+            alwaysReload: true,
           },
         ]}
       />
