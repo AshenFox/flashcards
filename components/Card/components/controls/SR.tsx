@@ -6,11 +6,11 @@ import Switch from '@ui/Switch';
 import s from './styles.module.scss';
 import clsx from 'clsx';
 
-type CardSRControlProps = {
+type SRProps = {
   data: Card;
 };
 
-const CardSRControl = ({ data }: CardSRControlProps) => {
+const SR = ({ data }: SRProps) => {
   const { set_card_sr, set_cards_sr_positive } = useActions();
 
   const { _id, studyRegime } = data;
@@ -42,7 +42,7 @@ const CardSRControl = ({ data }: CardSRControlProps) => {
   return (
     <Switch
       id={`card_sr_${_id}`}
-      className={clsx('module__card-controls-item', s.sr_control)}
+      className={clsx(s.controls_item, s.sr)}
       active={studyRegime}
       small
       icon={<SRIndicator data={data} small active={studyRegime} />}
@@ -54,4 +54,4 @@ const CardSRControl = ({ data }: CardSRControlProps) => {
   );
 };
 
-export default memo(CardSRControl);
+export default memo(SR);

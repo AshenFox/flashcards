@@ -1,14 +1,13 @@
-import { FC, MouseEvent as ReactMouseEvent, useEffect, useRef } from 'react';
-import { useActions } from '../../../store/hooks';
-import { Card } from '../../../store/reducers/main/mainInitState';
+import { MouseEvent as ReactMouseEvent, memo, useEffect, useRef } from 'react';
+import { useActions } from '@store/hooks';
+import { Card } from '@store/reducers/main/mainInitState';
+import s from './styles.module.scss';
 
-interface OwnProps {
+type QuestionProps = {
   data: Card;
-}
+};
 
-type Props = OwnProps;
-
-const CardQuestion: FC<Props> = ({ data }) => {
+const Question = ({ data }: QuestionProps) => {
   const { set_card_question, drop_card_sr } = useActions();
 
   const { question, _id } = data;
@@ -26,8 +25,10 @@ const CardQuestion: FC<Props> = ({ data }) => {
   }, [question]);
 
   const deactivateQuestion = useRef((e: MouseEvent) => {
-    let questionEl = (e.target as HTMLElement).closest('.module__question');
-    let questionAnswerEl = (e.target as HTMLElement).closest('.module__question-answer');
+    let questionEl = (e.target as HTMLElement).closest(`.${s.question}`);
+    let questionAnswerEl = (e.target as HTMLElement).closest(`.${s.answer}`);
+
+    console.log({ questionEl, questionAnswerEl, target: e.target }, s.question, s.answer);
 
     if (questionEl) {
       if (questionAnswerEl) {
@@ -41,16 +42,16 @@ const CardQuestion: FC<Props> = ({ data }) => {
   const clickYes = (e: ReactMouseEvent<HTMLDivElement>) => drop_card_sr(_id);
 
   return (
-    <div className='module__question' data-active={question}>
+    <div className={s.question} data-active={question}>
       <p>Drop card study progress?</p>
-      <div className='module__question-answer' data-answer='true' onClick={clickYes}>
+      <div className={s.answer} data-answer='true' onClick={clickYes}>
         <span>Yes</span>
       </div>
-      <div className='module__question-answer' data-answer='false'>
+      <div className={s.answer} data-answer='false'>
         <span>No</span>
       </div>
     </div>
   );
 };
 
-export default CardQuestion;
+export default memo(Question);

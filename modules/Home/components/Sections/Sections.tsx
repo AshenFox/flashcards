@@ -1,9 +1,9 @@
 import { useRouter } from 'next/router';
 import React, { memo } from 'react';
 import s from './styles.module.scss';
-import StudyRegime from './components/StudyRegime';
-import Modules from './components/Modules';
-import Cards from './components/Cards';
+import StudyRegime from './components/sections/StudyRegime';
+import Modules from './components/sections/Modules';
+import Cards from './components/sections/Cards';
 
 const Sections = () => {
   const router = useRouter();

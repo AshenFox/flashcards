@@ -1,9 +1,9 @@
-import Card from './Card';
 import EditCard from '@components/EditCard';
 import NotFound from './NotFound';
 import ScrollLoader from '@ui/ScrollLoader';
-import { useAppSelector } from '../../../store/hooks';
+import { useAppSelector } from '@store/hooks';
 import { FC } from 'react';
+import Card from '@components/Card';
 
 interface OwnProps {}
 
@@ -24,7 +24,7 @@ const CardsContainer: FC<Props> = () => {
             key={card._id}
             data={card}
             filter={search_cards.value}
-            filter_type={select_by.value}
+            filterType={select_by.value}
           />
         )
       )}

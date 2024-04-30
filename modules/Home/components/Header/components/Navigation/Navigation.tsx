@@ -1,6 +1,6 @@
 import { memo, useEffect } from 'react';
 import { useRouter } from 'next/router';
-import Item from './components/Item';
+import Item from './components/Item/Item';
 import s from './styles.module.scss';
 
 const Navigation = () => {
