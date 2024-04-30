@@ -1,13 +1,12 @@
 import { useAppSelector } from '@store/store';
 import React, { Fragment, memo } from 'react';
-import Divider from '../Divider';
+import Divider from '../components/Divider';
 import EditCard from '@components/EditCard';
-// import Card from '@modules/module/content/Card';
 import ScrollLoader from '@ui/ScrollLoader';
 import NotFound from '@components/NotFound';
 import Filter, { Option } from '@components/Filter';
 import { useActions } from '@store/hooks';
-import s from '../../styles.module.scss';
+import s from '../styles.module.scss';
 import Card from '@components/Card';
 
 const optionsBy: Option[] = [
