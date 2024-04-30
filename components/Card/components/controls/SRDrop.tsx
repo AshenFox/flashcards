@@ -4,13 +4,13 @@ import { Card } from '@store/reducers/main/mainInitState';
 import Tooltip, { tooltipContainer } from '@ui/Tooltip';
 import clsx from 'clsx';
 import s from './styles.module.scss';
-import { StudyRegimeIcon } from '@ui/Icons';
+import { DropStudyRegimeIcon } from '@ui/Icons';
 
-type CardSRDropControlProps = {
+type SRDropProps = {
   data: Card;
 };
 
-const CardSRDropControl = ({ data }: CardSRDropControlProps) => {
+const SRDrop = ({ data }: SRDropProps) => {
   const { set_card_question } = useActions();
 
   const { question, _id } = data;
@@ -19,14 +19,14 @@ const CardSRDropControl = ({ data }: CardSRDropControlProps) => {
 
   return (
     <div
-      className={clsx('module__card-controls-item', s.control, tooltipContainer)}
+      className={clsx(s.controls_item, s.sr_drop, tooltipContainer)}
       onClick={clickDropSR}
       data-active={question}
     >
-      <StudyRegimeIcon height='19' width='19' />
+      <DropStudyRegimeIcon height='19' width='19' />
       <Tooltip>Drop card study progress</Tooltip>
     </div>
   );
 };
 
-export default memo(CardSRDropControl);
+export default memo(SRDrop);

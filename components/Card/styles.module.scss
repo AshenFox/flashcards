@@ -1,0 +1,136 @@
+@import '@styles/vars.scss';
+
+.card {
+  margin-bottom: 1.5rem;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.55rem 2rem;
+  background-color: $white;
+  border-bottom: 2px solid #f0f0f0;
+}
+
+.created {
+  color: $grey-lighter;
+  font-size: 1.2rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.main {
+  display: flex;
+  background-color: $white;
+  padding: 2rem;
+  min-height: 10rem;
+
+  @media (max-width: $tablet-sm) {
+    flex-direction: column;
+  }
+}
+
+.term {
+  position: relative;
+  width: 30%;
+  text-align: center;
+  padding: 3rem 1.5rem 0 1.5rem;
+  border-right: 2px solid $grey-light;
+
+  font-size: 1.7rem;
+
+  overflow-wrap: break-word;
+
+  @media (max-width: $tablet-sm) {
+    width: 100%;
+    text-align: left;
+    border-right: none;
+    border-bottom: 2px solid $grey-light;
+    padding: 3rem 1rem 1.5rem 1rem;
+  }
+}
+
+.controls {
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: flex;
+  justify-content: flex-start;
+}
+
+.speaker {
+  position: absolute;
+  right: 1rem;
+  top: 0;
+
+  svg {
+    height: 17px;
+    width: 17px;
+  }
+}
+
+.definition_container {
+  width: 70%;
+
+  display: flex;
+
+  @media (max-width: $tablet) {
+    flex-direction: column;
+  }
+
+  @media (max-width: $tablet-sm) {
+    width: 100%;
+    padding-top: 1.5rem;
+  }
+}
+
+.definition {
+  padding: 3rem 1.5rem 0 1.5rem;
+  position: relative;
+  font-size: 1.7rem;
+  overflow-wrap: break-word;
+  text-align: left;
+
+  flex: 1;
+
+  @media (max-width: $tablet) {
+    padding: 3rem 1rem 0 1rem;
+    flex-direction: column;
+  }
+}
+
+.img_container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  align-self: center;
+  width: 20%;
+
+  &.inactive {
+    display: none;
+  }
+
+  @media (max-width: $tablet) {
+    padding: 0 1rem;
+    margin-left: 0;
+    margin-top: 1rem;
+    width: 100%;
+    justify-content: flex-start;
+  }
+}
+
+.img {
+  margin: 0 auto;
+  width: 12rem;
+  height: 10rem;
+  border-radius: 5px;
+
+  background-size: cover;
+  background-position: center;
+
+  @media (max-width: $tablet) {
+    margin: 0;
+  }
+}
