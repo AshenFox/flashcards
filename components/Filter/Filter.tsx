@@ -35,6 +35,7 @@ type FilterProps = {
     value: Option;
     options: Options<Option>;
     setValue: (value: Option) => void;
+    alwaysReload?: boolean;
   }[];
   getData: () => void;
   resetData: () => void;
@@ -69,7 +70,7 @@ const Filter = ({ className, search, selects, getData, resetData }: FilterProps)
             const onChange = (value: Option) => {
               select.setValue(value);
 
-              if (search.value) {
+              if (search.value || select.alwaysReload) {
                 resetData();
                 getData();
               }
