@@ -1,0 +1,9 @@
+@import '@styles/vars.scss';
+
+.filter {
+  margin-bottom: 4rem;
+
+  @media (max-width: $mobile) {
+    margin-bottom: 2.5rem;
+  }
+}
