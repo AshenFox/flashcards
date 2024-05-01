@@ -1,0 +1,26 @@
+@import '@styles/vars.scss';
+
+.param {
+  display: flex;
+  justify-content: space-between;
+  padding-bottom: 3rem;
+
+  @media (max-width: $tablet) {
+    flex-direction: column;
+  }
+}
+
+.search {
+  width: 70%;
+
+  @media (max-width: $tablet) {
+    width: auto;
+    margin-top: 1.5rem;
+  }
+}
+
+.count {
+  color: $grey;
+  font-size: 2rem;
+  font-weight: bold;
+}

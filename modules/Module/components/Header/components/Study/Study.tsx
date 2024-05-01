@@ -1,21 +1,18 @@
 import { useRouter } from 'next/router';
 import Link from 'next/link';
-import { FC } from 'react';
 import { CardsIcon, WriteIcon } from '@ui/Icons';
+import { memo } from 'react';
+import s from './styles.module.scss';
 
-interface OwnProps {}
-
-type Props = OwnProps;
-
-const Study: FC<Props> = () => {
+const Study = () => {
   const router = useRouter();
   const { _id } = router.query;
 
   return (
-    <div className='module__study'>
-      <div className='module__study-title'>STUDY:</div>
+    <div className={s.study}>
+      <div className={s.title}>STUDY:</div>
 
-      <div className='module__study-item' id='write-game'>
+      <div className={s.item} id='flashcards-game'>
         <Link href={`/flashcards/${_id}`}>
           <button>
             <CardsIcon height='31' width='31' />
@@ -24,7 +21,7 @@ const Study: FC<Props> = () => {
         </Link>
       </div>
 
-      <div className='module__study-item' id='write-game'>
+      <div className={s.item} id='write-game'>
         <Link href={`/write/${_id}`}>
           <button>
             <WriteIcon height='30' width='30' />
@@ -36,4 +33,4 @@ const Study: FC<Props> = () => {
   );
 };
 
-export default Study;
+export default memo(Study);

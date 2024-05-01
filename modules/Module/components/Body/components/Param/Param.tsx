@@ -1,6 +1,7 @@
 import { memo } from 'react';
 import { useActions, useAppSelector } from '@store/hooks';
 import Filter, { Option } from '@components/Filter';
+import s from './styles.module.scss';
 
 const optionsBy: Option[] = [
   { value: 'term', label: 'Term' },
@@ -22,14 +23,14 @@ const Param = () => {
   };
 
   return (
-    <div className='module__param'>
-      <div className='module__count'>
+    <div className={s.param}>
+      <div className={s.count}>
         <span>{'Terms in this set ( '}</span>
-        <span id='module__counter'>{number ? number : 0}</span>
+        <span>{number ? number : 0}</span>
         <span>{' )'}</span>
       </div>
       <Filter
-        className={'module__search'}
+        className={s.search}
         getData={getData}
         resetData={reset_fields_cards}
         search={{

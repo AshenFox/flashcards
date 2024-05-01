@@ -1,0 +1,40 @@
+@import '@styles/vars.scss';
+
+.study {
+  padding-bottom: 4rem;
+  border-bottom: 2px solid $grey-light;
+}
+
+.title {
+  color: $grey;
+  font-weight: bold;
+  font-size: 1.3rem;
+  margin-bottom: 1.2rem;
+}
+
+.item {
+  & button {
+    color: $grey;
+    font-size: 1.6rem;
+    margin-bottom: 0.3rem;
+
+    & svg {
+      vertical-align: middle;
+      margin-right: 0.5rem;
+      fill: $primary;
+      transition: all 0.1s linear;
+    }
+
+    & span {
+      display: inline-block;
+      vertical-align: middle;
+    }
+
+    &:hover {
+      color: $tertiary;
+      & svg {
+        fill: $tertiary;
+      }
+    }
+  }
+}

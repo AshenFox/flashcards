@@ -5,7 +5,7 @@ import clsx from 'clsx';
 import s from './styles.module.scss';
 import { StudyRegimeIcon } from '@ui/Icons';
 
-const ModuleSRControl = () => {
+const SR = () => {
   const { set_cards_sr } = useActions();
 
   const { cards } = useAppSelector(({ main }) => main);
@@ -35,4 +35,4 @@ const ModuleSRControl = () => {
   );
 };
 
-export default memo(ModuleSRControl);
+export default memo(SR);

@@ -1,7 +1,6 @@
-import { memo } from 'react';
+import { memo, useCallback } from 'react';
 import Speaker from '@components/Speaker';
 import { Edit, SRDrop, SR } from './components/controls';
-import Question from './components/Question';
 import Img from '@ui/Img';
 import DateStr from '@ui/DateStr';
 import { Card as CardType } from '@store/reducers/main/mainInitState';
@@ -9,6 +8,8 @@ import { usePlug } from '@helpers/hooks/usePlug';
 import ModuleLink from './components/ModuleLink';
 import TextArea from '@ui/TextArea';
 import s from './styles.module.scss';
+import ConfirmPopup from '@ui/ConfirmPopup';
+import { useActions } from '@store/hooks';
 
 type CardProps = {
   data: CardType;
@@ -23,7 +24,17 @@ const Card = ({
   filter = null,
   filterType = null,
 }: CardProps) => {
-  const { term = '', defenition = '', imgurl = '', _id, moduleID, creation_date } = data;
+  const { set_card_question, drop_card_sr } = useActions();
+
+  const {
+    term = '',
+    defenition = '',
+    imgurl = '',
+    _id,
+    moduleID,
+    creation_date,
+    question,
+  } = data;
 
   const filterRegExp = new RegExp(
     `${filter}(?!br>|r>|>|\/div>|div>|iv>|v>|nbsp;|bsp;|sp;|p;|;|\/span>|span>|pan>|an>|n>)`,
@@ -40,6 +51,17 @@ const Card = ({
     formatted_definition = defenition.replace(filterRegExp, replacement);
 
   const [visible, ref, Plug] = usePlug(s.card);
+
+  const onConfirm = useCallback(() => {
+    drop_card_sr(_id);
+  }, [_id, drop_card_sr]);
+
+  const setActive = useCallback(
+    (value: boolean) => {
+      set_card_question(_id, value);
+    },
+    [_id, set_card_question]
+  );
 
   return (
     <>
@@ -61,7 +83,13 @@ const Card = ({
                 <SR data={data} />
                 <SRDrop data={data} />
               </div>
-              <Question data={data} />
+              <ConfirmPopup
+                className={s.confirm}
+                active={question}
+                setActive={setActive}
+                onConfirm={onConfirm}
+                question='Drop card study progress?'
+              />
               <Speaker _id={_id} text={term} type={'term'} className={s.speaker} />
             </div>
             <div className={s.definition_container}>

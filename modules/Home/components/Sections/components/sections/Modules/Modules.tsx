@@ -71,9 +71,9 @@ const Modules = () => {
           resultsFound={modules.length}
           filterValue={search_modules.value}
           notFoundMsg={value => (
-            <p>
+            <>
               No modules matching <b>{`"${value}"`}</b> found.
-            </p>
+            </>
           )}
           nothingMsg={<>You don&apos;t have any modules yet.</>}
         />
