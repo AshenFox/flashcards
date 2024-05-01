@@ -1,8 +1,8 @@
 import { memo, useEffect } from 'react';
 import { useRouter } from 'next/router';
-import ModuleHeader from './content/ModuleHeader';
-import ModuleBody from './content/ModuleBody';
-import { useActions, useAppSelector } from '../../store/hooks';
+import Header from './components/Header/Header';
+import Body from './components/Body/Body';
+import { useActions, useAppSelector } from '@store/hooks';
 
 const Module = () => {
   const { get_module, clear_module, reset_fields_cards, reset_search } = useActions();
@@ -10,7 +10,7 @@ const Module = () => {
   const router = useRouter();
   const { _id } = router.query;
 
-  const { user } = useAppSelector(({ auth }) => auth);
+  const user = useAppSelector(s => s.auth.user);
 
   useEffect(() => {
     if (user && typeof _id === 'string') get_module(_id);
@@ -26,8 +26,8 @@ const Module = () => {
 
   return (
     <>
-      <ModuleHeader />
-      <ModuleBody />
+      <Header />
+      <Body />
     </>
   );
 };

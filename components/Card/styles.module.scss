@@ -134,3 +134,15 @@
     margin: 0;
   }
 }
+
+.confirm {
+  &:global(.confirm-popup__confirm) {
+    top: -10.5rem;
+    left: 5rem;
+    width: 20rem;
+
+    @media (max-width: $mobile) {
+      left: 1rem;
+    }
+  }
+}

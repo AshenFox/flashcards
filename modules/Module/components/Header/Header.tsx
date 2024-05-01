@@ -1,27 +1,24 @@
+import { memo } from 'react';
 import Skeleton from 'react-loading-skeleton';
 import Link from 'next/link';
-import Study from './Study';
-import Info from './Info';
+import Study from './components/Study/Study';
+import Info from './components/Info/Info';
 import ContentWrapper from '@components/ContentWrapper';
-import { useAppSelector } from '../../../store/hooks';
-import { FC } from 'react';
+import { useAppSelector } from '@store/hooks';
 import Container from '@components/Container';
+import s from './styles.module.scss';
 
-interface OwnProps {}
+const Header = () => {
+  const currentModule = useAppSelector(s => s.main.module);
 
-type Props = OwnProps;
-
-const ModuleContainer: FC<Props> = () => {
-  const { module } = useAppSelector(({ main }) => main);
-
-  const { title } = module || {};
+  const { title } = currentModule || {};
 
   return (
-    <div className='module__header'>
+    <div className={s.header}>
       <ContentWrapper tagType='section'>
         <Container>
-          <div className='module__header-top'>
-            <div className='module__title'>
+          <div className={s.top}>
+            <div className={s.title}>
               <h1
                 //helpers-delete
                 className={`${title ? '' : 'blue'}`}
@@ -29,7 +26,7 @@ const ModuleContainer: FC<Props> = () => {
                 {module ? title ? title : '(Untitled)' : <Skeleton width={150} />}
               </h1>
             </div>
-            <div className='module__return'>
+            <div className={s.return}>
               <Link href={'/home/modules'}>
                 <button
                   //helpers-delete
@@ -48,4 +45,4 @@ const ModuleContainer: FC<Props> = () => {
   );
 };
 
-export default ModuleContainer;
+export default memo(Header);

@@ -1,0 +1,75 @@
+@import '@styles/vars.scss';
+
+.info {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 2rem;
+
+  @media (max-width: 550px) {
+    flex-direction: column;
+  }
+}
+
+.author {
+  @media (max-width: 550px) {
+    margin-bottom: 1.5rem;
+  }
+}
+
+.created {
+  color: rgb(134, 134, 134);
+  display: block;
+  font-size: 1.2rem;
+}
+
+.nickname {
+  color: $grey;
+  display: block;
+  font-size: 1.8rem;
+  font-weight: bold;
+}
+
+.nav {
+  position: relative;
+  display: flex;
+  align-items: center;
+  margin-right: 1rem;
+  margin-top: auto;
+  margin-bottom: auto;
+
+  @media (max-width: $mobile-sm) {
+    align-self: center;
+    margin-right: 0;
+  }
+}
+
+.nav_item {
+  display: inline-block;
+  margin-left: 1.5rem;
+  border-radius: 5rem;
+  cursor: pointer;
+
+  & svg {
+    fill: $grey;
+    vertical-align: middle;
+    transition: all 0.1s linear;
+  }
+
+  &:hover {
+    & svg {
+      fill: rgba(255, 0, 0, 0.856);
+    }
+  }
+}
+
+.confirm {
+  &:global(.confirm-popup__confirm) {
+    width: 23rem;
+    top: -11rem;
+    left: -9.5rem;
+
+    @media (max-width: $mobile) {
+      left: 1.75rem;
+    }
+  }
+}

@@ -1,0 +1,37 @@
+@import '@styles/vars.scss';
+
+.header {
+  padding: 2rem 0;
+  background-color: $white;
+}
+
+.top {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 3rem;
+
+  @media (max-width: $tablet) {
+    flex-direction: column-reverse;
+    align-items: flex-end;
+  }
+}
+
+.title {
+  color: $grey;
+
+  @media (max-width: $tablet) {
+    width: 100%;
+  }
+
+  @media (max-width: $mobile) {
+    font-size: 1.3rem;
+  }
+}
+
+.return {
+  text-align: right;
+
+  @media (max-width: $tablet) {
+    margin-bottom: 1.5rem;
+  }
+}

@@ -3,9 +3,9 @@ import { useActions, useAppSelector } from '@store/hooks';
 import Tooltip, { tooltipContainer } from '@ui/Tooltip';
 import clsx from 'clsx';
 import s from './styles.module.scss';
-import { DropStudyRegimeIcon, StudyRegimeIcon } from '@ui/Icons';
+import { DropStudyRegimeIcon } from '@ui/Icons';
 
-const ModuleSRDropControl = () => {
+const SRDrop = () => {
   const { set_module_question } = useActions();
 
   const { module } = useAppSelector(({ main }) => main);
@@ -26,4 +26,4 @@ const ModuleSRDropControl = () => {
   );
 };
 
-export default memo(ModuleSRDropControl);
+export default memo(SRDrop);
