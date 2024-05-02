@@ -2,6 +2,8 @@ import { memo } from 'react';
 import { useEffect, useRef } from 'react';
 import { useActions, useAppSelector } from '@store/hooks';
 import { ArrowUpIcon } from '@ui/Icons';
+import s from './styles.module.scss';
+import clsx from 'clsx';
 
 const ScrollTop = () => {
   const { set_scroll_top } = useActions();
@@ -26,7 +28,7 @@ const ScrollTop = () => {
   const clickScroll = () => movePageUp();
 
   return (
-    <div className={`scroll ${scroll_top ? 'active' : ''}`} onClick={clickScroll}>
+    <div className={clsx(s.scroll, scroll_top && s.active)} onClick={clickScroll}>
       <ArrowUpIcon height='20' width='20' />
     </div>
   );

@@ -3,7 +3,7 @@ import { FC, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import Progress from './Progress';
 import ShuffleBtn from './ShuffleBtn';
-import { useActions } from '../../../store/hooks';
+import { useActions } from '@store/hooks';
 import { CardsIcon, TriangleLeftIcon } from '@ui/Icons';
 
 interface OwnProps {}
@@ -19,10 +19,10 @@ const Controls: FC<Props> = () => {
   const isSR = _id === 'sr';
 
   const onSizeChange = (e: UIEvent | Event) =>
-    set_game_controls_dimen(controllsEl.current);
+    set_game_controls_dimen(controlsEl.current);
 
   useEffect(() => {
-    set_game_controls_dimen(controllsEl.current);
+    set_game_controls_dimen(controlsEl.current);
   }, []);
 
   useEffect(() => {
@@ -34,11 +34,11 @@ const Controls: FC<Props> = () => {
     };
   }, []);
 
-  const controllsEl = useRef<HTMLDivElement>(null);
+  const controlsEl = useRef<HTMLDivElement>(null);
 
   return (
     <div className='game__container'>
-      <div className='game__controls-container' ref={controllsEl}>
+      <div className='game__controls-container' ref={controlsEl}>
         <div className='game__controls'>
           <div className='game__back'>
             <Link href={isSR ? '/home/sr' : `/module/${_id}`}>

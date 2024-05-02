@@ -1,10 +1,11 @@
 import { ChangeEvent, MouseEvent, memo, useRef } from 'react';
-import Error from './Error';
+import Error from './components/Error/Error';
 import LoadingBtn from '@ui/LoadingBtn';
 import { useActions, useAppSelector } from '@store/hooks';
 import TextLabel from '@ui/TextLabel';
 import Input from '@ui/Input';
 import clsx from 'clsx';
+import s from './styles.module.scss';
 
 const SignUp = () => {
   const { change_modal, control_field, enter, check_field } = useActions();
@@ -62,8 +63,8 @@ const SignUp = () => {
         name='username'
         type='text'
         className={clsx(
-          'modal__input-signup',
-          !!username && userErr.ok && !timers.current.username && 'success'
+          s.signup_input,
+          !!username && userErr.ok && !timers.current.username && s.success
         )}
         id='username'
         placeholder='Enter a user name'
@@ -77,8 +78,8 @@ const SignUp = () => {
         name='email'
         type='email'
         className={clsx(
-          'modal__input-signup',
-          !!email && emailErr.ok && !timers.current.email && 'success'
+          s.signup_input,
+          !!email && emailErr.ok && !timers.current.email && s.success
         )}
         id='email'
         placeholder='Enter an email'
@@ -92,8 +93,8 @@ const SignUp = () => {
         name='password'
         type='password'
         className={clsx(
-          'modal__input-signup',
-          !!password && passErr.ok && !timers.current.password && 'success'
+          s.signup_input,
+          !!password && passErr.ok && !timers.current.password && s.success
         )}
         id='password'
         placeholder='Enter a password'
@@ -111,7 +112,7 @@ const SignUp = () => {
         Sign up
       </LoadingBtn>
 
-      <div className='modal__options'>
+      <div className={s.options}>
         <p>
           Already have an account?{' '}
           <button

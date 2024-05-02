@@ -1,17 +1,14 @@
-import { FC, MouseEvent } from 'react';
-import { useActions, useAppSelector } from '../../../store/hooks';
+import { MouseEvent, memo } from 'react';
+import { useActions, useAppSelector } from '@store/hooks';
 import LoadingBtn from '@ui/LoadingBtn';
+import s from './styles.module.scss';
 
-interface OwnProps {}
-
-type Props = OwnProps;
-
-const Delete: FC<Props> = () => {
+const Delete = () => {
   const { delete_module, toggle_modal } = useActions();
 
-  const { module } = useAppSelector(({ main }) => main);
+  const currentModule = useAppSelector(s => s.main.module);
 
-  const { _id, module_loading, title } = module || {};
+  const { _id, module_loading, title } = currentModule || {};
 
   const clickDelete = (e: MouseEvent<HTMLButtonElement>) => delete_module(_id);
 
@@ -19,23 +16,23 @@ const Delete: FC<Props> = () => {
 
   return (
     <>
-      <div className='modal__set-title'>
+      <div className={s.module_title}>
         <h2>{title}</h2>
       </div>
 
-      <div className='modal__warning'>
+      <div className={s.warning}>
         <p>
-          You are about to delete this set and all of its data. You won&apos;t be able to
-          access this set ever again.
+          You are about to delete this module and all of its data. You won&apos;t be able
+          to access this set ever again.
         </p>
       </div>
 
-      <div className='modal__question'>
+      <div className={s.question}>
         <p>Are you absolutely positive? There&apos;s no undo.</p>
       </div>
 
-      <div className='modal__choice'>
-        <div className='modal__choice-item'>
+      <div className={s.choice}>
+        <div className={s.choice_item}>
           <button
             //helpers-delete
             className='width100 bcc-mudblue pad15-30 brr15 fz175 white h-opacity09'
@@ -45,7 +42,7 @@ const Delete: FC<Props> = () => {
           </button>
         </div>
 
-        <div className='modal__choice-item'>
+        <div className={s.choice_item}>
           <LoadingBtn
             active={true}
             loading={module_loading}
@@ -61,4 +58,4 @@ const Delete: FC<Props> = () => {
   );
 };
 
-export default Delete;
+export default memo(Delete);
