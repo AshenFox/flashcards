@@ -1,12 +1,14 @@
 import { useRef, MouseEvent, useEffect, memo } from 'react';
-import ModalContent from './content/ModalContent';
-import { useActions, useAppSelector } from '../../store/hooks';
+import Content from './components/Content';
+import { useActions, useAppSelector } from '@store/hooks';
 import { CloseIcon } from '@ui/Icons';
+import s from './styles.module.scss';
 
 const Modal = () => {
   const { toggle_modal } = useActions();
 
-  const { is_modal, active_modal } = useAppSelector(({ modal }) => modal);
+  const is_modal = useAppSelector(s => s.modal.is_modal);
+  const active_modal = useAppSelector(s => s.modal.active_modal);
 
   const modalEl = useRef<HTMLDivElement>(null);
   const dialogEl = useRef<HTMLDivElement>(null);
@@ -51,30 +53,30 @@ const Modal = () => {
 
   return (
     <div
-      className='modal'
+      className={s.modal}
       onMouseDown={onMouseDown}
       style={{ transitionDuration: transitionModal * 0.001 + 's' }}
       ref={modalEl}
     >
       <div
-        className='modal__dialog'
+        className={s.dialog}
         ref={dialogEl}
         style={{ transitionDuration: transitionDialog * 0.001 + 's' }}
       >
-        <div className='modal__header'>
-          <div className='modal__title'>
+        <div className={s.header}>
+          <div className={s.title}>
             <h3>
               {active_modal === 'log_in' ? 'Log in' : ''}
               {active_modal === 'sign_up' ? 'Sign up' : ''}
               {active_modal === 'delete' ? 'Delete this set?' : ''}
             </h3>
           </div>
-          <div className='modal__close' onClick={closeClick}>
+          <div className={s.close} onClick={closeClick}>
             <CloseIcon />
           </div>
         </div>
 
-        <ModalContent />
+        <Content />
       </div>
     </div>
   );

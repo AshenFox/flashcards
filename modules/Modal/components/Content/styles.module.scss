@@ -1,0 +1,74 @@
+@import '@styles/vars.scss';
+
+.login_input {
+  background-color: #e8f0fd;
+  display: flex;
+
+  svg {
+    width: 3rem;
+    fill: $grey;
+    cursor: pointer;
+  }
+}
+
+.signup_input {
+  &:global(.input__container) {
+    padding: 0.5rem 1.5rem;
+    margin-bottom: 2rem;
+    border: 2px solid $grey;
+    height: 4.4rem;
+  }
+
+  &.success {
+    border: 2px solid rgb(35, 200, 35);
+
+    &:focus-within {
+      border: 2px solid rgb(35, 200, 35);
+    }
+  }
+}
+
+.content {
+  background-color: $white;
+  padding: 2.5rem 2.5rem 2.5rem;
+  @media (max-width: $mobile) {
+    padding: 1.5rem 1.5rem 1.5rem;
+  }
+}
+
+.module_title {
+  margin-bottom: 1rem;
+}
+
+.warning {
+  margin-bottom: 1rem;
+}
+
+.question {
+  margin-bottom: 1.5rem;
+}
+
+.label {
+  margin-bottom: 1.5rem;
+}
+
+.options {
+  text-align: center;
+  padding: 1rem;
+  padding-bottom: 0;
+
+  p {
+    margin: 0;
+  }
+}
+
+.choice {
+  display: flex;
+}
+
+.choice_item {
+  width: 50%;
+  padding: 0.5rem;
+}
+
+// ------------------

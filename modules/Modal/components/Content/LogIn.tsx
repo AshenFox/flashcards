@@ -1,10 +1,11 @@
 import { MouseEvent, KeyboardEvent, ChangeEvent, useState, memo } from 'react';
-import Error from './Error';
+import Error from './components/Error/Error';
 import LoadingBtn from '@ui/LoadingBtn';
 import { useActions, useAppSelector } from '@store/hooks';
 import TextLabel from '@ui/TextLabel';
 import Input from '@ui/Input';
 import { EyeClosedIcon, EyeIcon } from '@ui/Icons';
+import s from './styles.module.scss';
 
 const LogIn = () => {
   const { change_modal, control_field, enter } = useActions();
@@ -48,13 +49,13 @@ const LogIn = () => {
       <Input
         name='username'
         id='username'
-        className='modal__input-login'
+        className={s.login_input}
         placeholder='Type your username'
         value={username}
         onChange={onChange}
         onKeyDown={onKeyDown}
       />
-      <TextLabel htmlFor='username' className='modal__label'>
+      <TextLabel htmlFor='username' className={s.label}>
         USERNAME
       </TextLabel>
 
@@ -63,7 +64,7 @@ const LogIn = () => {
         type={isPasswordVisible ? 'text' : 'password'}
         name='password'
         id='password'
-        className='modal__input-login'
+        className={s.login_input}
         placeholder='Type your password'
         value={password}
         onChange={onChange}
@@ -76,7 +77,7 @@ const LogIn = () => {
           )
         }
       />
-      <TextLabel htmlFor='password' className='modal__label'>
+      <TextLabel htmlFor='password' className={s.label}>
         PASSWORD
       </TextLabel>
 
@@ -90,7 +91,7 @@ const LogIn = () => {
         Log in
       </LoadingBtn>
 
-      <div className='modal__options'>
+      <div className={s.options}>
         <p>
           Don&apos;t have an account?{' '}
           <button
