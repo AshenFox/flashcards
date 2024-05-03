@@ -1,5 +1,5 @@
 import { FC, MouseEvent } from 'react';
-import { useActions, useAppSelector } from '../../../store/hooks';
+import { useActions, useAppSelector } from '@store/hooks';
 import { ShuffleIcon } from '@ui/Icons';
 
 interface OwnProps {}

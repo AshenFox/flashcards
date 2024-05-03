@@ -1,5 +1,5 @@
 .game {
-  &__container {
+  /* &__container {
     width: 100%;
     max-width: 1200px;
     margin: 0 auto;
@@ -72,9 +72,9 @@
       color: $primary;
       font-weight: bold;
     }
-  }
+  } */
 
-  &__progress {
+  /* &__progress {
     padding: 1rem;
 
     @media (max-width: $tablet) {
@@ -86,19 +86,20 @@
 
   &__progress-item {
     flex: 1;
+
     &:not(:last-child) {
-      margin-bottom: 1rem;
+      // margin-bottom: 1rem;
     }
 
     @media (max-width: $tablet) {
-      &:not(:last-child) {
-        margin: 0;
-        margin-right: 1.5rem;
+      .progress-bar__container {
+        display: flex;
+        flex-direction: row;
       }
     }
-  }
+  } */
 
-  &__progress-bar {
+  /* &__progress-bar {
     margin: auto;
     height: 1.5rem;
     background-color: $primary-pale;
@@ -186,9 +187,9 @@
     @media (max-width: $mobile) {
       font-size: 1.2rem;
     }
-  }
+  } */
 
-  &__control-buttons {
+  /* &__control-buttons {
     position: absolute;
     bottom: 1.25rem;
     left: 1.25rem;
@@ -197,9 +198,9 @@
     @media (max-width: $tablet) {
       display: none;
     }
-  }
+  } */
 
-  &__method {
+  /* &__method {
     margin-bottom: 2rem;
 
     & button {
@@ -241,7 +242,7 @@
     right: 0;
     background-color: $white;
     border: 1px solid $primary;
-  }
+  } */
 
   &__method-menu-item {
     vertical-align: middle;
@@ -291,7 +292,7 @@
     }
   }
 
-  &__content-container {
+  /* &__content-container {
     padding: 2.5rem;
     padding-left: calc(19.5rem + 2.5rem);
 
@@ -325,7 +326,7 @@
     &--unscrollable {
       height: 100%;
     }
-  }
+  } */
 
   // Write game -----
 

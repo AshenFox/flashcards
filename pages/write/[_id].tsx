@@ -1,4 +1,4 @@
-import Write from '@modules/Write';
+import { Write } from '@modules/Game';
 import { memo } from 'react';
 
 const WritePage = () => {

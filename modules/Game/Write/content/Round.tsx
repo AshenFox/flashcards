@@ -1,5 +1,5 @@
 import { FC, MouseEvent, useEffect } from 'react';
-import { useActions, useAppSelector } from '../../../store/hooks';
+import { useActions, useAppSelector } from '@store/hooks';
 
 interface OwnProps {}
 

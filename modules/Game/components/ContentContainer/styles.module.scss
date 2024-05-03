@@ -1,0 +1,37 @@
+@import '@styles/vars.scss';
+
+.container {
+  padding: 2.5rem;
+  padding-left: calc(19.5rem + 2.5rem);
+
+  @media (max-width: $tablet) {
+    padding: 1.5rem;
+  }
+
+  &.scrollable {
+    overflow-y: auto;
+    overflow-x: hidden !important;
+  }
+
+  &.unscrollable {
+    overflow: hidden !important;
+  }
+}
+
+.components {
+  margin: 0 auto;
+  max-width: 67.5rem;
+
+  display: flex;
+  align-items: center;
+  // justify-content: center;
+  flex-direction: column;
+
+  &.scrollable {
+    min-height: 100%;
+  }
+
+  &.unscrollable {
+    height: 100%;
+  }
+}

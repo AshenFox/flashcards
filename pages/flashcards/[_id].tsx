@@ -1,5 +1,5 @@
 import { memo } from 'react';
-import Flashcards from '@modules/Flashcards';
+import { Flashcards } from '@modules/Game';
 
 const FlashcardsPage = () => {
   return (

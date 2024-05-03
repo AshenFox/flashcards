@@ -1,7 +1,7 @@
 import { FC, useEffect, useRef } from 'react';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
-import { useAppSelector } from '../../../store/hooks';
+import { useAppSelector } from '@store/hooks';
 
 interface OwnProps {
   active: boolean;
