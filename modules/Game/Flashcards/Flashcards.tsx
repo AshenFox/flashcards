@@ -1,8 +1,11 @@
 import { memo, useEffect } from 'react';
 import { useRouter } from 'next/router';
-import Controls from './content/Controls';
-import ContentContainer from './content/ContentContainer';
-import { useActions, useAppSelector } from '../../store/hooks';
+import Content from './content/Content';
+import { useActions, useAppSelector } from '@store/hooks';
+import Controls, { ControlButtons } from '../components/Controls';
+import ShuffleBtn from './content/ShuffleBtn';
+import { CardsIcon } from '@ui/Icons';
+import Progress from './content/ProgressFlashcards/ProgressFlashcards';
 
 const Flashcards = () => {
   const { get_module_cards, clear_module, reset_all_game_fields, get_sr_cards } =
@@ -31,8 +34,11 @@ const Flashcards = () => {
 
   return (
     <>
-      <Controls />
-      <ContentContainer />
+      <Controls title='Flashcards' titleIcon={<CardsIcon height='40' width='40' />}>
+        <Progress />
+        <ControlButtons>{!isSR && <ShuffleBtn />}</ControlButtons>
+      </Controls>
+      <Content />
     </>
   );
 };

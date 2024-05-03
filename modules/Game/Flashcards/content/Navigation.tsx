@@ -1,6 +1,6 @@
 import { useRouter } from 'next/router';
 import { FC, MouseEvent, useEffect, useRef } from 'react';
-import { useActions, useAppSelector } from '../../../store/hooks';
+import { useActions, useAppSelector } from '@store/hooks';
 import { TriangleLeftIcon, TriangleRightIcon } from '@ui/Icons';
 
 interface OwnProps {}

@@ -2,7 +2,7 @@ import { FC, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import FinishItem from './FinishItem';
 import Link from 'next/link';
-import { useActions, useAppSelector } from '../../../store/hooks';
+import { useActions, useAppSelector } from '@store/hooks';
 
 interface OwnProps {}
 

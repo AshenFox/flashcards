@@ -1,0 +1,14 @@
+@import '@styles/vars.scss';
+
+.progress_bar {
+  @media (max-width: $tablet) {
+    &:global(.progress-bar__container) {
+      gap: 1rem;
+      flex-direction: row;
+    }
+
+    :global(.progress-bar__title) {
+      display: none;
+    }
+  }
+}
