@@ -1,9 +1,9 @@
 import React, { memo } from 'react';
 import { useAppSelector } from '@store/hooks';
-import Progress, { ProgressItem } from '@modules/Game/components/Progress';
+import DefaultProgress, { ProgressItem } from '@modules/Game/components/Progress';
 import ProgressBar from '@ui/ProgressBar';
 
-const ProgressWrite = () => {
+const Progress = () => {
   const remaining = useAppSelector(s => s.game.write.remaining);
   const answered = useAppSelector(s => s.game.write.answered);
   const rounds = useAppSelector(s => s.game.write.rounds);
@@ -22,7 +22,7 @@ const ProgressWrite = () => {
   const incorrectNum = answered.filter(item => item.answer === 'incorrect').length;
 
   return (
-    <Progress>
+    <DefaultProgress>
       <ProgressItem>
         <ProgressBar
           progress={remainingNum}
@@ -51,8 +51,8 @@ const ProgressWrite = () => {
           color='green'
         />
       </ProgressItem>
-    </Progress>
+    </DefaultProgress>
   );
 };
 
-export default memo(ProgressWrite);
+export default memo(Progress);

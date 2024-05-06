@@ -1,16 +1,16 @@
 @import '@styles/vars.scss';
 
-.indicator_question,
-.indicator_answer {
+.question,
+.answer {
   position: absolute;
 }
 
-.indicator_question {
+.question {
   left: 1rem;
   top: 1rem;
 }
 
-.indicator_answer {
+.answer {
   right: 4rem;
   top: 2.5rem;
 

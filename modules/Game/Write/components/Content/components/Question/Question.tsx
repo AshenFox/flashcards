@@ -1,24 +1,19 @@
 import { useRouter } from 'next/router';
-import { ChangeEvent, FC, MouseEvent, useCallback, useEffect, useRef } from 'react';
+import { ChangeEvent, MouseEvent, memo, useCallback, useEffect, useRef } from 'react';
 import Speaker from '@components/Speaker';
 import Img from '@ui/Img';
-import SRIndicator from '@components/SRIndicator';
 import { Card } from '@store/reducers/main/mainInitState';
 import { useActions, useAppSelector } from '@store/hooks';
-import s from './styles.module.scss';
-import clsx from 'clsx';
-import { tooltipContainer } from '@ui/Tooltip';
 import TextArea from '@ui/TextArea';
 import TextLabel from '@ui/TextLabel';
 import Input from '@ui/Input';
+import SRIndicator from '../SRIndicator';
 
-interface OwnProps {
+type QuestionProps = {
   data: Card;
-}
+};
 
-type Props = OwnProps;
-
-const Question: FC<Props> = ({ data }) => {
+const Question = ({ data }: QuestionProps) => {
   const { set_write_answer_field, check_write_answer } = useActions();
 
   const router = useRouter();
@@ -28,9 +23,7 @@ const Question: FC<Props> = ({ data }) => {
   const isSR = _id_param === 'sr';
 
   const { _id, term, defenition, imgurl } = data || {};
-  const {
-    write: { answer },
-  } = useAppSelector(({ game }) => game);
+  const answer = useAppSelector(s => s.game.write.answer);
 
   const hidTranscrDefenition = defenition.replaceAll(
     /\( \/(.*?)\/ \)/g,
@@ -73,12 +66,7 @@ const Question: FC<Props> = ({ data }) => {
   return (
     <div className='game__question'>
       <div className='game__question-container'>
-        {isSR && (
-          <SRIndicator
-            data={data}
-            className={clsx(s.indicator_question, tooltipContainer)}
-          />
-        )}
+        {isSR && <SRIndicator data={data} type='question' />}
         {term && (
           <div className='game__question-dontknow'>
             <span onClick={clickNotKnow}>Don&apos;t know</span>
@@ -124,4 +112,4 @@ const Question: FC<Props> = ({ data }) => {
   );
 };
 
-export default Question;
+export default memo(Question);

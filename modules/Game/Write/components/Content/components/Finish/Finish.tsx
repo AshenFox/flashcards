@@ -1,14 +1,10 @@
-import { FC, useEffect } from 'react';
+import { memo, useEffect } from 'react';
 import { useRouter } from 'next/router';
-import FinishItem from './FinishItem';
+import Item from './Item';
 import Link from 'next/link';
 import { useActions, useAppSelector } from '@store/hooks';
 
-interface OwnProps {}
-
-type Props = OwnProps;
-
-const Finish: FC<Props> = () => {
+const Finish = () => {
   const { next_write_round } = useActions();
 
   const router = useRouter();
@@ -70,7 +66,7 @@ const Finish: FC<Props> = () => {
 
             <div className='game__finish-body'>
               {round.map((data, z) => (
-                <FinishItem data={data} i={z + 1} key={data.id} stats={i === 0} />
+                <Item data={data} i={z + 1} key={data.id} stats={i === 0} />
               ))}
             </div>
           </div>
@@ -80,4 +76,4 @@ const Finish: FC<Props> = () => {
   );
 };
 
-export default Finish;
+export default memo(Finish);

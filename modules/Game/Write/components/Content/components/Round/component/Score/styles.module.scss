@@ -1,0 +1,36 @@
+@import '@styles/vars.scss';
+
+.score {
+  display: flex;
+  font-size: 1.8rem;
+  font-weight: bold;
+  color: $grey;
+
+  &.correct {
+    color: $green;
+  }
+
+  &.incorrect {
+    color: $red;
+  }
+
+  &:not(:last-child) {
+    padding-bottom: 1.5rem;
+    margin-bottom: 1.5rem;
+    border-bottom: 0.2rem solid #f4f4f4;
+  }
+}
+
+.title {
+  flex: 1;
+}
+
+.number {
+  display: inline-block;
+  margin-left: 2.5rem;
+}
+
+.percent {
+  display: inline-block;
+  margin-left: 2.5rem;
+}

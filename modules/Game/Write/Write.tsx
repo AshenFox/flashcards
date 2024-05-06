@@ -1,10 +1,11 @@
-import { MouseEvent, memo, useEffect } from 'react';
+import { memo, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { useActions, useAppSelector } from '@store/hooks';
-import Controls, { ControlButtons } from '../components/Controls';
-import ProgressWrite from './content/ProgressWrite';
+import Controls from '../components/Controls';
+import Progress from './components/Progress';
 import { WriteIcon } from '@ui/Icons';
-import Content from './content/Content';
+import Content from './components/Content';
+import ControlButtons from './components/ControlButtons';
 
 const Write = () => {
   const {
@@ -24,7 +25,6 @@ const Write = () => {
   const isSR = _id === 'sr';
 
   const { length } = Object.values(cards);
-  // const cardPrev = useRef(cards);
 
   useEffect(() => {
     return () => {
@@ -47,25 +47,11 @@ const Write = () => {
     }
   }, [length]);
 
-  const clickStartOver = (e: MouseEvent<HTMLButtonElement>) => prepare_write();
-
   return (
     <>
       <Controls title='Write' titleIcon={<WriteIcon height='40' width='40' />}>
-        <ProgressWrite />
-        <ControlButtons>
-          {!isSR && (
-            <div className='game__startover'>
-              <button
-                //helpers-delete
-                className='width100 fz15 pad7 br2 brc-grey-medium brr15 lightblue h-red h-brc-red'
-                onClick={clickStartOver}
-              >
-                <span>Start over</span>
-              </button>
-            </div>
-          )}
-        </ControlButtons>
+        <Progress />
+        <ControlButtons />
       </Controls>
       <Content />
     </>

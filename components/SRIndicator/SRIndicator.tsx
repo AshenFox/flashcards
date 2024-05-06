@@ -5,7 +5,7 @@ import s from './styles.module.scss';
 import Tooltip from '@ui/Tooltip';
 import { StudyRegimeIcon } from '@ui/Icons';
 
-type SRIndicatorProps = {
+export type SRIndicatorProps = {
   data: {
     stage: number;
     nextRep: string;
