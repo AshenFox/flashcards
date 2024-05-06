@@ -1,25 +1,21 @@
 import { useRouter } from 'next/router';
-import { ChangeEvent, FC, MouseEvent, useEffect, useRef } from 'react';
+import { ChangeEvent, MouseEvent, memo, useEffect, useRef } from 'react';
 import Speaker from '@components/Speaker';
 import Img from '@ui/Img';
-import SRIndicator from '@components/SRIndicator';
 import { Card } from '@store/reducers/main/mainInitState';
 import { useActions, useAppSelector } from '@store/hooks';
-import s from './styles.module.scss';
 import clsx from 'clsx';
-import { tooltipContainer } from '@ui/Tooltip';
 import TextArea from '@ui/TextArea';
 import TextLabel from '@ui/TextLabel';
 import Input from '@ui/Input';
 import { EditIcon } from '@ui/Icons';
+import SRIndicator from '../SRIndicator';
 
-interface OwnProps {
+type AnswerProps = {
   data: Card;
-}
+};
 
-type Props = OwnProps;
-
-const Answer: FC<Props> = ({ data }) => {
+const Answer = ({ data }: AnswerProps) => {
   const {
     set_card_edit,
     set_write_copy_answer_field,
@@ -118,9 +114,7 @@ const Answer: FC<Props> = ({ data }) => {
 
   return (
     <div className='game__answer' tabIndex={0} ref={gameAnswer}>
-      {isSR && (
-        <SRIndicator data={data} className={clsx(s.indicator_answer, tooltipContainer)} />
-      )}
+      {isSR && <SRIndicator data={data} type='answer' />}
       <div
         className={`game__edit game__edit--write${isSR ? '-sr' : ''}`}
         onClick={clickEdit}
@@ -211,4 +205,4 @@ const Answer: FC<Props> = ({ data }) => {
   );
 };
 
-export default Answer;
+export default memo(Answer);

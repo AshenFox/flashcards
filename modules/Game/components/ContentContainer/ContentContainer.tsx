@@ -24,7 +24,7 @@ const ContentContainer = ({
         !is_server
           ? document.documentElement.clientHeight -
             header_height -
-            (document.documentElement.clientWidth < 991 ? game_controls_height : 0)
+            (document.documentElement.clientWidth < 992 ? game_controls_height : 0)
           : 0
       }px`,
     }),

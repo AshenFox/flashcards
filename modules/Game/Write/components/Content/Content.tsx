@@ -1,10 +1,10 @@
 import ContentContainer from '@modules/Game/components/ContentContainer';
-import React, { ReactNode } from 'react';
-import Finish from './Finish';
-import Round from './Round';
+import React, { ReactNode, memo } from 'react';
+import Finish from './components/Finish';
+import Round from './components/Round';
 import EditCard from '@components/EditCard';
-import Answer from './Answer';
-import Question from './Question';
+import Answer from './components/Answer';
+import Question from './components/Question';
 import { useAppSelector } from '@store/store';
 
 const Content = () => {
@@ -56,4 +56,4 @@ const Content = () => {
   );
 };
 
-export default Content;
+export default memo(Content);

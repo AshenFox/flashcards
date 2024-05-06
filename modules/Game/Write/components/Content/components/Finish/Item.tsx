@@ -2,26 +2,24 @@ import { useRouter } from 'next/router';
 import Img from '@ui/Img';
 import DateStr from '@ui/DateStr';
 import { WriteCard } from '@store/reducers/game/gameInitState';
-import { FC } from 'react';
 import { useAppSelector } from '@store/hooks';
 import TextArea from '@ui/TextArea';
 import { CloseIcon, TickIcon } from '@ui/Icons';
+import { memo } from 'react';
 
-interface OwnProps {
+type FinishItemProps = {
   data: WriteCard;
   i: number;
   stats?: boolean;
-}
+};
 
-type Props = OwnProps;
-
-const FinishItem: FC<Props> = ({ data, i, stats }) => {
+const FinishItem = ({ data, i, stats }: FinishItemProps) => {
   const router = useRouter();
   const { _id } = router.query;
 
   const isSR = _id === 'sr';
 
-  const { cards } = useAppSelector(({ main }) => main);
+  const { cards } = useAppSelector(s => s.main.cards);
 
   const { term, defenition, imgurl, stage, nextRep, prevStage } = cards[data.id];
 
@@ -70,4 +68,4 @@ const FinishItem: FC<Props> = ({ data, i, stats }) => {
   );
 };
 
-export default FinishItem;
+export default memo(FinishItem);
