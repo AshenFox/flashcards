@@ -1,12 +1,12 @@
 import { useRouter } from 'next/router';
-import Navigation from './Navigation';
-import Card from './Card';
-import EndGame from './EndGame';
+import Navigation from './components/Navigation';
+import Card from './components/Card/Card';
+import EndGame from './components/Card/EndGame';
 import EditCard from '@components/EditCard';
-import Results from './Results';
 import { useAppSelector } from '@store/hooks';
 import ContentContainer from '@modules/Game/components/ContentContainer';
 import { memo } from 'react';
+import Finish from './components/Finish';
 
 const Content = () => {
   const router = useRouter();
@@ -46,7 +46,7 @@ const Content = () => {
               return false;
             }
           })}
-        {!isEdit && length && isEnd && isSR ? <Results /> : <EndGame active={isEnd} />}
+        {!isEdit && length && isEnd && isSR ? <Finish /> : <EndGame active={isEnd} />}
         {isEdit && (
           <EditCard
             key={activeCardData._id}

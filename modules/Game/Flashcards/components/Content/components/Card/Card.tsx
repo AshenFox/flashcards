@@ -3,7 +3,7 @@ import Speaker from '@components/Speaker';
 import Img from '@ui/Img';
 import SRIndicator from '@components/SRIndicator';
 import { Card as CardType } from '@store/reducers/main/mainInitState';
-import { FC, MouseEvent } from 'react';
+import { MouseEvent } from 'react';
 import { useActions } from '@store/hooks';
 import { tooltipContainer } from '@ui/Tooltip';
 import s from './styles.module.scss';
@@ -11,15 +11,13 @@ import clsx from 'clsx';
 import TextArea from '@ui/TextArea';
 import { EditIcon } from '@ui/Icons';
 
-interface OwnProps {
+type CardProps = {
   data: CardType;
   side?: 'definition' | 'term';
   position?: 'prev' | 'next';
-}
+};
 
-type Props = OwnProps;
-
-const Card: FC<Props> = ({ data, side = 'definition', position = null }) => {
+const Card = ({ data, side = 'definition', position = null }: CardProps) => {
   const { set_flashcards_side, set_card_edit } = useActions();
 
   const router = useRouter();

@@ -1,36 +1,36 @@
 import { useRouter } from 'next/router';
 import Img from '@ui/Img';
 import DateStr from '@ui/DateStr';
-import { WriteCard } from '@store/reducers/game/gameInitState';
 import { useAppSelector } from '@store/hooks';
 import TextArea from '@ui/TextArea';
 import { CloseIcon, TickIcon } from '@ui/Icons';
 import { memo } from 'react';
 
-type FinishItemProps = {
-  data: WriteCard;
-  i: number;
-  stats?: boolean;
+type ResultItemProps = {
+  data: {
+    id: string;
+    answer: false | 'correct' | 'incorrect';
+  };
+  number: number;
+  showHeader?: boolean;
 };
 
-const FinishItem = ({ data, i, stats }: FinishItemProps) => {
+const ResultItem = ({ data, number, showHeader = true }: ResultItemProps) => {
   const router = useRouter();
   const { _id } = router.query;
 
   const isSR = _id === 'sr';
 
-  const { cards } = useAppSelector(s => s.main.cards);
+  const cards = useAppSelector(s => s.main.cards);
 
-  const { term, defenition, imgurl, stage, nextRep, prevStage } = cards[data.id];
+  const { term, defenition, imgurl, stage, nextRep, prevStage } = cards[data.id] ?? {};
 
   return (
     <div className='game__finish-body-item'>
-      {isSR && (
+      {isSR && showHeader && (
         <div
           //helpers-delete
-          className={`game__finish-body-header game__finish-body-header--${data.answer} ${
-            stats ? '' : 'hidden'
-          }`}
+          className={`game__finish-body-header game__finish-body-header--${data.answer}`}
         >
           <p>SR Stage: {stage}</p>
           <p>
@@ -45,10 +45,14 @@ const FinishItem = ({ data, i, stats }: FinishItemProps) => {
       <div className='game__finish-body-main'>
         <div className='game__finish-body-left'>
           <div className={`game__finish-icon game__finish-icon--${data.answer}`}>
-            {data.answer === 'correct' ? <TickIcon /> : <CloseIcon />}
+            {data.answer === 'correct' ? (
+              <TickIcon width={20} />
+            ) : (
+              <CloseIcon width={20} />
+            )}
           </div>
           <div className={`game__finish-term game__finish-term--${data.answer}`}>
-            <span>{i}.</span>
+            <span>{number}.</span>
             <TextArea html={term} />
           </div>
         </div>
@@ -68,4 +72,4 @@ const FinishItem = ({ data, i, stats }: FinishItemProps) => {
   );
 };
 
-export default memo(FinishItem);
+export default memo(ResultItem);

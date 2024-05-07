@@ -7,7 +7,10 @@ import { useActions, useAppSelector } from '@store/hooks';
 import TextArea from '@ui/TextArea';
 import TextLabel from '@ui/TextLabel';
 import Input from '@ui/Input';
-import SRIndicator from '../SRIndicator';
+import s from './styles.module.scss';
+import SRIndicator from '@components/SRIndicator';
+import clsx from 'clsx';
+import { tooltipContainer } from '@ui/Tooltip';
 
 type QuestionProps = {
   data: Card;
@@ -66,7 +69,9 @@ const Question = ({ data }: QuestionProps) => {
   return (
     <div className='game__question'>
       <div className='game__question-container'>
-        {isSR && <SRIndicator data={data} type='question' />}
+        {isSR && (
+          <SRIndicator data={data} className={clsx(s.sr_indicator, tooltipContainer)} />
+        )}
         {term && (
           <div className='game__question-dontknow'>
             <span onClick={clickNotKnow}>Don&apos;t know</span>

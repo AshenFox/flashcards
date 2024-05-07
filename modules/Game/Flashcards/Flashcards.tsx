@@ -1,11 +1,11 @@
 import { memo, useEffect } from 'react';
 import { useRouter } from 'next/router';
-import Content from './content/Content';
+import Content from './components/Content';
 import { useActions, useAppSelector } from '@store/hooks';
 import Controls, { ControlButtons } from '../components/Controls';
-import ShuffleBtn from './content/ShuffleBtn';
+import ShuffleBtn from './components/ControlButtons/ShuffleBtn';
 import { CardsIcon } from '@ui/Icons';
-import Progress from './content/ProgressFlashcards/ProgressFlashcards';
+import Progress from './components/Progress';
 
 const Flashcards = () => {
   const { get_module_cards, clear_module, reset_all_game_fields, get_sr_cards } =
