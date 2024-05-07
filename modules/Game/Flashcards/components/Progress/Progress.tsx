@@ -1,21 +1,17 @@
 import { memo } from 'react';
 import { useAppSelector } from '@store/hooks';
 import ProgressBar from '@ui/ProgressBar';
-import Progress, { ProgressItem } from '@modules/Game/components/Progress';
+import DefaultProgress, { ProgressItem } from '@modules/Game/components/Progress';
 import s from './styles.module.scss';
 
-const ProgressFlashcards = () => {
-  const {
-    main: { cards },
-    game: {
-      flashcards: { progress },
-    },
-  } = useAppSelector(state => state);
+const Progress = () => {
+  const cards = useAppSelector(s => s.main.cards);
+  const progress = useAppSelector(s => s.game.flashcards.progress);
 
   const cards_arr = Object.keys(cards);
 
   return (
-    <Progress>
+    <DefaultProgress>
       <ProgressItem>
         <ProgressBar
           progress={progress}
@@ -25,8 +21,8 @@ const ProgressFlashcards = () => {
           className={s.progress_bar}
         />
       </ProgressItem>
-    </Progress>
+    </DefaultProgress>
   );
 };
 
-export default memo(ProgressFlashcards);
+export default memo(Progress);

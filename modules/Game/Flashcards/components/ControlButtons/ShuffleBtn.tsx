@@ -1,12 +1,8 @@
-import { FC, MouseEvent } from 'react';
+import { MouseEvent, memo } from 'react';
 import { useActions, useAppSelector } from '@store/hooks';
 import { ShuffleIcon } from '@ui/Icons';
 
-interface OwnProps {}
-
-type Props = OwnProps;
-
-const ShuffleBtn: FC<Props> = () => {
+const ShuffleBtn = () => {
   const {
     set_flashcards_shuffled,
     sort_flashcards,
@@ -44,4 +40,4 @@ const ShuffleBtn: FC<Props> = () => {
   );
 };
 
-export default ShuffleBtn;
+export default memo(ShuffleBtn);

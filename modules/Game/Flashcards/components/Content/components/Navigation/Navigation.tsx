@@ -1,13 +1,9 @@
 import { useRouter } from 'next/router';
-import { FC, MouseEvent, useEffect, useRef } from 'react';
+import { MouseEvent, memo, useEffect, useRef } from 'react';
 import { useActions, useAppSelector } from '@store/hooks';
 import { TriangleLeftIcon, TriangleRightIcon } from '@ui/Icons';
 
-interface OwnProps {}
-
-type Props = OwnProps;
-
-const Navigation: FC<Props> = () => {
+const Navigation = () => {
   const {
     set_flashcards_progress,
     save_flashcards_answer,
@@ -149,4 +145,4 @@ const Navigation: FC<Props> = () => {
   );
 };
 
-export default Navigation;
+export default memo(Navigation);

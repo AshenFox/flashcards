@@ -1,1 +1,1 @@
-export { default } from './ControlButtons';
+export { default as StartOver } from './StartOver';

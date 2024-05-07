@@ -1,11 +1,11 @@
 import { memo, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { useActions, useAppSelector } from '@store/hooks';
-import Controls from '../components/Controls';
+import Controls, { ControlButtons } from '../components/Controls';
 import Progress from './components/Progress';
 import { WriteIcon } from '@ui/Icons';
 import Content from './components/Content';
-import ControlButtons from './components/ControlButtons';
+import { StartOver } from './components/ControlButtons';
 
 const Write = () => {
   const {
@@ -51,7 +51,7 @@ const Write = () => {
     <>
       <Controls title='Write' titleIcon={<WriteIcon height='40' width='40' />}>
         <Progress />
-        <ControlButtons />
+        <ControlButtons>{!isSR && <StartOver />}</ControlButtons>
       </Controls>
       <Content />
     </>

@@ -1,15 +1,13 @@
-import { FC, useEffect, useRef } from 'react';
+import { memo, useEffect, useRef } from 'react';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
 import { useAppSelector } from '@store/hooks';
 
-interface OwnProps {
+type EndGameProps = {
   active: boolean;
-}
+};
 
-type Props = OwnProps;
-
-const EndGame: FC<Props> = ({ active }) => {
+const EndGame = ({ active }: EndGameProps) => {
   const {
     main: { cards },
     game: {
@@ -68,4 +66,4 @@ const EndGame: FC<Props> = ({ active }) => {
   );
 };
 
-export default EndGame;
+export default memo(EndGame);
