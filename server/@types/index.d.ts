@@ -1,4 +1,4 @@
-declare module 'image-search-google' {
+declare module "image-search-google" {
   export default class ImageSearch {
     constructor(cseId: string, apiKey: string);
 

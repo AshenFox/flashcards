@@ -1,34 +1,36 @@
-import { MouseEvent, KeyboardEvent, ChangeEvent, useState, memo } from 'react';
-import Error from './components/Error/Error';
-import LoadingBtn from '@ui/LoadingBtn';
-import { useActions, useAppSelector } from '@store/hooks';
-import TextLabel from '@ui/TextLabel';
-import Input from '@ui/Input';
-import { EyeClosedIcon, EyeIcon } from '@ui/Icons';
-import s from './styles.module.scss';
+import { useActions, useAppSelector } from "@store/hooks";
+import { EyeClosedIcon, EyeIcon } from "@ui/Icons";
+import Input from "@ui/Input";
+import LoadingBtn from "@ui/LoadingBtn";
+import TextLabel from "@ui/TextLabel";
+import { ChangeEvent, KeyboardEvent, memo, MouseEvent, useState } from "react";
+
+import Error from "./components/Error/Error";
+import s from "./styles.module.scss";
 
 const LogIn = () => {
   const { change_modal, control_field, enter } = useActions();
 
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
 
-  const username = useAppSelector(s => s.modal.log_in.username);
-  const password = useAppSelector(s => s.modal.log_in.password);
-  const userErr = useAppSelector(s => s.modal.log_in_errors.username);
-  const passErr = useAppSelector(s => s.modal.log_in_errors.password);
-  const loading = useAppSelector(s => s.modal.loading);
+  const username = useAppSelector((s) => s.modal.log_in.username);
+  const password = useAppSelector((s) => s.modal.log_in.password);
+  const userErr = useAppSelector((s) => s.modal.log_in_errors.username);
+  const passErr = useAppSelector((s) => s.modal.log_in_errors.password);
+  const loading = useAppSelector((s) => s.modal.loading);
 
   const onPasswordVisibleButton = (e: MouseEvent<SVGElement>) => {
     e.preventDefault();
-    setIsPasswordVisible(v => !v);
+    setIsPasswordVisible((v) => !v);
   };
 
-  const onClickChangeModal = (value: 'sign_up') => (e: MouseEvent<HTMLButtonElement>) => {
-    change_modal(value);
-  };
+  const onClickChangeModal =
+    (value: "sign_up") => (e: MouseEvent<HTMLButtonElement>) => {
+      change_modal(value);
+    };
 
   const onCLickLoadingButton =
-    (value: 'log_in') => (e: MouseEvent<HTMLButtonElement>) => {
+    (value: "log_in") => (e: MouseEvent<HTMLButtonElement>) => {
       enter(value);
     };
 
@@ -36,36 +38,36 @@ const LogIn = () => {
     // const target = e.target;
     const { value, name } = e.target;
 
-    control_field('log_in', name, value);
+    control_field("log_in", name, value);
   };
 
   const onKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === 'Enter') enter('log_in');
+    if (e.key === "Enter") enter("log_in");
   };
 
   return (
     <>
       <Error errObj={userErr} single={true} />
       <Input
-        name='username'
-        id='username'
+        name="username"
+        id="username"
         className={s.login_input}
-        placeholder='Type your username'
+        placeholder="Type your username"
         value={username}
         onChange={onChange}
         onKeyDown={onKeyDown}
       />
-      <TextLabel htmlFor='username' className={s.label}>
+      <TextLabel htmlFor="username" className={s.label}>
         USERNAME
       </TextLabel>
 
       {userErr.ok && <Error errObj={passErr} single={true} />}
       <Input
-        type={isPasswordVisible ? 'text' : 'password'}
-        name='password'
-        id='password'
+        type={isPasswordVisible ? "text" : "password"}
+        name="password"
+        id="password"
         className={s.login_input}
-        placeholder='Type your password'
+        placeholder="Type your password"
         value={password}
         onChange={onChange}
         onKeyDown={onKeyDown}
@@ -77,27 +79,29 @@ const LogIn = () => {
           )
         }
       />
-      <TextLabel htmlFor='password' className={s.label}>
+      <TextLabel htmlFor="password" className={s.label}>
         PASSWORD
       </TextLabel>
 
       <LoadingBtn
         active={true}
         loading={loading}
-        onClickHandler={onCLickLoadingButton('log_in')}
+        onClickHandler={onCLickLoadingButton("log_in")}
         //helpers-delete
-        classStr={'width100 bcc-lightblue pad15-30 brr15 fz175 white h-grey h-bcc-yellow'}
+        classStr={
+          "width100 bcc-lightblue pad15-30 brr15 fz175 white h-grey h-bcc-yellow"
+        }
       >
         Log in
       </LoadingBtn>
 
       <div className={s.options}>
         <p>
-          Don&apos;t have an account?{' '}
+          Don&apos;t have an account?{" "}
           <button
             //helpers-delete
-            className='white fz15 inline-block black h-yellow'
-            onClick={onClickChangeModal('sign_up')}
+            className="white fz15 inline-block black h-yellow"
+            onClick={onClickChangeModal("sign_up")}
           >
             Sign up!
           </button>

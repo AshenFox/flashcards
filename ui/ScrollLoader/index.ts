@@ -1,1 +1,1 @@
-export { default } from './ScrollLoader';
+export { default } from "./ScrollLoader";

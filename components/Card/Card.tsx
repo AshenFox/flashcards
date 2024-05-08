@@ -1,15 +1,16 @@
-import { memo, useCallback } from 'react';
-import Speaker from '@components/Speaker';
-import { Edit, SRDrop, SR } from './components/controls';
-import Img from '@ui/Img';
-import DateStr from '@ui/DateStr';
-import { Card as CardType } from '@store/reducers/main/mainInitState';
-import { usePlug } from '@helpers/hooks/usePlug';
-import ModuleLink from './components/ModuleLink';
-import TextArea from '@ui/TextArea';
-import s from './styles.module.scss';
-import ConfirmPopup from '@ui/ConfirmPopup';
-import { useActions } from '@store/hooks';
+import Speaker from "@components/Speaker";
+import { usePlug } from "@helpers/hooks/usePlug";
+import { useActions } from "@store/hooks";
+import { Card as CardType } from "@store/reducers/main/mainInitState";
+import ConfirmPopup from "@ui/ConfirmPopup";
+import DateStr from "@ui/DateStr";
+import Img from "@ui/Img";
+import TextArea from "@ui/TextArea";
+import { memo, useCallback } from "react";
+
+import { Edit, SR, SRDrop } from "./components/controls";
+import ModuleLink from "./components/ModuleLink";
+import s from "./styles.module.scss";
 
 type CardProps = {
   data: CardType;
@@ -27,9 +28,9 @@ const Card = ({
   const { set_card_question, drop_card_sr } = useActions();
 
   const {
-    term = '',
-    defenition = '',
-    imgurl = '',
+    term = "",
+    defenition = "",
+    imgurl = "",
     _id,
     moduleID,
     creation_date,
@@ -38,7 +39,7 @@ const Card = ({
 
   const filterRegExp = new RegExp(
     `${filter}(?!br>|r>|>|\/div>|div>|iv>|v>|nbsp;|bsp;|sp;|p;|;|\/span>|span>|pan>|an>|n>)`,
-    'g'
+    "g",
   );
 
   //helpers-delete
@@ -46,8 +47,9 @@ const Card = ({
 
   let formatted_term: string, formatted_definition: string;
 
-  if (filterType === 'term') formatted_term = term.replace(filterRegExp, replacement);
-  if (filterType === 'defenition')
+  if (filterType === "term")
+    formatted_term = term.replace(filterRegExp, replacement);
+  if (filterType === "defenition")
     formatted_definition = defenition.replace(filterRegExp, replacement);
 
   const [visible, ref, Plug] = usePlug(s.card);
@@ -60,7 +62,7 @@ const Card = ({
     (value: boolean) => {
       set_card_question(_id, value);
     },
-    [_id, set_card_question]
+    [_id, set_card_question],
   );
 
   return (
@@ -77,7 +79,9 @@ const Card = ({
           </div>
           <div className={s.main}>
             <div className={s.term}>
-              <TextArea html={filterType === 'term' && filter ? formatted_term : term} />
+              <TextArea
+                html={filterType === "term" && filter ? formatted_term : term}
+              />
               <div className={s.controls}>
                 <Edit data={data} />
                 <SR data={data} />
@@ -88,15 +92,20 @@ const Card = ({
                 active={question}
                 setActive={setActive}
                 onConfirm={onConfirm}
-                question='Drop card study progress?'
+                question="Drop card study progress?"
               />
-              <Speaker _id={_id} text={term} type={'term'} className={s.speaker} />
+              <Speaker
+                _id={_id}
+                text={term}
+                type={"term"}
+                className={s.speaker}
+              />
             </div>
             <div className={s.definition_container}>
               <div className={s.definition}>
                 <TextArea
                   html={
-                    filterType === 'defenition' && filter
+                    filterType === "defenition" && filter
                       ? formatted_definition
                       : defenition
                   }
@@ -104,7 +113,7 @@ const Card = ({
                 <Speaker
                   _id={_id}
                   text={defenition}
-                  type={'definition'}
+                  type={"definition"}
                   className={s.speaker}
                 />
               </div>

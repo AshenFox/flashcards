@@ -1,12 +1,12 @@
-import React, { useEffect, memo } from 'react';
+import React, { memo, useEffect } from "react";
 
 const TabUpdateController = () => {
   useEffect(() => {
     const reload = (e: StorageEvent) => window.location.reload();
 
-    window.addEventListener('storage', reload);
+    window.addEventListener("storage", reload);
 
-    return () => window.removeEventListener('storage', reload);
+    return () => window.removeEventListener("storage", reload);
   }, []);
 
   return <></>;

@@ -1,4 +1,4 @@
-@import '@styles/vars.scss';
+@import "@styles/vars.scss";
 
 .carousel {
   display: flex;
@@ -104,7 +104,7 @@
       }
     }
 
-    &[data-active='false'] {
+    &[data-active="false"] {
       button {
         cursor: auto;
         background-color: $grey-medium;

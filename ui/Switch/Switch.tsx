@@ -1,13 +1,14 @@
+import Tooltip, { tooltipContainer } from "@ui/Tooltip";
+import clsx from "clsx";
 import {
+  cloneElement,
+  memo,
   MouseEventHandler,
   ReactElement,
   TouchEventHandler,
-  cloneElement,
-  memo,
-} from 'react';
-import s from './styles.module.scss';
-import clsx from 'clsx';
-import Tooltip, { tooltipContainer } from '@ui/Tooltip';
+} from "react";
+
+import s from "./styles.module.scss";
 
 type SwitchProps = {
   id: string;
@@ -43,16 +44,17 @@ const Switch = ({
   return (
     <div className={clsx(s.container, tooltipContainer, className)}>
       <input
-        className={'switch__checkbox'}
-        type='checkbox'
+        className={"switch__checkbox"}
+        type="checkbox"
         id={id}
         checked={active}
         readOnly
       />
-      {!!icon && cloneElement(icon, { width: innerIconSize, height: innerIconSize })}
+      {!!icon &&
+        cloneElement(icon, { width: innerIconSize, height: innerIconSize })}
       {tooltip && <Tooltip>{tooltip}</Tooltip>}
       <label
-        className={clsx('switch__switch', small && s.small)}
+        className={clsx("switch__switch", small && s.small)}
         htmlFor={id}
         onClick={onClick}
         onMouseDown={onMouseDown}

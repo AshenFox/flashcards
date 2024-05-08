@@ -1,8 +1,9 @@
-import { ScrapingHeaders } from './../supplemental/axios';
-import express, { Request, Response } from 'express';
-import axios from 'axios';
-import cheerio from 'cheerio';
-import middleware from '../supplemental/middleware';
+import axios from "axios";
+import cheerio from "cheerio";
+import express, { Request, Response } from "express";
+
+import middleware from "../supplemental/middleware";
+import { ScrapingHeaders } from "./../supplemental/axios";
 
 const { auth } = middleware;
 const router = express.Router();
@@ -42,7 +43,7 @@ type TCodGetResBody = CodSection[];
 
 type TCodGetRes = Response<TCodGetResBody | IResError>;
 
-router.get('/cod', auth, async (req: TCodGetReq, res: TCodGetRes) => {
+router.get("/cod", auth, async (req: TCodGetReq, res: TCodGetRes) => {
   try {
     const { query } = req.query;
 
@@ -50,7 +51,7 @@ router.get('/cod', auth, async (req: TCodGetReq, res: TCodGetRes) => {
       `https://dictionary.cambridge.org/dictionary/english/${query}`,
       {
         headers: ScrapingHeaders,
-      }
+      },
     );
 
     console.log({ response });
@@ -60,14 +61,14 @@ router.get('/cod', auth, async (req: TCodGetReq, res: TCodGetRes) => {
 
     const result: TCodGetResBody = [];
 
-    const page = $('.page');
+    const page = $(".page");
 
-    const errMsg = 'Something went worng while parsing cod response.';
+    const errMsg = "Something went worng while parsing cod response.";
 
     if (!page || !page.length) throw new Error(errMsg);
 
-    let sections = page.find('.pr.entry-body__el');
-    if (!sections.length) sections = page.find('.pr.idiom-block');
+    let sections = page.find(".pr.entry-body__el");
+    if (!sections.length) sections = page.find(".pr.idiom-block");
     if (!sections.length) throw new Error(errMsg);
 
     sections.each((i, el) => {
@@ -76,35 +77,38 @@ router.get('/cod', auth, async (req: TCodGetReq, res: TCodGetRes) => {
       const sectionObj: CodSection = {};
       result.push(sectionObj);
 
-      const headerEl = section.find('.posgram.dpos-g.hdib.lmr-5');
+      const headerEl = section.find(".posgram.dpos-g.hdib.lmr-5");
 
-      sectionObj.part_of_speech = headerEl.find('.pos.dpos').text().trim();
+      sectionObj.part_of_speech = headerEl.find(".pos.dpos").text().trim();
 
       sectionObj.transcr_uk = headerEl
-        .siblings('.uk.dpron-i')
-        .find('.pron.dpron')
+        .siblings(".uk.dpron-i")
+        .find(".pron.dpron")
         .text()
         .trim();
 
       sectionObj.transcr_us = headerEl
-        .siblings('.us.dpron-i')
-        .find('.pron.dpron')
+        .siblings(".us.dpron-i")
+        .find(".pron.dpron")
         .text()
         .trim();
 
       const subSectionsArr: CodSubSection[] = [];
       sectionObj.sub_sections = subSectionsArr;
 
-      section.find('.pr.dsense').each((z, el) => {
+      section.find(".pr.dsense").each((z, el) => {
         const subSection = $(el);
         const subSectionObj: CodSubSection = {};
 
         subSectionsArr.push(subSectionObj);
 
-        subSectionObj.guideword = subSection.find('.guideword.dsense_gw').text().trim();
+        subSectionObj.guideword = subSection
+          .find(".guideword.dsense_gw")
+          .text()
+          .trim();
 
-        const blocksBody = subSection.find('.sense-body.dsense_b');
-        const blocks = blocksBody.find('.def-block.ddef_block ');
+        const blocksBody = subSection.find(".sense-body.dsense_b");
+        const blocks = blocksBody.find(".def-block.ddef_block ");
 
         const blocksArr: CodBlock[] = [];
         subSectionObj.blocks = blocksArr;
@@ -115,10 +119,10 @@ router.get('/cod', auth, async (req: TCodGetReq, res: TCodGetRes) => {
           const blockObj: CodBlock = {};
           blocksArr.push(blockObj);
 
-          blockObj.definition = block.find('.def.ddef_d.db').text().trim();
+          blockObj.definition = block.find(".def.ddef_d.db").text().trim();
 
-          const examplesBody = block.find('.def-body.ddef_b');
-          const examples = examplesBody.children('.examp.dexamp');
+          const examplesBody = block.find(".def-body.ddef_b");
+          const examples = examplesBody.children(".examp.dexamp");
           const examplesArr: string[] = [];
 
           blockObj.examples = examplesArr;
@@ -126,7 +130,7 @@ router.get('/cod', auth, async (req: TCodGetReq, res: TCodGetRes) => {
           examples.each((x, el) => {
             const example = $(el);
 
-            examplesArr.push(example.find('.eg.deg').text().trim());
+            examplesArr.push(example.find(".eg.deg").text().trim());
           });
         });
       });
@@ -135,7 +139,7 @@ router.get('/cod', auth, async (req: TCodGetReq, res: TCodGetRes) => {
     res.status(200).json(result);
   } catch (err) {
     console.error(err);
-    res.status(500).json({ errorBody: 'Server Error' });
+    res.status(500).json({ errorBody: "Server Error" });
   }
 });
 
@@ -158,12 +162,12 @@ type TUrbanGetResBody = UrbanPanel[];
 
 type TUrbanGetRes = Response<TUrbanGetResBody | IResError>;
 
-router.get('/urban', auth, async (req: TUrbanGetReq, res: TUrbanGetRes) => {
+router.get("/urban", auth, async (req: TUrbanGetReq, res: TUrbanGetRes) => {
   try {
     const { query } = req.query;
 
     const respose = await axios.get(
-      `https://www.urbandictionary.com/define.php?term=${query}`
+      `https://www.urbandictionary.com/define.php?term=${query}`,
     );
 
     const { data }: { data: string } = respose;
@@ -171,28 +175,28 @@ router.get('/urban', auth, async (req: TUrbanGetReq, res: TUrbanGetRes) => {
 
     const result: TUrbanGetResBody = [];
 
-    const content = $('#ud-root');
+    const content = $("#ud-root");
 
-    if (!content.length) throw new Error('');
+    if (!content.length) throw new Error("");
 
-    content.find('.definition').each((z, el) => {
+    content.find(".definition").each((z, el) => {
       const panel = $(el);
       const panelObj: UrbanPanel = {};
 
       result.push(panelObj);
 
       // panelObj.term = panel.find('.def-header .word').text().trim();
-      panelObj.definition = panel.find('.meaning').text().trim();
+      panelObj.definition = panel.find(".meaning").text().trim();
 
-      let example = '';
+      let example = "";
       panel
-        .find('.example')
+        .find(".example")
         .contents()
         .each((i, el) => {
           let name = $(el).get(0).name;
 
-          if (name === 'br') {
-            example = example + '<br>';
+          if (name === "br") {
+            example = example + "<br>";
           } else {
             example = example + $(el).text();
           }
@@ -204,7 +208,7 @@ router.get('/urban', auth, async (req: TUrbanGetReq, res: TUrbanGetRes) => {
     res.status(200).json(result);
   } catch (err) {
     console.error(err);
-    res.status(500).json({ errorBody: 'Server Error' });
+    res.status(500).json({ errorBody: "Server Error" });
   }
 });
 

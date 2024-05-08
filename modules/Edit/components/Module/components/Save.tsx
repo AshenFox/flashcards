@@ -1,13 +1,14 @@
-import { memo, useCallback } from 'react';
-import { useActions, useAppSelector } from '@store/hooks';
-import Switch from '@ui/Switch';
-import s from './styles.module.scss';
-import { SaveIcon } from '@ui/Icons';
+import { useActions, useAppSelector } from "@store/hooks";
+import { SaveIcon } from "@ui/Icons";
+import Switch from "@ui/Switch";
+import { memo, useCallback } from "react";
+
+import s from "./styles.module.scss";
 
 const Save = () => {
   const { set_cards_save } = useActions();
 
-  const cards = useAppSelector(s => s.main.cards);
+  const cards = useAppSelector((s) => s.main.cards);
 
   const cardsArr = Object.values(cards);
 
@@ -22,16 +23,16 @@ const Save = () => {
 
   const clickAllSave = useCallback(
     () => set_cards_save(!active),
-    [active, set_cards_save]
+    [active, set_cards_save],
   );
 
   return (
     <Switch
-      id={'switch-save-main'}
+      id={"switch-save-main"}
       className={s.save}
       active={active}
       icon={<SaveIcon />}
-      tooltip='Save the card'
+      tooltip="Save the card"
       onClick={clickAllSave}
     />
   );

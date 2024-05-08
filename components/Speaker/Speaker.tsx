@@ -1,15 +1,16 @@
-import { ForwardedRef, memo, useCallback, useMemo } from 'react';
-import { useActions, useAppSelector } from '@store/hooks';
-import EasySpeech from 'easy-speech';
-import { EasySpeechStatus } from '@store/reducers/voice/voiceInitState';
-import clsx from 'clsx';
-import s from './styles.module.scss';
-import { SpeakerIcon } from '@ui/Icons';
+import { useActions, useAppSelector } from "@store/hooks";
+import { EasySpeechStatus } from "@store/reducers/voice/voiceInitState";
+import { SpeakerIcon } from "@ui/Icons";
+import clsx from "clsx";
+import EasySpeech from "easy-speech";
+import { ForwardedRef, memo, useCallback, useMemo } from "react";
+
+import s from "./styles.module.scss";
 
 type SpeakerProps = {
   _id: string;
   text: string;
-  type: 'term' | 'definition';
+  type: "term" | "definition";
   className: string;
   ref?: ForwardedRef<HTMLDivElement>;
 };
@@ -21,19 +22,20 @@ const Speaker = ({ _id, text, type, className, ref }: SpeakerProps) => {
 
   const filteredText = useMemo(() => filterText(text), [text]);
   const language = useMemo(() => detectLanguage(filteredText), [filteredText]);
-  const active = text !== '' && language && working;
+  const active = text !== "" && language && working;
 
   let speakerSpeaking = false;
 
-  if (speaking) speakerSpeaking = speaking._id === _id && speaking.type === type;
+  if (speaking)
+    speakerSpeaking = speaking._id === _id && speaking.type === type;
 
   const cancel = useCallback(() => EasySpeech.cancel(), []);
 
   const speak = useCallback(
-    async (text: string, language: 'english' | 'russian') => {
+    async (text: string, language: "english" | "russian") => {
       let voice: SpeechSynthesisVoice;
 
-      if (language === 'english') {
+      if (language === "english") {
         if (voices.english) {
           voice = voices.english;
         } else if (voices.engBackup) {
@@ -41,7 +43,7 @@ const Speaker = ({ _id, text, type, className, ref }: SpeakerProps) => {
         } else {
           return;
         }
-      } else if (language === 'russian') {
+      } else if (language === "russian") {
         if (voices.russian) {
           voice = voices.russian;
         } else if (voices.rusBackup) {
@@ -57,16 +59,16 @@ const Speaker = ({ _id, text, type, className, ref }: SpeakerProps) => {
         pitch: 1,
         rate: 1,
         volume: 1,
-        start: () => console.info('Start speaking...'),
-        pause: e => {
-          console.info('Pause');
+        start: () => console.info("Start speaking..."),
+        pause: (e) => {
+          console.info("Pause");
         },
         end: () => {
-          console.info('Done speaking...');
+          console.info("Done speaking...");
           set_voice_speaking();
         },
-        error: e => {
-          console.info('Something vent wrong...', e);
+        error: (e) => {
+          console.info("Something vent wrong...", e);
         },
       });
     },
@@ -76,7 +78,7 @@ const Speaker = ({ _id, text, type, className, ref }: SpeakerProps) => {
       voices.english,
       voices.rusBackup,
       voices.russian,
-    ]
+    ],
   );
 
   const clickSpeaker = useCallback(() => {
@@ -92,7 +94,16 @@ const Speaker = ({ _id, text, type, className, ref }: SpeakerProps) => {
       speak(textForSpeaking, language);
       set_voice_speaking(_id, type);
     }
-  }, [_id, active, filteredText, language, set_voice_speaking, speak, cancel, type]);
+  }, [
+    _id,
+    active,
+    filteredText,
+    language,
+    set_voice_speaking,
+    speak,
+    cancel,
+    type,
+  ]);
 
   return (
     <div
@@ -115,7 +126,7 @@ export default memo(Speaker);
 // ==============================
 
 const detectLanguage = (text: string) => {
-  if (text !== '' && text) {
+  if (text !== "" && text) {
     let arrRus = text.match(/[а-яА-ЯЁё]/g);
     let arrEng = text.match(/[a-zA-Z]/g);
 
@@ -125,18 +136,18 @@ const detectLanguage = (text: string) => {
     let lengthEng = arrEng ? arrEng.length : 0;
 
     let lengthTotal = lengthRus + lengthEng;
-    return lengthEng / lengthTotal > 0.5 ? 'english' : 'russian';
+    return lengthEng / lengthTotal > 0.5 ? "english" : "russian";
   } else {
     return false;
   }
 };
 
-const filterLang = (text: string, lang: 'english' | 'russian') => {
+const filterLang = (text: string, lang: "english" | "russian") => {
   let filtered = text;
-  if (lang === 'english') {
-    filtered = filtered.replace(/[а-яА-ЯЁё]/g, '');
-  } else if (lang === 'russian') {
-    filtered = filtered.replace(/[a-zA-Z]/g, '');
+  if (lang === "english") {
+    filtered = filtered.replace(/[а-яА-ЯЁё]/g, "");
+  } else if (lang === "russian") {
+    filtered = filtered.replace(/[a-zA-Z]/g, "");
   }
 
   return filtered;
@@ -144,7 +155,7 @@ const filterLang = (text: string, lang: 'english' | 'russian') => {
 
 const filterText = (text: string) =>
   text
-    .replace(/<[^>]*>/g, ' ')
-    .replace(/\( \/[^/]*\/ \)/g, ' ')
-    .replace(/&nbsp;/g, ' ')
-    .replace(/\.\.\./g, '. ');
+    .replace(/<[^>]*>/g, " ")
+    .replace(/\( \/[^/]*\/ \)/g, " ")
+    .replace(/&nbsp;/g, " ")
+    .replace(/\.\.\./g, ". ");

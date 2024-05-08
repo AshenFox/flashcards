@@ -18,9 +18,9 @@ export interface SignUpErrors {
   email: ErrorObj;
 }
 
-export type ModalType = 'log_in' | 'sign_up' | 'delete';
+export type ModalType = "log_in" | "sign_up" | "delete";
 
-export type ModalInputFileds = 'username' | 'password' | 'email';
+export type ModalInputFileds = "username" | "password" | "email";
 
 export interface ModalState {
   is_modal: boolean;
@@ -43,13 +43,13 @@ const modalInitState: ModalState = {
   is_modal: false,
   active_modal: null,
   log_in: {
-    username: '',
-    password: '',
+    username: "",
+    password: "",
   },
   sign_up: {
-    username: '',
-    email: '',
-    password: '',
+    username: "",
+    email: "",
+    password: "",
   },
   loading: false,
 

@@ -1,10 +1,11 @@
-import { MouseEvent, TouchEvent, memo, useCallback, useRef } from 'react';
-import SRIndicator from '@components/SRIndicator';
-import { Card } from '@store/reducers/main/mainInitState';
-import { useActions } from '@store/hooks';
-import Switch from '@ui/Switch';
-import s from './styles.module.scss';
-import clsx from 'clsx';
+import SRIndicator from "@components/SRIndicator";
+import { useActions } from "@store/hooks";
+import { Card } from "@store/reducers/main/mainInitState";
+import Switch from "@ui/Switch";
+import clsx from "clsx";
+import { memo, MouseEvent, TouchEvent, useCallback, useRef } from "react";
+
+import s from "./styles.module.scss";
 
 type SRProps = {
   data: Card;
@@ -24,7 +25,7 @@ const SR = ({ data }: SRProps) => {
         set_card_sr(_id, !studyRegime);
       }
     },
-    [_id, set_card_sr, studyRegime]
+    [_id, set_card_sr, studyRegime],
   );
 
   const down = useCallback(
@@ -34,7 +35,7 @@ const SR = ({ data }: SRProps) => {
         if (!studyRegime) set_cards_sr_positive(_id);
       }, 550);
     },
-    [_id, set_cards_sr_positive, studyRegime]
+    [_id, set_cards_sr_positive, studyRegime],
   );
 
   const timer = useRef<ReturnType<typeof setTimeout>>(null);

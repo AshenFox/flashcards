@@ -1,24 +1,25 @@
-import { useRouter } from 'next/router';
+import Speaker from "@components/Speaker";
+import SRIndicator from "@components/SRIndicator";
+import { useActions, useAppSelector } from "@store/hooks";
+import { Card } from "@store/reducers/main/mainInitState";
+import Img from "@ui/Img";
+import Input from "@ui/Input";
+import TextArea from "@ui/TextArea";
+import TextLabel from "@ui/TextLabel";
+import { tooltipContainer } from "@ui/Tooltip";
+import clsx from "clsx";
+import { useRouter } from "next/router";
 import {
   ChangeEvent,
   FormEventHandler,
-  MouseEvent,
   memo,
+  MouseEvent,
   useCallback,
   useEffect,
   useRef,
-} from 'react';
-import Speaker from '@components/Speaker';
-import Img from '@ui/Img';
-import { Card } from '@store/reducers/main/mainInitState';
-import { useActions, useAppSelector } from '@store/hooks';
-import TextArea from '@ui/TextArea';
-import TextLabel from '@ui/TextLabel';
-import Input from '@ui/Input';
-import s from './styles.module.scss';
-import SRIndicator from '@components/SRIndicator';
-import clsx from 'clsx';
-import { tooltipContainer } from '@ui/Tooltip';
+} from "react";
+
+import s from "./styles.module.scss";
 
 type QuestionProps = {
   data: Card;
@@ -31,14 +32,15 @@ const Question = ({ data }: QuestionProps) => {
 
   const { _id: _id_param } = router.query;
 
-  const isSR = _id_param === 'sr';
+  const isSR = _id_param === "sr";
 
   const { _id, term, defenition, imgurl } = data || {};
-  const answer = useAppSelector(s => s.game.write.answer);
+  const answer = useAppSelector((s) => s.game.write.answer);
 
   const formattedDefinition = defenition.replaceAll(
     /\( \/(.*?)\/ \)/g,
-    (x, match) => `( /<span class="${s.transcription_hidden}">${match}</span>/ )`
+    (x, match) =>
+      `( /<span class="${s.transcription_hidden}">${match}</span>/ )`,
   );
 
   const changeAnswer = (e: ChangeEvent<HTMLInputElement>) =>
@@ -46,12 +48,12 @@ const Question = ({ data }: QuestionProps) => {
 
   const keyDownAnswer = useCallback(
     (e: KeyboardEvent) => {
-      if (e.key === 'Enter') {
+      if (e.key === "Enter") {
         e.preventDefault();
         check_write_answer();
       }
     },
-    [check_write_answer]
+    [check_write_answer],
   );
 
   const clickAnswer = useCallback(
@@ -59,14 +61,14 @@ const Question = ({ data }: QuestionProps) => {
       e.preventDefault();
       check_write_answer();
     },
-    [check_write_answer]
+    [check_write_answer],
   );
 
   const clickNotKnow = useCallback(() => {
     check_write_answer(true);
   }, [check_write_answer]);
 
-  const disableDefault = useCallback<FormEventHandler<HTMLFormElement>>(e => {
+  const disableDefault = useCallback<FormEventHandler<HTMLFormElement>>((e) => {
     e.preventDefault();
   }, []);
 
@@ -77,10 +79,10 @@ const Question = ({ data }: QuestionProps) => {
       setTimeout(() => answerInput.current.focus(), 0);
     }
 
-    window.addEventListener('keydown', keyDownAnswer);
+    window.addEventListener("keydown", keyDownAnswer);
 
     return () => {
-      window.removeEventListener('keydown', keyDownAnswer);
+      window.removeEventListener("keydown", keyDownAnswer);
     };
   }, [keyDownAnswer]);
 
@@ -88,7 +90,10 @@ const Question = ({ data }: QuestionProps) => {
     <div className={s.question}>
       <div className={s.container}>
         {isSR && (
-          <SRIndicator data={data} className={clsx(s.sr_indicator, tooltipContainer)} />
+          <SRIndicator
+            data={data}
+            className={clsx(s.sr_indicator, tooltipContainer)}
+          />
         )}
         {term && (
           <div className={s.do_not_know}>
@@ -97,27 +102,32 @@ const Question = ({ data }: QuestionProps) => {
         )}
         <Img containerClass={s.img_container} imgClass={s.img} url={imgurl} />
         <TextArea html={formattedDefinition} className={s.definition} />
-        <Speaker _id={_id} text={defenition} type={'definition'} className={s.speaker} />
+        <Speaker
+          _id={_id}
+          text={defenition}
+          type={"definition"}
+          className={s.speaker}
+        />
       </div>
-      <form className={s.form} autoComplete='off' onSubmit={disableDefault}>
+      <form className={s.form} autoComplete="off" onSubmit={disableDefault}>
         <fieldset className={s.fieldset}>
           <Input
-            id='write-input'
+            id="write-input"
             className={s.input}
             movingBorder
-            autoComplete='off'
+            autoComplete="off"
             onChange={changeAnswer}
             value={answer}
             inputRef={answerInput}
           />
-          <TextLabel htmlFor='write-input'>type the answer</TextLabel>
+          <TextLabel htmlFor="write-input">type the answer</TextLabel>
         </fieldset>
         <div className={s.btn_container}>
           <button
             //helpers-delete
-            className='bcc-lightblue pad10-30 brr15 white fz15 fw-normal h-grey h-bcc-yellow'
+            className="bcc-lightblue pad10-30 brr15 white fz15 fw-normal h-grey h-bcc-yellow"
             onClick={clickAnswer}
-            type='button'
+            type="button"
           >
             Answer
           </button>

@@ -1,1 +1,1 @@
-export { default } from './Voice';
+export { default } from "./Voice";

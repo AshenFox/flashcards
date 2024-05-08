@@ -1,29 +1,29 @@
-import { MainActions } from './../../types/types';
 import {
-  SET_IS_SERVER,
-  GET_MODULES,
-  SET_SKIP_CARDS,
-  SET_SKIP_MODULES,
-  SET_MAIN_LOADING,
-  GET_CARDS,
+  CLEAR_MODULE,
   CONTROL_SEARCH_CARDS,
   CONTROL_SEARCH_MODULES,
-  SET_SELECT_BY,
-  SET_SELECT_CREATED,
+  GET_CARDS,
+  GET_MODULE,
+  GET_MODULE_CARDS,
+  GET_MODULES,
   RESET_FIELDS_CARDS,
   RESET_FIELDS_MODULES,
   RESET_SEARCH,
-  GET_MODULE,
-  GET_MODULE_CARDS,
-  CLEAR_MODULE,
+  SET_IS_SERVER,
+  SET_MAIN_LOADING,
   SET_SCROLL_TOP,
-} from '../../types/types';
-import initialState, { MainState } from './mainInitState';
-import subEditReducer from './subReducers/subEditReducer';
-import subGalleryReducer from './subReducers/subGalleryReducer';
-import subScrapeReducer from './subReducers/subScrapeReducer';
-import subSrReducer from './subReducers/subSrReducer';
-import subFlashcardsReducer from './subReducers/subFlashcardsReducer';
+  SET_SELECT_BY,
+  SET_SELECT_CREATED,
+  SET_SKIP_CARDS,
+  SET_SKIP_MODULES,
+} from "../../types/types";
+import { MainActions } from "./../../types/types";
+import initialState, { MainState } from "./mainInitState";
+import subEditReducer from "./subReducers/subEditReducer";
+import subFlashcardsReducer from "./subReducers/subFlashcardsReducer";
+import subGalleryReducer from "./subReducers/subGalleryReducer";
+import subScrapeReducer from "./subReducers/subScrapeReducer";
+import subSrReducer from "./subReducers/subSrReducer";
 
 const MainReducer = (state = initialState, action: MainActions): MainState => {
   const { payload, type } = action;
@@ -95,13 +95,13 @@ const MainReducer = (state = initialState, action: MainActions): MainState => {
       return {
         ...state,
         search_cards: {
-          value: '',
+          value: "",
         },
         search_modules: {
-          value: '',
+          value: "",
         },
-        select_by: { value: 'term', label: 'Term' },
-        select_created: { value: 'newest', label: 'Newest' },
+        select_by: { value: "term", label: "Term" },
+        select_created: { value: "newest", label: "Newest" },
       };
 
     case SET_SELECT_BY:

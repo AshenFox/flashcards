@@ -1,9 +1,10 @@
-import { MouseEvent, memo, useCallback, useRef } from 'react';
-import Img from '@ui/Img';
-import { Card } from '@store/reducers/main/mainInitState';
-import { useActions } from '@store/hooks';
-import s from './styles.module.scss';
-import { DeleteIcon, ImgIcon } from '@ui/Icons';
+import { useActions } from "@store/hooks";
+import { Card } from "@store/reducers/main/mainInitState";
+import { DeleteIcon, ImgIcon } from "@ui/Icons";
+import Img from "@ui/Img";
+import { memo, MouseEvent, useCallback, useRef } from "react";
+
+import s from "./styles.module.scss";
 
 type AddImgProps = {
   data: Card;
@@ -19,15 +20,15 @@ const AddImg = ({ data }: AddImgProps) => {
       if (imgurl && e.target === deleteEl.current) return;
       set_gallery_search(_id, !gallery.search);
     },
-    [_id, gallery.search, imgurl, set_gallery_search]
+    [_id, gallery.search, imgurl, set_gallery_search],
   );
 
   const clickImgDelete = useCallback(
     (e: MouseEvent<HTMLDivElement>) => {
-      set_card_imgurl(_id, '');
+      set_card_imgurl(_id, "");
       edit_card(_id);
     },
-    [_id, edit_card, set_card_imgurl]
+    [_id, edit_card, set_card_imgurl],
   );
 
   const deleteEl = useRef<HTMLDivElement>(null);

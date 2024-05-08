@@ -1,18 +1,21 @@
-import { MainState } from './../mainInitState';
-import { MainActions } from './../../../types/types';
+import { shuffle } from "../../../helper-functions";
 import {
   DROP_CARD_SR,
   DROP_CARDS_SR,
+  GET_SR_CARDS,
+  PUT_SR_ANSWER,
   SET_CARD_SR,
   SET_CARDS_SR,
   SET_CARDS_SR_POSITIVE,
-  GET_SR_CARDS,
-  PUT_SR_ANSWER,
-} from '../../../types/types';
-import initialState from '../mainInitState';
-import { shuffle } from '../../../helper-functions';
+} from "../../../types/types";
+import initialState from "../mainInitState";
+import { MainActions } from "./../../../types/types";
+import { MainState } from "./../mainInitState";
 
-const subSrReducer = (state = initialState, action: MainActions): MainState | false => {
+const subSrReducer = (
+  state = initialState,
+  action: MainActions,
+): MainState | false => {
   const { payload, type } = action;
 
   switch (type) {
@@ -35,7 +38,7 @@ const subSrReducer = (state = initialState, action: MainActions): MainState | fa
           Object.entries(state.cards).map(([_id, card]) => [
             _id,
             { ...card, studyRegime: payload.value },
-          ])
+          ]),
         ),
       };
 
@@ -49,7 +52,7 @@ const subSrReducer = (state = initialState, action: MainActions): MainState | fa
             } else {
               return [_id, card];
             }
-          })
+          }),
         ),
       };
 
@@ -97,7 +100,7 @@ const subSrReducer = (state = initialState, action: MainActions): MainState | fa
               prevStage: payload.prevStage,
               lastRep: payload.lastRep,
             },
-          ])
+          ]),
         ),
       };
 
@@ -105,7 +108,9 @@ const subSrReducer = (state = initialState, action: MainActions): MainState | fa
       return {
         ...state,
         cards: Object.fromEntries(
-          shuffle(Object.entries(payload.cards)).sort((a, b) => a[1].stage - b[1].stage)
+          shuffle(Object.entries(payload.cards)).sort(
+            (a, b) => a[1].stage - b[1].stage,
+          ),
         ),
       };
     default:

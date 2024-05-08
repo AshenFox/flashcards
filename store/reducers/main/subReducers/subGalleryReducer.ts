@@ -1,21 +1,21 @@
-import { MainState } from './../mainInitState';
-import { MainActions } from './../../../types/types';
 import {
-  SET_GALLERY_SEARCH,
   CONTROL_GALLERY_QUERY,
-  RESET_GALLERY_FIELDS,
-  SET_GALLERY_LOADING,
-  SET_GALLERY_WIDTH,
   MOVE_GALLERY,
-  SET_GALLERY_ERROR,
-  SET_URL_OK,
+  RESET_GALLERY_FIELDS,
   SEARCH_IMAGES,
-} from '../../../types/types';
-import initialState from '../mainInitState';
+  SET_GALLERY_ERROR,
+  SET_GALLERY_LOADING,
+  SET_GALLERY_SEARCH,
+  SET_GALLERY_WIDTH,
+  SET_URL_OK,
+} from "../../../types/types";
+import initialState from "../mainInitState";
+import { MainActions } from "./../../../types/types";
+import { MainState } from "./../mainInitState";
 
 const subGalleryReducer = (
   state = initialState,
-  action: MainActions
+  action: MainActions,
 ): MainState | false => {
   const { payload, type } = action;
 
@@ -150,7 +150,8 @@ const subGalleryReducer = (
             ...state.cards[payload._id],
             gallery: {
               ...state.cards[payload._id].gallery,
-              position: state.cards[payload._id].gallery.position + payload.offset,
+              position:
+                state.cards[payload._id].gallery.position + payload.offset,
             },
           },
         },

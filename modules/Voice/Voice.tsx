@@ -1,5 +1,6 @@
-import { memo, useEffect } from 'react';
-import { useActions } from '../../store/hooks';
+import { memo, useEffect } from "react";
+
+import { useActions } from "../../store/hooks";
 
 const Voice = () => {
   const { init_easy_speech } = useActions();

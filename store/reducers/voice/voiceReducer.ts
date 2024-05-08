@@ -1,8 +1,11 @@
-import { VoiceActions } from './../../types/types';
-import { INIT_EASY_SPEECH, SET_VOICE_SPEAKING } from '../../types/types';
-import initialState, { VoiceState } from './voiceInitState';
+import { INIT_EASY_SPEECH, SET_VOICE_SPEAKING } from "../../types/types";
+import { VoiceActions } from "./../../types/types";
+import initialState, { VoiceState } from "./voiceInitState";
 
-const VoiceReducer = (state = initialState, action: VoiceActions): VoiceState => {
+const VoiceReducer = (
+  state = initialState,
+  action: VoiceActions,
+): VoiceState => {
   const { payload, type } = action;
 
   switch (type) {

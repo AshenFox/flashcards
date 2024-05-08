@@ -1,7 +1,8 @@
-import { CSSProperties, ReactNode, memo, useMemo } from 'react';
-import { useAppSelector } from '@store/hooks';
-import clsx from 'clsx';
-import s from './styles.module.scss';
+import { useAppSelector } from "@store/hooks";
+import clsx from "clsx";
+import { CSSProperties, memo, ReactNode, useMemo } from "react";
+
+import s from "./styles.module.scss";
 
 type ContentContainerProps = {
   loading: boolean;
@@ -14,9 +15,11 @@ const ContentContainer = ({
   children,
   isScrollable = true,
 }: ContentContainerProps) => {
-  const header_height = useAppSelector(s => s.dimen.header_height);
-  const game_controls_height = useAppSelector(s => s.dimen.game_controls_height);
-  const is_server = useAppSelector(s => s.main.is_server);
+  const header_height = useAppSelector((s) => s.dimen.header_height);
+  const game_controls_height = useAppSelector(
+    (s) => s.dimen.game_controls_height,
+  );
+  const is_server = useAppSelector((s) => s.main.is_server);
 
   const styles: CSSProperties = useMemo(
     () => ({
@@ -24,19 +27,29 @@ const ContentContainer = ({
         !is_server
           ? document.documentElement.clientHeight -
             header_height -
-            (document.documentElement.clientWidth < 992 ? game_controls_height : 0)
+            (document.documentElement.clientWidth < 992
+              ? game_controls_height
+              : 0)
           : 0
       }px`,
     }),
-    [game_controls_height, header_height, is_server]
+    [game_controls_height, header_height, is_server],
   );
 
   return (
     <main
-      className={clsx(s.container, isScrollable ? s.scrollable : s.unscrollable)}
+      className={clsx(
+        s.container,
+        isScrollable ? s.scrollable : s.unscrollable,
+      )}
       style={styles}
     >
-      <div className={clsx(s.components, isScrollable ? s.scrollable : s.unscrollable)}>
+      <div
+        className={clsx(
+          s.components,
+          isScrollable ? s.scrollable : s.unscrollable,
+        )}
+      >
         {loading ? <div className={s.spinner} /> : children}
       </div>
     </main>

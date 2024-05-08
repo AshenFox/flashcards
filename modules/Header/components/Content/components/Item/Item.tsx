@@ -1,14 +1,15 @@
-import clsx from 'clsx';
-import Link from 'next/link';
+import clsx from "clsx";
+import Link from "next/link";
 import {
+  cloneElement,
+  memo,
   MouseEventHandler,
   ReactElement,
   SVGProps,
-  cloneElement,
-  memo,
   useMemo,
-} from 'react';
-import s from './styles.module.scss';
+} from "react";
+
+import s from "./styles.module.scss";
 
 type ItemProps = {
   children?: string;
@@ -27,7 +28,7 @@ const Item = ({
   padded,
   icon,
   iconSize = 20,
-  className = '',
+  className = "",
 }: ItemProps) => {
   const InnerElements = useMemo(
     () => (
@@ -36,12 +37,12 @@ const Item = ({
         {children && <span>{children}</span>}
       </>
     ),
-    [children, icon, iconSize]
+    [children, icon, iconSize],
   );
 
   const innerClassName = useMemo(
     () => clsx(s.item, padded && s.padded, className),
-    [padded, className]
+    [padded, className],
   );
 
   if (onClick) {

@@ -1,5 +1,6 @@
-import { memo } from 'react';
-import s from './styles.module.scss';
+import { memo } from "react";
+
+import s from "./styles.module.scss";
 
 type DividerProps = {
   children: string;

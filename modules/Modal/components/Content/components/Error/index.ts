@@ -1,1 +1,1 @@
-export { default } from './styles.module.scss';
+export { default } from "./styles.module.scss";

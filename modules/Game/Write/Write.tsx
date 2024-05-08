@@ -1,11 +1,12 @@
-import { memo, useEffect } from 'react';
-import { useRouter } from 'next/router';
-import { useActions, useAppSelector } from '@store/hooks';
-import Controls, { ControlButtons } from '../components/Controls';
-import Progress from './components/Progress';
-import { WriteIcon } from '@ui/Icons';
-import Content from './components/Content';
-import { StartOver } from './components/ControlButtons';
+import { useActions, useAppSelector } from "@store/hooks";
+import { WriteIcon } from "@ui/Icons";
+import { useRouter } from "next/router";
+import { memo, useEffect } from "react";
+
+import Controls, { ControlButtons } from "../components/Controls";
+import Content from "./components/Content";
+import { StartOver } from "./components/ControlButtons";
+import Progress from "./components/Progress";
 
 const Write = () => {
   const {
@@ -16,13 +17,13 @@ const Write = () => {
     get_sr_cards,
   } = useActions();
 
-  const cards = useAppSelector(s => s.main.cards);
-  const user = useAppSelector(s => s.auth.user);
+  const cards = useAppSelector((s) => s.main.cards);
+  const user = useAppSelector((s) => s.auth.user);
 
   const router = useRouter();
   const { _id, number } = router.query;
 
-  const isSR = _id === 'sr';
+  const isSR = _id === "sr";
 
   const { length } = Object.values(cards);
 
@@ -35,8 +36,8 @@ const Write = () => {
 
   useEffect(() => {
     if (user) {
-      if (isSR && typeof number === 'string') get_sr_cards(+number);
-      else if (typeof _id === 'string') get_module_cards(_id);
+      if (isSR && typeof number === "string") get_sr_cards(+number);
+      else if (typeof _id === "string") get_module_cards(_id);
     }
   }, [user]);
 
@@ -49,7 +50,7 @@ const Write = () => {
 
   return (
     <>
-      <Controls title='Write' titleIcon={<WriteIcon height='40' width='40' />}>
+      <Controls title="Write" titleIcon={<WriteIcon height="40" width="40" />}>
         <Progress />
         <ControlButtons>{!isSR && <StartOver />}</ControlButtons>
       </Controls>

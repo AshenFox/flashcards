@@ -1,4 +1,5 @@
-import { ReactNode, memo } from 'react';
+import { memo, ReactNode } from 'react';
+
 import s from './styles.module.scss';
 
 type NotFoundProps = {

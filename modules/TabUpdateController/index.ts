@@ -1,1 +1,1 @@
-export { default } from './TabUpdateController';
+export { default } from "./TabUpdateController";

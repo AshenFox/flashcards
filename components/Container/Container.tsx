@@ -1,6 +1,7 @@
-import clsx from 'clsx';
-import React, { ReactNode, memo } from 'react';
-import s from './styles.module.scss';
+import clsx from "clsx";
+import React, { memo, ReactNode } from "react";
+
+import s from "./styles.module.scss";
 
 type ContainerProps = {
   children?: ReactNode;

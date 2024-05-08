@@ -1,4 +1,4 @@
-@import '@styles/vars.scss';
+@import "@styles/vars.scss";
 
 .add_img {
   cursor: pointer;
@@ -34,7 +34,7 @@
     display: none;
   }
 
-  &[data-imgurl~='false'] {
+  &[data-imgurl~="false"] {
     border: $grey-medium dashed 2px;
     padding: 1rem 0;
     height: auto;

@@ -1,16 +1,17 @@
-import EditCard from '@components/EditCard';
-import ScrollLoader from '@ui/ScrollLoader';
-import { AddCard, Save } from './components';
-import ContentWrapper from '@components/ContentWrapper';
-import { useAppSelector } from '@store/hooks';
-import { memo } from 'react';
-import Container from '@components/Container';
-import s from './styles.module.scss';
+import Container from "@components/Container";
+import ContentWrapper from "@components/ContentWrapper";
+import EditCard from "@components/EditCard";
+import { useAppSelector } from "@store/hooks";
+import ScrollLoader from "@ui/ScrollLoader";
+import { memo } from "react";
+
+import { AddCard, Save } from "./components";
+import s from "./styles.module.scss";
 
 const Cards = () => {
-  const cards = useAppSelector(s => s.main.cards);
-  const currentModule = useAppSelector(s => s.main.module);
-  const loading = useAppSelector(s => s.main.loading);
+  const cards = useAppSelector((s) => s.main.cards);
+  const currentModule = useAppSelector((s) => s.main.module);
+  const loading = useAppSelector((s) => s.main.loading);
 
   const { draft } = currentModule || {};
 

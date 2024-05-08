@@ -1,17 +1,18 @@
-import { useRouter } from 'next/router';
-import { ChangeEvent, MouseEvent, memo, useEffect, useRef } from 'react';
-import Speaker from '@components/Speaker';
-import Img from '@ui/Img';
-import { Card } from '@store/reducers/main/mainInitState';
-import { useActions, useAppSelector } from '@store/hooks';
-import clsx from 'clsx';
-import TextArea from '@ui/TextArea';
-import TextLabel from '@ui/TextLabel';
-import Input from '@ui/Input';
-import { EditIcon } from '@ui/Icons';
-import SRIndicator from '@components/SRIndicator';
-import s from './styles.module.scss';
-import { tooltipContainer } from '@ui/Tooltip';
+import Speaker from "@components/Speaker";
+import SRIndicator from "@components/SRIndicator";
+import { useActions, useAppSelector } from "@store/hooks";
+import { Card } from "@store/reducers/main/mainInitState";
+import { EditIcon } from "@ui/Icons";
+import Img from "@ui/Img";
+import Input from "@ui/Input";
+import TextArea from "@ui/TextArea";
+import TextLabel from "@ui/TextLabel";
+import { tooltipContainer } from "@ui/Tooltip";
+import clsx from "clsx";
+import { useRouter } from "next/router";
+import { ChangeEvent, memo, MouseEvent, useEffect, useRef } from "react";
+
+import s from "./styles.module.scss";
 
 type AnswerProps = {
   data: Card;
@@ -29,7 +30,7 @@ const Answer = ({ data }: AnswerProps) => {
   const router = useRouter();
   const { _id: _id_param } = router.query;
 
-  const isSR = _id_param === 'sr';
+  const isSR = _id_param === "sr";
 
   const { _id, term, defenition, imgurl } = data;
   const {
@@ -38,11 +39,11 @@ const Answer = ({ data }: AnswerProps) => {
 
   const activeCard = remaining[remaining.length - 1];
   let isCorrect = false;
-  if (activeCard.answer === 'correct') isCorrect = true;
-  if (activeCard.answer === 'incorrect') isCorrect = false;
+  if (activeCard.answer === "correct") isCorrect = true;
+  if (activeCard.answer === "incorrect") isCorrect = false;
 
   const isEmpty = !answer && term;
-  const copiedCorrectly = copy_answer === term.replace(/&nbsp;/g, ' ').trim();
+  const copiedCorrectly = copy_answer === term.replace(/&nbsp;/g, " ").trim();
 
   const isFirstRound = useRef(!rounds.length);
   isFirstRound.current = !rounds.length;
@@ -91,13 +92,13 @@ const Answer = ({ data }: AnswerProps) => {
   };
 
   const keyDownControl = (e: KeyboardEvent) => {
-    if (e.key === 'Enter') {
+    if (e.key === "Enter") {
       e.preventDefault();
 
       continueGame();
     }
 
-    if (e.key === 'o') {
+    if (e.key === "o") {
       if (!isCorrect && !isEmpty) {
         overrideAnswer();
       }
@@ -108,20 +109,23 @@ const Answer = ({ data }: AnswerProps) => {
     if (gameAnswer.current) gameAnswer.current.focus();
     if (copyAnswerInput.current) copyAnswerInput.current.focus();
 
-    window.addEventListener('keydown', keyDownControl);
+    window.addEventListener("keydown", keyDownControl);
 
     return () => {
-      window.removeEventListener('keydown', keyDownControl);
+      window.removeEventListener("keydown", keyDownControl);
     };
   }, []);
 
   return (
     <div className={s.answer} tabIndex={0} ref={gameAnswer}>
       {isSR && (
-        <SRIndicator data={data} className={clsx(s.sr_indicator, tooltipContainer)} />
+        <SRIndicator
+          data={data}
+          className={clsx(s.sr_indicator, tooltipContainer)}
+        />
       )}
       <div className={clsx(s.edit, isSR && s.sr)} onClick={clickEdit}>
-        <EditIcon width='21' height='21' />
+        <EditIcon width="21" height="21" />
       </div>
       <h1 className={clsx(s.type, activeCard.answer && s[activeCard.answer])}>
         {activeCard.answer}
@@ -136,7 +140,7 @@ const Answer = ({ data }: AnswerProps) => {
             <Speaker
               _id={_id}
               text={defenition}
-              type={'definition'}
+              type={"definition"}
               className={s.speaker}
             />
           </div>
@@ -149,7 +153,7 @@ const Answer = ({ data }: AnswerProps) => {
               <div className={s.override}>
                 <button
                   //helpers-delete
-                  className='fz15 fw-normal lightblue h-yellow'
+                  className="fz15 fw-normal lightblue h-yellow"
                   onClick={clickOverride}
                 >
                   Override: I was right
@@ -163,23 +167,28 @@ const Answer = ({ data }: AnswerProps) => {
           <span className={s.section_title}>Correct</span>
           <div className={s.section_body}>
             <TextArea html={term} />
-            <Speaker _id={_id} text={term} type={'term'} className={s.speaker} />
+            <Speaker
+              _id={_id}
+              text={term}
+              type={"term"}
+              className={s.speaker}
+            />
           </div>
         </div>
 
         {!isCorrect && isEmpty && (
-          <form action='' className={s.form} autoComplete='off'>
+          <form action="" className={s.form} autoComplete="off">
             <fieldset className={s.fieldset}>
               <Input
                 className={clsx(s.input, copiedCorrectly && s.correct)}
-                id='write-input'
-                autoComplete='off'
+                id="write-input"
+                autoComplete="off"
                 value={copy_answer}
                 onChange={changeCopyAnswer}
                 inputRef={copyAnswerInput}
                 movingBorder
               />
-              <TextLabel htmlFor='write-input'>copy answer</TextLabel>
+              <TextLabel htmlFor="write-input">copy answer</TextLabel>
             </fieldset>
           </form>
         )}
@@ -188,7 +197,7 @@ const Answer = ({ data }: AnswerProps) => {
       <div className={s.continue} data-correct={canContinue.current}>
         <button
           //helpers-delete
-          className='bcc-lightblue pad10-30 brr15 white fz15 fw-normal h-grey h-bcc-yellow'
+          className="bcc-lightblue pad10-30 brr15 white fz15 fw-normal h-grey h-bcc-yellow"
           onClick={clickContinue}
         >
           Click to continue

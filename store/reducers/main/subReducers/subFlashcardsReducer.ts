@@ -1,12 +1,12 @@
-import { MainState } from './../mainInitState';
-import { MainActions } from './../../../types/types';
-import { SHUFFLE_FLASHCARDS, SORT_FLASHCARDS } from '../../../types/types';
-import initialState from '../mainInitState';
-import { shuffle } from '../../../helper-functions';
+import { shuffle } from "../../../helper-functions";
+import { SHUFFLE_FLASHCARDS, SORT_FLASHCARDS } from "../../../types/types";
+import initialState from "../mainInitState";
+import { MainActions } from "./../../../types/types";
+import { MainState } from "./../mainInitState";
 
 const subFlashcardsReducer = (
   state = initialState,
-  action: MainActions
+  action: MainActions,
 ): MainState | false => {
   const { payload, type } = action;
 
@@ -15,7 +15,9 @@ const subFlashcardsReducer = (
       return {
         ...state,
         cards: Object.fromEntries(
-          shuffle(Object.entries(state.cards)).sort((a, b) => a[1].stage - b[1].stage)
+          shuffle(Object.entries(state.cards)).sort(
+            (a, b) => a[1].stage - b[1].stage,
+          ),
         ),
       };
 
@@ -25,8 +27,9 @@ const subFlashcardsReducer = (
         cards: Object.fromEntries(
           Object.entries(state.cards).sort(
             ([, a], [, b]) =>
-              new Date(a.creation_date).getTime() - new Date(b.creation_date).getTime()
-          )
+              new Date(a.creation_date).getTime() -
+              new Date(b.creation_date).getTime(),
+          ),
         ),
       };
     default:

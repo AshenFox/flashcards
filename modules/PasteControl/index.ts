@@ -1,1 +1,1 @@
-export { default } from './PasteControl';
+export { default } from "./PasteControl";

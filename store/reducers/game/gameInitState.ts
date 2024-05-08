@@ -1,10 +1,10 @@
 export interface FlashcardsAnswer {
   id: string;
-  answer: 'correct' | 'incorrect';
+  answer: "correct" | "incorrect";
 }
 
 export interface CardFields {
-  answer: false | 'correct' | 'incorrect';
+  answer: false | "correct" | "incorrect";
 }
 
 export interface WriteCard extends CardFields {
@@ -17,7 +17,7 @@ export type Round = WriteCard[];
 export interface GameState {
   flashcards: {
     progress: number;
-    side: 'definition' | 'term';
+    side: "definition" | "term";
     shuffled: boolean;
     answers: FlashcardsAnswer[];
     is_turned: boolean;
@@ -38,7 +38,7 @@ export interface GameState {
 const gameInitState: GameState = {
   flashcards: {
     progress: 0,
-    side: 'definition',
+    side: "definition",
     shuffled: false,
     answers: [],
     is_turned: false,
@@ -47,8 +47,8 @@ const gameInitState: GameState = {
     is_init: false,
     all_cards_num: 0,
     remaining: [],
-    answer: '',
-    copy_answer: '',
+    answer: "",
+    copy_answer: "",
     answered: [],
     rounds: [],
   },

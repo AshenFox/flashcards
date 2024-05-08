@@ -1,5 +1,6 @@
-import { memo } from 'react';
-import s from './style.module.scss';
+import { memo } from "react";
+
+import s from "./style.module.scss";
 
 type DividerProps = {
   prevDateString?: string;
@@ -12,7 +13,7 @@ const Divider = ({ prevDateString, curDateString, draft }: DividerProps) => {
 
   if (exists) return;
 
-  const msg = draft ? 'in progress' : curName;
+  const msg = draft ? "in progress" : curName;
 
   return (
     <div className={s.divider}>
@@ -30,9 +31,9 @@ const createName = (dateString: string) => {
   const sec = (new Date().getTime() - date.getTime()) * 0.001;
 
   if (sec < 60) {
-    return 'a few seconds ago';
+    return "a few seconds ago";
   } else if (sec < 600) {
-    return 'several minutes ago';
+    return "several minutes ago";
   } else if (sec < 1800) {
     return `${Math.floor(sec / 60)} minutes ago`;
   } else if (sec < 3600) {
@@ -53,22 +54,24 @@ const process = (prevDateString?: string, curDateString?: string) => {
   const curName = curDateString && createName(curDateString);
 
   const exists =
-    typeof prevName === 'string' && typeof curName === 'string' && curName === prevName;
+    typeof prevName === "string" &&
+    typeof curName === "string" &&
+    curName === prevName;
 
   return { curName, exists };
 };
 
 const months = [
-  'january',
-  'february',
-  'march',
-  'april',
-  'may',
-  'june',
-  'july',
-  'august',
-  'september',
-  'october',
-  'november',
-  'december',
+  "january",
+  "february",
+  "march",
+  "april",
+  "may",
+  "june",
+  "july",
+  "august",
+  "september",
+  "october",
+  "november",
+  "december",
 ];

@@ -1,12 +1,15 @@
-import { DimenActions } from './../../types/types';
 import {
+  SET_GAME_CONTROLS_DIMEN,
   SET_HEADER_DIMEN,
   SET_SCROLL_HEIGHT,
-  SET_GAME_CONTROLS_DIMEN,
-} from '../../types/types';
-import initialState, { DimenState } from './dimenInitState';
+} from "../../types/types";
+import { DimenActions } from "./../../types/types";
+import initialState, { DimenState } from "./dimenInitState";
 
-const DimenReducer = (state = initialState, action: DimenActions): DimenState => {
+const DimenReducer = (
+  state = initialState,
+  action: DimenActions,
+): DimenState => {
   const { payload, type } = action;
 
   switch (type) {

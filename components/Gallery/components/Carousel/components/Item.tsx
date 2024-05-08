@@ -1,8 +1,9 @@
-import { SyntheticEvent, memo, useCallback } from 'react';
-import { ImgurlObj } from '@store/reducers/main/mainInitState';
-import { useActions } from '@store/hooks';
-import s from '../styles.module.scss';
-import clsx from 'clsx';
+import { useActions } from "@store/hooks";
+import { ImgurlObj } from "@store/reducers/main/mainInitState";
+import clsx from "clsx";
+import { memo, SyntheticEvent, useCallback } from "react";
+
+import s from "../styles.module.scss";
 
 type ItemProps = {
   _id: string;
@@ -17,11 +18,11 @@ const Item = ({ _id, index, data }: ItemProps) => {
 
   const error = useCallback(
     (e: SyntheticEvent<HTMLImageElement>) => set_url_ok(_id, index, false),
-    [_id, index, set_url_ok]
+    [_id, index, set_url_ok],
   );
   const load = useCallback(
     (e: SyntheticEvent<HTMLImageElement>) => set_url_ok(_id, index, true),
-    [_id, index, set_url_ok]
+    [_id, index, set_url_ok],
   );
 
   const clickGalleryItem = () => {
@@ -30,8 +31,11 @@ const Item = ({ _id, index, data }: ItemProps) => {
   };
 
   return (
-    <figcaption className={clsx(s.item, !ok && 'hidden')} onClick={clickGalleryItem}>
-      <img src={url} alt='Gallery img' onLoad={load} onError={error} />
+    <figcaption
+      className={clsx(s.item, !ok && "hidden")}
+      onClick={clickGalleryItem}
+    >
+      <img src={url} alt="Gallery img" onLoad={load} onError={error} />
     </figcaption>
   );
 };

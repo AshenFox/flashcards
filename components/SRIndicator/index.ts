@@ -1,1 +1,1 @@
-export { default, type SRIndicatorProps } from './SRIndicator';
+export { default, type SRIndicatorProps } from "./SRIndicator";

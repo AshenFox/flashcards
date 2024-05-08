@@ -1,5 +1,5 @@
-import mongoose from 'mongoose';
-import { PushSubscription } from 'web-push';
+import mongoose from "mongoose";
+import { PushSubscription } from "web-push";
 
 const Schema = mongoose.Schema;
 
@@ -30,6 +30,6 @@ const userSchema = new Schema<IUser>({
   },
 });
 
-const userModel = mongoose.model<IUser>('Users', userSchema);
+const userModel = mongoose.model<IUser>("Users", userSchema);
 
 export default userModel;

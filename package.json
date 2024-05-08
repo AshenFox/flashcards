@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "_dev": "nodemon server/server.js",
-    "dev": "set NODE_OPTIONS=--openssl-legacy-provider && nodemon server/server.ts",
+    "dev": "set NODE_OPTIONS=--openssl-legacy-provider && nodemon ./server/server.ts",
     "devd": "docker-compose -f docker-compose.dev.yaml up",
     "devd-rebuild": "docker-compose -f docker-compose.dev.yaml up --no-deps --build app",
     "build": "next build",
@@ -14,7 +14,10 @@
     "prod": "docker-compose -f docker-compose.prod.yaml up -d",
     "prod-rebuild": "docker-compose -f docker-compose.prod.yaml up -d --no-deps --build app",
     "lint": "next lint",
-    "scp-config": "scp -r ./config/ user@host:~/apps/flashcards"
+    "scp-config": "scp -r ./config/ user@host:~/apps/flashcards",
+    "fix-eslint": "eslint ./ --fix",
+    "pretty": "prettier --write \"./**/*.{ts,tsx,js,css,scss}\"",
+    "kill": "taskkill /f /im node.exe"
   },
   "dependencies": {
     "@types/bcryptjs": "^2.4.2",
@@ -57,7 +60,10 @@
     "web-push": "^3.4.4"
   },
   "devDependencies": {
-    "nodemon": "^3.1.0",
+    "eslint-plugin-import": "^2.29.1",
+    "eslint-plugin-simple-import-sort": "^12.1.0",
+    "nodemon": "^2.0.22",
+    "prettier": "3.2.5",
     "sass": "^1.29.0",
     "tsx": "^4.7.1",
     "typescript": "^4.6.3",

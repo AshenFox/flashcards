@@ -1,4 +1,4 @@
-@import '@styles/vars.scss';
+@import "@styles/vars.scss";
 
 .confirm {
   position: absolute;
@@ -47,7 +47,7 @@
     animation: pulse 1.25s linear infinite;
   }
 
-  &[data-answer='false'] {
+  &[data-answer="false"] {
     background-color: $palegreen;
 
     &:hover {
@@ -55,7 +55,7 @@
     }
   }
 
-  &[data-answer='true'] {
+  &[data-answer="true"] {
     background-color: $palered;
 
     &:hover {

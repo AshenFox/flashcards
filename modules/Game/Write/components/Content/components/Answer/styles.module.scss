@@ -1,4 +1,4 @@
-@import '@styles/vars.scss';
+@import "@styles/vars.scss";
 
 .sr_indicator {
   position: absolute;
@@ -160,7 +160,7 @@
   margin-top: 3rem;
   text-align: center;
 
-  &[data-correct='false'] {
+  &[data-correct="false"] {
     & button {
       background-color: $grey-lighter;
       cursor: auto;

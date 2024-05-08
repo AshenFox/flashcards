@@ -1,9 +1,9 @@
-import { AppActions } from './../types/types';
 import {
+  SET_GAME_CONTROLS_DIMEN,
   SET_HEADER_DIMEN,
   SET_SCROLL_HEIGHT,
-  SET_GAME_CONTROLS_DIMEN,
-} from '../types/types';
+} from "../types/types";
+import { AppActions } from "./../types/types";
 
 // SET_HEADER_DIMEN
 export const set_header_dimen = (el: HTMLElement): AppActions => ({

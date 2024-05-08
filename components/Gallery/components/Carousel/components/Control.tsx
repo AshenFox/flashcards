@@ -1,18 +1,19 @@
-import { MouseEvent, memo, useCallback } from 'react';
-import { useActions, useAppSelector } from '@store/hooks';
-import { clsx } from 'clsx';
-import s from '../styles.module.scss';
-import { TriangleLeftIcon, TriangleRightIcon } from '@ui/Icons';
+import { useActions, useAppSelector } from "@store/hooks";
+import { TriangleLeftIcon, TriangleRightIcon } from "@ui/Icons";
+import { clsx } from "clsx";
+import { memo, MouseEvent, useCallback } from "react";
+
+import s from "../styles.module.scss";
 
 type ControlProps = {
-  direction: 'left' | 'right';
+  direction: "left" | "right";
   _id: string;
 };
 
 const Control = ({ direction, _id }: ControlProps) => {
   const { move_gallery } = useActions();
 
-  const cards = useAppSelector(s => s.main.cards);
+  const cards = useAppSelector((s) => s.main.cards);
 
   const card = cards[_id];
   const { position = 0, width = 0 } = card?.gallery ?? {};
@@ -23,14 +24,14 @@ const Control = ({ direction, _id }: ControlProps) => {
     (e: MouseEvent<HTMLDivElement>) => {
       if (active) move_gallery(_id, direction);
     },
-    [_id, active, direction, move_gallery]
+    [_id, active, direction, move_gallery],
   );
 
-  if (direction === 'left') {
+  if (direction === "left") {
     if (Math.abs(position) <= 0) active = false;
   }
 
-  if (direction === 'right') {
+  if (direction === "right") {
     const innerWidth = window.innerWidth;
     let windowWidth = 0;
 
@@ -47,19 +48,19 @@ const Control = ({ direction, _id }: ControlProps) => {
   return (
     <div
       className={clsx(s.control, s[direction])}
-      data-control_el='true'
+      data-control_el="true"
       data-active={active}
       onClick={clickControl}
     >
       <button
         //helpers-delete
         className={clsx(
-          'pad15 bcc-white brr50p d-f h-bcc-yellow p-r',
-          direction === 'left' ? 'mar-left-a' : ''
+          "pad15 bcc-white brr50p d-f h-bcc-yellow p-r",
+          direction === "left" ? "mar-left-a" : "",
         )}
       >
-        {direction === 'left' && <TriangleLeftIcon />}
-        {direction === 'right' && <TriangleRightIcon />}
+        {direction === "left" && <TriangleLeftIcon />}
+        {direction === "right" && <TriangleRightIcon />}
       </button>
     </div>
   );

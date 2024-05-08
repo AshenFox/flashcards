@@ -1,12 +1,13 @@
-import { MouseEvent, memo } from 'react';
-import { useActions, useAppSelector } from '@store/hooks';
-import LoadingBtn from '@ui/LoadingBtn';
-import s from './styles.module.scss';
+import { useActions, useAppSelector } from "@store/hooks";
+import LoadingBtn from "@ui/LoadingBtn";
+import { memo, MouseEvent } from "react";
+
+import s from "./styles.module.scss";
 
 const Delete = () => {
   const { delete_module, toggle_modal } = useActions();
 
-  const currentModule = useAppSelector(s => s.main.module);
+  const currentModule = useAppSelector((s) => s.main.module);
 
   const { _id, module_loading, title } = currentModule || {};
 
@@ -22,8 +23,8 @@ const Delete = () => {
 
       <div className={s.warning}>
         <p>
-          You are about to delete this module and all of its data. You won&apos;t be able
-          to access this set ever again.
+          You are about to delete this module and all of its data. You
+          won&apos;t be able to access this set ever again.
         </p>
       </div>
 
@@ -35,7 +36,7 @@ const Delete = () => {
         <div className={s.choice_item}>
           <button
             //helpers-delete
-            className='width100 bcc-mudblue pad15-30 brr15 fz175 white h-opacity09'
+            className="width100 bcc-mudblue pad15-30 brr15 fz175 white h-opacity09"
             onClick={close}
           >
             Cancel
@@ -48,7 +49,7 @@ const Delete = () => {
             loading={module_loading}
             onClickHandler={clickDelete}
             //helpers-delete
-            classStr='width100 bcc-coral pad15-30 brr15 fz175 white h-opacity09'
+            classStr="width100 bcc-coral pad15-30 brr15 fz175 white h-opacity09"
           >
             Yes, delete set
           </LoadingBtn>

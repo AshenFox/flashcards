@@ -1,5 +1,6 @@
-import userModel from '../models/user_model';
-import bcrypt from 'bcryptjs';
+import bcrypt from "bcryptjs";
+
+import userModel from "../models/user_model";
 
 const minLength = (str: string, length: number) => str.length <= length;
 
@@ -79,7 +80,7 @@ const incorrectPassword = async (username: string, password: string) => {
 
     if (!user) {
       result = true;
-      throw new Error('User is not found');
+      throw new Error("User is not found");
     }
 
     if (!(await bcrypt.compare(password, user.password))) result = true;
@@ -116,33 +117,34 @@ export interface ICheckResult {
   email?: IField;
 }
 
-export const check = async (data: ICheckData, type: 'log_in' | 'sign_up') => {
+export const check = async (data: ICheckData, type: "log_in" | "sign_up") => {
   const { username, password, email } = data;
 
   let result: ICheckResult = { ok: true };
 
   // Username checks
-  if (typeof username !== 'undefined') {
+  if (typeof username !== "undefined") {
     const errors: string[] = [];
     const length = 5;
 
-    if (isEmpty(username)) errors.push('Please enter a username.');
+    if (isEmpty(username)) errors.push("Please enter a username.");
     if (invalidChar(username, userRegExp))
-      errors.push('Your username may only contain latin letters and numbers.');
+      errors.push("Your username may only contain latin letters and numbers.");
 
     // type === log_in
-    if (type === 'log_in') {
-      if (await noUser(username)) errors.push(`Username "${username}" does not exist`);
+    if (type === "log_in") {
+      if (await noUser(username))
+        errors.push(`Username "${username}" does not exist`);
     }
     // ----------
 
     // type === sign_up
-    if (type === 'sign_up') {
+    if (type === "sign_up") {
       if (minLength(username, length))
         errors.push(
-          `Your username is too short. The minimum length is ${length} characters.`
+          `Your username is too short. The minimum length is ${length} characters.`,
         );
-      if (await userExists(username)) errors.push('Username taken.');
+      if (await userExists(username)) errors.push("Username taken.");
     }
     // ----------
     result.username = {
@@ -154,29 +156,29 @@ export const check = async (data: ICheckData, type: 'log_in' | 'sign_up') => {
   }
 
   // Password checks
-  if (typeof password !== 'undefined') {
+  if (typeof password !== "undefined") {
     const errors: string[] = [];
     const length = 7;
 
-    if (isEmpty(password)) errors.push('Please enter a password.');
+    if (isEmpty(password)) errors.push("Please enter a password.");
     if (invalidChar(password, passRegExp))
       errors.push(
-        'Your password may only contain latin letters, numbers and special symbols.'
+        "Your password may only contain latin letters, numbers and special symbols.",
       );
     // type === log_in
-    if (type === 'log_in') {
+    if (type === "log_in") {
       if (await incorrectPassword(username, password))
-        errors.push('The password you entered is incorrect. Try again...');
+        errors.push("The password you entered is incorrect. Try again...");
     }
     // ----------
     // type === sign_up
-    if (type === 'sign_up') {
+    if (type === "sign_up") {
       if (minLength(password, length))
         errors.push(
-          `Your password is too short. The minimum length is ${length} characters.`
+          `Your password is too short. The minimum length is ${length} characters.`,
         );
       if (!oneUppercase(password))
-        errors.push('Your password must have at least one uppercase letter.');
+        errors.push("Your password must have at least one uppercase letter.");
     }
     // ----------
 
@@ -189,12 +191,13 @@ export const check = async (data: ICheckData, type: 'log_in' | 'sign_up') => {
   }
 
   // Email checks
-  if (typeof email !== 'undefined') {
+  if (typeof email !== "undefined") {
     const errors: string[] = [];
 
-    if (isEmpty(email)) errors.push('Please enter an email.');
-    if (emailFormat(email)) errors.push('Invalid email format.');
-    if (await emailTaken(email)) errors.push('This email has already been taken.');
+    if (isEmpty(email)) errors.push("Please enter an email.");
+    if (emailFormat(email)) errors.push("Invalid email format.");
+    if (await emailTaken(email))
+      errors.push("This email has already been taken.");
 
     result.email = {
       ok: !errors.length,

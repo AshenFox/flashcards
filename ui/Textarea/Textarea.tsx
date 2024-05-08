@@ -1,11 +1,12 @@
-import React, { LegacyRef, memo } from 'react';
+import { Override } from "@helpers/types";
+import { clsx } from "clsx";
+import React, { LegacyRef, memo } from "react";
 import ContentEditable, {
   ContentEditableEvent,
   Props as ContentEditableProps,
-} from 'react-contenteditable';
-import s from './styles.module.scss';
-import { clsx } from 'clsx';
-import { Override } from '@helpers/types';
+} from "react-contenteditable";
+
+import s from "./styles.module.scss";
 
 type TextAreaProps = Override<
   ContentEditableProps,

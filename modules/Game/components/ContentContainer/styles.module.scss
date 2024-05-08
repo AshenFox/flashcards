@@ -1,5 +1,5 @@
-@import '@styles/vars.scss';
-@import '@styles/animations.scss';
+@import "@styles/vars.scss";
+@import "@styles/animations.scss";
 
 .container {
   padding: 2.5rem;
@@ -43,7 +43,7 @@
   height: 80px;
 
   &:after {
-    content: ' ';
+    content: " ";
     display: block;
     width: 64px;
     height: 64px;

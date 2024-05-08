@@ -1,6 +1,7 @@
-import { MouseEvent, memo, useCallback } from 'react';
-import s from './styles.module.scss';
-import clsx from 'clsx';
+import clsx from "clsx";
+import { memo, MouseEvent, useCallback } from "react";
+
+import s from "./styles.module.scss";
 
 type LoadingBtnProps = {
   active: boolean;
@@ -18,11 +19,11 @@ const LoadingBtn = ({
   onClickHandler,
 }: LoadingBtnProps) => {
   const logError = useCallback((e: MouseEvent<HTMLButtonElement>) => {
-    console.error('Button has been deactivated.');
+    console.error("Button has been deactivated.");
   }, []);
 
   return (
-    <div className={s.btn} data-loading={loading && active ? 'true' : 'false'}>
+    <div className={s.btn} data-loading={loading && active ? "true" : "false"}>
       <button
         className={clsx(classStr, !active && s.inactive)}
         onClick={active && onClickHandler ? onClickHandler : logError}

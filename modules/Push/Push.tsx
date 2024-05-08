@@ -1,22 +1,22 @@
-import { memo } from 'react';
-import { useEffect } from 'react';
-import axios from '@server/supplemental/axios';
-import { useAppSelector } from '@store/hooks';
-import config from '@config/default.json';
+import config from "@config/default.json";
+import axios from "@server/supplemental/axios";
+import { useAppSelector } from "@store/hooks";
+import { memo } from "react";
+import { useEffect } from "react";
 
 const Push = () => {
-  const user = useAppSelector(s => s.auth.user);
+  const user = useAppSelector((s) => s.auth.user);
 
   useEffect(() => {
-    let device: 'mobile' | 'tablet' | 'pc';
+    let device: "mobile" | "tablet" | "pc";
     const screenWidth = screen.width;
 
     if (screenWidth < 620) {
-      device = 'mobile';
+      device = "mobile";
     } else if (screenWidth < 991) {
-      device = 'tablet';
+      device = "tablet";
     } else {
-      device = 'pc';
+      device = "pc";
     }
 
     if (user) {
@@ -34,8 +34,8 @@ export default memo(Push);
 let subscriptionSent: boolean = false;
 
 const urlBase64ToUint8Array = (base64String: string) => {
-  const padding = '='.repeat((4 - (base64String.length % 4)) % 4);
-  const base64 = (base64String + padding).replace(/-/g, '+').replace(/_/g, '/');
+  const padding = "=".repeat((4 - (base64String.length % 4)) % 4);
+  const base64 = (base64String + padding).replace(/-/g, "+").replace(/_/g, "/");
 
   const rawData = window.atob(base64);
   const outputArray = new Uint8Array(rawData.length);
@@ -46,12 +46,13 @@ const urlBase64ToUint8Array = (base64String: string) => {
   return outputArray;
 };
 
-const preparePush = async (device: 'mobile' | 'tablet' | 'pc') => {
-  if ('serviceWorker' in navigator) {
+const preparePush = async (device: "mobile" | "tablet" | "pc") => {
+  if ("serviceWorker" in navigator) {
     if (subscriptionSent) return;
 
     try {
-      const register = await navigator.serviceWorker.register('/scripts/Worker.js');
+      const register =
+        await navigator.serviceWorker.register("/scripts/Worker.js");
 
       const subscription = await register.pushManager.subscribe({
         userVisibleOnly: true,
@@ -68,16 +69,16 @@ const preparePush = async (device: 'mobile' | 'tablet' | 'pc') => {
 };
 
 const sendSubscription = async (
-  device: 'mobile' | 'tablet' | 'pc',
-  subscription: PushSubscription
+  device: "mobile" | "tablet" | "pc",
+  subscription: PushSubscription,
 ) => {
   try {
     const { data }: { data: { msg: string } } = await axios.put(
-      '/api/notifications/subscribe',
+      "/api/notifications/subscribe",
       {
         device,
         subscription,
-      }
+      },
     );
   } catch (err) {
     console.log(err);

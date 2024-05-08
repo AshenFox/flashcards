@@ -8,4 +8,5 @@ export const shuffle = (array: any[]) => {
   return array;
 };
 
-export const saveLastUpdate = () => localStorage.setItem('lastUpdated', Date.now() + '');
+export const saveLastUpdate = () =>
+  localStorage.setItem("lastUpdated", Date.now() + "");

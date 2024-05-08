@@ -1,12 +1,12 @@
-import { memo, useEffect } from 'react';
-import { useActions, useAppSelector } from '@store/hooks';
-import Results, { ResultItem } from '@modules/Game/components/Results';
+import Results, { ResultItem } from "@modules/Game/components/Results";
+import { useActions, useAppSelector } from "@store/hooks";
+import { memo, useEffect } from "react";
 
 const Finish = () => {
   const { next_write_round } = useActions();
 
-  const all_cards_num = useAppSelector(s => s.game.write.all_cards_num);
-  const rounds = useAppSelector(s => s.game.write.rounds);
+  const all_cards_num = useAppSelector((s) => s.game.write.all_cards_num);
+  const rounds = useAppSelector((s) => s.game.write.rounds);
 
   useEffect(() => {
     if (all_cards_num) next_write_round();
@@ -15,7 +15,9 @@ const Finish = () => {
   return (
     <>
       {rounds.map((round, i) => {
-        const correctNum = round.filter(item => item.answer === 'correct').length;
+        const correctNum = round.filter(
+          (item) => item.answer === "correct",
+        ).length;
 
         return (
           <Results
@@ -26,7 +28,12 @@ const Finish = () => {
             showLink={i === 0}
           >
             {round.map((data, z) => (
-              <ResultItem data={data} number={z + 1} key={data.id} showHeader={i === 0} />
+              <ResultItem
+                data={data}
+                number={z + 1}
+                key={data.id}
+                showHeader={i === 0}
+              />
             ))}
           </Results>
         );

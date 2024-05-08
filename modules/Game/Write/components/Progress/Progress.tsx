@@ -1,25 +1,31 @@
-import React, { memo } from 'react';
-import { useAppSelector } from '@store/hooks';
-import DefaultProgress, { ProgressItem } from '@modules/Game/components/Progress';
-import ProgressBar from '@ui/ProgressBar';
+import DefaultProgress, {
+  ProgressItem,
+} from "@modules/Game/components/Progress";
+import { useAppSelector } from "@store/hooks";
+import ProgressBar from "@ui/ProgressBar";
+import React, { memo } from "react";
 
 const Progress = () => {
-  const remaining = useAppSelector(s => s.game.write.remaining);
-  const answered = useAppSelector(s => s.game.write.answered);
-  const rounds = useAppSelector(s => s.game.write.rounds);
-  const all_cards_num = useAppSelector(s => s.game.write.all_cards_num);
+  const remaining = useAppSelector((s) => s.game.write.remaining);
+  const answered = useAppSelector((s) => s.game.write.answered);
+  const rounds = useAppSelector((s) => s.game.write.rounds);
+  const all_cards_num = useAppSelector((s) => s.game.write.all_cards_num);
 
-  const correctAnswered = answered.filter(item => item.answer === 'correct').length;
+  const correctAnswered = answered.filter(
+    (item) => item.answer === "correct",
+  ).length;
 
   let correctRounds = 0;
   for (const round of rounds) {
-    let correctRound = round.filter(item => item.answer === 'correct').length;
+    let correctRound = round.filter((item) => item.answer === "correct").length;
     correctRounds += correctRound;
   }
 
   const remainingNum = remaining.length;
   const correctNum = correctAnswered + correctRounds;
-  const incorrectNum = answered.filter(item => item.answer === 'incorrect').length;
+  const incorrectNum = answered.filter(
+    (item) => item.answer === "incorrect",
+  ).length;
 
   return (
     <DefaultProgress>
@@ -27,7 +33,7 @@ const Progress = () => {
         <ProgressBar
           progress={remainingNum}
           complete={all_cards_num}
-          title={'remaining'}
+          title={"remaining"}
           showComplete={false}
         />
       </ProgressItem>
@@ -36,9 +42,9 @@ const Progress = () => {
         <ProgressBar
           progress={incorrectNum}
           complete={all_cards_num}
-          title={'incorrect'}
+          title={"incorrect"}
           showComplete={false}
-          color='red'
+          color="red"
         />
       </ProgressItem>
 
@@ -46,9 +52,9 @@ const Progress = () => {
         <ProgressBar
           progress={correctNum}
           complete={all_cards_num}
-          title={'correct'}
+          title={"correct"}
           showComplete={false}
-          color='green'
+          color="green"
         />
       </ProgressItem>
     </DefaultProgress>

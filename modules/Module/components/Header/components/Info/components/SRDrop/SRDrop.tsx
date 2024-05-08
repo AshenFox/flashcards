@@ -1,9 +1,10 @@
-import { MouseEvent, memo } from 'react';
-import { useActions, useAppSelector } from '@store/hooks';
-import Tooltip, { tooltipContainer } from '@ui/Tooltip';
-import clsx from 'clsx';
-import s from './styles.module.scss';
-import { DropStudyRegimeIcon } from '@ui/Icons';
+import { useActions, useAppSelector } from "@store/hooks";
+import { DropStudyRegimeIcon } from "@ui/Icons";
+import Tooltip, { tooltipContainer } from "@ui/Tooltip";
+import clsx from "clsx";
+import { memo, MouseEvent } from "react";
+
+import s from "./styles.module.scss";
 
 const SRDrop = () => {
   const { set_module_question } = useActions();
@@ -12,7 +13,8 @@ const SRDrop = () => {
 
   const { question } = module || {};
 
-  const clickDropSR = (e: MouseEvent<HTMLDivElement>) => set_module_question(true);
+  const clickDropSR = (e: MouseEvent<HTMLDivElement>) =>
+    set_module_question(true);
 
   return (
     <div
@@ -20,7 +22,7 @@ const SRDrop = () => {
       data-active={question}
       onClick={clickDropSR}
     >
-      <DropStudyRegimeIcon width='30' height='30' />
+      <DropStudyRegimeIcon width="30" height="30" />
       <Tooltip>Drop all cards study progress</Tooltip>
     </div>
   );

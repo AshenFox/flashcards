@@ -1,1 +1,1 @@
-export { default } from './Scrape';
+export { default } from "./Scrape";
