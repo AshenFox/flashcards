@@ -2,6 +2,7 @@ import { SyntheticEvent, memo, useCallback } from 'react';
 import { useState, useRef } from 'react';
 import s from './styles.module.scss';
 import clsx from 'clsx';
+import { BrokenImageIcon } from '@ui/Icons';
 
 type ImgProps = {
   containerClass?: string;
@@ -57,9 +58,7 @@ const Img = ({
 
       {error && (
         <div className={s.error}>
-          <svg>
-            <use href='../img/sprite.svg#icon__broken_image'></use>
-          </svg>
+          <BrokenImageIcon />
         </div>
       )}
     </div>

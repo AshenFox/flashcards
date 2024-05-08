@@ -26,7 +26,7 @@ type EditCardProps = {
 
 const EditCard = ({
   data,
-  loading,
+  loading = false,
   draft,
   index,
   toggle,

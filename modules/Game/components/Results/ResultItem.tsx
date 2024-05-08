@@ -5,6 +5,8 @@ import { useAppSelector } from '@store/hooks';
 import TextArea from '@ui/TextArea';
 import { CloseIcon, TickIcon } from '@ui/Icons';
 import { memo } from 'react';
+import s from './styles.module.scss';
+import clsx from 'clsx';
 
 type ResultItemProps = {
   data: {
@@ -26,12 +28,9 @@ const ResultItem = ({ data, number, showHeader = true }: ResultItemProps) => {
   const { term, defenition, imgurl, stage, nextRep, prevStage } = cards[data.id] ?? {};
 
   return (
-    <div className='game__finish-body-item'>
+    <div className={s.body_item}>
       {isSR && showHeader && (
-        <div
-          //helpers-delete
-          className={`game__finish-body-header game__finish-body-header--${data.answer}`}
-        >
+        <div className={clsx(s.body_header, data.answer && s[data.answer])}>
           <p>SR Stage: {stage}</p>
           <p>
             Next repeat: <DateStr date={nextRep} />
@@ -42,29 +41,25 @@ const ResultItem = ({ data, number, showHeader = true }: ResultItemProps) => {
         </div>
       )}
 
-      <div className='game__finish-body-main'>
-        <div className='game__finish-body-left'>
-          <div className={`game__finish-icon game__finish-icon--${data.answer}`}>
+      <div className={s.body_main}>
+        <div className={s.body_left}>
+          <div className={clsx(s.icon, data.answer && s[data.answer])}>
             {data.answer === 'correct' ? (
               <TickIcon width={20} />
             ) : (
               <CloseIcon width={20} />
             )}
           </div>
-          <div className={`game__finish-term game__finish-term--${data.answer}`}>
+          <div className={clsx(s.term, data.answer && s[data.answer])}>
             <span>{number}.</span>
             <TextArea html={term} />
           </div>
         </div>
 
-        <div className='game__finish-body-right'>
-          <div className='game__finish-definition'>
+        <div className={s.body_right}>
+          <div>
             <TextArea html={defenition} />
-            <Img
-              containerClass={'game__finish-img-container'}
-              imgClass={'game__finish-img'}
-              url={imgurl}
-            />
+            <Img imgClass={s.img} url={imgurl} />
           </div>
         </div>
       </div>

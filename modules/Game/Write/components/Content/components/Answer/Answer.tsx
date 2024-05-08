@@ -107,6 +107,7 @@ const Answer = ({ data }: AnswerProps) => {
   useEffect(() => {
     if (gameAnswer.current) gameAnswer.current.focus();
     if (copyAnswerInput.current) copyAnswerInput.current.focus();
+
     window.addEventListener('keydown', keyDownControl);
 
     return () => {
@@ -115,44 +116,37 @@ const Answer = ({ data }: AnswerProps) => {
   }, []);
 
   return (
-    <div className='game__answer' tabIndex={0} ref={gameAnswer}>
+    <div className={s.answer} tabIndex={0} ref={gameAnswer}>
       {isSR && (
         <SRIndicator data={data} className={clsx(s.sr_indicator, tooltipContainer)} />
       )}
-      <div
-        className={`game__edit game__edit--write${isSR ? '-sr' : ''}`}
-        onClick={clickEdit}
-      >
+      <div className={clsx(s.edit, isSR && s.sr)} onClick={clickEdit}>
         <EditIcon width='21' height='21' />
       </div>
-      <h1 className={`game__answer-type ${activeCard.answer}`}>
-        {activeCard.answer && activeCard.answer}
+      <h1 className={clsx(s.type, activeCard.answer && s[activeCard.answer])}>
+        {activeCard.answer}
       </h1>
 
-      <div className='game__answer-main'>
-        <div className='game__answer-section '>
-          <span className='game__section-title'>Definition</span>
-          <Img
-            containerClass={'game__section-img-container'}
-            imgClass={'game__section-img'}
-            url={imgurl}
-          />
-          <div className='game__section-body '>
+      <div>
+        <div className={s.section}>
+          <span className={s.section_title}>Definition</span>
+          <Img containerClass={s.img_container} imgClass={s.img} url={imgurl} />
+          <div className={s.section_body}>
             <TextArea html={defenition} />
             <Speaker
               _id={_id}
               text={defenition}
               type={'definition'}
-              className='game__speaker-write'
+              className={s.speaker}
             />
           </div>
         </div>
         {!isCorrect && !isEmpty && (
-          <div className='game__answer-section '>
-            <span className='game__section-title'>You said</span>
-            <div className='game__section-body'>
-              <div className='game__section-text'>{answer}</div>
-              <div className='game__override'>
+          <div className={s.section}>
+            <span className={s.section_title}>You said</span>
+            <div className={s.section_body}>
+              <div>{answer}</div>
+              <div className={s.override}>
                 <button
                   //helpers-delete
                   className='fz15 fw-normal lightblue h-yellow'
@@ -165,24 +159,19 @@ const Answer = ({ data }: AnswerProps) => {
           </div>
         )}
 
-        <div className='game__answer-section'>
-          <span className='game__section-title'>Correct</span>
-          <div className='game__section-body '>
+        <div className={s.section}>
+          <span className={s.section_title}>Correct</span>
+          <div className={s.section_body}>
             <TextArea html={term} />
-            <Speaker
-              _id={_id}
-              text={term}
-              type={'term'}
-              className='game__speaker-write'
-            />
+            <Speaker _id={_id} text={term} type={'term'} className={s.speaker} />
           </div>
         </div>
 
         {!isCorrect && isEmpty && (
-          <form action='' className='game__form' autoComplete='off'>
-            <fieldset className='game__form-fieldset'>
+          <form action='' className={s.form} autoComplete='off'>
+            <fieldset className={s.fieldset}>
               <Input
-                className={clsx('game__form-input', copiedCorrectly && 'correct')}
+                className={clsx(s.input, copiedCorrectly && s.correct)}
                 id='write-input'
                 autoComplete='off'
                 value={copy_answer}
@@ -196,7 +185,7 @@ const Answer = ({ data }: AnswerProps) => {
         )}
       </div>
 
-      <div className='game__answer-continue' data-correct={canContinue.current}>
+      <div className={s.continue} data-correct={canContinue.current}>
         <button
           //helpers-delete
           className='bcc-lightblue pad10-30 brr15 white fz15 fw-normal h-grey h-bcc-yellow'
