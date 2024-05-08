@@ -1,6 +1,8 @@
 import { MouseEvent, memo } from 'react';
 import { useActions, useAppSelector } from '@store/hooks';
 import { ShuffleIcon } from '@ui/Icons';
+import clsx from 'clsx';
+import s from './styles.module.scss';
 
 const ShuffleBtn = () => {
   const {
@@ -10,11 +12,9 @@ const ShuffleBtn = () => {
     reset_flashcards_progress,
   } = useActions();
 
-  const {
-    flashcards: { shuffled },
-  } = useAppSelector(({ game }) => game);
+  const shuffled = useAppSelector(s => s.game.flashcards.shuffled);
 
-  const clickSuffle = (e: MouseEvent<HTMLButtonElement>) => {
+  const clickShuffle = (e: MouseEvent<HTMLButtonElement>) => {
     if (shuffled) {
       sort_flashcards();
       set_flashcards_shuffled(false);
@@ -27,11 +27,11 @@ const ShuffleBtn = () => {
   };
 
   return (
-    <div className={`game__shuffle ${shuffled ? 'active' : ''}`}>
+    <div className={clsx(s.shuffle, shuffled && s.active)}>
       <button
         //helpers-delete
         className='width100 fz15 pad7 br2 brc-grey-medium brr15 lightblue h-yellow'
-        onClick={clickSuffle}
+        onClick={clickShuffle}
       >
         <ShuffleIcon height='20' width='20' />
         <span>Shuffle</span>

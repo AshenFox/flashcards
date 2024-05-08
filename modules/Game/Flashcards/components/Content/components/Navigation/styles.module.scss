@@ -1,0 +1,221 @@
+@import '@styles/vars.scss';
+
+.navigation {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+
+  width: 100%;
+  height: 20%;
+  pointer-events: none;
+
+  @media (max-width: $tablet) {
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    min-height: 8rem;
+  }
+}
+
+.item {
+  width: 50%;
+  padding: 0 5rem;
+
+  @media (max-width: $tablet) {
+    align-self: flex-end;
+    margin-bottom: 4rem;
+  }
+
+  @media (max-width: $mobile) {
+    margin-bottom: 2rem;
+  }
+
+  & button {
+    pointer-events: auto;
+    transition: all 0.1s linear;
+    z-index: 20;
+    width: 5rem;
+    height: 5rem;
+    box-shadow: 0 0 0.6rem 0 rgba(0, 0, 0, 0.28);
+
+    @media (max-width: $tablet) {
+      height: 4rem;
+      width: 4rem;
+    }
+
+    & svg {
+      transition: all 0.1s linear;
+      fill: $secondary;
+      position: absolute;
+      height: 2.5rem;
+      width: 2.5rem;
+
+      @media (max-width: $tablet) {
+        height: 2rem;
+        width: 2rem;
+      }
+    }
+
+    &:hover {
+      box-shadow: 0 0 0.6rem 0 rgba($tertiary, 0.28);
+      & svg {
+        fill: $grey;
+      }
+    }
+  }
+
+  &.inactive {
+    & button {
+      cursor: auto;
+      background-color: $grey-light;
+
+      svg {
+        fill: $grey-lighter;
+      }
+    }
+
+    &:hover {
+      & button {
+        background-color: $grey-light;
+        box-shadow: 0 0 0.6rem 0 rgba(0, 0, 0, 0.28);
+        svg {
+          fill: $grey-lighter;
+        }
+      }
+    }
+  }
+
+  &.prev {
+    & button {
+      margin-left: auto;
+
+      @media (max-width: $tablet) {
+        margin: 0 auto 0 0;
+      }
+
+      @media (max-width: $mobile) {
+        margin: 0 0 0 auto;
+      }
+
+      & svg {
+        top: 50%;
+        left: 50%;
+        transform: translate(-15px, -12.5px);
+
+        @media (max-width: $tablet) {
+          transform: translate(-12px, -10px);
+        }
+      }
+    }
+  }
+
+  &.next {
+    & button {
+      @media (max-width: $tablet) {
+        margin: 0 0 0 auto;
+      }
+
+      @media (max-width: $mobile) {
+        margin: 0;
+      }
+
+      & svg {
+        top: 50%;
+        left: 50%;
+        transform: translate(-9.5px, -12.5px);
+
+        @media (max-width: $tablet) {
+          transform: translate(-8px, -10px);
+        }
+      }
+    }
+  }
+}
+
+.question {
+  pointer-events: auto;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  text-align: center;
+  justify-content: space-around;
+  background-color: $white;
+  box-shadow: 0 0.5rem 1.25rem 0 rgba(0, 0, 0, 0.28);
+  padding: 1rem;
+  border-radius: 1rem;
+  height: 10rem;
+  align-self: flex-end;
+
+  transition: all 0.5s;
+
+  transform: translateY(20rem);
+  opacity: 0;
+
+  &[data-active='true'] {
+    transform: translateY(0);
+    opacity: 1;
+  }
+
+  & p {
+    font-size: 1.7rem;
+    width: 100%;
+  }
+
+  @media (max-width: $tablet) {
+    margin-bottom: 2rem;
+  }
+
+  @media (max-width: $mobile) {
+    width: 25rem;
+  }
+}
+
+.answer {
+  z-index: 30;
+  pointer-events: auto;
+  cursor: pointer;
+  display: inline-block;
+  padding: 1rem 3.5rem;
+  border-radius: 0.75rem;
+  transition: all 0.2s;
+  color: $white;
+  user-select: none;
+
+  &:hover {
+    animation: pulse 1.25s linear infinite;
+  }
+
+  &[data-answer='true'] {
+    background-color: $palegreen;
+
+    &:hover {
+      background-color: $green;
+    }
+  }
+
+  &[data-answer='false'] {
+    background-color: $palered;
+
+    &:hover {
+      background-color: $red;
+    }
+  }
+}
+
+.spinner {
+  display: inline-block;
+  width: 80px;
+  height: 80px;
+
+  &:after {
+    content: ' ';
+    display: block;
+    width: 64px;
+    height: 64px;
+    margin: 7px;
+    border-radius: 50%;
+    border: 6px solid $tertiary;
+    border-color: $tertiary transparent $tertiary transparent;
+    animation: lds-dual-ring 1.2s linear infinite;
+  }
+}

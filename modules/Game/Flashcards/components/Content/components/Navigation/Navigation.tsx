@@ -2,6 +2,8 @@ import { useRouter } from 'next/router';
 import { MouseEvent, memo, useEffect, useRef } from 'react';
 import { useActions, useAppSelector } from '@store/hooks';
 import { TriangleLeftIcon, TriangleRightIcon } from '@ui/Icons';
+import s from './styles.module.scss';
+import clsx from 'clsx';
 
 const Navigation = () => {
   const {
@@ -91,56 +93,54 @@ const Navigation = () => {
   }, []);
 
   return (
-    <div className='game__nav'>
-      <div
-        className={`game__nav-question ${isSR ? '' : 'hidden'}`}
-        data-active={is_turned}
-      >
-        <p>Did you know the answer?</p>
-        <div
-          className='game__nav-answer'
-          data-answer='true'
-          onClick={clickNavItem('next', 'correct')}
-        >
-          <span>Yes</span>
+    <div className={s.navigation}>
+      {isSR && (
+        <div className={s.question} data-active={is_turned}>
+          <p>Did you know the answer?</p>
+          <div
+            className={s.answer}
+            data-answer='true'
+            onClick={clickNavItem('next', 'correct')}
+          >
+            <span>Yes</span>
+          </div>
+          <div
+            className={s.answer}
+            data-answer='false'
+            onClick={clickNavItem('next', 'incorrect')}
+          >
+            <span>No</span>
+          </div>
         </div>
-        <div
-          className='game__nav-answer'
-          data-answer='false'
-          onClick={clickNavItem('next', 'incorrect')}
-        >
-          <span>No</span>
-        </div>
-      </div>
+      )}
 
-      <div
-        className={`game__nav-item prev ${isSR ? 'hidden' : ''} ${
-          progress <= 0 ? 'game__nav-item--inactive' : ''
-        }`}
-        onClick={clickNavItem('prev')}
-      >
-        <button
-          //helpers-delete
-          className='pad15 bcc-white brr50p d-f h-bcc-yellow mar-left-a p-r'
-        >
-          <TriangleLeftIcon />
-        </button>
-      </div>
+      {!isSR && (
+        <>
+          <div
+            className={clsx(s.item, s.prev, progress <= 0 && s.inactive)}
+            onClick={clickNavItem('prev')}
+          >
+            <button
+              //helpers-delete
+              className='pad15 bcc-white brr50p d-f h-bcc-yellow mar-left-a p-r'
+            >
+              <TriangleLeftIcon />
+            </button>
+          </div>
 
-      <div
-        //helpers-delete
-        className={`game__nav-item next ${isSR ? 'hidden' : ''} ${
-          progress >= cardsArr.length ? 'game__nav-item--inactive' : ''
-        }`}
-        onClick={clickNavItem('next')}
-      >
-        <button
-          //helpers-delete
-          className='pad15 bcc-white brr50p d-f h-bcc-yellow p-r'
-        >
-          <TriangleRightIcon />
-        </button>
-      </div>
+          <div
+            className={clsx(s.item, s.next, progress >= cardsArr.length && s.inactive)}
+            onClick={clickNavItem('next')}
+          >
+            <button
+              //helpers-delete
+              className='pad15 bcc-white brr50p d-f h-bcc-yellow p-r'
+            >
+              <TriangleRightIcon />
+            </button>
+          </div>
+        </>
+      )}
     </div>
   );
 };

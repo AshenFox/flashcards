@@ -37,7 +37,7 @@ const ContentContainer = ({
       style={styles}
     >
       <div className={clsx(s.components, isScrollable ? s.scrollable : s.unscrollable)}>
-        {loading ? <div className='game__loading-spinner' /> : children}
+        {loading ? <div className={s.spinner} /> : children}
       </div>
     </main>
   );

@@ -2,18 +2,16 @@ import { memo, useEffect, useRef } from 'react';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
 import { useAppSelector } from '@store/hooks';
+import s from './styles.module.scss';
+import clsx from 'clsx';
 
 type EndGameProps = {
   active: boolean;
 };
 
 const EndGame = ({ active }: EndGameProps) => {
-  const {
-    main: { cards },
-    game: {
-      flashcards: { progress },
-    },
-  } = useAppSelector(state => state);
+  const cards = useAppSelector(s => s.main.cards);
+  const progress = useAppSelector(s => s.game.flashcards.progress);
 
   const router = useRouter();
 
@@ -42,10 +40,10 @@ const EndGame = ({ active }: EndGameProps) => {
   }, []);
 
   return (
-    <div className={`game__card ${isEnd ? '' : 'transparent'}`}>
-      <div className={`game__card-front unturnable ${!active ? 'next transparent' : ''}`}>
-        <h1 className='game__card-message'>Nice work!</h1>
-        <p className='game__card-message-info'>{`You've just studied ${length} term${
+    <div className={clsx(s.card, !isEnd && s.transparent)}>
+      <div className={clsx(s.front, s.unmovable, !active && clsx(s.next, s.transparent))}>
+        <h1 className={s.message}>Nice work!</h1>
+        <p className={s.message_info}>{`You've just studied ${length} term${
           length > 1 ? 's' : ''
         }!`}</p>
         <Link href={`/module/${_id}`}>
@@ -58,9 +56,12 @@ const EndGame = ({ active }: EndGameProps) => {
         </Link>
       </div>
       <div
-        className={`game__card-back unturnable rearside ${
-          !active ? 'next transparent' : ''
-        }`}
+        className={clsx(
+          s.back,
+          s.unmovable,
+          s.rear_side,
+          !active && clsx(s.next, s.transparent)
+        )}
       ></div>
     </div>
   );

@@ -11,3 +11,285 @@
     top: -1rem;
   }
 }
+
+.speaker {
+  position: absolute;
+  right: 2rem;
+  top: 2rem;
+
+  svg {
+    height: 22px;
+    width: 22px;
+  }
+}
+
+.transcription_hidden {
+  transition: all 0.2s;
+  background-color: $grey-medium;
+  color: $grey-medium;
+  user-select: none;
+
+  &:hover {
+    background-color: inherit;
+    color: inherit;
+  }
+}
+
+.card {
+  position: absolute;
+  height: 100%;
+  width: 100%;
+
+  transition: opacity 0.12s linear;
+
+  opacity: 1;
+
+  text-align: center;
+
+  perspective: 1000px;
+  height: 100%;
+
+  &.transparent {
+    opacity: 0;
+    z-index: -10;
+  }
+}
+
+.front,
+.back {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+
+  background-color: $white;
+  width: 100%;
+  height: 100%;
+  border-radius: 1rem;
+  box-shadow: 0 0 1.25rem -0.1rem rgba(0, 0, 0, 0.28);
+  transform-style: preserve-3d;
+  transition: transform 0.3s ease;
+  backface-visibility: hidden;
+  z-index: 19;
+  transform: rotateX(0deg);
+  display: flex;
+
+  &.transparent {
+    z-index: -10;
+    pointer-events: none;
+  }
+
+  &.prev {
+    transform: translateX(-16%) rotateY(16deg) translateZ(0);
+  }
+
+  &.next {
+    transform: translateX(16%) rotateY(-16deg) translateZ(0);
+  }
+
+  &.unmovable {
+    background-color: transparent;
+    box-shadow: none;
+  }
+}
+
+.front {
+  display: flex;
+
+  &.rear_side {
+    transform: rotateX(180deg);
+    z-index: -10;
+  }
+
+  &.unmovable {
+    display: block;
+
+    &.rear_side {
+      transform: none;
+      z-index: 0;
+    }
+  }
+}
+
+.back {
+  &.rear_side {
+    transform: rotateX(-180deg);
+    z-index: -10;
+  }
+
+  &.unmovable {
+    &.rear_side {
+      transform: none;
+      z-index: 0;
+    }
+  }
+}
+
+/* .front,
+.back {
+  &.rear_side {
+    & .sr-indicator {
+      opacity: 0;
+
+      & .sr-indicator__dots {
+        opacity: 0;
+
+        & .sr-indicator__dot {
+          opacity: 0;
+        }
+      }
+    }
+  }
+} */
+
+.img_container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto;
+  height: 100%;
+  width: 55%;
+  padding: 2.5rem 0.75rem 2.5rem 2.5rem;
+
+  &.full {
+    width: 100%;
+    padding: 6rem 1.5rem 5rem 1.5rem;
+  }
+
+  @media (max-height: $h-tablet) {
+    width: 50%;
+  }
+
+  @media (max-height: $h-mobile) {
+    width: 45%;
+  }
+
+  @media (max-height: $h-mobile-sm) {
+    width: 40%;
+  }
+}
+
+.img {
+  width: 100%;
+  height: 100%;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  overflow: hidden;
+}
+
+.definition_container {
+  text-align: center;
+  height: 100%;
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 6rem 1.5rem 5rem 0.75rem !important;
+}
+
+.definition {
+  max-height: 100%;
+  overflow-y: auto;
+  overflow-x: hidden;
+  font-size: 1.9rem;
+  color: $grey;
+  padding-right: 1rem;
+
+  @media (max-width: $tablet) {
+    font-size: 1.8rem;
+    padding-bottom: 10rem;
+  }
+
+  @media (max-width: $mobile) {
+    font-size: 1.7rem;
+  }
+
+  @media (max-width: $mobile-sm) {
+    font-size: 1.6rem;
+  }
+
+  @media (max-width: $mobile-sm) {
+    font-size: 1.6rem;
+  }
+
+  // =================
+
+  &::-webkit-scrollbar {
+    background-color: $white;
+    width: 0.2rem;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: rgba($grey, 0.3);
+    border-radius: 0.1rem;
+    opacity: 0.3;
+  }
+}
+
+.edit {
+  cursor: pointer;
+  position: absolute;
+  top: 2rem;
+  right: 6rem;
+  padding-right: 1.75rem;
+  border-right: 2px solid #f0f0f0;
+  display: flex;
+
+  svg {
+    fill: $grey;
+    transition: all 0.2s;
+  }
+
+  &:hover {
+    svg {
+      fill: $red;
+    }
+  }
+}
+
+.term_container {
+  height: 100%;
+  width: 100%;
+
+  font-size: 3rem;
+  color: $grey;
+
+  padding: 5rem 1.5rem 5rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  @media (max-width: $tablet) {
+    font-size: 2.8rem;
+  }
+
+  @media (max-width: $mobile) {
+    font-size: 2.6rem;
+  }
+
+  @media (max-width: $mobile-sm) {
+    font-size: 2.4rem;
+  }
+}
+
+.term {
+  overflow-y: auto;
+  overflow-x: hidden;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.message {
+  font-size: 4.5rem;
+  color: $grey;
+}
+
+.message_info {
+  font-size: 1.7rem;
+  margin-bottom: 1.5rem;
+  color: $grey;
+}

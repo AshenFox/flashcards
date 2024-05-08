@@ -7,6 +7,7 @@ import { useAppSelector } from '@store/hooks';
 import ContentContainer from '@modules/Game/components/ContentContainer';
 import { memo } from 'react';
 import Finish from './components/Finish';
+import s from './styles.module.scss';
 
 const Content = () => {
   const router = useRouter();
@@ -32,7 +33,7 @@ const Content = () => {
       loading={loading || !length}
       isScrollable={isEdit || (isSR && isEnd)}
     >
-      <div className='game__cards-container'>
+      <div className={s.container}>
         {!isEdit &&
           !isEnd &&
           formatted_cards.map((card, i) => {

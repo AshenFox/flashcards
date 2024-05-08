@@ -1,5 +1,13 @@
 import { useRouter } from 'next/router';
-import { ChangeEvent, MouseEvent, memo, useCallback, useEffect, useRef } from 'react';
+import {
+  ChangeEvent,
+  FormEventHandler,
+  MouseEvent,
+  memo,
+  useCallback,
+  useEffect,
+  useRef,
+} from 'react';
 import Speaker from '@components/Speaker';
 import Img from '@ui/Img';
 import { Card } from '@store/reducers/main/mainInitState';
@@ -28,9 +36,9 @@ const Question = ({ data }: QuestionProps) => {
   const { _id, term, defenition, imgurl } = data || {};
   const answer = useAppSelector(s => s.game.write.answer);
 
-  const hidTranscrDefenition = defenition.replaceAll(
+  const formattedDefinition = defenition.replaceAll(
     /\( \/(.*?)\/ \)/g,
-    (x, match) => `( /<span class="game__definition-hidden">${match}</span>/ )`
+    (x, match) => `( /<span class="${s.transcription_hidden}">${match}</span>/ )`
   );
 
   const changeAnswer = (e: ChangeEvent<HTMLInputElement>) =>
@@ -46,19 +54,29 @@ const Question = ({ data }: QuestionProps) => {
     [check_write_answer]
   );
 
-  const clickAnswer = (e: MouseEvent<HTMLButtonElement>) => {
-    e.preventDefault();
-    check_write_answer();
-  };
+  const clickAnswer = useCallback(
+    (e: MouseEvent<HTMLButtonElement>) => {
+      e.preventDefault();
+      check_write_answer();
+    },
+    [check_write_answer]
+  );
 
-  const clickNotKnow = (e: MouseEvent<HTMLSpanElement>) => {
+  const clickNotKnow = useCallback(() => {
     check_write_answer(true);
-  };
+  }, [check_write_answer]);
+
+  const disableDefault = useCallback<FormEventHandler<HTMLFormElement>>(e => {
+    e.preventDefault();
+  }, []);
 
   const answerInput = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
-    if (answerInput.current) answerInput.current.focus();
+    if (answerInput.current) {
+      setTimeout(() => answerInput.current.focus(), 0);
+    }
+
     window.addEventListener('keydown', keyDownAnswer);
 
     return () => {
@@ -67,34 +85,25 @@ const Question = ({ data }: QuestionProps) => {
   }, [keyDownAnswer]);
 
   return (
-    <div className='game__question'>
-      <div className='game__question-container'>
+    <div className={s.question}>
+      <div className={s.container}>
         {isSR && (
           <SRIndicator data={data} className={clsx(s.sr_indicator, tooltipContainer)} />
         )}
         {term && (
-          <div className='game__question-dontknow'>
+          <div className={s.do_not_know}>
             <span onClick={clickNotKnow}>Don&apos;t know</span>
           </div>
         )}
-        <Img
-          containerClass={'game__question-img-container'}
-          imgClass={'game__question-img'}
-          url={imgurl}
-        />
-        <TextArea html={hidTranscrDefenition} className='game__question-definition' />
-        <Speaker
-          _id={_id}
-          text={defenition}
-          type={'definition'}
-          className='game__speaker-write'
-        />
+        <Img containerClass={s.img_container} imgClass={s.img} url={imgurl} />
+        <TextArea html={formattedDefinition} className={s.definition} />
+        <Speaker _id={_id} text={defenition} type={'definition'} className={s.speaker} />
       </div>
-      <form action='' className='game__form' autoComplete='off'>
-        <fieldset className='game__form-fieldset'>
+      <form className={s.form} autoComplete='off' onSubmit={disableDefault}>
+        <fieldset className={s.fieldset}>
           <Input
             id='write-input'
-            className='game__form-input'
+            className={s.input}
             movingBorder
             autoComplete='off'
             onChange={changeAnswer}
@@ -103,11 +112,12 @@ const Question = ({ data }: QuestionProps) => {
           />
           <TextLabel htmlFor='write-input'>type the answer</TextLabel>
         </fieldset>
-        <div className='game__form-btn-container'>
+        <div className={s.btn_container}>
           <button
             //helpers-delete
             className='bcc-lightblue pad10-30 brr15 white fz15 fw-normal h-grey h-bcc-yellow'
             onClick={clickAnswer}
+            type='button'
           >
             Answer
           </button>

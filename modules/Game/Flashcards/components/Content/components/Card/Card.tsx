@@ -3,7 +3,7 @@ import Speaker from '@components/Speaker';
 import Img from '@ui/Img';
 import SRIndicator from '@components/SRIndicator';
 import { Card as CardType } from '@store/reducers/main/mainInitState';
-import { MouseEvent } from 'react';
+import { MouseEvent, memo } from 'react';
 import { useActions } from '@store/hooks';
 import { tooltipContainer } from '@ui/Tooltip';
 import s from './styles.module.scss';
@@ -27,28 +27,30 @@ const Card = ({ data, side = 'definition', position = null }: CardProps) => {
 
   const { _id, term, defenition, imgurl } = data;
 
-  const hidTranscrDefenition = defenition.replaceAll(
+  const formattedDefinition = defenition.replaceAll(
     /\( \/(.*?)\/ \)/g,
-    (x, match) => `( /<span class="game__definition-hidden">${match}</span>/ )`
+    (x, match) => `( /<span class=${s.transcription_hidden}>${match}</span>/ )`
   );
 
-  const frontClassName = [
-    'game__card-front',
-    position ? `transparent ${position}` : '',
-    side === 'definition' ? '' : 'rearside',
-  ].join(' ');
-  const backClassName = [
-    'game__card-back',
-    position ? `transparent ${position}` : '',
-    side === 'term' ? '' : 'rearside',
-  ].join(' ');
-  const cardClassName = ['game__card', position ? 'transparent' : ''].join(' ');
+  const frontClassName = clsx(
+    s.front,
+    position && clsx(s.transparent, s[position]),
+    side !== 'definition' && s.rear_side
+  );
+
+  const backClassName = clsx(
+    s.back,
+    position && clsx(s.transparent, s[position]),
+    side !== 'term' && s.rear_side
+  );
+
+  const cardClassName = clsx(s.card, position && s.transparent);
 
   const clickSide = (value: 'term' | 'definition') => (e: MouseEvent<HTMLDivElement>) => {
-    if ((e.target as HTMLElement).closest('.game__speaker-flashcards')) return;
-    if ((e.target as HTMLElement).closest('.game__edit')) return;
-    if ((e.target as HTMLElement).closest('.sr-indicator')) return;
-    if ((e.target as HTMLElement).closest('.game__definition-hidden')) return;
+    if ((e.target as HTMLElement).closest(`.${s.speaker}`)) return;
+    if ((e.target as HTMLElement).closest(`.${s.edit}`)) return;
+    if ((e.target as HTMLElement).closest(`.${s.sr_indicator}`)) return;
+    if ((e.target as HTMLElement).closest(`.${s.transcription_hidden}`)) return;
 
     set_flashcards_side(value);
   };
@@ -59,8 +61,8 @@ const Card = ({ data, side = 'definition', position = null }: CardProps) => {
     <div className={cardClassName}>
       <div className={frontClassName} onClick={clickSide('term')}>
         <Img
-          containerClass={`game__img-container ${defenition ? '' : 'full'}`}
-          imgClass={'game__img'}
+          containerClass={clsx(s.img_container, !defenition && s.full)}
+          imgClass={s.img}
           url={imgurl}
         />
         {isSR && (
@@ -68,17 +70,12 @@ const Card = ({ data, side = 'definition', position = null }: CardProps) => {
         )}
 
         {defenition && (
-          <div className={`game__definition-container ${imgurl ? '' : 'full'}`}>
-            <TextArea html={hidTranscrDefenition} className='game__definition' />
+          <div className={clsx(s.definition_container, !imgurl && s.full)}>
+            <TextArea html={formattedDefinition} className={s.definition} />
           </div>
         )}
-        <Speaker
-          _id={_id}
-          text={defenition}
-          type={'definition'}
-          className='game__speaker-flashcards'
-        />
-        <div className='game__edit' onClick={clickEdit}>
+        <Speaker _id={_id} text={defenition} type={'definition'} className={s.speaker} />
+        <div className={s.edit} onClick={clickEdit}>
           <EditIcon width='21' height='21' />
         </div>
       </div>
@@ -86,16 +83,11 @@ const Card = ({ data, side = 'definition', position = null }: CardProps) => {
         {isSR && (
           <SRIndicator data={data} className={clsx(s.sr_indicator, tooltipContainer)} />
         )}
-        <div className='game__term-container '>
-          <TextArea html={term} className='game__term' />
+        <div className={s.term_container}>
+          <TextArea html={term} className={s.term} />
         </div>
-        <Speaker
-          _id={_id}
-          text={term}
-          type={'term'}
-          className='game__speaker-flashcards'
-        />
-        <div className='game__edit' onClick={clickEdit}>
+        <Speaker _id={_id} text={term} type={'term'} className={s.speaker} />
+        <div className={s.edit} onClick={clickEdit}>
           <EditIcon width='21' height='21' />
         </div>
       </div>
@@ -103,4 +95,4 @@ const Card = ({ data, side = 'definition', position = null }: CardProps) => {
   );
 };
 
-export default Card;
+export default memo(Card);

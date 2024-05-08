@@ -5,3 +5,135 @@
   left: 1rem;
   top: 1rem;
 }
+
+.question {
+  width: 100%;
+  background-color: $white;
+  padding: 2.5rem 4rem;
+  margin-bottom: 1rem;
+
+  border-radius: 1rem;
+  box-shadow: 0 0 1.25rem -0.1rem rgba(0, 0, 0, 0.28);
+
+  &:focus {
+    outline: none;
+  }
+
+  @media (max-width: $mobile) {
+    padding: 1.5rem 3rem;
+  }
+}
+
+.container {
+  position: relative;
+}
+
+.do_not_know {
+  margin-bottom: 3.5rem;
+  text-align: right;
+  color: $secondary;
+  transition: all 0.2s;
+
+  & span {
+    cursor: pointer;
+
+    &:hover {
+      color: $tertiary;
+    }
+  }
+}
+
+.img_container {
+  margin-bottom: 2rem;
+}
+
+.img {
+  height: 30rem;
+  width: 32rem;
+
+  @media (max-width: $mobile) {
+    height: 23rem;
+    width: 24rem;
+  }
+
+  @media (max-width: $mobile-sm) {
+    width: 100%;
+  }
+}
+
+.definition {
+  font-size: 2rem;
+  padding-bottom: 2.75rem;
+  min-height: 5rem;
+
+  @media (max-width: $mobile) {
+    font-size: 1.5rem;
+  }
+}
+
+.form {
+  display: flex;
+  margin-top: 1.5rem;
+  border-top: 0.2rem solid #f4f4f4;
+  padding-top: 1.5rem;
+
+  @media (max-width: $mobile) {
+    flex-direction: column;
+  }
+}
+
+.fieldset {
+  border: none;
+  flex: 1;
+
+  & :global(.text_label__label) {
+    color: $grey-lighter;
+    font-size: 1.2rem;
+    letter-spacing: 0.2rem;
+  }
+}
+
+.input {
+  &:global(.input__container) {
+    padding: 0.2rem 1rem;
+    transition: all 0.2s;
+    margin-bottom: 0.5rem;
+    border-bottom: 2px solid $black;
+  }
+
+  & :global(.input__input) {
+    font-size: 1.5rem;
+  }
+}
+
+.btn_container {
+  margin-left: 2rem;
+
+  @media (max-width: $mobile) {
+    margin-left: 0;
+    margin-top: 2rem;
+  }
+}
+
+.speaker {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+
+  svg {
+    height: 22px;
+    width: 22px;
+  }
+}
+
+.transcription_hidden {
+  transition: all 0.2s;
+  background-color: $grey-medium;
+  color: $grey-medium;
+  user-select: none;
+
+  &:hover {
+    background-color: inherit;
+    color: inherit;
+  }
+}
