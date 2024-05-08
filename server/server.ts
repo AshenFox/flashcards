@@ -1,21 +1,21 @@
 // dependencies
-import express from 'express';
-import connectDB from './supplemental/db';
-import next from 'next';
 import config from 'config';
-import https, { ServerOptions } from 'https';
-import http from 'http';
+import express from 'express';
 import fs from 'fs';
+import http from 'http';
+import https, { ServerOptions } from 'https';
+import next from 'next';
 import webpush from 'web-push';
 
 // import routes
 import auth from './routes/auth';
-import main from './routes/main';
-import img_search from './routes/img_search';
-import scrape from './routes/scrape';
 import edit from './routes/edit';
-import sr from './routes/sr';
+import img_search from './routes/img_search';
+import main from './routes/main';
 import notifications from './routes/notifications';
+import scrape from './routes/scrape';
+import sr from './routes/sr';
+import connectDB from './supplemental/db';
 import { send_notifications } from './supplemental/notifications_control';
 
 const port = process.env.PORT || 4000;
@@ -105,6 +105,12 @@ const start = async () => {
     process.exit(1);
   }
 };
+
+process.on('SIGTERM', async () => {
+  console.log('\nGracefully shutting down from SIGINT (Ctrl-C)');
+  await nextApp.close();
+  process.exit(0);
+});
 
 start();
 

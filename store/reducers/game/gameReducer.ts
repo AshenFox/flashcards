@@ -1,22 +1,22 @@
-import { GameActions } from './../../types/types';
+import { shuffle } from "../../helper-functions";
 import {
-  SET_FLASHCARDS_PROGRESS,
-  RESET_FLASHCARDS_PROGRESS,
-  SET_FLASHCARDS_SHUFFLED,
-  SET_FLASHCARDS_SIDE,
-  SAVE_FLASHCARDS_ANSWER,
-  PREPARE_WRITE,
-  SET_WRITE_IS_INIT,
-  SET_WRITE_ANSWER_FIELD,
-  SET_WRITE_COPY_ANSWER_FIELD,
   CHECK_WRITE_ANSWER,
   NEXT_WRITE_CARD,
-  OVERRIDE_WRITE_ANSWER,
   NEXT_WRITE_ROUND,
+  OVERRIDE_WRITE_ANSWER,
+  PREPARE_WRITE,
   RESET_ALL_GAME_FIELDS,
-} from '../../types/types';
-import initialState, { GameState } from './gameInitState';
-import { shuffle } from '../../helper-functions';
+  RESET_FLASHCARDS_PROGRESS,
+  SAVE_FLASHCARDS_ANSWER,
+  SET_FLASHCARDS_PROGRESS,
+  SET_FLASHCARDS_SHUFFLED,
+  SET_FLASHCARDS_SIDE,
+  SET_WRITE_ANSWER_FIELD,
+  SET_WRITE_COPY_ANSWER_FIELD,
+  SET_WRITE_IS_INIT,
+} from "../../types/types";
+import { GameActions } from "./../../types/types";
+import initialState, { GameState } from "./gameInitState";
 
 const GameReducer = (state = initialState, action: GameActions): GameState => {
   const { payload, type } = action;
@@ -35,7 +35,9 @@ const GameReducer = (state = initialState, action: GameActions): GameState => {
         write: {
           ...state.write,
           all_cards_num: payload.remaining.length,
-          remaining: shuffle(payload.remaining).sort((a, b) => b.stage - a.stage),
+          remaining: shuffle(payload.remaining).sort(
+            (a, b) => b.stage - a.stage,
+          ),
         },
       };
 
@@ -87,9 +89,11 @@ const GameReducer = (state = initialState, action: GameActions): GameState => {
         ...state,
         write: {
           ...state.write,
-          answer: '',
-          copy_answer: '',
-          remaining: state.write.remaining.filter((item, i, arr) => i !== arr.length - 1),
+          answer: "",
+          copy_answer: "",
+          remaining: state.write.remaining.filter(
+            (item, i, arr) => i !== arr.length - 1,
+          ),
           answered: [
             ...state.write.answered,
             state.write.remaining[state.write.remaining.length - 1],
@@ -102,14 +106,16 @@ const GameReducer = (state = initialState, action: GameActions): GameState => {
         ...state,
         write: {
           ...state.write,
-          answer: '',
-          copy_answer: '',
-          remaining: state.write.remaining.filter((item, i, arr) => i !== arr.length - 1),
+          answer: "",
+          copy_answer: "",
+          remaining: state.write.remaining.filter(
+            (item, i, arr) => i !== arr.length - 1,
+          ),
           answered: [
             ...state.write.answered,
             {
               ...state.write.remaining[state.write.remaining.length - 1],
-              answer: 'correct',
+              answer: "correct",
             },
           ],
         },
@@ -120,12 +126,12 @@ const GameReducer = (state = initialState, action: GameActions): GameState => {
         ...state,
         write: {
           ...state.write,
-          answer: '',
-          copy_answer: '',
+          answer: "",
+          copy_answer: "",
           remaining: shuffle(
             state.write.answered
-              .filter((item) => item.answer === 'incorrect')
-              .map((item) => ({ ...item, answer: false }))
+              .filter((item) => item.answer === "incorrect")
+              .map((item) => ({ ...item, answer: false })),
           ).sort((a, b) => b.stage - a.stage),
           answered: [],
           rounds: [...state.write.rounds, [...state.write.answered]],
@@ -141,7 +147,7 @@ const GameReducer = (state = initialState, action: GameActions): GameState => {
           ...state.flashcards,
           progress: state.flashcards.progress + payload.value,
           is_turned: false,
-          side: 'definition',
+          side: "definition",
         },
       };
 

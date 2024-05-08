@@ -1,15 +1,20 @@
-import { createStore, applyMiddleware } from 'redux';
-import { composeWithDevTools } from 'redux-devtools-extension';
-import thunk, { ThunkDispatch, ThunkMiddleware, ThunkAction } from 'redux-thunk';
-import rootReducer from './reducers/index';
-import { AppActions } from './types/types';
-import { useSelector, useDispatch, TypedUseSelectorHook } from 'react-redux';
+import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
+import { applyMiddleware, createStore } from "redux";
+import { composeWithDevTools } from "redux-devtools-extension";
+import thunk, {
+  ThunkAction,
+  ThunkDispatch,
+  ThunkMiddleware,
+} from "redux-thunk";
+
+import rootReducer from "./reducers/index";
+import { AppActions } from "./types/types";
 
 const initialState = {};
 
 const middleware = [thunk as ThunkMiddleware<AppState, AppActions>];
 
-const isDev = process.env.NODE_ENV === 'development'; // from create-react-app
+const isDev = process.env.NODE_ENV === "development"; // from create-react-app
 
 const composeEnhancers = composeWithDevTools({
   trace: true,
@@ -20,7 +25,7 @@ const store = isDev
   ? createStore(
       rootReducer,
       initialState,
-      composeEnhancers(applyMiddleware(...middleware))
+      composeEnhancers(applyMiddleware(...middleware)),
     )
   : createStore(rootReducer, initialState, applyMiddleware(...middleware));
 

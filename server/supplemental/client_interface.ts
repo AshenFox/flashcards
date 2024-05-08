@@ -1,5 +1,5 @@
-import ImageSearch from 'image-search-google';
-import config from 'config';
+import config from "config";
+import ImageSearch from "image-search-google";
 
 declare global {
   namespace ImageSearchGoogle {
@@ -14,8 +14,8 @@ declare global {
   }
 }
 
-const cse_id: string = config.get('cse_id');
-const keyArr: string[] = config.get('keyArr');
+const cse_id: string = config.get("cse_id");
+const keyArr: string[] = config.get("keyArr");
 
 interface IClientInterface {
   clientArr: Client[];
@@ -50,7 +50,7 @@ const client_interface: IClientInterface = {
         try {
           let response = await client.search(`${inquiry}`, {
             page: 1,
-            size: 'medium',
+            size: "medium",
           });
 
           return response;
@@ -67,14 +67,18 @@ const client_interface: IClientInterface = {
   errCheck(client: Client) {
     const { error, errorDate } = client;
 
-    if (error && errorDate && new Date().getTime() - errorDate.getTime() > 88200000) {
+    if (
+      error &&
+      errorDate &&
+      new Date().getTime() - errorDate.getTime() > 88200000
+    ) {
       client.error = false;
       client.errorDate = null;
     }
   },
 };
 
-keyArr.forEach(key => {
+keyArr.forEach((key) => {
   client_interface.clientArr.push(new Client(cse_id, key));
 });
 

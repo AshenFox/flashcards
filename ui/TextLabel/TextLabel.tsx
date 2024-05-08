@@ -1,6 +1,12 @@
-import React, { memo, useCallback, MouseEventHandler, LabelHTMLAttributes } from 'react';
-import s from './styles.module.scss';
-import clsx from 'clsx';
+import clsx from "clsx";
+import React, {
+  LabelHTMLAttributes,
+  memo,
+  MouseEventHandler,
+  useCallback,
+} from "react";
+
+import s from "./styles.module.scss";
 
 const getLastNode = (nodes: NodeListOf<ChildNode>) => {
   const lastNode = nodes[nodes.length - 1];
@@ -23,20 +29,20 @@ type TextLabelProps = LabelHTMLAttributes<HTMLLabelElement> & {
 const TextLabel = ({
   children,
   error = false,
-  errorMessage = '',
+  errorMessage = "",
   htmlFor,
   className,
   onClick,
   ...rest
 }: TextLabelProps) => {
   const onInnerLabelClick = useCallback<MouseEventHandler<HTMLLabelElement>>(
-    e => {
+    (e) => {
       onClick?.(e);
 
       if (htmlFor) {
         const el = window?.document?.getElementById(htmlFor);
 
-        if (el?.contentEditable === 'true') {
+        if (el?.contentEditable === "true") {
           try {
             const range = document?.createRange();
             const sel = window?.getSelection();
@@ -55,18 +61,18 @@ const TextLabel = ({
         }
       }
     },
-    [htmlFor, onClick]
+    [htmlFor, onClick],
   );
 
   return (
     <label
       {...rest}
       className={clsx(
-        'text_label__label',
+        "text_label__label",
         s.label,
         error && s.error,
         !!htmlFor && s.active,
-        className
+        className,
       )}
       htmlFor={htmlFor}
       onClick={onInnerLabelClick}

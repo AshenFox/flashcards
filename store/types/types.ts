@@ -1,28 +1,28 @@
-import { Voices, Speaking } from './../reducers/voice/voiceInitState';
-import { Round } from './../reducers/game/gameInitState';
+import { User } from "./../reducers/auth/authInitState";
+import { Round } from "./../reducers/game/gameInitState";
 import {
-  SelectBy,
-  SelectCreated,
-  Module,
   Card,
   Cards,
   ImgurlObjs,
-} from './../reducers/main/mainInitState';
-import { User } from './../reducers/auth/authInitState';
+  Module,
+  SelectBy,
+  SelectCreated,
+} from "./../reducers/main/mainInitState";
 import {
-  ModalType,
-  ModalInputFileds,
   LogInErrors,
+  ModalInputFileds,
+  ModalType,
   SignUpErrors,
-} from './../reducers/modal/modalInitState';
+} from "./../reducers/modal/modalInitState";
+import { Speaking, Voices } from "./../reducers/voice/voiceInitState";
 // modal
-export const CHANGE_MODAL = 'CHANGE_MODAL';
-export const TOGGLE_MODAL = 'TOGGLE_MODAL';
-export const CONTROL_FIELD = 'CONTROL_FIELD';
-export const CHANGE_MODAL_LOADING = 'CHANGE_MODAL_LOADING';
-export const CLEAR_LOG_IN = 'CLEAR_LOG_IN';
-export const CLEAR_SIGN_UP = 'CLEAR_SIGN_UP';
-export const ENTER = 'ENTER';
+export const CHANGE_MODAL = "CHANGE_MODAL";
+export const TOGGLE_MODAL = "TOGGLE_MODAL";
+export const CONTROL_FIELD = "CONTROL_FIELD";
+export const CHANGE_MODAL_LOADING = "CHANGE_MODAL_LOADING";
+export const CLEAR_LOG_IN = "CLEAR_LOG_IN";
+export const CLEAR_SIGN_UP = "CLEAR_SIGN_UP";
+export const ENTER = "ENTER";
 
 export interface ChangeModalAction {
   type: typeof CHANGE_MODAL;
@@ -88,10 +88,10 @@ export type ModalActions =
   | EnterAction;
 
 // auth
-export const CHECK_FIELD = 'CHECK_FIELD';
-export const LOG_OUT = 'LOG_OUT';
-export const AUTHENTICATE = 'AUTHENTICATE';
-export const CHANGE_AUTH_LOADING = 'CHANGE_AUTH_LOADING';
+export const CHECK_FIELD = "CHECK_FIELD";
+export const LOG_OUT = "LOG_OUT";
+export const AUTHENTICATE = "AUTHENTICATE";
+export const CHANGE_AUTH_LOADING = "CHANGE_AUTH_LOADING";
 
 export interface LogOutAction {
   type: typeof LOG_OUT;
@@ -108,26 +108,29 @@ export interface ChangeAuthLoadingAction {
   payload: boolean;
 }
 
-export type AuthActions = LogOutAction | AuthenticateAction | ChangeAuthLoadingAction;
+export type AuthActions =
+  | LogOutAction
+  | AuthenticateAction
+  | ChangeAuthLoadingAction;
 
 // main
-export const SET_IS_SERVER = 'SET_IS_SERVER';
-export const SET_MAIN_LOADING = 'SET_MAIN_LOADING';
-export const GET_MODULES = 'GET_MODULES';
-export const GET_CARDS = 'GET_CARDS';
-export const SET_SKIP_CARDS = 'SET_SKIP_CARDS';
-export const SET_SKIP_MODULES = 'SET_SKIP_MODULES';
-export const CONTROL_SEARCH_CARDS = 'CONTROL_SEARCH_CARDS';
-export const CONTROL_SEARCH_MODULES = 'CONTROL_SEARCH_MODULES';
-export const SET_SELECT_BY = 'SET_SELECT_BY';
-export const SET_SELECT_CREATED = 'SET_SELECT_CREATED';
-export const RESET_FIELDS_CARDS = 'RESET_FIELDS_CARDS';
-export const RESET_FIELDS_MODULES = 'RESET_FIELDS_MODULES';
-export const RESET_SEARCH = 'RESET_SEARCH';
-export const GET_MODULE = 'GET_MODULE';
-export const GET_MODULE_CARDS = 'GET_MODULE_CARDS';
-export const CLEAR_MODULE = 'CLEAR_MODULE';
-export const SET_SCROLL_TOP = 'SET_SCROLL_TOP';
+export const SET_IS_SERVER = "SET_IS_SERVER";
+export const SET_MAIN_LOADING = "SET_MAIN_LOADING";
+export const GET_MODULES = "GET_MODULES";
+export const GET_CARDS = "GET_CARDS";
+export const SET_SKIP_CARDS = "SET_SKIP_CARDS";
+export const SET_SKIP_MODULES = "SET_SKIP_MODULES";
+export const CONTROL_SEARCH_CARDS = "CONTROL_SEARCH_CARDS";
+export const CONTROL_SEARCH_MODULES = "CONTROL_SEARCH_MODULES";
+export const SET_SELECT_BY = "SET_SELECT_BY";
+export const SET_SELECT_CREATED = "SET_SELECT_CREATED";
+export const RESET_FIELDS_CARDS = "RESET_FIELDS_CARDS";
+export const RESET_FIELDS_MODULES = "RESET_FIELDS_MODULES";
+export const RESET_SEARCH = "RESET_SEARCH";
+export const GET_MODULE = "GET_MODULE";
+export const GET_MODULE_CARDS = "GET_MODULE_CARDS";
+export const CLEAR_MODULE = "CLEAR_MODULE";
+export const SET_SCROLL_TOP = "SET_SCROLL_TOP";
 
 export interface SetIsServerAction {
   type: typeof SET_IS_SERVER;
@@ -241,7 +244,7 @@ export interface SetScrollTopAction {
 }
 
 // header
-export const SET_DROPDOWN = 'SET_DROPDOWN';
+export const SET_DROPDOWN = "SET_DROPDOWN";
 
 export interface SetDropdownAction {
   type: typeof SET_DROPDOWN;
@@ -251,9 +254,9 @@ export interface SetDropdownAction {
 export type HeaderActions = SetDropdownAction;
 
 // dimen
-export const SET_HEADER_DIMEN = 'SET_HEADER_DIMEN';
-export const SET_SCROLL_HEIGHT = 'SET_SCROLL_HEIGHT';
-export const SET_GAME_CONTROLS_DIMEN = 'SET_GAME_CONTROLS_DIMEN';
+export const SET_HEADER_DIMEN = "SET_HEADER_DIMEN";
+export const SET_SCROLL_HEIGHT = "SET_SCROLL_HEIGHT";
+export const SET_GAME_CONTROLS_DIMEN = "SET_GAME_CONTROLS_DIMEN";
 
 export interface SetHeaderDimenAction {
   type: typeof SET_HEADER_DIMEN;
@@ -284,35 +287,35 @@ export type DimenActions =
   | SetGameControlsDimen;
 
 // edit
-export const DELETE_MODULE = 'DELETE_MODULE'; // edit
-export const EDIT_MODULE = 'EDIT_MODULE'; // edit
-export const EDIT_CARD = 'EDIT_CARD'; // edit
-export const CREATE_MODULE = 'CREATE_MODULE'; // edit
-export const SCRAPE_DICTIONARY = 'SCRAPE_DICTIONARY'; // scrape
-export const SET_SCRAPE_LOADING = 'SET_SCRAPE_LOADING'; // scrape
-export const SET_GALLERY_SEARCH = 'SET_GALLERY_SEARCH'; // gallery
-export const SET_URL_OK = 'SET_URL_OK'; // gallery
-export const CONTROL_GALLERY_QUERY = 'CONTROL_GALLERY_QUERY'; // gallery
-export const SEARCH_IMAGES = 'SEARCH_IMAGES'; // gallery
-export const RESET_GALLERY_FIELDS = 'RESET_GALLERY_FIELDS'; // gallery
-export const SET_GALLERY_LOADING = 'SET_GALLERY_LOADING'; // gallery
-export const SET_GALLERY_WIDTH = 'SET_GALLERY_WIDTH'; // gallery
-export const MOVE_GALLERY = 'MOVE_GALLERY'; // gallery
-export const SET_GALLERY_ERROR = 'SET_GALLERY_ERROR'; // gallery
-export const SHUFFLE_FLASHCARDS = 'SHUFFLE_FLASHCARDS'; // flashcards
-export const SORT_FLASHCARDS = 'SORT_FLASHCARDS'; // flashcards
-export const SET_CARD_EDIT = 'SET_CARD_EDIT'; // edit
-export const CONTROL_CARD = 'CONTROL_CARD'; // edit
-export const SET_CARD_IMGURL = 'SET_CARD_IMGURL'; // edit
-export const CONTROL_MODULE = 'CONTROL_MODULE'; // edit
-export const DELETE_CARD = 'DELETE_CARD'; // edit
-export const CREATE_CARD = 'CREATE_CARD'; // edit
-export const SET_CARD_SAVE = 'SET_CARD_SAVE'; // edit
-export const SET_CARDS_SAVE = 'SET_CARDS_SAVE'; // edit
-export const SET_CARDS_SAVE_POSITIVE = 'SET_CARDS_SAVE_POSITIVE'; // edit
-export const SET_MODULE_QUESTION = 'SET_MODULE_QUESTION'; // edit
-export const SET_CARD_QUESTION = 'SET_CARD_QUESTION'; // edit
-export const SET_MODULE_LOADING = 'SET_MODULE_LOADING'; // edit
+export const DELETE_MODULE = "DELETE_MODULE"; // edit
+export const EDIT_MODULE = "EDIT_MODULE"; // edit
+export const EDIT_CARD = "EDIT_CARD"; // edit
+export const CREATE_MODULE = "CREATE_MODULE"; // edit
+export const SCRAPE_DICTIONARY = "SCRAPE_DICTIONARY"; // scrape
+export const SET_SCRAPE_LOADING = "SET_SCRAPE_LOADING"; // scrape
+export const SET_GALLERY_SEARCH = "SET_GALLERY_SEARCH"; // gallery
+export const SET_URL_OK = "SET_URL_OK"; // gallery
+export const CONTROL_GALLERY_QUERY = "CONTROL_GALLERY_QUERY"; // gallery
+export const SEARCH_IMAGES = "SEARCH_IMAGES"; // gallery
+export const RESET_GALLERY_FIELDS = "RESET_GALLERY_FIELDS"; // gallery
+export const SET_GALLERY_LOADING = "SET_GALLERY_LOADING"; // gallery
+export const SET_GALLERY_WIDTH = "SET_GALLERY_WIDTH"; // gallery
+export const MOVE_GALLERY = "MOVE_GALLERY"; // gallery
+export const SET_GALLERY_ERROR = "SET_GALLERY_ERROR"; // gallery
+export const SHUFFLE_FLASHCARDS = "SHUFFLE_FLASHCARDS"; // flashcards
+export const SORT_FLASHCARDS = "SORT_FLASHCARDS"; // flashcards
+export const SET_CARD_EDIT = "SET_CARD_EDIT"; // edit
+export const CONTROL_CARD = "CONTROL_CARD"; // edit
+export const SET_CARD_IMGURL = "SET_CARD_IMGURL"; // edit
+export const CONTROL_MODULE = "CONTROL_MODULE"; // edit
+export const DELETE_CARD = "DELETE_CARD"; // edit
+export const CREATE_CARD = "CREATE_CARD"; // edit
+export const SET_CARD_SAVE = "SET_CARD_SAVE"; // edit
+export const SET_CARDS_SAVE = "SET_CARDS_SAVE"; // edit
+export const SET_CARDS_SAVE_POSITIVE = "SET_CARDS_SAVE_POSITIVE"; // edit
+export const SET_MODULE_QUESTION = "SET_MODULE_QUESTION"; // edit
+export const SET_CARD_QUESTION = "SET_CARD_QUESTION"; // edit
+export const SET_MODULE_LOADING = "SET_MODULE_LOADING"; // edit
 
 export type SubMainActions =
   | SetIsServerAction
@@ -346,7 +349,9 @@ export type SubGalleryActions =
 
 export type SubScrapeActions = ScrapeDictionaryAction | SetScrapeLoadingAction;
 
-export type SubFlashcardsActions = ShuffleFlashcardsAction | SortFlashcardsAction;
+export type SubFlashcardsActions =
+  | ShuffleFlashcardsAction
+  | SortFlashcardsAction;
 
 export type SubEditActions =
   | DeleteModuleAction
@@ -405,7 +410,7 @@ export interface ControlCardAction {
   type: typeof CONTROL_CARD;
   payload: {
     _id: string;
-    type: 'term' | 'defenition';
+    type: "term" | "defenition";
     value: string;
   };
 }
@@ -576,8 +581,8 @@ export interface SortFlashcardsAction {
 }
 
 // voice
-export const INIT_EASY_SPEECH = 'INIT_EASY_SPEECH';
-export const SET_VOICE_SPEAKING = 'SET_VOICE_SPEAKING';
+export const INIT_EASY_SPEECH = "INIT_EASY_SPEECH";
+export const SET_VOICE_SPEAKING = "SET_VOICE_SPEAKING";
 
 export interface InitEasySpeechAction {
   type: typeof INIT_EASY_SPEECH;
@@ -595,11 +600,11 @@ export interface SetVoiceSpeakingAction {
 export type VoiceActions = InitEasySpeechAction | SetVoiceSpeakingAction;
 
 // falshcards
-export const SET_FLASHCARDS_PROGRESS = 'SET_FLASHCARDS_PROGRESS';
-export const RESET_FLASHCARDS_PROGRESS = 'RESET_FLASHCARDS_PROGRESS';
-export const SET_FLASHCARDS_SHUFFLED = 'SET_FLASHCARDS_SHUFFLED';
-export const SET_FLASHCARDS_SIDE = 'SET_FLASHCARDS_SIDE';
-export const SAVE_FLASHCARDS_ANSWER = 'SAVE_FLASHCARDS_ANSWER';
+export const SET_FLASHCARDS_PROGRESS = "SET_FLASHCARDS_PROGRESS";
+export const RESET_FLASHCARDS_PROGRESS = "RESET_FLASHCARDS_PROGRESS";
+export const SET_FLASHCARDS_SHUFFLED = "SET_FLASHCARDS_SHUFFLED";
+export const SET_FLASHCARDS_SIDE = "SET_FLASHCARDS_SIDE";
+export const SAVE_FLASHCARDS_ANSWER = "SAVE_FLASHCARDS_ANSWER";
 
 export interface SetFlashcardsProgressAction {
   type: typeof SET_FLASHCARDS_PROGRESS;
@@ -623,7 +628,7 @@ export interface SetFlashcardsShuffledAction {
 export interface SetFlashcardsSideAction {
   type: typeof SET_FLASHCARDS_SIDE;
   payload: {
-    value: 'definition' | 'term';
+    value: "definition" | "term";
   };
 }
 
@@ -631,7 +636,7 @@ export interface SaveFlashcardsAnswerAction {
   type: typeof SAVE_FLASHCARDS_ANSWER;
   payload: {
     id: string;
-    card_answer: 'correct' | 'incorrect';
+    card_answer: "correct" | "incorrect";
   };
 }
 
@@ -643,14 +648,14 @@ export type FlashcardsActions =
   | SaveFlashcardsAnswerAction;
 
 // write
-export const PREPARE_WRITE = 'PREPARE_WRITE';
-export const SET_WRITE_IS_INIT = 'SET_WRITE_IS_INIT';
-export const SET_WRITE_ANSWER_FIELD = 'SET_WRITE_ANSWER_FIELD';
-export const SET_WRITE_COPY_ANSWER_FIELD = 'SET_WRITE_COPY_ANSWER_FIELD';
-export const CHECK_WRITE_ANSWER = 'CHECK_WRITE_ANSWER';
-export const NEXT_WRITE_CARD = 'NEXT_WRITE_CARD';
-export const OVERRIDE_WRITE_ANSWER = 'OVERRIDE_WRITE_ANSWER';
-export const NEXT_WRITE_ROUND = 'NEXT_WRITE_ROUND';
+export const PREPARE_WRITE = "PREPARE_WRITE";
+export const SET_WRITE_IS_INIT = "SET_WRITE_IS_INIT";
+export const SET_WRITE_ANSWER_FIELD = "SET_WRITE_ANSWER_FIELD";
+export const SET_WRITE_COPY_ANSWER_FIELD = "SET_WRITE_COPY_ANSWER_FIELD";
+export const CHECK_WRITE_ANSWER = "CHECK_WRITE_ANSWER";
+export const NEXT_WRITE_CARD = "NEXT_WRITE_CARD";
+export const OVERRIDE_WRITE_ANSWER = "OVERRIDE_WRITE_ANSWER";
+export const NEXT_WRITE_ROUND = "NEXT_WRITE_ROUND";
 
 export interface PrepareWriteAction {
   type: typeof PREPARE_WRITE;
@@ -683,7 +688,7 @@ export interface SetWriteCopyAnswerFieldAction {
 export interface CheckWriteAnswerAction {
   type: typeof CHECK_WRITE_ANSWER;
   payload: {
-    card_answer: 'correct' | 'incorrect';
+    card_answer: "correct" | "incorrect";
     answer: string;
   };
 }
@@ -714,26 +719,29 @@ export type WriteActions =
   | NextWriteRoundAction;
 
 // game
-export const RESET_ALL_GAME_FIELDS = 'RESET_ALL_GAME_FIELDS';
+export const RESET_ALL_GAME_FIELDS = "RESET_ALL_GAME_FIELDS";
 
 export interface ResetAllGameFieldsAction {
   type: typeof RESET_ALL_GAME_FIELDS;
   payload?: {};
 }
 
-export type GameActions = ResetAllGameFieldsAction | WriteActions | FlashcardsActions;
+export type GameActions =
+  | ResetAllGameFieldsAction
+  | WriteActions
+  | FlashcardsActions;
 
 // sr
-export const GET_SR_COUNT = 'GET_SR_COUNT';
-export const SET_SR_COUNTER = 'SET_SR_COUNTER';
-export const SET_SR_LOADING = 'SET_SR_LOADING';
-export const GET_SR_CARDS = 'GET_SR_CARDS';
-export const PUT_SR_ANSWER = 'PUT_SR_ANSWER';
-export const SET_CARD_SR = 'SET_CARD_SR';
-export const SET_CARDS_SR = 'SET_CARDS_SR';
-export const SET_CARDS_SR_POSITIVE = 'SET_CARDS_SR_POSITIVE';
-export const DROP_CARD_SR = 'DROP_CARD_SR';
-export const DROP_CARDS_SR = 'DROP_CARDS_SR';
+export const GET_SR_COUNT = "GET_SR_COUNT";
+export const SET_SR_COUNTER = "SET_SR_COUNTER";
+export const SET_SR_LOADING = "SET_SR_LOADING";
+export const GET_SR_CARDS = "GET_SR_CARDS";
+export const PUT_SR_ANSWER = "PUT_SR_ANSWER";
+export const SET_CARD_SR = "SET_CARD_SR";
+export const SET_CARDS_SR = "SET_CARDS_SR";
+export const SET_CARDS_SR_POSITIVE = "SET_CARDS_SR_POSITIVE";
+export const DROP_CARD_SR = "DROP_CARD_SR";
+export const DROP_CARDS_SR = "DROP_CARDS_SR";
 
 export interface GetSRCountAction {
   type: typeof GET_SR_COUNT;
@@ -821,7 +829,10 @@ export interface DropCardsSRAction {
   };
 }
 
-export type SrActions = GetSRCountAction | SetSRCounterAction | SetSRLoadingAction;
+export type SrActions =
+  | GetSRCountAction
+  | SetSRCounterAction
+  | SetSRLoadingAction;
 
 export type SubSrActions =
   | GetSRCardsAction

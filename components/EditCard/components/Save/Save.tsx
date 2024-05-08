@@ -1,9 +1,10 @@
-import { MouseEvent, TouchEvent, memo, useCallback, useRef } from 'react';
-import { useActions } from '@store/hooks';
-import { Card } from '@store/reducers/main/mainInitState';
-import s from './styles.module.scss';
-import Switch from '@ui/Switch';
-import { SaveIcon } from '@ui/Icons';
+import { useActions } from "@store/hooks";
+import { Card } from "@store/reducers/main/mainInitState";
+import { SaveIcon } from "@ui/Icons";
+import Switch from "@ui/Switch";
+import { memo, MouseEvent, TouchEvent, useCallback, useRef } from "react";
+
+import s from "./styles.module.scss";
 
 type SaveProps = {
   data: Card;
@@ -23,7 +24,7 @@ const Save = ({ data }: SaveProps) => {
         set_card_save(_id, !save);
       }
     },
-    [_id, save, set_card_save]
+    [_id, save, set_card_save],
   );
 
   const down = useCallback(
@@ -33,7 +34,7 @@ const Save = ({ data }: SaveProps) => {
         if (!save) set_cards_save_positive(_id);
       }, 550);
     },
-    [_id, save, set_cards_save_positive]
+    [_id, save, set_cards_save_positive],
   );
 
   const timer = useRef<ReturnType<typeof setTimeout>>(null);
@@ -45,7 +46,7 @@ const Save = ({ data }: SaveProps) => {
       active={save}
       small
       icon={<SaveIcon />}
-      tooltip='Save the card'
+      tooltip="Save the card"
       onMouseDown={down}
       onMouseUp={up}
       onTouchStart={down}

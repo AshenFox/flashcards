@@ -25,13 +25,13 @@ export type MainState = {
 };
 
 export interface SelectBy {
-  value: 'term' | 'defenition';
-  label: 'Term' | 'Defenition';
+  value: "term" | "defenition";
+  label: "Term" | "Defenition";
 }
 
 export interface SelectCreated {
-  value: 'newest' | 'oldest';
-  label: 'Newest' | 'Oldest';
+  value: "newest" | "oldest";
+  label: "Newest" | "Oldest";
 }
 
 export interface ImgurlFields {
@@ -116,7 +116,7 @@ export const card_fields: CardFields = {
   edit: false,
   gallery: {
     search: false,
-    query: '',
+    query: "",
     imgurl_obj: {},
     loading: false,
     loaded: 0,
@@ -158,13 +158,13 @@ const mainInitState: MainState = {
   all_modules_number: false,
   all_cards_number: false,
   search_cards: {
-    value: '',
+    value: "",
   },
   search_modules: {
-    value: '',
+    value: "",
   },
-  select_by: { value: 'term', label: 'Term' },
-  select_created: { value: 'newest', label: 'Newest' },
+  select_by: { value: "term", label: "Term" },
+  select_created: { value: "newest", label: "Newest" },
   scroll_top: false,
 };
 

@@ -1,6 +1,7 @@
-import { useEffect, useRef, MouseEvent as ReactMouseEvent, memo } from 'react';
-import s from './styles.module.scss';
-import clsx from 'clsx';
+import clsx from "clsx";
+import { memo, MouseEvent as ReactMouseEvent, useEffect, useRef } from "react";
+
+import s from "./styles.module.scss";
 
 type ConfirmPopupProps = {
   active: boolean;
@@ -21,12 +22,12 @@ const ConfirmPopup = ({
     setTimeout(
       () =>
         active
-          ? window.addEventListener('click', deactivateConfirm.current)
-          : window.removeEventListener('click', deactivateConfirm.current),
-      0
+          ? window.addEventListener("click", deactivateConfirm.current)
+          : window.removeEventListener("click", deactivateConfirm.current),
+      0,
     );
 
-    return () => window.removeEventListener('click', deactivateConfirm.current);
+    return () => window.removeEventListener("click", deactivateConfirm.current);
   }, [active]);
 
   const deactivateConfirm = useRef((e: MouseEvent) => {
@@ -44,17 +45,25 @@ const ConfirmPopup = ({
 
   return (
     <div
-      className={clsx(s.confirm, active && s.active, 'confirm-popup__confirm', className)}
+      className={clsx(
+        s.confirm,
+        active && s.active,
+        "confirm-popup__confirm",
+        className,
+      )}
     >
       <p>{question}</p>
       <div
-        className={clsx(s.answer, 'confirm-popup__answer')}
-        data-answer='true'
+        className={clsx(s.answer, "confirm-popup__answer")}
+        data-answer="true"
         onClick={clickYes}
       >
         <span>Yes</span>
       </div>
-      <div className={clsx(s.answer, 'confirm-popup__answer')} data-answer='false'>
+      <div
+        className={clsx(s.answer, "confirm-popup__answer")}
+        data-answer="false"
+      >
         <span>No</span>
       </div>
     </div>

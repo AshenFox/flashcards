@@ -1,6 +1,6 @@
-import { memo } from 'react';
-import Modal from '@modules/Modal';
-import Start from '@modules/Start';
+import Modal from "@modules/Modal";
+import Start from "@modules/Start";
+import { memo } from "react";
 
 const StartPage = () => {
   return (

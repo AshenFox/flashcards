@@ -1,9 +1,10 @@
-import { ReactElement, memo, useMemo } from 'react';
-import DateStr from '@ui/DateStr';
-import clsx from 'clsx';
-import s from './styles.module.scss';
-import Tooltip from '@ui/Tooltip';
-import { StudyRegimeIcon } from '@ui/Icons';
+import DateStr from "@ui/DateStr";
+import { StudyRegimeIcon } from "@ui/Icons";
+import Tooltip from "@ui/Tooltip";
+import clsx from "clsx";
+import { memo, ReactElement, useMemo } from "react";
+
+import s from "./styles.module.scss";
 
 export type SRIndicatorProps = {
   data: {
@@ -46,14 +47,14 @@ const SRIndicator = ({
       dots.push(
         <div
           key={angle}
-          className={'indicator__dot'}
+          className={"indicator__dot"}
           style={{
             top: `${y_percent}%`,
             left: `${x_percent}%`,
             backgroundColor: color_arr[i - 1],
             boxShadow: `0 0 0.15rem 0 ${color_arr[i - 1]}`,
           }}
-        />
+        />,
       );
     }
 
@@ -61,7 +62,14 @@ const SRIndicator = ({
   }, [stage]);
 
   return (
-    <div className={clsx(s.indicator, active && s.active, small && s.small, className)}>
+    <div
+      className={clsx(
+        s.indicator,
+        active && s.active,
+        small && s.small,
+        className,
+      )}
+    >
       <StudyRegimeIcon />
       <Tooltip>
         <span>SR Stage: {stage}</span>
@@ -72,7 +80,7 @@ const SRIndicator = ({
           Drop stage: <DateStr date={prevStage} />
         </span>
       </Tooltip>
-      <div className={'indicator__dots'}>{dots}</div>
+      <div className={"indicator__dots"}>{dots}</div>
     </div>
   );
 };
@@ -80,15 +88,15 @@ const SRIndicator = ({
 export default memo(SRIndicator);
 
 const color_arr = [
-  '#0000dc',
-  '#00817d',
-  '#238e24',
-  '#afd510',
-  '#fce72c',
-  '#ffca2c',
-  '#fc7300',
-  '#f32a00',
-  '#da0000',
-  '#b10067',
-  '#54267b',
+  "#0000dc",
+  "#00817d",
+  "#238e24",
+  "#afd510",
+  "#fce72c",
+  "#ffca2c",
+  "#fc7300",
+  "#f32a00",
+  "#da0000",
+  "#b10067",
+  "#54267b",
 ];

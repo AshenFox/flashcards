@@ -1,4 +1,4 @@
-import mongoose from 'mongoose';
+import mongoose from "mongoose";
 
 const Schema = mongoose.Schema;
 
@@ -16,8 +16,8 @@ const notificationSchema = new Schema<INotification>({
 });
 
 const notificationModel = mongoose.model<INotification>(
-  'Notifications',
-  notificationSchema
+  "Notifications",
+  notificationSchema,
 );
 
 export default notificationModel;

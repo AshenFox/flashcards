@@ -1,18 +1,19 @@
-import { memo, useCallback, useRef } from 'react';
-import { ContentEditableEvent } from 'react-contenteditable';
-import Gallery from '@components/Gallery';
-import Scrape from './components/Scrape';
-import Save from './components/Save';
-import Close from './components/Close';
-import Delete from './components/Delete';
-import AddImg from './components/AddImg';
-import { Card } from '@store/reducers/main/mainInitState';
-import { useActions } from '@store/hooks';
-import { usePlug } from '@helpers/hooks/usePlug';
-import s from './styles.module.scss';
-import clsx from 'clsx';
-import TextArea from '@ui/TextArea';
-import TextLabel from '@ui/TextLabel';
+import Gallery from "@components/Gallery";
+import { usePlug } from "@helpers/hooks/usePlug";
+import { useActions } from "@store/hooks";
+import { Card } from "@store/reducers/main/mainInitState";
+import TextArea from "@ui/TextArea";
+import TextLabel from "@ui/TextLabel";
+import clsx from "clsx";
+import { memo, useCallback, useRef } from "react";
+import { ContentEditableEvent } from "react-contenteditable";
+
+import AddImg from "./components/AddImg";
+import Close from "./components/Close";
+import Delete from "./components/Delete";
+import Save from "./components/Save";
+import Scrape from "./components/Scrape";
+import s from "./styles.module.scss";
 
 type EditCardProps = {
   data: Card;
@@ -40,7 +41,7 @@ const EditCard = ({
   const { search } = gallery || {};
 
   const handleCardChange = useCallback(
-    (type: 'term' | 'defenition') => (e: ContentEditableEvent) => {
+    (type: "term" | "defenition") => (e: ContentEditableEvent) => {
       control_card(_id, type, e.target.value);
       clearTimeout(timer.current);
       timer.current = setTimeout(async () => {
@@ -48,7 +49,7 @@ const EditCard = ({
         timer.current = null;
       }, 500);
     },
-    [_id, control_card, edit_card]
+    [_id, control_card, edit_card],
   );
 
   const timer = useRef<ReturnType<typeof setTimeout>>(null);
@@ -64,7 +65,11 @@ const EditCard = ({
       <div className={s.header}>
         <div className={s.number}>{index && index}</div>
         {draft && <Save data={data} />}
-        {toggle ? <Close data={data} /> : <Delete data={data} active={deleteActive} />}
+        {toggle ? (
+          <Close data={data} />
+        ) : (
+          <Delete data={data} active={deleteActive} />
+        )}
       </div>
 
       <div className={s.items}>
@@ -72,7 +77,7 @@ const EditCard = ({
           <TextArea
             html={term}
             disabled={loading}
-            onChange={handleCardChange('term')}
+            onChange={handleCardChange("term")}
             id={`term${data._id}`}
             isStyled
           />
@@ -84,7 +89,7 @@ const EditCard = ({
             <TextArea
               html={defenition}
               disabled={loading}
-              onChange={handleCardChange('defenition')}
+              onChange={handleCardChange("defenition")}
               id={`definition${data._id}`}
               isStyled
             />

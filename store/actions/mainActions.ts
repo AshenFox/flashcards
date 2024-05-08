@@ -1,33 +1,33 @@
+import axios from "../../server/supplemental/axios";
+import { card_fields, module_fields } from "../reducers/main/mainInitState";
 import {
-  SelectBy,
-  SelectCreated,
-  Module,
-  CardBase,
-  Cards,
-} from './../reducers/main/mainInitState';
-import { ThunkActionApp } from './../store';
-import { AppActions } from './../types/types';
-import {
-  SET_IS_SERVER,
-  GET_MODULES,
-  SET_SKIP_CARDS,
-  SET_SKIP_MODULES,
-  SET_MAIN_LOADING,
-  GET_CARDS,
+  CLEAR_MODULE,
   CONTROL_SEARCH_CARDS,
   CONTROL_SEARCH_MODULES,
-  SET_SELECT_BY,
-  SET_SELECT_CREATED,
+  GET_CARDS,
+  GET_MODULE,
+  GET_MODULE_CARDS,
+  GET_MODULES,
   RESET_FIELDS_CARDS,
   RESET_FIELDS_MODULES,
   RESET_SEARCH,
-  GET_MODULE,
-  GET_MODULE_CARDS,
-  CLEAR_MODULE,
+  SET_IS_SERVER,
+  SET_MAIN_LOADING,
   SET_SCROLL_TOP,
-} from '../types/types';
-import { card_fields, module_fields } from '../reducers/main/mainInitState';
-import axios from '../../server/supplemental/axios';
+  SET_SELECT_BY,
+  SET_SELECT_CREATED,
+  SET_SKIP_CARDS,
+  SET_SKIP_MODULES,
+} from "../types/types";
+import {
+  CardBase,
+  Cards,
+  Module,
+  SelectBy,
+  SelectCreated,
+} from "./../reducers/main/mainInitState";
+import { ThunkActionApp } from "./../store";
+import { AppActions } from "./../types/types";
 
 // SET_MAIN_LOADING
 export const set_main_loading = (value: boolean): AppActions => ({
@@ -39,7 +39,7 @@ export const set_main_loading = (value: boolean): AppActions => ({
 export const set_is_server = (): AppActions => ({
   type: SET_IS_SERVER,
   payload: {
-    value: typeof document === 'undefined',
+    value: typeof document === "undefined",
   },
 });
 
@@ -102,12 +102,18 @@ export const control_search_modules = (value: string): AppActions => ({
 // GET MODULES
 export const get_modules = (ignore?: boolean) => <ThunkActionApp>(async (
     dispatch,
-    getState
+    getState,
   ) => {
     try {
       const {
         auth: { user },
-        main: { skip_modules, all_modules, search_modules, select_created, loading },
+        main: {
+          skip_modules,
+          all_modules,
+          search_modules,
+          select_created,
+          loading,
+        },
       } = getState();
       if (!user || all_modules) return;
       if (!ignore && loading) return;
@@ -127,7 +133,7 @@ export const get_modules = (ignore?: boolean) => <ThunkActionApp>(async (
           modules: Module[];
           modules_number: number;
         };
-      } = await axios.get('/api/main/modules', {
+      } = await axios.get("/api/main/modules", {
         params: {
           skip: skip_modules,
           filter: search_modules.value,
@@ -153,12 +159,19 @@ export const get_modules = (ignore?: boolean) => <ThunkActionApp>(async (
 // GET CARDS
 export const get_cards = (ignore?: boolean) => <ThunkActionApp>(async (
     dispatch,
-    getState
+    getState,
   ) => {
     try {
       const {
         auth: { user },
-        main: { skip_cards, all_cards, search_cards, select_by, select_created, loading },
+        main: {
+          skip_cards,
+          all_cards,
+          search_cards,
+          select_by,
+          select_created,
+          loading,
+        },
       } = getState();
       if (!user || all_cards) return;
       if (!ignore && loading) return;
@@ -177,7 +190,7 @@ export const get_cards = (ignore?: boolean) => <ThunkActionApp>(async (
           cards: CardBase[];
           cards_number: number;
         };
-      } = await axios.get('/api/main/cards', {
+      } = await axios.get("/api/main/cards", {
         params: {
           skip: skip_cards,
           filter: search_cards.value,
@@ -186,7 +199,10 @@ export const get_cards = (ignore?: boolean) => <ThunkActionApp>(async (
         },
       });
 
-      dispatch({ type: GET_CARDS, payload: { ...data, cards: arr_to_obj(data.cards) } });
+      dispatch({
+        type: GET_CARDS,
+        payload: { ...data, cards: arr_to_obj(data.cards) },
+      });
       dispatch({
         type: SET_SKIP_CARDS,
         payload: skip_cards + 1,
@@ -204,7 +220,7 @@ export const get_cards = (ignore?: boolean) => <ThunkActionApp>(async (
 // GET MODULE CARDS
 export const get_module_cards = (_id: string) => <ThunkActionApp>(async (
     dispatch,
-    getState
+    getState,
   ) => {
     try {
       const {
@@ -224,7 +240,7 @@ export const get_module_cards = (_id: string) => <ThunkActionApp>(async (
         data: {
           cards: CardBase[];
         };
-      } = await axios.get('/api/main/module/cards', {
+      } = await axios.get("/api/main/module/cards", {
         params: {
           _id,
           filter: search_cards.value,
@@ -233,7 +249,10 @@ export const get_module_cards = (_id: string) => <ThunkActionApp>(async (
         },
       });
 
-      dispatch({ type: GET_MODULE_CARDS, payload: { cards: arr_to_obj(data.cards) } });
+      dispatch({
+        type: GET_MODULE_CARDS,
+        payload: { cards: arr_to_obj(data.cards) },
+      });
     } catch (err) {
       console.error(err);
     }
@@ -247,7 +266,7 @@ export const get_module_cards = (_id: string) => <ThunkActionApp>(async (
 // GET_MODULE
 export const get_module = (_id: string) => <ThunkActionApp>(async (
     dispatch,
-    getState
+    getState,
   ) => {
     try {
       const {
@@ -267,7 +286,7 @@ export const get_module = (_id: string) => <ThunkActionApp>(async (
           cards: CardBase[];
           module: Module;
         };
-      } = await axios.get('/api/main/module', {
+      } = await axios.get("/api/main/module", {
         params: {
           _id,
         },
@@ -313,7 +332,7 @@ export const get_draft = () => <ThunkActionApp>(async (dispatch, getState) => {
           cards: CardBase[];
           module: Module;
         };
-      } = await axios.get('/api/edit/draft');
+      } = await axios.get("/api/edit/draft");
 
       data.module = { ...data.module, ...module_fields };
 
@@ -347,6 +366,6 @@ const arr_to_obj = (arr: CardBase[]): Cards => {
         ...card,
         ...card_fields,
       },
-    ])
+    ]),
   );
 };

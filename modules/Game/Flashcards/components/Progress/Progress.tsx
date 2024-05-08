@@ -1,12 +1,15 @@
-import { memo } from 'react';
-import { useAppSelector } from '@store/hooks';
-import ProgressBar from '@ui/ProgressBar';
-import DefaultProgress, { ProgressItem } from '@modules/Game/components/Progress';
-import s from './styles.module.scss';
+import DefaultProgress, {
+  ProgressItem,
+} from "@modules/Game/components/Progress";
+import { useAppSelector } from "@store/hooks";
+import ProgressBar from "@ui/ProgressBar";
+import { memo } from "react";
+
+import s from "./styles.module.scss";
 
 const Progress = () => {
-  const cards = useAppSelector(s => s.main.cards);
-  const progress = useAppSelector(s => s.game.flashcards.progress);
+  const cards = useAppSelector((s) => s.main.cards);
+  const progress = useAppSelector((s) => s.game.flashcards.progress);
 
   const cards_arr = Object.keys(cards);
 
@@ -16,7 +19,7 @@ const Progress = () => {
         <ProgressBar
           progress={progress}
           complete={cards_arr.length}
-          title={'progress'}
+          title={"progress"}
           showComplete
           className={s.progress_bar}
         />

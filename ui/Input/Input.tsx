@@ -1,13 +1,14 @@
+import clsx from "clsx";
 import React, {
   InputHTMLAttributes,
+  memo,
   MutableRefObject,
   ReactNode,
-  memo,
   useCallback,
   useRef,
-} from 'react';
-import clsx from 'clsx';
-import s from './styles.module.scss';
+} from "react";
+
+import s from "./styles.module.scss";
 
 type InputProps = InputHTMLAttributes<HTMLInputElement> & {
   movingBorder?: boolean;
@@ -38,15 +39,15 @@ const Input = ({
       className={clsx(
         s.container,
         movingBorder && s.movingBorder,
-        'input__container',
-        className
+        "input__container",
+        className,
       )}
       onClick={onContainerClick}
     >
       {before}
       <input
         {...rest}
-        className={clsx(s.input, 'input__input')}
+        className={clsx(s.input, "input__input")}
         id={id}
         ref={inputRef ?? innerInputRef}
       />

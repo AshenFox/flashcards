@@ -1,10 +1,11 @@
-import express, { Request, Response } from 'express';
-import userModel from '../models/user_model';
-import notificationModel from '../models//notification_model';
-import cardModelGenerator, { ICard, ICardSortObj } from '../models/card_model';
-import middleware from '../supplemental/middleware';
-import sr_stages from '../supplemental/sr_stages';
-import { notification_timeout } from '../supplemental/notifications_control';
+import express, { Request, Response } from "express";
+
+import notificationModel from "../models//notification_model";
+import cardModelGenerator, { ICard, ICardSortObj } from "../models/card_model";
+import userModel from "../models/user_model";
+import middleware from "../supplemental/middleware";
+import { notification_timeout } from "../supplemental/notifications_control";
+import sr_stages from "../supplemental/sr_stages";
 
 const { auth } = middleware;
 const router = express.Router();
@@ -29,7 +30,7 @@ interface ICardsGetResBody {
 
 type TCardsGetRes = Response<ICardsGetResBody | IResError>;
 
-router.get('/cards', auth, async (req: TCardsGetReq, res: TCardsGetRes) => {
+router.get("/cards", auth, async (req: TCardsGetReq, res: TCardsGetRes) => {
   try {
     let { number } = req.query;
 
@@ -62,7 +63,7 @@ router.get('/cards', auth, async (req: TCardsGetReq, res: TCardsGetRes) => {
     res.status(200).json({ cards });
   } catch (err) {
     console.error(err);
-    res.status(500).json({ errorBody: 'Server Error' });
+    res.status(500).json({ errorBody: "Server Error" });
   }
 });
 
@@ -79,7 +80,7 @@ interface ICountGetResBody {
 
 type TCountGetRes = Response<ICountGetResBody | IResError>;
 
-router.get('/count', auth, async (req: Request, res: TCountGetRes) => {
+router.get("/count", auth, async (req: Request, res: TCountGetRes) => {
   try {
     const server_id = req.user.server_id;
 
@@ -110,7 +111,7 @@ router.get('/count', auth, async (req: Request, res: TCountGetRes) => {
     res.status(200).json({ all_num, repeat_num, next_num, next_date });
   } catch (err) {
     console.error(err);
-    res.status(500).json({ errorBody: 'Server Error' });
+    res.status(500).json({ errorBody: "Server Error" });
   }
 });
 
@@ -135,7 +136,7 @@ interface IAnswerPutResBody {
 
 type TAnswerPutRes = Response<IAnswerPutResBody | IResError>;
 
-router.put('/answer', auth, async (req: TAnswerPutReq, res: TAnswerPutRes) => {
+router.put("/answer", auth, async (req: TAnswerPutReq, res: TAnswerPutRes) => {
   try {
     const { _id, answer } = req.body;
 
@@ -175,7 +176,7 @@ router.put('/answer', auth, async (req: TAnswerPutReq, res: TAnswerPutRes) => {
       {
         _id,
       },
-      fields
+      fields,
     );
 
     res.status(200).json(fields);
@@ -183,7 +184,7 @@ router.put('/answer', auth, async (req: TAnswerPutReq, res: TAnswerPutRes) => {
     await notification_timeout(user);
   } catch (err) {
     console.error(err);
-    res.status(500).json({ errorBody: 'Server Error' });
+    res.status(500).json({ errorBody: "Server Error" });
   }
 });
 
@@ -199,35 +200,42 @@ interface IControlPutBody {
 type TControlPutReq = Request<any, any, IControlPutBody>;
 
 interface IControlPutResBody {
-  msg: 'Study regime has been controlled';
+  msg: "Study regime has been controlled";
 }
 
 type TControlPutRes = Response<IControlPutResBody | IResError>;
 
-router.put('/control', auth, async (req: TControlPutReq, res: TControlPutRes) => {
-  try {
-    const { _id_arr, study_regime } = req.body;
+router.put(
+  "/control",
+  auth,
+  async (req: TControlPutReq, res: TControlPutRes) => {
+    try {
+      const { _id_arr, study_regime } = req.body;
 
-    const server_id = req.user.server_id;
+      const server_id = req.user.server_id;
 
-    const user = await userModel.findOne({
-      server_id,
-    });
+      const user = await userModel.findOne({
+        server_id,
+      });
 
-    if (!user) throw new Error(`User ${server_id} has not been found.`);
+      if (!user) throw new Error(`User ${server_id} has not been found.`);
 
-    const cardModel = cardModelGenerator(user.username);
+      const cardModel = cardModelGenerator(user.username);
 
-    await cardModel.updateMany({ _id: { $in: _id_arr } }, { studyRegime: study_regime });
+      await cardModel.updateMany(
+        { _id: { $in: _id_arr } },
+        { studyRegime: study_regime },
+      );
 
-    res.status(200).json({ msg: 'Study regime has been controlled' });
+      res.status(200).json({ msg: "Study regime has been controlled" });
 
-    await notification_timeout(user);
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ errorBody: 'Server Error' });
-  }
-});
+      await notification_timeout(user);
+    } catch (err) {
+      console.error(err);
+      res.status(500).json({ errorBody: "Server Error" });
+    }
+  },
+);
 
 // @route ------ PUT api/sr/drop
 // @desc ------- Drop card/cards study regime
@@ -248,7 +256,7 @@ interface IDropPutResBody {
 
 type TDropPutRes = Response<IDropPutResBody | IResError>;
 
-router.put('/drop', auth, async (req: TDropPutReq, res: TDropPutRes) => {
+router.put("/drop", auth, async (req: TDropPutReq, res: TDropPutRes) => {
   try {
     const { _id_arr } = req.body;
 
@@ -276,7 +284,7 @@ router.put('/drop', auth, async (req: TDropPutReq, res: TDropPutRes) => {
     await notification_timeout(user);
   } catch (err) {
     console.error(err);
-    res.status(500).json({ errorBody: 'Server Error' });
+    res.status(500).json({ errorBody: "Server Error" });
   }
 });
 

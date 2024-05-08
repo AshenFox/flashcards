@@ -1,11 +1,11 @@
-@import '@styles/vars.scss';
-@import '@styles/animations.scss';
+@import "@styles/vars.scss";
+@import "@styles/animations.scss";
 
 .btn {
   text-align: center;
   position: relative;
 
-  &[data-loading='true'] {
+  &[data-loading="true"] {
     & button {
       background-color: $tertiary;
       cursor: auto;

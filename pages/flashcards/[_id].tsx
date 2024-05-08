@@ -1,5 +1,5 @@
-import { memo } from 'react';
-import { Flashcards } from '@modules/Game';
+import { Flashcards } from "@modules/Game";
+import { memo } from "react";
 
 const FlashcardsPage = () => {
   return (

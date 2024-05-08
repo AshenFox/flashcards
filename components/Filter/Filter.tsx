@@ -1,22 +1,28 @@
-import { ChangeEventHandler, memo, useRef } from 'react';
-import Select, { GroupBase, Options, StylesConfig, ThemeConfig } from 'react-select';
-import Input from '@ui/Input';
-import s from './styles.module.scss';
-import clsx from 'clsx';
+import Input from "@ui/Input";
+import clsx from "clsx";
+import { ChangeEventHandler, memo, useRef } from "react";
+import Select, {
+  GroupBase,
+  Options,
+  StylesConfig,
+  ThemeConfig,
+} from "react-select";
+
+import s from "./styles.module.scss";
 
 export type Option = { value: string; label: string };
 
-const createCustomTheme: ThemeConfig = theme => ({
+const createCustomTheme: ThemeConfig = (theme) => ({
   ...theme,
   colors: {
     ...theme.colors,
-    primary25: '#ffcd1f',
-    primary: '#ffcd1f',
+    primary25: "#ffcd1f",
+    primary: "#ffcd1f",
   },
 });
 
 const customStyles: StylesConfig<Option, false, GroupBase<Option>> = {
-  dropdownIndicator: provided => ({
+  dropdownIndicator: (provided) => ({
     ...provided,
     paddingLeft: 3,
     paddingRight: 3,
@@ -41,10 +47,16 @@ type FilterProps = {
   resetData: () => void;
 };
 
-const Filter = ({ className, search, selects, getData, resetData }: FilterProps) => {
+const Filter = ({
+  className,
+  search,
+  selects,
+  getData,
+  resetData,
+}: FilterProps) => {
   const timer = useRef<ReturnType<typeof setTimeout>>(null);
 
-  const onInnerSearchChange: ChangeEventHandler<HTMLInputElement> = e => {
+  const onInnerSearchChange: ChangeEventHandler<HTMLInputElement> = (e) => {
     search.setValue(e.target.value);
     resetData();
 
@@ -66,7 +78,7 @@ const Filter = ({ className, search, selects, getData, resetData }: FilterProps)
           />
         )}
         <div className={s.select_group}>
-          {selects?.map(select => {
+          {selects?.map((select) => {
             const onChange = (value: Option) => {
               select.setValue(value);
 

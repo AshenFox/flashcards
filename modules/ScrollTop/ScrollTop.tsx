@@ -1,9 +1,10 @@
-import { memo } from 'react';
-import { useEffect, useRef } from 'react';
-import { useActions, useAppSelector } from '@store/hooks';
-import { ArrowUpIcon } from '@ui/Icons';
-import s from './styles.module.scss';
-import clsx from 'clsx';
+import { useActions, useAppSelector } from "@store/hooks";
+import { ArrowUpIcon } from "@ui/Icons";
+import clsx from "clsx";
+import { memo } from "react";
+import { useEffect, useRef } from "react";
+
+import s from "./styles.module.scss";
 
 const ScrollTop = () => {
   const { set_scroll_top } = useActions();
@@ -20,16 +21,19 @@ const ScrollTop = () => {
       if (window.scrollY < 100 && scroll_top_ref.current) set_scroll_top(false);
     };
 
-    window.addEventListener('scroll', onScroll);
+    window.addEventListener("scroll", onScroll);
 
-    return () => window.removeEventListener('scroll', onScroll);
+    return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
   const clickScroll = () => movePageUp();
 
   return (
-    <div className={clsx(s.scroll, scroll_top && s.active)} onClick={clickScroll}>
-      <ArrowUpIcon height='20' width='20' />
+    <div
+      className={clsx(s.scroll, scroll_top && s.active)}
+      onClick={clickScroll}
+    >
+      <ArrowUpIcon height="20" width="20" />
     </div>
   );
 };
@@ -42,14 +46,16 @@ const ease = (
   currentTime: number,
   startValue: number,
   changeInValue: number,
-  duration: number
+  duration: number,
 ) => {
   currentTime /= duration / 2;
 
   if (currentTime < 1)
     return (changeInValue / 2) * currentTime * currentTime + startValue;
   currentTime--;
-  return (-changeInValue / 2) * (currentTime * (currentTime - 2) - 1) + startValue;
+  return (
+    (-changeInValue / 2) * (currentTime * (currentTime - 2) - 1) + startValue
+  );
 };
 
 const animation = (currentTime: number) => {
@@ -68,7 +74,8 @@ const animation = (currentTime: number) => {
 };
 
 const movePageUp = () => {
-  let pageYOffset: number = window.pageYOffset || document.documentElement.scrollTop;
+  let pageYOffset: number =
+    window.pageYOffset || document.documentElement.scrollTop;
 
   if (pageYOffset) requestAnimationFrame(animation);
 };

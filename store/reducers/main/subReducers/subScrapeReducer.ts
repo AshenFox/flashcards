@@ -1,11 +1,11 @@
-import { MainState } from './../mainInitState';
-import { MainActions } from './../../../types/types';
-import { SCRAPE_DICTIONARY, SET_SCRAPE_LOADING } from '../../../types/types';
-import initialState from '../mainInitState';
+import { SCRAPE_DICTIONARY, SET_SCRAPE_LOADING } from "../../../types/types";
+import initialState from "../mainInitState";
+import { MainActions } from "./../../../types/types";
+import { MainState } from "./../mainInitState";
 
 const subScrapeReducer = (
   state = initialState,
-  action: MainActions
+  action: MainActions,
 ): MainState | false => {
   const { payload, type } = action;
 

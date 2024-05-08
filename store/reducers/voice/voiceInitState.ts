@@ -26,7 +26,7 @@ export type Voices = {
 export type Speaking =
   | {
       _id: string;
-      type: 'term' | 'definition';
+      type: "term" | "definition";
     }
   | false;
 

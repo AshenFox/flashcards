@@ -1,9 +1,10 @@
-import { IModule, IModuleSortObj } from './../models/module_model';
-import express, { Request, Response } from 'express';
-import userModel from '../models/user_model';
-import cardModelGenerator, { ICard, ICardSortObj } from '../models/card_model';
-import moduleModelGenerator from '../models/module_model';
-import middleware from '../supplemental/middleware';
+import express, { Request, Response } from "express";
+
+import cardModelGenerator, { ICard, ICardSortObj } from "../models/card_model";
+import moduleModelGenerator from "../models/module_model";
+import userModel from "../models/user_model";
+import middleware from "../supplemental/middleware";
+import { IModule, IModuleSortObj } from "./../models/module_model";
 
 const { auth } = middleware;
 const router = express.Router();
@@ -19,7 +20,7 @@ interface IResError {
 interface IModulesGetQuery extends qs.ParsedQs {
   skip: string;
   filter: string;
-  created: 'newest' | 'oldest';
+  created: "newest" | "oldest";
 }
 
 type TModulesGetReq = Request<any, any, any, IModulesGetQuery>;
@@ -34,75 +35,79 @@ interface IModulesGetResBody {
 
 type TModulesGetRes = Response<IModulesGetResBody | IResError>;
 
-router.get('/modules', auth, async (req: TModulesGetReq, res: TModulesGetRes) => {
-  try {
-    const { skip, filter, created } = req.query;
+router.get(
+  "/modules",
+  auth,
+  async (req: TModulesGetReq, res: TModulesGetRes) => {
+    try {
+      const { skip, filter, created } = req.query;
 
-    const skipNum = parseInt(skip);
+      const skipNum = parseInt(skip);
 
-    const server_id = req.user.server_id;
+      const server_id = req.user.server_id;
 
-    const user = await userModel.findOne({
-      server_id,
-    });
+      const user = await userModel.findOne({
+        server_id,
+      });
 
-    if (!user) throw new Error(`User ${server_id} has not been found.`);
+      if (!user) throw new Error(`User ${server_id} has not been found.`);
 
-    const moduleModel = moduleModelGenerator(user.username);
+      const moduleModel = moduleModelGenerator(user.username);
 
-    const draft = await moduleModel.findOne({
-      draft: true,
-    });
+      const draft = await moduleModel.findOne({
+        draft: true,
+      });
 
-    let all_modules_number = await moduleModel.estimatedDocumentCount();
+      let all_modules_number = await moduleModel.estimatedDocumentCount();
 
-    const filterObj: {
-      draft: boolean;
-      title?: {
-        $regex: string;
-      };
-    } = {
-      draft: false,
-    };
-
-    const sortObj: IModuleSortObj = {};
-
-    if (created === 'newest') sortObj.creation_date = -1;
-    if (created === 'oldest') sortObj.creation_date = 1;
-
-    if (filter)
-      filterObj.title = {
-        $regex: `${filter}(?!br>|r>|>|\/div>|div>|iv>|v>|nbsp;|bsp;|sp;|p;|;|\/span>|span>|pan>|an>|n>)`,
+      const filterObj: {
+        draft: boolean;
+        title?: {
+          $regex: string;
+        };
+      } = {
+        draft: false,
       };
 
-    const modules = await moduleModel
-      .find(filterObj)
-      .sort(sortObj)
-      .skip(skipNum * 10)
-      .limit(10);
+      const sortObj: IModuleSortObj = {};
 
-    const modules_number = await moduleModel.countDocuments(filterObj);
+      if (created === "newest") sortObj.creation_date = -1;
+      if (created === "oldest") sortObj.creation_date = 1;
 
-    if (draft) --all_modules_number;
+      if (filter)
+        filterObj.title = {
+          $regex: `${filter}(?!br>|r>|>|\/div>|div>|iv>|v>|nbsp;|bsp;|sp;|p;|;|\/span>|span>|pan>|an>|n>)`,
+        };
 
-    const all_modules = all_modules_number <= (skipNum + 1) * 10;
+      const modules = await moduleModel
+        .find(filterObj)
+        .sort(sortObj)
+        .skip(skipNum * 10)
+        .limit(10);
 
-    const result: IModulesGetResBody = {
-      draft: null,
-      modules,
-      modules_number,
-      all_modules,
-      all_modules_number,
-    };
+      const modules_number = await moduleModel.countDocuments(filterObj);
 
-    if (!filter) result.draft = draft;
+      if (draft) --all_modules_number;
 
-    res.status(200).json(result);
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ errorBody: 'Server Error' });
-  }
-});
+      const all_modules = all_modules_number <= (skipNum + 1) * 10;
+
+      const result: IModulesGetResBody = {
+        draft: null,
+        modules,
+        modules_number,
+        all_modules,
+        all_modules_number,
+      };
+
+      if (!filter) result.draft = draft;
+
+      res.status(200).json(result);
+    } catch (err) {
+      console.error(err);
+      res.status(500).json({ errorBody: "Server Error" });
+    }
+  },
+);
 
 // @route ------ GET api/main/cards
 // @desc ------- Get user cards
@@ -111,8 +116,8 @@ router.get('/modules', auth, async (req: TModulesGetReq, res: TModulesGetRes) =>
 interface ICardsGetQuery extends qs.ParsedQs {
   skip: string;
   filter: string;
-  by: 'term' | 'definition';
-  created: 'newest' | 'oldest';
+  by: "term" | "definition";
+  created: "newest" | "oldest";
 }
 
 type TCardsGetReq = Request<any, any, any, ICardsGetQuery>;
@@ -126,7 +131,7 @@ interface ICardsGetResBody {
 
 type TCardsGetRes = Response<ICardsGetResBody | IResError>;
 
-router.get('/cards', auth, async (req: TCardsGetReq, res: TCardsGetRes) => {
+router.get("/cards", auth, async (req: TCardsGetReq, res: TCardsGetRes) => {
   try {
     let { skip, filter, by, created } = req.query;
 
@@ -155,8 +160,8 @@ router.get('/cards', auth, async (req: TCardsGetReq, res: TCardsGetRes) => {
 
     const sortObj: ICardSortObj = {};
 
-    if (created === 'newest') sortObj.creation_date = -1;
-    if (created === 'oldest') sortObj.creation_date = 1;
+    if (created === "newest") sortObj.creation_date = -1;
+    if (created === "oldest") sortObj.creation_date = 1;
 
     const all_cards_number = await cardModel.countDocuments(filterObj);
 
@@ -178,7 +183,7 @@ router.get('/cards', auth, async (req: TCardsGetReq, res: TCardsGetRes) => {
     res.status(200).json({ cards, cards_number, all_cards, all_cards_number });
   } catch (err) {
     console.error(err);
-    res.status(500).json({ errorBody: 'Server Error' });
+    res.status(500).json({ errorBody: "Server Error" });
   }
 });
 
@@ -199,7 +204,7 @@ interface IModuleGetResBody {
 
 type TModuleGetRes = Response<IModuleGetResBody | IResError>;
 
-router.get('/module', auth, async (req: TModuleGetReq, res: TModuleGetRes) => {
+router.get("/module", auth, async (req: TModuleGetReq, res: TModuleGetRes) => {
   try {
     let { _id } = req.query;
 
@@ -220,14 +225,16 @@ router.get('/module', auth, async (req: TModuleGetReq, res: TModuleGetRes) => {
     });
 
     if (!module) throw new Error(`Module ${_id} has not been found.`);
-    if (module.draft) throw new Error('Can not get draft');
+    if (module.draft) throw new Error("Can not get draft");
 
-    const cards = await cardModel.find({ moduleID: _id }).sort({ creation_date: 1 });
+    const cards = await cardModel
+      .find({ moduleID: _id })
+      .sort({ creation_date: 1 });
 
     res.status(200).json({ module, cards });
   } catch (err) {
     console.error(err);
-    res.status(500).json({ errorBody: 'Server Error' });
+    res.status(500).json({ errorBody: "Server Error" });
   }
 });
 
@@ -238,7 +245,7 @@ router.get('/module', auth, async (req: TModuleGetReq, res: TModuleGetRes) => {
 interface IModuleCardsGetQuery extends qs.ParsedQs {
   _id: string;
   filter: string;
-  by: 'term' | 'definition';
+  by: "term" | "definition";
 }
 
 type TModuleCardsGetReq = Request<any, any, any, IModuleCardsGetQuery>;
@@ -250,7 +257,7 @@ interface IModuleCardsGetResBody {
 type TModuleCardsGetRes = Response<IModuleCardsGetResBody | IResError>;
 
 router.get(
-  '/module/cards',
+  "/module/cards",
   auth,
   async (req: TModuleCardsGetReq, res: TModuleCardsGetRes) => {
     try {
@@ -284,9 +291,9 @@ router.get(
       res.status(200).json({ cards });
     } catch (err) {
       console.error(err);
-      res.status(500).json({ errorBody: 'Server Error' });
+      res.status(500).json({ errorBody: "Server Error" });
     }
-  }
+  },
 );
 
 export default router;

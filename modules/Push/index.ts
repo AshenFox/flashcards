@@ -1,1 +1,1 @@
-export { default } from './Push';
+export { default } from "./Push";

@@ -1,2 +1,2 @@
-export { default } from './Controls';
-export { default as ControlButtons } from './ControlButtons';
+export { default as ControlButtons } from "./ControlButtons";
+export { default } from "./Controls";

@@ -1,13 +1,14 @@
-import { memo, useCallback, useRef } from 'react';
-import { useRouter } from 'next/router';
-import { ContentEditableEvent } from 'react-contenteditable';
-import { Save } from './components';
-import ContentWrapper from '@components/ContentWrapper';
-import { useActions, useAppSelector } from '@store/hooks';
-import Container from '@components/Container';
-import s from './styles.module.scss';
-import TextArea from '@ui/TextArea';
-import TextLabel from '@ui/TextLabel';
+import Container from "@components/Container";
+import ContentWrapper from "@components/ContentWrapper";
+import { useActions, useAppSelector } from "@store/hooks";
+import TextArea from "@ui/TextArea";
+import TextLabel from "@ui/TextLabel";
+import { useRouter } from "next/router";
+import { memo, useCallback, useRef } from "react";
+import { ContentEditableEvent } from "react-contenteditable";
+
+import { Save } from "./components";
+import s from "./styles.module.scss";
 
 const Module = () => {
   const { control_module, edit_module } = useActions();
@@ -15,11 +16,11 @@ const Module = () => {
   const router = useRouter();
   const { _id } = router.query;
 
-  const isDraft = _id === 'draft';
+  const isDraft = _id === "draft";
 
-  const currentModule = useAppSelector(s => s.main.module);
-  const cards = useAppSelector(s => s.main.cards);
-  const loading = useAppSelector(s => s.main.loading);
+  const currentModule = useAppSelector((s) => s.main.module);
+  const cards = useAppSelector((s) => s.main.cards);
+  const loading = useAppSelector((s) => s.main.loading);
 
   const { title, draft, _id: moduleId } = currentModule || {};
 
@@ -33,7 +34,7 @@ const Module = () => {
         timer.current = null;
       }, 500);
     },
-    [control_module, edit_module]
+    [control_module, edit_module],
   );
 
   const timer = useRef<ReturnType<typeof setTimeout>>(null);
@@ -59,19 +60,19 @@ const Module = () => {
   if (!cardsArr.length) active = true;
 
   const errMessage = draft
-    ? 'PLEASE ENTER A TITLE AND ENSURE SAVING OF AT LEAST 2 CARDS'
-    : 'PLEASE ENTER A TITLE';
+    ? "PLEASE ENTER A TITLE AND ENSURE SAVING OF AT LEAST 2 CARDS"
+    : "PLEASE ENTER A TITLE";
 
   const textAreaId = `module${moduleId}`;
 
   return (
     <div className={s.module}>
-      <ContentWrapper tagType='section'>
+      <ContentWrapper tagType="section">
         <Container>
           <div className={s.content}>
             <div className={s.title}>
               <TextArea
-                html={title ?? ''}
+                html={title ?? ""}
                 disabled={loading}
                 className={s.textarea}
                 onChange={handleModuleChange}
@@ -79,7 +80,11 @@ const Module = () => {
                 error={!active}
                 id={textAreaId}
               />
-              <TextLabel htmlFor={textAreaId} errorMessage={errMessage} error={!active}>
+              <TextLabel
+                htmlFor={textAreaId}
+                errorMessage={errMessage}
+                error={!active}
+              >
                 TITLE
               </TextLabel>
             </div>

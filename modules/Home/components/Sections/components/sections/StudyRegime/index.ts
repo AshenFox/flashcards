@@ -1,1 +1,1 @@
-export { default } from './StudyRegime';
+export { default } from "./StudyRegime";

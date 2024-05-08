@@ -1,17 +1,18 @@
-import { memo, useEffect, useRef } from 'react';
-import { useRouter } from 'next/router';
-import Link from 'next/link';
-import { useAppSelector } from '@store/hooks';
-import s from './styles.module.scss';
-import clsx from 'clsx';
+import { useAppSelector } from "@store/hooks";
+import clsx from "clsx";
+import Link from "next/link";
+import { useRouter } from "next/router";
+import { memo, useEffect, useRef } from "react";
+
+import s from "./styles.module.scss";
 
 type EndGameProps = {
   active: boolean;
 };
 
 const EndGame = ({ active }: EndGameProps) => {
-  const cards = useAppSelector(s => s.main.cards);
-  const progress = useAppSelector(s => s.game.flashcards.progress);
+  const cards = useAppSelector((s) => s.main.cards);
+  const progress = useAppSelector((s) => s.game.flashcards.progress);
 
   const router = useRouter();
 
@@ -26,30 +27,36 @@ const EndGame = ({ active }: EndGameProps) => {
   isEndRef.current = isEnd;
 
   const keyDown = (e: KeyboardEvent) => {
-    if (e.key === 'Enter' && isEndRef.current) {
+    if (e.key === "Enter" && isEndRef.current) {
       router.replace(`/module/${_id}`);
     }
   };
 
   useEffect(() => {
-    window.addEventListener('keydown', keyDown);
+    window.addEventListener("keydown", keyDown);
 
     return () => {
-      window.removeEventListener('keydown', keyDown);
+      window.removeEventListener("keydown", keyDown);
     };
   }, []);
 
   return (
     <div className={clsx(s.card, !isEnd && s.transparent)}>
-      <div className={clsx(s.front, s.unmovable, !active && clsx(s.next, s.transparent))}>
+      <div
+        className={clsx(
+          s.front,
+          s.unmovable,
+          !active && clsx(s.next, s.transparent),
+        )}
+      >
         <h1 className={s.message}>Nice work!</h1>
         <p className={s.message_info}>{`You've just studied ${length} term${
-          length > 1 ? 's' : ''
+          length > 1 ? "s" : ""
         }!`}</p>
         <Link href={`/module/${_id}`}>
           <button
             //helpers-delete
-            className='bcc-lightblue pad30 brr15 white fz175 h-grey h-bcc-yellow width50'
+            className="bcc-lightblue pad30 brr15 white fz175 h-grey h-bcc-yellow width50"
           >
             Finish up
           </button>
@@ -60,7 +67,7 @@ const EndGame = ({ active }: EndGameProps) => {
           s.back,
           s.unmovable,
           s.rear_side,
-          !active && clsx(s.next, s.transparent)
+          !active && clsx(s.next, s.transparent),
         )}
       ></div>
     </div>

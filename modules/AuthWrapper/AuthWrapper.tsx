@@ -1,5 +1,5 @@
-import { ReactNode, memo, useEffect } from 'react';
-import { useActions } from '@store/hooks';
+import { useActions } from "@store/hooks";
+import { memo, ReactNode, useEffect } from "react";
 
 type AuthWrapperProps = {
   children: ReactNode;

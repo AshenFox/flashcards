@@ -1,11 +1,12 @@
-import { useAppSelector } from '@store/store';
-import { useRouter } from 'next/router';
-import { memo } from 'react';
-import s from './styles.module.scss';
-import { getIsGame, getIsSR } from '@helpers/functions/determinePath';
-import Title from './components/Title';
-import Item from './components/Item';
-import { GameBackIcon } from '@ui/Icons';
+import { getIsGame, getIsSR } from "@helpers/functions/determinePath";
+import { useAppSelector } from "@store/store";
+import { GameBackIcon } from "@ui/Icons";
+import { useRouter } from "next/router";
+import { memo } from "react";
+
+import Item from "./components/Item";
+import Title from "./components/Title";
+import s from "./styles.module.scss";
 
 const Left = () => {
   const router = useRouter();
@@ -14,8 +15,8 @@ const Left = () => {
   const isSR = getIsSR(_id);
   const isGame = getIsGame(router.pathname);
 
-  const user = useAppSelector(s => s.auth.user);
-  const loading = useAppSelector(s => s.auth.loading);
+  const user = useAppSelector((s) => s.auth.user);
+  const loading = useAppSelector((s) => s.auth.loading);
 
   return (
     <div className={s.left}>
@@ -23,7 +24,7 @@ const Left = () => {
         <>
           {user && isGame && (
             <Item
-              href={isSR ? '/home/sr' : `/module/${_id}`}
+              href={isSR ? "/home/sr" : `/module/${_id}`}
               icon={<GameBackIcon />}
               iconSize={25}
               className={s.back}

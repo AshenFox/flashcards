@@ -1,17 +1,18 @@
-import { useRouter } from 'next/router';
-import Img from '@ui/Img';
-import DateStr from '@ui/DateStr';
-import { useAppSelector } from '@store/hooks';
-import TextArea from '@ui/TextArea';
-import { CloseIcon, TickIcon } from '@ui/Icons';
-import { memo } from 'react';
-import s from './styles.module.scss';
-import clsx from 'clsx';
+import { useAppSelector } from "@store/hooks";
+import DateStr from "@ui/DateStr";
+import { CloseIcon, TickIcon } from "@ui/Icons";
+import Img from "@ui/Img";
+import TextArea from "@ui/TextArea";
+import clsx from "clsx";
+import { useRouter } from "next/router";
+import { memo } from "react";
+
+import s from "./styles.module.scss";
 
 type ResultItemProps = {
   data: {
     id: string;
-    answer: false | 'correct' | 'incorrect';
+    answer: false | "correct" | "incorrect";
   };
   number: number;
   showHeader?: boolean;
@@ -21,11 +22,12 @@ const ResultItem = ({ data, number, showHeader = true }: ResultItemProps) => {
   const router = useRouter();
   const { _id } = router.query;
 
-  const isSR = _id === 'sr';
+  const isSR = _id === "sr";
 
-  const cards = useAppSelector(s => s.main.cards);
+  const cards = useAppSelector((s) => s.main.cards);
 
-  const { term, defenition, imgurl, stage, nextRep, prevStage } = cards[data.id] ?? {};
+  const { term, defenition, imgurl, stage, nextRep, prevStage } =
+    cards[data.id] ?? {};
 
   return (
     <div className={s.body_item}>
@@ -44,7 +46,7 @@ const ResultItem = ({ data, number, showHeader = true }: ResultItemProps) => {
       <div className={s.body_main}>
         <div className={s.body_left}>
           <div className={clsx(s.icon, data.answer && s[data.answer])}>
-            {data.answer === 'correct' ? (
+            {data.answer === "correct" ? (
               <TickIcon width={20} />
             ) : (
               <CloseIcon width={20} />

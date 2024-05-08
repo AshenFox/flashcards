@@ -1,6 +1,6 @@
-import Edit from '@modules/Edit';
-import ScrollTop from '@modules/ScrollTop';
-import { memo } from 'react';
+import Edit from "@modules/Edit";
+import ScrollTop from "@modules/ScrollTop";
+import { memo } from "react";
 
 const EditPage = () => {
   return (

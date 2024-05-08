@@ -1,9 +1,10 @@
-import Tooltip, { tooltipContainer } from '@ui/Tooltip';
-import clsx from 'clsx';
-import Link from 'next/link';
-import React, { memo } from 'react';
-import s from './styles.module.scss';
-import { ExternalLinkIcon } from '@ui/Icons';
+import { ExternalLinkIcon } from "@ui/Icons";
+import Tooltip, { tooltipContainer } from "@ui/Tooltip";
+import clsx from "clsx";
+import Link from "next/link";
+import React, { memo } from "react";
+
+import s from "./styles.module.scss";
 
 type ModuleLinkProps = {
   moduleId: string;

@@ -1,2 +1,2 @@
-export { default } from './Results';
-export { default as ResultItem } from './ResultItem';
+export { default as ResultItem } from "./ResultItem";
+export { default } from "./Results";

@@ -1,4 +1,4 @@
-@import '@styles/vars.scss';
+@import "@styles/vars.scss";
 
 .container {
   display: flex;
@@ -30,14 +30,14 @@
     padding: 0 2px;
 
     &:before {
-      content: '';
+      content: "";
       display: inline-block;
       transition: all 0.2s;
       flex-grow: 0;
     }
 
     &:after {
-      content: '';
+      content: "";
       display: inline-block;
       height: 18px;
       width: 18px;

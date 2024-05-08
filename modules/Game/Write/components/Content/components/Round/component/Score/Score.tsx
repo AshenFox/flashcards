@@ -1,12 +1,13 @@
-import React, { memo } from 'react';
-import s from './styles.module.scss';
-import clsx from 'clsx';
+import clsx from "clsx";
+import React, { memo } from "react";
+
+import s from "./styles.module.scss";
 
 type ScoreProps = {
   progress: number;
   all: number;
   title: string;
-  result?: 'correct' | 'incorrect';
+  result?: "correct" | "incorrect";
   displayAll?: boolean;
 };
 

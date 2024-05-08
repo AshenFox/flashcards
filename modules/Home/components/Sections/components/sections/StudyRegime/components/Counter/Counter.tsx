@@ -1,12 +1,20 @@
-import { useRef, useEffect, ChangeEvent, MouseEvent, TouchEvent, memo } from 'react';
-import { useActions, useAppSelector } from '@store/hooks';
-import Input from '@ui/Input';
-import s from './styles.module.scss';
+import { useActions, useAppSelector } from "@store/hooks";
+import Input from "@ui/Input";
+import {
+  ChangeEvent,
+  memo,
+  MouseEvent,
+  TouchEvent,
+  useEffect,
+  useRef,
+} from "react";
+
+import s from "./styles.module.scss";
 
 const Counter = () => {
   const { set_sr_counter } = useActions();
 
-  const counter = useAppSelector(s => s.sr.counter);
+  const counter = useAppSelector((s) => s.sr.counter);
 
   const handleCounterChange = (e: ChangeEvent<HTMLInputElement>) =>
     set_sr_counter(null, e.target.value);
@@ -15,22 +23,23 @@ const Counter = () => {
   const timeoutRef = useRef<ReturnType<typeof setTimeout>>(null);
   const blockSingle = useRef<boolean>(false);
 
-  const single = (value: 'stepUp' | 'stepDown') => (e: MouseEvent<HTMLDivElement>) => {
-    if (blockSingle.current) return;
-    if (value === 'stepUp') set_sr_counter(1);
-    if (value === 'stepDown') set_sr_counter(-1);
-  };
+  const single =
+    (value: "stepUp" | "stepDown") => (e: MouseEvent<HTMLDivElement>) => {
+      if (blockSingle.current) return;
+      if (value === "stepUp") set_sr_counter(1);
+      if (value === "stepDown") set_sr_counter(-1);
+    };
 
   const multiple =
-    (value: 'stepUp' | 'stepDown') =>
+    (value: "stepUp" | "stepDown") =>
     (e: MouseEvent<HTMLDivElement> | TouchEvent<HTMLDivElement>) => {
       timeoutRef.current = setTimeout(() => {
         timeoutRef.current = null;
         blockSingle.current = true;
 
         intervalRef.current = setInterval(() => {
-          if (value === 'stepUp') set_sr_counter(5);
-          if (value === 'stepDown') set_sr_counter(-5);
+          if (value === "stepUp") set_sr_counter(5);
+          if (value === "stepDown") set_sr_counter(-5);
         }, 100);
       }, 500);
     };
@@ -44,14 +53,14 @@ const Counter = () => {
       blockSingle.current = false;
     };
 
-    window.addEventListener('mouseup', cleanup);
-    window.addEventListener('touchend', cleanup);
-    document.addEventListener('mouseleave', cleanup);
+    window.addEventListener("mouseup", cleanup);
+    window.addEventListener("touchend", cleanup);
+    document.addEventListener("mouseleave", cleanup);
 
     return () => {
-      window.removeEventListener('mouseup', cleanup);
-      window.removeEventListener('touchend', cleanup);
-      document.removeEventListener('mouseleave', cleanup);
+      window.removeEventListener("mouseup", cleanup);
+      window.removeEventListener("touchend", cleanup);
+      document.removeEventListener("mouseleave", cleanup);
     };
   }, []);
 
@@ -60,21 +69,21 @@ const Counter = () => {
       <div className={s.counter}>
         <div
           className={s.subtract}
-          onMouseDown={multiple('stepDown')}
-          onTouchStart={multiple('stepDown')}
-          onMouseUp={single('stepDown')}
+          onMouseDown={multiple("stepDown")}
+          onTouchStart={multiple("stepDown")}
+          onMouseUp={single("stepDown")}
         />
         <Input
-          type='number'
+          type="number"
           className={s.number}
           onChange={handleCounterChange}
           value={counter}
         />
         <div
           className={s.add}
-          onMouseDown={multiple('stepUp')}
-          onTouchStart={multiple('stepUp')}
-          onMouseUp={single('stepUp')}
+          onMouseDown={multiple("stepUp")}
+          onTouchStart={multiple("stepUp")}
+          onMouseUp={single("stepUp")}
         />
       </div>
     </div>

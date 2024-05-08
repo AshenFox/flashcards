@@ -1,1 +1,1 @@
-export { default } from './RouterConfiguration';
+export { default } from "./RouterConfiguration";

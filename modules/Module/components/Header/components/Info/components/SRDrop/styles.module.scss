@@ -1,4 +1,4 @@
-@import '@styles/vars.scss';
+@import "@styles/vars.scss";
 
 .drop {
   display: flex;
@@ -24,7 +24,7 @@
     }
   }
 
-  &[data-active='true'] {
+  &[data-active="true"] {
     :global(.tooltip__tooltip) {
       opacity: 0 !important;
     }

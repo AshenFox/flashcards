@@ -1,1 +1,1 @@
-export { default } from './ContentWrapper';
+export { default } from "./ContentWrapper";

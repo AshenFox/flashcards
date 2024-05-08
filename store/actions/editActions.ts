@@ -1,44 +1,49 @@
-import { Card, CardBase, ImgurlBase, ImgurlObjs } from './../reducers/main/mainInitState';
-import { AppActions } from './../types/types';
-import { ThunkActionApp } from './../store';
+import axios from "../../server/supplemental/axios";
+import { saveLastUpdate } from "../helper-functions";
+import { url_fields } from "../reducers/main/mainInitState";
+import { card_fields } from "../reducers/main/mainInitState";
 import {
-  SET_CARD_EDIT,
   CONTROL_CARD,
-  CONTROL_MODULE,
-  SET_GALLERY_SEARCH,
   CONTROL_GALLERY_QUERY,
-  SEARCH_IMAGES,
-  SET_URL_OK,
-  RESET_GALLERY_FIELDS,
-  SET_GALLERY_LOADING,
-  MOVE_GALLERY,
-  SET_GALLERY_WIDTH,
-  SET_CARD_IMGURL,
-  SCRAPE_DICTIONARY,
-  SET_SCRAPE_LOADING,
-  SET_GALLERY_ERROR,
-  DELETE_MODULE,
-  DELETE_CARD,
-  EDIT_MODULE,
-  EDIT_CARD,
-  CREATE_MODULE,
+  CONTROL_MODULE,
   CREATE_CARD,
+  CREATE_MODULE,
+  DELETE_CARD,
+  DELETE_MODULE,
+  EDIT_CARD,
+  EDIT_MODULE,
+  MOVE_GALLERY,
+  RESET_GALLERY_FIELDS,
+  SCRAPE_DICTIONARY,
+  SEARCH_IMAGES,
+  SET_CARD_EDIT,
+  SET_CARD_IMGURL,
+  SET_CARD_QUESTION,
   SET_CARD_SAVE,
   SET_CARDS_SAVE,
   SET_CARDS_SAVE_POSITIVE,
-  SET_MODULE_QUESTION,
-  SET_CARD_QUESTION,
+  SET_GALLERY_ERROR,
+  SET_GALLERY_LOADING,
+  SET_GALLERY_SEARCH,
+  SET_GALLERY_WIDTH,
   SET_MODULE_LOADING,
-} from '../types/types';
-import { url_fields } from '../reducers/main/mainInitState';
-import { card_fields } from '../reducers/main/mainInitState';
-import axios from '../../server/supplemental/axios';
-import { saveLastUpdate } from '../helper-functions';
+  SET_MODULE_QUESTION,
+  SET_SCRAPE_LOADING,
+  SET_URL_OK,
+} from "../types/types";
+import {
+  Card,
+  CardBase,
+  ImgurlBase,
+  ImgurlObjs,
+} from "./../reducers/main/mainInitState";
+import { ThunkActionApp } from "./../store";
+import { AppActions } from "./../types/types";
 
 // SET_CARDS_SAVE_POSITIVE
 export const set_cards_save_positive = (_id: string) => <ThunkActionApp>(async (
     dispatch,
-    getState
+    getState,
   ) => {
     const {
       main: { cards },
@@ -119,7 +124,7 @@ export const set_gallery_error = (_id: string, value: boolean): AppActions => ({
 });
 
 // SCRAPE_DICTIONARY
-export const scrape_dictionary = (_id: string, value: 'cod' | 'urban') =>
+export const scrape_dictionary = (_id: string, value: "cod" | "urban") =>
   <ThunkActionApp>(async (dispatch, getState) => {
     try {
       const {
@@ -128,16 +133,16 @@ export const scrape_dictionary = (_id: string, value: 'cod' | 'urban') =>
 
       const { term } = cards[_id];
 
-      if (!term) throw new Error('Term field can not be empty.');
+      if (!term) throw new Error("Term field can not be empty.");
 
       dispatch(set_scrape_loading(_id, true));
 
-      const term_without_tags = term.replace(/<[^>]*>/g, '');
+      const term_without_tags = term.replace(/<[^>]*>/g, "");
 
       let query: string;
 
-      if (value === 'cod') query = term_without_tags.replace(/\s+/g, '-');
-      if (value === 'urban') query = term_without_tags.replace(/\s+/g, '+');
+      if (value === "cod") query = term_without_tags.replace(/\s+/g, "-");
+      if (value === "urban") query = term_without_tags.replace(/\s+/g, "+");
 
       const url = `/api/scrape/${value}`;
       const params = {
@@ -148,14 +153,14 @@ export const scrape_dictionary = (_id: string, value: 'cod' | 'urban') =>
 
       let result: string;
 
-      if (value === 'cod') {
+      if (value === "cod") {
         const { data }: { data: CodReply } = await axios.get(url, params);
-        result = format_dictionary_result({ type: 'cod', data });
+        result = format_dictionary_result({ type: "cod", data });
       }
 
-      if (value === 'urban') {
+      if (value === "urban") {
         const { data }: { data: UrbanReply } = await axios.get(url, params);
-        result = format_dictionary_result({ type: 'urban', data });
+        result = format_dictionary_result({ type: "urban", data });
       }
 
       dispatch({
@@ -198,10 +203,13 @@ export const set_gallery_width = (_id: string, value: number): AppActions => {
 };
 
 // MOVE_GALLERY
-export const move_gallery = (_id: string, value: 'left' | 'right'): AppActions => {
+export const move_gallery = (
+  _id: string,
+  value: "left" | "right",
+): AppActions => {
   let offset = 0;
-  if (value === 'left') offset = 17;
-  if (value === 'right') offset = -17;
+  if (value === "left") offset = 17;
+  if (value === "right") offset = -17;
 
   return {
     type: MOVE_GALLERY,
@@ -213,7 +221,10 @@ export const move_gallery = (_id: string, value: 'left' | 'right'): AppActions =
 };
 
 // SET_GALLERY_LOADING
-export const set_gallery_loading = (_id: string, value: boolean): AppActions => ({
+export const set_gallery_loading = (
+  _id: string,
+  value: boolean,
+): AppActions => ({
   type: SET_GALLERY_LOADING,
   payload: {
     _id,
@@ -222,7 +233,10 @@ export const set_gallery_loading = (_id: string, value: boolean): AppActions => 
 });
 
 // SET_SCRAPE_LOADING
-export const set_scrape_loading = (_id: string, value: boolean): AppActions => ({
+export const set_scrape_loading = (
+  _id: string,
+  value: boolean,
+): AppActions => ({
   type: SET_SCRAPE_LOADING,
   payload: {
     _id,
@@ -276,7 +290,10 @@ export const set_card_edit = (_id: string, value: boolean): AppActions => ({
 });
 
 // SET_GALLERY_SEARCH
-export const set_gallery_search = (_id: string, value: boolean): AppActions => ({
+export const set_gallery_search = (
+  _id: string,
+  value: boolean,
+): AppActions => ({
   type: SET_GALLERY_SEARCH,
   payload: {
     _id,
@@ -287,8 +304,8 @@ export const set_gallery_search = (_id: string, value: boolean): AppActions => (
 // CONTROL_CARD
 export const control_card = (
   _id: string,
-  type: 'term' | 'defenition',
-  value: string
+  type: "term" | "defenition",
+  value: string,
 ): AppActions => ({
   type: CONTROL_CARD,
   payload: {
@@ -307,7 +324,10 @@ export const control_module = (value: string): AppActions => ({
 });
 
 // CONTROL_GALLERY_QUERY
-export const control_gallery_query = (_id: string, value: string): AppActions => ({
+export const control_gallery_query = (
+  _id: string,
+  value: string,
+): AppActions => ({
   type: CONTROL_GALLERY_QUERY,
   payload: {
     _id,
@@ -318,7 +338,7 @@ export const control_gallery_query = (_id: string, value: string): AppActions =>
 // SEARCH_IMAGES
 export const search_images = (_id: string) => <ThunkActionApp>(async (
     dispatch,
-    getState
+    getState,
   ) => {
     try {
       const {
@@ -327,7 +347,7 @@ export const search_images = (_id: string) => <ThunkActionApp>(async (
 
       const query = cards[_id].gallery.query;
 
-      if (!query) return console.error('Query can not be empty.');
+      if (!query) return console.error("Query can not be empty.");
 
       const regexpURL = /^@url - /;
 
@@ -336,9 +356,9 @@ export const search_images = (_id: string) => <ThunkActionApp>(async (
       dispatch(set_gallery_loading(_id, true));
 
       if (isURL) {
-        const url = query.replace(regexpURL, '').trim();
+        const url = query.replace(regexpURL, "").trim();
 
-        if (!url) return console.error('Query can not be empty.');
+        if (!url) return console.error("Query can not be empty.");
 
         dispatch({
           type: SEARCH_IMAGES,
@@ -349,11 +369,14 @@ export const search_images = (_id: string) => <ThunkActionApp>(async (
           },
         });
       } else {
-        let { data }: { data: ImgurlBase[] } = await axios.get('/api/imgsearch', {
-          params: {
-            query,
+        let { data }: { data: ImgurlBase[] } = await axios.get(
+          "/api/imgsearch",
+          {
+            params: {
+              query,
+            },
           },
-        });
+        );
 
         const all = data.length;
         const imgurl_obj = arr_to_obj(data);
@@ -379,7 +402,10 @@ export const search_images = (_id: string) => <ThunkActionApp>(async (
 
 // DELETE_MODULE
 
-export const delete_module = _id => <ThunkActionApp>(async (dispatch, getState) => {
+export const delete_module = (_id) => <ThunkActionApp>(async (
+    dispatch,
+    getState,
+  ) => {
     try {
       const {
         auth: { user },
@@ -390,11 +416,14 @@ export const delete_module = _id => <ThunkActionApp>(async (dispatch, getState) 
       if (!user || module_loading) return;
       dispatch(set_module_loading(true));
 
-      const { data }: { data: { msg: string } } = await axios.delete('/api/edit/module', {
-        params: {
-          _id,
+      const { data }: { data: { msg: string } } = await axios.delete(
+        "/api/edit/module",
+        {
+          params: {
+            _id,
+          },
         },
-      });
+      );
 
       console.log(data);
 
@@ -412,7 +441,7 @@ export const delete_module = _id => <ThunkActionApp>(async (dispatch, getState) 
 // DELETE_CARD
 export const delete_card = (_id: string) => <ThunkActionApp>(async (
     dispatch,
-    getState
+    getState,
   ) => {
     try {
       const {
@@ -420,11 +449,14 @@ export const delete_card = (_id: string) => <ThunkActionApp>(async (
       } = getState();
       if (!user) return;
 
-      const { data }: { data: { msg: string } } = await axios.delete('/api/edit/card', {
-        params: {
-          _id,
+      const { data }: { data: { msg: string } } = await axios.delete(
+        "/api/edit/card",
+        {
+          params: {
+            _id,
+          },
         },
-      });
+      );
 
       console.log(data);
 
@@ -442,7 +474,10 @@ export const delete_card = (_id: string) => <ThunkActionApp>(async (
   });
 
 // EDIT_MODULE
-export const edit_module = () => <ThunkActionApp>(async (dispatch, getState) => {
+export const edit_module = () => <ThunkActionApp>(async (
+    dispatch,
+    getState,
+  ) => {
     try {
       const {
         auth: { user },
@@ -451,8 +486,8 @@ export const edit_module = () => <ThunkActionApp>(async (dispatch, getState) => 
       if (!user) return;
 
       const { data }: { data: { msg: string } } = await axios.put(
-        '/api/edit/module',
-        module
+        "/api/edit/module",
+        module,
       );
 
       console.log(data);
@@ -466,7 +501,10 @@ export const edit_module = () => <ThunkActionApp>(async (dispatch, getState) => 
   });
 
 // EDIT_CARD
-export const edit_card = (_id: string) => <ThunkActionApp>(async (dispatch, getState) => {
+export const edit_card = (_id: string) => <ThunkActionApp>(async (
+    dispatch,
+    getState,
+  ) => {
     try {
       const {
         auth: { user },
@@ -475,8 +513,8 @@ export const edit_card = (_id: string) => <ThunkActionApp>(async (dispatch, getS
       if (!user) return;
 
       const { data }: { data: { msg: string } } = await axios.put(
-        '/api/edit/card',
-        cards[_id]
+        "/api/edit/card",
+        cards[_id],
       );
 
       console.log(data);
@@ -490,7 +528,10 @@ export const edit_card = (_id: string) => <ThunkActionApp>(async (dispatch, getS
   });
 
 // CREATE_MODULE
-export const create_module = () => <ThunkActionApp>(async (dispatch, getState) => {
+export const create_module = () => <ThunkActionApp>(async (
+    dispatch,
+    getState,
+  ) => {
     try {
       const {
         auth: { user },
@@ -513,9 +554,12 @@ export const create_module = () => <ThunkActionApp>(async (dispatch, getState) =
 
       console.log(_id_arr);
 
-      const { data }: { data: { msg: string } } = await axios.post('/api/edit/module', {
-        _id_arr,
-      });
+      const { data }: { data: { msg: string } } = await axios.post(
+        "/api/edit/module",
+        {
+          _id_arr,
+        },
+      );
 
       console.log(data);
 
@@ -526,12 +570,15 @@ export const create_module = () => <ThunkActionApp>(async (dispatch, getState) =
       console.error(err);
     }
 
-    window.location.replace('/home/modules');
+    window.location.replace("/home/modules");
     dispatch(set_module_loading(false));
   });
 
 // CREATE_CARD
-export const create_card = () => <ThunkActionApp>(async (dispatch, getState) => {
+export const create_card = () => <ThunkActionApp>(async (
+    dispatch,
+    getState,
+  ) => {
     try {
       const {
         auth: { user },
@@ -539,7 +586,7 @@ export const create_card = () => <ThunkActionApp>(async (dispatch, getState) => 
       } = getState();
       if (!user) return;
 
-      const { data }: { data: CardBase } = await axios.post('/api/edit/card', {
+      const { data }: { data: CardBase } = await axios.post("/api/edit/card", {
         module,
       });
 
@@ -556,7 +603,7 @@ export const create_card = () => <ThunkActionApp>(async (dispatch, getState) => 
         document.body.offsetHeight,
         document.documentElement.offsetHeight,
         document.body.clientHeight,
-        document.documentElement.clientHeight
+        document.documentElement.clientHeight,
       );
 
       saveLastUpdate();
@@ -581,23 +628,25 @@ const arr_to_obj = (arr: ImgurlBase[]): ImgurlObjs => {
         ...url,
         ...url_fields,
       },
-    ])
+    ]),
   );
 };
 
-const format_dictionary_result = (result: CodDictResult | UrbanDictResult): string => {
+const format_dictionary_result = (
+  result: CodDictResult | UrbanDictResult,
+): string => {
   const { type, data } = result;
 
-  let devider = '<br><div>-------</div><br>';
-  let br = '<br>';
+  let devider = "<br><div>-------</div><br>";
+  let br = "<br>";
 
   let formatedResult = devider;
 
-  const wrap_in = (str?: string, el?: 'div'): string => {
-    if (!str) return '';
+  const wrap_in = (str?: string, el?: "div"): string => {
+    if (!str) return "";
 
     switch (el) {
-      case 'div':
+      case "div":
         return `<${el}>` + str + `</${el}>`;
       default:
         return `( ` + str + ` )`;
@@ -605,26 +654,29 @@ const format_dictionary_result = (result: CodDictResult | UrbanDictResult): stri
   };
 
   // cod
-  if (type === 'cod') {
-    data.map(sect => {
+  if (type === "cod") {
+    data.map((sect) => {
       let { part_of_speech, transcr_uk, transcr_us, sub_sections } = sect;
 
-      sub_sections.map(sub_sect => {
+      sub_sections.map((sub_sect) => {
         let { guideword, blocks } = sub_sect;
 
-        blocks.map(block => {
+        blocks.map((block) => {
           let { definition, examples } = block;
 
-          let examplesHtml = '';
-          examples.map(example => {
-            examplesHtml = examplesHtml + wrap_in(example, 'div');
+          let examplesHtml = "";
+          examples.map((example) => {
+            examplesHtml = examplesHtml + wrap_in(example, "div");
           });
 
-          let defenitionHtml = wrap_in(guideword.concat(wrap_in(definition)), 'div');
+          let defenitionHtml = wrap_in(
+            guideword.concat(wrap_in(definition)),
+            "div",
+          );
 
           let additionalInfoHtml = wrap_in(
             wrap_in(transcr_us).concat(wrap_in(part_of_speech), wrap_in()),
-            'div'
+            "div",
           );
 
           formatedResult = formatedResult.concat(
@@ -632,22 +684,22 @@ const format_dictionary_result = (result: CodDictResult | UrbanDictResult): stri
             br,
             defenitionHtml,
             additionalInfoHtml,
-            devider
+            devider,
           );
         });
       });
     });
 
     // urban
-  } else if (type === 'urban') {
-    data.map(panel => {
+  } else if (type === "urban") {
+    data.map((panel) => {
       let { definition, example } = panel;
 
       formatedResult = formatedResult.concat(
-        wrap_in(example, 'div'),
+        wrap_in(example, "div"),
         br,
-        wrap_in(wrap_in(definition), 'div'),
-        devider
+        wrap_in(wrap_in(definition), "div"),
+        devider,
       );
     });
   }
@@ -671,7 +723,7 @@ interface CodSection {
 type CodReply = CodSection[];
 
 interface CodDictResult {
-  type: 'cod';
+  type: "cod";
   data: CodReply;
 }
 
@@ -683,6 +735,6 @@ interface UrbanPanel {
 type UrbanReply = UrbanPanel[];
 
 interface UrbanDictResult {
-  type: 'urban';
+  type: "urban";
   data: UrbanReply;
 }

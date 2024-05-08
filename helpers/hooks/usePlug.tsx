@@ -1,7 +1,7 @@
-import { MutableRefObject, useEffect, useMemo, useRef, useState } from 'react';
+import { MutableRefObject, useEffect, useMemo, useRef, useState } from "react";
 
 export const usePlug = (
-  classStr: string
+  classStr: string,
 ): [boolean, MutableRefObject<HTMLDivElement>, JSX.Element] => {
   const ref = useRef<HTMLDivElement>(null);
 
@@ -9,7 +9,7 @@ export const usePlug = (
   const [heightDimen, setHeightDimen] = useState(0);
 
   useEffect(() => {
-    const observer = new IntersectionObserver(entry => {
+    const observer = new IntersectionObserver((entry) => {
       setVisible(entry[0].isIntersecting); // is there some way to optimize that
     });
 
@@ -25,8 +25,10 @@ export const usePlug = (
   }, [visible, classStr]);
 
   const Plug = useMemo(
-    () => <div className={classStr} style={{ height: `${heightDimen}px` }}></div>,
-    [classStr, heightDimen]
+    () => (
+      <div className={classStr} style={{ height: `${heightDimen}px` }}></div>
+    ),
+    [classStr, heightDimen],
   );
 
   return [visible, ref, Plug];

@@ -1,7 +1,8 @@
-import { ReactNode, memo, useEffect } from 'react';
-import { useRouter } from 'next/router';
-import Link from 'next/link';
-import s from './styles.module.scss';
+import Link from "next/link";
+import { useRouter } from "next/router";
+import { memo, ReactNode, useEffect } from "react";
+
+import s from "./styles.module.scss";
 
 type ResultsProps = {
   title: string;
@@ -11,23 +12,29 @@ type ResultsProps = {
   children?: ReactNode;
 };
 
-const Results = ({ title, progress, all, showLink = true, children }: ResultsProps) => {
+const Results = ({
+  title,
+  progress,
+  all,
+  showLink = true,
+  children,
+}: ResultsProps) => {
   const router = useRouter();
   const { _id } = router.query;
 
-  const isSR = _id === 'sr';
+  const isSR = _id === "sr";
 
   useEffect(() => {
     const keyDownFinish = (e: KeyboardEvent) => {
-      if (e.key === 'Enter') {
-        router.replace(isSR ? '/home/sr' : `/module/${_id}`);
+      if (e.key === "Enter") {
+        router.replace(isSR ? "/home/sr" : `/module/${_id}`);
       }
     };
 
-    window.addEventListener('keydown', keyDownFinish);
+    window.addEventListener("keydown", keyDownFinish);
 
     return () => {
-      window.removeEventListener('keydown', keyDownFinish);
+      window.removeEventListener("keydown", keyDownFinish);
     };
   }, [_id, isSR, router]);
 
@@ -43,10 +50,10 @@ const Results = ({ title, progress, all, showLink = true, children }: ResultsPro
 
         {showLink && (
           <div className={s.header_item}>
-            <Link href={isSR ? '/home/sr' : `/module/${_id}`}>
+            <Link href={isSR ? "/home/sr" : `/module/${_id}`}>
               <button
                 //helpers-delete
-                className='bcc-lightblue pad10-30 brr15 white fz15 fw-normal h-grey h-bcc-yellow'
+                className="bcc-lightblue pad10-30 brr15 white fz15 fw-normal h-grey h-bcc-yellow"
               >
                 Finish game
               </button>

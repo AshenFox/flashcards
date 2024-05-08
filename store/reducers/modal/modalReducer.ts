@@ -1,17 +1,20 @@
-import { ModalActions } from './../../types/types';
 import {
   CHANGE_MODAL,
-  TOGGLE_MODAL,
-  CONTROL_FIELD,
   CHANGE_MODAL_LOADING,
   CHECK_FIELD,
   CLEAR_LOG_IN,
   CLEAR_SIGN_UP,
+  CONTROL_FIELD,
   ENTER,
-} from '../../types/types';
-import initialState, { ModalState } from './modalInitState';
+  TOGGLE_MODAL,
+} from "../../types/types";
+import { ModalActions } from "./../../types/types";
+import initialState, { ModalState } from "./modalInitState";
 
-const ModalReducer = (state = initialState, action: ModalActions): ModalState => {
+const ModalReducer = (
+  state = initialState,
+  action: ModalActions,
+): ModalState => {
   const { payload, type } = action;
 
   switch (type) {
@@ -52,8 +55,8 @@ const ModalReducer = (state = initialState, action: ModalActions): ModalState =>
       return {
         ...state,
         log_in: {
-          username: '',
-          password: '',
+          username: "",
+          password: "",
         },
         log_in_errors: {
           ok: true,
@@ -82,9 +85,9 @@ const ModalReducer = (state = initialState, action: ModalActions): ModalState =>
       return {
         ...state,
         sign_up: {
-          username: '',
-          email: '',
-          password: '',
+          username: "",
+          email: "",
+          password: "",
         },
         sign_up_errors: {
           ok: false,

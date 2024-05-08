@@ -1,6 +1,6 @@
-import { memo, useEffect } from 'react';
-import sanitize from 'sanitize-html';
-import sanConfig from '@config/sanitize-config.json';
+import sanConfig from "@config/sanitize-config.json";
+import { memo, useEffect } from "react";
+import sanitize from "sanitize-html";
 
 const PasteControl = () => {
   useEffect(() => {
@@ -8,14 +8,18 @@ const PasteControl = () => {
       // Influences paste on the page
       e.preventDefault();
 
-      const cleanText = sanitize(e.clipboardData.getData('text/plain'), sanConfig);
+      const cleanText = sanitize(
+        e.clipboardData.getData("text/plain"),
+        sanConfig,
+      );
 
-      document.execCommand('insertHTML', false, cleanText);
+      document.execCommand("insertHTML", false, cleanText);
     };
 
-    document.documentElement.addEventListener('paste', pasteControl);
+    document.documentElement.addEventListener("paste", pasteControl);
 
-    return () => document.documentElement.removeEventListener('paste', pasteControl);
+    return () =>
+      document.documentElement.removeEventListener("paste", pasteControl);
   }, []);
   return <></>;
 };

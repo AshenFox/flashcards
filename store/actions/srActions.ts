@@ -1,22 +1,22 @@
-import { CardBase, Cards } from './../reducers/main/mainInitState';
-import { AppActions } from './../types/types';
-import { ThunkActionApp } from './../store';
+import axios from "../../server/supplemental/axios";
+import { saveLastUpdate } from "../helper-functions";
+import { card_fields } from "../reducers/main/mainInitState";
 import {
-  SET_MAIN_LOADING,
-  GET_SR_COUNT,
-  SET_CARD_SR,
-  SET_CARDS_SR,
-  SET_CARDS_SR_POSITIVE,
   DROP_CARD_SR,
   DROP_CARDS_SR,
   GET_SR_CARDS,
-  SET_SR_COUNTER,
+  GET_SR_COUNT,
   PUT_SR_ANSWER,
+  SET_CARD_SR,
+  SET_CARDS_SR,
+  SET_CARDS_SR_POSITIVE,
+  SET_MAIN_LOADING,
+  SET_SR_COUNTER,
   SET_SR_LOADING,
-} from '../types/types';
-import axios from '../../server/supplemental/axios';
-import { card_fields } from '../reducers/main/mainInitState';
-import { saveLastUpdate } from '../helper-functions';
+} from "../types/types";
+import { CardBase, Cards } from "./../reducers/main/mainInitState";
+import { ThunkActionApp } from "./../store";
+import { AppActions } from "./../types/types";
 
 // SET_SR_COUNTER
 export const set_sr_counter = (additionNumber: number, value?: string) =>
@@ -61,10 +61,8 @@ export const set_sr_loading = (value: boolean): AppActions => ({
 });
 
 // PUT_SR_ANSWER
-export const put_sr_answer = (_id: string, answer: 1 | -1) => <ThunkActionApp>(async (
-    dispatch,
-    getState
-  ) => {
+export const put_sr_answer = (_id: string, answer: 1 | -1) =>
+  <ThunkActionApp>(async (dispatch, getState) => {
     try {
       const {
         sr: { loading },
@@ -84,7 +82,7 @@ export const put_sr_answer = (_id: string, answer: 1 | -1) => <ThunkActionApp>(a
           lastRep: string;
           studyRegime: boolean;
         };
-      } = await axios.put('/api/sr/answer', {
+      } = await axios.put("/api/sr/answer", {
         _id,
         answer,
       });
@@ -103,7 +101,10 @@ export const put_sr_answer = (_id: string, answer: 1 | -1) => <ThunkActionApp>(a
   });
 
 // GET_SR_COUNT
-export const get_sr_count = () => <ThunkActionApp>(async (dispatch, getState) => {
+export const get_sr_count = () => <ThunkActionApp>(async (
+    dispatch,
+    getState,
+  ) => {
     try {
       dispatch({
         type: SET_MAIN_LOADING,
@@ -119,7 +120,7 @@ export const get_sr_count = () => <ThunkActionApp>(async (dispatch, getState) =>
           next_num: number;
           next_date: string;
         };
-      } = await axios.get('/api/sr/count');
+      } = await axios.get("/api/sr/count");
 
       dispatch({
         type: GET_SR_COUNT,
@@ -138,7 +139,7 @@ export const get_sr_count = () => <ThunkActionApp>(async (dispatch, getState) =>
 // SET_CARDS_SR_POSITIVE
 export const set_cards_sr_positive = (_id: string) => <ThunkActionApp>(async (
     dispatch,
-    getState
+    getState,
   ) => {
     try {
       const {
@@ -160,10 +161,13 @@ export const set_cards_sr_positive = (_id: string) => <ThunkActionApp>(async (
         }
       }
 
-      const { data }: { data: { msg: string } } = await axios.put('/api/sr/control', {
-        _id_arr,
-        study_regime: true,
-      });
+      const { data }: { data: { msg: string } } = await axios.put(
+        "/api/sr/control",
+        {
+          _id_arr,
+          study_regime: true,
+        },
+      );
 
       console.log(data);
 
@@ -183,7 +187,7 @@ export const set_cards_sr_positive = (_id: string) => <ThunkActionApp>(async (
 // SET_CARDS_SR
 export const set_cards_sr = (value: boolean) => <ThunkActionApp>(async (
     dispatch,
-    getState
+    getState,
   ) => {
     try {
       const {
@@ -192,10 +196,13 @@ export const set_cards_sr = (value: boolean) => <ThunkActionApp>(async (
 
       const _id_arr = Object.keys(cards);
 
-      const { data }: { data: { msg: string } } = await axios.put('/api/sr/control', {
-        _id_arr,
-        study_regime: value,
-      });
+      const { data }: { data: { msg: string } } = await axios.put(
+        "/api/sr/control",
+        {
+          _id_arr,
+          study_regime: value,
+        },
+      );
 
       dispatch({
         type: SET_CARDS_SR,
@@ -211,15 +218,16 @@ export const set_cards_sr = (value: boolean) => <ThunkActionApp>(async (
   });
 
 // SET_CARD_SR
-export const set_card_sr = (_id: string, value: boolean) => <ThunkActionApp>(async (
-    dispatch,
-    getState
-  ) => {
+export const set_card_sr = (_id: string, value: boolean) =>
+  <ThunkActionApp>(async (dispatch, getState) => {
     try {
-      const { data }: { data: { msg: string } } = await axios.put('/api/sr/control', {
-        _id_arr: [_id],
-        study_regime: value,
-      });
+      const { data }: { data: { msg: string } } = await axios.put(
+        "/api/sr/control",
+        {
+          _id_arr: [_id],
+          study_regime: value,
+        },
+      );
 
       dispatch({
         type: SET_CARD_SR,
@@ -236,7 +244,10 @@ export const set_card_sr = (_id: string, value: boolean) => <ThunkActionApp>(asy
   });
 
 // DROP_CARDS_SR
-export const drop_cards_sr = () => <ThunkActionApp>(async (dispatch, getState) => {
+export const drop_cards_sr = () => <ThunkActionApp>(async (
+    dispatch,
+    getState,
+  ) => {
     try {
       const {
         main: { cards },
@@ -253,7 +264,7 @@ export const drop_cards_sr = () => <ThunkActionApp>(async (dispatch, getState) =
           prevStage: string;
           lastRep: string;
         };
-      } = await axios.put('/api/sr/drop', {
+      } = await axios.put("/api/sr/drop", {
         _id_arr,
       });
 
@@ -273,7 +284,7 @@ export const drop_cards_sr = () => <ThunkActionApp>(async (dispatch, getState) =
 // DROP_CARD_SR
 export const drop_card_sr = (_id: string) => <ThunkActionApp>(async (
     dispatch,
-    getState
+    getState,
   ) => {
     try {
       const {
@@ -285,7 +296,7 @@ export const drop_card_sr = (_id: string) => <ThunkActionApp>(async (
           prevStage: string;
           lastRep: string;
         };
-      } = await axios.put('/api/sr/drop', {
+      } = await axios.put("/api/sr/drop", {
         _id_arr: [_id],
       });
 
@@ -306,7 +317,7 @@ export const drop_card_sr = (_id: string) => <ThunkActionApp>(async (
 // GET_SR_CARDS
 export const get_sr_cards = (number: number) => <ThunkActionApp>(async (
     dispatch,
-    getState
+    getState,
   ) => {
     try {
       const {
@@ -326,7 +337,7 @@ export const get_sr_cards = (number: number) => <ThunkActionApp>(async (
         data: {
           cards: CardBase[];
         };
-      } = await axios.get('/api/sr/cards', {
+      } = await axios.get("/api/sr/cards", {
         params: {
           number,
         },
@@ -335,8 +346,8 @@ export const get_sr_cards = (number: number) => <ThunkActionApp>(async (
       const { length } = cards;
 
       if (!length) {
-        window.location.replace('/home/sr');
-        throw new Error('No cards to repeat.');
+        window.location.replace("/home/sr");
+        throw new Error("No cards to repeat.");
       }
 
       dispatch({
@@ -367,6 +378,6 @@ const arr_to_obj = (arr: CardBase[]): Cards => {
         ...card,
         ...card_fields,
       },
-    ])
+    ]),
   );
 };

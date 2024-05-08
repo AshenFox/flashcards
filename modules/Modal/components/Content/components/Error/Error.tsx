@@ -1,6 +1,7 @@
-import { FC, memo } from 'react';
-import { ErrorObj } from '@store/reducers/modal/modalInitState';
-import s from './styles.module.scss';
+import { ErrorObj } from "@store/reducers/modal/modalInitState";
+import { FC, memo } from "react";
+
+import s from "./styles.module.scss";
 
 type ErrorProps = {
   errObj: ErrorObj;

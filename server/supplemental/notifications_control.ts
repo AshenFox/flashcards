@@ -1,9 +1,10 @@
-import { ICard } from './../models/card_model';
-import userModel, { IUser } from '../models/user_model';
-import notificationModel from '../models//notification_model';
-import cardModelGenerator from '../models/card_model';
-import sr_stages from './sr_stages';
-import webpush from 'web-push';
+import webpush from "web-push";
+
+import notificationModel from "../models//notification_model";
+import cardModelGenerator from "../models/card_model";
+import userModel, { IUser } from "../models/user_model";
+import { ICard } from "./../models/card_model";
+import sr_stages from "./sr_stages";
 
 // Tests
 // unsafely-treat-insecure-origin-as-secure flag allows to send notifications without ssl
@@ -56,28 +57,30 @@ export const send_notifications = async () => {
         body: string;
       } = {
         title: "It's time to study some cards!",
-        body: '',
+        body: "",
       };
 
       if (notif.number) {
         payload.body = `You have ${notif.number} card${
-          notif.number > 1 ? 's' : ''
+          notif.number > 1 ? "s" : ""
         } to repeat`;
       } else {
-        payload.body = 'You still have cards to repeat :)';
+        payload.body = "You still have cards to repeat :)";
       }
 
       const { pc, tablet, mobile } = users[_id].subscriptions;
 
       const errCallback = (err: any) => {
-        console.log('Something went wrong: ', err);
+        console.log("Something went wrong: ", err);
       };
 
       const payloadJSON = JSON.stringify(payload);
 
       if (pc) webpush.sendNotification(pc, payloadJSON).catch(errCallback);
-      if (tablet) webpush.sendNotification(tablet, payloadJSON).catch(errCallback);
-      if (mobile) webpush.sendNotification(mobile, payloadJSON).catch(errCallback);
+      if (tablet)
+        webpush.sendNotification(tablet, payloadJSON).catch(errCallback);
+      if (mobile)
+        webpush.sendNotification(mobile, payloadJSON).catch(errCallback);
 
       await notificationModel.deleteOne({ _id: notif._id });
     }
@@ -150,7 +153,7 @@ const create_notifications = async (user: IUser) => {
         notifArr.push(notif);
 
         remindTime = new Date(
-          new Date(notif.calcTime.getTime() + 86400000).setHours(12, 0, 0, 0)
+          new Date(notif.calcTime.getTime() + 86400000).setHours(12, 0, 0, 0),
         );
       } else {
         let stageDelay: number = 0;
@@ -166,14 +169,21 @@ const create_notifications = async (user: IUser) => {
 
           if (notifArr.length === 1)
             remindTime = new Date(
-              new Date(notif.calcTime.getTime() + 86400000).setHours(12, 0, 0, 0)
+              new Date(notif.calcTime.getTime() + 86400000).setHours(
+                12,
+                0,
+                0,
+                0,
+              ),
             );
         }
 
-        if (notif.stage >= 3) stageDelay = sr_stages[1].prevStage - sr_stages[1].nextRep;
+        if (notif.stage >= 3)
+          stageDelay = sr_stages[1].prevStage - sr_stages[1].nextRep;
         if (notif.stage === 2)
           stageDelay =
-            sr_stages[notif.stage - 2].prevStage - sr_stages[notif.stage - 2].nextRep;
+            sr_stages[notif.stage - 2].prevStage -
+            sr_stages[notif.stage - 2].nextRep;
         if (notif.stage === 1) stageDelay = 0;
 
         if (card.nextRep.getTime() - notif.calcTime.getTime() < stageDelay) {

@@ -1,1 +1,1 @@
-export { default } from './AuthSpinner';
+export { default } from "./AuthSpinner";

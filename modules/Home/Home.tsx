@@ -1,11 +1,12 @@
-import { useEffect, useRef, memo } from 'react';
-import { useRouter } from 'next/router';
-import ContentWrapper from '@components/ContentWrapper';
-import { useActions, useAppSelector } from '@store/hooks';
-import Container from '@components/Container';
-import Header from './components/Header';
-import s from './styles.module.scss';
-import Sections from './components/Sections';
+import Container from "@components/Container";
+import ContentWrapper from "@components/ContentWrapper";
+import { useActions, useAppSelector } from "@store/hooks";
+import { useRouter } from "next/router";
+import { memo, useEffect, useRef } from "react";
+
+import Header from "./components/Header";
+import Sections from "./components/Sections";
+import s from "./styles.module.scss";
 
 const checkBottom = () => {
   const windowHeight = document.documentElement.clientHeight;
@@ -16,7 +17,7 @@ const checkBottom = () => {
     document.body.offsetHeight,
     document.documentElement.offsetHeight,
     document.body.clientHeight,
-    document.documentElement.clientHeight
+    document.documentElement.clientHeight,
   );
 
   const currentScroll = window.scrollY;
@@ -42,7 +43,7 @@ const Home = () => {
   const {
     main: { modules, cards },
     auth: { user },
-  } = useAppSelector(state => state);
+  } = useAppSelector((state) => state);
 
   useEffect(() => {
     if (!user) return;
@@ -51,24 +52,24 @@ const Home = () => {
   }, [user, section]);
 
   useEffect(() => {
-    if (section === 'modules') {
-      window.addEventListener('scroll', scrollModules.current);
-      window.removeEventListener('scroll', scrollCards.current);
+    if (section === "modules") {
+      window.addEventListener("scroll", scrollModules.current);
+      window.removeEventListener("scroll", scrollCards.current);
     }
 
-    if (section === 'cards') {
-      window.addEventListener('scroll', scrollCards.current);
-      window.removeEventListener('scroll', scrollModules.current);
+    if (section === "cards") {
+      window.addEventListener("scroll", scrollCards.current);
+      window.removeEventListener("scroll", scrollModules.current);
     }
 
-    if (section === 'sr') {
-      window.removeEventListener('scroll', scrollCards.current);
-      window.removeEventListener('scroll', scrollModules.current);
+    if (section === "sr") {
+      window.removeEventListener("scroll", scrollCards.current);
+      window.removeEventListener("scroll", scrollModules.current);
     }
 
     return () => {
-      window.removeEventListener('scroll', scrollModules.current);
-      window.removeEventListener('scroll', scrollCards.current);
+      window.removeEventListener("scroll", scrollModules.current);
+      window.removeEventListener("scroll", scrollCards.current);
     };
   }, [section]);
 
@@ -81,16 +82,17 @@ const Home = () => {
   }, []);
 
   const loadContent = () => {
-    if (!modules.length && section === 'modules') get_modules(true);
-    if (!cards.length && section === 'cards') get_cards(true);
-    if (section === 'sr') get_sr_count();
+    if (!modules.length && section === "modules") get_modules(true);
+    if (!cards.length && section === "cards") get_cards(true);
+    if (section === "sr") get_sr_count();
   };
 
   const scrollModules = useRef(
-    () => router.pathname === '/home/[section]' && checkBottom() && get_modules()
+    () =>
+      router.pathname === "/home/[section]" && checkBottom() && get_modules(),
   );
   const scrollCards = useRef(
-    () => router.pathname === '/home/[section]' && checkBottom() && get_cards()
+    () => router.pathname === "/home/[section]" && checkBottom() && get_cards(),
   );
 
   return (

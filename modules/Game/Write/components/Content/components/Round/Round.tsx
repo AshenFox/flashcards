@@ -1,26 +1,31 @@
-import { MouseEvent, memo, useEffect } from 'react';
-import { useActions, useAppSelector } from '@store/hooks';
-import s from './styles.module.scss';
-import Score from './component/Score';
+import { useActions, useAppSelector } from "@store/hooks";
+import { memo, MouseEvent, useEffect } from "react";
+
+import Score from "./component/Score";
+import s from "./styles.module.scss";
 
 const Round = () => {
   const { next_write_round } = useActions();
 
-  const answered = useAppSelector(s => s.game.write.answered);
-  const rounds = useAppSelector(s => s.game.write.rounds);
-  const all_cards_num = useAppSelector(s => s.game.write.all_cards_num);
+  const answered = useAppSelector((s) => s.game.write.answered);
+  const rounds = useAppSelector((s) => s.game.write.rounds);
+  const all_cards_num = useAppSelector((s) => s.game.write.all_cards_num);
 
-  const correctAnswered = answered.filter(item => item.answer === 'correct').length;
+  const correctAnswered = answered.filter(
+    (item) => item.answer === "correct",
+  ).length;
 
   let correctRounds = 0;
 
   for (const round of rounds) {
-    let correctRound = round.filter(item => item.answer === 'correct').length;
+    let correctRound = round.filter((item) => item.answer === "correct").length;
     correctRounds += correctRound;
   }
 
   const correctNum = correctAnswered + correctRounds;
-  const incorrectNum = answered.filter(item => item.answer === 'incorrect').length;
+  const incorrectNum = answered.filter(
+    (item) => item.answer === "incorrect",
+  ).length;
   const roundCardsNum = answered.length;
 
   const roundNum = rounds.length + 1;
@@ -30,16 +35,16 @@ const Round = () => {
   };
 
   const keyDownContinue = (e: KeyboardEvent) => {
-    if (e.key === 'Enter') {
+    if (e.key === "Enter") {
       next_write_round();
     }
   };
 
   useEffect(() => {
-    window.addEventListener('keydown', keyDownContinue);
+    window.addEventListener("keydown", keyDownContinue);
 
     return () => {
-      window.removeEventListener('keydown', keyDownContinue);
+      window.removeEventListener("keydown", keyDownContinue);
     };
   }, []);
 
@@ -51,21 +56,21 @@ const Round = () => {
       </h1>
       <div className={s.body}>
         <Score
-          title='Correct'
+          title="Correct"
           progress={correctAnswered}
           all={roundCardsNum}
-          result='correct'
+          result="correct"
         />
 
         <Score
-          title='Incorrect'
+          title="Incorrect"
           progress={incorrectNum}
           all={roundCardsNum}
-          result='incorrect'
+          result="incorrect"
         />
 
         <Score
-          title='Overall progress'
+          title="Overall progress"
           progress={correctNum}
           all={all_cards_num}
           displayAll
@@ -75,7 +80,7 @@ const Round = () => {
       <div className={s.continue}>
         <button
           //helpers-delete
-          className='bcc-lightblue pad10-30 brr15 white fz15 fw-normal h-grey h-bcc-yellow'
+          className="bcc-lightblue pad10-30 brr15 white fz15 fw-normal h-grey h-bcc-yellow"
           onClick={clickContinue}
         >
           Continue

@@ -1,5 +1,5 @@
-@import '@styles/vars.scss';
-@import '@styles/animations.scss';
+@import "@styles/vars.scss";
+@import "@styles/animations.scss";
 
 .speaker {
   cursor: pointer;
@@ -19,7 +19,7 @@
     }
   }
 
-  &[data-active='false'] {
+  &[data-active="false"] {
     cursor: initial;
 
     svg {
@@ -33,7 +33,7 @@
     }
   }
 
-  &[data-speaking='true'] {
+  &[data-speaking="true"] {
     svg {
       fill: $tertiary;
     }

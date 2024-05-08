@@ -1,22 +1,25 @@
-import { MainState } from './../mainInitState';
-import { MainActions } from './../../../types/types';
 import {
-  SET_CARD_EDIT,
   CONTROL_CARD,
-  SET_CARD_IMGURL,
   CONTROL_MODULE,
-  DELETE_CARD,
   CREATE_CARD,
+  DELETE_CARD,
+  SET_CARD_EDIT,
+  SET_CARD_IMGURL,
+  SET_CARD_QUESTION,
   SET_CARD_SAVE,
   SET_CARDS_SAVE,
   SET_CARDS_SAVE_POSITIVE,
-  SET_MODULE_QUESTION,
-  SET_CARD_QUESTION,
   SET_MODULE_LOADING,
-} from '../../../types/types';
-import initialState from '../mainInitState';
+  SET_MODULE_QUESTION,
+} from "../../../types/types";
+import initialState from "../mainInitState";
+import { MainActions } from "./../../../types/types";
+import { MainState } from "./../mainInitState";
 
-const subEditReducer = (state = initialState, action: MainActions): MainState | false => {
+const subEditReducer = (
+  state = initialState,
+  action: MainActions,
+): MainState | false => {
   const { payload, type } = action;
 
   switch (type) {
@@ -71,7 +74,7 @@ const subEditReducer = (state = initialState, action: MainActions): MainState | 
       return {
         ...state,
         cards: Object.fromEntries(
-          Object.entries(state.cards).filter(([_id]) => _id !== payload._id)
+          Object.entries(state.cards).filter(([_id]) => _id !== payload._id),
         ),
       };
 
@@ -103,7 +106,7 @@ const subEditReducer = (state = initialState, action: MainActions): MainState | 
           Object.entries(state.cards).map(([_id, card]) => [
             _id,
             { ...card, save: payload.value },
-          ])
+          ]),
         ),
       };
 
@@ -117,7 +120,7 @@ const subEditReducer = (state = initialState, action: MainActions): MainState | 
             } else {
               return [_id, card];
             }
-          })
+          }),
         ),
       };
 

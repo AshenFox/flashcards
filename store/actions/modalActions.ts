@@ -1,12 +1,15 @@
-import { AppActions } from './../types/types';
-import { ModalType, ModalInputFileds } from './../reducers/modal/modalInitState';
 import {
   CHANGE_MODAL,
-  TOGGLE_MODAL,
-  CONTROL_FIELD,
   CLEAR_LOG_IN,
   CLEAR_SIGN_UP,
-} from '../types/types';
+  CONTROL_FIELD,
+  TOGGLE_MODAL,
+} from "../types/types";
+import {
+  ModalInputFileds,
+  ModalType,
+} from "./../reducers/modal/modalInitState";
+import { AppActions } from "./../types/types";
 
 // CLEAR_LOG_IN
 export const clear_log_in = (): AppActions => ({
@@ -37,9 +40,9 @@ export const change_modal = (active_modal: ModalType): AppActions => {
 export const control_field = (
   field: ModalType,
   name: string,
-  value: string
+  value: string,
 ): AppActions => {
-  if (name === 'username' || name === 'password' || name === 'email')
+  if (name === "username" || name === "password" || name === "email")
     return {
       type: CONTROL_FIELD,
       payload: {

@@ -1,29 +1,29 @@
-import { AppActions } from './../types/types';
-import { ThunkActionApp } from './../store';
+import { card_fields } from "../reducers/game/gameInitState";
 import {
-  SET_FLASHCARDS_PROGRESS,
-  RESET_FLASHCARDS_PROGRESS,
-  SHUFFLE_FLASHCARDS,
-  SORT_FLASHCARDS,
-  SET_FLASHCARDS_SHUFFLED,
-  SET_FLASHCARDS_SIDE,
-  SAVE_FLASHCARDS_ANSWER,
-  PREPARE_WRITE,
-  SET_WRITE_IS_INIT,
-  SET_WRITE_ANSWER_FIELD,
-  SET_WRITE_COPY_ANSWER_FIELD,
   CHECK_WRITE_ANSWER,
   NEXT_WRITE_CARD,
-  OVERRIDE_WRITE_ANSWER,
   NEXT_WRITE_ROUND,
+  OVERRIDE_WRITE_ANSWER,
+  PREPARE_WRITE,
   RESET_ALL_GAME_FIELDS,
-} from '../types/types';
-import { card_fields } from '../reducers/game/gameInitState';
+  RESET_FLASHCARDS_PROGRESS,
+  SAVE_FLASHCARDS_ANSWER,
+  SET_FLASHCARDS_PROGRESS,
+  SET_FLASHCARDS_SHUFFLED,
+  SET_FLASHCARDS_SIDE,
+  SET_WRITE_ANSWER_FIELD,
+  SET_WRITE_COPY_ANSWER_FIELD,
+  SET_WRITE_IS_INIT,
+  SHUFFLE_FLASHCARDS,
+  SORT_FLASHCARDS,
+} from "../types/types";
+import { ThunkActionApp } from "./../store";
+import { AppActions } from "./../types/types";
 
 // SAVE_FLASHCARDS_ANSWER
 export const save_flashcards_answer = (
   id: string,
-  card_answer: 'correct' | 'incorrect'
+  card_answer: "correct" | "incorrect",
 ): AppActions => ({
   type: SAVE_FLASHCARDS_ANSWER,
   payload: {
@@ -46,7 +46,10 @@ export const reset_all_game_fields = (): AppActions => ({
 });
 
 // PREPARE_WRITE
-export const prepare_write = () => <ThunkActionApp>(async (dispatch, getState) => {
+export const prepare_write = () => <ThunkActionApp>(async (
+    dispatch,
+    getState,
+  ) => {
     const {
       main: { cards },
     } = getState();
@@ -90,10 +93,8 @@ export const set_write_copy_answer_field = (value: string): AppActions => ({
 });
 
 // CHECK_WRITE_ANSWER
-export const check_write_answer = (not_know?: boolean) => <ThunkActionApp>(async (
-    dispatch,
-    getState
-  ) => {
+export const check_write_answer = (not_know?: boolean) =>
+  <ThunkActionApp>(async (dispatch, getState) => {
     const {
       game: {
         write: { remaining, answer },
@@ -104,14 +105,15 @@ export const check_write_answer = (not_know?: boolean) => <ThunkActionApp>(async
     const id = remaining[remaining.length - 1].id;
     const card = cards[id];
 
-    const formatedTerm = card.term.replace(/&nbsp;/g, ' ').trim();
+    const formatedTerm = card.term.replace(/&nbsp;/g, " ").trim();
 
     const payload: {
-      card_answer: 'correct' | 'incorrect';
+      card_answer: "correct" | "incorrect";
       answer: string;
     } = {
-      card_answer: answer === formatedTerm && !not_know ? 'correct' : 'incorrect',
-      answer: not_know ? '' : answer,
+      card_answer:
+        answer === formatedTerm && !not_know ? "correct" : "incorrect",
+      answer: not_know ? "" : answer,
     };
 
     dispatch({
@@ -136,7 +138,7 @@ export const next_write_round = (): AppActions => ({
 });
 
 // SET_FLASHCARDS_PROGRESS
-export const set_flashcards_progress = (value: 'next' | 'prev') =>
+export const set_flashcards_progress = (value: "next" | "prev") =>
   <ThunkActionApp>(async (dispatch, getState) => {
     const {
       main: { cards },
@@ -152,12 +154,12 @@ export const set_flashcards_progress = (value: 'next' | 'prev') =>
       value?: number;
     } = {};
 
-    if (value === 'next') {
+    if (value === "next") {
       if (progress >= cards_arr.length) return;
       payload.value = 1;
     }
 
-    if (value === 'prev') {
+    if (value === "prev") {
       if (progress <= 0) return;
       payload.value = -1;
     }
@@ -181,12 +183,12 @@ export const sort_flashcards = (): AppActions => ({
 // RESET_FLASHCARDS_PROGRESS
 export const reset_flashcards_progress = () => <ThunkActionApp>(async (
     dispatch,
-    getState
+    getState,
   ) => {
     dispatch({
       type: SET_FLASHCARDS_SIDE,
       payload: {
-        value: 'definition',
+        value: "definition",
       },
     });
 
@@ -204,7 +206,9 @@ export const set_flashcards_shuffled = (value: boolean): AppActions => ({
 });
 
 // SET_FLASHCARDS_SIDE
-export const set_flashcards_side = (value: 'definition' | 'term'): AppActions => ({
+export const set_flashcards_side = (
+  value: "definition" | "term",
+): AppActions => ({
   type: SET_FLASHCARDS_SIDE,
   payload: {
     value,

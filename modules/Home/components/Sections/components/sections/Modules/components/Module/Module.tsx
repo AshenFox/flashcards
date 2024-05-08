@@ -1,11 +1,12 @@
-import { memo } from 'react';
-import Link from 'next/link';
-import { Module as ModuleType } from '@store/reducers/main/mainInitState';
-import { usePlug } from '@helpers/hooks/usePlug';
-import DateStr from '@ui/DateStr';
-import TextArea from '@ui/TextArea';
-import s from './styles.module.scss';
-import clsx from 'clsx';
+import { usePlug } from "@helpers/hooks/usePlug";
+import { Module as ModuleType } from "@store/reducers/main/mainInitState";
+import DateStr from "@ui/DateStr";
+import TextArea from "@ui/TextArea";
+import clsx from "clsx";
+import Link from "next/link";
+import { memo } from "react";
+
+import s from "./styles.module.scss";
 
 type ModuleProps = {
   data: ModuleType;
@@ -17,7 +18,7 @@ const Module = ({ data, filter = null }: ModuleProps) => {
 
   const filterRegExp = new RegExp(
     `${filter}(?!br>|r>|>|\/div>|div>|iv>|v>|nbsp;|bsp;|sp;|p;|;|\/span>|span>|pan>|an>|n>)`,
-    'g'
+    "g",
   );
 
   //helpers-delete
@@ -31,8 +32,8 @@ const Module = ({ data, filter = null }: ModuleProps) => {
 
   if (filter) html = formatted_title;
   if (!draft && !filter) html = title;
-  if (!title) html = '(Untitled)';
-  if (draft) html = '(Draft)';
+  if (!title) html = "(Untitled)";
+  if (draft) html = "(Draft)";
 
   const [visible, ref, Plug] = usePlug(s.module);
 

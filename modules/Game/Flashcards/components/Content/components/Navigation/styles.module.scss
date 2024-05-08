@@ -1,4 +1,4 @@
-@import '@styles/vars.scss';
+@import "@styles/vars.scss";
 
 .navigation {
   display: flex;
@@ -151,7 +151,7 @@
   transform: translateY(20rem);
   opacity: 0;
 
-  &[data-active='true'] {
+  &[data-active="true"] {
     transform: translateY(0);
     opacity: 1;
   }
@@ -185,7 +185,7 @@
     animation: pulse 1.25s linear infinite;
   }
 
-  &[data-answer='true'] {
+  &[data-answer="true"] {
     background-color: $palegreen;
 
     &:hover {
@@ -193,7 +193,7 @@
     }
   }
 
-  &[data-answer='false'] {
+  &[data-answer="false"] {
     background-color: $palered;
 
     &:hover {
@@ -208,7 +208,7 @@
   height: 80px;
 
   &:after {
-    content: ' ';
+    content: " ";
     display: block;
     width: 64px;
     height: 64px;

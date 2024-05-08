@@ -1,5 +1,6 @@
-import React, { ReactNode, memo } from 'react';
-import s from './styles.module.scss';
+import React, { memo, ReactNode } from "react";
+
+import s from "./styles.module.scss";
 
 type ControlButtonsProps = {
   children?: ReactNode;

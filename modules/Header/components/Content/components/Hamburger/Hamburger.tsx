@@ -1,10 +1,11 @@
-import clsx from 'clsx';
-import React, { MouseEventHandler, memo } from 'react';
-import s from './styles.module.scss';
+import clsx from "clsx";
+import React, { memo, MouseEventHandler } from "react";
+
+import s from "./styles.module.scss";
 
 type HamburgerProps = {
   active?: boolean;
-  hidden?: 'tablet' | 'mobile';
+  hidden?: "tablet" | "mobile";
   className?: string;
   onClick?: MouseEventHandler<HTMLButtonElement>;
 };

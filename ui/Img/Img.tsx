@@ -1,8 +1,9 @@
-import { SyntheticEvent, memo, useCallback } from 'react';
-import { useState, useRef } from 'react';
-import s from './styles.module.scss';
-import clsx from 'clsx';
-import { BrokenImageIcon } from '@ui/Icons';
+import { BrokenImageIcon } from "@ui/Icons";
+import clsx from "clsx";
+import { memo, SyntheticEvent, useCallback } from "react";
+import { useRef, useState } from "react";
+
+import s from "./styles.module.scss";
 
 type ImgProps = {
   containerClass?: string;
@@ -12,8 +13,8 @@ type ImgProps = {
 };
 
 const Img = ({
-  containerClass = '',
-  imgClass = '',
+  containerClass = "",
+  imgClass = "",
   url,
   isHideOnLoading = true,
 }: ImgProps) => {
@@ -30,11 +31,11 @@ const Img = ({
 
   const onError = useCallback(
     (e: SyntheticEvent<HTMLImageElement>) => setError(true),
-    []
+    [],
   );
   const onLoad = useCallback(
     (e: SyntheticEvent<HTMLImageElement>) => setLoaded(true),
-    []
+    [],
   );
 
   return (
@@ -42,8 +43,8 @@ const Img = ({
       className={clsx(
         containerClass,
         s.container,
-        !error || (loaded && isHideOnLoading) ? '' : s.not_loaded,
-        error && s.error
+        !error || (loaded && isHideOnLoading) ? "" : s.not_loaded,
+        error && s.error,
       )}
     >
       {url && !error && (
@@ -52,7 +53,7 @@ const Img = ({
           src={url}
           onLoad={onLoad}
           onError={onError}
-          alt=''
+          alt=""
         />
       )}
 

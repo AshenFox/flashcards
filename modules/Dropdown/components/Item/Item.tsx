@@ -1,14 +1,15 @@
-import clsx from 'clsx';
-import Link from 'next/link';
+import clsx from "clsx";
+import Link from "next/link";
 import {
+  cloneElement,
+  memo,
   MouseEventHandler,
   ReactElement,
   SVGProps,
-  cloneElement,
-  memo,
   useMemo,
-} from 'react';
-import s from './styles.module.scss';
+} from "react";
+
+import s from "./styles.module.scss";
 
 type ItemProps = {
   children: string;
@@ -19,9 +20,16 @@ type ItemProps = {
   active?: boolean;
 };
 
-const iconSize = '20';
+const iconSize = "20";
 
-const Item = ({ href, children, icon, onClick, caution, active }: ItemProps) => {
+const Item = ({
+  href,
+  children,
+  icon,
+  onClick,
+  caution,
+  active,
+}: ItemProps) => {
   const InnerElements = useMemo(
     () => (
       <>
@@ -29,12 +37,12 @@ const Item = ({ href, children, icon, onClick, caution, active }: ItemProps) => 
         <span>{children}</span>
       </>
     ),
-    [children, icon]
+    [children, icon],
   );
 
   const className = useMemo(
     () => clsx(s.item, caution && s.caution, active && s.active),
-    [active, caution]
+    [active, caution],
   );
 
   if (onClick) {

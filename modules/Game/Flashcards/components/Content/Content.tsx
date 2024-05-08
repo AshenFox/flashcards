@@ -1,24 +1,25 @@
-import { useRouter } from 'next/router';
-import Navigation from './components/Navigation';
-import Card from './components/Card/Card';
-import EndGame from './components/Card/EndGame';
-import EditCard from '@components/EditCard';
-import { useAppSelector } from '@store/hooks';
-import ContentContainer from '@modules/Game/components/ContentContainer';
-import { memo } from 'react';
-import Finish from './components/Finish';
-import s from './styles.module.scss';
+import EditCard from "@components/EditCard";
+import ContentContainer from "@modules/Game/components/ContentContainer";
+import { useAppSelector } from "@store/hooks";
+import { useRouter } from "next/router";
+import { memo } from "react";
+
+import Card from "./components/Card/Card";
+import EndGame from "./components/Card/EndGame";
+import Finish from "./components/Finish";
+import Navigation from "./components/Navigation";
+import s from "./styles.module.scss";
 
 const Content = () => {
   const router = useRouter();
   const { _id } = router.query;
 
-  const isSR = _id === 'sr';
+  const isSR = _id === "sr";
 
-  const progress = useAppSelector(s => s.game.flashcards.progress);
-  const side = useAppSelector(s => s.game.flashcards.side);
-  const cards = useAppSelector(s => s.main.cards);
-  const loading = useAppSelector(s => s.main.loading);
+  const progress = useAppSelector((s) => s.game.flashcards.progress);
+  const side = useAppSelector((s) => s.game.flashcards.side);
+  const cards = useAppSelector((s) => s.main.cards);
+  const loading = useAppSelector((s) => s.main.loading);
 
   const formatted_cards = Object.values(cards);
   const { length } = formatted_cards;
@@ -40,14 +41,18 @@ const Content = () => {
             if (i === progress) {
               return <Card key={card._id} data={card} side={side} />;
             } else if (i === progress - 1 && progress - 1 >= 0) {
-              return <Card key={card._id} data={card} position={'prev'} />;
+              return <Card key={card._id} data={card} position={"prev"} />;
             } else if (i === progress + 1 && progress + 1 <= length - 1) {
-              return <Card key={card._id} data={card} position={'next'} />;
+              return <Card key={card._id} data={card} position={"next"} />;
             } else {
               return false;
             }
           })}
-        {!isEdit && length && isEnd && isSR ? <Finish /> : <EndGame active={isEnd} />}
+        {!isEdit && length && isEnd && isSR ? (
+          <Finish />
+        ) : (
+          <EndGame active={isEnd} />
+        )}
         {isEdit && (
           <EditCard
             key={activeCardData._id}

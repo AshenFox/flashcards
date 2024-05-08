@@ -1,8 +1,11 @@
-import { HeaderActions } from './../../types/types';
-import { SET_DROPDOWN } from '../../types/types';
-import initialState, { HeaderState } from './headerInitState';
+import { SET_DROPDOWN } from "../../types/types";
+import { HeaderActions } from "./../../types/types";
+import initialState, { HeaderState } from "./headerInitState";
 
-const HeaderReducer = (state = initialState, action: HeaderActions): HeaderState => {
+const HeaderReducer = (
+  state = initialState,
+  action: HeaderActions,
+): HeaderState => {
   const { payload, type } = action;
 
   switch (type) {

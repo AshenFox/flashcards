@@ -1,12 +1,16 @@
-import { ReactNode, memo } from 'react';
-import s from './styles.module.scss';
+import { memo, ReactNode } from "react";
+
+import s from "./styles.module.scss";
 
 type ContentWrapperProps = {
   children: ReactNode;
   tagType?: keyof JSX.IntrinsicElements;
 };
 
-const ContentWrapper = ({ children, tagType = 'main' }: ContentWrapperProps) => {
+const ContentWrapper = ({
+  children,
+  tagType = "main",
+}: ContentWrapperProps) => {
   const WrapperTag = tagType;
 
   return <WrapperTag className={s.wrapper}>{children}</WrapperTag>;

@@ -1,4 +1,4 @@
-import mongoose, { SortOrder } from 'mongoose';
+import mongoose, { SortOrder } from "mongoose";
 
 const Schema = mongoose.Schema;
 

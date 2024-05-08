@@ -1,6 +1,7 @@
-import { memo } from 'react';
-import clsx from 'clsx';
-import s from './styles.module.scss';
+import clsx from "clsx";
+import { memo } from "react";
+
+import s from "./styles.module.scss";
 
 type SpinnerProps = {
   small?: boolean;

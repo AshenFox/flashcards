@@ -1,22 +1,23 @@
 import {
-  useEffect,
-  useRef,
-  MouseEvent as ReactMouseEvent,
-  CSSProperties,
-  memo,
-} from 'react';
-import { useRouter } from 'next/router';
-import { useActions, useAppSelector } from '@store/hooks';
-import Item from './components/Item';
-import Divider from './components/Divider';
-import s from './styles.module.scss';
-import clsx from 'clsx';
-import {
   getIsDraft,
   getIsFlashcards,
   getIsWrite,
-} from '@helpers/functions/determinePath';
-import { NewModuleIcon, ShuffleIcon } from '@ui/Icons';
+} from "@helpers/functions/determinePath";
+import { useActions, useAppSelector } from "@store/hooks";
+import { NewModuleIcon, ShuffleIcon } from "@ui/Icons";
+import clsx from "clsx";
+import { useRouter } from "next/router";
+import {
+  CSSProperties,
+  memo,
+  MouseEvent as ReactMouseEvent,
+  useEffect,
+  useRef,
+} from "react";
+
+import Divider from "./components/Divider";
+import Item from "./components/Item";
+import s from "./styles.module.scss";
 
 const Dropdown = () => {
   const {
@@ -29,22 +30,22 @@ const Dropdown = () => {
     set_dropdown,
   } = useActions();
 
-  const shuffled = useAppSelector(s => s.game.flashcards.shuffled);
-  const dropdown_active = useAppSelector(s => s.header.dropdown_active);
-  const header_height = useAppSelector(s => s.dimen.header_height);
+  const shuffled = useAppSelector((s) => s.game.flashcards.shuffled);
+  const dropdown_active = useAppSelector((s) => s.header.dropdown_active);
+  const header_height = useAppSelector((s) => s.dimen.header_height);
 
   const router = useRouter();
   const { _id } = router.query;
 
-  const isSR = _id === 'sr';
+  const isSR = _id === "sr";
 
   const isFlashcards = getIsFlashcards(router.pathname);
   const isWrite = getIsWrite(router.pathname);
   const isDraft = getIsDraft(router.asPath);
 
   const deactivateDropdown = useRef((e: MouseEvent) => {
-    const menuEl = (e.target as HTMLElement).closest('.header__menu');
-    const menuItemEl = (e.target as HTMLElement).closest('.header__menu-item');
+    const menuEl = (e.target as HTMLElement).closest(".header__menu");
+    const menuItemEl = (e.target as HTMLElement).closest(".header__menu-item");
 
     if (menuEl) {
       if (menuItemEl) set_dropdown(false);
@@ -57,11 +58,12 @@ const Dropdown = () => {
     setTimeout(
       () =>
         dropdown_active
-          ? window.addEventListener('click', deactivateDropdown.current)
-          : window.removeEventListener('click', deactivateDropdown.current),
-      0
+          ? window.addEventListener("click", deactivateDropdown.current)
+          : window.removeEventListener("click", deactivateDropdown.current),
+      0,
     );
-    return () => window.removeEventListener('click', deactivateDropdown.current);
+    return () =>
+      window.removeEventListener("click", deactivateDropdown.current);
   }, [dropdown_active]);
 
   const clickSuffle = (e: ReactMouseEvent<HTMLButtonElement>) => {
@@ -76,7 +78,8 @@ const Dropdown = () => {
     reset_flashcards_progress();
   };
 
-  const clickStartOver = (e: ReactMouseEvent<HTMLButtonElement>) => prepare_write();
+  const clickStartOver = (e: ReactMouseEvent<HTMLButtonElement>) =>
+    prepare_write();
 
   const logOut = (e: ReactMouseEvent<HTMLButtonElement>) => log_out();
 
@@ -85,13 +88,13 @@ const Dropdown = () => {
   const className = clsx(
     s.dropdown,
     dropdown_active && s.active,
-    isFlashcards || isWrite ? s.hide_min_tablet : s.hide_min_mobile
+    isFlashcards || isWrite ? s.hide_min_tablet : s.hide_min_mobile,
   );
 
   return (
     <div className={className} style={stylesHeader}>
       {!isDraft && (
-        <Item href='/edit/draft' icon={<NewModuleIcon />}>
+        <Item href="/edit/draft" icon={<NewModuleIcon />}>
           Create new module
         </Item>
       )}

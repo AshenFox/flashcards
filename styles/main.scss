@@ -1,5 +1,5 @@
-@import 'vars';
-@import 'animations';
+@import "vars";
+@import "animations";
 
 *,
 *:before,
@@ -12,7 +12,7 @@
 
 html {
   font-size: 10px;
-  font-family: 'Alata', sans-serif;
+  font-family: "Alata", sans-serif;
 }
 
 body {
@@ -66,4 +66,4 @@ button {
   }
 }
 
-@import 'helpers';
+@import "helpers";

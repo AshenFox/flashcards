@@ -1,32 +1,33 @@
-import { memo, useCallback, useEffect, useRef } from 'react';
-import ContentWrapper from '@components/ContentWrapper';
-import { useActions, useAppSelector } from '@store/hooks';
-import Container from '@components/Container';
-import { Left, Right } from './components/Content';
-import s from './styles.module.scss';
+import Container from "@components/Container";
+import ContentWrapper from "@components/ContentWrapper";
+import { useActions, useAppSelector } from "@store/hooks";
+import { memo, useCallback, useEffect, useRef } from "react";
+
+import { Left, Right } from "./components/Content";
+import s from "./styles.module.scss";
 
 const Header = () => {
   const { set_header_dimen } = useActions();
 
-  const user = useAppSelector(s => s.auth.user);
-  const loading = useAppSelector(s => s.auth.loading);
+  const user = useAppSelector((s) => s.auth.user);
+  const loading = useAppSelector((s) => s.auth.loading);
 
   const onSizeChange = useCallback(
     (e: UIEvent) => set_header_dimen(headerEl.current),
-    [set_header_dimen]
+    [set_header_dimen],
   );
   const onSizeChangeDelayed = useCallback(
     (e: Event) => setTimeout(() => set_header_dimen(headerEl.current), 200),
-    [set_header_dimen]
+    [set_header_dimen],
   );
 
   useEffect(() => {
-    window.addEventListener('resize', onSizeChange);
-    window.addEventListener('orientationchange', onSizeChangeDelayed);
+    window.addEventListener("resize", onSizeChange);
+    window.addEventListener("orientationchange", onSizeChangeDelayed);
 
     return () => {
-      window.removeEventListener('resize', onSizeChange);
-      window.removeEventListener('orientationchange', onSizeChangeDelayed);
+      window.removeEventListener("resize", onSizeChange);
+      window.removeEventListener("orientationchange", onSizeChangeDelayed);
     };
   }, [onSizeChange, onSizeChangeDelayed]);
 
@@ -38,7 +39,7 @@ const Header = () => {
 
   return (
     <header className={s.header} ref={headerEl}>
-      <ContentWrapper tagType='section'>
+      <ContentWrapper tagType="section">
         <Container>
           <div className={s.content}>
             <Left />

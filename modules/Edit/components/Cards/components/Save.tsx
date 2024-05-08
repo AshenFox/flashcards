@@ -1,15 +1,16 @@
-import { useRouter } from 'next/router';
-import { MouseEvent, memo, useCallback } from 'react';
-import { useActions, useAppSelector } from '@store/hooks';
-import LoadingBtn from '@ui/LoadingBtn';
-import Container from '@components/Container';
-import s from './styles.module.scss';
+import Container from "@components/Container";
+import { useActions, useAppSelector } from "@store/hooks";
+import LoadingBtn from "@ui/LoadingBtn";
+import { useRouter } from "next/router";
+import { memo, MouseEvent, useCallback } from "react";
+
+import s from "./styles.module.scss";
 
 const Save = () => {
   const { create_module } = useActions();
 
-  const currentModule = useAppSelector(s => s.main.module);
-  const cards = useAppSelector(s => s.main.cards);
+  const currentModule = useAppSelector((s) => s.main.module);
+  const cards = useAppSelector((s) => s.main.cards);
 
   const { _id, draft, title, module_loading } = currentModule || {};
 
@@ -36,14 +37,14 @@ const Save = () => {
     (e: MouseEvent<HTMLButtonElement>) => {
       if (active) create_module();
     },
-    [active, create_module]
+    [active, create_module],
   );
 
   const clickLink = useCallback(
     (e: MouseEvent<HTMLButtonElement>) => {
       router.replace(`/module/${_id}`);
     },
-    [_id, router]
+    [_id, router],
   );
 
   return (
@@ -54,9 +55,9 @@ const Save = () => {
             active={active || !draft ? true : false}
             loading={module_loading}
             onClickHandler={draft ? clickSave : clickLink}
-            classStr='btn bcc-lightblue pad30-70 brr15 white fz20 fw-bold h-grey h-bcc-yellow'
+            classStr="btn bcc-lightblue pad30-70 brr15 white fz20 fw-bold h-grey h-bcc-yellow"
           >
-            {draft ? 'Save' : 'Return'}
+            {draft ? "Save" : "Return"}
           </LoadingBtn>
         </div>
       </Container>
