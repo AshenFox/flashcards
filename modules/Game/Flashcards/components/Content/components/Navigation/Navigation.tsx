@@ -19,12 +19,10 @@ const Navigation = () => {
 
   const isSR = _id === "sr";
 
-  const {
-    main: { cards },
-    game: {
-      flashcards: { progress, is_turned, side },
-    },
-  } = useAppSelector(state => state);
+  const cards = useAppSelector(s => s.main.cards);
+  const progress = useAppSelector(s => s.game.flashcards.progress);
+  const is_turned = useAppSelector(s => s.game.flashcards.is_turned);
+  const side = useAppSelector(s => s.game.flashcards.side);
 
   const clickNavItem =
     (value: "next" | "prev", cardAnswer?: "correct" | "incorrect") =>

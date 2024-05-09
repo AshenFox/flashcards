@@ -9,7 +9,7 @@ import s from "./styles.module.scss";
 const ScrollTop = () => {
   const { set_scroll_top } = useActions();
 
-  const { scroll_top } = useAppSelector(({ main }) => main);
+  const scroll_top = useAppSelector(s => s.main.scroll_top);
 
   const scroll_top_ref = useRef(scroll_top);
   scroll_top_ref.current = scroll_top;

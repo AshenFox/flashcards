@@ -13,10 +13,10 @@ interface OwnProps {}
 type Props = OwnProps;
 
 const StudyRegime: FC<Props> = () => {
-  const {
-    sr: { all_num, repeat_num, counter },
-    main: { loading },
-  } = useAppSelector(state => state);
+  const all_num = useAppSelector(s => s.sr.all_num);
+  const repeat_num = useAppSelector(s => s.sr.repeat_num);
+  const counter = useAppSelector(s => s.sr.counter);
+  const loading = useAppSelector(s => s.main.loading);
 
   return (
     <div className={s.study_regime}>

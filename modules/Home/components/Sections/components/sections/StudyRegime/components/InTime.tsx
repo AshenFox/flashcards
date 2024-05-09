@@ -3,10 +3,9 @@ import { memo } from "react";
 import Skeleton from "react-loading-skeleton";
 
 const InTime = () => {
-  const {
-    sr: { next_num, next_date },
-    main: { loading },
-  } = useAppSelector(state => state);
+  const next_num = useAppSelector(s => s.sr.next_num);
+  const next_date = useAppSelector(s => s.sr.next_date);
+  const loading = useAppSelector(s => s.main.loading);
 
   return (
     <>
