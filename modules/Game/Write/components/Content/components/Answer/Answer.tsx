@@ -33,9 +33,11 @@ const Answer = ({ data }: AnswerProps) => {
   const isSR = _id_param === "sr";
 
   const { _id, term, defenition, imgurl } = data;
-  const {
-    write: { answer, copy_answer, remaining, rounds },
-  } = useAppSelector(({ game }) => game);
+
+  const answer = useAppSelector(s => s.game.write.answer);
+  const copy_answer = useAppSelector(s => s.game.write.copy_answer);
+  const remaining = useAppSelector(s => s.game.write.remaining);
+  const rounds = useAppSelector(s => s.game.write.rounds);
 
   const activeCard = remaining[remaining.length - 1];
   let isCorrect = false;

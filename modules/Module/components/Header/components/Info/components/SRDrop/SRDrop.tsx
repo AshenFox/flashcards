@@ -9,9 +9,9 @@ import s from "./styles.module.scss";
 const SRDrop = () => {
   const { set_module_question } = useActions();
 
-  const { module } = useAppSelector(({ main }) => main);
+  const currentModule = useAppSelector(s => s.main.module);
 
-  const { question } = module || {};
+  const { question } = currentModule || {};
 
   const clickDropSR = (e: MouseEvent<HTMLDivElement>) =>
     set_module_question(true);

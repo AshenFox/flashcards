@@ -6,9 +6,10 @@ import ScrollLoader from "@ui/ScrollLoader";
 import { memo } from "react";
 
 const CardsContainer = () => {
-  const { cards, loading, search_cards, select_by } = useAppSelector(
-    ({ main }) => main,
-  );
+  const cards = useAppSelector(s => s.main.cards);
+  const loading = useAppSelector(s => s.main.loading);
+  const search_cards = useAppSelector(s => s.main.search_cards);
+  const select_by = useAppSelector(s => s.main.select_by);
 
   const formatted_cards = Object.values(cards);
 

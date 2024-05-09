@@ -21,7 +21,7 @@ const Flashcards = () => {
 
   const isSR = _id === "sr";
 
-  const { user } = useAppSelector(({ auth }) => auth);
+  const user = useAppSelector(s => s.auth.user);
 
   useEffect(() => {
     if (user) {

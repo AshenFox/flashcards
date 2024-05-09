@@ -40,10 +40,9 @@ const Home = () => {
     get_sr_count,
   } = useActions();
 
-  const {
-    main: { modules, cards },
-    auth: { user },
-  } = useAppSelector(state => state);
+  const modules = useAppSelector(s => s.main.modules);
+  const cards = useAppSelector(s => s.main.cards);
+  const user = useAppSelector(s => s.auth.user);
 
   useEffect(() => {
     if (!user) return;

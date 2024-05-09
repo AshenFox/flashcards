@@ -9,7 +9,7 @@ import s from "./styles.module.scss";
 const SR = () => {
   const { set_cards_sr } = useActions();
 
-  const { cards } = useAppSelector(({ main }) => main);
+  const cards = useAppSelector(s => s.main.cards);
 
   const cardsArr = Object.values(cards);
 
