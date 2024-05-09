@@ -7,7 +7,7 @@ import s from "./styles.module.scss";
 const Delete = () => {
   const { delete_module, toggle_modal } = useActions();
 
-  const currentModule = useAppSelector((s) => s.main.module);
+  const currentModule = useAppSelector(s => s.main.module);
 
   const { _id, module_loading, title } = currentModule || {};
 

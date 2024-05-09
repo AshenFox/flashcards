@@ -15,11 +15,11 @@ const ContentContainer = ({
   children,
   isScrollable = true,
 }: ContentContainerProps) => {
-  const header_height = useAppSelector((s) => s.dimen.header_height);
+  const header_height = useAppSelector(s => s.dimen.header_height);
   const game_controls_height = useAppSelector(
-    (s) => s.dimen.game_controls_height,
+    s => s.dimen.game_controls_height,
   );
-  const is_server = useAppSelector((s) => s.main.is_server);
+  const is_server = useAppSelector(s => s.main.is_server);
 
   const styles: CSSProperties = useMemo(
     () => ({

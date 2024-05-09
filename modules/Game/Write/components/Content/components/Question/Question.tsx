@@ -35,7 +35,7 @@ const Question = ({ data }: QuestionProps) => {
   const isSR = _id_param === "sr";
 
   const { _id, term, defenition, imgurl } = data || {};
-  const answer = useAppSelector((s) => s.game.write.answer);
+  const answer = useAppSelector(s => s.game.write.answer);
 
   const formattedDefinition = defenition.replaceAll(
     /\( \/(.*?)\/ \)/g,
@@ -68,7 +68,7 @@ const Question = ({ data }: QuestionProps) => {
     check_write_answer(true);
   }, [check_write_answer]);
 
-  const disableDefault = useCallback<FormEventHandler<HTMLFormElement>>((e) => {
+  const disableDefault = useCallback<FormEventHandler<HTMLFormElement>>(e => {
     e.preventDefault();
   }, []);
 

@@ -9,9 +9,9 @@ import { AddCard, Save } from "./components";
 import s from "./styles.module.scss";
 
 const Cards = () => {
-  const cards = useAppSelector((s) => s.main.cards);
-  const currentModule = useAppSelector((s) => s.main.module);
-  const loading = useAppSelector((s) => s.main.loading);
+  const cards = useAppSelector(s => s.main.cards);
+  const currentModule = useAppSelector(s => s.main.module);
+  const loading = useAppSelector(s => s.main.loading);
 
   const { draft } = currentModule || {};
 

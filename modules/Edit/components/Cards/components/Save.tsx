@@ -9,8 +9,8 @@ import s from "./styles.module.scss";
 const Save = () => {
   const { create_module } = useActions();
 
-  const currentModule = useAppSelector((s) => s.main.module);
-  const cards = useAppSelector((s) => s.main.cards);
+  const currentModule = useAppSelector(s => s.main.module);
+  const cards = useAppSelector(s => s.main.cards);
 
   const { _id, draft, title, module_loading } = currentModule || {};
 

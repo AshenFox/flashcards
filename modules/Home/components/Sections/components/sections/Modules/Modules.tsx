@@ -15,11 +15,11 @@ const optionsBy: Option[] = [
 ];
 
 const Modules = () => {
-  const modules = useAppSelector((s) => s.main.modules);
-  const draft = useAppSelector((s) => s.main.draft);
-  const loading = useAppSelector((s) => s.main.loading);
-  const search_modules = useAppSelector((s) => s.main.search_modules);
-  const select_created = useAppSelector((s) => s.main.select_created);
+  const modules = useAppSelector(s => s.main.modules);
+  const draft = useAppSelector(s => s.main.draft);
+  const loading = useAppSelector(s => s.main.loading);
+  const search_modules = useAppSelector(s => s.main.search_modules);
+  const select_created = useAppSelector(s => s.main.select_created);
 
   const {
     get_modules,
@@ -74,7 +74,7 @@ const Modules = () => {
         <NotFound
           resultsFound={modules.length}
           filterValue={search_modules.value}
-          notFoundMsg={(value) => (
+          notFoundMsg={value => (
             <>
               No modules matching <b>{`"${value}"`}</b> found.
             </>

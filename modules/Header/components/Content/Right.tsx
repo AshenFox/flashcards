@@ -14,8 +14,8 @@ const Right = () => {
 
   const router = useRouter();
 
-  const user = useAppSelector((s) => s.auth.user);
-  const dropdown_active = useAppSelector((s) => s.header.dropdown_active);
+  const user = useAppSelector(s => s.auth.user);
+  const dropdown_active = useAppSelector(s => s.header.dropdown_active);
 
   const isDraft = getIsDraft(router.asPath);
   const isGame = getIsGame(router.pathname);

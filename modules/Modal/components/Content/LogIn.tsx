@@ -13,15 +13,15 @@ const LogIn = () => {
 
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
 
-  const username = useAppSelector((s) => s.modal.log_in.username);
-  const password = useAppSelector((s) => s.modal.log_in.password);
-  const userErr = useAppSelector((s) => s.modal.log_in_errors.username);
-  const passErr = useAppSelector((s) => s.modal.log_in_errors.password);
-  const loading = useAppSelector((s) => s.modal.loading);
+  const username = useAppSelector(s => s.modal.log_in.username);
+  const password = useAppSelector(s => s.modal.log_in.password);
+  const userErr = useAppSelector(s => s.modal.log_in_errors.username);
+  const passErr = useAppSelector(s => s.modal.log_in_errors.password);
+  const loading = useAppSelector(s => s.modal.loading);
 
   const onPasswordVisibleButton = (e: MouseEvent<SVGElement>) => {
     e.preventDefault();
-    setIsPasswordVisible((v) => !v);
+    setIsPasswordVisible(v => !v);
   };
 
   const onClickChangeModal =

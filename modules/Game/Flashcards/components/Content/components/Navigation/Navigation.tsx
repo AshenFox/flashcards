@@ -24,7 +24,7 @@ const Navigation = () => {
     game: {
       flashcards: { progress, is_turned, side },
     },
-  } = useAppSelector((state) => state);
+  } = useAppSelector(state => state);
 
   const clickNavItem =
     (value: "next" | "prev", cardAnswer?: "correct" | "incorrect") =>

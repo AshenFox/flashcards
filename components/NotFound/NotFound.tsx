@@ -1,6 +1,6 @@
-import { memo, ReactNode } from 'react';
+import { memo, ReactNode } from "react";
 
-import s from './styles.module.scss';
+import s from "./styles.module.scss";
 
 type NotFoundProps = {
   resultsFound: number;
@@ -19,7 +19,8 @@ const NotFound = ({
 
   if (notFoundMsg && !resultsFound) content = <p>{notFoundMsg(filterValue)}</p>;
 
-  if (nothingMsg && !resultsFound && filterValue === '') content = <p>{nothingMsg}</p>;
+  if (nothingMsg && !resultsFound && filterValue === "")
+    content = <p>{nothingMsg}</p>;
 
   return <div className={s.not_found}>{content}</div>;
 };

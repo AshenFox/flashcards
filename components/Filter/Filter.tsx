@@ -12,7 +12,7 @@ import s from "./styles.module.scss";
 
 export type Option = { value: string; label: string };
 
-const createCustomTheme: ThemeConfig = (theme) => ({
+const createCustomTheme: ThemeConfig = theme => ({
   ...theme,
   colors: {
     ...theme.colors,
@@ -22,7 +22,7 @@ const createCustomTheme: ThemeConfig = (theme) => ({
 });
 
 const customStyles: StylesConfig<Option, false, GroupBase<Option>> = {
-  dropdownIndicator: (provided) => ({
+  dropdownIndicator: provided => ({
     ...provided,
     paddingLeft: 3,
     paddingRight: 3,
@@ -56,7 +56,7 @@ const Filter = ({
 }: FilterProps) => {
   const timer = useRef<ReturnType<typeof setTimeout>>(null);
 
-  const onInnerSearchChange: ChangeEventHandler<HTMLInputElement> = (e) => {
+  const onInnerSearchChange: ChangeEventHandler<HTMLInputElement> = e => {
     search.setValue(e.target.value);
     resetData();
 
@@ -78,7 +78,7 @@ const Filter = ({
           />
         )}
         <div className={s.select_group}>
-          {selects?.map((select) => {
+          {selects?.map(select => {
             const onChange = (value: Option) => {
               select.setValue(value);
 

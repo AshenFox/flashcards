@@ -372,7 +372,7 @@ export const get_sr_cards = (number: number) => <ThunkActionApp>(async (
 
 const arr_to_obj = (arr: CardBase[]): Cards => {
   return Object.fromEntries(
-    arr.map((card) => [
+    arr.map(card => [
       card._id,
       {
         ...card,

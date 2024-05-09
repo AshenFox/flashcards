@@ -7,7 +7,7 @@ import SignUp from "./SignUp";
 import s from "./styles.module.scss";
 
 const Content = () => {
-  const active_modal = useAppSelector((s) => s.modal.active_modal);
+  const active_modal = useAppSelector(s => s.modal.active_modal);
 
   return (
     <div className={s.content}>

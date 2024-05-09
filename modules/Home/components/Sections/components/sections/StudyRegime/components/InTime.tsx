@@ -6,7 +6,7 @@ const InTime = () => {
   const {
     sr: { next_num, next_date },
     main: { loading },
-  } = useAppSelector((state) => state);
+  } = useAppSelector(state => state);
 
   return (
     <>

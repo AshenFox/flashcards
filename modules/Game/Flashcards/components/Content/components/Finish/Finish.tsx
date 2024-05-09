@@ -3,9 +3,9 @@ import { useAppSelector } from "@store/hooks";
 import { memo } from "react";
 
 const Finish = () => {
-  const answers = useAppSelector((s) => s.game.flashcards.answers);
+  const answers = useAppSelector(s => s.game.flashcards.answers);
 
-  const correctNum = answers.filter((item) => item.answer === "correct").length;
+  const correctNum = answers.filter(item => item.answer === "correct").length;
 
   return (
     <Results title={"Results"} progress={correctNum} all={answers.length}>

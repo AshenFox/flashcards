@@ -16,10 +16,10 @@ const Content = () => {
 
   const isSR = _id === "sr";
 
-  const progress = useAppSelector((s) => s.game.flashcards.progress);
-  const side = useAppSelector((s) => s.game.flashcards.side);
-  const cards = useAppSelector((s) => s.main.cards);
-  const loading = useAppSelector((s) => s.main.loading);
+  const progress = useAppSelector(s => s.game.flashcards.progress);
+  const side = useAppSelector(s => s.game.flashcards.side);
+  const cards = useAppSelector(s => s.main.cards);
+  const loading = useAppSelector(s => s.main.loading);
 
   const formatted_cards = Object.values(cards);
   const { length } = formatted_cards;

@@ -5,8 +5,8 @@ import { memo, useEffect } from "react";
 const Finish = () => {
   const { next_write_round } = useActions();
 
-  const all_cards_num = useAppSelector((s) => s.game.write.all_cards_num);
-  const rounds = useAppSelector((s) => s.game.write.rounds);
+  const all_cards_num = useAppSelector(s => s.game.write.all_cards_num);
+  const rounds = useAppSelector(s => s.game.write.rounds);
 
   useEffect(() => {
     if (all_cards_num) next_write_round();
@@ -16,7 +16,7 @@ const Finish = () => {
     <>
       {rounds.map((round, i) => {
         const correctNum = round.filter(
-          (item) => item.answer === "correct",
+          item => item.answer === "correct",
         ).length;
 
         return (

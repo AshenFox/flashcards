@@ -60,14 +60,14 @@ const Speaker = ({ _id, text, type, className, ref }: SpeakerProps) => {
         rate: 1,
         volume: 1,
         start: () => console.info("Start speaking..."),
-        pause: (e) => {
+        pause: e => {
           console.info("Pause");
         },
         end: () => {
           console.info("Done speaking...");
           set_voice_speaking();
         },
-        error: (e) => {
+        error: e => {
           console.info("Something vent wrong...", e);
         },
       });

@@ -11,8 +11,8 @@ const Title = () => {
 
   const isGame = getIsGame(router.pathname);
 
-  const user = useAppSelector((s) => s.auth.user);
-  const header_width = useAppSelector((s) => s.dimen.header_width);
+  const user = useAppSelector(s => s.auth.user);
+  const header_width = useAppSelector(s => s.dimen.header_width);
 
   return (
     <a className={s.link} href={user ? "/home/modules" : "/"}>

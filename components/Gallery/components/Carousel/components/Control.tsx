@@ -13,7 +13,7 @@ type ControlProps = {
 const Control = ({ direction, _id }: ControlProps) => {
   const { move_gallery } = useActions();
 
-  const cards = useAppSelector((s) => s.main.cards);
+  const cards = useAppSelector(s => s.main.cards);
 
   const card = cards[_id];
   const { position = 0, width = 0 } = card?.gallery ?? {};

@@ -14,7 +14,7 @@ const Info = () => {
   const { change_modal, toggle_modal, set_module_question, drop_cards_sr } =
     useActions();
 
-  const currentModule = useAppSelector((s) => s.main.module);
+  const currentModule = useAppSelector(s => s.main.module);
 
   const { author, _id, creation_date, question } = currentModule || {};
 

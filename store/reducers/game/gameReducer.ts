@@ -130,8 +130,8 @@ const GameReducer = (state = initialState, action: GameActions): GameState => {
           copy_answer: "",
           remaining: shuffle(
             state.write.answered
-              .filter((item) => item.answer === "incorrect")
-              .map((item) => ({ ...item, answer: false })),
+              .filter(item => item.answer === "incorrect")
+              .map(item => ({ ...item, answer: false })),
           ).sort((a, b) => b.stage - a.stage),
           answered: [],
           rounds: [...state.write.rounds, [...state.write.answered]],

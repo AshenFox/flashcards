@@ -17,8 +17,8 @@ const Write = () => {
     get_sr_cards,
   } = useActions();
 
-  const cards = useAppSelector((s) => s.main.cards);
-  const user = useAppSelector((s) => s.auth.user);
+  const cards = useAppSelector(s => s.main.cards);
+  const user = useAppSelector(s => s.auth.user);
 
   const router = useRouter();
   const { _id, number } = router.query;

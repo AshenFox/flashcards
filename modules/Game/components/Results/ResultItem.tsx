@@ -24,7 +24,7 @@ const ResultItem = ({ data, number, showHeader = true }: ResultItemProps) => {
 
   const isSR = _id === "sr";
 
-  const cards = useAppSelector((s) => s.main.cards);
+  const cards = useAppSelector(s => s.main.cards);
 
   const { term, defenition, imgurl, stage, nextRep, prevStage } =
     cards[data.id] ?? {};

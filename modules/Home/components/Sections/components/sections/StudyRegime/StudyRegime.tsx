@@ -16,7 +16,7 @@ const StudyRegime: FC<Props> = () => {
   const {
     sr: { all_num, repeat_num, counter },
     main: { loading },
-  } = useAppSelector((state) => state);
+  } = useAppSelector(state => state);
 
   return (
     <div className={s.study_regime}>

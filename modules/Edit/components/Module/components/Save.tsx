@@ -8,7 +8,7 @@ import s from "./styles.module.scss";
 const Save = () => {
   const { set_cards_save } = useActions();
 
-  const cards = useAppSelector((s) => s.main.cards);
+  const cards = useAppSelector(s => s.main.cards);
 
   const cardsArr = Object.values(cards);
 

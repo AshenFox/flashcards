@@ -15,8 +15,8 @@ const Left = () => {
   const isSR = getIsSR(_id);
   const isGame = getIsGame(router.pathname);
 
-  const user = useAppSelector((s) => s.auth.user);
-  const loading = useAppSelector((s) => s.auth.loading);
+  const user = useAppSelector(s => s.auth.user);
+  const loading = useAppSelector(s => s.auth.loading);
 
   return (
     <div className={s.left}>

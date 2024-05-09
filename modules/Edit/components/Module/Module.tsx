@@ -18,9 +18,9 @@ const Module = () => {
 
   const isDraft = _id === "draft";
 
-  const currentModule = useAppSelector((s) => s.main.module);
-  const cards = useAppSelector((s) => s.main.cards);
-  const loading = useAppSelector((s) => s.main.loading);
+  const currentModule = useAppSelector(s => s.main.module);
+  const cards = useAppSelector(s => s.main.cards);
+  const loading = useAppSelector(s => s.main.loading);
 
   const { title, draft, _id: moduleId } = currentModule || {};
 

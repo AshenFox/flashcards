@@ -8,8 +8,8 @@ import s from "./styles.module.scss";
 const Modal = () => {
   const { toggle_modal } = useActions();
 
-  const is_modal = useAppSelector((s) => s.modal.is_modal);
-  const active_modal = useAppSelector((s) => s.modal.active_modal);
+  const is_modal = useAppSelector(s => s.modal.is_modal);
+  const active_modal = useAppSelector(s => s.modal.active_modal);
 
   const modalEl = useRef<HTMLDivElement>(null);
   const dialogEl = useRef<HTMLDivElement>(null);
