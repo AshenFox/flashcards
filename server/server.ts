@@ -106,7 +106,7 @@ const start = async () => {
   }
 };
 
-process.on('SIGTERM', async () => {
+process.on('SIGINT', async () => {
   console.log('\nGracefully shutting down from SIGINT (Ctrl-C)');
   await nextApp.close();
   process.exit(0);
