@@ -9,8 +9,8 @@ import s from "./styles.module.scss";
 const Header = () => {
   const { set_header_dimen } = useActions();
 
-  const user = useAppSelector((s) => s.auth.user);
-  const loading = useAppSelector((s) => s.auth.loading);
+  const user = useAppSelector(s => s.auth.user);
+  const loading = useAppSelector(s => s.auth.loading);
 
   const onSizeChange = useCallback(
     (e: UIEvent) => set_header_dimen(headerEl.current),

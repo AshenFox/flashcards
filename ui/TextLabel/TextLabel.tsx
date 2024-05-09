@@ -36,7 +36,7 @@ const TextLabel = ({
   ...rest
 }: TextLabelProps) => {
   const onInnerLabelClick = useCallback<MouseEventHandler<HTMLLabelElement>>(
-    (e) => {
+    e => {
       onClick?.(e);
 
       if (htmlFor) {

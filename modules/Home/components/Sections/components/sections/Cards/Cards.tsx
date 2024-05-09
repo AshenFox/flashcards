@@ -21,11 +21,11 @@ const optionsCreated: Option[] = [
 ];
 
 const Cards = () => {
-  const loading = useAppSelector((s) => s.main.loading);
-  const cards = useAppSelector((s) => s.main.cards);
-  const search_cards = useAppSelector((s) => s.main.search_cards);
-  const select_by = useAppSelector((s) => s.main.select_by);
-  const select_created = useAppSelector((s) => s.main.select_created);
+  const loading = useAppSelector(s => s.main.loading);
+  const cards = useAppSelector(s => s.main.cards);
+  const search_cards = useAppSelector(s => s.main.search_cards);
+  const select_by = useAppSelector(s => s.main.select_by);
+  const select_created = useAppSelector(s => s.main.select_created);
 
   const formatted_cards = Object.values(cards);
 
@@ -92,7 +92,7 @@ const Cards = () => {
         <NotFound
           resultsFound={formatted_cards.length}
           filterValue={search_cards.value}
-          notFoundMsg={(value) => (
+          notFoundMsg={value => (
             <>
               No cards matching <b>{`"${value}"`}</b> found.
             </>

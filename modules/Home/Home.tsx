@@ -43,7 +43,7 @@ const Home = () => {
   const {
     main: { modules, cards },
     auth: { user },
-  } = useAppSelector((state) => state);
+  } = useAppSelector(state => state);
 
   useEffect(() => {
     if (!user) return;

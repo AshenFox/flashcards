@@ -78,7 +78,7 @@ const client_interface: IClientInterface = {
   },
 };
 
-keyArr.forEach((key) => {
+keyArr.forEach(key => {
   client_interface.clientArr.push(new Client(cse_id, key));
 });
 

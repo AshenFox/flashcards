@@ -360,7 +360,7 @@ export const get_draft = () => <ThunkActionApp>(async (dispatch, getState) => {
 
 const arr_to_obj = (arr: CardBase[]): Cards => {
   return Object.fromEntries(
-    arr.map((card) => [
+    arr.map(card => [
       card._id,
       {
         ...card,

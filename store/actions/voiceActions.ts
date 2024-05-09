@@ -22,7 +22,7 @@ export const set_voice_speaking = (
 };
 
 // INIT_EASY_SPEECH
-export const init_easy_speech = () => <ThunkActionApp>(async (dispatch) => {
+export const init_easy_speech = () => <ThunkActionApp>(async dispatch => {
     const status = EasySpeech.status() as EasySpeechStatus;
 
     if (status?.initialized) {
@@ -52,7 +52,7 @@ export const init_easy_speech = () => <ThunkActionApp>(async (dispatch) => {
 
       const voicesArr = EasySpeech.voices();
 
-      voicesArr.forEach((voice) => {
+      voicesArr.forEach(voice => {
         if (voice.name === "Google US English") voices.english = voice;
         if (voice.name === "Google русский") voices.russian = voice;
         if (/en.+US/.test(voice.lang) && !voices.engBackup)

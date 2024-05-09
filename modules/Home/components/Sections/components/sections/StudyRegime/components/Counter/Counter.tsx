@@ -14,7 +14,7 @@ import s from "./styles.module.scss";
 const Counter = () => {
   const { set_sr_counter } = useActions();
 
-  const counter = useAppSelector((s) => s.sr.counter);
+  const counter = useAppSelector(s => s.sr.counter);
 
   const handleCounterChange = (e: ChangeEvent<HTMLInputElement>) =>
     set_sr_counter(null, e.target.value);

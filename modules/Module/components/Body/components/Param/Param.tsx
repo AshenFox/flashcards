@@ -10,9 +10,9 @@ const optionsBy: Option[] = [
 ];
 
 const Param = () => {
-  const search_cards = useAppSelector((s) => s.main.search_cards);
-  const select_by = useAppSelector((s) => s.main.select_by);
-  const currentModule = useAppSelector((s) => s.main.module);
+  const search_cards = useAppSelector(s => s.main.search_cards);
+  const select_by = useAppSelector(s => s.main.select_by);
+  const currentModule = useAppSelector(s => s.main.module);
 
   const { _id, number } = currentModule || {};
 

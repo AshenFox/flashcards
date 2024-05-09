@@ -10,7 +10,7 @@ import Study from "./components/Study/Study";
 import s from "./styles.module.scss";
 
 const Header = () => {
-  const currentModule = useAppSelector((s) => s.main.module);
+  const currentModule = useAppSelector(s => s.main.module);
 
   const { title } = currentModule || {};
 

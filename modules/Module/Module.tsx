@@ -12,7 +12,7 @@ const Module = () => {
   const router = useRouter();
   const { _id } = router.query;
 
-  const user = useAppSelector((s) => s.auth.user);
+  const user = useAppSelector(s => s.auth.user);
 
   useEffect(() => {
     if (user && typeof _id === "string") get_module(_id);

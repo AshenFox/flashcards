@@ -6,25 +6,25 @@ import ProgressBar from "@ui/ProgressBar";
 import React, { memo } from "react";
 
 const Progress = () => {
-  const remaining = useAppSelector((s) => s.game.write.remaining);
-  const answered = useAppSelector((s) => s.game.write.answered);
-  const rounds = useAppSelector((s) => s.game.write.rounds);
-  const all_cards_num = useAppSelector((s) => s.game.write.all_cards_num);
+  const remaining = useAppSelector(s => s.game.write.remaining);
+  const answered = useAppSelector(s => s.game.write.answered);
+  const rounds = useAppSelector(s => s.game.write.rounds);
+  const all_cards_num = useAppSelector(s => s.game.write.all_cards_num);
 
   const correctAnswered = answered.filter(
-    (item) => item.answer === "correct",
+    item => item.answer === "correct",
   ).length;
 
   let correctRounds = 0;
   for (const round of rounds) {
-    let correctRound = round.filter((item) => item.answer === "correct").length;
+    let correctRound = round.filter(item => item.answer === "correct").length;
     correctRounds += correctRound;
   }
 
   const remainingNum = remaining.length;
   const correctNum = correctAnswered + correctRounds;
   const incorrectNum = answered.filter(
-    (item) => item.answer === "incorrect",
+    item => item.answer === "incorrect",
   ).length;
 
   return (

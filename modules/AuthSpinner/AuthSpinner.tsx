@@ -6,7 +6,7 @@ import { memo } from "react";
 import s from "./styles.module.scss";
 
 const AuthSpinner = () => {
-  const loading = useAppSelector((s) => s.auth.loading);
+  const loading = useAppSelector(s => s.auth.loading);
 
   return (
     <div className={clsx(s.container, !loading && "hidden")}>

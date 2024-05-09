@@ -6,8 +6,8 @@ import s from "./styles.module.scss";
 const Start = () => {
   const { change_modal, toggle_modal } = useActions();
 
-  const header_height = useAppSelector((s) => s.dimen.header_height);
-  const is_server = useAppSelector((s) => s.main.is_server);
+  const header_height = useAppSelector(s => s.dimen.header_height);
+  const is_server = useAppSelector(s => s.main.is_server);
 
   const click = (value: "log_in") => (e: MouseEvent<HTMLButtonElement>) => {
     change_modal(value);

@@ -12,7 +12,7 @@ const Intro = () => {
 
   const { _id } = router.query;
 
-  const currentModule = useAppSelector((s) => s.main.module);
+  const currentModule = useAppSelector(s => s.main.module);
 
   const { draft } = currentModule || {};
 

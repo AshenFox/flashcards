@@ -5,7 +5,7 @@ import { memo } from "react";
 import { useEffect } from "react";
 
 const Push = () => {
-  const user = useAppSelector((s) => s.auth.user);
+  const user = useAppSelector(s => s.auth.user);
 
   useEffect(() => {
     let device: "mobile" | "tablet" | "pc";

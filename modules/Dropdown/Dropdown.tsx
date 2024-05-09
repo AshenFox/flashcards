@@ -30,9 +30,9 @@ const Dropdown = () => {
     set_dropdown,
   } = useActions();
 
-  const shuffled = useAppSelector((s) => s.game.flashcards.shuffled);
-  const dropdown_active = useAppSelector((s) => s.header.dropdown_active);
-  const header_height = useAppSelector((s) => s.dimen.header_height);
+  const shuffled = useAppSelector(s => s.game.flashcards.shuffled);
+  const dropdown_active = useAppSelector(s => s.header.dropdown_active);
+  const header_height = useAppSelector(s => s.dimen.header_height);
 
   const router = useRouter();
   const { _id } = router.query;

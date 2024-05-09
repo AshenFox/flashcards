@@ -11,14 +11,14 @@ import s from "./styles.module.scss";
 const SignUp = () => {
   const { change_modal, control_field, enter, check_field } = useActions();
 
-  const username = useAppSelector((s) => s.modal.sign_up.username);
-  const password = useAppSelector((s) => s.modal.sign_up.password);
-  const email = useAppSelector((s) => s.modal.sign_up.email);
-  const userErr = useAppSelector((s) => s.modal.sign_up_errors.username);
-  const passErr = useAppSelector((s) => s.modal.sign_up_errors.password);
-  const emailErr = useAppSelector((s) => s.modal.sign_up_errors.email);
-  const ok = useAppSelector((s) => s.modal.sign_up_errors.ok);
-  const loading = useAppSelector((s) => s.modal.loading);
+  const username = useAppSelector(s => s.modal.sign_up.username);
+  const password = useAppSelector(s => s.modal.sign_up.password);
+  const email = useAppSelector(s => s.modal.sign_up.email);
+  const userErr = useAppSelector(s => s.modal.sign_up_errors.username);
+  const passErr = useAppSelector(s => s.modal.sign_up_errors.password);
+  const emailErr = useAppSelector(s => s.modal.sign_up_errors.email);
+  const ok = useAppSelector(s => s.modal.sign_up_errors.ok);
+  const loading = useAppSelector(s => s.modal.loading);
 
   const onClickChangeModal =
     (value: "log_in") => (e: MouseEvent<HTMLButtonElement>) => {

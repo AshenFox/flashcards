@@ -14,7 +14,7 @@ const CardsContainer = () => {
 
   return (
     <div>
-      {formatted_cards.map((card) =>
+      {formatted_cards.map(card =>
         card.edit ? (
           <EditCard
             key={card._id}
@@ -36,7 +36,7 @@ const CardsContainer = () => {
         <NotFound
           resultsFound={formatted_cards.length}
           filterValue={search_cards.value}
-          notFoundMsg={(value) => (
+          notFoundMsg={value => (
             <>
               No cards matching <b>{`"${value}"`}</b> found.
             </>

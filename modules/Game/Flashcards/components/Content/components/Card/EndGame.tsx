@@ -11,8 +11,8 @@ type EndGameProps = {
 };
 
 const EndGame = ({ active }: EndGameProps) => {
-  const cards = useAppSelector((s) => s.main.cards);
-  const progress = useAppSelector((s) => s.game.flashcards.progress);
+  const cards = useAppSelector(s => s.main.cards);
+  const progress = useAppSelector(s => s.game.flashcards.progress);
 
   const router = useRouter();
 

@@ -8,8 +8,8 @@ import { memo } from "react";
 import s from "./styles.module.scss";
 
 const Progress = () => {
-  const cards = useAppSelector((s) => s.main.cards);
-  const progress = useAppSelector((s) => s.game.flashcards.progress);
+  const cards = useAppSelector(s => s.main.cards);
+  const progress = useAppSelector(s => s.game.flashcards.progress);
 
   const cards_arr = Object.keys(cards);
 
