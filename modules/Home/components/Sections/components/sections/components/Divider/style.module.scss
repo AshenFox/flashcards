@@ -6,22 +6,22 @@
   margin-top: 2rem;
 
   &:first-child {
-    margin-top: 0rem;
+    margin-top: 0;
   }
 }
 
 .text {
   flex-grow: 0;
   margin-right: 2rem;
+  color: black;
   text-align: left;
   text-transform: uppercase;
-  color: black;
 }
 
 .line {
-  background-color: #b6b6b6;
+  height: 1px;
   flex-grow: 10;
   margin: auto;
+  background-color: #b6b6b6;
   text-align: center;
-  height: 1px;
 }

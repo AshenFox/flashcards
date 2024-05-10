@@ -2,17 +2,16 @@
 
 .navigation {
   display: flex;
-  justify-content: space-around;
-  align-items: center;
-
   width: 100%;
   height: 20%;
+  align-items: center;
+  justify-content: space-around;
   pointer-events: none;
 
   @media (max-width: $tablet) {
     position: fixed;
-    left: 0;
     bottom: 0;
+    left: 0;
     min-height: 8rem;
   }
 }
@@ -31,56 +30,36 @@
   }
 
   & button {
-    pointer-events: auto;
-    transition: all 0.1s linear;
     z-index: 20;
     width: 5rem;
     height: 5rem;
-    box-shadow: 0 0 0.6rem 0 rgba(0, 0, 0, 0.28);
+    box-shadow: 0 0 0.6rem 0 rgb(0 0 0 / 28%);
+    pointer-events: auto;
+    transition: all 0.1s linear;
 
     @media (max-width: $tablet) {
-      height: 4rem;
       width: 4rem;
+      height: 4rem;
     }
 
     & svg {
-      transition: all 0.1s linear;
-      fill: $secondary;
       position: absolute;
-      height: 2.5rem;
       width: 2.5rem;
+      height: 2.5rem;
+      fill: $secondary;
+      transition: all 0.1s linear;
 
       @media (max-width: $tablet) {
-        height: 2rem;
         width: 2rem;
+        height: 2rem;
       }
     }
 
     &:hover {
       box-shadow: 0 0 0.6rem 0 rgba($tertiary, 0.28);
+
       & svg {
         fill: $grey;
-      }
-    }
-  }
-
-  &.inactive {
-    & button {
-      cursor: auto;
-      background-color: $grey-light;
-
-      svg {
-        fill: $grey-lighter;
-      }
-    }
-
-    &:hover {
-      & button {
-        background-color: $grey-light;
-        box-shadow: 0 0 0.6rem 0 rgba(0, 0, 0, 0.28);
-        svg {
-          fill: $grey-lighter;
-        }
       }
     }
   }
@@ -130,35 +109,55 @@
       }
     }
   }
+
+  &.inactive {
+    & button {
+      background-color: $grey-light;
+      cursor: auto;
+
+      svg {
+        fill: $grey-lighter;
+      }
+    }
+
+    &:hover {
+      & button {
+        background-color: $grey-light;
+        box-shadow: 0 0 0.6rem 0 rgb(0 0 0 / 28%);
+
+        svg {
+          fill: $grey-lighter;
+        }
+      }
+    }
+  }
 }
 
 .question {
-  pointer-events: auto;
   display: flex;
+  height: 10rem;
   flex-wrap: wrap;
   align-items: center;
-  text-align: center;
+  align-self: flex-end;
   justify-content: space-around;
-  background-color: $white;
-  box-shadow: 0 0.5rem 1.25rem 0 rgba(0, 0, 0, 0.28);
   padding: 1rem;
   border-radius: 1rem;
-  height: 10rem;
-  align-self: flex-end;
-
+  background-color: $white;
+  box-shadow: 0 0.5rem 1.25rem 0 rgb(0 0 0 / 28%);
+  opacity: 0;
+  pointer-events: auto;
+  text-align: center;
+  transform: translateY(20rem);
   transition: all 0.5s;
 
-  transform: translateY(20rem);
-  opacity: 0;
-
   &[data-active="true"] {
-    transform: translateY(0);
     opacity: 1;
+    transform: translateY(0);
   }
 
   & p {
-    font-size: 1.7rem;
     width: 100%;
+    font-size: 1.7rem;
   }
 
   @media (max-width: $tablet) {
@@ -172,13 +171,13 @@
 
 .answer {
   z-index: 30;
-  pointer-events: auto;
-  cursor: pointer;
   display: inline-block;
   padding: 1rem 3.5rem;
   border-radius: 0.75rem;
-  transition: all 0.2s;
   color: $white;
+  cursor: pointer;
+  pointer-events: auto;
+  transition: all 0.2s;
   user-select: none;
 
   &:hover {
@@ -207,15 +206,15 @@
   width: 80px;
   height: 80px;
 
-  &:after {
-    content: " ";
+  &::after {
     display: block;
     width: 64px;
     height: 64px;
-    margin: 7px;
-    border-radius: 50%;
     border: 6px solid $tertiary;
     border-color: $tertiary transparent $tertiary transparent;
+    border-radius: 50%;
+    margin: 7px;
     animation: lds-dual-ring 1.2s linear infinite;
+    content: " ";
   }
 }

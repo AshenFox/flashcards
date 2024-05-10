@@ -2,21 +2,28 @@
 @import "@styles/animations.scss";
 
 .speaker {
-  cursor: pointer;
   display: flex;
-
   animation-duration: 1.5s;
   animation-iteration-count: infinite;
+  cursor: pointer;
 
   svg {
-    transition: all 0.2s;
     fill: $grey;
+    transition: all 0.2s;
   }
 
   &:hover {
     svg {
       fill: $tertiary;
     }
+  }
+
+  &[data-speaking="true"] {
+    svg {
+      fill: $tertiary;
+    }
+
+    animation-name: example;
   }
 
   &[data-active="false"] {
@@ -31,13 +38,5 @@
         fill: $grey-medium;
       }
     }
-  }
-
-  &[data-speaking="true"] {
-    svg {
-      fill: $tertiary;
-    }
-
-    animation-name: example;
   }
 }

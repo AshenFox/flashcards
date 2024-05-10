@@ -2,21 +2,21 @@
 
 .scroll {
   position: fixed;
+  z-index: 10000;
   right: -100px;
   bottom: 25px;
-  z-index: 10000;
-  cursor: pointer;
+  display: flex;
   width: 55px;
   height: 55px;
-  border-radius: 50%;
-  border: none;
-  background-color: $primary;
-  transition: all 0.3s ease;
-  display: flex;
   align-items: center;
   justify-content: center;
+  border: none;
+  border-radius: 50%;
+  background-color: $primary;
   box-shadow: 0 0.5rem 1.25rem 0 rgba($primary, 0.28);
+  cursor: pointer;
   pointer-events: all;
+  transition: all 0.3s ease;
 
   @media (max-width: $mobile) {
     bottom: 15px;

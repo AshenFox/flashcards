@@ -2,24 +2,21 @@
 
 .confirm {
   position: absolute;
+  z-index: 2000;
+  display: flex;
   width: 20rem;
   height: 9rem;
-
-  display: flex;
   flex-wrap: wrap;
   align-items: center;
-  text-align: center;
   justify-content: space-around;
-  background-color: $white;
-  box-shadow: 0 0 1.25rem 0 rgba($grey, 0.28);
   padding: 0.5rem;
   border-radius: 1rem;
-
-  transition: all 0.2s;
-  z-index: 2000;
-
+  background-color: $white;
+  box-shadow: 0 0 1.25rem 0 rgba($grey, 0.28);
   opacity: 0;
   pointer-events: none;
+  text-align: center;
+  transition: all 0.2s;
 
   &.active {
     opacity: 1;
@@ -27,21 +24,21 @@
   }
 
   & p {
-    font-size: 1.5rem;
     width: 100%;
+    font-size: 1.5rem;
   }
 }
 
 .answer {
   z-index: 30;
-  cursor: pointer;
   display: inline-block;
   padding: 0.75rem 2.5rem;
   border-radius: 0.75rem;
-  transition: all 0.2s;
   color: $white;
-  user-select: none;
+  cursor: pointer;
   font-size: 1.5rem;
+  transition: all 0.2s;
+  user-select: none;
 
   &:hover {
     animation: pulse 1.25s linear infinite;

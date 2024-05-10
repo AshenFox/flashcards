@@ -1,9 +1,9 @@
 @import "@styles/vars.scss";
 
 .progress {
-  padding: 1rem;
   display: flex;
   flex-direction: column;
+  padding: 1rem;
   gap: 1rem;
 
   @media (max-width: $tablet) {
@@ -14,8 +14,8 @@
 }
 
 .item {
-  flex: 1;
   display: flex;
+  flex: 1;
   flex-direction: column;
 
   /* &:not(:last-child) {

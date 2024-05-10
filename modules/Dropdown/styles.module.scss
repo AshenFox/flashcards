@@ -2,15 +2,15 @@
 
 .dropdown {
   position: fixed;
-  display: flex;
-  flex-direction: column;
+  z-index: 45;
   top: 0;
   right: -200px;
+  display: flex;
+  height: 200rem;
+  flex-direction: column;
   background-color: $white;
-  z-index: 45;
   box-shadow: 0 0.5rem 1.25rem 0 rgba($primary, 0.28);
   transition: right 0.3s ease;
-  height: 200rem;
 
   &.active {
     right: 0;

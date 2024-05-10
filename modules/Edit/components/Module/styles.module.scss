@@ -11,9 +11,9 @@
 
 .content {
   display: flex;
-  text-align: left;
-  font-size: 2rem;
   padding: 0 2rem;
+  font-size: 2rem;
+  text-align: left;
 
   @media (max-width: $mobile) {
     display: block;

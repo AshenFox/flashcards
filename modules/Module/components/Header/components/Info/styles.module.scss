@@ -5,26 +5,26 @@
   justify-content: space-between;
   margin-top: 2rem;
 
-  @media (max-width: 550px) {
+  @media (width <= 550px) {
     flex-direction: column;
   }
 }
 
 .author {
-  @media (max-width: 550px) {
+  @media (width <= 550px) {
     margin-bottom: 1.5rem;
   }
 }
 
 .created {
-  color: rgb(134, 134, 134);
   display: block;
+  color: rgb(134 134 134);
   font-size: 1.2rem;
 }
 
 .nickname {
-  color: $grey;
   display: block;
+  color: $grey;
   font-size: 1.8rem;
   font-weight: bold;
 }
@@ -33,8 +33,8 @@
   position: relative;
   display: flex;
   align-items: center;
-  margin-right: 1rem;
   margin-top: auto;
+  margin-right: 1rem;
   margin-bottom: auto;
 
   @media (max-width: $mobile-sm) {
@@ -45,28 +45,28 @@
 
 .nav_item {
   display: inline-block;
-  margin-left: 1.5rem;
   border-radius: 5rem;
+  margin-left: 1.5rem;
   cursor: pointer;
 
   & svg {
     fill: $grey;
-    vertical-align: middle;
     transition: all 0.1s linear;
+    vertical-align: middle;
   }
 
   &:hover {
     & svg {
-      fill: rgba(255, 0, 0, 0.856);
+      fill: rgb(255 0 0 / 85.6%);
     }
   }
 }
 
 .confirm {
   &:global(.confirm-popup__confirm) {
-    width: 23rem;
     top: -11rem;
     left: -9.5rem;
+    width: 23rem;
 
     @media (max-width: $mobile) {
       left: 1.75rem;

@@ -2,8 +2,8 @@
 
 .sr_indicator {
   position: absolute;
-  right: 4rem;
   top: 2.5rem;
+  right: 4rem;
 
   @media (max-width: $mobile) {
     top: 2rem;
@@ -11,20 +11,19 @@
   }
 
   :global(.tooltip__tooltip) {
-    left: -21rem;
     top: -1rem;
+    left: -21rem;
   }
 }
 
 .answer {
   position: relative;
   width: 100%;
-  background-color: $white;
   padding: 2.5rem 4rem;
-  margin-bottom: 1rem;
-
   border-radius: 1rem;
-  box-shadow: 0 0 1.25rem -0.1rem rgba(0, 0, 0, 0.28);
+  margin-bottom: 1rem;
+  background-color: $white;
+  box-shadow: 0 0 1.25rem -0.1rem rgb(0 0 0 / 28%);
 
   &:focus {
     outline: none;
@@ -35,15 +34,25 @@
   }
 }
 
+.speaker {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+
+  svg {
+    width: 22px;
+    height: 22px;
+  }
+}
+
 .edit {
-  cursor: pointer;
   position: absolute;
   top: 2.5rem;
   right: 4rem;
-  padding: 0;
-
-  border: none;
   display: flex;
+  padding: 0;
+  border: none;
+  cursor: pointer;
 
   @media (max-width: $mobile) {
     top: 1.5rem;
@@ -64,8 +73,8 @@
   &.sr {
     top: 2.5rem;
     right: 8.25rem;
-    border-right: 2px solid #f0f0f0;
     padding-right: 1.75rem;
+    border-right: 2px solid #f0f0f0;
 
     @media (max-width: $mobile) {
       top: 2rem;
@@ -75,6 +84,7 @@
 }
 
 .type {
+  margin-bottom: 2.5rem;
   line-height: 1;
 
   &.correct {
@@ -84,8 +94,6 @@
   &.incorrect {
     color: $red;
   }
-
-  margin-bottom: 2.5rem;
 
   &::first-letter {
     text-transform: uppercase;
@@ -98,19 +106,19 @@
 
 .section {
   &:not(:first-child) {
-    margin-top: 1.5rem;
     padding-top: 1.5rem;
     border-top: 0.2rem solid #f4f4f4;
+    margin-top: 1.5rem;
   }
 }
 
 .section_title {
   display: block;
   margin-bottom: 1rem;
-  font-size: 1.2rem;
-  text-transform: uppercase;
-  letter-spacing: 1px;
   color: $grey-lighter;
+  font-size: 1.2rem;
+  letter-spacing: 1px;
+  text-transform: uppercase;
 }
 
 .img_container {
@@ -118,12 +126,12 @@
 }
 
 .img {
-  height: 30rem;
   width: 32rem;
+  height: 30rem;
 
   @media (max-width: $mobile) {
-    height: 23rem;
     width: 24rem;
+    height: 23rem;
   }
 
   @media (max-width: $mobile-sm) {
@@ -142,17 +150,6 @@
 
   @media (max-width: $mobile) {
     margin-top: 1rem;
-  }
-}
-
-.speaker {
-  position: absolute;
-  bottom: 0;
-  right: 0;
-
-  svg {
-    height: 22px;
-    width: 22px;
   }
 }
 
@@ -175,9 +172,9 @@
 
 .form {
   display: flex;
-  margin-top: 1.5rem;
-  border-top: 0.2rem solid #f4f4f4;
   padding-top: 1.5rem;
+  border-top: 0.2rem solid #f4f4f4;
+  margin-top: 1.5rem;
 
   @media (max-width: $mobile) {
     flex-direction: column;
@@ -185,8 +182,8 @@
 }
 
 .fieldset {
-  border: none;
   flex: 1;
+  border: none;
 
   & :global(.text_label__label) {
     color: $grey-lighter;
@@ -198,9 +195,9 @@
 .input {
   &:global(.input__container) {
     padding: 0.2rem 1rem;
-    transition: all 0.2s;
-    margin-bottom: 0.5rem;
     border-bottom: 2px solid $black;
+    margin-bottom: 0.5rem;
+    transition: all 0.2s;
 
     &.correct {
       border-color: $green;
@@ -209,12 +206,12 @@
         color: $green;
       }
 
-      &:after {
+      &::after {
         background-color: $green;
       }
 
       &:focus-within {
-        &:after {
+        &::after {
           background-color: $green;
         }
       }

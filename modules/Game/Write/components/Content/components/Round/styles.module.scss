@@ -2,12 +2,11 @@
 
 .round {
   width: 100%;
-  background-color: $white;
   padding: 2.5rem 4rem;
-  margin-bottom: 1rem;
-
   border-radius: 1rem;
-  box-shadow: 0 0 1.25rem -0.1rem rgba(0, 0, 0, 0.28);
+  margin-bottom: 1rem;
+  background-color: $white;
+  box-shadow: 0 0 1.25rem -0.1rem rgb(0 0 0 / 28%);
 
   &:focus {
     outline: none;

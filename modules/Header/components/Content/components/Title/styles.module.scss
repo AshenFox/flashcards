@@ -1,11 +1,11 @@
 @import "@styles/vars.scss";
 
 .title {
-  font-family: "Fredoka One";
-  font-weight: 400;
-  font-size: 4rem;
   color: $white;
   cursor: pointer;
+  font-family: "Fredoka One";
+  font-size: 4rem;
+  font-weight: 400;
 
   @media (max-width: $mobile) {
     font-size: 3rem;

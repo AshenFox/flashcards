@@ -1,9 +1,9 @@
 @import "@styles/vars.scss";
 
 .sr_control {
-  border-right: 2px solid $grey-light;
   padding-right: 1.5rem;
   padding-left: 1.5rem;
+  border-right: 2px solid $grey-light;
 
   :global(.tooltip__tooltip) {
     left: 1.5rem;
@@ -17,7 +17,7 @@
     & ~ :global(.switch__switch) {
       border-color: $green;
 
-      &:after {
+      &::after {
         background-color: $green;
       }
     }

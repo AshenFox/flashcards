@@ -1,9 +1,9 @@
 @import "@styles/vars.scss";
 
 .header {
-  background-color: $white;
-  margin: 2rem;
   padding: 2rem;
+  margin: 2rem;
+  background-color: $white;
 
   @media (max-width: $mobile) {
     margin: 2rem 0;
