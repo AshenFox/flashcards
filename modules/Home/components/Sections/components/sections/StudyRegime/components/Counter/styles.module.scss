@@ -2,27 +2,26 @@
 
 .container {
   display: flex;
-  justify-content: flex-end;
   align-self: flex-end;
-
+  justify-content: flex-end;
   margin-right: auto;
 
   @media (max-width: $tablet) {
+    justify-content: flex-start;
+    order: 3;
     margin-right: 0;
     margin-left: auto;
-    order: 3;
-    justify-content: flex-start;
   }
 }
 
 .counter {
   display: flex;
-  align-items: stretch;
-  text-align: center;
-  line-height: 1;
   height: 3.5rem;
-  font-size: 2rem;
+  align-items: stretch;
   border-radius: 5px;
+  font-size: 2rem;
+  line-height: 1;
+  text-align: center;
 
   div {
     display: flex;
@@ -33,14 +32,14 @@
 
 .number {
   &:global(.input__container) {
-    border-bottom: 2px solid $primary;
     width: 4rem;
     height: 3.5rem;
+    border-bottom: 2px solid $primary;
   }
 
   :global(.input__input) {
-    appearance: textfield;
     height: 100%;
+    appearance: textfield;
     font-size: 1.75rem;
     text-align: center;
   }
@@ -51,46 +50,12 @@
   }
 }
 
-.subtract,
-.add {
-  user-select: none;
-  position: relative;
-  cursor: pointer;
-  width: 3.5rem;
-  height: 3.5rem;
-  font-weight: bold;
-  color: $white;
-  background-color: $primary;
-  transition: all 0.2s;
-  border-radius: 50%;
-
-  &::before,
-  &::after {
-    content: "";
-    position: absolute;
-    background-color: $white;
-    border-radius: 0.25rem;
-    transition: all 0.2s;
-  }
-
-  &:hover {
-    color: $black;
-    background-color: $tertiary;
-    border-color: $tertiary;
-
-    &::before,
-    &::after {
-      background-color: $grey;
-    }
-  }
-}
-
 .subtract {
   margin-right: 0.5rem;
 
   &::after {
-    height: 0.4rem;
     width: 1.8rem;
+    height: 0.4rem;
   }
 }
 
@@ -98,12 +63,46 @@
   margin-left: 0.5rem;
 
   &::before {
-    height: 1.8rem;
     width: 0.4rem;
+    height: 1.8rem;
   }
 
   &::after {
-    height: 0.4rem;
     width: 1.8rem;
+    height: 0.4rem;
+  }
+}
+
+.subtract,
+.add {
+  position: relative;
+  width: 3.5rem;
+  height: 3.5rem;
+  border-radius: 50%;
+  background-color: $primary;
+  color: $white;
+  cursor: pointer;
+  font-weight: bold;
+  transition: all 0.2s;
+  user-select: none;
+
+  &::before,
+  &::after {
+    position: absolute;
+    border-radius: 0.25rem;
+    background-color: $white;
+    content: "";
+    transition: all 0.2s;
+  }
+
+  &:hover {
+    border-color: $tertiary;
+    background-color: $tertiary;
+    color: $black;
+
+    &::before,
+    &::after {
+      background-color: $grey;
+    }
   }
 }

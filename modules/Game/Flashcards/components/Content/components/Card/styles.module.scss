@@ -2,31 +2,31 @@
 
 .sr_indicator {
   position: absolute;
-  left: 2rem;
   top: 2rem;
+  left: 2rem;
 
   :global(.tooltip__tooltip) {
-    color: $green;
-    left: 4rem;
     top: -1rem;
+    left: 4rem;
+    color: $green;
   }
 }
 
 .speaker {
   position: absolute;
-  right: 2rem;
   top: 2rem;
+  right: 2rem;
 
   svg {
-    height: 22px;
     width: 22px;
+    height: 22px;
   }
 }
 
 .transcription_hidden {
-  transition: all 0.2s;
   background-color: $grey-medium;
   color: $grey-medium;
+  transition: all 0.2s;
   user-select: none;
 
   &:hover {
@@ -37,43 +37,34 @@
 
 .card {
   position: absolute;
-  height: 100%;
   width: 100%;
-
+  height: 100%;
+  opacity: 1;
+  perspective: 1000px;
+  text-align: center;
   transition: opacity 0.12s linear;
 
-  opacity: 1;
-
-  text-align: center;
-
-  perspective: 1000px;
-  height: 100%;
-
   &.transparent {
-    opacity: 0;
     z-index: -10;
+    opacity: 0;
   }
 }
 
 .front,
 .back {
   position: absolute;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
-
-  background-color: $white;
+  z-index: 19;
+  display: flex;
   width: 100%;
   height: 100%;
   border-radius: 1rem;
-  box-shadow: 0 0 1.25rem -0.1rem rgba(0, 0, 0, 0.28);
+  backface-visibility: hidden;
+  background-color: $white;
+  box-shadow: 0 0 1.25rem -0.1rem rgb(0 0 0 / 28%);
+  inset: 0;
+  transform: rotateX(0deg);
   transform-style: preserve-3d;
   transition: transform 0.3s ease;
-  backface-visibility: hidden;
-  z-index: 19;
-  transform: rotateX(0deg);
-  display: flex;
 
   &.transparent {
     z-index: -10;
@@ -98,30 +89,30 @@
   display: flex;
 
   &.rear_side {
-    transform: rotateX(180deg);
     z-index: -10;
+    transform: rotateX(180deg);
   }
 
   &.unmovable {
     display: block;
 
     &.rear_side {
-      transform: none;
       z-index: 0;
+      transform: none;
     }
   }
 }
 
 .back {
   &.rear_side {
-    transform: rotateX(-180deg);
     z-index: -10;
+    transform: rotateX(-180deg);
   }
 
   &.unmovable {
     &.rear_side {
-      transform: none;
       z-index: 0;
+      transform: none;
     }
   }
 }
@@ -145,16 +136,16 @@
 
 .img_container {
   display: flex;
+  width: 55%;
+  height: 100%;
   align-items: center;
   justify-content: center;
-  margin: 0 auto;
-  height: 100%;
-  width: 55%;
   padding: 2.5rem 0.75rem 2.5rem 2.5rem;
+  margin: 0 auto;
 
   &.full {
     width: 100%;
-    padding: 6rem 1.5rem 5rem 1.5rem;
+    padding: 6rem 1.5rem 5rem;
   }
 
   @media (max-height: $h-tablet) {
@@ -171,35 +162,34 @@
 }
 
 .img {
+  overflow: hidden;
   width: 100%;
   height: 100%;
-  background-size: contain;
-  background-repeat: no-repeat;
   background-position: center;
-  overflow: hidden;
+  background-repeat: no-repeat;
+  background-size: contain;
 }
 
 .definition_container {
-  text-align: center;
+  display: flex;
   height: 100%;
   flex: 1;
-  display: flex;
-  justify-content: center;
   align-items: center;
+  justify-content: center;
   padding: 6rem 1.5rem 5rem 0.75rem !important;
+  text-align: center;
 }
 
 .definition {
+  overflow: hidden auto;
   max-height: 100%;
-  overflow-y: auto;
-  overflow-x: hidden;
-  font-size: 1.9rem;
-  color: $grey;
   padding-right: 1rem;
+  color: $grey;
+  font-size: 1.9rem;
 
   @media (max-width: $tablet) {
-    font-size: 1.8rem;
     padding-bottom: 10rem;
+    font-size: 1.8rem;
   }
 
   @media (max-width: $mobile) {
@@ -214,28 +204,26 @@
     font-size: 1.6rem;
   }
 
-  // =================
-
   &::-webkit-scrollbar {
-    background-color: $white;
     width: 0.2rem;
+    background-color: $white;
   }
 
   &::-webkit-scrollbar-thumb {
-    background-color: rgba($grey, 0.3);
     border-radius: 0.1rem;
+    background-color: rgba($grey, 0.3);
     opacity: 0.3;
   }
 }
 
 .edit {
-  cursor: pointer;
   position: absolute;
   top: 2rem;
   right: 6rem;
+  display: flex;
   padding-right: 1.75rem;
   border-right: 2px solid #f0f0f0;
-  display: flex;
+  cursor: pointer;
 
   svg {
     fill: $grey;
@@ -250,16 +238,14 @@
 }
 
 .term_container {
-  height: 100%;
-  width: 100%;
-
-  font-size: 3rem;
-  color: $grey;
-
-  padding: 5rem 1.5rem 5rem;
   display: flex;
-  justify-content: center;
+  width: 100%;
+  height: 100%;
   align-items: center;
+  justify-content: center;
+  padding: 5rem 1.5rem;
+  color: $grey;
+  font-size: 3rem;
 
   @media (max-width: $tablet) {
     font-size: 2.8rem;
@@ -275,21 +261,19 @@
 }
 
 .term {
-  overflow-y: auto;
-  overflow-x: hidden;
-
   display: flex;
+  overflow: hidden auto;
   align-items: center;
   justify-content: center;
 }
 
 .message {
-  font-size: 4.5rem;
   color: $grey;
+  font-size: 4.5rem;
 }
 
 .message_info {
-  font-size: 1.7rem;
   margin-bottom: 1.5rem;
   color: $grey;
+  font-size: 1.7rem;
 }

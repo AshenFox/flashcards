@@ -10,8 +10,7 @@
   }
 
   &.scrollable {
-    overflow-y: auto;
-    overflow-x: hidden !important;
+    overflow: hidden auto !important;
   }
 
   &.unscrollable {
@@ -20,13 +19,11 @@
 }
 
 .components {
-  margin: 0 auto;
-  max-width: 67.5rem;
-
   display: flex;
-  align-items: center;
-  // justify-content: center;
+  max-width: 67.5rem;
   flex-direction: column;
+  align-items: center;
+  margin: 0 auto;
 
   &.scrollable {
     min-height: 100%;
@@ -42,15 +39,15 @@
   width: 80px;
   height: 80px;
 
-  &:after {
-    content: " ";
+  &::after {
     display: block;
     width: 64px;
     height: 64px;
-    margin: 7px;
-    border-radius: 50%;
     border: 6px solid $tertiary;
     border-color: $tertiary transparent $tertiary transparent;
+    border-radius: 50%;
+    margin: 7px;
     animation: lds-dual-ring 1.2s linear infinite;
+    content: " ";
   }
 }

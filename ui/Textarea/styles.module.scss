@@ -2,24 +2,20 @@
 
 .textarea {
   display: block;
-  resize: none;
-
   width: 100%;
   max-width: 100%;
-
-  font-family: inherit;
-  font-size: 1.7rem;
-  text-align: left;
-  overflow-wrap: break-word;
-
+  padding: 0.5rem 0;
   border: none;
   border-bottom: 2px solid $grey;
-
-  padding: 0.5rem 0;
+  font-family: inherit;
+  font-size: 1.7rem;
+  overflow-wrap: break-word;
+  resize: none;
+  text-align: left;
 
   &:focus {
-    outline: none;
     border-bottom: 2px solid $tertiary;
+    outline: none;
   }
 
   &.error {

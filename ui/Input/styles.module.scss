@@ -2,9 +2,9 @@
 
 .container {
   display: flex;
+  height: 4rem;
   align-items: center;
   padding: 0.5rem;
-  height: 4rem;
   border-color: $grey;
   border-bottom: 2px solid $grey;
   cursor: text;
@@ -17,14 +17,14 @@
     position: relative;
 
     &::after {
-      content: "";
       position: absolute;
       bottom: -2px;
       left: 0;
       display: inline-block;
-      background-color: $black;
-      height: 2px;
       width: 100%;
+      height: 2px;
+      background-color: $black;
+      content: "";
       transition: all 0.2s;
     }
 

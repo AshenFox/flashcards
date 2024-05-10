@@ -1,24 +1,19 @@
 @import "@styles/vars.scss";
 
 .modal {
-  display: none;
-  opacity: 0;
-
-  width: 100%;
-  height: 100%;
-  overflow: auto;
-
-  background-color: rgba($black, 0.8);
-
   position: fixed;
+  z-index: 1000;
   top: 0;
   left: 0;
-  z-index: 1000;
-
-  transition-timing-function: ease;
-  transition-property: all;
-
+  display: none;
+  overflow: auto;
+  width: 100%;
+  height: 100%;
   padding: 2rem 0;
+  background-color: rgba($black, 0.8);
+  opacity: 0;
+  transition-property: all;
+  transition-timing-function: ease;
 
   @media (max-width: $mobile) {
     padding: 0;
@@ -26,30 +21,27 @@
 }
 
 .dialog {
+  position: relative;
+  z-index: 2000;
   width: 100%;
   max-width: 600px;
   margin: auto;
-  position: relative;
-
-  background-color: #ffffff;
-
-  z-index: 2000;
-
-  transition-timing-function: ease-out;
+  background-color: #fff;
+  opacity: 0;
+  transform: translateY(-30vh);
   transition-property: all;
+  transition-timing-function: ease-out;
+
   @media (max-width: $mobile) {
     max-width: none;
     height: 100%;
   }
-
-  opacity: 0;
-  transform: translateY(-30vh);
 }
 
 .header {
-  padding: 3rem;
   display: flex;
   justify-content: space-between;
+  padding: 3rem;
   background-color: $primary;
 
   @media (max-width: $mobile) {
@@ -63,19 +55,17 @@
 }
 
 .close {
-  cursor: pointer;
   display: flex;
   justify-content: center;
-
   padding: 1.25rem;
   border: 3px solid $primary-drak;
   border-radius: 25px;
-
+  cursor: pointer;
   transition: all 0.1s linear;
 
   svg {
-    height: 17px;
     width: 17px;
+    height: 17px;
     fill: $white;
     transform: translate(1px, 1px);
   }
@@ -86,38 +76,39 @@
 }
 
 .input-login {
-  background-color: #e8f0fd;
   display: flex;
+  background-color: #e8f0fd;
 
   svg {
     width: 3rem;
-    fill: $grey;
     cursor: pointer;
+    fill: $grey;
   }
 }
 
 .input-signup {
   &.input__container {
-    padding: 0.5rem 1.5rem;
-    margin-bottom: 2rem;
-    border: 2px solid $grey;
     height: 4.4rem;
+    padding: 0.5rem 1.5rem;
+    border: 2px solid $grey;
+    margin-bottom: 2rem;
   }
 
   &.success {
-    border: 2px solid rgb(35, 200, 35);
+    border: 2px solid rgb(35 200 35);
 
     &:focus-within {
-      border: 2px solid rgb(35, 200, 35);
+      border: 2px solid rgb(35 200 35);
     }
   }
 }
 
 .content {
+  padding: 2.5rem;
   background-color: $white;
-  padding: 2.5rem 2.5rem 2.5rem;
+
   @media (max-width: $mobile) {
-    padding: 1.5rem 1.5rem 1.5rem;
+    padding: 1.5rem;
   }
 }
 
@@ -138,9 +129,9 @@
 }
 
 .options {
-  text-align: center;
   padding: 1rem;
   padding-bottom: 0;
+  text-align: center;
 
   p {
     margin: 0;
@@ -148,11 +139,11 @@
 }
 
 .error-list {
-  color: red;
   padding: 1rem 4rem;
   border: 2px solid red;
   border-radius: 2rem;
-  margin: 1rem 0rem;
+  margin: 1rem 0;
+  color: red;
 }
 
 .choice {
@@ -163,5 +154,3 @@
   width: 50%;
   padding: 0.5rem;
 }
-
-// ------------------

@@ -2,9 +2,9 @@
 
 .item {
   display: inline-flex;
-  cursor: pointer;
   border-left: 1px solid #cecece;
   color: $secondary;
+  cursor: pointer;
   transition: all 0.1s linear;
 
   &:hover {
@@ -24,9 +24,9 @@
   }
 
   &.active {
+    border-color: $tertiary;
     background-color: $tertiary;
     color: $grey;
-    border-color: $tertiary;
 
     &:hover {
       color: $grey;

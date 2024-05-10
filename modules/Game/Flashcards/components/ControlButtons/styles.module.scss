@@ -3,11 +3,12 @@
 .shuffle {
   & button {
     & svg {
-      fill: $secondary;
-      vertical-align: middle;
-      transition: all 0.1s linear;
       margin-right: 2rem;
+      fill: $secondary;
+      transition: all 0.1s linear;
+      vertical-align: middle;
     }
+
     & span {
       vertical-align: middle;
     }

@@ -11,62 +11,60 @@
   }
 
   & svg {
-    margin-left: auto;
     margin-right: 1rem;
+    margin-left: auto;
     fill: $grey;
     transition: all 0.2s;
   }
 
   :global(.switch__switch) {
-    cursor: pointer;
     position: relative;
     display: inline-flex;
-    align-items: center;
-    height: 28px;
     width: 50px;
-    border-radius: 14px;
-    border: 2px solid $grey;
-    transition: all 0.2s;
+    height: 28px;
+    align-items: center;
     padding: 0 2px;
+    border: 2px solid $grey;
+    border-radius: 14px;
+    cursor: pointer;
+    transition: all 0.2s;
 
-    &:before {
-      content: "";
+    &::before {
       display: inline-block;
-      transition: all 0.2s;
       flex-grow: 0;
+      content: "";
+      transition: all 0.2s;
     }
 
-    &:after {
-      content: "";
+    &::after {
       display: inline-block;
-      height: 18px;
       width: 18px;
-      background-color: $grey;
+      height: 18px;
       border-radius: 50%;
+      background-color: $grey;
+      content: "";
       transition: all 0.2s;
     }
 
     &.small {
-      height: 20px;
       width: 35px;
-      border-radius: 10px;
+      height: 20px;
       border: 1.5px solid $grey;
+      border-radius: 10px;
 
-      &:after {
-        height: 14px;
+      &::after {
         width: 14px;
+        height: 14px;
       }
     }
   }
 
   :global(.switch__checkbox) {
     display: none;
-  }
 
-  :global(.switch__checkbox) {
     &:checked {
       & ~ :global(.switch__switch) {
-        &:before {
+        &::before {
           flex-grow: 1;
         }
       }

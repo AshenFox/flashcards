@@ -1,5 +1,23 @@
 @import "@styles/vars.scss";
 
+.sr {
+  margin-left: 0.5rem;
+
+  & svg {
+    margin-right: 1.3rem;
+  }
+
+  :global(.switch__checkbox):checked {
+    & ~ :global(.switch__switch) {
+      border-color: $green;
+
+      &::after {
+        background-color: $green;
+      }
+    }
+  }
+}
+
 .sr_drop {
   display: flex;
   cursor: pointer;
@@ -10,18 +28,18 @@
     transition: all 0.2s;
   }
 
+  &:hover {
+    svg {
+      fill: $red;
+    }
+  }
+
   :global(.tooltip__tooltip) {
     top: -3rem;
     left: -1rem;
     width: max-content;
     margin-right: 1rem;
     color: $red !important;
-  }
-
-  &:hover {
-    svg {
-      fill: $red;
-    }
   }
 
   &[data-active="true"] {
@@ -35,45 +53,28 @@
   }
 }
 
-.sr {
-  margin-left: 0.5rem;
-
-  & svg {
-    margin-right: 1.3rem;
-  }
-
-  :global(.switch__checkbox):checked {
-    & ~ :global(.switch__switch) {
-      border-color: $green;
-
-      &:after {
-        background-color: $green;
-      }
-    }
-  }
-}
-
 .edit {
   display: flex;
   cursor: pointer;
 
+  /* stylelint-disable-next-line no-descending-specificity */
   & svg {
     fill: $grey;
-    vertical-align: middle;
     transition: all 0.1s linear;
+    vertical-align: middle;
   }
 
   &:hover {
     & svg {
-      fill: rgba(255, 0, 0, 0.856);
+      fill: rgb(255 0 0 / 85.6%);
     }
   }
 }
 
 .controls_item {
   &:not(:last-child) {
-    border-right: 2px solid $grey-light;
     padding-right: 1.25rem;
+    border-right: 2px solid $grey-light;
     margin-right: 1.25rem;
   }
 }

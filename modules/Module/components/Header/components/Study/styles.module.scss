@@ -6,23 +6,23 @@
 }
 
 .title {
-  color: $grey;
-  font-weight: bold;
-  font-size: 1.3rem;
   margin-bottom: 1.2rem;
+  color: $grey;
+  font-size: 1.3rem;
+  font-weight: bold;
 }
 
 .item {
   & button {
+    margin-bottom: 0.3rem;
     color: $grey;
     font-size: 1.6rem;
-    margin-bottom: 0.3rem;
 
     & svg {
-      vertical-align: middle;
       margin-right: 0.5rem;
       fill: $primary;
       transition: all 0.1s linear;
+      vertical-align: middle;
     }
 
     & span {
@@ -32,6 +32,7 @@
 
     &:hover {
       color: $tertiary;
+
       & svg {
         fill: $tertiary;
       }

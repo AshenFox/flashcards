@@ -1,38 +1,39 @@
 @import "@styles/vars.scss";
 
 .login_input {
-  background-color: #e8f0fd;
   display: flex;
+  background-color: #e8f0fd;
 
   svg {
     width: 3rem;
-    fill: $grey;
     cursor: pointer;
+    fill: $grey;
   }
 }
 
 .signup_input {
   &:global(.input__container) {
-    padding: 0.5rem 1.5rem;
-    margin-bottom: 2rem;
-    border: 2px solid $grey;
     height: 4.4rem;
+    padding: 0.5rem 1.5rem;
+    border: 2px solid $grey;
+    margin-bottom: 2rem;
   }
 
   &.success {
-    border: 2px solid rgb(35, 200, 35);
+    border: 2px solid rgb(35 200 35);
 
     &:focus-within {
-      border: 2px solid rgb(35, 200, 35);
+      border: 2px solid rgb(35 200 35);
     }
   }
 }
 
 .content {
+  padding: 2.5rem;
   background-color: $white;
-  padding: 2.5rem 2.5rem 2.5rem;
+
   @media (max-width: $mobile) {
-    padding: 1.5rem 1.5rem 1.5rem;
+    padding: 1.5rem;
   }
 }
 
@@ -53,9 +54,9 @@
 }
 
 .options {
-  text-align: center;
   padding: 1rem;
   padding-bottom: 0;
+  text-align: center;
 
   p {
     margin: 0;
@@ -70,5 +71,3 @@
   width: 50%;
   padding: 0.5rem;
 }
-
-// ------------------

@@ -2,12 +2,11 @@
 
 .finish {
   width: 100%;
-  background-color: $white;
   padding: 2.5rem 4rem;
-  margin-bottom: 1rem;
-
   border-radius: 1rem;
-  box-shadow: 0 0 1.25rem -0.1rem rgba(0, 0, 0, 0.28);
+  margin-bottom: 1rem;
+  background-color: $white;
+  box-shadow: 0 0 1.25rem -0.1rem rgb(0 0 0 / 28%);
 
   &:focus {
     outline: none;
@@ -20,8 +19,8 @@
 
 .header {
   display: flex;
-  justify-content: space-between;
   align-items: center;
+  justify-content: space-between;
   margin-bottom: 2.5rem;
 
   @media (max-width: $mobile-sm) {
@@ -39,26 +38,26 @@
 }
 
 .title {
-  line-height: 1;
   margin-bottom: 0.6rem;
+  line-height: 1;
 }
 
 .stats {
-  line-height: 1;
   color: $grey-lighter;
+  line-height: 1;
 }
 
 .body_item {
   &:not(:first-child) {
-    margin-top: 1.5rem;
     padding-top: 1.5rem;
     border-top: 0.2rem solid #f4f4f4;
+    margin-top: 1.5rem;
   }
 }
 
 .body_header {
-  font-size: 1.2rem;
   margin-bottom: 1rem;
+  font-size: 1.2rem;
 
   &.correct {
     color: $green;
@@ -84,9 +83,9 @@
 }
 
 .body_left {
-  align-self: start;
   display: flex;
   align-items: flex-start;
+  align-self: start;
 
   @media (max-width: $mobile) {
     margin-bottom: 1.5rem;
@@ -107,8 +106,8 @@
 }
 
 .term {
-  line-height: 1;
   display: flex;
+  line-height: 1;
 
   & span {
     padding-right: 1rem;
@@ -124,7 +123,7 @@
 }
 
 .img {
-  height: 7.5rem;
   width: 10rem;
+  height: 7.5rem;
   margin-top: 1rem;
 }
