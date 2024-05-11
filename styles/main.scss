@@ -18,8 +18,8 @@ html {
 
 body {
   margin: 0;
-  background-color: $grey-light;
-  color: black;
+  background-color: var(--app-background-color);
+  color: var(--text-color);
   font-size: 1.5rem;
   overflow-x: hidden !important;
 }

@@ -3,7 +3,7 @@
 .item {
   display: flex;
   align-items: center;
-  color: $white;
+  color: var(--reverse-text-color);
   font-size: 1.75rem;
   gap: 0.5rem;
   transition: all 0.1s;
@@ -13,33 +13,33 @@
   }
 
   svg {
-    fill: $white;
-    transition: all 0.1s linear;
+    fill: var(--reverse-text-color);
+    transition: all 0.1s;
   }
 
   &:hover {
-    color: $primary-pale;
+    opacity: 0.8;
 
     svg {
-      fill: $primary-pale;
+      opacity: 0.8;
     }
   }
 
   &.padded {
     padding: 1.5rem 3rem;
     border-radius: 1.5rem;
-    background-color: $secondary;
+    background-color: var(--secondary-element-background-color);
 
     @media (max-width: $mobile) {
       padding: 1rem 2rem;
     }
 
     &:hover {
-      background-color: $tertiary;
-      color: $grey;
+      background-color: var(--highlighted-element-background-color);
+      color: var(--text-color);
 
       svg {
-        fill: $grey;
+        fill: var(--icon-fill);
       }
     }
   }
