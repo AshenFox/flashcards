@@ -3,7 +3,7 @@ $grey: rgb(78 78 78);
 $grey-lighter: #97a5aa;
 $grey-light: #f0f0f0;
 $grey-medium: #c7c7c7;
-$white: #fff;
+
 $tertiary: #ffcd1f;
 $secondary: #00ad57;
 $primary-pale: #d5c8e0;
@@ -24,3 +24,65 @@ $notebook: 1199px;
 $h-mobile-sm: 350px;
 $h-mobile: 620px;
 $h-tablet: 840px;
+
+/* ======= */
+
+$white: #fff;
+
+$dandelion: #ffdd67;
+$lightning-yellow: #ffcd1f;
+$orange-peel: #ff9800;
+$orange: #ff5722;
+$jade: #00ad57;
+
+$concrete: #f3f3f3;
+$silver-foil: #b0b0b0;
+$quartz: #4b4b4b;
+$jet: #363636;
+$raisin-black: #232323;
+
+/* $cultured: #f5f5f5; */
+$lotion: #fdfdfd;
+$anti-flash-white: #f0f0f0;
+$philippine-silver: #b6b6b6;
+$gainsboro: #dbdbdb;
+$cadet-grey: #97a5aa;
+$dark-liver: #4e4e4e;
+
+$languid-lavender: #d5c8e0;
+$regalia: #54267b;
+$american-purple: #431c64; /* old dark */
+$jacarta: #4a2b63; /* new dark  */
+
+$light-red: #ffd4cd;
+$bittersweet: #ff725b;
+$magic-mint: #bde8d3;
+$crayola: #23b26d;
+
+body.light {
+  /* icon */
+  --icon-fill: #{$dark-liver};
+  --icon-positive-fill: #{$crayola};
+  --icon-danger-fill: #{$bittersweet};
+
+  /* app */
+  --app-background-color: #{$concrete};
+  --element-background-color: #{$lotion};
+  --element-border-color: #{$gainsboro};
+  --accentuated-element-background-color: #{$regalia};
+  --accentuated-element-border-color: #{$jacarta};
+  --secondary-element-background-color: #{$jade};
+  --highlighted-element-background-color: #{$lightning-yellow};
+  --highlighted-element-border-color: #{$lightning-yellow};
+  --divider-color: #{$philippine-silver};
+
+  /* text */
+  --text-color: #{$dark-liver};
+  --strong-text-color: #{$jet};
+  --accentuated-text-color: #{$regalia};
+  --subtle-text-color: #{$concrete};
+  --reverse-text-color: #{$lotion};
+
+  /* miscellaneous */
+  --highlighted-color: #{$lightning-yellow};
+}

@@ -2,8 +2,9 @@
 
 .header {
   padding: 2rem;
+  border: 1px solid var(--element-border-color);
   margin: 2rem;
-  background-color: $white;
+  background-color: var(--element-background-color);
 
   @media (max-width: $mobile) {
     margin: 2rem 0;
@@ -11,6 +12,7 @@
 }
 
 .nickname {
+  color: var(--strong-text-color);
   font-size: 2.5rem;
 
   @media (max-width: $mobile) {

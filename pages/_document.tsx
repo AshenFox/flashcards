@@ -38,7 +38,7 @@ const Document = () => {
           rel="stylesheet"
         />
       </Head>
-      <body>
+      <body className="light">
         <Main />
         <NextScript />
       </body>
