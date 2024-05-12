@@ -1,4 +1,4 @@
-@import "@styles/vars.scss";
+@import "@styles/vars";
 
 .divider {
   display: flex;
@@ -13,7 +13,7 @@
 .text {
   flex-grow: 0;
   margin-right: 2rem;
-  color: black;
+  color: var(--strong-text-color);
   text-align: left;
   text-transform: uppercase;
 }
@@ -22,6 +22,6 @@
   height: 1px;
   flex-grow: 10;
   margin: auto;
-  background-color: #b6b6b6;
+  background-color: var(--divider-color);
   text-align: center;
 }

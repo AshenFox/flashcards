@@ -1,4 +1,4 @@
-@import "@styles/vars.scss";
+@import "@styles/vars";
 
 .sr_indicator {
   position: absolute;
@@ -195,7 +195,6 @@
 .input {
   &:global(.input__container) {
     padding: 0.2rem 1rem;
-    border-bottom: 2px solid $black;
     margin-bottom: 0.5rem;
     transition: all 0.2s;
 
