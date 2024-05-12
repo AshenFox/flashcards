@@ -1,4 +1,4 @@
-@import "@styles/vars.scss";
+@import "@styles/vars";
 
 .login_input {
   display: flex;
@@ -7,7 +7,7 @@
   svg {
     width: 3rem;
     cursor: pointer;
-    fill: $grey;
+    fill: var(--icon-fill);
   }
 }
 
@@ -15,7 +15,8 @@
   &:global(.input__container) {
     height: 4.4rem;
     padding: 0.5rem 1.5rem;
-    border: 2px solid $grey;
+    border: 1px solid var(--strong-element-border-color);
+    margin-top: 0.3rem;
     margin-bottom: 2rem;
   }
 

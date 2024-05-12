@@ -1,4 +1,4 @@
-@import "@styles/vars.scss";
+@import "@styles/vars";
 
 .filter {
   position: static;
@@ -26,12 +26,12 @@
 
 .select_group {
   display: flex;
+  align-items: flex-end;
   gap: 1rem;
 }
 
 .select {
   width: 11.5rem;
-  height: 4rem;
 
   @media (max-width: $mobile) {
     margin-top: 1.5rem;

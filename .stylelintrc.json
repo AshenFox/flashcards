@@ -1,5 +1,8 @@
 {
-  "extends": ["stylelint-config-standard", "stylelint-config-idiomatic-order"],
+  "extends": [
+    "stylelint-config-standard-scss",
+    "stylelint-config-idiomatic-order"
+  ],
   "plugins": ["stylelint-order"],
   "rules": {
     "media-query-no-invalid": null,
@@ -16,6 +19,14 @@
       {
         "ignoreFontFamilies": ["Fredoka One"]
       }
-    ]
+    ],
+    "no-invalid-double-slash-comments": null,
+    "scss/dollar-variable-empty-line-before": [
+      "always",
+      {
+        "ignore": ["after-dollar-variable", "after-comment"]
+      }
+    ],
+    "scss/double-slash-comment-empty-line-before": "never"
   }
 }

@@ -1,25 +1,42 @@
-@import "@styles/vars.scss";
+@import "@styles/vars";
 
 .main {
-  padding: 0.55rem 2rem 1rem;
-  border: 4px solid $white;
+  position: relative;
+  padding: 1.05rem 2.4rem 1.4rem;
   border-radius: 0 0 5px 5px;
-  background-color: $white;
+  background-color: var(--element-background-color);
   transition: all 0.2s;
 
   @media (max-width: $mobile) {
-    padding: 1rem;
-    padding-top: 0.5rem;
+    padding: 1.4rem;
+    padding-top: 0.9rem;
+  }
+
+  &::after {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 4px;
+    border-radius: 0 0 5px 5px;
+    background-color: var(--highlighted-element-background-color);
+    content: "";
+    opacity: 0;
+    transition: all 0.2s;
   }
 }
 
 .module {
+  border: 1px solid var(--element-border-color);
+  border-radius: 5px;
   margin-bottom: 1rem;
   cursor: pointer;
 
   &:hover {
-    .main {
-      border-bottom: 4px solid $tertiary;
+    border-bottom: 1px solid var(--highlighted-element-border-color);
+
+    .main::after {
+      opacity: 1;
     }
   }
 }
@@ -27,8 +44,8 @@
 .header {
   padding: 0.55rem 2.4rem;
   border-radius: 5px 5px 0 0;
-  border-bottom: 2px solid #f0f0f0;
-  background-color: $white;
+  border-bottom: 1px solid var(--element-border-color);
+  background-color: var(--element-background-color);
 
   @media (max-width: $mobile) {
     padding: 0.55rem 1rem;
@@ -39,7 +56,7 @@
   display: flex;
   align-items: center;
   justify-content: flex-start;
-  color: $grey-lighter;
+  color: var(--subtle-text-color);
   font-size: 1.2rem;
 }
 
@@ -50,31 +67,23 @@
 
 .term_number {
   padding-right: 1rem;
-  color: $grey;
+  // color: $grey;
   line-height: 1.5rem;
 }
 
 .author {
   padding-left: 1rem;
-  border-left: 2px solid $grey-light;
+  border-left: 1px solid var(--element-border-color);
   color: $grey;
   line-height: 1.5rem;
 }
 
 .title {
-  color: $grey;
   font-size: 2.5rem;
   font-weight: bold;
 
   &.highlighted {
-    color: $primary;
-  }
-
-  svg {
-    width: 18px;
-    height: 18px;
-    margin-left: 0.5rem;
-    fill: $grey-medium;
+    color: var(--accentuated-text-color);
   }
 
   @media (max-width: $mobile-sm) {

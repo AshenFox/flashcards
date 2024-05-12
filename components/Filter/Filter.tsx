@@ -16,16 +16,36 @@ const createCustomTheme: ThemeConfig = theme => ({
   ...theme,
   colors: {
     ...theme.colors,
-    primary25: "#ffcd1f",
-    primary: "#ffcd1f",
+    primary25: "var(--highlighted-element-background-color)",
+    primary: "var(--highlighted-element-background-color)",
   },
 });
 
 const customStyles: StylesConfig<Option, false, GroupBase<Option>> = {
-  dropdownIndicator: provided => ({
+  dropdownIndicator: (provided, state) => ({
     ...provided,
     paddingLeft: 3,
     paddingRight: 3,
+    color: state.isFocused ? "var(--icon-fill)" : "var(--icon-pale-fill)",
+    ":hover": {
+      color: "var(--icon-fill)",
+    },
+  }),
+  control: provided => ({
+    ...provided,
+    borderColor: "var(--element-border-color)",
+  }),
+  option: provided => ({
+    ...provided,
+    color: "var(--text-color)",
+  }),
+  indicatorSeparator: provided => ({
+    ...provided,
+    backgroundColor: "var(--element-border-color)",
+  }),
+  singleValue: provided => ({
+    ...provided,
+    color: "var(--text-color)",
   }),
 };
 

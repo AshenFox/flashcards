@@ -62,6 +62,7 @@ $crayola: #23b26d;
 body.light {
   /* icon */
   --icon-fill: #{$dark-liver};
+  --icon-pale-fill: #{$gainsboro};
   --icon-positive-fill: #{$crayola};
   --icon-danger-fill: #{$bittersweet};
 
@@ -74,13 +75,15 @@ body.light {
   --secondary-element-background-color: #{$jade};
   --highlighted-element-background-color: #{$lightning-yellow};
   --highlighted-element-border-color: #{$lightning-yellow};
+  --strong-element-border-color: #{$jet};
   --divider-color: #{$philippine-silver};
 
   /* text */
   --text-color: #{$dark-liver};
   --strong-text-color: #{$jet};
   --accentuated-text-color: #{$regalia};
-  --subtle-text-color: #{$concrete};
+  --strong-accentuated-text-color: #{$american-purple};
+  --subtle-text-color: #{$cadet-grey};
   --reverse-text-color: #{$lotion};
 
   /* miscellaneous */
