@@ -2,6 +2,7 @@ import Input from "@ui/Input";
 import clsx from "clsx";
 import { ChangeEventHandler, memo, useRef } from "react";
 import Select, {
+  CSSObjectWithLabel,
   GroupBase,
   Options,
   StylesConfig,
@@ -31,14 +32,39 @@ const customStyles: StylesConfig<Option, false, GroupBase<Option>> = {
       color: "var(--icon-fill)",
     },
   }),
-  control: provided => ({
+
+  control: (provided, state) => ({
     ...provided,
-    borderColor: "var(--element-border-color)",
+    borderColor: state.isFocused
+      ? "var(--highlighted-element-border-color)"
+      : "var(--element-border-color)",
+    backgroundColor: "var(--element-background-color)",
+    ":hover": {
+      borderColor: "var(--highlighted-element-border-color)",
+    },
   }),
-  option: provided => ({
-    ...provided,
-    color: "var(--text-color)",
-  }),
+  option: (provided, state) => {
+    const { isSelected } = state;
+    const res: CSSObjectWithLabel = {
+      ...provided,
+      cursor: "pointer",
+      transition: "all 0.1s",
+      color: isSelected ? "var(--active-text-color)" : "var(--text-color)",
+      backgroundColor: isSelected
+        ? "var(--highlighted-element-background-color)"
+        : "transparent",
+      ":hover": {
+        backgroundColor: isSelected
+          ? "var(--highlighted-element-background-color)"
+          : "transparent",
+        color: isSelected
+          ? "var(--active-text-color)"
+          : "var(--highlighted-text-color)",
+      },
+    };
+
+    return res;
+  },
   indicatorSeparator: provided => ({
     ...provided,
     backgroundColor: "var(--element-border-color)",
@@ -46,6 +72,13 @@ const customStyles: StylesConfig<Option, false, GroupBase<Option>> = {
   singleValue: provided => ({
     ...provided,
     color: "var(--text-color)",
+  }),
+  menu: provided => ({
+    ...provided,
+    backgroundColor: "var(--element-background-color)",
+    border: "1px solid var(--element-border-color)",
+    marginTop: "0.3rem",
+    boxShadow: "none",
   }),
 };
 

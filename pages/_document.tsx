@@ -38,7 +38,10 @@ const Document = () => {
           rel="stylesheet"
         />
       </Head>
-      <body className="light">
+      <body
+        className="light"
+        // className="dark"
+      >
         <Main />
         <NextScript />
       </body>

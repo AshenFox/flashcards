@@ -1,4 +1,4 @@
-@import "@styles/vars.scss";
+@import "@styles/vars";
 
 .confirm {
   position: absolute;
@@ -10,9 +10,9 @@
   align-items: center;
   justify-content: space-around;
   padding: 0.5rem;
-  border-radius: 1rem;
-  background-color: $white;
-  box-shadow: 0 0 1.25rem 0 rgba($grey, 0.28);
+  border: 1px solid var(--element-border-color);
+  border-radius: 0.5rem;
+  background-color: var(--element-background-color);
   opacity: 0;
   pointer-events: none;
   text-align: center;
@@ -34,7 +34,7 @@
   display: inline-block;
   padding: 0.75rem 2.5rem;
   border-radius: 0.75rem;
-  color: $white;
+  color: var(--reverse-text-color);
   cursor: pointer;
   font-size: 1.5rem;
   transition: all 0.2s;

@@ -1,5 +1,5 @@
-@import "@styles/vars.scss";
-@import "@styles/animations.scss";
+@import "@styles/vars";
+@import "@styles/animations";
 
 .speaker {
   display: flex;
@@ -8,19 +8,19 @@
   cursor: pointer;
 
   svg {
-    fill: $grey;
+    fill: var(--icon-fill);
     transition: all 0.2s;
   }
 
   &:hover {
     svg {
-      fill: $tertiary;
+      fill: var(--icon-highlighted-fill);
     }
   }
 
   &[data-speaking="true"] {
     svg {
-      fill: $tertiary;
+      fill: var(--icon-highlighted-fill);
     }
 
     animation-name: example;
@@ -30,12 +30,12 @@
     cursor: initial;
 
     svg {
-      fill: $grey-medium;
+      fill: var(--icon-pale-fill);
     }
 
     &:hover {
       svg {
-        fill: $grey-medium;
+        fill: var(--icon-pale-fill);
       }
     }
   }

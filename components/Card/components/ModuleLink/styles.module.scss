@@ -1,20 +1,22 @@
-@import "@styles/vars.scss";
+@import "@styles/vars";
 
 .module_link {
   position: relative;
+  display: flex;
+  align-items: center;
   cursor: pointer;
   font-size: 1.2rem;
 
   svg {
-    width: 1.8rem;
-    height: 1.8rem;
-    fill: $grey-lighter;
+    width: 1.5rem;
+    height: 1.5rem;
+    fill: var(--icon-fill);
     transition: all 0.1s linear;
   }
 
   &:hover {
     svg {
-      fill: $tertiary;
+      fill: var(--icon-highlighted-fill);
     }
   }
 
@@ -22,6 +24,5 @@
     top: -3.25rem;
     right: 0;
     width: max-content;
-    color: $tertiary;
   }
 }

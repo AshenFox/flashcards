@@ -14,6 +14,8 @@ $red: #ff725b;
 $palegreen: #bde8d3;
 $green: #23b26d;
 
+/* ======= */
+
 $mobile-sm: 350px;
 $mobile-m: 450px;
 $mobile: 620px;
@@ -36,7 +38,7 @@ $orange: #ff5722;
 $jade: #00ad57;
 
 $concrete: #f3f3f3;
-$silver-foil: #b0b0b0;
+$silver-foil: #979797;
 $quartz: #4b4b4b;
 $jet: #363636;
 $raisin-black: #232323;
@@ -44,15 +46,16 @@ $raisin-black: #232323;
 /* $cultured: #f5f5f5; */
 $lotion: #fdfdfd;
 $anti-flash-white: #f0f0f0;
-$philippine-silver: #b6b6b6;
 $gainsboro: #dbdbdb;
+$philippine-silver: #b6b6b6;
 $cadet-grey: #97a5aa;
+$dim-gray: #696969;
 $dark-liver: #4e4e4e;
 
 $languid-lavender: #d5c8e0;
 $regalia: #54267b;
 $american-purple: #431c64; /* old dark */
-$jacarta: #4a2b63; /* new dark  */
+// $jacarta: #4a2b63; /* new dark  */
 
 $light-red: #ffd4cd;
 $bittersweet: #ff725b;
@@ -65,27 +68,88 @@ body.light {
   --icon-pale-fill: #{$gainsboro};
   --icon-positive-fill: #{$crayola};
   --icon-danger-fill: #{$bittersweet};
+  --icon-highlighted-fill: #{$lightning-yellow};
 
   /* app */
   --app-background-color: #{$concrete};
   --element-background-color: #{$lotion};
   --element-border-color: #{$gainsboro};
   --accentuated-element-background-color: #{$regalia};
-  --accentuated-element-border-color: #{$jacarta};
+  --accentuated-element-border-color: #{$american-purple};
   --secondary-element-background-color: #{$jade};
   --highlighted-element-background-color: #{$lightning-yellow};
   --highlighted-element-border-color: #{$lightning-yellow};
   --strong-element-border-color: #{$jet};
   --divider-color: #{$philippine-silver};
+  --danger-border-color: #{$bittersweet};
 
   /* text */
   --text-color: #{$dark-liver};
   --strong-text-color: #{$jet};
   --accentuated-text-color: #{$regalia};
   --strong-accentuated-text-color: #{$american-purple};
+  --diffused-text-color: #{$regalia};
+  --highlighted-text-color: #{$lightning-yellow};
+  --active-text-color: #{jet};
   --subtle-text-color: #{$cadet-grey};
+  --strong-subtle-text-color: #{$dim-gray};
   --reverse-text-color: #{$lotion};
+  --danger-text-color: #{$bittersweet};
+}
 
-  /* miscellaneous */
-  --highlighted-color: #{$lightning-yellow};
+body.dark {
+  /* icon */
+  --icon-fill: #{$silver-foil};
+  --icon-pale-fill: #{$dim-gray};
+  --icon-positive-fill: #{$crayola}; // not changed
+  --icon-danger-fill: #{$bittersweet}; // not changed
+  --icon-highlighted-fill: #{$lightning-yellow};
+
+  /* app */
+  --app-background-color: #{$raisin-black};
+  --element-background-color: #{$jet};
+  --element-border-color: #{$quartz};
+  --accentuated-element-background-color: #{$jet};
+  --accentuated-element-border-color: #{$quartz};
+  --secondary-element-background-color: #{$jade}; // not changed
+  --highlighted-element-background-color: #{$lightning-yellow};
+  --highlighted-element-border-color: #{$lightning-yellow};
+  --strong-element-border-color: #{$silver-foil}; // not changed
+  --divider-color: #{$silver-foil};
+  --danger-border-color: #{$bittersweet};
+
+  /* text */
+  --text-color: #{$anti-flash-white};
+  --strong-text-color: #{$concrete};
+  --accentuated-text-color: #{$lightning-yellow};
+  --strong-accentuated-text-color: #{$american-purple}; // not changed
+  --diffused-text-color: #{$dandelion};
+  --highlighted-text-color: #{$lightning-yellow};
+  --active-text-color: #{$jet};
+  --subtle-text-color: #{$silver-foil};
+  --strong-subtle-text-color: #{$philippine-silver};
+  --reverse-text-color: #{$lotion}; // not changed
+  --danger-text-color: #{$bittersweet};
+}
+
+/* sr indicator colors */
+body.light,
+body.dark {
+  --sr-indicator-stage-1: #0000dc;
+  --sr-indicator-stage-2: #00817d;
+  --sr-indicator-stage-3: #238e24;
+  --sr-indicator-stage-4: #afd510;
+  --sr-indicator-stage-5: #fce72c;
+  --sr-indicator-stage-6: #ffca2c;
+  --sr-indicator-stage-7: #fc7300;
+  --sr-indicator-stage-8: #f32a00;
+  --sr-indicator-stage-9: #da0000;
+  --sr-indicator-stage-10: #b10067;
+  --sr-indicator-stage-11: #54267b;
+}
+
+/* stylelint-disable-next-line no-duplicate-selectors */
+body.dark {
+  --sr-indicator-stage-1: #5858ff;
+  --sr-indicator-stage-11: #8d39d6;
 }
