@@ -1,5 +1,5 @@
-@import "@styles/vars.scss";
-@import "@styles/animations.scss";
+@import "@styles/vars";
+@import "@styles/animations";
 
 .indicator {
   position: relative;
@@ -9,7 +9,7 @@
   svg {
     width: 22px;
     height: 22px;
-    fill: $grey;
+    fill: var(--icon-fill);
   }
 
   :global(.indicator__dots) {
@@ -29,7 +29,7 @@
     width: 0.4rem;
     height: 0.4rem;
     border-radius: 50%;
-    background-color: $secondary;
+    background-color: var(--icon-positive-fill);
     transform: translate(-50%, -50%);
   }
 
@@ -37,8 +37,7 @@
     top: -1rem;
     left: 4rem;
     width: max-content;
-    border-radius: 1.5rem;
-    color: $grey;
+    border-radius: 0.5rem;
 
     span {
       display: block;
@@ -71,13 +70,13 @@
     svg {
       width: 17px;
       height: 17px;
-      fill: $grey;
+      fill: var(--icon-fill);
     }
   }
 
   &.active {
     svg {
-      fill: $green;
+      fill: var(--icon-positive-fill);
     }
 
     :global(.indicator__dots) {
@@ -85,7 +84,7 @@
     }
 
     :global(.tooltip__tooltip) {
-      color: $green;
+      color: var(--icon-positive-fill);
     }
   }
 }

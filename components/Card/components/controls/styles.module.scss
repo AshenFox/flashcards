@@ -1,4 +1,4 @@
-@import "@styles/vars.scss";
+@import "@styles/vars";
 
 .sr {
   margin-left: 0.5rem;
@@ -9,10 +9,10 @@
 
   :global(.switch__checkbox):checked {
     & ~ :global(.switch__switch) {
-      border-color: $green;
+      border-color: var(--icon-positive-fill);
 
       &::after {
-        background-color: $green;
+        background-color: var(--icon-positive-fill);
       }
     }
   }
@@ -24,13 +24,13 @@
 
   & svg {
     margin-right: 1rem;
-    fill: $grey;
+    fill: var(--icon-fill);
     transition: all 0.2s;
   }
 
   &:hover {
     svg {
-      fill: $red;
+      fill: var(--icon-danger-fill);
     }
   }
 
@@ -39,7 +39,7 @@
     left: -1rem;
     width: max-content;
     margin-right: 1rem;
-    color: $red !important;
+    color: var(--danger-text-color) !important;
   }
 
   &[data-active="true"] {
@@ -48,7 +48,7 @@
     }
 
     svg {
-      fill: $red;
+      fill: var(--danger-text-color);
     }
   }
 }
@@ -59,14 +59,14 @@
 
   /* stylelint-disable-next-line no-descending-specificity */
   & svg {
-    fill: $grey;
+    fill: var(--icon-fill);
     transition: all 0.1s linear;
     vertical-align: middle;
   }
 
   &:hover {
     & svg {
-      fill: rgb(255 0 0 / 85.6%);
+      fill: var(--icon-danger-fill);
     }
   }
 }
@@ -74,7 +74,7 @@
 .controls_item {
   &:not(:last-child) {
     padding-right: 1.25rem;
-    border-right: 2px solid $grey-light;
+    border-right: 1px solid var(--element-border-color);
     margin-right: 1.25rem;
   }
 }

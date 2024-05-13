@@ -1,4 +1,4 @@
-@import "@styles/vars.scss";
+@import "@styles/vars";
 
 .textarea {
   display: block;
@@ -6,23 +6,24 @@
   max-width: 100%;
   padding: 0.5rem 0;
   border: none;
-  border-bottom: 2px solid $grey;
+  border-bottom: 1px solid var(--strong-element-border-color);
   font-family: inherit;
   font-size: 1.7rem;
   overflow-wrap: break-word;
   resize: none;
   text-align: left;
+  transition: all 0.1s;
 
   &:focus {
-    border-bottom: 2px solid $tertiary;
+    border-bottom: 1px solid var(--highlighted-element-border-color);
     outline: none;
   }
 
   &.error {
-    border-color: red;
+    border-color: var(--danger-border-color);
   }
 
-  &[disabled] {
+  /* &[disabled] {
     height: 4.6rem;
-  }
+  } */
 }

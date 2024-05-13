@@ -1,6 +1,7 @@
-@import "@styles/vars.scss";
+@import "@styles/vars";
 
 .card {
+  border: 1px solid var(--element-border-color);
   margin-bottom: 1.5rem;
 }
 
@@ -8,15 +9,15 @@
   display: flex;
   justify-content: space-between;
   padding: 0.55rem 2rem;
-  border-bottom: 2px solid #f0f0f0;
-  background-color: $white;
+  border-bottom: 1px solid var(--element-border-color);
+  background-color: var(--element-background-color);
 }
 
 .created {
   display: flex;
   align-items: center;
   justify-content: center;
-  color: $grey-lighter;
+  color: var(--subtle-text-color);
   font-size: 1.2rem;
 }
 
@@ -24,7 +25,7 @@
   display: flex;
   min-height: 10rem;
   padding: 2rem;
-  background-color: $white;
+  background-color: var(--element-background-color);
 
   @media (max-width: $tablet-sm) {
     flex-direction: column;
@@ -35,7 +36,7 @@
   position: relative;
   width: 30%;
   padding: 3rem 1.5rem 0;
-  border-right: 2px solid $grey-light;
+  border-right: 1px solid var(--element-border-color);
   font-size: 1.7rem;
   overflow-wrap: break-word;
   text-align: center;
@@ -44,7 +45,7 @@
     width: 100%;
     padding: 3rem 1rem 1.5rem;
     border-right: none;
-    border-bottom: 2px solid $grey-light;
+    border-bottom: 1px solid var(--element-border-color);
     text-align: left;
   }
 }
@@ -130,7 +131,7 @@
 }
 
 .confirm {
-  &:global(.confirm_popup__confirm) {
+  &:global(.confirm-popup__confirm) {
     top: -10.5rem;
     left: 5rem;
     width: 20rem;

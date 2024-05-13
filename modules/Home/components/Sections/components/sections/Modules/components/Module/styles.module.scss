@@ -67,14 +67,14 @@
 
 .term_number {
   padding-right: 1rem;
-  // color: $grey;
+  color: var(--strong-subtle-text-color);
   line-height: 1.5rem;
 }
 
 .author {
   padding-left: 1rem;
   border-left: 1px solid var(--element-border-color);
-  color: $grey;
+  color: var(--strong-subtle-text-color);
   line-height: 1.5rem;
 }
 

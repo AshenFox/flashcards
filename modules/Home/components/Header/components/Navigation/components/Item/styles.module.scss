@@ -3,12 +3,12 @@
 .item {
   display: inline-flex;
   border-left: 1px solid var(--divider-color);
-  color: var(--accentuated-text-color);
+  color: var(--diffused-text-color);
   cursor: pointer;
   transition: all 0.1s linear;
 
   &:hover {
-    color: var(--strong-accentuated-text-color);
+    color: var(--highlighted-text-color);
   }
 
   a {
@@ -26,10 +26,10 @@
   &.active {
     border-color: var(--highlighted-element-border-color);
     background-color: var(--highlighted-element-border-color);
-    color: var(--strong-text-color);
+    color: var(--active-text-color);
 
     &:hover {
-      color: var(--strong-text-color);
+      color: var(--active-text-color);
     }
   }
 

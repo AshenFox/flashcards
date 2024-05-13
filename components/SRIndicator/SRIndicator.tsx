@@ -88,15 +88,15 @@ const SRIndicator = ({
 export default memo(SRIndicator);
 
 const color_arr = [
-  "#0000dc",
-  "#00817d",
-  "#238e24",
-  "#afd510",
-  "#fce72c",
-  "#ffca2c",
-  "#fc7300",
-  "#f32a00",
-  "#da0000",
-  "#b10067",
-  "#54267b",
+  "var(--sr-indicator-stage-1)",
+  "var(--sr-indicator-stage-2)",
+  "var(--sr-indicator-stage-3)",
+  "var(--sr-indicator-stage-4)",
+  "var(--sr-indicator-stage-5)",
+  "var(--sr-indicator-stage-6)",
+  "var(--sr-indicator-stage-7)",
+  "var(--sr-indicator-stage-8)",
+  "var(--sr-indicator-stage-9)",
+  "var(--sr-indicator-stage-10)",
+  "var(--sr-indicator-stage-11)",
 ];
