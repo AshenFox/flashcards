@@ -1,4 +1,5 @@
 import { useActions, useAppSelector } from "@store/hooks";
+import { MinusIcon, PlusIcon } from "@ui/Icons";
 import Input from "@ui/Input";
 import {
   ChangeEvent,
@@ -72,7 +73,9 @@ const Counter = () => {
           onMouseDown={multiple("stepDown")}
           onTouchStart={multiple("stepDown")}
           onMouseUp={single("stepDown")}
-        />
+        >
+          <MinusIcon />
+        </div>
         <Input
           type="number"
           className={s.number}
@@ -84,7 +87,9 @@ const Counter = () => {
           onMouseDown={multiple("stepUp")}
           onTouchStart={multiple("stepUp")}
           onMouseUp={single("stepUp")}
-        />
+        >
+          <PlusIcon />
+        </div>
       </div>
     </div>
   );

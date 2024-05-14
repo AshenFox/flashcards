@@ -2,9 +2,9 @@ import { useActions, useAppSelector } from "@store/hooks";
 import ConfirmPopup from "@ui/ConfirmPopup";
 import DateStr from "@ui/DateStr";
 import { DeleteIcon, EditIcon } from "@ui/Icons";
+import Skeleton from "@ui/Skeleton";
 import Link from "next/link";
 import { memo, MouseEvent } from "react";
-import Skeleton from "react-loading-skeleton";
 
 import SR from "./components/SR";
 import SRDrop from "./components/SRDrop";

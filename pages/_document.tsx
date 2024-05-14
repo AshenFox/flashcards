@@ -39,8 +39,8 @@ const Document = () => {
         />
       </Head>
       <body
-        className="light"
-        // className="dark"
+        // className="light"
+        className="dark"
       >
         <Main />
         <NextScript />

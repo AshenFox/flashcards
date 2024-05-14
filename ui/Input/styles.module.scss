@@ -5,12 +5,12 @@
   height: 4rem;
   align-items: center;
   padding: 0.5rem;
-  border-color: var(--strong-element-border-color);
-  border-bottom: 1px solid var(--strong-element-border-color);
+  border-color: var(--input-border-color);
+  border-bottom: 1px solid var(--input-border-color);
   cursor: text;
 
   &:focus-within {
-    border-color: var(--highlighted-element-border-color);
+    border-color: var(--active-color);
   }
 
   &.movingBorder {

@@ -6,7 +6,7 @@
   max-width: 100%;
   padding: 0.5rem 0;
   border: none;
-  border-bottom: 1px solid var(--strong-element-border-color);
+  border-bottom: 1px solid var(--input-border-color);
   font-family: inherit;
   font-size: 1.7rem;
   overflow-wrap: break-word;
@@ -15,12 +15,12 @@
   transition: all 0.1s;
 
   &:focus {
-    border-bottom: 1px solid var(--highlighted-element-border-color);
+    border-bottom: 1px solid var(--active-color);
     outline: none;
   }
 
   &.error {
-    border-color: var(--danger-border-color);
+    border-color: var(--danger-color);
   }
 
   /* &[disabled] {

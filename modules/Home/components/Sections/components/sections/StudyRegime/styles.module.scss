@@ -1,12 +1,13 @@
-@import "@styles/vars.scss";
+@import "@styles/vars";
 
 .study_regime {
   display: flex;
   justify-content: space-between;
   padding: 1.4rem 2.4rem;
+  border: 1px solid var(--element-border-color);
   border-radius: 5px;
   margin-bottom: 1rem;
-  background-color: $white;
+  background-color: var(--element-background-color);
   cursor: auto;
 
   @media (max-width: $mobile) {
@@ -24,12 +25,12 @@
 
   @media (max-width: $tablet) {
     padding-bottom: 1rem;
-    border-bottom: 2px solid $grey-light;
+    border-bottom: 1px solid var(--element-border-color);
   }
 }
 
 .title {
-  color: $primary;
+  color: var(--accentuated-color);
   font-size: 2.5rem;
   font-weight: bold;
 
@@ -43,13 +44,12 @@
   list-style: none;
 
   span {
-    color: $primary;
+    color: var(--accentuated-color);
     font-weight: bold;
   }
 }
 
 .repeat {
-  color: $grey;
   text-align: right;
 
   @media (max-width: $tablet) {
@@ -60,7 +60,7 @@
 
   p {
     span {
-      color: $primary;
+      color: var(--accentuated-color);
     }
   }
 
@@ -83,21 +83,21 @@
   height: 6rem;
   align-items: center;
   justify-content: space-around;
-  border: 2px solid $primary;
+  border: 2px solid var(--accentuated-color);
   border-radius: 100%;
   cursor: pointer;
   transition: all 0.2s;
 
   svg {
-    fill: $primary;
+    fill: var(--accentuated-color);
     transition: all 0.2s;
   }
 
   &:hover {
-    border: 2px solid $tertiary;
+    border: 2px solid var(--alternative-active-color);
 
     svg {
-      fill: $tertiary;
+      fill: var(--alternative-active-color);
     }
   }
 
