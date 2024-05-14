@@ -29,7 +29,7 @@
     width: 0.4rem;
     height: 0.4rem;
     border-radius: 50%;
-    background-color: var(--icon-positive-fill);
+    background-color: var(--success-color);
     transform: translate(-50%, -50%);
   }
 
@@ -76,7 +76,7 @@
 
   &.active {
     svg {
-      fill: var(--icon-positive-fill);
+      fill: var(--success-color);
     }
 
     :global(.indicator__dots) {
@@ -84,7 +84,7 @@
     }
 
     :global(.tooltip__tooltip) {
-      color: var(--icon-positive-fill);
+      color: var(--success-color);
     }
   }
 }

@@ -1,12 +1,12 @@
-@import "@styles/vars.scss";
+@import "@styles/vars";
 
 .header {
   position: relative;
   z-index: 40;
   padding: 0;
   padding: 1.5rem 0;
-  border-bottom: 1px solid var(--accentuated-element-border-color);
-  background-color: var(--accentuated-element-background-color);
+  border-bottom: 1px solid var(--header-border-color);
+  background-color: var(--header-background-color);
   transition: all 0.1 linear;
 
   @media (max-width: $tablet) {

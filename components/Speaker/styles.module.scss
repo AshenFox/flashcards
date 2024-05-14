@@ -14,13 +14,13 @@
 
   &:hover {
     svg {
-      fill: var(--icon-highlighted-fill);
+      fill: var(--active-color);
     }
   }
 
   &[data-speaking="true"] {
     svg {
-      fill: var(--icon-highlighted-fill);
+      fill: var(--active-color);
     }
 
     animation-name: example;
@@ -30,12 +30,12 @@
     cursor: initial;
 
     svg {
-      fill: var(--icon-pale-fill);
+      fill: var(--inactive-color);
     }
 
     &:hover {
       svg {
-        fill: var(--icon-pale-fill);
+        fill: var(--inactive-color);
       }
     }
   }

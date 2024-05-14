@@ -1,9 +1,9 @@
 import Container from "@components/Container";
 import ContentWrapper from "@components/ContentWrapper";
 import { useAppSelector } from "@store/hooks";
+import Skeleton from "@ui/Skeleton";
 import Link from "next/link";
 import { memo } from "react";
-import Skeleton from "react-loading-skeleton";
 
 import Info from "./components/Info/Info";
 import Study from "./components/Study/Study";

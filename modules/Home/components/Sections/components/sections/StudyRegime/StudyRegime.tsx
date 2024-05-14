@@ -1,8 +1,8 @@
 import { useAppSelector } from "@store/hooks";
 import { CardsIcon, WriteIcon } from "@ui/Icons";
+import Skeleton from "@ui/Skeleton";
 import Link from "next/link";
 import { FC, memo } from "react";
-import Skeleton from "react-loading-skeleton";
 
 import SrCounter from "./components/Counter/Counter";
 import InTime from "./components/InTime";
@@ -40,7 +40,7 @@ const StudyRegime: FC<Props> = () => {
         <p>
           Currently you have{" "}
           <span>
-            {loading ? <Skeleton width={30} /> : repeat_num} card
+            {loading ? <Skeleton width={25} /> : repeat_num} card
             {repeat_num > 1 || repeat_num < 1 ? "s" : ""}
           </span>{" "}
           to repeat.

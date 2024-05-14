@@ -17,8 +17,8 @@ const createCustomTheme: ThemeConfig = theme => ({
   ...theme,
   colors: {
     ...theme.colors,
-    primary25: "var(--highlighted-element-background-color)",
-    primary: "var(--highlighted-element-background-color)",
+    primary25: "var(--active-color)",
+    primary: "var(--active-color)",
   },
 });
 
@@ -27,7 +27,7 @@ const customStyles: StylesConfig<Option, false, GroupBase<Option>> = {
     ...provided,
     paddingLeft: 3,
     paddingRight: 3,
-    color: state.isFocused ? "var(--icon-fill)" : "var(--icon-pale-fill)",
+    color: state.isFocused ? "var(--icon-fill)" : "var(--inactive-color)",
     ":hover": {
       color: "var(--icon-fill)",
     },
@@ -36,11 +36,11 @@ const customStyles: StylesConfig<Option, false, GroupBase<Option>> = {
   control: (provided, state) => ({
     ...provided,
     borderColor: state.isFocused
-      ? "var(--highlighted-element-border-color)"
+      ? "var(--active-color)"
       : "var(--element-border-color)",
     backgroundColor: "var(--element-background-color)",
     ":hover": {
-      borderColor: "var(--highlighted-element-border-color)",
+      borderColor: "var(--active-color)",
     },
   }),
   option: (provided, state) => {
@@ -49,17 +49,13 @@ const customStyles: StylesConfig<Option, false, GroupBase<Option>> = {
       ...provided,
       cursor: "pointer",
       transition: "all 0.1s",
-      color: isSelected ? "var(--active-text-color)" : "var(--text-color)",
-      backgroundColor: isSelected
-        ? "var(--highlighted-element-background-color)"
-        : "transparent",
+      color: isSelected ? "var(--active-secondary-color)" : "var(--text-color)",
+      backgroundColor: isSelected ? "var(--active-color)" : "transparent",
       ":hover": {
-        backgroundColor: isSelected
-          ? "var(--highlighted-element-background-color)"
-          : "transparent",
+        backgroundColor: isSelected ? "var(--active-color)" : "transparent",
         color: isSelected
-          ? "var(--active-text-color)"
-          : "var(--highlighted-text-color)",
+          ? "var(--active-secondary-color)"
+          : "var(--active-color)",
       },
     };
 

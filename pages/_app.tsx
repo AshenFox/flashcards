@@ -1,4 +1,5 @@
 import "../styles/main.scss";
+import "react-loading-skeleton/dist/skeleton.css";
 
 import AuthSpinner from "@modules/AuthSpinner";
 import AuthWrapper from "@modules/AuthWrapper";

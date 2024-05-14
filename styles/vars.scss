@@ -63,73 +63,73 @@ $magic-mint: #bde8d3;
 $crayola: #23b26d;
 
 body.light {
-  /* icon */
-  --icon-fill: #{$dark-liver};
-  --icon-pale-fill: #{$gainsboro};
-  --icon-positive-fill: #{$crayola};
-  --icon-danger-fill: #{$bittersweet};
-  --icon-highlighted-fill: #{$lightning-yellow};
-
-  /* app */
+  /* general app element colors */
   --app-background-color: #{$concrete};
   --element-background-color: #{$lotion};
   --element-border-color: #{$gainsboro};
-  --accentuated-element-background-color: #{$regalia};
-  --accentuated-element-border-color: #{$american-purple};
   --secondary-element-background-color: #{$jade};
-  --highlighted-element-background-color: #{$lightning-yellow};
-  --highlighted-element-border-color: #{$lightning-yellow};
-  --strong-element-border-color: #{$jet};
+  --icon-fill: #{$dark-liver};
+  --input-border-color: #{$jet};
   --divider-color: #{$philippine-silver};
-  --danger-border-color: #{$bittersweet};
+  --header-background-color: #{$regalia};
+  --header-border-color: #{$american-purple};
 
   /* text */
   --text-color: #{$dark-liver};
-  --strong-text-color: #{$jet};
-  --accentuated-text-color: #{$regalia};
-  --strong-accentuated-text-color: #{$american-purple};
-  --diffused-text-color: #{$regalia};
-  --highlighted-text-color: #{$lightning-yellow};
-  --active-text-color: #{jet};
+  --stronger-text-color: #{$jet};
+  --secondary-text-color: #{$regalia};
   --subtle-text-color: #{$cadet-grey};
-  --strong-subtle-text-color: #{$dim-gray};
-  --reverse-text-color: #{$lotion};
-  --danger-text-color: #{$bittersweet};
+  --stronger-subtle-text-color: #{$dim-gray};
+
+  /* general state */
+  --inactive-color: #{$gainsboro};
+  --success-color: #{$crayola};
+  --danger-color: #{$bittersweet};
+  --active-color: #{$lightning-yellow};
+  --active-secondary-color: #{$jet};
+  --alternative-active-color: #{$lightning-yellow};
+  --accentuated-color: #{$regalia};
+  --stronger-accentuated-color: #{$american-purple};
+  --reverse-color: #{$anti-flash-white};
+
+  /* constant colors */
+  --dark-color: #{$dark-liver};
+  --light-color: #{$anti-flash-white};
 }
 
 body.dark {
-  /* icon */
-  --icon-fill: #{$silver-foil};
-  --icon-pale-fill: #{$dim-gray};
-  --icon-positive-fill: #{$crayola}; // not changed
-  --icon-danger-fill: #{$bittersweet}; // not changed
-  --icon-highlighted-fill: #{$lightning-yellow};
-
-  /* app */
+  /* general app elements colors */
   --app-background-color: #{$raisin-black};
   --element-background-color: #{$jet};
   --element-border-color: #{$quartz};
-  --accentuated-element-background-color: #{$jet};
-  --accentuated-element-border-color: #{$quartz};
-  --secondary-element-background-color: #{$jade}; // not changed
-  --highlighted-element-background-color: #{$lightning-yellow};
-  --highlighted-element-border-color: #{$lightning-yellow};
-  --strong-element-border-color: #{$silver-foil}; // not changed
+  --secondary-element-background-color: #{$lightning-yellow};
+  --icon-fill: #{$silver-foil};
+  --input-border-color: #{$silver-foil};
   --divider-color: #{$silver-foil};
-  --danger-border-color: #{$bittersweet};
+  --header-background-color: #{$jet};
+  --header-border-color: #{$quartz};
 
   /* text */
   --text-color: #{$anti-flash-white};
-  --strong-text-color: #{$concrete};
-  --accentuated-text-color: #{$lightning-yellow};
-  --strong-accentuated-text-color: #{$american-purple}; // not changed
-  --diffused-text-color: #{$dandelion};
-  --highlighted-text-color: #{$lightning-yellow};
-  --active-text-color: #{$jet};
+  --stronger-text-color: #{$concrete};
+  --secondary-text-color: #{$dandelion};
   --subtle-text-color: #{$silver-foil};
-  --strong-subtle-text-color: #{$philippine-silver};
-  --reverse-text-color: #{$lotion}; // not changed
-  --danger-text-color: #{$bittersweet};
+  --stronger-subtle-text-color: #{$philippine-silver};
+
+  /* general state and colors */
+  --inactive-color: #{$dim-gray};
+  --success-color: #{$crayola};
+  --danger-color: #{$bittersweet};
+  --active-color: #{$lightning-yellow};
+  --active-secondary-color: #{$jet};
+  --alternative-active-color: #{$dandelion};
+  --accentuated-color: #{$lightning-yellow};
+  --stronger-accentuated-color: #{$american-purple};
+  --reverse-color: #{$dark-liver};
+
+  /* constant colors */
+  --dark-color: #{$dark-liver};
+  --light-color: #{$anti-flash-white};
 }
 
 /* sr indicator colors */
@@ -153,3 +153,69 @@ body.dark {
   --sr-indicator-stage-1: #5858ff;
   --sr-indicator-stage-11: #8d39d6;
 }
+
+/* =========================== */
+// body.light {
+//   /* icon */
+//   --icon-fill: #{$dark-liver};
+//   --icon-pale-fill: #{$gainsboro};
+//   --icon-positive-fill: #{$crayola};
+//   --icon-danger-fill: #{$bittersweet};
+//   --icon-highlighted-fill: #{$lightning-yellow};
+//   /* app */
+//   --app-background-color: #{$concrete};
+//   --element-background-color: #{$lotion};
+//   --element-border-color: #{$gainsboro};
+//   --accentuated-element-background-color: #{$regalia};
+//   --accentuated-element-border-color: #{$american-purple};
+//   --secondary-element-background-color: #{$jade};
+//   --highlighted-element-background-color: #{$lightning-yellow};
+//   --highlighted-element-border-color: #{$lightning-yellow};
+//   --strong-element-border-color: #{$jet};
+//   --divider-color: #{$philippine-silver};
+//   --danger-border-color: #{$bittersweet};
+//   /* text */
+//   --text-color: #{$dark-liver};
+//   --strong-text-color: #{$jet};
+//   --accentuated-text-color: #{$regalia};
+//   --strong-accentuated-text-color: #{$american-purple};
+//   --diffused-text-color: #{$regalia};
+//   --highlighted-text-color: #{$lightning-yellow};
+//   --active-text-color: #{jet};
+//   --subtle-text-color: #{$cadet-grey};
+//   --strong-subtle-text-color: #{$dim-gray};
+//   --reverse-text-color: #{$lotion};
+//   --danger-text-color: #{$bittersweet};
+// }
+// body.dark {
+//   /* icon */
+//   --icon-fill: #{$silver-foil};
+//   --icon-pale-fill: #{$dim-gray};
+//   --icon-positive-fill: #{$crayola}; // not changed
+//   --icon-danger-fill: #{$bittersweet}; // not changed
+//   --icon-highlighted-fill: #{$lightning-yellow};
+//   /* app */
+//   --app-background-color: #{$raisin-black};
+//   --element-background-color: #{$jet};
+//   --element-border-color: #{$quartz};
+//   --accentuated-element-background-color: #{$jet};
+//   --accentuated-element-border-color: #{$quartz};
+//   --secondary-element-background-color: #{$jade}; // not changed
+//   --highlighted-element-background-color: #{$lightning-yellow};
+//   --highlighted-element-border-color: #{$lightning-yellow};
+//   --strong-element-border-color: #{$silver-foil}; // not changed
+//   --divider-color: #{$silver-foil};
+//   --danger-border-color: #{$bittersweet};
+//   /* text */
+//   --text-color: #{$anti-flash-white};
+//   --strong-text-color: #{$concrete};
+//   --accentuated-text-color: #{$lightning-yellow};
+//   --strong-accentuated-text-color: #{$american-purple}; // not changed
+//   --diffused-text-color: #{$dandelion};
+//   --highlighted-text-color: #{$lightning-yellow};
+//   --active-text-color: #{$jet};
+//   --subtle-text-color: #{$silver-foil};
+//   --strong-subtle-text-color: #{$philippine-silver};
+//   --reverse-text-color: #{$lotion}; // not changed
+//   --danger-text-color: #{$bittersweet};
+// }

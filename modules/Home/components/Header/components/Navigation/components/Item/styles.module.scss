@@ -3,12 +3,12 @@
 .item {
   display: inline-flex;
   border-left: 1px solid var(--divider-color);
-  color: var(--diffused-text-color);
+  color: var(--secondary-text-color);
   cursor: pointer;
   transition: all 0.1s linear;
 
   &:hover {
-    color: var(--highlighted-text-color);
+    color: var(--active-color);
   }
 
   a {
@@ -24,16 +24,16 @@
   }
 
   &.active {
-    border-color: var(--highlighted-element-border-color);
-    background-color: var(--highlighted-element-border-color);
-    color: var(--active-text-color);
+    border-color: var(--active-color);
+    background-color: var(--active-color);
+    color: var(--active-secondary-color);
 
     &:hover {
-      color: var(--active-text-color);
+      color: var(--active-secondary-color);
     }
   }
 
   &.active + & {
-    border-color: var(--highlighted-element-border-color);
+    border-color: var(--active-color);
   }
 }
