@@ -59,6 +59,7 @@ $american-purple: #431c64; /* old dark */
 
 $light-red: #ffd4cd;
 $bittersweet: #ff725b;
+$whero-red: #da2626;
 $magic-mint: #bde8d3;
 $crayola: #23b26d;
 
@@ -73,6 +74,8 @@ body.light {
   --divider-color: #{$philippine-silver};
   --header-background-color: #{$regalia};
   --header-border-color: #{$american-purple};
+  --scroll-top-background-color: #{$regalia};
+  --scroll-top-icon-fill: #{$anti-flash-white};
 
   /* text */
   --text-color: #{$dark-liver};
@@ -85,11 +88,13 @@ body.light {
   --inactive-color: #{$gainsboro};
   --success-color: #{$crayola};
   --danger-color: #{$bittersweet};
+  --strong-danger-color: #{$whero-red};
   --active-color: #{$lightning-yellow};
   --active-secondary-color: #{$jet};
   --alternative-active-color: #{$lightning-yellow};
   --accentuated-color: #{$regalia};
   --stronger-accentuated-color: #{$american-purple};
+  --lighter-reverse-color: #{$philippine-silver};
   --reverse-color: #{$anti-flash-white};
 
   /* constant colors */
@@ -108,6 +113,8 @@ body.dark {
   --divider-color: #{$silver-foil};
   --header-background-color: #{$jet};
   --header-border-color: #{$quartz};
+  --scroll-top-background-color: #{$jet};
+  --scroll-top-icon-fill: #{$lightning-yellow};
 
   /* text */
   --text-color: #{$anti-flash-white};
@@ -120,11 +127,13 @@ body.dark {
   --inactive-color: #{$dim-gray};
   --success-color: #{$crayola};
   --danger-color: #{$bittersweet};
+  --strong-danger-color: #{$whero-red};
   --active-color: #{$lightning-yellow};
   --active-secondary-color: #{$jet};
   --alternative-active-color: #{$dandelion};
   --accentuated-color: #{$lightning-yellow};
   --stronger-accentuated-color: #{$american-purple};
+  --lighter-reverse-color: #{$philippine-silver};
   --reverse-color: #{$dark-liver};
 
   /* constant colors */

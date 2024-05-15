@@ -1,10 +1,10 @@
-@import "@styles/vars.scss";
+@import "@styles/vars";
 
 .logo {
   svg {
     width: 18px;
     height: 18px;
-    fill: $grey;
+    fill: var(--icon-fill);
     transition: all 0.2s;
   }
 }
@@ -16,20 +16,20 @@
   display: flex;
   padding: 0.5rem;
   border-radius: 5px;
-  background-color: $grey;
+  background-color: var(--dark-color);
   visibility: hidden;
 
   svg {
     width: 15px;
     height: 15px;
-    fill: $white;
+    fill: var(--light-color);
   }
 
   &:hover {
-    background-color: $tertiary;
+    background-color: var(--active-color);
 
     svg {
-      fill: $grey;
+      fill: var(--active-secondary-color);
     }
   }
 }
@@ -69,7 +69,7 @@
   &[data-imgurl~="false"] {
     height: auto;
     padding: 1rem 0;
-    border: $grey-medium dashed 2px;
+    border: var(--lighter-reverse-color) dashed 2px;
 
     & .delete {
       visibility: hidden;
@@ -82,7 +82,7 @@
   }
 
   &:hover .logo svg {
-    fill: $tertiary;
+    fill: var(--active-color);
   }
 }
 

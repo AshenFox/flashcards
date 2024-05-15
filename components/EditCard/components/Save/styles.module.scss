@@ -1,25 +1,25 @@
-@import "@styles/vars.scss";
+@import "@styles/vars";
 
 .save {
   padding-right: 1.5rem;
-  border-right: 2px solid $grey-light;
+  border-right: 1px solid var(--element-border-color);
 
   :global(.switch__checkbox):checked {
     & ~ :global(.tooltip__tooltip) {
-      border-color: $green;
-      color: $green;
+      border-color: var(--success-color);
+      color: var(--success-color);
     }
 
     & ~ :global(.switch__switch) {
-      border-color: $green;
+      border-color: var(--success-color);
 
       &::after {
-        background-color: $green;
+        background-color: var(--success-color);
       }
     }
 
     & ~ svg {
-      fill: $green;
+      fill: var(--success-color);
     }
   }
 }

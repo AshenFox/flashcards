@@ -20,13 +20,6 @@ const Control = ({ direction, _id }: ControlProps) => {
 
   let active = true;
 
-  const clickControl = useCallback(
-    (e: MouseEvent<HTMLDivElement>) => {
-      if (active) move_gallery(_id, direction);
-    },
-    [_id, active, direction, move_gallery],
-  );
-
   if (direction === "left") {
     if (Math.abs(position) <= 0) active = false;
   }
@@ -44,6 +37,13 @@ const Control = ({ direction, _id }: ControlProps) => {
 
     if (sum >= width) active = false;
   }
+
+  const clickControl = useCallback(
+    (e: MouseEvent<HTMLDivElement>) => {
+      if (active) move_gallery(_id, direction);
+    },
+    [_id, active, direction, move_gallery],
+  );
 
   return (
     <div
