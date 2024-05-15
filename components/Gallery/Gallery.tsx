@@ -13,7 +13,7 @@ import {
   useState,
 } from "react";
 
-import Container from "./components/Carousel";
+import Carousel from "./components/Carousel";
 import { Error, LoadingSpinner } from "./components/States";
 import s from "./styles.module.scss";
 
@@ -105,7 +105,7 @@ const Gallery = ({ data, active, game = false }: GalleryProps) => {
           </form>
         </div>
         <div className={s.results}>
-          <Container data={data} game={game} />
+          <Carousel data={data} game={game} />
           <LoadingSpinner active={loading} />
           <Error active={error} />
         </div>

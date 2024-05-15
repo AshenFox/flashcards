@@ -1,4 +1,4 @@
-@import "@styles/vars.scss";
+@import "@styles/vars";
 
 .scroll {
   position: fixed;
@@ -11,9 +11,9 @@
   align-items: center;
   justify-content: center;
   border: none;
+  border: 1px solid var(--accentuated-color);
   border-radius: 50%;
-  background-color: $primary;
-  box-shadow: 0 0.5rem 1.25rem 0 rgba($primary, 0.28);
+  background-color: var(--scroll-top-background-color);
   cursor: pointer;
   pointer-events: all;
   transition: all 0.3s ease;
@@ -31,17 +31,17 @@
   }
 
   svg {
-    fill: $white;
+    fill: var(--scroll-top-icon-fill);
     transform: translateY(-2px);
     transition: all 0.3s ease;
   }
 
   &:hover {
-    background-color: $tertiary;
-    box-shadow: 0 0.5rem 1.25rem 0 rgba($tertiary, 0.28);
+    border-color: var(--active-color);
+    background-color: var(--active-color);
 
     svg {
-      fill: $black;
+      fill: var(--dark-color);
     }
   }
 }

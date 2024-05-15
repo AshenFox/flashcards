@@ -1,4 +1,4 @@
-@import "@styles/vars.scss";
+@import "@styles/vars";
 
 .gallery {
   display: block;
@@ -12,7 +12,7 @@
   display: block;
   overflow: hidden;
   height: 0;
-  border-top: 2px solid $grey-light;
+  border-top: 1px solid var(--element-border-color);
   transition: all 0.3s;
   visibility: hidden;
 
@@ -43,15 +43,15 @@
 .input {
   padding-left: 1rem;
 
+  .icon {
+    fill: var(--icon-fill);
+  }
+
   :global(.input__input) {
     &:not(:placeholder-shown) {
       & ~ .icon {
-        fill: $secondary;
+        fill: var(--success-color);
       }
-    }
-
-    &::placeholder {
-      color: $grey-medium;
     }
   }
 }
@@ -61,7 +61,7 @@
   margin-top: 2rem;
 }
 
-.carousel {
+/* .carousel {
   z-index: 20;
   display: flex;
   height: 15rem;
@@ -74,9 +74,9 @@
     transition-delay: 0;
     visibility: hidden;
   }
-}
+} */
 
-.window {
+/* .window {
   overflow: hidden;
   width: 68rem;
 
@@ -98,18 +98,18 @@
     width: 17rem;
     min-width: 17rem;
   }
-}
+} */
 
-.track {
+/* .track {
   display: flex;
   width: 0;
   height: 100%;
   padding: 0 1rem;
   transform: translateX(0);
   transition: all 0.3s;
-}
+} */
 
-.item {
+/* .item {
   min-width: 15rem;
   height: 15rem;
   cursor: pointer;
@@ -126,10 +126,11 @@
   }
 
   &:hover {
-    border: 5px solid $tertiary;
+    border: 5px solid var(--active-color);
   }
-}
+} */
 
+/* 
 .control {
   &.left {
     margin-right: 1rem;
@@ -149,7 +150,7 @@
 
   button:hover {
     svg {
-      fill: $black;
+      fill: var(--stronger-accentuated-color);
     }
   }
 
@@ -191,4 +192,4 @@
       }
     }
   }
-}
+} */

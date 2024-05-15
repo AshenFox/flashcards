@@ -1,4 +1,4 @@
-@import "@styles/vars.scss";
+@import "@styles/vars";
 
 .carousel {
   z-index: 20;
@@ -65,7 +65,7 @@
   }
 
   &:hover {
-    border: 5px solid $tertiary;
+    border: 5px solid var(--active-color);
   }
 }
 
@@ -94,7 +94,7 @@
     button {
       width: 4rem;
       height: 4rem;
-      background-color: $secondary;
+      background-color: var(--secondary-element-background-color);
 
       svg {
         position: absolute;
@@ -102,29 +102,31 @@
         left: 50%;
         width: 2rem;
         height: 2rem;
-        fill: $white;
+        fill: var(--reverse-color);
         transition: all 0.2s;
       }
     }
 
     button:hover {
+      background-color: var(--alternative-active-color);
+
       svg {
-        fill: $black;
+        fill: var(--reverse-color);
       }
     }
 
     &[data-active="false"] {
       button {
-        background-color: $grey-medium;
+        background-color: var(--inactive-color);
         cursor: auto;
 
         svg {
-          fill: $grey-light;
+          fill: var(--light-color);
         }
 
         &:hover {
           svg {
-            fill: $grey-light;
+            fill: var(--light-color);
           }
         }
       }

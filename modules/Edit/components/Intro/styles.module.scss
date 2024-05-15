@@ -1,8 +1,8 @@
-@import "@styles/vars.scss";
+@import "@styles/vars";
 
 .intro {
   padding: 2rem 0;
-  background-color: $white;
+  background-color: var(--element-background-color);
 }
 
 .content {
@@ -16,8 +16,6 @@
 }
 
 .info {
-  color: $grey;
-
   @media (max-width: $tablet) {
     font-size: 1.7rem;
   }
@@ -25,6 +23,16 @@
 
 .return {
   text-align: right;
+
+  button {
+    background-color: var(--secondary-element-background-color);
+    color: var(--reverse-color);
+
+    &:hover {
+      background-color: var(--alternative-active-color);
+      color: var(--dark-color);
+    }
+  }
 
   @media (max-width: $tablet) {
     margin-bottom: 1.5rem;

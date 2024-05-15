@@ -28,7 +28,7 @@ const Intro = () => {
               <Link href={draft ? "/home/modules" : `/module/${_id}`}>
                 <button
                   //helpers-delete
-                  className="bcc-lightblue pad12-30 brr15 white fz15 fw-normal h-grey h-bcc-yellow"
+                  className=" pad12-30 brr15 fz15 fw-normal "
                   type="button"
                 >
                   Return

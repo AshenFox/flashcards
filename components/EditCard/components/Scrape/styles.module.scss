@@ -1,4 +1,5 @@
-@import "@styles/vars.scss";
+@import "@styles/vars";
+@import "@styles/animations";
 
 .background {
   width: 100%;
@@ -32,7 +33,7 @@
   :global(.tooltip__tooltip) {
     top: -3rem;
     width: max-content;
-    color: $primary;
+    color: var(--accentuated-color);
   }
 
   &:hover span {
@@ -45,7 +46,7 @@
     left: calc(50% - 1rem);
     width: 2rem;
     height: 2rem;
-    border: 3px solid $tertiary;
+    border: 3px solid var(--active-color);
     border-radius: 50%;
     border-right: 3px solid transparent;
     animation: spin 1.75s linear infinite;
@@ -65,7 +66,7 @@
 .scrape {
   display: flex;
   padding: 1rem 2rem;
-  border-top: 2px solid $grey-light;
+  border-top: 1px solid var(--element-border-color);
 
   &[data-loading="true"] {
     .button {
