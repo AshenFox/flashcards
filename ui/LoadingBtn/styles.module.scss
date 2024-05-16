@@ -39,11 +39,11 @@
 }
 
 .inactive {
-  background-color: var(--strong-danger-color);
+  background-color: var(--stronger-danger-color);
   cursor: auto;
 
   &:hover {
-    background-color: var(--strong-danger-color);
+    background-color: var(--stronger-danger-color);
     color: $white;
   }
 }

@@ -48,7 +48,7 @@ const Controls = ({ title, titleIcon, children }: ControlsProps) => {
             <Link href={isSR ? "/home/sr" : `/module/${_id}`}>
               <button
                 //helpers-delete
-                className="grey ai-c ta-l fz17 width100 pad15-20 h-bcc-yellow"
+                className="ai-c ta-l fz17 width100 pad15-20 h-bcc-yellow"
               >
                 <TriangleLeftIcon height="15" width="15" />
                 <span>Back</span>

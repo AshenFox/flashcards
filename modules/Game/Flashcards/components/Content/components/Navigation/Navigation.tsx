@@ -121,7 +121,7 @@ const Navigation = () => {
           >
             <button
               //helpers-delete
-              className="pad15 bcc-white brr50p d-f h-bcc-yellow mar-left-a p-r"
+              className="pad15 brr50p d-f mar-left-a p-r"
             >
               <TriangleLeftIcon />
             </button>
@@ -137,7 +137,7 @@ const Navigation = () => {
           >
             <button
               //helpers-delete
-              className="pad15 bcc-white brr50p d-f h-bcc-yellow p-r"
+              className="pad15 brr50p d-f p-r"
             >
               <TriangleRightIcon />
             </button>

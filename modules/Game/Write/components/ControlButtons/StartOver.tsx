@@ -1,3 +1,4 @@
+import { ControlButton } from "@modules/Game/components/Controls";
 import { useActions } from "@store/hooks";
 import React, { memo, MouseEvent, useCallback } from "react";
 
@@ -9,17 +10,7 @@ const StartOver = () => {
     [prepare_write],
   );
 
-  return (
-    <div>
-      <button
-        //helpers-delete
-        className="width100 fz15 pad7 br2 brc-grey-medium brr15 lightblue h-red h-brc-red"
-        onClick={clickStartOver}
-      >
-        <span>Start over</span>
-      </button>
-    </div>
-  );
+  return <ControlButton title="Start over" onClick={clickStartOver} />;
 };
 
 export default memo(StartOver);

@@ -1,0 +1,64 @@
+@import "@styles/vars";
+
+.control_button {
+  & button {
+    display: inline-flex;
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+    padding: 0.7rem;
+    border: 1px solid var(--divider-color);
+    border-radius: 1rem;
+    transition: all 0.1s;
+
+    & svg {
+      width: 20px;
+      height: 20px;
+      margin-right: 2rem;
+      fill: var(--secondary-element-background-color);
+      transition: all 0.1s;
+      vertical-align: middle;
+    }
+
+    & span {
+      color: var(--secondary-element-background-color);
+      font-size: 1.5rem;
+      transition: all 0.1s;
+      vertical-align: middle;
+    }
+
+    &:hover {
+      border-color: var(--alternative-active-color);
+
+      & span {
+        color: var(--alternative-active-color);
+      }
+
+      & svg {
+        fill: var(--alternative-active-color);
+      }
+    }
+  }
+
+  &.active {
+    button {
+      border-color: var(--active-color);
+      background-color: var(--active-color);
+      color: var(--active-secondary-color);
+
+      span {
+        color: var(--active-secondary-color);
+      }
+
+      svg {
+        fill: var(--active-secondary-color);
+      }
+
+      &:hover {
+        svg {
+          fill: var(--active-secondary-color);
+        }
+      }
+    }
+  }
+}

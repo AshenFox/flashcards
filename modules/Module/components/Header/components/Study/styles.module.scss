@@ -1,13 +1,12 @@
-@import "@styles/vars.scss";
+@import "@styles/vars";
 
 .study {
   padding-bottom: 4rem;
-  border-bottom: 2px solid $grey-light;
+  border-bottom: 1px solid var(--element-border-color);
 }
 
 .title {
   margin-bottom: 1.2rem;
-  color: $grey;
   font-size: 1.3rem;
   font-weight: bold;
 }
@@ -15,12 +14,11 @@
 .item {
   & button {
     margin-bottom: 0.3rem;
-    color: $grey;
     font-size: 1.6rem;
 
     & svg {
       margin-right: 0.5rem;
-      fill: $primary;
+      fill: var(--accentuated-color);
       transition: all 0.1s linear;
       vertical-align: middle;
     }
@@ -31,10 +29,10 @@
     }
 
     &:hover {
-      color: $tertiary;
+      color: var(--active-color);
 
       & svg {
-        fill: $tertiary;
+        fill: var(--active-color);
       }
     }
   }

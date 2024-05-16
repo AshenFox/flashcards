@@ -1,8 +1,9 @@
-@import "@styles/vars.scss";
+@import "@styles/vars";
 
 .header {
   padding: 2rem 0;
-  background-color: $white;
+  border-bottom: 1px solid var(--element-border-color);
+  background-color: var(--element-background-color);
 }
 
 .top {
@@ -17,7 +18,9 @@
 }
 
 .title {
-  color: $grey;
+  &.noTitle {
+    color: var(--accentuated-color);
+  }
 
   @media (max-width: $tablet) {
     width: 100%;
@@ -30,6 +33,17 @@
 
 .return {
   text-align: right;
+
+  button {
+    border-radius: 1rem;
+    background-color: var(--secondary-element-background-color);
+    color: var(--reverse-color);
+
+    &:hover {
+      background-color: var(--alternative-active-color);
+      color: var(--dark-color);
+    }
+  }
 
   @media (max-width: $tablet) {
     margin-bottom: 1.5rem;

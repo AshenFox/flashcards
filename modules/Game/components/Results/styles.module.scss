@@ -1,12 +1,12 @@
-@import "@styles/vars.scss";
+@import "@styles/vars";
 
 .finish {
   width: 100%;
   padding: 2.5rem 4rem;
+  border: 1px solid var(--element-border-color);
   border-radius: 1rem;
   margin-bottom: 1rem;
-  background-color: $white;
-  box-shadow: 0 0 1.25rem -0.1rem rgb(0 0 0 / 28%);
+  background-color: var(--element-background-color);
 
   &:focus {
     outline: none;
@@ -35,6 +35,23 @@
       margin-bottom: 1.5rem;
     }
   }
+
+  button {
+    padding: 1rem 3rem;
+    border-radius: 1rem;
+    background-color: var(--secondary-element-background-color);
+    color: var(--reverse-color);
+    font-size: 1.5rem;
+
+    @media (max-width: $mobile) {
+      padding: 1rem 2rem;
+    }
+
+    &:hover {
+      background-color: var(--alternative-active-color);
+      color: var(--active-secondary-color);
+    }
+  }
 }
 
 .title {
@@ -43,14 +60,14 @@
 }
 
 .stats {
-  color: $grey-lighter;
+  color: var(--subtle-text-color);
   line-height: 1;
 }
 
 .body_item {
   &:not(:first-child) {
     padding-top: 1.5rem;
-    border-top: 0.2rem solid #f4f4f4;
+    border-top: 1px solid var(--element-border-color);
     margin-top: 1.5rem;
   }
 }
@@ -60,11 +77,11 @@
   font-size: 1.2rem;
 
   &.correct {
-    color: $green;
+    color: var(--success-color);
   }
 
   &.incorrect {
-    color: $red;
+    color: var(--danger-color);
   }
 }
 
@@ -97,11 +114,11 @@
   margin-right: 1rem;
 
   &.correct svg {
-    fill: $green;
+    fill: var(--success-color);
   }
 
   &.incorrect svg {
-    fill: $red;
+    fill: var(--danger-color);
   }
 }
 
@@ -114,11 +131,11 @@
   }
 
   &.correct {
-    color: $green;
+    color: var(--success-color);
   }
 
   &.incorrect {
-    color: $red;
+    color: var(--danger-color);
   }
 }
 

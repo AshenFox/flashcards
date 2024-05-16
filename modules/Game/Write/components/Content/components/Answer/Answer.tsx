@@ -199,7 +199,7 @@ const Answer = ({ data }: AnswerProps) => {
       <div className={s.continue} data-correct={canContinue.current}>
         <button
           //helpers-delete
-          className="bcc-lightblue pad10-30 brr15 white fz15 fw-normal h-grey h-bcc-yellow"
+          // className="bcc-lightblue pad10-30 brr15 white fz15 fw-normal h-grey h-bcc-yellow"
           onClick={clickContinue}
         >
           Click to continue
