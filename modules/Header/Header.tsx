@@ -1,7 +1,7 @@
 import Container from "@components/Container";
 import ContentWrapper from "@components/ContentWrapper";
 import { useActions, useAppSelector } from "@store/hooks";
-import { memo, useCallback, useEffect, useRef } from "react";
+import { memo, useCallback, useEffect, useRef, useState } from "react";
 
 import { Left, Right } from "./components/Content";
 import s from "./styles.module.scss";

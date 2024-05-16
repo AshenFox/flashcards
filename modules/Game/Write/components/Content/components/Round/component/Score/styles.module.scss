@@ -1,22 +1,21 @@
-@import "@styles/vars.scss";
+@import "@styles/vars";
 
 .score {
   display: flex;
-  color: $grey;
   font-size: 1.8rem;
   font-weight: bold;
 
   &.correct {
-    color: $green;
+    color: var(--success-color);
   }
 
   &.incorrect {
-    color: $red;
+    color: var(--danger-color);
   }
 
   &:not(:last-child) {
     padding-bottom: 1.5rem;
-    border-bottom: 0.2rem solid #f4f4f4;
+    border-bottom: 1px solid var(--element-border-color);
     margin-bottom: 1.5rem;
   }
 }

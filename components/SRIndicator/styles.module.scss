@@ -88,3 +88,22 @@
     }
   }
 }
+
+body:global(.light) .indicator {
+  --sr-indicator-stage-1: #0000dc;
+  --sr-indicator-stage-2: #00817d;
+  --sr-indicator-stage-3: #238e24;
+  --sr-indicator-stage-4: #afd510;
+  --sr-indicator-stage-5: #fce72c;
+  --sr-indicator-stage-6: #ffca2c;
+  --sr-indicator-stage-7: #fc7300;
+  --sr-indicator-stage-8: #f32a00;
+  --sr-indicator-stage-9: #da0000;
+  --sr-indicator-stage-10: #b10067;
+  --sr-indicator-stage-11: #54267b;
+}
+
+body:global(.dark) .indicator {
+  --sr-indicator-stage-1: #5858ff;
+  --sr-indicator-stage-11: #8d39d6;
+}

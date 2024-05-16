@@ -3,7 +3,7 @@
 .item {
   display: inline-flex;
   border-left: 1px solid var(--divider-color);
-  color: var(--secondary-text-color);
+  color: var(--text-color);
   cursor: pointer;
   transition: all 0.1s linear;
 
@@ -36,4 +36,14 @@
   &.active + & {
     border-color: var(--active-color);
   }
+}
+
+/* stylelint-disable-next-line no-descending-specificity */
+body:global(.light) .item {
+  --text-color: var(--accentuated-color);
+}
+
+/* stylelint-disable-next-line no-descending-specificity */
+body:global(.dark) .item {
+  --text-color: var(--alternative-active-color);
 }

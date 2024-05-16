@@ -78,13 +78,7 @@ const Round = () => {
       </div>
 
       <div className={s.continue}>
-        <button
-          //helpers-delete
-          className="bcc-lightblue pad10-30 brr15 white fz15 fw-normal h-grey h-bcc-yellow"
-          onClick={clickContinue}
-        >
-          Continue
-        </button>
+        <button onClick={clickContinue}>Continue</button>
       </div>
     </div>
   );

@@ -13,7 +13,7 @@
   border: none;
   border: 1px solid var(--accentuated-color);
   border-radius: 50%;
-  background-color: var(--scroll-top-background-color);
+  background-color: var(--background-color);
   cursor: pointer;
   pointer-events: all;
   transition: all 0.3s ease;
@@ -31,7 +31,7 @@
   }
 
   svg {
-    fill: var(--scroll-top-icon-fill);
+    fill: var(--icon-fill);
     transform: translateY(-2px);
     transition: all 0.3s ease;
   }
@@ -44,4 +44,14 @@
       fill: var(--dark-color);
     }
   }
+}
+
+body:global(.light) .scroll {
+  --background-color: var(--accentuated-color);
+  --icon-fill: var(--light-color);
+}
+
+body:global(.dark) .scroll {
+  --background-color: var(--element-background-color);
+  --icon-fill: var(--active-color);
 }

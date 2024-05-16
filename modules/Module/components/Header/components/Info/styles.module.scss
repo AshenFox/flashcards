@@ -1,4 +1,4 @@
-@import "@styles/vars.scss";
+@import "@styles/vars";
 
 .info {
   display: flex;
@@ -18,13 +18,13 @@
 
 .created {
   display: block;
-  color: rgb(134 134 134);
+  color: var(--subtle-text-color);
   font-size: 1.2rem;
 }
 
 .nickname {
   display: block;
-  color: $grey;
+  color: var(--stronger-subtle-text-color);
   font-size: 1.8rem;
   font-weight: bold;
 }
@@ -50,14 +50,14 @@
   cursor: pointer;
 
   & svg {
-    fill: $grey;
+    fill: var(--icon-fill);
     transition: all 0.1s linear;
     vertical-align: middle;
   }
 
   &:hover {
     & svg {
-      fill: rgb(255 0 0 / 85.6%);
+      fill: var(--danger-color);
     }
   }
 }

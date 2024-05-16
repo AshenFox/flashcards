@@ -1,4 +1,4 @@
-@import "@styles/vars.scss";
+@import "@styles/vars";
 
 .container {
   display: flex;
@@ -18,26 +18,32 @@
   margin: auto;
 
   &.default {
-    background-color: $primary-pale;
+    background-color: var(--default-background-color);
   }
 
   &.red {
-    background-color: $palered;
+    background-color: var(--red-background-color);
   }
 
   &.green {
-    background-color: $palegreen;
+    background-color: var(--green-background-color);
   }
 
   @media (max-width: $tablet) {
     height: 1.2rem;
   }
+}
 
-  /* &.full {
-    @media (max-width: $tablet) {
-      width: 100%;
-    }
-  } */
+body:global(.light) .bar {
+  --default-background-color: #{$languid-lavender};
+  --red-background-color: #{$light-red};
+  --green-background-color: #{$magic-mint};
+}
+
+body:global(.dark) .bar {
+  --default-background-color: #{$quartz};
+  --red-background-color: #{$quartz};
+  --green-background-color: #{$quartz};
 }
 
 .fill {
@@ -49,40 +55,42 @@
   transition: all 0.2s;
 
   &.default {
-    background-color: $primary;
+    background-color: var(--default-background-color);
   }
 
   &.red {
-    background-color: $red;
+    background-color: var(--red-background-color);
   }
 
   &.green {
-    background-color: $green;
+    background-color: var(--green-background-color);
   }
+}
+
+body .fill {
+  --default-background-color: #{$regalia};
+  --red-background-color: #{$bittersweet};
+  --green-background-color: #{$crayola};
+}
+
+body:global(.dark) .fill {
+  --default-background-color: #{$lightning-yellow};
 }
 
 .info {
   display: flex;
   justify-content: space-between;
   line-height: 1;
-
-  @media (max-width: $tablet) {
-    /* width: 10%;widthwidth */
-  }
 }
 
 .title {
-  color: $grey;
+  color: var(--stronger-subtle-text-color);
   font-size: 1.4rem;
   text-transform: uppercase;
-
-  /* @media (max-width: $tablet) {
-    display: none;
-  } */
 }
 
 .count {
-  color: $grey;
+  color: var(--stronger-subtle-text-color);
   font-size: 1.4rem;
 
   @media (max-width: $mobile) {

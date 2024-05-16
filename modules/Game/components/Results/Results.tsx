@@ -51,12 +51,7 @@ const Results = ({
         {showLink && (
           <div className={s.header_item}>
             <Link href={isSR ? "/home/sr" : `/module/${_id}`}>
-              <button
-                //helpers-delete
-                className="bcc-lightblue pad10-30 brr15 white fz15 fw-normal h-grey h-bcc-yellow"
-              >
-                Finish game
-              </button>
+              <button>Finish game</button>
             </Link>
           </div>
         )}

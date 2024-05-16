@@ -20,10 +20,10 @@
   position: relative;
   width: 100%;
   padding: 2.5rem 4rem;
+  border: 1px solid var(--element-border-color);
   border-radius: 1rem;
   margin-bottom: 1rem;
-  background-color: $white;
-  box-shadow: 0 0 1.25rem -0.1rem rgb(0 0 0 / 28%);
+  background-color: var(--element-background-color);
 
   &:focus {
     outline: none;
@@ -60,13 +60,12 @@
   }
 
   svg {
-    fill: $grey;
     transition: all 0.2s;
   }
 
   &:hover {
     svg {
-      fill: $red;
+      fill: var(--danger-color);
     }
   }
 
@@ -74,7 +73,7 @@
     top: 2.5rem;
     right: 8.25rem;
     padding-right: 1.75rem;
-    border-right: 2px solid #f0f0f0;
+    border-right: 1px solid var(--element-border-color);
 
     @media (max-width: $mobile) {
       top: 2rem;
@@ -88,11 +87,11 @@
   line-height: 1;
 
   &.correct {
-    color: $green;
+    color: var(--success-color);
   }
 
   &.incorrect {
-    color: $red;
+    color: var(--danger-color);
   }
 
   &::first-letter {
@@ -107,7 +106,7 @@
 .section {
   &:not(:first-child) {
     padding-top: 1.5rem;
-    border-top: 0.2rem solid #f4f4f4;
+    border-top: 1px solid var(--element-border-color);
     margin-top: 1.5rem;
   }
 }
@@ -115,7 +114,7 @@
 .section_title {
   display: block;
   margin-bottom: 1rem;
-  color: $grey-lighter;
+  color: var(--subtle-text-color);
   font-size: 1.2rem;
   letter-spacing: 1px;
   text-transform: uppercase;
@@ -157,14 +156,32 @@
   margin-top: 3rem;
   text-align: center;
 
+  button {
+    padding: 1rem 3rem;
+    border-radius: 1rem;
+    background-color: var(--secondary-element-background-color);
+    color: var(--reverse-color);
+    font-size: 1.5rem;
+
+    @media (max-width: $mobile) {
+      padding: 1rem 2rem;
+    }
+
+    &:hover {
+      background-color: var(--alternative-active-color);
+      color: var(--active-secondary-color);
+    }
+  }
+
   &[data-correct="false"] {
     & button {
-      background-color: $grey-lighter;
+      background-color: var(--inactive-color);
+      color: var(--inactive-secondary-color);
       cursor: auto;
 
       &:hover {
-        background-color: $grey-lighter;
-        color: $white;
+        background-color: var(--inactive-color);
+        color: var(--inactive-secondary-color);
       }
     }
   }
@@ -173,7 +190,7 @@
 .form {
   display: flex;
   padding-top: 1.5rem;
-  border-top: 0.2rem solid #f4f4f4;
+  border-top: 1px solid var(--element-border-color);
   margin-top: 1.5rem;
 
   @media (max-width: $mobile) {
@@ -186,7 +203,7 @@
   border: none;
 
   & :global(.text_label__label) {
-    color: $grey-lighter;
+    color: var(--subtle-text-color);
     font-size: 1.2rem;
     letter-spacing: 0.2rem;
   }
@@ -199,19 +216,19 @@
     transition: all 0.2s;
 
     &.correct {
-      border-color: $green;
+      border-color: var(--success-color);
 
       & + :global(.label__label) {
-        color: $green;
+        color: var(--success-color);
       }
 
       &::after {
-        background-color: $green;
+        background-color: var(--success-color);
       }
 
       &:focus-within {
         &::after {
-          background-color: $green;
+          background-color: var(--success-color);
         }
       }
     }

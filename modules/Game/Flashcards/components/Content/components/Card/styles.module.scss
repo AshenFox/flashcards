@@ -1,4 +1,4 @@
-@import "@styles/vars.scss";
+@import "@styles/vars";
 
 .sr_indicator {
   position: absolute;
@@ -8,7 +8,7 @@
   :global(.tooltip__tooltip) {
     top: -1rem;
     left: 4rem;
-    color: $green;
+    color: var(--success-color);
   }
 }
 
@@ -24,8 +24,8 @@
 }
 
 .transcription_hidden {
-  background-color: $grey-medium;
-  color: $grey-medium;
+  background-color: var(--subtle-text-color);
+  color: var(--subtle-text-color);
   transition: all 0.2s;
   user-select: none;
 
@@ -57,10 +57,10 @@
   display: flex;
   width: 100%;
   height: 100%;
+  border: 1px solid var(--element-border-color);
   border-radius: 1rem;
   backface-visibility: hidden;
-  background-color: $white;
-  box-shadow: 0 0 1.25rem -0.1rem rgb(0 0 0 / 28%);
+  background-color: var(--element-background-color);
   inset: 0;
   transform: rotateX(0deg);
   transform-style: preserve-3d;
@@ -80,8 +80,9 @@
   }
 
   &.unmovable {
+    border: none;
+    border-color: transparent;
     background-color: transparent;
-    box-shadow: none;
   }
 }
 
@@ -184,7 +185,6 @@
   overflow: hidden auto;
   max-height: 100%;
   padding-right: 1rem;
-  color: $grey;
   font-size: 1.9rem;
 
   @media (max-width: $tablet) {
@@ -206,12 +206,12 @@
 
   &::-webkit-scrollbar {
     width: 0.2rem;
-    background-color: $white;
+    background-color: var(--element-background-color);
   }
 
   &::-webkit-scrollbar-thumb {
     border-radius: 0.1rem;
-    background-color: rgba($grey, 0.3);
+    background-color: var(--stronger-subtle-text-color);
     opacity: 0.3;
   }
 }
@@ -222,17 +222,17 @@
   right: 6rem;
   display: flex;
   padding-right: 1.75rem;
-  border-right: 2px solid #f0f0f0;
+  border-right: 1px solid var(--element-border-color);
   cursor: pointer;
 
   svg {
-    fill: $grey;
+    fill: var(--icon-fill);
     transition: all 0.2s;
   }
 
   &:hover {
     svg {
-      fill: $red;
+      fill: var(--danger-color);
     }
   }
 }
@@ -244,7 +244,6 @@
   align-items: center;
   justify-content: center;
   padding: 5rem 1.5rem;
-  color: $grey;
   font-size: 3rem;
 
   @media (max-width: $tablet) {
@@ -268,12 +267,28 @@
 }
 
 .message {
-  color: $grey;
   font-size: 4.5rem;
 }
 
 .message_info {
   margin-bottom: 1.5rem;
-  color: $grey;
   font-size: 1.7rem;
+}
+
+.finish_up {
+  width: 50%;
+  padding: 3rem;
+  border-radius: 1.5rem;
+  background-color: var(--secondary-element-background-color);
+  color: var(--reverse-color);
+  font-size: 1.75rem;
+
+  @media (max-width: $mobile) {
+    font-size: 1.5rem;
+  }
+
+  &:hover {
+    background-color: var(--alternative-active-color);
+    color: var(--active-secondary-color);
+  }
 }

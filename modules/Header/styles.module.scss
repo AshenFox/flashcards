@@ -5,13 +5,23 @@
   z-index: 40;
   padding: 0;
   padding: 1.5rem 0;
-  border-bottom: 1px solid var(--header-border-color);
-  background-color: var(--header-background-color);
+  border-bottom: 1px solid var(--border-color);
+  background-color: var(--background-color);
   transition: all 0.1 linear;
 
   @media (max-width: $tablet) {
     padding: 0.75rem 0;
   }
+}
+
+body:global(.light) .header {
+  --background-color: var(--accentuated-color);
+  --border-color: var(--stronger-accentuated-color);
+}
+
+body:global(.dark) .header {
+  --background-color: var(--element-background-color);
+  --border-color: var(--element-border-color);
 }
 
 .content {

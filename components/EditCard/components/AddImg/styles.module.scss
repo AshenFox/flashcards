@@ -69,7 +69,7 @@
   &[data-imgurl~="false"] {
     height: auto;
     padding: 1rem 0;
-    border: var(--lighter-reverse-color) dashed 2px;
+    border: 2px dashed var(--border-color);
 
     & .delete {
       visibility: hidden;
@@ -84,6 +84,14 @@
   &:hover .logo svg {
     fill: var(--active-color);
   }
+}
+
+body:global(.light) .add_img {
+  --border-color: var(--subtle-text-color);
+}
+
+body:global(.dark) .add_img {
+  --border-color: var(--subtle-text-color);
 }
 
 .container {

@@ -1,11 +1,11 @@
-@import "@styles/vars.scss";
+@import "@styles/vars";
 
 .container {
   position: fixed;
   top: 7.8rem;
   bottom: 0;
   width: 19.5rem;
-  background-color: $white;
+  background-color: var(--element-background-color);
 
   @media (max-width: $tablet) {
     position: static;
@@ -20,7 +20,18 @@
   z-index: 20;
   width: 100%;
   height: 100%;
-  box-shadow: 0 0 1rem 0 rgb(0 0 0 / 28%);
+  border: 1px solid var(--element-border-color);
+  border-top: none;
+  border-bottom: none;
+
+  @media (max-width: $tablet) {
+    position: static;
+    top: auto;
+    bottom: auto;
+    width: 100%;
+    border: none;
+    border-bottom: 1px solid var(--element-border-color);
+  }
 }
 
 .title {
@@ -33,12 +44,12 @@
 
   & svg {
     margin-right: 0.5rem;
-    fill: $primary;
+    fill: var(--accentuated-color);
     vertical-align: middle;
   }
 
   & span {
-    color: $primary;
+    color: var(--accentuated-color);
     font-size: 2.4rem;
     font-weight: bold;
     vertical-align: middle;
@@ -50,32 +61,23 @@
     display: none;
   }
 
-  border-bottom: 1px solid $grey-light;
+  border-bottom: 1px solid var(--element-border-color);
 
   & button {
     & svg {
       margin-right: 0.5rem;
-      fill: $secondary;
+      fill: var(--secondary-element-background-color);
       transition: all 0.1s linear;
     }
 
     &:hover {
+      color: var(--active-secondary-color);
+
       & svg {
-        fill: $grey;
+        fill: var(--active-secondary-color);
       }
     }
   }
 
   margin-bottom: 3rem;
-}
-
-.control_buttons {
-  position: absolute;
-  right: 1.25rem;
-  bottom: 1.25rem;
-  left: 1.25rem;
-
-  @media (max-width: $tablet) {
-    display: none;
-  }
 }

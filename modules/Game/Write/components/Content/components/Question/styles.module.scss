@@ -1,4 +1,4 @@
-@import "@styles/vars.scss";
+@import "@styles/vars";
 
 .sr_indicator {
   position: absolute;
@@ -9,10 +9,10 @@
 .question {
   width: 100%;
   padding: 2.5rem 4rem;
+  border: 1px solid var(--element-border-color);
   border-radius: 1rem;
   margin-bottom: 1rem;
-  background-color: $white;
-  box-shadow: 0 0 1.25rem -0.1rem rgb(0 0 0 / 28%);
+  background-color: var(--element-background-color);
 
   &:focus {
     outline: none;
@@ -29,7 +29,7 @@
 
 .do_not_know {
   margin-bottom: 3.5rem;
-  color: $secondary;
+  color: var(--secondary-element-background-color);
   text-align: right;
   transition: all 0.2s;
 
@@ -37,7 +37,7 @@
     cursor: pointer;
 
     &:hover {
-      color: $tertiary;
+      color: var(--alternative-active-color);
     }
   }
 }
@@ -73,7 +73,7 @@
 .form {
   display: flex;
   padding-top: 1.5rem;
-  border-top: 0.2rem solid #f4f4f4;
+  border-top: 1px solid var(--element-border-color);
   margin-top: 1.5rem;
 
   @media (max-width: $mobile) {
@@ -86,7 +86,7 @@
   border: none;
 
   & :global(.text_label__label) {
-    color: $grey-lighter;
+    color: var(--subtle-text-color);
     font-size: 1.2rem;
     letter-spacing: 0.2rem;
   }
@@ -95,7 +95,6 @@
 .input {
   &:global(.input__container) {
     padding: 0.2rem 1rem;
-    border-bottom: 2px solid $black;
     margin-bottom: 0.5rem;
     transition: all 0.2s;
   }
@@ -112,6 +111,23 @@
     margin-top: 2rem;
     margin-left: 0;
   }
+
+  button {
+    padding: 1rem 3rem;
+    border-radius: 1rem;
+    background-color: var(--secondary-element-background-color);
+    color: var(--reverse-color);
+    font-size: 1.5rem;
+
+    @media (max-width: $mobile) {
+      padding: 1rem 2rem;
+    }
+
+    &:hover {
+      background-color: var(--alternative-active-color);
+      color: var(--active-secondary-color);
+    }
+  }
 }
 
 .speaker {
@@ -126,8 +142,8 @@
 }
 
 .transcription_hidden {
-  background-color: $grey-medium;
-  color: $grey-medium;
+  background-color: var(--subtle-text-color);
+  color: var(--subtle-text-color);
   transition: all 0.2s;
   user-select: none;
 

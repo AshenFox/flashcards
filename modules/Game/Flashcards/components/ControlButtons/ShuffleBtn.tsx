@@ -1,9 +1,7 @@
+import { ControlButton } from "@modules/Game/components/Controls";
 import { useActions, useAppSelector } from "@store/hooks";
 import { ShuffleIcon } from "@ui/Icons";
-import clsx from "clsx";
 import { memo, MouseEvent } from "react";
-
-import s from "./styles.module.scss";
 
 const ShuffleBtn = () => {
   const {
@@ -28,16 +26,12 @@ const ShuffleBtn = () => {
   };
 
   return (
-    <div className={clsx(s.shuffle, shuffled && s.active)}>
-      <button
-        //helpers-delete
-        className="width100 fz15 pad7 br2 brc-grey-medium brr15 lightblue h-yellow"
-        onClick={clickShuffle}
-      >
-        <ShuffleIcon height="20" width="20" />
-        <span>Shuffle</span>
-      </button>
-    </div>
+    <ControlButton
+      icon={<ShuffleIcon height="20" width="20" />}
+      title="Shuffle"
+      active={shuffled}
+      onClick={clickShuffle}
+    />
   );
 };
 
