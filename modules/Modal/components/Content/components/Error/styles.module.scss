@@ -1,7 +1,7 @@
 .errors {
   padding: 1rem 4rem;
-  border: 2px solid red;
-  border-radius: 2rem;
+  border: 1px solid var(--stronger-danger-color);
+  border-radius: 1rem;
   margin: 1rem 0;
-  color: red;
+  color: var(--stronger-danger-color);
 }

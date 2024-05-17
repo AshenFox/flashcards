@@ -1,6 +1,6 @@
 import Container from "@components/Container";
 import { useActions, useAppSelector } from "@store/hooks";
-import LoadingBtn from "@ui/LoadingBtn";
+import { Button } from "@ui/InteractiveElement";
 import { useRouter } from "next/router";
 import { memo, MouseEvent, useCallback } from "react";
 
@@ -51,14 +51,13 @@ const Save = () => {
     <div className={s.save}>
       <Container>
         <div className={s.save_module}>
-          <LoadingBtn
+          <Button
             active={active || !draft ? true : false}
             loading={module_loading}
-            onClickHandler={draft ? clickSave : clickLink}
-            classStr="btn bcc-lightblue pad30-70 brr15 white fz20 fw-bold h-grey h-bcc-yellow"
+            onClick={draft ? clickSave : clickLink}
           >
             {draft ? "Save" : "Return"}
-          </LoadingBtn>
+          </Button>
         </div>
       </Container>
     </div>

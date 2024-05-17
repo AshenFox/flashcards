@@ -1,5 +1,6 @@
 import { useActions, useAppSelector } from "@store/hooks";
-import LoadingBtn from "@ui/LoadingBtn";
+import { Button } from "@ui/InteractiveElement";
+import { clsx } from "clsx";
 import { memo, MouseEvent } from "react";
 
 import s from "./styles.module.scss";
@@ -33,26 +34,14 @@ const Delete = () => {
       </div>
 
       <div className={s.choice}>
-        <div className={s.choice_item}>
-          <button
-            //helpers-delete
-            className="width100 bcc-mudblue pad15-30 brr15 fz175 white h-opacity09"
-            onClick={close}
-          >
-            Cancel
-          </button>
+        <div className={clsx(s.choice_item, s.cancel)}>
+          <Button onClick={close}>Cancel</Button>
         </div>
 
         <div className={s.choice_item}>
-          <LoadingBtn
-            active={true}
-            loading={module_loading}
-            onClickHandler={clickDelete}
-            //helpers-delete
-            classStr="width100 bcc-coral pad15-30 brr15 fz175 white h-opacity09"
-          >
+          <Button loading={module_loading} onClick={clickDelete}>
             Yes, delete set
-          </LoadingBtn>
+          </Button>
         </div>
       </div>
     </>

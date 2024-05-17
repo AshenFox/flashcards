@@ -1,4 +1,3 @@
-$black: #2b2a2c;
 $grey: rgb(78 78 78);
 $grey-lighter: #97a5aa;
 $grey-light: #f0f0f0;
@@ -14,6 +13,9 @@ $red: #ff725b;
 $palegreen: #bde8d3;
 $green: #23b26d;
 
+$black: #2b2a2c;
+$white: #fff;
+
 /* ======= */
 
 $mobile-sm: 350px;
@@ -28,8 +30,6 @@ $h-mobile: 620px;
 $h-tablet: 840px;
 
 /* ======= */
-
-$white: #fff;
 
 $dandelion: #ffdd67;
 $lightning-yellow: #ffcd1f;
@@ -54,14 +54,15 @@ $dark-liver: #4e4e4e;
 
 $languid-lavender: #d5c8e0;
 $regalia: #54267b;
-$american-purple: #431c64; /* old dark */
-// $jacarta: #4a2b63; /* new dark  */
+$american-purple: #431c64;
 
+$brilliant-white: #e8f0fd;
 $light-red: #ffd4cd;
 $bittersweet: #ff725b;
-$whero-red: #da2626;
+$lust: #e62121;
 $magic-mint: #bde8d3;
 $crayola: #23b26d;
+$benzol-green: #00da70;
 
 body.light {
   /* general app element colors */
@@ -73,6 +74,8 @@ body.light {
   --input-border-color: #{$jet};
   --divider-color: #{$philippine-silver};
   --reverse-color: #{$anti-flash-white};
+  --header-color: #{$regalia};
+  --header-secondary-color: #{$american-purple};
 
   /* text */
   --text-color: #{$dark-liver};
@@ -84,8 +87,9 @@ body.light {
   --inactive-color: #{$gainsboro};
   --inactive-secondary-color: #{$cadet-grey};
   --success-color: #{$crayola};
+  --stronger-success-color: #{$benzol-green};
   --danger-color: #{$bittersweet};
-  --stronger-danger-color: #{$whero-red};
+  --stronger-danger-color: #{$lust};
   --active-color: #{$lightning-yellow};
   --active-secondary-color: #{$jet};
   --alternative-active-color: #{$lightning-yellow};
@@ -107,6 +111,8 @@ body.dark {
   --input-border-color: #{$silver-foil};
   --divider-color: #{$silver-foil};
   --reverse-color: #{$dark-liver};
+  --header-color: #{$jet};
+  --header-secondary-color: #{$quartz};
 
   /* text */
   --text-color: #{$anti-flash-white};
@@ -118,13 +124,14 @@ body.dark {
   --inactive-color: #{$dim-gray};
   --inactive-secondary-color: #{$silver-foil};
   --success-color: #{$crayola};
+  --stronger-success-color: #{$benzol-green};
   --danger-color: #{$bittersweet};
-  --stronger-danger-color: #{$whero-red};
+  --stronger-danger-color: #{$lust};
   --active-color: #{$lightning-yellow};
   --active-secondary-color: #{$jet};
   --alternative-active-color: #{$dandelion};
   --accentuated-color: #{$lightning-yellow};
-  --stronger-accentuated-color: #{$american-purple};
+  --stronger-accentuated-color: #{$lightning-yellow};
 
   /* constant colors */
   --dark-color: #{$dark-liver};

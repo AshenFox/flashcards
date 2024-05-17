@@ -1,5 +1,7 @@
 @import "@styles/vars";
 
+$modal-background-color: #2b2a2c;
+
 .modal {
   position: fixed;
   z-index: 1000;
@@ -10,7 +12,7 @@
   width: 100%;
   height: 100%;
   padding: 2rem 0;
-  background-color: rgba($black, 0.8);
+  background-color: rgba($modal-background-color, 0.8);
   opacity: 0;
   transition-property: all;
   transition-timing-function: ease;
@@ -26,7 +28,7 @@
   width: 100%;
   max-width: 600px;
   margin: auto;
-  background-color: #fff;
+  background-color: var(--element-background-color);
   opacity: 0;
   transform: translateY(-30vh);
   transition-property: all;
@@ -42,115 +44,58 @@
   display: flex;
   justify-content: space-between;
   padding: 3rem;
-  background-color: $primary;
+  border: 1px solid var(--border-color);
+  border-bottom: 1px solid var(--header-secondary-color);
+  background-color: var(--header-color);
 
   @media (max-width: $mobile) {
     padding: 1.5rem;
   }
 }
 
+body:global(.light) .header {
+  --border-color: var(--header-color);
+}
+
+body:global(.dark) .header {
+  --border-color: var(--element-border-color);
+}
+
 .title {
-  color: $white;
+  color: var(--light-color);
   font-size: 2.5rem;
 }
 
 .close {
   display: flex;
   justify-content: center;
-  padding: 1.25rem;
-  border: 3px solid $primary-drak;
+  padding: 1.3rem;
+  border: 2px solid var(--border-color);
   border-radius: 25px;
   cursor: pointer;
-  transition: all 0.1s linear;
+  transition: all 0.1s;
 
   svg {
     width: 17px;
     height: 17px;
-    fill: $white;
-    transform: translate(1px, 1px);
+    fill: var(--icon-fill);
   }
 
   &:hover {
-    background-color: $primary-drak;
-  }
-}
+    background-color: var(--stronger-accentuated-color);
 
-.input-login {
-  display: flex;
-  background-color: #e8f0fd;
-
-  svg {
-    width: 3rem;
-    cursor: pointer;
-    fill: $grey;
-  }
-}
-
-.input-signup {
-  &.input__container {
-    height: 4.4rem;
-    padding: 0.5rem 1.5rem;
-    border: 2px solid $grey;
-    margin-bottom: 2rem;
-  }
-
-  &.success {
-    border: 2px solid rgb(35 200 35);
-
-    &:focus-within {
-      border: 2px solid rgb(35 200 35);
+    svg {
+      fill: var(--reverse-color);
     }
   }
 }
 
-.content {
-  padding: 2.5rem;
-  background-color: $white;
-
-  @media (max-width: $mobile) {
-    padding: 1.5rem;
-  }
+body:global(.light) .close {
+  --border-color: var(--stronger-accentuated-color);
+  --icon-fill: var(--light-color);
 }
 
-.set-title {
-  margin-bottom: 1rem;
-}
-
-.warning {
-  margin-bottom: 1rem;
-}
-
-.question {
-  margin-bottom: 1.5rem;
-}
-
-.label {
-  margin-bottom: 1.5rem;
-}
-
-.options {
-  padding: 1rem;
-  padding-bottom: 0;
-  text-align: center;
-
-  p {
-    margin: 0;
-  }
-}
-
-.error-list {
-  padding: 1rem 4rem;
-  border: 2px solid red;
-  border-radius: 2rem;
-  margin: 1rem 0;
-  color: red;
-}
-
-.choice {
-  display: flex;
-}
-
-.choice-item {
-  width: 50%;
-  padding: 0.5rem;
+body:global(.dark) .close {
+  --border-color: var(--accentuated-color);
+  --icon-fill: var(--accentuated-color);
 }
