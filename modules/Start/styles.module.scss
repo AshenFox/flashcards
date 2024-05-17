@@ -97,6 +97,8 @@ body:global(.dark) .start {
   }
 
   h2 {
+    // color: $jade;
+    // color: #23b26d;
     font-family: "Fredoka One";
     font-size: 6rem;
     font-weight: 400;
@@ -125,6 +127,7 @@ body:global(.dark) .start {
   h1 {
     margin-bottom: 3.5rem;
     color: var(--accentuated-color);
+    // color: #6400bb;
     font-family: "Fredoka One";
     font-size: 10rem;
     font-weight: 400;
@@ -154,6 +157,7 @@ body:global(.dark) .start {
   p {
     max-width: 500px;
     margin-bottom: 3.5rem;
+    // color: $gainsboro;
     font-size: 2.1rem;
     line-height: 1.8;
 
@@ -185,5 +189,17 @@ body:global(.dark) .start {
 
   @media (max-width: $mobile) {
     font-size: 1.5rem;
+  }
+}
+
+.get_started {
+  &:global(.interactive_element__element) {
+    padding: 1.5rem 6rem;
+    font-size: 1.75rem;
+
+    @media (max-width: $mobile) {
+      padding: 1.5rem 4rem;
+      font-size: 1.5rem;
+    }
   }
 }

@@ -2,13 +2,27 @@
 
 .login_input {
   display: flex;
-  background-color: #e8f0fd;
+  background-color: var(--background-color);
+
+  :global(.input__input) {
+    &::placeholder {
+      color: var(--stronger-subtle-text-color);
+    }
+  }
 
   svg {
     width: 3rem;
     cursor: pointer;
-    fill: var(--icon-fill);
+    fill: var(--stronger-subtle-text-color);
   }
+}
+
+body:global(.light) .login_input {
+  --background-color: #{$brilliant-white};
+}
+
+body:global(.dark) .login_input {
+  --background-color: #{$quartz};
 }
 
 .signup_input {
@@ -21,17 +35,19 @@
   }
 
   &.success {
-    border: 2px solid rgb(35 200 35);
+    border: 1px solid var(--stronger-success-color);
 
     &:focus-within {
-      border: 2px solid rgb(35 200 35);
+      border: 1px solid var(--stronger-success-color);
     }
   }
 }
 
 .content {
   padding: 2.5rem;
-  background-color: $white;
+  border: 1px solid var(--element-border-color);
+  border-top: none;
+  background-color: var(--element-background-color);
 
   @media (max-width: $mobile) {
     padding: 1.5rem;
@@ -54,6 +70,39 @@
   margin-bottom: 1.5rem;
 }
 
+.choice {
+  display: flex;
+}
+
+.choice_item {
+  width: 50%;
+  padding: 0.5rem;
+
+  button {
+    width: 100%;
+    padding: 1.5rem 3rem;
+    background-color: var(--danger-color);
+    color: var(--light-color);
+    font-size: 1.75rem;
+
+    @media (max-width: $mobile) {
+      padding: 1rem 2rem;
+    }
+
+    &:hover {
+      background-color: var(--active-color);
+    }
+  }
+
+  &.cancel button {
+    background-color: var(--dark-color);
+
+    &:hover {
+      background-color: var(--active-color);
+    }
+  }
+}
+
 .options {
   padding: 1rem;
   padding-bottom: 0;
@@ -62,13 +111,31 @@
   p {
     margin: 0;
   }
+
+  /* stylelint-disable-next-line no-descending-specificity */
+  button {
+    color: var(--accentuated-color);
+    font-size: 1.5rem;
+
+    /* stylelint-disable-next-line no-descending-specificity */
+    &:hover {
+      color: var(--alternative-active-color);
+    }
+  }
 }
 
-.choice {
-  display: flex;
-}
+.submit_button {
+  &:global(.interactive_element__element) {
+    width: 100%;
+    padding: 1.5rem 3rem;
+    font-size: 1.75rem;
 
-.choice_item {
-  width: 50%;
-  padding: 0.5rem;
+    @media (max-width: $mobile) {
+      padding: 1rem 2rem;
+    }
+
+    @media (max-width: $mobile) {
+      font-size: 1.5rem;
+    }
+  }
 }
