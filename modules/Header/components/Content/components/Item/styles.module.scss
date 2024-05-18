@@ -16,6 +16,7 @@
     opacity: 0.8;
 
     :global(.interactive_element__icon) {
+      fill: var(--light-color);
       opacity: 0.8;
     }
   }

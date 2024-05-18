@@ -32,6 +32,10 @@
   &.unscrollable {
     height: 100%;
   }
+
+  &.loading {
+    justify-content: center;
+  }
 }
 
 .spinner {
@@ -43,8 +47,9 @@
     display: block;
     width: 64px;
     height: 64px;
-    border: 6px solid $tertiary;
-    border-color: $tertiary transparent $tertiary transparent;
+    border: 6px solid var(--active-color);
+    border-color: var(--active-color) transparent var(--active-color)
+      transparent;
     border-radius: 50%;
     margin: 7px;
     animation: lds-dual-ring 1.2s linear infinite;

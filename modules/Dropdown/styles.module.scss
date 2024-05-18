@@ -8,8 +8,8 @@
   display: flex;
   height: 200rem;
   flex-direction: column;
-  background-color: $white;
-  box-shadow: 0 0.5rem 1.25rem 0 rgba($primary, 0.28);
+  border-left: 1px solid var(--element-border-color);
+  background-color: var(--element-background-color);
   transition: right 0.3s ease;
 
   &.active {
