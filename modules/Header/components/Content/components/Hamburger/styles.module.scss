@@ -11,7 +11,7 @@
     width: 35px;
     height: 4px;
     border-radius: 4px;
-    background-color: $white;
+    background-color: var(--light-color);
     transition-duration: 0.15s;
     transition-property: transform;
     transition-timing-function: ease;

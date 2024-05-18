@@ -4,6 +4,6 @@
   display: flex;
   justify-content: center;
   padding: 2rem 0 0.75rem;
-  border-bottom: 1px solid $grey-light;
-  color: $grey-lighter;
+  border-bottom: 1px solid var(--element-border-color);
+  color: var(--stronger-subtle-text-color);
 }

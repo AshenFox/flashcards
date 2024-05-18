@@ -43,7 +43,6 @@ $quartz: #4b4b4b;
 $jet: #363636;
 $raisin-black: #232323;
 
-/* $cultured: #f5f5f5; */
 $lotion: #fdfdfd;
 $anti-flash-white: #f0f0f0;
 $gainsboro: #dbdbdb;
@@ -63,6 +62,19 @@ $lust: #e62121;
 $magic-mint: #bde8d3;
 $crayola: #23b26d;
 $benzol-green: #00da70;
+
+body.light,
+body.dark {
+  /* constant colors/helpers */
+  --stronger-success-color: #{$benzol-green};
+  --stronger-danger-color: #{$lust};
+  --active-color: #{$lightning-yellow};
+  --active-secondary-color: #{$jet};
+  --danger-color: #{$bittersweet};
+  --success-color: #{$crayola};
+  --dark-color: #{$dark-liver};
+  --light-color: #{$anti-flash-white};
+}
 
 body.light {
   /* general app element colors */
@@ -86,19 +98,9 @@ body.light {
   /* general state */
   --inactive-color: #{$gainsboro};
   --inactive-secondary-color: #{$cadet-grey};
-  --success-color: #{$crayola};
-  --stronger-success-color: #{$benzol-green};
-  --danger-color: #{$bittersweet};
-  --stronger-danger-color: #{$lust};
-  --active-color: #{$lightning-yellow};
-  --active-secondary-color: #{$jet};
   --alternative-active-color: #{$lightning-yellow};
   --accentuated-color: #{$regalia};
   --stronger-accentuated-color: #{$american-purple};
-
-  /* constant colors */
-  --dark-color: #{$dark-liver};
-  --light-color: #{$anti-flash-white};
 }
 
 body.dark {
@@ -123,17 +125,7 @@ body.dark {
   /* general state and colors */
   --inactive-color: #{$dim-gray};
   --inactive-secondary-color: #{$silver-foil};
-  --success-color: #{$crayola};
-  --stronger-success-color: #{$benzol-green};
-  --danger-color: #{$bittersweet};
-  --stronger-danger-color: #{$lust};
-  --active-color: #{$lightning-yellow};
-  --active-secondary-color: #{$jet};
   --alternative-active-color: #{$dandelion};
   --accentuated-color: #{$lightning-yellow};
   --stronger-accentuated-color: #{$lightning-yellow};
-
-  /* constant colors */
-  --dark-color: #{$dark-liver};
-  --light-color: #{$anti-flash-white};
 }

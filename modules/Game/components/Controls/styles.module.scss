@@ -24,6 +24,10 @@
   border-top: none;
   border-bottom: none;
 
+  @media (max-width: $notebook) {
+    border-left: none;
+  }
+
   @media (max-width: $tablet) {
     position: static;
     top: auto;
