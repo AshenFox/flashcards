@@ -141,3 +141,8 @@
     }
   }
 }
+
+.highlighted_text {
+  background-color: var(--active-color);
+  color: var(--dark-color);
+}
