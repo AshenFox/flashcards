@@ -34,15 +34,8 @@
 .return {
   text-align: right;
 
-  button {
-    border-radius: 1rem;
-    background-color: var(--secondary-element-background-color);
-    color: var(--reverse-color);
-
-    &:hover {
-      background-color: var(--alternative-active-color);
-      color: var(--dark-color);
-    }
+  a {
+    padding: 1.25rem 3rem;
   }
 
   @media (max-width: $tablet) {

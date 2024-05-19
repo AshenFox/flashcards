@@ -26,7 +26,7 @@ const Navigation = () => {
 
   const clickNavItem =
     (value: "next" | "prev", cardAnswer?: "correct" | "incorrect") =>
-    (e: MouseEvent<HTMLDivElement>) => {
+    (e: MouseEvent<HTMLDivElement | HTMLButtonElement>) => {
       if (value === "next" && isSR) {
         if (cardAnswer === "correct") put_sr_answer(activeCardData._id, 1);
         if (cardAnswer === "incorrect") put_sr_answer(activeCardData._id, -1);
@@ -115,14 +115,8 @@ const Navigation = () => {
 
       {!isSR && (
         <>
-          <div
-            className={clsx(s.item, s.prev, progress <= 0 && s.inactive)}
-            onClick={clickNavItem("prev")}
-          >
-            <button
-              //helpers-delete
-              className="pad15 brr50p d-f mar-left-a p-r"
-            >
+          <div className={clsx(s.item, s.prev, progress <= 0 && s.inactive)}>
+            <button onClick={clickNavItem("prev")}>
               <TriangleLeftIcon />
             </button>
           </div>
@@ -133,12 +127,8 @@ const Navigation = () => {
               s.next,
               progress >= cardsArr.length && s.inactive,
             )}
-            onClick={clickNavItem("next")}
           >
-            <button
-              //helpers-delete
-              className="pad15 brr50p d-f p-r"
-            >
+            <button onClick={clickNavItem("next")}>
               <TriangleRightIcon />
             </button>
           </div>

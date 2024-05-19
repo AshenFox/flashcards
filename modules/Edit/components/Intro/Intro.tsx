@@ -1,7 +1,8 @@
 import Container from "@components/Container";
 import ContentWrapper from "@components/ContentWrapper";
 import { useAppSelector } from "@store/hooks";
-import Link from "next/link";
+import { Button, Link } from "@ui/InteractiveElement";
+// import Link from "next/link";
 import { useRouter } from "next/router";
 import { memo } from "react";
 
@@ -26,13 +27,7 @@ const Intro = () => {
             </div>
             <div className={s.return}>
               <Link href={draft ? "/home/modules" : `/module/${_id}`}>
-                <button
-                  //helpers-delete
-                  className=" pad12-30 fz15 fw-normal "
-                  type="button"
-                >
-                  Return
-                </button>
+                Return
               </Link>
             </div>
           </div>

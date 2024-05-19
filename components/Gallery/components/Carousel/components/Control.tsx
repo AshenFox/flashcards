@@ -52,13 +52,7 @@ const Control = ({ direction, _id }: ControlProps) => {
       data-active={active}
       onClick={clickControl}
     >
-      <button
-        //helpers-delete
-        className={clsx(
-          "pad15 bcc-white brr50p d-f h-bcc-yellow p-r",
-          direction === "left" ? "mar-left-a" : "",
-        )}
-      >
+      <button>
         {direction === "left" && <TriangleLeftIcon />}
         {direction === "right" && <TriangleRightIcon />}
       </button>

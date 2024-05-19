@@ -9,7 +9,7 @@ const AuthSpinner = () => {
   const loading = useAppSelector(s => s.auth.loading);
 
   return (
-    <div className={clsx(s.container, !loading && "hidden")}>
+    <div className={clsx(s.container, !loading && s.hidden)}>
       <Spinner />
     </div>
   );

@@ -31,10 +31,14 @@
   }
 
   & button {
+    position: relative;
     z-index: 20;
+    display: flex;
     width: 5rem;
     height: 5rem;
+    padding: 1.5rem;
     border: 1px solid var(--button-border-color);
+    border-radius: 50%;
     background-color: var(--element-background-color);
     pointer-events: auto;
     transition: all 0.1s linear;

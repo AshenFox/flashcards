@@ -150,28 +150,19 @@
   @media (max-width: $mobile) {
     margin-top: 1rem;
   }
+
+  button {
+    color: var(--secondary-element-background-color);
+
+    &:hover {
+      color: var(--alternative-active-color);
+    }
+  }
 }
 
 .continue {
   margin-top: 3rem;
   text-align: center;
-
-  button {
-    padding: 1rem 3rem;
-    border-radius: 1rem;
-    background-color: var(--secondary-element-background-color);
-    color: var(--reverse-color);
-    font-size: 1.5rem;
-
-    @media (max-width: $mobile) {
-      padding: 1rem 2rem;
-    }
-
-    &:hover {
-      background-color: var(--alternative-active-color);
-      color: var(--active-secondary-color);
-    }
-  }
 
   &[data-correct="false"] {
     & button {

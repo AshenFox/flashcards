@@ -5,6 +5,7 @@ import { Card } from "@store/reducers/main/mainInitState";
 import { EditIcon } from "@ui/Icons";
 import Img from "@ui/Img";
 import Input from "@ui/Input";
+import { Button } from "@ui/InteractiveElement";
 import TextArea from "@ui/TextArea";
 import TextLabel from "@ui/TextLabel";
 import { tooltipContainer } from "@ui/Tooltip";
@@ -153,13 +154,9 @@ const Answer = ({ data }: AnswerProps) => {
             <div className={s.section_body}>
               <div>{answer}</div>
               <div className={s.override}>
-                <button
-                  //helpers-delete
-                  className="fz15 fw-normal lightblue h-yellow"
-                  onClick={clickOverride}
-                >
+                <Button onClick={clickOverride} design="plain">
                   Override: I was right
-                </button>
+                </Button>
               </div>
             </div>
           </div>
@@ -197,13 +194,7 @@ const Answer = ({ data }: AnswerProps) => {
       </div>
 
       <div className={s.continue} data-correct={canContinue.current}>
-        <button
-          //helpers-delete
-          // className="bcc-lightblue pad10-30 brr15 white fz15 fw-normal h-grey h-bcc-yellow"
-          onClick={clickContinue}
-        >
-          Click to continue
-        </button>
+        <Button onClick={clickContinue}>Click to continue</Button>
       </div>
     </div>
   );

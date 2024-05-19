@@ -42,8 +42,7 @@ const Card = ({
     "g",
   );
 
-  //helpers-delete
-  const replacement = `<span class='bcc-yellow'>${filter}</span>`;
+  const replacement = `<span class=${s.highlighted_text}>${filter}</span>`;
 
   let formatted_term: string, formatted_definition: string;
 

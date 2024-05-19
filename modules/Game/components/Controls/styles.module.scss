@@ -61,27 +61,34 @@
 }
 
 .back {
+  border-bottom: 1px solid var(--element-border-color);
+  margin-bottom: 3rem;
+
   @media (max-width: $tablet) {
     display: none;
   }
 
-  border-bottom: 1px solid var(--element-border-color);
+  & a {
+    width: 100%;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 1.5rem 2rem;
+    font-size: 1.7rem;
+    text-align: left;
 
-  & button {
-    & svg {
+    & :global(.interactive_element__icon) {
       margin-right: 0.5rem;
       fill: var(--secondary-element-background-color);
       transition: all 0.1s linear;
     }
 
     &:hover {
+      background-color: var(--active-color);
       color: var(--active-secondary-color);
 
-      & svg {
+      & :global(.interactive_element__icon) {
         fill: var(--active-secondary-color);
       }
     }
   }
-
-  margin-bottom: 3rem;
 }

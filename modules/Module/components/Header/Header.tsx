@@ -1,9 +1,9 @@
 import Container from "@components/Container";
 import ContentWrapper from "@components/ContentWrapper";
 import { useAppSelector } from "@store/hooks";
+import { Button, Link } from "@ui/InteractiveElement";
 import Skeleton from "@ui/Skeleton";
 import clsx from "clsx";
-import Link from "next/link";
 import { memo } from "react";
 
 import Info from "./components/Info/Info";
@@ -34,14 +34,7 @@ const Header = () => {
               </h1>
             </div>
             <div className={s.return}>
-              <Link href={"/home/modules"}>
-                <button
-                  //helpers-delete
-                  className="pad12-30 fz15 fw-normal"
-                >
-                  Return
-                </button>
-              </Link>
+              <Link href={"/home/modules"}>Return</Link>
             </div>
           </div>
           <Study />

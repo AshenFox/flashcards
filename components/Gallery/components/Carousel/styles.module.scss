@@ -60,6 +60,10 @@
     object-fit: cover;
   }
 
+  &.hidden {
+    display: none;
+  }
+
   &:not(:last-child) {
     margin-right: 2rem;
   }
@@ -70,6 +74,13 @@
 }
 
 .control {
+  button {
+    position: relative;
+    display: inline-flex;
+    padding: 1.5rem;
+    border-radius: 50%;
+  }
+
   &.left button svg {
     transform: translate(-12px, -10px);
   }
