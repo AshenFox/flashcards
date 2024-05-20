@@ -1,7 +1,7 @@
+import { Block, Link } from "@ui/InteractiveElement";
 import { useRouter } from "next/router";
 import { memo, useEffect } from "react";
 
-import Item from "./components/Item/Item";
 import s from "./styles.module.scss";
 
 const Navigation = () => {
@@ -17,17 +17,21 @@ const Navigation = () => {
 
   return (
     <div className={s.container}>
-      <ul className={s.navigation}>
-        <Item href="/home/cards" active={section === "cards"}>
+      <Block>
+        <Link href="/home/cards" pressed={section === "cards"} design="outline">
           Cards
-        </Item>
-        <Item href="/home/modules" active={section === "modules"}>
+        </Link>
+        <Link
+          href="/home/modules"
+          pressed={section === "modules"}
+          design="outline"
+        >
           Modules
-        </Item>
-        <Item href="/home/sr" active={section === "sr"}>
+        </Link>
+        <Link href="/home/sr" pressed={section === "sr"} design="outline">
           SR
-        </Item>
-      </ul>
+        </Link>
+      </Block>
     </div>
   );
 };

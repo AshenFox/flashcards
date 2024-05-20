@@ -1,8 +1,8 @@
 import clsx from "clsx";
 import { cloneElement, memo } from "react";
 
-import s from "./styles.module.scss";
-import { InnerProps } from "./types";
+import s from "../styles.module.scss";
+import { InnerProps } from "../types";
 
 const Inner = ({ loading, children, icon, iconSize }: InnerProps) => {
   return (
@@ -13,7 +13,9 @@ const Inner = ({ loading, children, icon, iconSize }: InnerProps) => {
           height: iconSize,
           className: clsx(s.icon, "interactive_element__icon"),
         })}
-      <span className="interactive_element__text">{children}</span>
+      {!!children && (
+        <span className="interactive_element__text">{children}</span>
+      )}
       {typeof loading !== "undefined" && (
         <div className={clsx(s.spinner, "interactive_element__spinner")} />
       )}
