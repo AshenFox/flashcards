@@ -1,8 +1,8 @@
 import { noop } from "@helpers/functions/noop";
 import { memo } from "react";
 
+import Inner from "./components/Inner";
 import { createClassName } from "./helpers";
-import Inner from "./Inner";
 import { ButtonProps } from "./types";
 
 const Button = (props: ButtonProps) => {

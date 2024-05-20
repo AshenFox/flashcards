@@ -1,0 +1,33 @@
+@import "@styles/vars";
+
+.logo {
+  display: inline-flex;
+  justify-content: center;
+  padding: 0 1.5rem;
+  cursor: pointer;
+  transform: translateX(-1rem);
+
+  svg {
+    width: 4rem;
+  }
+
+  &.isGame {
+    @media (max-width: $tablet) {
+      display: none;
+    }
+  }
+
+  @media (max-width: $tablet) {
+    svg {
+      width: 3.5rem;
+    }
+  }
+
+  @media (max-width: $mobile) {
+    padding: 0 1rem;
+
+    svg {
+      width: 3rem;
+    }
+  }
+}

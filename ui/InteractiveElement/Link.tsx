@@ -1,8 +1,8 @@
 import NextLink from "next/link";
 import { memo } from "react";
 
+import Inner from "./components/Inner";
 import { createClassName } from "./helpers";
-import Inner from "./Inner";
 import { LinkProps } from "./types";
 
 const Link = (props: LinkProps) => {

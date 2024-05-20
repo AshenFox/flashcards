@@ -1,12 +1,10 @@
-import clsx from "clsx";
-import { memo, MouseEventHandler, ReactNode } from "react";
-
-import s from "./styles.module.scss";
+import { Button } from "@ui/InteractiveElement";
+import { memo, MouseEventHandler, ReactElement, SVGProps } from "react";
 
 type ControlButtonProps = {
   active?: boolean;
   title?: string;
-  icon?: ReactNode;
+  icon?: ReactElement<SVGProps<SVGSVGElement>>;
   onClick?: MouseEventHandler<HTMLButtonElement>;
 };
 
@@ -17,12 +15,9 @@ const ControlButton = ({
   onClick,
 }: ControlButtonProps) => {
   return (
-    <div className={clsx(s.control_button, active && s.active)}>
-      <button onClick={onClick}>
-        {icon}
-        <span>{title}</span>
-      </button>
-    </div>
+    <Button onClick={onClick} icon={icon} design="outline" pressed={active}>
+      {title}
+    </Button>
   );
 };
 

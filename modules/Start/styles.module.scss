@@ -63,11 +63,11 @@ body:global(.dark) .content {
   background-image: url("~/public/img/start-background-dark.png");
 
   @media (max-width: $tablet) {
-    background-image: url("~/public/img/start-background-small-light.png");
+    background-image: url("~/public/img/start-background-small-dark.png");
   }
 
   @media (max-width: $mobile) {
-    background-image: url("~/public/img/start-background-secondary-light.png");
+    background-image: url("~/public/img/start-background-secondary-dark.png");
   }
 }
 
@@ -116,8 +116,7 @@ body:global(.dark) .content {
   }
 
   h2 {
-    // color: $jade;
-    // color: #23b26d;
+    color: var(--text-color);
     font-family: "Fredoka One";
     font-size: 6rem;
     font-weight: 400;
@@ -145,7 +144,7 @@ body:global(.dark) .content {
 
   h1 {
     margin-bottom: 3.5rem;
-    color: var(--accentuated-color);
+    color: var(--text-color);
     // color: #6400bb;
     font-family: "Fredoka One";
     font-size: 10rem;
@@ -204,10 +203,26 @@ body:global(.dark) .content {
 
 body:global(.light) .intro {
   background-image: url("~/public/img/start-background-secondary-light.png");
+
+  h1 {
+    --text-color: #{$violet};
+  }
+
+  h2 {
+    --text-color: #{$jade};
+  }
 }
 
 body:global(.dark) .intro {
-  background-image: url("~/public/img/start-background-secondary-light.png");
+  background-image: url("~/public/img/start-background-secondary-dark.png");
+
+  h1 {
+    --text-color: var(--active-color);
+  }
+
+  h2 {
+    --text-color: var(--text-color);
+  }
 }
 
 body:global(.light) .intro,
