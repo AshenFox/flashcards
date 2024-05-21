@@ -1,6 +1,7 @@
 import {
   getIsDraft,
   getIsFlashcards,
+  getIsSettings,
   getIsWrite,
 } from "@helpers/functions/determinePath";
 import { useActions, useAppSelector } from "@store/hooks";
@@ -42,6 +43,7 @@ const Dropdown = () => {
   const isFlashcards = getIsFlashcards(router.pathname);
   const isWrite = getIsWrite(router.pathname);
   const isDraft = getIsDraft(router.asPath);
+  const isSettings = getIsSettings(router.pathname);
 
   const deactivateDropdown = useRef((e: MouseEvent) => {
     const menuEl = (e.target as HTMLElement).closest(".header__menu");
@@ -55,18 +57,19 @@ const Dropdown = () => {
   });
 
   useEffect(() => {
+    const callback = deactivateDropdown.current;
+
     setTimeout(
       () =>
         dropdown_active
-          ? window.addEventListener("click", deactivateDropdown.current)
-          : window.removeEventListener("click", deactivateDropdown.current),
+          ? window.addEventListener("click", callback)
+          : window.removeEventListener("click", callback),
       0,
     );
-    return () =>
-      window.removeEventListener("click", deactivateDropdown.current);
+    return () => window.removeEventListener("click", callback);
   }, [dropdown_active]);
 
-  const clickSuffle = (e: ReactMouseEvent<HTMLButtonElement>) => {
+  const clickShuffle = (e: ReactMouseEvent<HTMLButtonElement>) => {
     if (shuffled) {
       sort_flashcards();
       set_flashcards_shuffled(false);
@@ -83,7 +86,7 @@ const Dropdown = () => {
 
   const logOut = (e: ReactMouseEvent<HTMLButtonElement>) => log_out();
 
-  const stylesHeader: CSSProperties = { paddingTop: `${header_height}px` };
+  const stylesHeader: CSSProperties = { paddingTop: `${header_height - 1}px` };
 
   const className = clsx(
     s.dropdown,
@@ -98,12 +101,13 @@ const Dropdown = () => {
           Create new module
         </Item>
       )}
+      {!isSettings && <Item href="/settings">Settings</Item>}
       <Item onClick={logOut}>Log out</Item>
 
       {(isFlashcards || isWrite) && !isSR && <Divider>Options:</Divider>}
 
       {isFlashcards && !isSR && (
-        <Item onClick={clickSuffle} icon={<ShuffleIcon />} active={shuffled}>
+        <Item onClick={clickShuffle} icon={<ShuffleIcon />} active={shuffled}>
           Shuffle
         </Item>
       )}

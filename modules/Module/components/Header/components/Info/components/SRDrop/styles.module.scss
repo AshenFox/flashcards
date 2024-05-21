@@ -1,26 +1,26 @@
-@import "@styles/vars.scss";
+@import "@styles/vars";
 
 .drop {
   display: flex;
-  cursor: pointer;
-  border-right: 2px solid $grey-light;
   padding-right: 0.65rem;
+  border-right: 1px solid var(--element-border-color);
+  cursor: pointer;
 
   & svg {
     margin-right: 1rem;
-    fill: $grey;
+    fill: var(--icon-fill);
     transition: all 0.2s;
   }
 
   :global(.tooltip__tooltip) {
     top: -3rem;
     width: max-content;
-    color: $red !important;
+    color: var(--danger-color) !important;
   }
 
   &:hover {
     svg {
-      fill: $red;
+      fill: var(--danger-color);
     }
   }
 
@@ -30,7 +30,7 @@
     }
 
     svg {
-      fill: $red;
+      fill: var(--danger-color);
     }
   }
 }

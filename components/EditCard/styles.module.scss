@@ -1,26 +1,26 @@
-@import "@styles/vars.scss";
+@import "@styles/vars";
 
 .card {
-  background-color: $white;
-  margin-bottom: 1.5rem;
   z-index: 0;
+  border: 1px solid var(--element-border-color);
+  margin-bottom: 1.5rem;
+  background-color: var(--element-background-color);
 
   &:last-child {
     margin-bottom: 0;
   }
 
   &.game {
-    border-radius: 1rem;
-    box-shadow: 0 0 1.25rem -0.1rem rgba(0, 0, 0, 0.28);
     width: 100%;
+    border-radius: 1rem;
   }
 }
 
 .header {
   display: flex;
   align-items: center;
-  border-bottom: 2px solid $grey-light;
-  padding: 1.25rem 2rem;
+  padding: 1rem 2rem;
+  border-bottom: 1px solid var(--element-border-color);
 }
 
 .number {
@@ -30,44 +30,40 @@
 
 .delete,
 .close {
+  display: flex;
+  margin-left: 2rem;
   cursor: pointer;
   text-align: right;
-  margin-left: 2rem;
-  display: flex;
 
   & svg {
-    fill: $grey;
+    fill: var(--icon-fill);
     transition: fill 0.1s;
-  }
-
-  &.inactive {
-    & svg {
-      fill: rgba(143, 143, 143, 0.856);
-    }
-
-    &:hover {
-      & svg {
-        fill: rgba(143, 143, 143, 0.856);
-      }
-    }
   }
 
   &:hover {
     & svg {
-      fill: rgba(255, 0, 0, 0.856);
+      fill: var(--danger-color);
     }
   }
 
-  &.inactive:hover {
+  &.inactive {
+    cursor: auto;
+
     & svg {
-      fill: rgba(143, 143, 143, 0.856);
+      fill: var(--inactive-color);
+    }
+
+    &:hover {
+      & svg {
+        fill: var(--inactive-color);
+      }
     }
   }
 }
 
 .items {
   display: flex;
-  align-items: center;
+  align-items: stretch;
 
   @media (max-width: $mobile) {
     flex-direction: column;
@@ -75,9 +71,11 @@
 }
 
 .term {
+  display: flex;
   width: 50%;
+  flex-direction: column;
+  justify-content: center;
   padding: 2rem;
-
   text-align: center;
 
   @media (max-width: $mobile) {
@@ -86,11 +84,9 @@
 }
 
 .definition {
+  display: flex;
   width: 50%;
   padding: 2rem;
-
-  display: flex;
-
   text-align: center;
 
   @media (max-width: $mobile) {
@@ -99,5 +95,8 @@
 }
 
 .definition_input {
+  display: flex;
   width: 80%;
+  flex-direction: column;
+  justify-content: center;
 }

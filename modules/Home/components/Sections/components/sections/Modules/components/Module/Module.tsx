@@ -21,8 +21,7 @@ const Module = ({ data, filter = null }: ModuleProps) => {
     "g",
   );
 
-  //helpers-delete
-  const replacement = `<span class='bcc-yellow'>${filter}</span>`;
+  const replacement = `<span class='${s.highlighted_text}'>${filter}</span>`;
 
   let formatted_title: string;
 

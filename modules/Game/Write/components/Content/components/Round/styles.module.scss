@@ -1,13 +1,12 @@
-@import "@styles/vars.scss";
+@import "@styles/vars";
 
 .round {
   width: 100%;
-  background-color: $white;
   padding: 2.5rem 4rem;
-  margin-bottom: 1rem;
-
+  border: 1px solid var(--element-border-color);
   border-radius: 1rem;
-  box-shadow: 0 0 1.25rem -0.1rem rgba(0, 0, 0, 0.28);
+  margin-bottom: 1rem;
+  background-color: var(--element-background-color);
 
   &:focus {
     outline: none;
@@ -20,7 +19,6 @@
 
 .title {
   margin-bottom: 2.5rem;
-  color: $grey;
 }
 
 .body {
@@ -29,4 +27,21 @@
 
 .continue {
   text-align: center;
+
+  button {
+    padding: 1rem 3rem;
+    border-radius: 1rem;
+    background-color: var(--secondary-element-background-color);
+    color: var(--reverse-color);
+    font-size: 1.5rem;
+
+    @media (max-width: $mobile) {
+      padding: 1rem 2rem;
+    }
+
+    &:hover {
+      background-color: var(--alternative-active-color);
+      color: var(--active-secondary-color);
+    }
+  }
 }

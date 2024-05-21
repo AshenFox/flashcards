@@ -1,17 +1,17 @@
-@import "@styles/vars.scss";
+@import "@styles/vars";
 
 .label {
   display: block;
   width: 100%;
-  text-align: left;
-  color: $grey;
+  color: var(--stronger-subtle-text-color);
   font-size: 1.5rem;
+  text-align: left;
   text-transform: uppercase;
-  user-select: none;
   transition: all 0.2s;
+  user-select: none;
 
   &.error {
-    color: red;
+    color: var(--danger-color);
   }
 
   &.active {

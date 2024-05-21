@@ -1,4 +1,4 @@
-@import "@styles/vars.scss";
+@import "@styles/vars";
 
 .container {
   display: flex;
@@ -11,79 +11,87 @@
 }
 
 .bar {
+  position: relative;
   display: flex;
   width: 100%;
-  margin: auto;
   height: 1.5rem;
-  position: relative;
+  margin: auto;
 
   &.default {
-    background-color: $primary-pale;
+    background-color: var(--default-background-color);
   }
 
   &.red {
-    background-color: $palered;
+    background-color: var(--red-background-color);
   }
 
   &.green {
-    background-color: $palegreen;
+    background-color: var(--green-background-color);
   }
 
   @media (max-width: $tablet) {
     height: 1.2rem;
   }
+}
 
-  /* &.full {
-    @media (max-width: $tablet) {
-      width: 100%;
-    }
-  } */
+html:global(.light) .bar {
+  --default-background-color: #{$languid-lavender};
+  --red-background-color: #{$light-red};
+  --green-background-color: #{$magic-mint};
+}
+
+html:global(.dark) .bar {
+  --default-background-color: #{$quartz};
+  --red-background-color: #{$quartz};
+  --green-background-color: #{$quartz};
 }
 
 .fill {
   position: absolute;
   top: 0;
   left: 0;
-  height: 100%;
   width: 0%;
+  height: 100%;
   transition: all 0.2s;
 
   &.default {
-    background-color: $primary;
+    background-color: var(--default-background-color);
   }
 
   &.red {
-    background-color: $red;
+    background-color: var(--red-background-color);
   }
 
   &.green {
-    background-color: $green;
+    background-color: var(--green-background-color);
   }
+}
+
+html .fill {
+  --default-background-color: #{$regalia};
+  --red-background-color: #{$bittersweet};
+  --green-background-color: #{$crayola};
+}
+
+html:global(.dark) .fill {
+  --default-background-color: #{$lightning-yellow};
 }
 
 .info {
   display: flex;
   justify-content: space-between;
   line-height: 1;
-
-  @media (max-width: $tablet) {
-    // width: 10%;
-  }
 }
 
 .title {
-  text-transform: uppercase;
+  color: var(--stronger-subtle-text-color);
   font-size: 1.4rem;
-  color: $grey;
-
-  /* @media (max-width: $tablet) {
-    display: none;
-  } */
+  text-transform: uppercase;
 }
 
 .count {
+  color: var(--stronger-subtle-text-color);
   font-size: 1.4rem;
-  color: $grey;
 
   @media (max-width: $mobile) {
     font-size: 1.2rem;

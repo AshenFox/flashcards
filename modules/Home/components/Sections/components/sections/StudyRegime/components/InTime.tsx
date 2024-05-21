@@ -1,6 +1,6 @@
 import { useAppSelector } from "@store/hooks";
+import Skeleton from "@ui/Skeleton";
 import { memo } from "react";
-import Skeleton from "react-loading-skeleton";
 
 const InTime = () => {
   const next_num = useAppSelector(s => s.sr.next_num);

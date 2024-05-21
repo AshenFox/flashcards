@@ -1,5 +1,5 @@
-@import "@styles/vars.scss";
-@import "@styles/animations.scss";
+@import "@styles/vars";
+@import "@styles/animations";
 
 .indicator {
   position: relative;
@@ -7,42 +7,37 @@
   align-items: center;
 
   svg {
-    fill: $grey;
-    height: 22px;
     width: 22px;
+    height: 22px;
+    fill: var(--icon-fill);
   }
 
   :global(.indicator__dots) {
     position: absolute;
-
-    transition: all 0.2s;
-    transform-origin: center;
-    animation: rotate 35s linear infinite;
-
-    opacity: 0;
     top: -0.6rem;
     left: -0.6rem;
-    height: 3.4rem;
     width: 3.4rem;
+    height: 3.4rem;
+    animation: rotate 35s linear infinite;
+    opacity: 0;
+    transform-origin: center;
+    transition: all 0.2s;
   }
 
   :global(.indicator__dot) {
     position: absolute;
-    background-color: $secondary;
-    border-radius: 50%;
-    transform: translate(-50%, -50%);
-
-    height: 0.4rem;
     width: 0.4rem;
+    height: 0.4rem;
+    border-radius: 50%;
+    background-color: var(--success-color);
+    transform: translate(-50%, -50%);
   }
 
   :global(.tooltip__tooltip) {
-    width: max-content;
-    border-radius: 1.5rem;
-
-    color: $grey;
-    left: 4rem;
     top: -1rem;
+    left: 4rem;
+    width: max-content;
+    border-radius: 0.5rem;
 
     span {
       display: block;
@@ -58,30 +53,30 @@
     :global(.indicator__dots) {
       top: -0.5rem;
       left: -0.5rem;
-      height: 2.7rem;
       width: 2.7rem;
+      height: 2.7rem;
     }
 
     :global(.indicator__dot) {
-      height: 0.4rem;
       width: 0.4rem;
+      height: 0.4rem;
     }
 
     :global(.tooltip__tooltip) {
-      left: -1rem;
       top: -6rem;
+      left: -1rem;
     }
 
     svg {
-      fill: $grey;
-      height: 17px;
       width: 17px;
+      height: 17px;
+      fill: var(--icon-fill);
     }
   }
 
   &.active {
     svg {
-      fill: $green;
+      fill: var(--success-color);
     }
 
     :global(.indicator__dots) {
@@ -89,7 +84,26 @@
     }
 
     :global(.tooltip__tooltip) {
-      color: $green;
+      color: var(--success-color);
     }
   }
+}
+
+html:global(.light) .indicator {
+  --sr-indicator-stage-1: #0000dc;
+  --sr-indicator-stage-2: #00817d;
+  --sr-indicator-stage-3: #238e24;
+  --sr-indicator-stage-4: #afd510;
+  --sr-indicator-stage-5: #fce72c;
+  --sr-indicator-stage-6: #ffca2c;
+  --sr-indicator-stage-7: #fc7300;
+  --sr-indicator-stage-8: #f32a00;
+  --sr-indicator-stage-9: #da0000;
+  --sr-indicator-stage-10: #b10067;
+  --sr-indicator-stage-11: #54267b;
+}
+
+html:global(.dark) .indicator {
+  --sr-indicator-stage-1: #5858ff;
+  --sr-indicator-stage-11: #8d39d6;
 }

@@ -123,12 +123,7 @@ const Question = ({ data }: QuestionProps) => {
           <TextLabel htmlFor="write-input">type the answer</TextLabel>
         </fieldset>
         <div className={s.btn_container}>
-          <button
-            //helpers-delete
-            className="bcc-lightblue pad10-30 brr15 white fz15 fw-normal h-grey h-bcc-yellow"
-            onClick={clickAnswer}
-            type="button"
-          >
+          <button onClick={clickAnswer} type="button">
             Answer
           </button>
         </div>

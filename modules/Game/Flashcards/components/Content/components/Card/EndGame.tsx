@@ -54,12 +54,7 @@ const EndGame = ({ active }: EndGameProps) => {
           length > 1 ? "s" : ""
         }!`}</p>
         <Link href={`/module/${_id}`}>
-          <button
-            //helpers-delete
-            className="bcc-lightblue pad30 brr15 white fz175 h-grey h-bcc-yellow width50"
-          >
-            Finish up
-          </button>
+          <button className={s.finish_up}>Finish up</button>
         </Link>
       </div>
       <div

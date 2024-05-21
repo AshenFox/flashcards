@@ -24,7 +24,7 @@ const Close = ({ data }: CloseProps) => {
 
   return (
     <div className={s.close} onClick={clickClose}>
-      <CloseIcon width="17" height="17" />
+      <CloseIcon width="15" height="15" />
     </div>
   );
 };

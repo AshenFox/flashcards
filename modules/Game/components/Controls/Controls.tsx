@@ -1,7 +1,8 @@
 import Container from "@components/Container";
 import { useActions } from "@store/hooks";
 import { TriangleLeftIcon } from "@ui/Icons";
-import Link from "next/link";
+import { Link } from "@ui/InteractiveElement";
+// import Link from "next/link";
 import { useRouter } from "next/router";
 import { memo, ReactNode, useEffect, useRef } from "react";
 
@@ -45,14 +46,13 @@ const Controls = ({ title, titleIcon, children }: ControlsProps) => {
       <div className={s.container} ref={controlsEl}>
         <div className={s.controls}>
           <div className={s.back}>
-            <Link href={isSR ? "/home/sr" : `/module/${_id}`}>
-              <button
-                //helpers-delete
-                className="grey ai-c ta-l fz17 width100 pad15-20 h-bcc-yellow"
-              >
-                <TriangleLeftIcon height="15" width="15" />
-                <span>Back</span>
-              </button>
+            <Link
+              href={isSR ? "/home/sr" : `/module/${_id}`}
+              design="plain"
+              icon={<TriangleLeftIcon />}
+              iconSize={15}
+            >
+              Back
             </Link>
           </div>
 

@@ -1,32 +1,29 @@
-@import "@styles/vars.scss";
+@import "@styles/vars";
 
 .textarea {
   display: block;
-  resize: none;
-
   width: 100%;
   max-width: 100%;
-
+  padding: 0.5rem 0;
+  border: none;
+  border-bottom: 1px solid var(--input-border-color);
   font-family: inherit;
   font-size: 1.7rem;
-  text-align: left;
   overflow-wrap: break-word;
-
-  border: none;
-  border-bottom: 2px solid $grey;
-
-  padding: 0.5rem 0;
+  resize: none;
+  text-align: left;
+  transition: all 0.1s;
 
   &:focus {
+    border-bottom: 1px solid var(--active-color);
     outline: none;
-    border-bottom: 2px solid $tertiary;
   }
 
   &.error {
-    border-color: red;
+    border-color: var(--danger-color);
   }
 
-  &[disabled] {
+  /* &[disabled] {
     height: 4.6rem;
-  }
+  } */
 }

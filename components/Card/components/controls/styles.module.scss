@@ -1,39 +1,4 @@
-@import "@styles/vars.scss";
-
-.sr_drop {
-  display: flex;
-  cursor: pointer;
-
-  & svg {
-    margin-right: 1rem;
-    fill: $grey;
-    transition: all 0.2s;
-  }
-
-  :global(.tooltip__tooltip) {
-    top: -3rem;
-    left: -1rem;
-    width: max-content;
-    margin-right: 1rem;
-    color: $red !important;
-  }
-
-  &:hover {
-    svg {
-      fill: $red;
-    }
-  }
-
-  &[data-active="true"] {
-    :global(.tooltip__tooltip) {
-      opacity: 0 !important;
-    }
-
-    svg {
-      fill: $red;
-    }
-  }
-}
+@import "@styles/vars";
 
 .sr {
   margin-left: 0.5rem;
@@ -44,11 +9,46 @@
 
   :global(.switch__checkbox):checked {
     & ~ :global(.switch__switch) {
-      border-color: $green;
+      border-color: var(--success-color);
 
-      &:after {
-        background-color: $green;
+      &::after {
+        background-color: var(--success-color);
       }
+    }
+  }
+}
+
+.sr_drop {
+  display: flex;
+  cursor: pointer;
+
+  & svg {
+    margin-right: 1rem;
+    fill: var(--icon-fill);
+    transition: all 0.2s;
+  }
+
+  &:hover {
+    svg {
+      fill: var(--danger-color);
+    }
+  }
+
+  :global(.tooltip__tooltip) {
+    top: -3rem;
+    left: -1rem;
+    width: max-content;
+    margin-right: 1rem;
+    color: var(--danger-color);
+  }
+
+  &[data-active="true"] {
+    :global(.tooltip__tooltip) {
+      opacity: 0 !important;
+    }
+
+    svg {
+      fill: var(--danger-color);
     }
   }
 }
@@ -57,23 +57,24 @@
   display: flex;
   cursor: pointer;
 
+  /* stylelint-disable-next-line no-descending-specificity */
   & svg {
-    fill: $grey;
-    vertical-align: middle;
+    fill: var(--icon-fill);
     transition: all 0.1s linear;
+    vertical-align: middle;
   }
 
   &:hover {
     & svg {
-      fill: rgba(255, 0, 0, 0.856);
+      fill: var(--danger-color);
     }
   }
 }
 
 .controls_item {
   &:not(:last-child) {
-    border-right: 2px solid $grey-light;
     padding-right: 1.25rem;
+    border-right: 1px solid var(--element-border-color);
     margin-right: 1.25rem;
   }
 }

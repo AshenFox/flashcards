@@ -1,50 +1,41 @@
-@import "@styles/vars.scss";
+@import "@styles/vars";
 
 .container {
   position: fixed;
+  top: 7.15rem;
   bottom: 0;
-  top: 7.8rem;
   width: 19.5rem;
-
-  background-color: $white;
+  background-color: var(--element-background-color);
 
   @media (max-width: $tablet) {
-    bottom: auto;
-    top: auto;
     position: static;
+    top: auto;
+    bottom: auto;
     width: 100%;
   }
 }
 
 .controls {
   position: relative;
-  height: 100%;
-  width: 100%;
   z-index: 20;
-  box-shadow: 0 0 1rem 0 rgba(0, 0, 0, 0.28);
-}
+  width: 100%;
+  height: 100%;
+  border: 1px solid var(--element-border-color);
+  border-top: none;
+  border-bottom: none;
 
-.back {
+  @media (max-width: $notebook) {
+    border-left: none;
+  }
+
   @media (max-width: $tablet) {
-    display: none;
+    position: static;
+    top: auto;
+    bottom: auto;
+    width: 100%;
+    border: none;
+    border-bottom: 1px solid var(--element-border-color);
   }
-
-  border-bottom: 1px solid $grey-light;
-
-  & button {
-    & svg {
-      fill: $secondary;
-      margin-right: 0.5rem;
-      transition: all 0.1s linear;
-    }
-
-    &:hover {
-      & svg {
-        fill: $grey;
-      }
-    }
-  }
-  margin-bottom: 3rem;
 }
 
 .title {
@@ -52,30 +43,52 @@
     display: none;
   }
 
-  text-align: center;
   margin-bottom: 3rem;
+  text-align: center;
 
   & svg {
-    vertical-align: middle;
     margin-right: 0.5rem;
-    fill: $primary;
+    fill: var(--accentuated-color);
+    vertical-align: middle;
   }
 
   & span {
-    vertical-align: middle;
+    color: var(--accentuated-color);
     font-size: 2.4rem;
-    color: $primary;
     font-weight: bold;
+    vertical-align: middle;
   }
 }
 
-.control_buttons {
-  position: absolute;
-  bottom: 1.25rem;
-  left: 1.25rem;
-  right: 1.25rem;
+.back {
+  border-bottom: 1px solid var(--element-border-color);
+  margin-bottom: 3rem;
 
   @media (max-width: $tablet) {
     display: none;
+  }
+
+  & a {
+    width: 100%;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 1.5rem 2rem;
+    font-size: 1.7rem;
+    text-align: left;
+
+    & :global(.interactive_element__icon) {
+      margin-right: 0.5rem;
+      fill: var(--secondary-element-background-color);
+      transition: all 0.1s linear;
+    }
+
+    &:hover {
+      background-color: var(--active-color);
+      color: var(--active-secondary-color);
+
+      & :global(.interactive_element__icon) {
+        fill: var(--active-secondary-color);
+      }
+    }
   }
 }

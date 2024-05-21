@@ -1,6 +1,6 @@
 import { useActions, useAppSelector } from "@store/hooks";
 import Input from "@ui/Input";
-import LoadingBtn from "@ui/LoadingBtn";
+import { Button } from "@ui/InteractiveElement";
 import TextLabel from "@ui/TextLabel";
 import clsx from "clsx";
 import { ChangeEvent, memo, MouseEvent, useRef } from "react";
@@ -104,28 +104,19 @@ const SignUp = () => {
         onChange={onChange}
       />
 
-      <LoadingBtn
+      <Button
         active={ok}
         loading={loading}
-        onClickHandler={onCLickLoadingButton("sign_up")}
-        //helpers-delete
-        classStr={
-          "width100 bcc-lightblue pad15-30 brr15 fz175 white h-grey h-bcc-yellow"
-        }
+        onClick={onCLickLoadingButton("sign_up")}
+        className={s.submit_button}
       >
         Sign up
-      </LoadingBtn>
+      </Button>
 
       <div className={s.options}>
         <p>
           Already have an account?{" "}
-          <button
-            //helpers-delete
-            className="white fz15 inline-block black h-yellow"
-            onClick={onClickChangeModal("log_in")}
-          >
-            Log in!
-          </button>
+          <button onClick={onClickChangeModal("log_in")}>Log in!</button>
         </p>
       </div>
     </>

@@ -1,5 +1,5 @@
+import { Button, Link } from "@ui/InteractiveElement";
 import clsx from "clsx";
-import Link from "next/link";
 import {
   cloneElement,
   memo,
@@ -41,21 +41,33 @@ const Item = ({
   );
 
   const innerClassName = useMemo(
-    () => clsx(s.item, padded && s.padded, className),
-    [padded, className],
+    () => clsx(s.item, padded ? s.padded : s.plain, className),
+    [className, padded],
   );
 
   if (onClick) {
     return (
-      <button className={innerClassName} onClick={onClick}>
-        {InnerElements}
-      </button>
+      <Button
+        onClick={onClick}
+        icon={icon}
+        iconSize={iconSize}
+        design={padded ? "padded" : "plain"}
+        className={innerClassName}
+      >
+        {children}
+      </Button>
     );
   }
 
   return (
-    <Link href={href} className={innerClassName}>
-      {InnerElements}
+    <Link
+      href={href}
+      icon={icon}
+      iconSize={iconSize}
+      className={innerClassName}
+      design="plain"
+    >
+      {children}
     </Link>
   );
 };

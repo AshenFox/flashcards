@@ -1,38 +1,56 @@
-@import "@styles/vars.scss";
+@import "@styles/vars";
 
 .login_input {
-  background-color: #e8f0fd;
   display: flex;
+  background-color: var(--background-color);
+
+  :global(.input__input) {
+    &::placeholder {
+      color: var(--stronger-subtle-text-color);
+    }
+  }
 
   svg {
     width: 3rem;
-    fill: $grey;
     cursor: pointer;
+    fill: var(--stronger-subtle-text-color);
   }
+}
+
+html:global(.light) .login_input {
+  --background-color: #{$brilliant-white};
+}
+
+html:global(.dark) .login_input {
+  --background-color: #{$quartz};
 }
 
 .signup_input {
   &:global(.input__container) {
-    padding: 0.5rem 1.5rem;
-    margin-bottom: 2rem;
-    border: 2px solid $grey;
     height: 4.4rem;
+    padding: 0.5rem 1.5rem;
+    border: 1px solid var(--input-border-color);
+    margin-top: 0.3rem;
+    margin-bottom: 2rem;
   }
 
   &.success {
-    border: 2px solid rgb(35, 200, 35);
+    border: 1px solid var(--stronger-success-color);
 
     &:focus-within {
-      border: 2px solid rgb(35, 200, 35);
+      border: 1px solid var(--stronger-success-color);
     }
   }
 }
 
 .content {
-  background-color: $white;
-  padding: 2.5rem 2.5rem 2.5rem;
+  padding: 2.5rem;
+  border: 1px solid var(--element-border-color);
+  border-top: none;
+  background-color: var(--element-background-color);
+
   @media (max-width: $mobile) {
-    padding: 1.5rem 1.5rem 1.5rem;
+    padding: 1.5rem;
   }
 }
 
@@ -52,16 +70,6 @@
   margin-bottom: 1.5rem;
 }
 
-.options {
-  text-align: center;
-  padding: 1rem;
-  padding-bottom: 0;
-
-  p {
-    margin: 0;
-  }
-}
-
 .choice {
   display: flex;
 }
@@ -69,6 +77,65 @@
 .choice_item {
   width: 50%;
   padding: 0.5rem;
+
+  button {
+    width: 100%;
+    padding: 1.5rem 3rem;
+    background-color: var(--danger-color);
+    color: var(--light-color);
+    font-size: 1.75rem;
+
+    @media (max-width: $mobile) {
+      padding: 1rem 2rem;
+    }
+
+    &:hover {
+      background-color: var(--active-color);
+    }
+  }
+
+  &.cancel button {
+    background-color: var(--dark-color);
+
+    &:hover {
+      background-color: var(--active-color);
+    }
+  }
 }
 
-// ------------------
+.options {
+  padding: 1rem;
+  padding-bottom: 0;
+  text-align: center;
+
+  p {
+    margin: 0;
+  }
+
+  /* stylelint-disable-next-line no-descending-specificity */
+  button {
+    color: var(--accentuated-color);
+    font-size: 1.5rem;
+
+    /* stylelint-disable-next-line no-descending-specificity */
+    &:hover {
+      color: var(--alternative-active-color);
+    }
+  }
+}
+
+.submit_button {
+  &:global(.interactive_element__element) {
+    width: 100%;
+    padding: 1.5rem 3rem;
+    font-size: 1.75rem;
+
+    @media (max-width: $mobile) {
+      padding: 1rem 2rem;
+    }
+
+    @media (max-width: $mobile) {
+      font-size: 1.5rem;
+    }
+  }
+}

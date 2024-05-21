@@ -1,22 +1,22 @@
-@import "@styles/vars.scss";
+@import "@styles/vars";
 
 .scroll {
   position: fixed;
+  z-index: 10000;
   right: -100px;
   bottom: 25px;
-  z-index: 10000;
-  cursor: pointer;
+  display: flex;
   width: 55px;
   height: 55px;
-  border-radius: 50%;
-  border: none;
-  background-color: $primary;
-  transition: all 0.3s ease;
-  display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 0.5rem 1.25rem 0 rgba($primary, 0.28);
+  border: none;
+  border: 1px solid var(--accentuated-color);
+  border-radius: 50%;
+  background-color: var(--background-color);
+  cursor: pointer;
   pointer-events: all;
+  transition: all 0.3s ease;
 
   @media (max-width: $mobile) {
     bottom: 15px;
@@ -31,17 +31,27 @@
   }
 
   svg {
-    fill: $white;
+    fill: var(--icon-fill);
     transform: translateY(-2px);
     transition: all 0.3s ease;
   }
 
   &:hover {
-    background-color: $tertiary;
-    box-shadow: 0 0.5rem 1.25rem 0 rgba($tertiary, 0.28);
+    border-color: var(--active-color);
+    background-color: var(--active-color);
 
     svg {
-      fill: $black;
+      fill: var(--dark-color);
     }
   }
+}
+
+html:global(.light) .scroll {
+  --background-color: var(--accentuated-color);
+  --icon-fill: var(--light-color);
+}
+
+html:global(.dark) .scroll {
+  --background-color: var(--element-background-color);
+  --icon-fill: var(--active-color);
 }

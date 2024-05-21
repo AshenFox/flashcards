@@ -1,4 +1,5 @@
 import { useActions, useAppSelector } from "@store/hooks";
+import { Button } from "@ui/InteractiveElement";
 import { CSSProperties, memo, MouseEvent } from "react";
 
 import s from "./styles.module.scss";
@@ -34,13 +35,10 @@ const Start = () => {
               and interactive and engaging games.
             </p>
           </div>
-          <button
-            onClick={click("log_in")}
-            //helpers-delete
-            className="bcc-lightblue pad15-60 brr15 white fz175 h-grey h-bcc-yellow"
-          >
+
+          <Button onClick={click("log_in")} className={s.get_started}>
             Get started
-          </button>
+          </Button>
         </div>
       </div>
     </main>

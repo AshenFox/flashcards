@@ -1,8 +1,8 @@
-@import "@styles/vars.scss";
+@import "@styles/vars";
 
 .intro {
   padding: 2rem 0;
-  background-color: $white;
+  background-color: var(--element-background-color);
 }
 
 .content {
@@ -16,8 +16,6 @@
 }
 
 .info {
-  color: $grey;
-
   @media (max-width: $tablet) {
     font-size: 1.7rem;
   }
@@ -25,8 +23,4 @@
 
 .return {
   text-align: right;
-
-  @media (max-width: $tablet) {
-    margin-bottom: 1.5rem;
-  }
 }

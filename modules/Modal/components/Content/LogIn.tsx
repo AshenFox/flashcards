@@ -1,7 +1,7 @@
 import { useActions, useAppSelector } from "@store/hooks";
 import { EyeClosedIcon, EyeIcon } from "@ui/Icons";
 import Input from "@ui/Input";
-import LoadingBtn from "@ui/LoadingBtn";
+import { Button } from "@ui/InteractiveElement";
 import TextLabel from "@ui/TextLabel";
 import { ChangeEvent, KeyboardEvent, memo, MouseEvent, useState } from "react";
 
@@ -83,28 +83,19 @@ const LogIn = () => {
         PASSWORD
       </TextLabel>
 
-      <LoadingBtn
+      <Button
         active={true}
         loading={loading}
-        onClickHandler={onCLickLoadingButton("log_in")}
-        //helpers-delete
-        classStr={
-          "width100 bcc-lightblue pad15-30 brr15 fz175 white h-grey h-bcc-yellow"
-        }
+        onClick={onCLickLoadingButton("log_in")}
+        className={s.submit_button}
       >
         Log in
-      </LoadingBtn>
+      </Button>
 
       <div className={s.options}>
         <p>
           Don&apos;t have an account?{" "}
-          <button
-            //helpers-delete
-            className="white fz15 inline-block black h-yellow"
-            onClick={onClickChangeModal("sign_up")}
-          >
-            Sign up!
-          </button>
+          <button onClick={onClickChangeModal("sign_up")}>Sign up!</button>
         </p>
       </div>
     </>
