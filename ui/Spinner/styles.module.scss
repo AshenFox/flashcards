@@ -1,30 +1,28 @@
-@import "@styles/vars.scss";
+@import "@styles/vars";
 
 @keyframes spin {
   from {
-    -webkit-transform: rotate(0deg);
     transform: rotate(0deg);
   }
+
   to {
-    -webkit-transform: rotate(360deg);
     transform: rotate(360deg);
   }
 }
 
 .spinner {
+  position: relative;
+  z-index: 1000;
   top: 50%;
   left: 50%;
-  margin: -62.5px 0 0 -62.5px;
   display: inline-block;
-  position: relative;
   width: 125px;
   height: 125px;
-  border-radius: 50%;
   border: 4px solid transparent;
-  border-top: 4px solid #ff5722;
+  border-radius: 50%;
+  border-top: 4px solid $orange;
+  margin: -62.5px 0 0 -62.5px;
   animation: spin 2s linear infinite;
-
-  z-index: 1000;
 
   &.small {
     width: 75px;
@@ -34,41 +32,21 @@
 
   &::before,
   &::after {
-    content: "";
     position: absolute;
-    border-radius: 50%;
     border: 4px solid transparent;
+    border-radius: 50%;
+    content: "";
   }
+
   &::before {
-    top: 5px;
-    left: 5px;
-    right: 5px;
-    bottom: 5px;
-    border-top-color: #ff9800;
+    border-top-color: $orange-peel;
     animation: spin 3.5s linear infinite;
+    inset: 5px;
   }
+
   &::after {
-    top: 14px;
-    left: 14px;
-    right: 14px;
-    bottom: 14px;
-    border-top-color: #ffc107;
+    border-top-color: $lightning-yellow;
     animation: spin 1.75s linear infinite;
-  }
-}
-
-.container {
-  position: fixed;
-  top: 0;
-  left: 0;
-  height: 100vh;
-  width: 100vw;
-  z-index: 40;
-
-  @supports (-webkit-backdrop-filter: blur(10px)) or
-    (backdrop-filter: blur(10px)) {
-    -webkit-backdrop-filter: blur(5px);
-    backdrop-filter: blur(5px);
-    background-color: rgba($black, 0.1);
+    inset: 14px;
   }
 }

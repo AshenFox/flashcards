@@ -1,10 +1,4 @@
-@import "@styles/vars.scss";
-
-.addcard {
-  padding: 3rem 2rem;
-  background-color: $white;
-  text-align: center;
-}
+@import "@styles/vars";
 
 .save {
   padding-bottom: 2rem;
@@ -15,5 +9,34 @@
 
   @media (max-width: $mobile-sm) {
     text-align: left;
+  }
+
+  button {
+    padding: 3rem 7rem;
+    border-radius: 1.5rem;
+    font-size: 2rem;
+    font-weight: bold;
+  }
+}
+
+.addcard {
+  padding: 3rem 2rem;
+  border: 1px solid var(--element-border-color);
+  background-color: var(--element-background-color);
+  cursor: pointer;
+  text-align: center;
+
+  button {
+    padding-bottom: 1rem;
+    border-bottom: 5px solid var(--success-color);
+    font-size: 1.5rem;
+    text-transform: uppercase;
+  }
+
+  &:hover {
+    button {
+      border-color: var(--active-color);
+      color: var(--active-color);
+    }
   }
 }

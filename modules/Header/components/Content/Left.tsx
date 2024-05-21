@@ -5,7 +5,7 @@ import { useRouter } from "next/router";
 import { memo } from "react";
 
 import Item from "./components/Item";
-import Title from "./components/Title";
+import Logo from "./components/Logo";
 import s from "./styles.module.scss";
 
 const Left = () => {
@@ -31,7 +31,7 @@ const Left = () => {
             />
           )}
 
-          <Title />
+          <Logo />
         </>
       )}
     </div>

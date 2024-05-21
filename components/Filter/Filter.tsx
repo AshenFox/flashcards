@@ -2,6 +2,8 @@ import Input from "@ui/Input";
 import clsx from "clsx";
 import { ChangeEventHandler, memo, useRef } from "react";
 import Select, {
+  createFilter,
+  CSSObjectWithLabel,
   GroupBase,
   Options,
   StylesConfig,
@@ -16,16 +18,64 @@ const createCustomTheme: ThemeConfig = theme => ({
   ...theme,
   colors: {
     ...theme.colors,
-    primary25: "#ffcd1f",
-    primary: "#ffcd1f",
+    primary25: "var(--active-color)",
+    primary: "var(--active-color)",
   },
 });
 
 const customStyles: StylesConfig<Option, false, GroupBase<Option>> = {
-  dropdownIndicator: provided => ({
+  dropdownIndicator: (provided, state) => ({
     ...provided,
     paddingLeft: 3,
     paddingRight: 3,
+    color: state.isFocused ? "var(--icon-fill)" : "var(--inactive-color)",
+    ":hover": {
+      color: "var(--icon-fill)",
+    },
+  }),
+
+  control: (provided, state) => ({
+    ...provided,
+    borderColor: state.isFocused
+      ? "var(--active-color)"
+      : "var(--element-border-color)",
+    backgroundColor: "var(--element-background-color)",
+    ":hover": {
+      borderColor: "var(--active-color)",
+    },
+  }),
+  option: (provided, state) => {
+    const { isSelected } = state;
+    const res: CSSObjectWithLabel = {
+      ...provided,
+      cursor: "pointer",
+      transition: "all 0.1s",
+      color: isSelected ? "var(--active-secondary-color)" : "var(--text-color)",
+      backgroundColor: isSelected ? "var(--active-color)" : "transparent",
+      ":hover": {
+        backgroundColor: isSelected ? "var(--active-color)" : "transparent",
+        color: isSelected
+          ? "var(--active-secondary-color)"
+          : "var(--active-color)",
+      },
+    };
+
+    return res;
+  },
+  indicatorSeparator: provided => ({
+    ...provided,
+    backgroundColor: "var(--element-border-color)",
+  }),
+  singleValue: provided => ({
+    ...provided,
+    color: "var(--text-color)",
+  }),
+  menu: provided => ({
+    ...provided,
+    backgroundColor: "var(--element-background-color)",
+    border: "1px solid var(--element-border-color)",
+    marginTop: "0.3rem",
+    boxShadow: "none",
   }),
 };
 

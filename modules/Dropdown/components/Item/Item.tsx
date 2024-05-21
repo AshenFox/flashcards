@@ -33,7 +33,7 @@ const Item = ({
   const InnerElements = useMemo(
     () => (
       <>
-        {!!icon && cloneElement(icon, { width: iconSize, height: iconSize })}
+        {!!icon && cloneElement(icon, { width: iconSize })}
         <span>{children}</span>
       </>
     ),

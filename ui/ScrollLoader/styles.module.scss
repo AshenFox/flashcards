@@ -1,24 +1,8 @@
-@import "@styles/vars.scss";
-
-.container {
-  height: 0;
-  overflow: hidden;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-
-  &.active {
-    height: 3.5rem;
-
-    .loader {
-      opacity: 1;
-    }
-  }
-}
+@import "@styles/vars";
 
 .loader {
-  display: inline-block;
   position: relative;
+  display: inline-block;
   width: 80px;
   height: 80px;
   opacity: 0;
@@ -29,23 +13,43 @@
     width: 13px;
     height: 13px;
     border-radius: 50%;
-    background: $tertiary;
     animation-timing-function: cubic-bezier(0, 1, 1, 0);
+    background: var(--active-color);
   }
+
   div:nth-child(1) {
     left: 8px;
     animation: ellipsis1 0.6s infinite;
   }
+
   div:nth-child(2) {
     left: 8px;
     animation: ellipsis2 0.6s infinite;
   }
+
   div:nth-child(3) {
     left: 32px;
     animation: ellipsis2 0.6s infinite;
   }
+
   div:nth-child(4) {
     left: 56px;
     animation: ellipsis3 0.6s infinite;
+  }
+}
+
+.container {
+  display: flex;
+  overflow: hidden;
+  height: 0;
+  align-items: center;
+  justify-content: center;
+
+  &.active {
+    height: 3.5rem;
+
+    .loader {
+      opacity: 1;
+    }
   }
 }

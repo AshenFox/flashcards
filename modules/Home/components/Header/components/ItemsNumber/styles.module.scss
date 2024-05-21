@@ -1,6 +1,6 @@
-@import "@styles/vars.scss";
+@import "@styles/vars";
 
 .number {
   margin-top: 1rem;
-  color: $secondary;
+  color: var(--accentuated-color);
 }

@@ -1,28 +1,56 @@
-@import "@styles/vars.scss";
+@import "@styles/vars";
+
+.logo {
+  svg {
+    width: 18px;
+    height: 18px;
+    fill: var(--icon-fill);
+    transition: all 0.2s;
+  }
+}
+
+.delete {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  display: flex;
+  padding: 0.5rem;
+  border-radius: 5px;
+  background-color: var(--dark-color);
+  visibility: hidden;
+
+  svg {
+    width: 15px;
+    height: 15px;
+    fill: var(--light-color);
+  }
+
+  &:hover {
+    background-color: var(--active-color);
+
+    svg {
+      fill: var(--active-secondary-color);
+    }
+  }
+}
 
 .add_img {
-  cursor: pointer;
   position: relative;
-
-  align-self: center;
-
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-
+  overflow: hidden;
   width: 20%;
   min-width: 6rem;
-  margin-left: 1rem;
-
-  background-size: cover;
-  background-position: center;
-
+  height: 7rem;
+  flex-direction: column;
+  align-items: center;
+  align-self: center;
+  justify-content: center;
   border: none;
   border-radius: 0.5rem;
-  height: 7rem;
-  overflow: hidden;
-
+  margin-left: 1rem;
+  background-position: center;
+  background-size: cover;
+  cursor: pointer;
   transition: all 0.2s;
 
   & .delete {
@@ -34,10 +62,14 @@
     display: none;
   }
 
+  span {
+    font-size: 1rem;
+  }
+
   &[data-imgurl~="false"] {
-    border: $grey-medium dashed 2px;
-    padding: 1rem 0;
     height: auto;
+    padding: 1rem 0;
+    border: 2px dashed var(--border-color);
 
     & .delete {
       visibility: hidden;
@@ -49,48 +81,17 @@
     }
   }
 
-  span {
-    font-size: 1rem;
-  }
-
   &:hover .logo svg {
-    fill: $tertiary;
+    fill: var(--active-color);
   }
 }
 
-.delete {
-  visibility: hidden;
-  display: flex;
-  position: absolute;
-  top: 0.5rem;
-  right: 0.5rem;
-
-  background-color: $grey;
-  border-radius: 5px;
-  padding: 0.5rem;
-
-  svg {
-    fill: $white;
-    height: 15px;
-    width: 15px;
-  }
-
-  &:hover {
-    background-color: $tertiary;
-
-    svg {
-      fill: $grey;
-    }
-  }
+html:global(.light) .add_img {
+  --border-color: var(--subtle-text-color);
 }
 
-.logo {
-  svg {
-    height: 18px;
-    width: 18px;
-    fill: $grey;
-    transition: all 0.2s;
-  }
+html:global(.dark) .add_img {
+  --border-color: var(--subtle-text-color);
 }
 
 .container {

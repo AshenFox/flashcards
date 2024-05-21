@@ -1,6 +1,6 @@
 import { useAppSelector } from "@store/store";
+import Skeleton from "@ui/Skeleton";
 import React, { memo } from "react";
-import Skeleton from "react-loading-skeleton";
 
 import ItemsNumber from "./components/ItemsNumber";
 import Navigation from "./components/Navigation";

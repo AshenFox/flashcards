@@ -1,4 +1,8 @@
-import { getIsDraft, getIsGame } from "@helpers/functions/determinePath";
+import {
+  getIsDraft,
+  getIsGame,
+  getIsSettings,
+} from "@helpers/functions/determinePath";
 import { useActions } from "@store/hooks";
 import { useAppSelector } from "@store/store";
 import { NewModuleIcon } from "@ui/Icons";
@@ -19,6 +23,7 @@ const Right = () => {
 
   const isDraft = getIsDraft(router.asPath);
   const isGame = getIsGame(router.pathname);
+  const isSettings = getIsSettings(router.pathname);
 
   const activateDropdown = useCallback(
     (e: MouseEvent<HTMLButtonElement>) => {
@@ -46,6 +51,15 @@ const Right = () => {
               className={isGame ? s.hide_max_tablet : s.hide_max_mobile}
             >
               Create new module
+            </Item>
+          )}
+
+          {!isSettings && (
+            <Item
+              href="/settings"
+              className={isGame ? s.hide_max_tablet : s.hide_max_mobile}
+            >
+              Settings
             </Item>
           )}
 

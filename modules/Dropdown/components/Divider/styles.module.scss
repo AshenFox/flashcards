@@ -1,9 +1,9 @@
-@import "@styles/vars.scss";
+@import "@styles/vars";
 
 .divider {
   display: flex;
   justify-content: center;
-  border-bottom: 1px solid $grey-light;
-  color: $grey-lighter;
-  padding: 2rem 0rem 0.75rem;
+  padding: 2rem 0 0.75rem;
+  border-bottom: 1px solid var(--element-border-color);
+  color: var(--stronger-subtle-text-color);
 }

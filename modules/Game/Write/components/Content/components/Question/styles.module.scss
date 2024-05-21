@@ -1,19 +1,18 @@
-@import "@styles/vars.scss";
+@import "@styles/vars";
 
 .sr_indicator {
   position: absolute;
-  left: 1rem;
   top: 1rem;
+  left: 1rem;
 }
 
 .question {
   width: 100%;
-  background-color: $white;
   padding: 2.5rem 4rem;
-  margin-bottom: 1rem;
-
+  border: 1px solid var(--element-border-color);
   border-radius: 1rem;
-  box-shadow: 0 0 1.25rem -0.1rem rgba(0, 0, 0, 0.28);
+  margin-bottom: 1rem;
+  background-color: var(--element-background-color);
 
   &:focus {
     outline: none;
@@ -30,15 +29,15 @@
 
 .do_not_know {
   margin-bottom: 3.5rem;
+  color: var(--secondary-element-background-color);
   text-align: right;
-  color: $secondary;
   transition: all 0.2s;
 
   & span {
     cursor: pointer;
 
     &:hover {
-      color: $tertiary;
+      color: var(--alternative-active-color);
     }
   }
 }
@@ -48,12 +47,12 @@
 }
 
 .img {
-  height: 30rem;
   width: 32rem;
+  height: 30rem;
 
   @media (max-width: $mobile) {
-    height: 23rem;
     width: 24rem;
+    height: 23rem;
   }
 
   @media (max-width: $mobile-sm) {
@@ -62,9 +61,9 @@
 }
 
 .definition {
-  font-size: 2rem;
-  padding-bottom: 2.75rem;
   min-height: 5rem;
+  padding-bottom: 2.75rem;
+  font-size: 2rem;
 
   @media (max-width: $mobile) {
     font-size: 1.5rem;
@@ -73,9 +72,9 @@
 
 .form {
   display: flex;
-  margin-top: 1.5rem;
-  border-top: 0.2rem solid #f4f4f4;
   padding-top: 1.5rem;
+  border-top: 1px solid var(--element-border-color);
+  margin-top: 1.5rem;
 
   @media (max-width: $mobile) {
     flex-direction: column;
@@ -83,11 +82,11 @@
 }
 
 .fieldset {
-  border: none;
   flex: 1;
+  border: none;
 
   & :global(.text_label__label) {
-    color: $grey-lighter;
+    color: var(--subtle-text-color);
     font-size: 1.2rem;
     letter-spacing: 0.2rem;
   }
@@ -96,9 +95,8 @@
 .input {
   &:global(.input__container) {
     padding: 0.2rem 1rem;
-    transition: all 0.2s;
     margin-bottom: 0.5rem;
-    border-bottom: 2px solid $black;
+    transition: all 0.2s;
   }
 
   & :global(.input__input) {
@@ -110,26 +108,43 @@
   margin-left: 2rem;
 
   @media (max-width: $mobile) {
-    margin-left: 0;
     margin-top: 2rem;
+    margin-left: 0;
+  }
+
+  button {
+    padding: 1rem 3rem;
+    border-radius: 1rem;
+    background-color: var(--secondary-element-background-color);
+    color: var(--reverse-color);
+    font-size: 1.5rem;
+
+    @media (max-width: $mobile) {
+      padding: 1rem 2rem;
+    }
+
+    &:hover {
+      background-color: var(--alternative-active-color);
+      color: var(--active-secondary-color);
+    }
   }
 }
 
 .speaker {
   position: absolute;
-  bottom: 0;
   right: 0;
+  bottom: 0;
 
   svg {
-    height: 22px;
     width: 22px;
+    height: 22px;
   }
 }
 
 .transcription_hidden {
+  background-color: var(--subtle-text-color);
+  color: var(--subtle-text-color);
   transition: all 0.2s;
-  background-color: $grey-medium;
-  color: $grey-medium;
   user-select: none;
 
   &:hover {

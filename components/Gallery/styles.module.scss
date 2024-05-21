@@ -1,19 +1,19 @@
-@import "@styles/vars.scss";
+@import "@styles/vars";
 
 .gallery {
   display: block;
   padding: 2rem;
-  transition: all 0.3s;
   transform: translateY(-100%);
   transform-origin: top;
+  transition: all 0.3s;
 }
 
 .container {
-  border-top: 2px solid $grey-light;
+  display: block;
   overflow: hidden;
   height: 0;
+  border-top: 1px solid var(--element-border-color);
   transition: all 0.3s;
-  display: block;
   visibility: hidden;
 
   &.active {
@@ -27,12 +27,12 @@
 }
 
 .form {
-  min-width: 40rem;
   width: 45%;
+  min-width: 40rem;
 
   @media (max-width: $mobile) {
-    min-width: 100%;
     width: 100%;
+    min-width: 100%;
   }
 }
 
@@ -43,157 +43,20 @@
 .input {
   padding-left: 1rem;
 
+  .icon {
+    fill: var(--icon-fill);
+  }
+
   :global(.input__input) {
     &:not(:placeholder-shown) {
       & ~ .icon {
-        fill: $secondary;
+        fill: var(--success-color);
       }
-    }
-
-    &::placeholder {
-      color: $grey-medium;
     }
   }
 }
 
 .results {
-  margin-top: 2rem;
   position: relative;
-}
-
-.carousel {
-  display: flex;
-  justify-content: center;
-
-  height: 15rem;
-
-  transition: all 0.2s;
-  transition-delay: 0.2s;
-
-  z-index: 20;
-
-  &.hide {
-    visibility: hidden;
-    opacity: 0;
-    transition-delay: 0;
-  }
-}
-
-.window {
-  width: 68rem;
-  overflow: hidden;
-
-  &.game {
-    width: 51rem;
-  }
-
-  @media screen and (max-width: 62.5em) {
-    width: 51rem;
-    min-width: 51rem;
-  }
-
-  @media screen and (max-width: 50em) {
-    width: 34rem;
-    min-width: 34rem;
-  }
-
-  @media screen and (max-width: 37.5em) {
-    width: 17rem;
-    min-width: 17rem;
-  }
-}
-
-.track {
-  display: flex;
-  width: 0;
-  height: 100%;
-  padding: 0 1rem;
-
-  transition: all 0.3s;
-
-  transform: translateX(0);
-}
-
-.item {
-  min-width: 15rem;
-  height: 15rem;
-  cursor: pointer;
-  transition: all 0.3s;
-
-  img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-  }
-
-  &:not(:last-child) {
-    margin-right: 2rem;
-  }
-
-  &:hover {
-    border: 5px solid $tertiary;
-  }
-}
-
-.control {
-  &.left {
-    margin-right: 1rem;
-  }
-
-  &.right {
-    margin-left: 1rem;
-  }
-
-  &.left,
-  &.right {
-    position: relative;
-    align-self: center;
-
-    button {
-      width: 4rem;
-      height: 4rem;
-      background-color: $secondary;
-
-      svg {
-        top: 50%;
-        left: 50%;
-        position: absolute;
-        height: 2rem;
-        width: 2rem;
-        fill: $white;
-        transition: all 0.2s;
-      }
-    }
-
-    &[data-active="false"] {
-      button {
-        cursor: auto;
-        background-color: $grey-medium;
-
-        svg {
-          fill: $grey-light;
-        }
-
-        &:hover {
-          svg {
-            fill: $grey-light;
-          }
-        }
-      }
-    }
-
-    button:hover {
-      svg {
-        fill: $black;
-      }
-    }
-  }
-
-  &.left button svg {
-    transform: translate(-12px, -10px);
-  }
-
-  &.right button svg {
-    transform: translate(-7.5px, -10px);
-  }
+  margin-top: 2rem;
 }

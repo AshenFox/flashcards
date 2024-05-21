@@ -13,13 +13,7 @@ const AddCard = () => {
 
   return (
     <div className={s.addcard} onClick={clickAddcard}>
-      <button
-        //helpers-delete
-        className="fz15 uppercase grey h-yellow pad-bot10 br-bottom5 brc-lightblue h-brc-yellow"
-        type="button"
-      >
-        + add card
-      </button>
+      <button type="button">+ add card</button>
     </div>
   );
 };

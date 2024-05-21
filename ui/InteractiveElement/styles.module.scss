@@ -1,0 +1,211 @@
+@import "@styles/vars";
+@import "@styles/animations";
+
+.spinner {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  display: none;
+  width: 3rem;
+  height: 3rem;
+  border: 4px solid var(--border-color);
+  border-radius: 50%;
+  border-right: 4px solid transparent;
+  border-left: 4px solid transparent;
+  margin: -1.5rem 0 0 -1.5rem;
+  animation: spin 1.25s linear infinite;
+  transform: rotate(180deg);
+  transform-origin: center;
+}
+
+.loading {
+  background-color: var(--active-color);
+  cursor: auto;
+
+  & span {
+    visibility: hidden;
+  }
+
+  & .spinner {
+    display: block;
+  }
+}
+
+.icon {
+  fill: var(--text-color);
+  transition: all 0.1s;
+}
+
+.interactive_element {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  gap: 0.5rem;
+  text-align: center;
+}
+
+html:global(.light) .interactive_element {
+  --border-color: var(--light-color);
+
+  &:hover .spinner {
+    --border-color: var(--active-secondary-color);
+  }
+}
+
+html:global(.dark) .interactive_element {
+  --border-color: var(--active-secondary-color);
+}
+
+.plain {
+  &:hover {
+    color: var(--stronger-subtle-text-color);
+
+    .icon {
+      fill: var(--stronger-subtle-text-color);
+    }
+  }
+}
+
+.padded {
+  padding: 1rem 3rem;
+  border-radius: 1rem;
+  background-color: var(--secondary-element-background-color);
+  color: var(--reverse-color);
+
+  @media (max-width: $mobile) {
+    padding: 1rem 2rem;
+  }
+
+  &:hover {
+    background-color: var(--alternative-active-color);
+    color: var(--active-secondary-color);
+  }
+}
+
+.outline {
+  display: inline-flex;
+  width: 100%;
+  min-height: 3.7rem;
+  align-items: center;
+  justify-content: center;
+  padding: 0.7rem;
+  border: 1px solid var(--divider-color);
+  border-radius: 1rem;
+  transition: all 0.1s;
+
+  & svg {
+    width: 20px;
+    height: 20px;
+    margin-right: 2rem;
+    fill: var(--secondary-element-background-color);
+    transition: all 0.1s;
+    vertical-align: middle;
+  }
+
+  & span {
+    color: var(--secondary-element-background-color);
+    font-size: 1.5rem;
+    line-height: 1rem;
+    transition: all 0.1s;
+    vertical-align: middle;
+  }
+
+  &:hover {
+    border-color: var(--alternative-active-color);
+
+    & span {
+      color: var(--alternative-active-color);
+    }
+
+    & svg {
+      fill: var(--alternative-active-color);
+    }
+  }
+
+  &.pressed {
+    border-color: var(--active-color);
+    background-color: var(--active-color);
+    color: var(--active-secondary-color);
+
+    span {
+      color: var(--active-secondary-color);
+    }
+
+    svg {
+      fill: var(--active-secondary-color);
+    }
+
+    &:hover {
+      svg {
+        fill: var(--active-secondary-color);
+      }
+    }
+  }
+}
+
+.inactive {
+  background-color: var(--stronger-danger-color);
+  color: var(--light-color);
+  cursor: auto;
+
+  &:hover {
+    background-color: var(--stronger-danger-color);
+    color: var(--light-color);
+  }
+}
+
+.block {
+  display: flex;
+  overflow: hidden;
+  border: 1px solid var(--divider-color);
+  border-radius: 0.5rem;
+  list-style: none;
+
+  .interactive_element.outline {
+    padding: 0.8rem 2rem;
+    border: none;
+    border-radius: 0;
+    border-left: 1px solid var(--divider-color);
+
+    & span {
+      color: var(--text-color);
+      line-height: normal;
+    }
+
+    &:first-child {
+      border-color: transparent;
+    }
+
+    &:hover {
+      & span {
+        color: var(--active-color);
+      }
+    }
+
+    @media (max-width: $mobile) {
+      padding: 0.8rem 1.5rem;
+    }
+
+    &.pressed {
+      border-color: var(--active-color);
+
+      & span {
+        color: var(--active-secondary-color);
+      }
+    }
+
+    &.pressed + .interactive_element.outline {
+      border-color: var(--active-color);
+    }
+  }
+}
+
+html:global(.light) .block .interactive_element.outline span {
+  --text-color: var(--accentuated-color);
+}
+
+html:global(.dark) .block .interactive_element.outline span {
+  --text-color: var(--alternative-active-color);
+}

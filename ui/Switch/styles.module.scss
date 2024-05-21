@@ -1,4 +1,4 @@
-@import "@styles/vars.scss";
+@import "@styles/vars";
 
 .container {
   display: flex;
@@ -11,62 +11,59 @@
   }
 
   & svg {
-    margin-left: auto;
     margin-right: 1rem;
-    fill: $grey;
+    margin-left: auto;
+    fill: var(--icon-fill);
     transition: all 0.2s;
   }
 
   :global(.switch__switch) {
-    cursor: pointer;
     position: relative;
     display: inline-flex;
+    width: 46px;
     align-items: center;
-    height: 28px;
-    width: 50px;
+    padding: 3px 2px;
+    border: 1px solid var(--icon-fill);
     border-radius: 14px;
-    border: 2px solid $grey;
+    cursor: pointer;
     transition: all 0.2s;
-    padding: 0 2px;
 
-    &:before {
-      content: "";
+    &::before {
       display: inline-block;
-      transition: all 0.2s;
       flex-grow: 0;
+      content: "";
+      transition: all 0.2s;
     }
 
-    &:after {
-      content: "";
+    &::after {
       display: inline-block;
-      height: 18px;
       width: 18px;
-      background-color: $grey;
+      height: 18px;
       border-radius: 50%;
+      background-color: var(--icon-fill);
+      content: "";
       transition: all 0.2s;
     }
 
     &.small {
-      height: 20px;
-      width: 35px;
+      width: 34px;
+      padding: 2px;
+      border: 1.5px solid var(--icon-fill);
       border-radius: 10px;
-      border: 1.5px solid $grey;
 
-      &:after {
-        height: 14px;
+      &::after {
         width: 14px;
+        height: 14px;
       }
     }
   }
 
   :global(.switch__checkbox) {
     display: none;
-  }
 
-  :global(.switch__checkbox) {
     &:checked {
       & ~ :global(.switch__switch) {
-        &:before {
+        &::before {
           flex-grow: 1;
         }
       }

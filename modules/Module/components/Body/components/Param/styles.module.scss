@@ -1,4 +1,4 @@
-@import "@styles/vars.scss";
+@import "@styles/vars";
 
 .param {
   display: flex;
@@ -20,7 +20,7 @@
 }
 
 .count {
-  color: $grey;
+  color: var(--stronger-subtle-text-color);
   font-size: 2rem;
   font-weight: bold;
 }

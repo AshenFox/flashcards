@@ -48,6 +48,7 @@ const ContentContainer = ({
         className={clsx(
           s.components,
           isScrollable ? s.scrollable : s.unscrollable,
+          loading && s.loading,
         )}
       >
         {loading ? <div className={s.spinner} /> : children}

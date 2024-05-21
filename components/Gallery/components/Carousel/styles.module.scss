@@ -1,42 +1,39 @@
-@import "@styles/vars.scss";
+@import "@styles/vars";
 
 .carousel {
+  z-index: 20;
   display: flex;
-  justify-content: center;
-
   height: 15rem;
-
+  justify-content: center;
   transition: all 0.2s;
   transition-delay: 0.2s;
 
-  z-index: 20;
-
   &.hide {
-    visibility: hidden;
     opacity: 0;
     transition-delay: 0;
+    visibility: hidden;
   }
 }
 
 .window {
-  width: 68rem;
   overflow: hidden;
+  width: 68rem;
 
   &.game {
     width: 51rem;
   }
 
-  @media screen and (max-width: 62.5em) {
+  @media screen and (width <= 62.5em) {
     width: 51rem;
     min-width: 51rem;
   }
 
-  @media screen and (max-width: 50em) {
+  @media screen and (width <= 50em) {
     width: 34rem;
     min-width: 34rem;
   }
 
-  @media screen and (max-width: 37.5em) {
+  @media screen and (width <= 37.5em) {
     width: 17rem;
     min-width: 17rem;
   }
@@ -47,10 +44,8 @@
   width: 0;
   height: 100%;
   padding: 0 1rem;
-
-  transition: all 0.3s;
-
   transform: translateX(0);
+  transition: all 0.3s;
 }
 
 .item {
@@ -65,16 +60,35 @@
     object-fit: cover;
   }
 
+  &.hidden {
+    display: none;
+  }
+
   &:not(:last-child) {
     margin-right: 2rem;
   }
 
   &:hover {
-    border: 5px solid $tertiary;
+    border: 5px solid var(--active-color);
   }
 }
 
 .control {
+  button {
+    position: relative;
+    display: inline-flex;
+    padding: 1.5rem;
+    border-radius: 50%;
+  }
+
+  &.left button svg {
+    transform: translate(-12px, -10px);
+  }
+
+  &.right button svg {
+    transform: translate(-7.5px, -10px);
+  }
+
   &.left {
     margin-right: 1rem;
   }
@@ -91,48 +105,57 @@
     button {
       width: 4rem;
       height: 4rem;
-      background-color: $secondary;
+      border: 1px solid var(--button-border-color);
+      background-color: var(--button-background-color);
 
       svg {
+        position: absolute;
         top: 50%;
         left: 50%;
-        position: absolute;
-        height: 2rem;
         width: 2rem;
-        fill: $white;
+        height: 2rem;
+        fill: var(--icon-fill);
         transition: all 0.2s;
+      }
+    }
+
+    button:hover {
+      border-color: var(--active-color);
+      background-color: var(--active-color);
+
+      svg {
+        fill: var(--active-secondary-color);
       }
     }
 
     &[data-active="false"] {
       button {
+        border-color: var(--inactive-color);
+        background-color: var(--inactive-color);
         cursor: auto;
-        background-color: $grey-medium;
 
         svg {
-          fill: $grey-light;
+          fill: var(--inactive-secondary-color);
         }
 
         &:hover {
           svg {
-            fill: $grey-light;
+            fill: var(--inactive-secondary-color);
           }
         }
       }
     }
-
-    button:hover {
-      svg {
-        fill: $black;
-      }
-    }
   }
+}
 
-  &.left button svg {
-    transform: translate(-12px, -10px);
-  }
+html:global(.light) .control {
+  --button-background-color: var(--success-color);
+  --button-border-color: var(--success-color);
+  --icon-fill: var(--light-color);
+}
 
-  &.right button svg {
-    transform: translate(-7.5px, -10px);
-  }
+html:global(.dark) .control {
+  --button-background-color: var(--element-background-color);
+  --button-border-color: var(--active-color);
+  --icon-fill: var(--active-color);
 }

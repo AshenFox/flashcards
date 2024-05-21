@@ -1,15 +1,6 @@
-@import "@styles/vars.scss";
+@import "@styles/vars";
 
 .container {
   display: inline-block;
   margin-top: 1rem;
-}
-
-.navigation {
-  display: flex;
-  list-style: none;
-  overflow: hidden;
-
-  border-radius: 0.5rem;
-  border: 1px solid #cecece;
 }

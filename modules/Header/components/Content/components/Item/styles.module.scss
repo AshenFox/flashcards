@@ -1,46 +1,31 @@
-@import "@styles/vars.scss";
+@import "@styles/vars";
 
 .item {
-  display: flex;
-  align-items: center;
-  transition: all 0.1s;
-  gap: 0.5rem;
-  color: $white;
   font-size: 1.75rem;
+}
 
-  @media (max-width: $mobile) {
-    font-size: 1.5rem;
+.plain {
+  color: var(--light-color);
+
+  :global(.interactive_element__icon) {
+    fill: var(--light-color);
   }
 
   &:hover {
-    color: $primary-pale;
+    color: var(--light-color);
+    opacity: 0.8;
 
-    svg {
-      fill: $primary-pale;
+    :global(.interactive_element__icon) {
+      fill: var(--light-color);
+      opacity: 0.8;
     }
   }
+}
 
-  svg {
-    fill: $white;
-    transition: all 0.1s linear;
-  }
+.padded {
+  padding: 1.2rem 2.7rem;
 
-  &.padded {
-    padding: 1.5rem 3rem;
-    background-color: $secondary;
-    border-radius: 1.5rem;
-
-    @media (max-width: $mobile) {
-      padding: 1rem 2rem;
-    }
-
-    &:hover {
-      color: $grey;
-      background-color: $tertiary;
-
-      svg {
-        fill: $grey;
-      }
-    }
+  @media (max-width: $mobile) {
+    padding: 1rem 2rem;
   }
 }
