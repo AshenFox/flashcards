@@ -140,11 +140,11 @@
   }
 }
 
-body:global(.light) .item {
+html:global(.light) .item {
   --button-border-color: var(--element-border-color);
 }
 
-body:global(.dark) .item {
+html:global(.dark) .item {
   --button-border-color: var(--active-color);
 }
 

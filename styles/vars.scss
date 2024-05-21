@@ -45,8 +45,8 @@ $magic-mint: #bde8d3;
 $crayola: #23b26d;
 $benzol-green: #00da70;
 
-body.light,
-body.dark {
+html.light,
+html.dark {
   /* constant colors/helpers */
   --stronger-success-color: #{$benzol-green};
   --stronger-danger-color: #{$lust};
@@ -58,7 +58,7 @@ body.dark {
   --light-color: #{$anti-flash-white};
 }
 
-body.light {
+html.light {
   /* general app element colors */
   --app-background-color: #{$super-silver};
   --element-background-color: #{$lotion};
@@ -85,7 +85,7 @@ body.light {
   --stronger-accentuated-color: #{$american-purple};
 }
 
-body.dark {
+html.dark {
   /* general app elements colors */
   --app-background-color: #{$raisin-black};
   --element-background-color: #{$jet};

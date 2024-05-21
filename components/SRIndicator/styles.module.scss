@@ -89,7 +89,7 @@
   }
 }
 
-body:global(.light) .indicator {
+html:global(.light) .indicator {
   --sr-indicator-stage-1: #0000dc;
   --sr-indicator-stage-2: #00817d;
   --sr-indicator-stage-3: #238e24;
@@ -103,7 +103,7 @@ body:global(.light) .indicator {
   --sr-indicator-stage-11: #54267b;
 }
 
-body:global(.dark) .indicator {
+html:global(.dark) .indicator {
   --sr-indicator-stage-1: #5858ff;
   --sr-indicator-stage-11: #8d39d6;
 }

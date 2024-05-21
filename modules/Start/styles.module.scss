@@ -4,11 +4,11 @@
   background-color: var(--background-color);
 }
 
-body:global(.light) .start {
+html:global(.light) .start {
   --background-color: var(--element-background-color);
 }
 
-body:global(.dark) .start {
+html:global(.dark) .start {
   --background-color: var(--app-background-color);
 }
 
@@ -47,7 +47,7 @@ body:global(.dark) .start {
   }
 }
 
-body:global(.light) .content {
+html:global(.light) .content {
   background-image: url("~/public/img/start-background-light.png");
 
   @media (max-width: $tablet) {
@@ -59,7 +59,7 @@ body:global(.light) .content {
   }
 }
 
-body:global(.dark) .content {
+html:global(.dark) .content {
   background-image: url("~/public/img/start-background-dark.png");
 
   @media (max-width: $tablet) {
@@ -201,7 +201,7 @@ body:global(.dark) .content {
   }
 }
 
-body:global(.light) .intro {
+html:global(.light) .intro {
   background-image: url("~/public/img/start-background-secondary-light.png");
 
   h1 {
@@ -213,7 +213,7 @@ body:global(.light) .intro {
   }
 }
 
-body:global(.dark) .intro {
+html:global(.dark) .intro {
   background-image: url("~/public/img/start-background-secondary-dark.png");
 
   h1 {
@@ -225,8 +225,8 @@ body:global(.dark) .intro {
   }
 }
 
-body:global(.light) .intro,
-body:global(.dark) .intro {
+html:global(.light) .intro,
+html:global(.dark) .intro {
   @media (max-width: $tablet) {
     background-image: none;
   }

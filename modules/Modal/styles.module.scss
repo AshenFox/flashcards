@@ -53,11 +53,11 @@ $modal-background-color: #2b2a2c;
   }
 }
 
-body:global(.light) .header {
+html:global(.light) .header {
   --border-color: var(--header-color);
 }
 
-body:global(.dark) .header {
+html:global(.dark) .header {
   --border-color: var(--element-border-color);
 }
 
@@ -90,12 +90,12 @@ body:global(.dark) .header {
   }
 }
 
-body:global(.light) .close {
+html:global(.light) .close {
   --border-color: var(--stronger-accentuated-color);
   --icon-fill: var(--light-color);
 }
 
-body:global(.dark) .close {
+html:global(.dark) .close {
   --border-color: var(--accentuated-color);
   --icon-fill: var(--accentuated-color);
 }

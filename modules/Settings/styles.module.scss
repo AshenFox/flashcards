@@ -1,0 +1,43 @@
+@import "@styles/vars";
+
+.settings {
+  min-height: 20rem;
+  padding: 2rem;
+  border: 1px solid var(--element-border-color);
+  margin: 2rem;
+  background-color: var(--element-background-color);
+
+  @media (max-width: $mobile) {
+    margin: 2rem 0;
+  }
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 4rem;
+}
+
+.title {
+  font-size: 2.5rem;
+}
+
+.theme {
+  button {
+    span {
+      font-size: 1.7rem;
+      text-transform: capitalize;
+    }
+
+    /* stylelint-disable-next-line selector-id-pattern */
+    svg:global(#icon__sun) {
+      stroke: var(--text-color);
+    }
+  }
+
+  /* stylelint-disable-next-line selector-id-pattern */
+  button:hover svg:global(#icon__sun) {
+    stroke: var(--stronger-subtle-text-color);
+  }
+}

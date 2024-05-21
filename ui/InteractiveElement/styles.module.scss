@@ -46,7 +46,7 @@
   text-align: center;
 }
 
-body:global(.light) .interactive_element {
+html:global(.light) .interactive_element {
   --border-color: var(--light-color);
 
   &:hover .spinner {
@@ -54,7 +54,7 @@ body:global(.light) .interactive_element {
   }
 }
 
-body:global(.dark) .interactive_element {
+html:global(.dark) .interactive_element {
   --border-color: var(--active-secondary-color);
 }
 
@@ -202,10 +202,10 @@ body:global(.dark) .interactive_element {
   }
 }
 
-body:global(.light) .block .interactive_element.outline span {
+html:global(.light) .block .interactive_element.outline span {
   --text-color: var(--accentuated-color);
 }
 
-body:global(.dark) .block .interactive_element.outline span {
+html:global(.dark) .block .interactive_element.outline span {
   --text-color: var(--alternative-active-color);
 }
