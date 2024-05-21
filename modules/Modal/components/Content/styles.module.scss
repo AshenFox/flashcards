@@ -17,11 +17,11 @@
   }
 }
 
-body:global(.light) .login_input {
+html:global(.light) .login_input {
   --background-color: #{$brilliant-white};
 }
 
-body:global(.dark) .login_input {
+html:global(.dark) .login_input {
   --background-color: #{$quartz};
 }
 

@@ -46,12 +46,12 @@
   }
 }
 
-body:global(.light) .scroll {
+html:global(.light) .scroll {
   --background-color: var(--accentuated-color);
   --icon-fill: var(--light-color);
 }
 
-body:global(.dark) .scroll {
+html:global(.dark) .scroll {
   --background-color: var(--element-background-color);
   --icon-fill: var(--active-color);
 }

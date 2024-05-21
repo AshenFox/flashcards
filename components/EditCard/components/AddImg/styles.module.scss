@@ -86,11 +86,11 @@
   }
 }
 
-body:global(.light) .add_img {
+html:global(.light) .add_img {
   --border-color: var(--subtle-text-color);
 }
 
-body:global(.dark) .add_img {
+html:global(.dark) .add_img {
   --border-color: var(--subtle-text-color);
 }
 

@@ -3,4 +3,5 @@ export const getIsGame = (value: string) =>
 export const getIsFlashcards = (value: string) => value === "/flashcards/[_id]";
 export const getIsWrite = (value: string) => value === "/write/[_id]";
 export const getIsDraft = (value: string) => value === "/edit/draft";
+export const getIsSettings = (value: string) => value === "/settings";
 export const getIsSR = (value: string | string[]) => value === "sr";

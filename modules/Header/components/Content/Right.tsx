@@ -1,22 +1,17 @@
-import { getIsDraft, getIsGame } from "@helpers/functions/determinePath";
+import {
+  getIsDraft,
+  getIsGame,
+  getIsSettings,
+} from "@helpers/functions/determinePath";
 import { useActions } from "@store/hooks";
 import { useAppSelector } from "@store/store";
 import { NewModuleIcon } from "@ui/Icons";
 import { useRouter } from "next/router";
-import {
-  memo,
-  MouseEvent,
-  MouseEventHandler,
-  useCallback,
-  useEffect,
-  useState,
-} from "react";
+import { memo, MouseEvent, useCallback } from "react";
 
 import Hamburger from "./components/Hamburger";
 import Item from "./components/Item";
 import s from "./styles.module.scss";
-
-type Theme = "light" | "dark";
 
 const Right = () => {
   const { change_modal, toggle_modal, set_dropdown, log_out } = useActions();
@@ -28,6 +23,7 @@ const Right = () => {
 
   const isDraft = getIsDraft(router.asPath);
   const isGame = getIsGame(router.pathname);
+  const isSettings = getIsSettings(router.pathname);
 
   const activateDropdown = useCallback(
     (e: MouseEvent<HTMLButtonElement>) => {
@@ -44,28 +40,8 @@ const Right = () => {
     [change_modal, toggle_modal],
   );
 
-  // temporary theme logic
-  const [theme, setTheme] = useState<Theme>("light");
-
-  const changeTheme: MouseEventHandler = e => {
-    const newTheme: Theme = theme === "dark" ? "light" : "dark";
-    setTheme(newTheme);
-    const classList = document.querySelector("body").classList;
-    localStorage.setItem("theme", newTheme);
-    classList.remove(theme);
-    classList.add(newTheme);
-  };
-
-  useEffect(() => {
-    const savedTheme = (localStorage.getItem("theme") as Theme) ?? "light";
-    setTheme(savedTheme);
-    const classList = document.querySelector("body").classList;
-    classList.add(savedTheme);
-  }, []);
-
   return (
     <div className={s.right}>
-      <Item onClick={changeTheme}>{theme}</Item>
       {user ? (
         <>
           {!isDraft && (
@@ -75,6 +51,15 @@ const Right = () => {
               className={isGame ? s.hide_max_tablet : s.hide_max_mobile}
             >
               Create new module
+            </Item>
+          )}
+
+          {!isSettings && (
+            <Item
+              href="/settings"
+              className={isGame ? s.hide_max_tablet : s.hide_max_mobile}
+            >
+              Settings
             </Item>
           )}
 
