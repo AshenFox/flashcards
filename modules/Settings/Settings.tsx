@@ -1,25 +1,28 @@
 import Container from "@components/Container";
 import ContentWrapper from "@components/ContentWrapper";
+import { useIsMounted } from "@helpers/hooks/useIsMounted";
+import { useUserThemePreference } from "@helpers/hooks/useUserThemePreference";
 import { MoonIcon, SunIcon } from "@ui/Icons";
 import { Button, Link } from "@ui/InteractiveElement";
 import { useTheme } from "next-themes";
-import React, { memo, MouseEventHandler, useEffect, useState } from "react";
+import React, { memo, MouseEventHandler } from "react";
 
 import s from "./styles.module.scss";
 
-type Theme = "light" | "dark";
-
 const Settings = () => {
   const { theme, setTheme } = useTheme();
-  const [isMounted, setIsMounted] = useState(false);
+  const isMounted = useIsMounted();
 
-  useEffect(() => {
-    setIsMounted(true);
-  }, []);
+  const preference = useUserThemePreference();
 
   const changeTheme: MouseEventHandler = () => {
-    const newTheme: Theme = theme === "dark" ? "light" : "dark";
-    setTheme(newTheme);
+    if (theme === "system") {
+      setTheme(preference === "dark" ? "light" : "dark");
+    } else if (theme === "dark") {
+      setTheme("light");
+    } else {
+      setTheme("dark");
+    }
   };
 
   return (
@@ -38,7 +41,10 @@ const Settings = () => {
                 icon={theme === "dark" ? <SunIcon /> : <MoonIcon />}
                 iconSize={25}
               >
-                {theme === "dark" ? "light" : "dark"}
+                {theme === "dark" ||
+                (theme === "system" && preference === "dark")
+                  ? "light"
+                  : "dark"}
               </Button>
             )}
           </div>
