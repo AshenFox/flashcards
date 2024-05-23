@@ -89,7 +89,8 @@
   }
 }
 
-html:global(.light) .indicator {
+html:global(.light) .indicator,
+html:global(.dark) .indicator {
   --sr-indicator-stage-1: #0000dc;
   --sr-indicator-stage-2: #00817d;
   --sr-indicator-stage-3: #238e24;

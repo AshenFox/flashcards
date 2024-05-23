@@ -11,16 +11,25 @@
 }
 
 html {
+  overflow: hidden;
   font-family: Alata, sans-serif;
   font-size: 10px;
 }
 
 body {
+  height: 100dvh;
   margin: 0;
   background-color: var(--app-background-color);
   color: var(--text-color);
   font-size: 1.5rem;
   overflow-x: hidden !important;
+}
+
+/* stylelint-disable-next-line selector-id-pattern */
+#__next {
+  display: flex;
+  height: 100dvh;
+  flex-direction: column;
 }
 
 h1,

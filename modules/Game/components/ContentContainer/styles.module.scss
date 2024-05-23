@@ -2,6 +2,9 @@
 @import "@styles/animations";
 
 .container {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
   padding: 2.5rem;
   padding-left: calc(19.5rem + 2.5rem);
 
@@ -20,18 +23,12 @@
 
 .components {
   display: flex;
+  width: 100%;
   max-width: 67.5rem;
+  flex: 1;
   flex-direction: column;
   align-items: center;
   margin: 0 auto;
-
-  &.scrollable {
-    min-height: 100%;
-  }
-
-  &.unscrollable {
-    height: 100%;
-  }
 
   &.loading {
     justify-content: center;

@@ -1,6 +1,5 @@
-import { useAppSelector } from "@store/hooks";
 import clsx from "clsx";
-import { CSSProperties, memo, ReactNode, useMemo } from "react";
+import { memo, ReactNode } from "react";
 
 import s from "./styles.module.scss";
 
@@ -15,42 +14,14 @@ const ContentContainer = ({
   children,
   isScrollable = true,
 }: ContentContainerProps) => {
-  const header_height = useAppSelector(s => s.dimen.header_height);
-  const game_controls_height = useAppSelector(
-    s => s.dimen.game_controls_height,
-  );
-  const is_server = useAppSelector(s => s.main.is_server);
-
-  const styles: CSSProperties = useMemo(
-    () => ({
-      height: `${
-        !is_server
-          ? document.documentElement.clientHeight -
-            header_height -
-            (document.documentElement.clientWidth < 992
-              ? game_controls_height
-              : 0)
-          : 0
-      }px`,
-    }),
-    [game_controls_height, header_height, is_server],
-  );
-
   return (
     <main
       className={clsx(
         s.container,
         isScrollable ? s.scrollable : s.unscrollable,
       )}
-      style={styles}
     >
-      <div
-        className={clsx(
-          s.components,
-          isScrollable ? s.scrollable : s.unscrollable,
-          loading && s.loading,
-        )}
-      >
+      <div className={clsx(s.components, loading && s.loading)}>
         {loading ? <div className={s.spinner} /> : children}
       </div>
     </main>
