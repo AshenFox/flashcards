@@ -5,8 +5,8 @@ self.addEventListener("push", e => {
   console.log("Push recieved...");
   self.registration.showNotification(data.title, {
     body: data.body,
-    icon: `${location.origin}/img/android-chrome-192x192.png`,
-    badge: `${location.origin}/img/Fc - logo.png`,
+    icon: `${location.origin}/img/dark/android-chrome/android-chrome-192x192.png`,
+    badge: `${location.origin}/img/notification-logo.png`,
     silent: false,
     requireInteraction: true,
     vibrate: [200, 100, 200, 100, 200],

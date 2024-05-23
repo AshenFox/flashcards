@@ -1,6 +1,9 @@
 @import "@styles/vars";
 
 .start {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
   background-color: var(--background-color);
 }
 
@@ -14,8 +17,9 @@ html:global(.dark) .start {
 
 .content {
   display: flex;
-  align-items: center;
-  justify-content: flex-end;
+  flex: 1;
+  flex-direction: column;
+  align-items: flex-end;
   background-position: left;
   background-repeat: no-repeat;
   background-size: contain;
@@ -35,6 +39,7 @@ html:global(.dark) .start {
   }
 
   @media (width <= 800px) {
+    align-items: flex-start;
     background-size: 65%;
   }
 
@@ -48,32 +53,34 @@ html:global(.dark) .start {
 }
 
 html:global(.light) .content {
-  background-image: url("~/public/img/start-background-light.png");
+  background-image: url("~/public/img/light/start-background-light.png");
 
   @media (max-width: $tablet) {
-    background-image: url("~/public/img/start-background-small-light.png");
+    background-image: url("~/public/img/light/start-background-small-light.png");
   }
 
   @media (max-width: $mobile) {
-    background-image: url("~/public/img/start-background-secondary-light.png");
+    background-image: url("~/public/img/light/start-background-secondary-light.png");
   }
 }
 
 html:global(.dark) .content {
-  background-image: url("~/public/img/start-background-dark.png");
+  background-image: url("~/public/img/dark/start-background-dark.png");
 
   @media (max-width: $tablet) {
-    background-image: url("~/public/img/start-background-small-dark.png");
+    background-image: url("~/public/img/dark/start-background-small-dark.png");
   }
 
   @media (max-width: $mobile) {
-    background-image: url("~/public/img/start-background-secondary-dark.png");
+    background-image: url("~/public/img/dark/start-background-secondary-dark.png");
   }
 }
 
 .intro {
   display: flex;
   width: 50%;
+  height: 100%;
+  flex: 1;
   flex-direction: column;
   align-items: flex-start;
   justify-content: center;
@@ -202,7 +209,7 @@ html:global(.dark) .content {
 }
 
 html:global(.light) .intro {
-  background-image: url("~/public/img/start-background-secondary-light.png");
+  background-image: url("~/public/img/light/start-background-secondary-light.png");
 
   h1 {
     --text-color: #{$violet};
@@ -214,7 +221,7 @@ html:global(.light) .intro {
 }
 
 html:global(.dark) .intro {
-  background-image: url("~/public/img/start-background-secondary-dark.png");
+  background-image: url("~/public/img/dark/start-background-secondary-dark.png");
 
   h1 {
     --text-color: var(--active-color);
