@@ -1,10 +1,18 @@
 console.log("Service worker loaded");
 
 self.addEventListener("push", e => {
-  const data = e.data.json();
-  console.log("Push recieved...");
-  self.registration.showNotification(data.title, {
-    body: data.body,
+  let data = "Default data";
+
+  try {
+    data = e.data?.json();
+  } catch (e) {
+    console.error(e);
+  }
+
+  console.log("Push received...");
+
+  self.registration.showNotification(data?.title || "Default title", {
+    body: data || data.body,
     icon: `${location.origin}/img/dark/android-chrome/android-chrome-192x192.png`,
     badge: `${location.origin}/img/notification-logo.png`,
     silent: false,
