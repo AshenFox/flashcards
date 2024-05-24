@@ -13,21 +13,29 @@ const Header = () => {
   const loading = useAppSelector(s => s.auth.loading);
 
   const onSizeChange = useCallback(
-    (e: UIEvent) => set_header_dimen(headerEl.current),
+    () => set_header_dimen(headerEl.current),
     [set_header_dimen],
   );
   const onSizeChangeDelayed = useCallback(
-    (e: Event) => setTimeout(() => set_header_dimen(headerEl.current), 200),
+    () => setTimeout(() => set_header_dimen(headerEl.current), 110),
     [set_header_dimen],
   );
 
   useEffect(() => {
-    window.addEventListener("resize", onSizeChange);
+    const currentHeaderEl = headerEl.current;
+
+    window.addEventListener("resize", onSizeChangeDelayed);
     window.addEventListener("orientationchange", onSizeChangeDelayed);
+    const observer = new ResizeObserver(() => {
+      onSizeChangeDelayed();
+    });
+
+    observer.observe(currentHeaderEl);
 
     return () => {
       window.removeEventListener("resize", onSizeChange);
       window.removeEventListener("orientationchange", onSizeChangeDelayed);
+      observer.unobserve(currentHeaderEl);
     };
   }, [onSizeChange, onSizeChangeDelayed]);
 

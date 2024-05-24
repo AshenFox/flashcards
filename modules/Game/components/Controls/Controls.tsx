@@ -1,10 +1,9 @@
 import Container from "@components/Container";
-import { useActions } from "@store/hooks";
+import { useAppSelector } from "@store/store";
 import { TriangleLeftIcon } from "@ui/Icons";
 import { Link } from "@ui/InteractiveElement";
-// import Link from "next/link";
 import { useRouter } from "next/router";
-import { memo, ReactNode, useEffect, useRef } from "react";
+import { CSSProperties, memo, ReactNode, useRef } from "react";
 
 import s from "./styles.module.scss";
 
@@ -15,35 +14,20 @@ type ControlsProps = {
 };
 
 const Controls = ({ title, titleIcon, children }: ControlsProps) => {
-  const { set_game_controls_dimen } = useActions();
-
   const router = useRouter();
   const { _id } = router.query;
 
+  const header_height = useAppSelector(s => s.dimen.header_height);
+
   const isSR = _id === "sr";
-
-  const onSizeChange = (e: UIEvent | Event) =>
-    set_game_controls_dimen(controlsEl.current);
-
-  useEffect(() => {
-    set_game_controls_dimen(controlsEl.current);
-  }, []);
-
-  useEffect(() => {
-    window.addEventListener("resize", onSizeChange);
-    window.addEventListener("orientationchange", onSizeChange);
-
-    return () => {
-      window.removeEventListener("resize", onSizeChange);
-      window.removeEventListener("orientationchange", onSizeChange);
-    };
-  }, []);
 
   const controlsEl = useRef<HTMLDivElement>(null);
 
+  const stylesContainer: CSSProperties = { top: `${header_height}px` };
+
   return (
     <Container noPadding>
-      <div className={s.container} ref={controlsEl}>
+      <div className={s.container} ref={controlsEl} style={stylesContainer}>
         <div className={s.controls}>
           <div className={s.back}>
             <Link

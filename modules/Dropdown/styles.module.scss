@@ -1,5 +1,9 @@
 @import "@styles/vars";
 
+.container {
+  position: relative;
+}
+
 .dropdown {
   position: fixed;
   z-index: 45;

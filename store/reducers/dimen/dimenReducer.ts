@@ -1,8 +1,4 @@
-import {
-  SET_GAME_CONTROLS_DIMEN,
-  SET_HEADER_DIMEN,
-  SET_SCROLL_HEIGHT,
-} from "../../types/types";
+import { SET_HEADER_DIMEN } from "../../types/types";
 import { DimenActions } from "./../../types/types";
 import initialState, { DimenState } from "./dimenInitState";
 
@@ -17,18 +13,6 @@ const DimenReducer = (
       return {
         ...state,
         ...payload,
-      };
-
-    case SET_GAME_CONTROLS_DIMEN:
-      return {
-        ...state,
-        ...payload,
-      };
-
-    case SET_SCROLL_HEIGHT:
-      return {
-        ...state,
-        scroll_height: payload.scroll_height,
       };
 
     default:

@@ -7,7 +7,7 @@
   padding: 1.2rem 0;
   border-bottom: 1px solid var(--header-secondary-color);
   background-color: var(--header-color);
-  transition: all 0.1 linear;
+  transition: all 0.1s linear;
 
   @media (max-width: $tablet) {
     padding: 0.75rem 0;
