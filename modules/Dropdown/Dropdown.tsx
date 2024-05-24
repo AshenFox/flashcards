@@ -95,27 +95,29 @@ const Dropdown = () => {
   );
 
   return (
-    <div className={className} style={stylesHeader}>
-      {!isDraft && (
-        <Item href="/edit/draft" icon={<NewModuleIcon />}>
-          Create new module
-        </Item>
-      )}
-      {!isSettings && <Item href="/settings">Settings</Item>}
-      <Item onClick={logOut}>Log out</Item>
+    <div className={s.container}>
+      <div className={className} style={stylesHeader}>
+        {!isDraft && (
+          <Item href="/edit/draft" icon={<NewModuleIcon />}>
+            Create new module
+          </Item>
+        )}
+        {!isSettings && <Item href="/settings">Settings</Item>}
+        <Item onClick={logOut}>Log out</Item>
 
-      {(isFlashcards || isWrite) && !isSR && <Divider>Options:</Divider>}
+        {(isFlashcards || isWrite) && !isSR && <Divider>Options:</Divider>}
 
-      {isFlashcards && !isSR && (
-        <Item onClick={clickShuffle} icon={<ShuffleIcon />} active={shuffled}>
-          Shuffle
-        </Item>
-      )}
-      {isWrite && !isSR && (
-        <Item onClick={clickStartOver} caution>
-          Start over
-        </Item>
-      )}
+        {isFlashcards && !isSR && (
+          <Item onClick={clickShuffle} icon={<ShuffleIcon />} active={shuffled}>
+            Shuffle
+          </Item>
+        )}
+        {isWrite && !isSR && (
+          <Item onClick={clickStartOver} caution>
+            Start over
+          </Item>
+        )}
+      </div>
     </div>
   );
 };

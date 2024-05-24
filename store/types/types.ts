@@ -255,8 +255,6 @@ export type HeaderActions = SetDropdownAction;
 
 // dimen
 export const SET_HEADER_DIMEN = "SET_HEADER_DIMEN";
-export const SET_SCROLL_HEIGHT = "SET_SCROLL_HEIGHT";
-export const SET_GAME_CONTROLS_DIMEN = "SET_GAME_CONTROLS_DIMEN";
 
 export interface SetHeaderDimenAction {
   type: typeof SET_HEADER_DIMEN;
@@ -266,25 +264,7 @@ export interface SetHeaderDimenAction {
   };
 }
 
-export interface SetScrollHeightAction {
-  type: typeof SET_SCROLL_HEIGHT;
-  payload: {
-    scroll_height: number;
-  };
-}
-
-export interface SetGameControlsDimen {
-  type: typeof SET_GAME_CONTROLS_DIMEN;
-  payload: {
-    game_controls_height: number;
-    game_controls_width: number;
-  };
-}
-
-export type DimenActions =
-  | SetHeaderDimenAction
-  | SetScrollHeightAction
-  | SetGameControlsDimen;
+export type DimenActions = SetHeaderDimenAction;
 
 // edit
 export const DELETE_MODULE = "DELETE_MODULE"; // edit
