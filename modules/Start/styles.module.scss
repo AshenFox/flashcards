@@ -124,9 +124,7 @@ html:global(.dark) .content {
 
   h2 {
     color: var(--text-color);
-    font-family: "Fredoka One";
     font-size: 6rem;
-    font-weight: 400;
 
     @media (width <= 1300px) {
       font-size: 5rem;
@@ -152,10 +150,7 @@ html:global(.dark) .content {
   h1 {
     margin-bottom: 3.5rem;
     color: var(--text-color);
-    // color: #6400bb;
-    font-family: "Fredoka One";
     font-size: 10rem;
-    font-weight: 400;
     line-height: 1;
 
     @media (width <= 1300px) {
