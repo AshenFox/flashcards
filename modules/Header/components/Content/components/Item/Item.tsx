@@ -30,16 +30,6 @@ const Item = ({
   iconSize = 20,
   className = "",
 }: ItemProps) => {
-  const InnerElements = useMemo(
-    () => (
-      <>
-        {!!icon && cloneElement(icon, { width: iconSize, height: iconSize })}
-        {children && <span>{children}</span>}
-      </>
-    ),
-    [children, icon, iconSize],
-  );
-
   const innerClassName = useMemo(
     () => clsx(s.item, padded ? s.padded : s.plain, className),
     [className, padded],

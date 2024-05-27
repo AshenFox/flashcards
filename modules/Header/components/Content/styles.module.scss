@@ -42,7 +42,7 @@ button {
   }
 
   &.hide_min_tablet {
-    @media (min-width: $tablet) {
+    @media (min-width: $tablet) /* or (max-height: $h-tablet) */ {
       display: none;
     }
   }
