@@ -7,6 +7,13 @@
   src: url("~/public/fonts/Alata-Regular.ttf") format("truetype");
 }
 
+@font-face {
+  font-family: WixMadeforDisplay;
+  font-style: normal;
+  src: url("~/public/fonts/WixMadeforDisplay-VariableFont.ttf")
+    format("truetype");
+}
+
 *,
 *::before,
 *::after {
@@ -17,13 +24,15 @@
 }
 
 html {
-  overflow: hidden;
-  font-family: Alata, sans-serif;
+  font-family: Alata, WixMadeforDisplay, sans-serif;
   font-size: 10px;
+  font-weight: 550;
 }
 
 body {
-  height: 100dvh;
+  display: flex;
+  min-height: 100dvh;
+  flex-direction: column;
   margin: 0;
   background-color: var(--app-background-color);
   color: var(--text-color);
@@ -34,7 +43,8 @@ body {
 /* stylelint-disable-next-line selector-id-pattern */
 #__next {
   display: flex;
-  height: 100dvh;
+  width: 100vw;
+  flex: 1;
   flex-direction: column;
 }
 

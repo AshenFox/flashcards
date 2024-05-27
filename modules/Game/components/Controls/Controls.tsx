@@ -3,7 +3,7 @@ import { useAppSelector } from "@store/store";
 import { TriangleLeftIcon } from "@ui/Icons";
 import { Link } from "@ui/InteractiveElement";
 import { useRouter } from "next/router";
-import { CSSProperties, memo, ReactNode, useRef } from "react";
+import { CSSProperties, memo, ReactNode } from "react";
 
 import s from "./styles.module.scss";
 
@@ -21,32 +21,28 @@ const Controls = ({ title, titleIcon, children }: ControlsProps) => {
 
   const isSR = _id === "sr";
 
-  const controlsEl = useRef<HTMLDivElement>(null);
-
-  const stylesContainer: CSSProperties = { top: `${header_height}px` };
+  const stylesContainer: CSSProperties = { top: `${header_height - 1}px` };
 
   return (
-    <Container noPadding>
-      <div className={s.container} ref={controlsEl} style={stylesContainer}>
-        <div className={s.controls}>
-          <div className={s.back}>
-            <Link
-              href={isSR ? "/home/sr" : `/module/${_id}`}
-              design="plain"
-              icon={<TriangleLeftIcon />}
-              iconSize={15}
-            >
-              Back
-            </Link>
-          </div>
-
-          <div className={s.title}>
-            {titleIcon}
-            <span>{title}</span>
-          </div>
-
-          {children}
+    <Container className={s.container} style={stylesContainer} noPadding>
+      <div className={s.controls} style={stylesContainer}>
+        <div className={s.back}>
+          <Link
+            href={isSR ? "/home/sr" : `/module/${_id}`}
+            design="plain"
+            icon={<TriangleLeftIcon />}
+            iconSize={15}
+          >
+            Back
+          </Link>
         </div>
+
+        <div className={s.title}>
+          {titleIcon}
+          <span>{title}</span>
+        </div>
+
+        {children}
       </div>
     </Container>
   );

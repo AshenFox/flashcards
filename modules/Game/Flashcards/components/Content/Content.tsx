@@ -2,7 +2,7 @@ import EditCard from "@components/EditCard";
 import ContentContainer from "@modules/Game/components/ContentContainer";
 import { useAppSelector } from "@store/hooks";
 import { useRouter } from "next/router";
-import { memo } from "react";
+import { memo, ReactNode } from "react";
 
 import Card from "./components/Card/Card";
 import EndGame from "./components/Card/EndGame";
@@ -29,14 +29,21 @@ const Content = () => {
   const isEnd = length === progress;
   const isEdit = length && length !== progress ? activeCardData.edit : false;
 
-  return (
-    <ContentContainer
-      loading={loading || !length}
-      isScrollable={isEdit || (isSR && isEnd)}
-    >
-      <div className={s.container}>
-        {!isEdit &&
-          !isEnd &&
+  let content: ReactNode = null;
+
+  if (isEdit) {
+    content = (
+      <EditCard
+        key={activeCardData._id}
+        data={activeCardData}
+        toggle={true}
+        game={true}
+      />
+    );
+  } else {
+    content = (
+      <>
+        {!isEnd &&
           formatted_cards.map((card, i) => {
             if (i === progress) {
               return <Card key={card._id} data={card} side={side} />;
@@ -48,20 +55,18 @@ const Content = () => {
               return false;
             }
           })}
-        {!isEdit && length && isEnd && isSR ? (
-          <Finish />
-        ) : (
-          <EndGame active={isEnd} />
-        )}
-        {isEdit && (
-          <EditCard
-            key={activeCardData._id}
-            data={activeCardData}
-            toggle={true}
-            game={true}
-          />
-        )}
-      </div>
+        {length && isEnd && isSR && <Finish />}
+        {length && <EndGame active={isEnd} />}
+      </>
+    );
+  }
+
+  return (
+    <ContentContainer
+      loading={loading || !length}
+      isScrollable={isEdit || (isSR && isEnd)}
+    >
+      <div className={s.container}>{content}</div>
       {!isEdit && !isEnd && <Navigation />}
     </ContentContainer>
   );

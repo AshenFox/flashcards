@@ -1,16 +1,23 @@
 import Container from "@components/Container";
 import ContentWrapper from "@components/ContentWrapper";
+import { getIsGame } from "@helpers/functions/determinePath";
 import { useActions, useAppSelector } from "@store/hooks";
+import clsx from "clsx";
+import { useRouter } from "next/router";
 import { memo, useCallback, useEffect, useRef } from "react";
 
 import { Left, Right } from "./components/Content";
 import s from "./styles.module.scss";
 
 const Header = () => {
+  const router = useRouter();
+
   const { set_header_dimen } = useActions();
 
   const user = useAppSelector(s => s.auth.user);
   const loading = useAppSelector(s => s.auth.loading);
+
+  const isGame = getIsGame(router.pathname);
 
   const onSizeChange = useCallback(
     () => set_header_dimen(headerEl.current),
@@ -46,7 +53,7 @@ const Header = () => {
   const headerEl = useRef<HTMLElement>(null);
 
   return (
-    <header className={s.header} ref={headerEl}>
+    <header className={clsx(s.header, isGame && s.sticky)} ref={headerEl}>
       <ContentWrapper tagType="section">
         <Container>
           <div className={s.content}>
