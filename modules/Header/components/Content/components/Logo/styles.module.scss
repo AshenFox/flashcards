@@ -12,7 +12,7 @@
   }
 
   &.isGame {
-    @media (max-width: $tablet) {
+    @media (max-width: $tablet) or (max-height: $h-mobile) {
       display: none;
     }
   }

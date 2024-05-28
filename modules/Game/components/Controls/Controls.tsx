@@ -21,7 +21,7 @@ const Controls = ({ title, titleIcon, children }: ControlsProps) => {
 
   const isSR = _id === "sr";
 
-  const stylesContainer: CSSProperties = { top: `${header_height - 1}px` };
+  const stylesContainer: CSSProperties = { top: `${header_height}px` };
 
   return (
     <Container className={s.container} style={stylesContainer} noPadding>

@@ -29,7 +29,7 @@
     background-color: var(--green-background-color);
   }
 
-  @media (max-width: $tablet) {
+  @media (max-width: $tablet) or (max-height: $h-mobile) {
     height: 1.2rem;
   }
 }

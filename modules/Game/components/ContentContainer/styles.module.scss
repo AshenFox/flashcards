@@ -9,7 +9,7 @@
   padding: 2.5rem;
   padding-left: calc(19.5rem + 2.5rem);
 
-  @media (max-width: $tablet) {
+  @media (max-width: $tablet) or (max-height: $h-mobile) {
     padding: 1.5rem;
     padding-right: 3rem;
   }

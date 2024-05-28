@@ -1,7 +1,7 @@
 @import "@styles/vars";
 
 .progress_bar {
-  @media (max-width: $tablet) {
+  @media (max-width: $tablet) or (max-height: $h-mobile) {
     &:global(.progress-bar__container) {
       flex-direction: row;
       gap: 1rem;

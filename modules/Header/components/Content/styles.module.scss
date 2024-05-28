@@ -7,49 +7,46 @@
   gap: 2rem;
 }
 
-a,
-button {
-  &.back {
-    display: none;
+.back {
+  display: none;
 
-    @media (max-width: $tablet) {
-      display: flex;
-    }
-
-    svg {
-      margin: 1rem 0;
-
-      @media (max-width: $mobile) {
-        margin: 0.5rem 0;
-      }
-
-      @media (max-width: $mobile-sm) {
-        margin: 0.25rem 0;
-      }
-    }
+  @media (max-width: $tablet) or (max-height: $h-mobile) {
+    display: flex;
   }
 
-  &.hide_max_tablet {
-    @media (max-width: $tablet) {
-      display: none;
-    }
-  }
+  svg {
+    margin: 1rem 0;
 
-  &.hide_max_mobile {
     @media (max-width: $mobile) {
+      margin: 0.5rem 0;
+    }
+
+    @media (max-width: $mobile-sm) {
+      margin: 0.25rem 0;
+    }
+  }
+}
+
+.item {
+  @media (max-width: $mobile) {
+    display: none;
+  }
+
+  &.isGame {
+    @media (max-width: $tablet) or (max-height: $h-mobile) {
       display: none;
     }
   }
+}
 
-  &.hide_min_tablet {
-    @media (min-width: $tablet) /* or (max-height: $h-tablet) */ {
-      display: none;
-    }
+.hamburger {
+  @media (max-width: $mobile) {
+    display: inline-block;
   }
 
-  &.hide_min_mobile {
-    @media (min-width: $mobile) {
-      display: none;
+  &.isGame {
+    @media (max-width: $tablet) or (max-height: $h-mobile) {
+      display: inline-block;
     }
   }
 }
