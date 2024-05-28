@@ -55,8 +55,8 @@ const Content = () => {
               return false;
             }
           })}
-        {length && isEnd && isSR && <Finish />}
-        {length && <EndGame active={isEnd} />}
+        {length && isSR && isEnd && <Finish />}
+        {length && !isSR && <EndGame active={isEnd} />}
       </>
     );
   }

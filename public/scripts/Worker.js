@@ -1,7 +1,7 @@
 console.log("Service worker loaded");
 
 self.addEventListener("push", e => {
-  let data = "Default data";
+  let data = {};
 
   try {
     data = e.data?.json();
@@ -12,7 +12,7 @@ self.addEventListener("push", e => {
   console.log("Push received...");
 
   self.registration.showNotification(data?.title || "Default title", {
-    body: data || data.body,
+    body: data?.body || "Default body",
     icon: `${location.origin}/img/dark/android-chrome/android-chrome-192x192.png`,
     badge: `${location.origin}/img/notification-logo.png`,
     silent: false,
