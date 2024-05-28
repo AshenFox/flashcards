@@ -6,6 +6,7 @@
   @media (max-width: $tablet) or (max-height: $h-mobile) {
     position: sticky;
     padding-right: 1.5rem;
+    transform: translateY(-0.5px);
   }
 
   @media (hover: none) {
