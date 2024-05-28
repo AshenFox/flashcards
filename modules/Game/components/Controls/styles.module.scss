@@ -3,7 +3,7 @@
 .container {
   z-index: 20;
 
-  @media (max-width: $tablet) {
+  @media (max-width: $tablet) or (max-height: $h-mobile) {
     position: sticky;
     padding-right: 1.5rem;
   }
@@ -23,11 +23,11 @@
   border-bottom: none;
   background-color: var(--element-background-color);
 
-  @media (max-width: $notebook) {
+  @media (max-width: $notebook) or (max-height: $h-mobile) {
     border-left: none;
   }
 
-  @media (max-width: $tablet) {
+  @media (max-width: $tablet) or (max-height: $h-mobile) {
     position: static;
     top: auto;
     bottom: auto;
@@ -43,7 +43,7 @@
 }
 
 .title {
-  @media (max-width: $tablet) {
+  @media (max-width: $tablet) or (max-height: $h-mobile) {
     display: none;
   }
 
@@ -68,7 +68,7 @@
   border-bottom: 1px solid var(--element-border-color);
   margin-bottom: 3rem;
 
-  @media (max-width: $tablet) {
+  @media (max-width: $tablet) or (max-height: $h-mobile) {
     display: none;
   }
 

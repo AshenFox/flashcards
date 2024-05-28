@@ -6,7 +6,7 @@
   bottom: 1.25rem;
   left: 1.25rem;
 
-  @media (max-width: $tablet) {
+  @media (max-width: $tablet) or (max-height: $h-mobile) {
     display: none;
   }
 }

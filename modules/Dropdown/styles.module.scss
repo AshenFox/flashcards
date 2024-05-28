@@ -9,7 +9,7 @@
   z-index: 45;
   top: 0;
   right: -200px;
-  display: flex;
+  display: none;
   height: 200rem;
   flex-direction: column;
   border-left: 1px solid var(--element-border-color);
@@ -19,16 +19,14 @@
   &.active {
     right: 0;
   }
-}
 
-.hide_min_tablet {
-  @media (min-width: $tablet) {
-    display: none;
+  &.isGame {
+    @media (max-width: $tablet) or (max-height: $h-mobile) {
+      display: flex;
+    }
   }
-}
 
-.hide_min_mobile {
-  @media (min-width: $mobile) {
+  @media (max-width: $mobile) {
     display: none;
   }
 }

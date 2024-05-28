@@ -6,7 +6,7 @@
   height: 80%;
   flex: 1;
 
-  @media (max-width: $tablet) {
+  @media (max-width: $tablet) or (max-height: $h-mobile) {
     height: 100%;
   }
 }

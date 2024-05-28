@@ -14,10 +14,6 @@
   line-height: 0.8;
   transition: all 0.1s linear;
 
-  &:hover {
-    background-color: var(--active-color);
-  }
-
   &:first-child {
     border-top: 1px solid var(--element-border-color);
   }
@@ -25,6 +21,15 @@
   & svg {
     margin-right: 0.5rem;
     fill: var(--text-color);
+  }
+
+  &:hover {
+    background-color: var(--active-color);
+    color: var(--active-secondary-color);
+
+    svg {
+      fill: var(--active-secondary-color);
+    }
   }
 
   &.active {

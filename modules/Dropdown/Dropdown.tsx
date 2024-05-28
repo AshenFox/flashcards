@@ -91,7 +91,7 @@ const Dropdown = () => {
   const className = clsx(
     s.dropdown,
     dropdown_active && s.active,
-    isFlashcards || isWrite ? s.hide_min_tablet : s.hide_min_mobile,
+    (isFlashcards || isWrite) && s.isGame,
   );
 
   return (

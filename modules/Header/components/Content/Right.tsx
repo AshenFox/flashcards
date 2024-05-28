@@ -6,6 +6,7 @@ import {
 import { useActions } from "@store/hooks";
 import { useAppSelector } from "@store/store";
 import { NewModuleIcon } from "@ui/Icons";
+import clsx from "clsx";
 import { useRouter } from "next/router";
 import { memo, MouseEvent, useCallback } from "react";
 
@@ -48,32 +49,26 @@ const Right = () => {
             <Item
               href="/edit/draft"
               icon={<NewModuleIcon />}
-              className={isGame ? s.hide_max_tablet : s.hide_max_mobile}
+              className={clsx(s.item, isGame && s.isGame)}
             >
               Create new module
             </Item>
           )}
 
           {!isSettings && (
-            <Item
-              href="/settings"
-              className={isGame ? s.hide_max_tablet : s.hide_max_mobile}
-            >
+            <Item href="/settings" className={clsx(s.item, isGame && s.isGame)}>
               Settings
             </Item>
           )}
 
-          <Item
-            onClick={log_out}
-            className={isGame ? s.hide_max_tablet : s.hide_max_mobile}
-          >
+          <Item onClick={log_out} className={clsx(s.item, isGame && s.isGame)}>
             Log out
           </Item>
 
           <Hamburger
             active={dropdown_active}
             onClick={activateDropdown}
-            className={isGame ? s.hide_min_tablet : s.hide_min_mobile}
+            className={clsx(s.hamburger, isGame && s.isGame)}
           />
         </>
       ) : (
