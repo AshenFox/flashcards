@@ -29,6 +29,7 @@ const TextArea = ({
 }: TextAreaProps) => {
   return (
     <ContentEditable
+      spellCheck={true}
       {...rest}
       disabled={disabled}
       className={clsx(isStyled && s.textarea, error && s.error, className)}
