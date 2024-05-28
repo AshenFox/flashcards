@@ -21,7 +21,7 @@ const Controls = ({ title, titleIcon, children }: ControlsProps) => {
 
   const isSR = _id === "sr";
 
-  const containerStyles: CSSProperties = { top: `${header_height - 0.5}px` };
+  const containerStyles: CSSProperties = { top: `${header_height}px` };
   const controlsStyles: CSSProperties = { top: `${header_height}px` };
 
   return (
