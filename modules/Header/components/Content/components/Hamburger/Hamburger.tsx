@@ -13,7 +13,13 @@ type HamburgerProps = {
 const Hamburger = ({ active, className, onClick }: HamburgerProps) => {
   return (
     <button
-      className={clsx(s.hamburger, s.spring, active && s.active, className)}
+      className={clsx(
+        s.hamburger,
+        s.spring,
+        active && s.active,
+        className,
+        "hamburger__hamburger",
+      )}
       onClick={onClick}
     >
       <span className={s.box}>

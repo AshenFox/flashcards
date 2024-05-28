@@ -39,7 +39,7 @@
   }
 }
 
-.hamburger {
+.hamburger:global(.hamburger__hamburger) {
   @media (max-width: $mobile) {
     display: inline-block;
   }
