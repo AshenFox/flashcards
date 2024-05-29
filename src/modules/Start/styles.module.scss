@@ -53,26 +53,26 @@ html:global(.dark) .start {
 }
 
 html:global(.light) .content {
-  background-image: url("~/public/img/light/start-background-light.png");
+  background-image: url("~/public/img/light/start-background-light.webp");
 
   @media (max-width: $tablet) {
-    background-image: url("~/public/img/light/start-background-small-light.png");
+    background-image: url("~/public/img/light/start-background-small-light.webp");
   }
 
   @media (max-width: $mobile) {
-    background-image: url("~/public/img/light/start-background-secondary-light.png");
+    background-image: url("~/public/img/light/start-background-secondary-light.webp");
   }
 }
 
 html:global(.dark) .content {
-  background-image: url("~/public/img/dark/start-background-dark.png");
+  background-image: url("~/public/img/dark/start-background-dark.webp");
 
   @media (max-width: $tablet) {
-    background-image: url("~/public/img/dark/start-background-small-dark.png");
+    background-image: url("~/public/img/dark/start-background-small-dark.webp");
   }
 
   @media (max-width: $mobile) {
-    background-image: url("~/public/img/dark/start-background-secondary-dark.png");
+    background-image: url("~/public/img/dark/start-background-secondary-dark.webp");
   }
 }
 
@@ -204,7 +204,7 @@ html:global(.dark) .content {
 }
 
 html:global(.light) .intro {
-  background-image: url("~/public/img/light/start-background-secondary-light.png");
+  background-image: url("~/public/img/light/start-background-secondary-light.webp");
 
   h1 {
     --text-color: #{$violet};
@@ -216,7 +216,7 @@ html:global(.light) .intro {
 }
 
 html:global(.dark) .intro {
-  background-image: url("~/public/img/dark/start-background-secondary-dark.png");
+  background-image: url("~/public/img/dark/start-background-secondary-dark.webp");
 
   h1 {
     --text-color: var(--active-color);
