@@ -7,8 +7,8 @@ import {
   CONTROL_FIELD,
   ENTER,
   TOGGLE_MODAL,
-} from "../../types/types";
-import { ModalActions } from "./../../types/types";
+} from "../../types";
+import { ModalActions } from "../../types";
 import initialState, { ModalState } from "./modalInitState";
 
 const ModalReducer = (

@@ -4,9 +4,9 @@ import {
   CLEAR_SIGN_UP,
   CONTROL_FIELD,
   TOGGLE_MODAL,
-} from "../types/types";
+} from "../types";
+import { AppActions } from "../types";
 import { ModalType } from "./../reducers/modal/modalInitState";
-import { AppActions } from "./../types/types";
 
 // CLEAR_LOG_IN
 export const clear_log_in = (): AppActions => ({

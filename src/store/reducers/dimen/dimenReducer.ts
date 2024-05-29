@@ -1,5 +1,5 @@
-import { SET_HEADER_DIMEN } from "../../types/types";
-import { DimenActions } from "./../../types/types";
+import { SET_HEADER_DIMEN } from "../../types";
+import { DimenActions } from "../../types";
 import initialState, { DimenState } from "./dimenInitState";
 
 const DimenReducer = (

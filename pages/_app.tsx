@@ -1,16 +1,16 @@
 import "@styles/main.scss";
 import "react-loading-skeleton/dist/skeleton.css";
 
+import Head from "@configuration/Head";
+import PasteControl from "@configuration/PasteControl";
+import RouterConfiguration from "@configuration/RouterConfiguration";
+import TabUpdateController from "@configuration/TabUpdateController";
+import Theme from "@configuration/Theme";
+import Voice from "@configuration/Voice";
 import AuthSpinner from "@modules/AuthSpinner";
 import AuthWrapper from "@modules/AuthWrapper";
 import Dropdown from "@modules/Dropdown";
-import Head from "@modules/Head";
 import Header from "@modules/Header";
-import PasteControl from "@modules/PasteControl";
-import RouterConfiguration from "@modules/RouterConfiguration";
-import TabUpdateController from "@modules/TabUpdateController";
-import Theme from "@modules/Theme";
-import Voice from "@modules/Voice";
 import store from "@store/store";
 import type { AppProps } from "next/app";
 import { Provider } from "react-redux";

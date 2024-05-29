@@ -8,9 +8,9 @@ import {
   SET_GALLERY_SEARCH,
   SET_GALLERY_WIDTH,
   SET_URL_OK,
-} from "../../../types/types";
+} from "../../../types";
+import { MainActions } from "../../../types";
 import initialState from "../mainInitState";
-import { MainActions } from "./../../../types/types";
 import { MainState } from "./../mainInitState";
 
 const subGalleryReducer = (

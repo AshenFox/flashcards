@@ -1,7 +1,7 @@
 import { shuffle } from "../../../helper-functions";
-import { SHUFFLE_FLASHCARDS, SORT_FLASHCARDS } from "../../../types/types";
+import { SHUFFLE_FLASHCARDS, SORT_FLASHCARDS } from "../../../types";
+import { MainActions } from "../../../types";
 import initialState from "../mainInitState";
-import { MainActions } from "./../../../types/types";
 import { MainState } from "./../mainInitState";
 
 const subFlashcardsReducer = (

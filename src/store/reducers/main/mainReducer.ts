@@ -16,8 +16,8 @@ import {
   SET_SELECT_CREATED,
   SET_SKIP_CARDS,
   SET_SKIP_MODULES,
-} from "../../types/types";
-import { MainActions } from "./../../types/types";
+} from "../../types";
+import { MainActions } from "../../types";
 import initialState, { MainState } from "./mainInitState";
 import subEditReducer from "./subReducers/subEditReducer";
 import subFlashcardsReducer from "./subReducers/subFlashcardsReducer";

@@ -1,5 +1,5 @@
-import { User } from "./../reducers/auth/authInitState";
-import { Round } from "./../reducers/game/gameInitState";
+import { User } from "../reducers/auth/authInitState";
+import { Round } from "../reducers/game/gameInitState";
 import {
   Card,
   Cards,
@@ -7,14 +7,14 @@ import {
   Module,
   SelectBy,
   SelectCreated,
-} from "./../reducers/main/mainInitState";
+} from "../reducers/main/mainInitState";
 import {
   LogInErrors,
   ModalInputFileds,
   ModalType,
   SignUpErrors,
-} from "./../reducers/modal/modalInitState";
-import { Speaking, Voices } from "./../reducers/voice/voiceInitState";
+} from "../reducers/modal/modalInitState";
+import { Speaking, Voices } from "../reducers/voice/voiceInitState";
 // modal
 export const CHANGE_MODAL = "CHANGE_MODAL";
 export const TOGGLE_MODAL = "TOGGLE_MODAL";

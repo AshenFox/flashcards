@@ -14,10 +14,10 @@ import {
   SET_MAIN_LOADING,
   SET_SR_COUNTER,
   SET_SR_LOADING,
-} from "../types/types";
+} from "../types";
+import { AppActions } from "../types";
 import { CardBase, Cards } from "./../reducers/main/mainInitState";
 import { ThunkActionApp } from "./../store";
-import { AppActions } from "./../types/types";
 
 // SET_SR_COUNTER
 export const set_sr_counter = (additionNumber: number, value?: string) =>

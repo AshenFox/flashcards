@@ -7,9 +7,9 @@ import {
   SET_CARD_SR,
   SET_CARDS_SR,
   SET_CARDS_SR_POSITIVE,
-} from "../../../types/types";
+} from "../../../types";
+import { MainActions } from "../../../types";
 import initialState from "../mainInitState";
-import { MainActions } from "./../../../types/types";
 import { MainState } from "./../mainInitState";
 
 const subSrReducer = (

@@ -1,9 +1,9 @@
 import EasySpeech from "easy-speech";
 
 import { ThunkActionApp } from "../store";
-import { INIT_EASY_SPEECH, SET_VOICE_SPEAKING } from "../types/types";
+import { INIT_EASY_SPEECH, SET_VOICE_SPEAKING } from "../types";
+import { AppActions } from "../types";
 import { EasySpeechStatus, Voices } from "./../reducers/voice/voiceInitState";
-import { AppActions } from "./../types/types";
 
 // SET_VOICE_SPEAKING
 export const set_voice_speaking = (

@@ -11,9 +11,9 @@ import {
   SET_CARDS_SAVE_POSITIVE,
   SET_MODULE_LOADING,
   SET_MODULE_QUESTION,
-} from "../../../types/types";
+} from "../../../types";
+import { MainActions } from "../../../types";
 import initialState from "../mainInitState";
-import { MainActions } from "./../../../types/types";
 import { MainState } from "./../mainInitState";
 
 const subEditReducer = (
