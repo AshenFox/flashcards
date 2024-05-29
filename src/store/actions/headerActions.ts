@@ -1,5 +1,5 @@
-import { SET_DROPDOWN } from "../types/types";
-import { AppActions } from "./../types/types";
+import { SET_DROPDOWN } from "../types";
+import { AppActions } from "../types";
 
 // SET_DROPDOWN
 export const set_dropdown = (value: boolean): AppActions => ({

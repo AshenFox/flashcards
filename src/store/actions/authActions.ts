@@ -9,11 +9,11 @@ import {
   CLEAR_SIGN_UP,
   ENTER,
   LOG_OUT,
-} from "../types/types";
+} from "../types";
+import { AppActions } from "../types";
 import { User } from "./../reducers/auth/authInitState";
 import { LogInErrors, SignUpErrors } from "./../reducers/modal/modalInitState";
 import { ThunkActionApp } from "./../store";
-import { AppActions } from "./../types/types";
 
 // ENTER
 export const enter = (type: "log_in" | "sign_up") => <ThunkActionApp>(async (

@@ -14,8 +14,8 @@ import {
   SET_WRITE_ANSWER_FIELD,
   SET_WRITE_COPY_ANSWER_FIELD,
   SET_WRITE_IS_INIT,
-} from "../../types/types";
-import { GameActions } from "./../../types/types";
+} from "../../types";
+import { GameActions } from "../../types";
 import initialState, { GameState } from "./gameInitState";
 
 const GameReducer = (state = initialState, action: GameActions): GameState => {

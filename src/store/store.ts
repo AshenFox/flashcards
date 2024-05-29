@@ -8,7 +8,7 @@ import thunk, {
 } from "redux-thunk";
 
 import rootReducer from "./reducers/index";
-import { AppActions } from "./types/types";
+import { AppActions } from "./types";
 
 const initialState = {};
 

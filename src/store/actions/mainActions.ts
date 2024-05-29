@@ -19,7 +19,8 @@ import {
   SET_SELECT_CREATED,
   SET_SKIP_CARDS,
   SET_SKIP_MODULES,
-} from "../types/types";
+} from "../types";
+import { AppActions } from "../types";
 import {
   CardBase,
   Cards,
@@ -28,7 +29,6 @@ import {
   SelectCreated,
 } from "./../reducers/main/mainInitState";
 import { ThunkActionApp } from "./../store";
-import { AppActions } from "./../types/types";
 
 // SET_MAIN_LOADING
 export const set_main_loading = (value: boolean): AppActions => ({

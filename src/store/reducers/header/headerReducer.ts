@@ -1,5 +1,5 @@
-import { SET_DROPDOWN } from "../../types/types";
-import { HeaderActions } from "./../../types/types";
+import { SET_DROPDOWN } from "../../types";
+import { HeaderActions } from "../../types";
 import initialState, { HeaderState } from "./headerInitState";
 
 const HeaderReducer = (

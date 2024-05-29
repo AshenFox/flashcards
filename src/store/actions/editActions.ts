@@ -31,7 +31,8 @@ import {
   SET_MODULE_QUESTION,
   SET_SCRAPE_LOADING,
   SET_URL_OK,
-} from "../types/types";
+} from "../types";
+import { AppActions } from "../types";
 import {
   Card,
   CardBase,
@@ -39,7 +40,6 @@ import {
   ImgurlObjs,
 } from "./../reducers/main/mainInitState";
 import { ThunkActionApp } from "./../store";
-import { AppActions } from "./../types/types";
 
 // SET_CARDS_SAVE_POSITIVE
 export const set_cards_save_positive = (_id: string) => <ThunkActionApp>(async (

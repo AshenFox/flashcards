@@ -1,5 +1,5 @@
-import { AUTHENTICATE, CHANGE_AUTH_LOADING, LOG_OUT } from "../../types/types";
-import { AuthActions } from "./../../types/types";
+import { AUTHENTICATE, CHANGE_AUTH_LOADING, LOG_OUT } from "../../types";
+import { AuthActions } from "../../types";
 import initialState, { AuthState } from "./authInitState";
 
 const AuthReducer = (state = initialState, action: AuthActions): AuthState => {

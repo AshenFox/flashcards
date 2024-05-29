@@ -1,5 +1,5 @@
-import { SET_HEADER_DIMEN } from "../types/types";
-import { AppActions } from "./../types/types";
+import { SET_HEADER_DIMEN } from "../types";
+import { AppActions } from "../types";
 
 // SET_HEADER_DIMEN
 export const set_header_dimen = (el: HTMLElement): AppActions => ({

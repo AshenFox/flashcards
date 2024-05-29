@@ -16,9 +16,9 @@ import {
   SET_WRITE_IS_INIT,
   SHUFFLE_FLASHCARDS,
   SORT_FLASHCARDS,
-} from "../types/types";
+} from "../types";
+import { AppActions } from "../types";
 import { ThunkActionApp } from "./../store";
-import { AppActions } from "./../types/types";
 
 // SAVE_FLASHCARDS_ANSWER
 export const save_flashcards_answer = (
