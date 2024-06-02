@@ -86,7 +86,9 @@ const Dropdown = () => {
 
   const logOut = (e: ReactMouseEvent<HTMLButtonElement>) => log_out();
 
-  const stylesHeader: CSSProperties = { paddingTop: `${header_height - 1}px` };
+  const stylesHeader: CSSProperties = {
+    paddingTop: `${header_height - 0.7}px`,
+  };
 
   const className = clsx(
     s.dropdown,
@@ -95,29 +97,27 @@ const Dropdown = () => {
   );
 
   return (
-    <div className={s.container}>
-      <div className={className} style={stylesHeader}>
-        {!isDraft && (
-          <Item href="/edit/draft" icon={<NewModuleIcon />}>
-            Create new module
-          </Item>
-        )}
-        {!isSettings && <Item href="/settings">Settings</Item>}
-        <Item onClick={logOut}>Log out</Item>
+    <div className={className} style={stylesHeader}>
+      {!isDraft && (
+        <Item href="/edit/draft" icon={<NewModuleIcon />}>
+          Create new module
+        </Item>
+      )}
+      {!isSettings && <Item href="/settings">Settings</Item>}
+      <Item onClick={logOut}>Log out</Item>
 
-        {(isFlashcards || isWrite) && !isSR && <Divider>Options:</Divider>}
+      {(isFlashcards || isWrite) && !isSR && <Divider>Options:</Divider>}
 
-        {isFlashcards && !isSR && (
-          <Item onClick={clickShuffle} icon={<ShuffleIcon />} active={shuffled}>
-            Shuffle
-          </Item>
-        )}
-        {isWrite && !isSR && (
-          <Item onClick={clickStartOver} caution>
-            Start over
-          </Item>
-        )}
-      </div>
+      {isFlashcards && !isSR && (
+        <Item onClick={clickShuffle} icon={<ShuffleIcon />} active={shuffled}>
+          Shuffle
+        </Item>
+      )}
+      {isWrite && !isSR && (
+        <Item onClick={clickStartOver} caution>
+          Start over
+        </Item>
+      )}
     </div>
   );
 };
