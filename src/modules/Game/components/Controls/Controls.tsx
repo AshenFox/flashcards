@@ -21,12 +21,11 @@ const Controls = ({ title, titleIcon, children }: ControlsProps) => {
 
   const isSR = _id === "sr";
 
-  const containerStyles: CSSProperties = { top: `${header_height}px` };
-  const controlsStyles: CSSProperties = { top: `${header_height}px` };
+  const styles: CSSProperties = { top: `${header_height}px` };
 
   return (
-    <Container className={s.container} style={containerStyles} noPadding>
-      <div className={s.controls} style={controlsStyles}>
+    <Container className={s.container} style={styles} noPadding>
+      <div className={s.controls} style={styles}>
         <div className={s.back}>
           <Link
             href={isSR ? "/home/sr" : `/module/${_id}`}

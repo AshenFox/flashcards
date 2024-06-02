@@ -5,7 +5,6 @@ const Document = () => {
   return (
     <Html>
       <Head>
-        <meta name="viewport" content="width=device-width initial-scale=1" />
         <meta name="application-name" content="Flash Cards" />
         <meta charSet="UTF-8" />
       </Head>

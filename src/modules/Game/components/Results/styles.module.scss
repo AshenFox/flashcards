@@ -97,6 +97,11 @@
 .body_left,
 .body_right {
   flex: 1;
+  font-size: 2rem;
+
+  @media (max-width: $mobile) {
+    font-size: 1.7rem;
+  }
 }
 
 .body_left {
