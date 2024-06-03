@@ -1,4 +1,5 @@
 import axios from "@server/supplemental/axios";
+import sanitize from "sanitize-html";
 
 import { saveLastUpdate } from "../helper-functions";
 import { url_fields } from "../reducers/main/mainInitState";
@@ -156,12 +157,12 @@ export const scrape_dictionary = (_id: string, value: "cod" | "urban") =>
 
       if (value === "cod") {
         const { data }: { data: CodReply } = await axios.get(url, params);
-        result = format_dictionary_result({ type: "cod", data });
+        result = sanitize(format_dictionary_result({ type: "cod", data }));
       }
 
       if (value === "urban") {
         const { data }: { data: UrbanReply } = await axios.get(url, params);
-        result = format_dictionary_result({ type: "urban", data });
+        result = sanitize(format_dictionary_result({ type: "urban", data }));
       }
 
       dispatch({
@@ -426,8 +427,6 @@ export const delete_module = _id => <ThunkActionApp>(async (
         },
       );
 
-      console.log(data);
-
       dispatch({ type: DELETE_MODULE });
 
       saveLastUpdate();
@@ -459,8 +458,6 @@ export const delete_card = (_id: string) => <ThunkActionApp>(async (
         },
       );
 
-      console.log(data);
-
       dispatch({
         type: DELETE_CARD,
         payload: {
@@ -491,8 +488,6 @@ export const edit_module = () => <ThunkActionApp>(async (
         module,
       );
 
-      console.log(data);
-
       dispatch({ type: EDIT_MODULE });
 
       saveLastUpdate();
@@ -517,8 +512,6 @@ export const edit_card = (_id: string) => <ThunkActionApp>(async (
         "/api/edit/card",
         cards[_id],
       );
-
-      console.log(data);
 
       dispatch({ type: EDIT_CARD });
 
@@ -553,16 +546,12 @@ export const create_module = () => <ThunkActionApp>(async (
         if (card.save) _id_arr.push(card._id);
       }
 
-      console.log(_id_arr);
-
       const { data }: { data: { msg: string } } = await axios.post(
         "/api/edit/module",
         {
           _id_arr,
         },
       );
-
-      console.log(data);
 
       dispatch({ type: CREATE_MODULE });
 
