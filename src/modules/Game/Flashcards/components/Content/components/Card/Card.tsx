@@ -29,8 +29,10 @@ const Card = ({ data, side = "definition", position = null }: CardProps) => {
   const { _id, term, defenition, imgurl } = data;
 
   const formattedDefinition = defenition.replaceAll(
-    /\( \/(.*?)\/ \)/g,
-    (x, match) => `( /<span class=${s.transcription_hidden}>${match}</span>/ )`,
+    /\(( |\u00A0|&nbsp;)*\/(.*?)\/( |\u00A0|&nbsp;)*\)/g,
+    (match, space1, transcription) => {
+      return `( /<span class=${s.transcription_hidden}>${transcription}</span>/ )`;
+    },
   );
 
   const frontClassName = clsx(

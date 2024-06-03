@@ -63,11 +63,7 @@
 .definition {
   min-height: 5rem;
   padding-bottom: 2.75rem;
-  font-size: 2rem;
-
-  @media (max-width: $mobile) {
-    font-size: 1.7rem;
-  }
+  font-size: 1.7rem;
 }
 
 .form {
@@ -100,11 +96,7 @@
   }
 
   & :global(.input__input) {
-    font-size: 2rem;
-
-    @media (max-width: $mobile) {
-      font-size: 1.7rem;
-    }
+    font-size: 1.7rem;
   }
 }
 

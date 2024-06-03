@@ -5,6 +5,7 @@ import ContentEditable, {
   ContentEditableEvent,
   Props as ContentEditableProps,
 } from "react-contenteditable";
+import sanitize from "sanitize-html";
 
 import s from "./styles.module.scss";
 

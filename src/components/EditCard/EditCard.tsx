@@ -52,6 +52,8 @@ const EditCard = ({
     [_id, control_card, edit_card],
   );
 
+  console.log({ term, defenition });
+
   const timer = useRef<ReturnType<typeof setTimeout>>(null);
 
   const deleteActive = number > 2;
