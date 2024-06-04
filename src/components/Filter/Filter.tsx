@@ -26,6 +26,7 @@ const createCustomTheme: ThemeConfig = theme => ({
 const customStyles: StylesConfig<Option, false, GroupBase<Option>> = {
   dropdownIndicator: (provided, state) => ({
     ...provided,
+    padding: 0,
     paddingLeft: 3,
     paddingRight: 3,
     color: state.isFocused ? "var(--icon-fill)" : "var(--inactive-color)",
@@ -43,6 +44,7 @@ const customStyles: StylesConfig<Option, false, GroupBase<Option>> = {
     ":hover": {
       borderColor: "var(--active-color)",
     },
+    minHeight: "35px",
   }),
   option: (provided, state) => {
     const { isSelected } = state;
@@ -58,6 +60,9 @@ const customStyles: StylesConfig<Option, false, GroupBase<Option>> = {
           ? "var(--active-secondary-color)"
           : "var(--active-color)",
       },
+      height: "33px",
+      display: "flex",
+      alignItems: "center",
     };
 
     return res;
@@ -76,6 +81,12 @@ const customStyles: StylesConfig<Option, false, GroupBase<Option>> = {
     border: "1px solid var(--element-border-color)",
     marginTop: "0.3rem",
     boxShadow: "none",
+  }),
+  valueContainer: provided => ({
+    ...provided,
+    input: {
+      position: "absolute",
+    },
   }),
 };
 
