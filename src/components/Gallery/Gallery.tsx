@@ -40,6 +40,8 @@ const Gallery = ({ data, active, game = false }: GalleryProps) => {
 
   useEffect(() => {
     if (uPressed && altPressed) {
+      setUPressed(false);
+      setAltPressed(false);
       addUrlFlag();
     }
   }, [uPressed, altPressed, addUrlFlag]);
