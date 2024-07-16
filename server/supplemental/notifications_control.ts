@@ -1,7 +1,7 @@
 import webpush from "web-push";
 
 import notificationModel from "../models//notification_model";
-import cardModelGenerator from "../models/card_model";
+import cardModel from "../models/card_model";
 import userModel, { IUser } from "../models/user_model";
 import { ICard } from "./../models/card_model";
 import sr_stages from "./sr_stages";
@@ -119,8 +119,6 @@ interface INotif {
 const create_notifications = async (user: IUser) => {
   try {
     await notificationModel.deleteMany({ user_id: user._id });
-
-    const cardModel = cardModelGenerator(user.username);
 
     const filterObj = {
       studyRegime: true,

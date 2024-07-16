@@ -34,10 +34,10 @@ const Question = ({ data }: QuestionProps) => {
 
   const isSR = _id_param === "sr";
 
-  const { _id, term, defenition, imgurl } = data || {};
+  const { _id, term, definition, imgurl } = data || {};
   const answer = useAppSelector(s => s.game.write.answer);
 
-  const formattedDefinition = defenition.replaceAll(
+  const formattedDefinition = definition.replaceAll(
     /\( \/(.*?)\/ \)/g,
     (x, match) =>
       `( /<span class="${s.transcription_hidden}">${match}</span>/ )`,
@@ -104,7 +104,7 @@ const Question = ({ data }: QuestionProps) => {
         <TextArea html={formattedDefinition} className={s.definition} />
         <Speaker
           _id={_id}
-          text={defenition}
+          text={definition}
           type={"definition"}
           className={s.speaker}
         />

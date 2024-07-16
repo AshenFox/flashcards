@@ -15,7 +15,7 @@ declare global {
 type TAuthMiddleRes = Response<{ msg: string }>;
 
 const auth = (req: Request, res: TAuthMiddleRes, next: NextFunction) => {
-  // Get token fron headers
+  // Get token from headers
   const header = req.header("Authorization");
   const token = header && header.split(" ")[1];
 

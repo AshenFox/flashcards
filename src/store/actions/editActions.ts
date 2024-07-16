@@ -306,7 +306,7 @@ export const set_gallery_search = (
 // CONTROL_CARD
 export const control_card = (
   _id: string,
-  type: "term" | "defenition",
+  type: "term" | "definition",
   value: string,
 ): AppActions => ({
   type: CONTROL_CARD,
@@ -659,7 +659,7 @@ const format_dictionary_result = (
             examplesHtml = examplesHtml + wrap_in(example, "div");
           });
 
-          let defenitionHtml = wrap_in(
+          let definitionHtml = wrap_in(
             guideword.concat(wrap_in(definition)),
             "div",
           );
@@ -672,7 +672,7 @@ const format_dictionary_result = (
           formatedResult = formatedResult.concat(
             examplesHtml,
             br,
-            defenitionHtml,
+            definitionHtml,
             additionalInfoHtml,
             devider,
           );

@@ -1,7 +1,7 @@
 import express, { Request, Response } from "express";
 
-import cardModelGenerator, { ICard, ICardSortObj } from "../models/card_model";
-import moduleModelGenerator from "../models/module_model";
+import cardModel, { ICard, ICardSortObj } from "../models/card_model";
+import moduleModel from "../models/module_model";
 import userModel from "../models/user_model";
 import middleware from "../supplemental/middleware";
 import { IModule, IModuleSortObj } from "./../models/module_model";
@@ -51,8 +51,6 @@ router.get(
       });
 
       if (!user) throw new Error(`User ${server_id} has not been found.`);
-
-      const moduleModel = moduleModelGenerator(user.username);
 
       const draft = await moduleModel.findOne({
         draft: true,
@@ -145,9 +143,6 @@ router.get("/cards", auth, async (req: TCardsGetReq, res: TCardsGetRes) => {
 
     if (!user) throw new Error(`User ${server_id} has not been found.`);
 
-    const cardModel = cardModelGenerator(user.username);
-    const moduleModel = moduleModelGenerator(user.username);
-
     const draft = await moduleModel.findOne({
       draft: true,
     });
@@ -216,9 +211,6 @@ router.get("/module", auth, async (req: TModuleGetReq, res: TModuleGetRes) => {
 
     if (!user) throw new Error(`User ${server_id} has not been found.`);
 
-    const cardModel = cardModelGenerator(user.username);
-    const moduleModel = moduleModelGenerator(user.username);
-
     /* eslint-disable */
     const module = await moduleModel.findOne({
       _id,
@@ -270,8 +262,6 @@ router.get(
       });
 
       if (!user) throw new Error(`User ${server_id} has not been found.`);
-
-      const cardModel = cardModelGenerator(user.username);
 
       const filterObj: {
         moduleID: string;

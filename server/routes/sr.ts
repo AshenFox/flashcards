@@ -1,7 +1,7 @@
 import express, { Request, Response } from "express";
 
 import notificationModel from "../models//notification_model";
-import cardModelGenerator, { ICard, ICardSortObj } from "../models/card_model";
+import cardModel, { ICard, ICardSortObj } from "../models/card_model";
 import userModel from "../models/user_model";
 import middleware from "../supplemental/middleware";
 import { notification_timeout } from "../supplemental/notifications_control";
@@ -50,8 +50,6 @@ router.get("/cards", auth, async (req: TCardsGetReq, res: TCardsGetRes) => {
 
     if (!user) throw new Error(`User ${server_id} has not been found.`);
 
-    const cardModel = cardModelGenerator(user.username);
-
     const filterObj = {
       studyRegime: true,
       nextRep: { $lte: new Date() },
@@ -89,8 +87,6 @@ router.get("/count", auth, async (req: Request, res: TCountGetRes) => {
     });
 
     if (!user) throw new Error(`User ${server_id} has not been found.`);
-
-    const cardModel = cardModelGenerator(user.username);
 
     const all_num = await cardModel.countDocuments({
       studyRegime: true,
@@ -147,8 +143,6 @@ router.put("/answer", auth, async (req: TAnswerPutReq, res: TAnswerPutRes) => {
     });
 
     if (!user) throw new Error(`User ${server_id} has not been found.`);
-
-    const cardModel = cardModelGenerator(user.username);
 
     const card = await cardModel.findOne({
       _id,
@@ -220,8 +214,6 @@ router.put(
 
       if (!user) throw new Error(`User ${server_id} has not been found.`);
 
-      const cardModel = cardModelGenerator(user.username);
-
       await cardModel.updateMany(
         { _id: { $in: _id_arr } },
         { studyRegime: study_regime },
@@ -267,8 +259,6 @@ router.put("/drop", auth, async (req: TDropPutReq, res: TDropPutRes) => {
     });
 
     if (!user) throw new Error(`User ${server_id} has not been found.`);
-
-    const cardModel = cardModelGenerator(user.username);
 
     const fields = {
       stage: 1,

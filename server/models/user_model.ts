@@ -17,7 +17,7 @@ export interface IUser {
   };
 }
 
-const userSchema = new Schema<IUser>({
+const UserSchema = new Schema<IUser>({
   server_id: String,
   username: String,
   email: String,
@@ -30,6 +30,6 @@ const userSchema = new Schema<IUser>({
   },
 });
 
-const userModel = mongoose.model<IUser>("Users", userSchema);
+const userModel = mongoose.model<IUser>("Users", UserSchema);
 
 export default userModel;
