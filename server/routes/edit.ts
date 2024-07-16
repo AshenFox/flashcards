@@ -1,7 +1,7 @@
 import express, { Request, Response } from "express";
 
-import cardModelGenerator from "../models/card_model";
-import moduleModelGenerator from "../models/module_model";
+import cardModel from "../models/card_model";
+import moduleModel from "../models/module_model";
 import userModel from "../models/user_model";
 import middleware from "../supplemental/middleware";
 import { notification_timeout } from "../supplemental/notifications_control";
@@ -46,9 +46,6 @@ router.delete(
 
       if (!user) throw new Error(`User ${server_id} has not been found.`);
 
-      const moduleModel = moduleModelGenerator(user.username);
-      const cardModel = cardModelGenerator(user.username);
-
       await moduleModel.deleteOne({ _id });
       await cardModel.deleteMany({ moduleID: _id });
 
@@ -90,9 +87,6 @@ router.delete(
       });
 
       if (!user) throw new Error(`User ${server_id} has not been found.`);
-
-      const cardModel = cardModelGenerator(user.username);
-      const moduleModel = moduleModelGenerator(user.username);
 
       const card = await cardModel.findOne({ _id });
 
@@ -140,8 +134,6 @@ router.put("/module", auth, async (req: TModulePutReq, res: TModulePutRes) => {
 
     if (!user) throw new Error(`User ${server_id} has not been found.`);
 
-    const moduleModel = moduleModelGenerator(user.username);
-
     /* eslint-disable */
     const module = await moduleModel.findOne({
       _id,
@@ -184,8 +176,6 @@ router.put("/card", auth, async (req: TCardPutReq, res: TCardPutRes) => {
 
     if (!user) throw new Error(`User ${server_id} has not been found.`);
 
-    const cardModel = cardModelGenerator(user.username);
-
     const card = await cardModel.findOne({
       _id,
     });
@@ -193,7 +183,7 @@ router.put("/card", auth, async (req: TCardPutReq, res: TCardPutRes) => {
     if (!card) throw new Error(`Card ${_id} has not been found.`);
 
     card.term = card_data.term;
-    card.defenition = card_data.defenition;
+    card.definition = card_data.definition;
     card.imgurl = card_data.imgurl;
 
     await card.save();
@@ -234,13 +224,13 @@ router.post(
 
       if (!user) throw new Error(`User ${server_id} has not been found.`);
 
-      const moduleModel = moduleModelGenerator(user.username);
-      const cardModel = cardModelGenerator(user.username);
-
-      const draft = await moduleModel.findOne({ draft: true });
+      const draft = await moduleModel.findOne({
+        author_id: user.id,
+        draft: true,
+      });
 
       if (!draft)
-        throw new Error(`Draf for user ${user.username} has not been found.`);
+        throw new Error(`Draft for user ${user.username} has not been found.`);
 
       const new_module = await moduleModel.create({
         title: draft.title,
@@ -261,7 +251,7 @@ router.post(
       });
 
       if (!number) {
-        await moduleModel.deleteOne({ draft: true });
+        await moduleModel.deleteOne({ author_id: user.id, draft: true });
       } else {
         draft.title = "";
         draft.number = number;
@@ -302,19 +292,18 @@ router.post("/card", auth, async (req: TCardPostReq, res: TCardPostRes) => {
 
     if (!user) throw new Error(`User ${server_id} has not been found.`);
 
-    const cardModel = cardModelGenerator(user.username);
-    const moduleModel = moduleModelGenerator(user.username);
-
     const new_card = await cardModel.create({
       moduleID: module._id,
       term: "",
-      defenition: "",
+      definition: "",
       imgurl: "",
       creation_date: new Date(),
       studyRegime: false,
       stage: 1,
       nextRep: new Date(),
       prevStage: new Date(),
+      author_id: user.server_id,
+      author: user.username,
     });
 
     const number = await cardModel.countDocuments({
@@ -353,9 +342,6 @@ router.get("/draft", auth, async (req: Request, res: TDraftGetRes) => {
 
     if (!user) throw new Error(`User ${server_id} has not been found.`);
 
-    const cardModel = cardModelGenerator(user.username);
-    const moduleModel = moduleModelGenerator(user.username);
-
     let module: IModule | null, cards: ICard[];
 
     module = await moduleModel.findOne({
@@ -383,7 +369,7 @@ router.get("/draft", auth, async (req: Request, res: TDraftGetRes) => {
         cardsData.push({
           moduleID: module._id,
           term: "",
-          defenition: "",
+          definition: "",
           imgurl: "",
           creation_date: new Date(Date.now() + i),
           studyRegime: false,
@@ -391,6 +377,8 @@ router.get("/draft", auth, async (req: Request, res: TDraftGetRes) => {
           nextRep: new Date(),
           prevStage: new Date(),
           lastRep: new Date(),
+          author_id: user.server_id,
+          author: user.username,
         });
       }
 

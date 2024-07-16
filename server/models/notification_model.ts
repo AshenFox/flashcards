@@ -9,7 +9,7 @@ export interface INotification {
   user_id: string;
 }
 
-const notificationSchema = new Schema<INotification>({
+const NotificationSchema = new Schema<INotification>({
   time: Date,
   number: Number,
   user_id: String,
@@ -17,7 +17,7 @@ const notificationSchema = new Schema<INotification>({
 
 const notificationModel = mongoose.model<INotification>(
   "Notifications",
-  notificationSchema,
+  NotificationSchema,
 );
 
 export default notificationModel;

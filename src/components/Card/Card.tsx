@@ -29,7 +29,7 @@ const Card = ({
 
   const {
     term = "",
-    defenition = "",
+    definition = "",
     imgurl = "",
     _id,
     moduleID,
@@ -48,8 +48,8 @@ const Card = ({
 
   if (filterType === "term")
     formatted_term = term.replace(filterRegExp, replacement);
-  if (filterType === "defenition")
-    formatted_definition = defenition.replace(filterRegExp, replacement);
+  if (filterType === "definition")
+    formatted_definition = definition.replace(filterRegExp, replacement);
 
   const [visible, ref, Plug] = usePlug(s.card);
 
@@ -104,14 +104,14 @@ const Card = ({
               <div className={s.definition}>
                 <TextArea
                   html={
-                    filterType === "defenition" && filter
+                    filterType === "definition" && filter
                       ? formatted_definition
-                      : defenition
+                      : definition
                   }
                 />
                 <Speaker
                   _id={_id}
-                  text={defenition}
+                  text={definition}
                   type={"definition"}
                   className={s.speaker}
                 />

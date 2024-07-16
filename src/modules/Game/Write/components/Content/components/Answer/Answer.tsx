@@ -33,7 +33,7 @@ const Answer = ({ data }: AnswerProps) => {
 
   const isSR = _id_param === "sr";
 
-  const { _id, term, defenition, imgurl } = data;
+  const { _id, term, definition, imgurl } = data;
 
   const answer = useAppSelector(s => s.game.write.answer);
   const copy_answer = useAppSelector(s => s.game.write.copy_answer);
@@ -139,10 +139,10 @@ const Answer = ({ data }: AnswerProps) => {
           <span className={s.section_title}>Definition</span>
           <Img containerClass={s.img_container} imgClass={s.img} url={imgurl} />
           <div className={s.section_body}>
-            <TextArea html={defenition} />
+            <TextArea html={definition} />
             <Speaker
               _id={_id}
-              text={defenition}
+              text={definition}
               type={"definition"}
               className={s.speaker}
             />

@@ -25,8 +25,8 @@ export type MainState = {
 };
 
 export interface SelectBy {
-  value: "term" | "defenition";
-  label: "Term" | "Defenition";
+  value: "term" | "definition";
+  label: "Term" | "Definition";
 }
 
 export interface SelectCreated {
@@ -76,7 +76,7 @@ export interface CardBase {
   _id: string;
   moduleID: string;
   term: string;
-  defenition: string;
+  definition: string;
   imgurl: string;
   creation_date: string;
   studyRegime: boolean;

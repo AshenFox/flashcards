@@ -63,7 +63,7 @@ router.get("/cod", auth, async (req: TCodGetReq, res: TCodGetRes) => {
 
     const page = $(".page");
 
-    const errMsg = "Something went worng while parsing cod response.";
+    const errMsg = "Something went wrong while parsing cod response.";
 
     if (!page || !page.length) throw new Error(errMsg);
 

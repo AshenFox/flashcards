@@ -53,7 +53,7 @@ router.put(
         user.subscriptions[device] = subscription;
         await user.save();
 
-        res.status(200).json({ msg: "Subscribtion has been updated" });
+        res.status(200).json({ msg: "Subscription has been updated" });
         return;
       }
 

@@ -26,7 +26,7 @@ const ResultItem = ({ data, number, showHeader = true }: ResultItemProps) => {
 
   const cards = useAppSelector(s => s.main.cards);
 
-  const { term, defenition, imgurl, stage, nextRep, prevStage } =
+  const { term, definition, imgurl, stage, nextRep, prevStage } =
     cards[data.id] ?? {};
 
   return (
@@ -60,7 +60,7 @@ const ResultItem = ({ data, number, showHeader = true }: ResultItemProps) => {
 
         <div className={s.body_right}>
           <div>
-            <TextArea html={defenition} />
+            <TextArea html={definition} />
             <Img imgClass={s.img} url={imgurl} />
           </div>
         </div>
