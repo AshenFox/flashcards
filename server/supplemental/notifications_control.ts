@@ -40,7 +40,11 @@ export const send_notifications = async () => {
       time: { $lt: now },
     };
 
-    if (!(await notificationModel.countDocuments(filterObj))) return; // false
+    const notificationsExist = Boolean(
+      await notificationModel.countDocuments(filterObj),
+    );
+
+    if (notificationsExist) return;
 
     let notifications = await notificationModel.find(filterObj);
 

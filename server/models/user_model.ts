@@ -5,7 +5,6 @@ const Schema = mongoose.Schema;
 
 export interface IUser {
   _id: string;
-  server_id: string;
   username: string;
   email: string;
   password: string;
@@ -18,7 +17,6 @@ export interface IUser {
 }
 
 const UserSchema = new Schema<IUser>({
-  server_id: String,
   username: String,
   email: String,
   password: String,

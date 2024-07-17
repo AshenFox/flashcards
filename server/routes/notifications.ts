@@ -1,7 +1,7 @@
 import express, { Request, Response } from "express";
 import { PushSubscription } from "web-push";
 
-import userModel from "../models/user_model";
+import { ResponseLocals } from "../@types/types";
 import middleware from "../supplemental/middleware";
 
 const { auth } = middleware;
@@ -29,7 +29,7 @@ interface ISubscribePutResBody {
   msg: string;
 }
 
-type TSubscribePutRes = Response<ISubscribePutResBody | IResError>;
+type TSubscribePutRes = ResponseLocals<ISubscribePutResBody | IResError>;
 
 router.put(
   "/subscribe",
@@ -38,13 +38,7 @@ router.put(
     try {
       const { device, subscription } = req.body;
 
-      const server_id = req.user.server_id;
-
-      const user = await userModel.findOne({
-        server_id,
-      });
-
-      if (!user) throw new Error(`User ${server_id} has not been found.`);
+      const user = res.locals.user;
 
       if (
         !user.subscriptions[device] ||

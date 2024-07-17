@@ -1,5 +1,6 @@
 import express, { Request, Response } from "express";
 
+import { ResponseLocals } from "../@types/types";
 import cardModel, { ICard, ICardSortObj } from "../models/card_model";
 import moduleModel from "../models/module_model";
 import userModel from "../models/user_model";
@@ -33,7 +34,7 @@ interface IModulesGetResBody {
   all_modules_number: number;
 }
 
-type TModulesGetRes = Response<IModulesGetResBody | IResError>;
+type TModulesGetRes = ResponseLocals<IModulesGetResBody | IResError>;
 
 router.get(
   "/modules",
@@ -44,26 +45,25 @@ router.get(
 
       const skipNum = parseInt(skip);
 
-      const server_id = req.user.server_id;
-
-      const user = await userModel.findOne({
-        server_id,
-      });
-
-      if (!user) throw new Error(`User ${server_id} has not been found.`);
+      const _id = res.locals.user._id;
 
       const draft = await moduleModel.findOne({
+        author_id: _id,
         draft: true,
       });
 
-      let all_modules_number = await moduleModel.estimatedDocumentCount();
+      let all_modules_number = await moduleModel.countDocuments({
+        author_id: _id,
+      });
 
       const filterObj: {
+        author_id: string;
         draft: boolean;
         title?: {
           $regex: string;
         };
       } = {
+        author_id: _id,
         draft: false,
       };
 
@@ -127,7 +127,7 @@ interface ICardsGetResBody {
   all_cards_number: number;
 }
 
-type TCardsGetRes = Response<ICardsGetResBody | IResError>;
+type TCardsGetRes = ResponseLocals<ICardsGetResBody | IResError>;
 
 router.get("/cards", auth, async (req: TCardsGetReq, res: TCardsGetRes) => {
   try {
@@ -135,23 +135,22 @@ router.get("/cards", auth, async (req: TCardsGetReq, res: TCardsGetRes) => {
 
     const skipNum = parseInt(skip);
 
-    const server_id = req.user.server_id;
-
-    const user = await userModel.findOne({
-      server_id,
-    });
-
-    if (!user) throw new Error(`User ${server_id} has not been found.`);
+    const _id = res.locals.user._id;
 
     const draft = await moduleModel.findOne({
+      author_id: _id,
       draft: true,
     });
 
     const filterObj: {
+      author_id: string;
       moduleID?: { $ne: string };
       term?: { $regex: string };
       definition?: { $regex: string };
-    } = draft ? { moduleID: { $ne: draft._id } } : {};
+    } = {
+      author_id: _id,
+      moduleID: draft ? { $ne: draft._id } : undefined,
+    };
 
     const sortObj: ICardSortObj = {};
 
@@ -197,33 +196,34 @@ interface IModuleGetResBody {
   cards: ICard[];
 }
 
-type TModuleGetRes = Response<IModuleGetResBody | IResError>;
+type TModuleGetRes = ResponseLocals<IModuleGetResBody | IResError>;
 
 router.get("/module", auth, async (req: TModuleGetReq, res: TModuleGetRes) => {
   try {
-    let { _id } = req.query;
+    let { _id: module_id } = req.query;
 
-    const server_id = req.user.server_id;
+    const _id = res.locals.user._id;
 
     const user = await userModel.findOne({
-      server_id,
-    });
-
-    if (!user) throw new Error(`User ${server_id} has not been found.`);
-
-    /* eslint-disable */
-    const module = await moduleModel.findOne({
       _id,
     });
 
-    if (!module) throw new Error(`Module ${_id} has not been found.`);
-    if (module.draft) throw new Error("Can not get draft");
+    if (!user) throw new Error(`User ${_id} has not been found.`);
+
+    /* eslint-disable */
+    const foundModule = await moduleModel.findOne({
+      _id: module_id,
+      author_id: _id,
+    });
+
+    if (!foundModule) throw new Error(`Module ${_id} has not been found.`);
+    if (foundModule.draft) throw new Error("Can not get draft");
 
     const cards = await cardModel
-      .find({ moduleID: _id })
+      .find({ moduleID: module_id, author_id: _id })
       .sort({ creation_date: 1 });
 
-    res.status(200).json({ module, cards });
+    res.status(200).json({ module: foundModule, cards });
   } catch (err) {
     console.error(err);
     res.status(500).json({ errorBody: "Server Error" });
@@ -246,28 +246,29 @@ interface IModuleCardsGetResBody {
   cards: ICard[];
 }
 
-type TModuleCardsGetRes = Response<IModuleCardsGetResBody | IResError>;
+type TModuleCardsGetRes = ResponseLocals<IModuleCardsGetResBody | IResError>;
 
 router.get(
   "/module/cards",
   auth,
   async (req: TModuleCardsGetReq, res: TModuleCardsGetRes) => {
     try {
-      let { _id, filter, by } = req.query;
+      let { _id: module_id, filter, by } = req.query;
 
-      const server_id = req.user.server_id;
+      const _id = res.locals.user._id;
 
       const user = await userModel.findOne({
-        server_id,
+        _id,
       });
 
-      if (!user) throw new Error(`User ${server_id} has not been found.`);
+      if (!user) throw new Error(`User ${_id} has not been found.`);
 
       const filterObj: {
         moduleID: string;
+        author_id: string;
         term?: { $regex: string };
         definition?: { $regex: string };
-      } = { moduleID: _id };
+      } = { moduleID: module_id, author_id: _id };
 
       const sortObj: ICardSortObj = { creation_date: 1 };
 
