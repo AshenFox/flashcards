@@ -1,3 +1,4 @@
+import { FilterQuery } from "mongoose";
 import webpush from "web-push";
 
 import notificationModel from "../models//notification_model";
@@ -122,9 +123,12 @@ interface INotif {
 
 const create_notifications = async (user: IUser) => {
   try {
-    await notificationModel.deleteMany({ user_id: user._id });
+    const { _id } = user;
 
-    const filterObj = {
+    await notificationModel.deleteMany({ user_id: _id });
+
+    const filterObj: FilterQuery<ICard> = {
+      author_id: _id,
       studyRegime: true,
     };
 

@@ -1,8 +1,9 @@
-import express, { Request, Response } from "express";
+import express, { Request } from "express";
+import { FilterQuery } from "mongoose";
 
+import { ResponseLocals } from "../@types/types";
 import notificationModel from "../models//notification_model";
 import cardModel, { ICard, ICardSortObj } from "../models/card_model";
-import userModel from "../models/user_model";
 import middleware from "../supplemental/middleware";
 import { notification_timeout } from "../supplemental/notifications_control";
 import sr_stages from "../supplemental/sr_stages";
@@ -28,29 +29,18 @@ interface ICardsGetResBody {
   cards: ICard[];
 }
 
-type TCardsGetRes = Response<ICardsGetResBody | IResError>;
+type TCardsGetRes = ResponseLocals<ICardsGetResBody | IResError>;
 
 router.get("/cards", auth, async (req: TCardsGetReq, res: TCardsGetRes) => {
   try {
     let { number } = req.query;
 
-    let numCards: number;
+    let numCards = parseInt(number) || 0;
 
-    if (number) {
-      numCards = parseInt(number);
-    } else {
-      numCards = 0;
-    }
+    const _id = res.locals.user._id;
 
-    const server_id = req.user.server_id;
-
-    const user = await userModel.findOne({
-      server_id,
-    });
-
-    if (!user) throw new Error(`User ${server_id} has not been found.`);
-
-    const filterObj = {
+    const filterObj: FilterQuery<ICard> = {
+      author_id: _id,
       studyRegime: true,
       nextRep: { $lte: new Date() },
     };
@@ -76,33 +66,29 @@ interface ICountGetResBody {
   next_date: false | Date;
 }
 
-type TCountGetRes = Response<ICountGetResBody | IResError>;
+type TCountGetRes = ResponseLocals<ICountGetResBody | IResError>;
 
 router.get("/count", auth, async (req: Request, res: TCountGetRes) => {
   try {
-    const server_id = req.user.server_id;
-
-    const user = await userModel.findOne({
-      server_id,
-    });
-
-    if (!user) throw new Error(`User ${server_id} has not been found.`);
+    const _id = res.locals.user._id;
 
     const all_num = await cardModel.countDocuments({
+      author_id: _id,
       studyRegime: true,
     });
 
     const repeat_num = await cardModel.countDocuments({
+      author_id: _id,
       nextRep: { $lte: new Date() },
       studyRegime: true,
     });
 
-    const notif = await notificationModel
-      .findOne({ user_id: user._id, number: { $gt: 0 } })
+    const notification = await notificationModel
+      .findOne({ user_id: _id, number: { $gt: 0 } })
       .sort({ time: 1 });
 
-    const next_num = notif ? notif.number : 0;
-    const next_date = notif ? notif.time : false;
+    const next_num = notification ? notification.number : 0;
+    const next_date = notification ? notification.time : false;
 
     res.status(200).json({ all_num, repeat_num, next_num, next_date });
   } catch (err) {
@@ -130,25 +116,21 @@ interface IAnswerPutResBody {
   studyRegime: boolean;
 }
 
-type TAnswerPutRes = Response<IAnswerPutResBody | IResError>;
+type TAnswerPutRes = ResponseLocals<IAnswerPutResBody | IResError>;
 
 router.put("/answer", auth, async (req: TAnswerPutReq, res: TAnswerPutRes) => {
   try {
-    const { _id, answer } = req.body;
+    const { _id: card_id, answer } = req.body;
 
-    const server_id = req.user.server_id;
-
-    const user = await userModel.findOne({
-      server_id,
-    });
-
-    if (!user) throw new Error(`User ${server_id} has not been found.`);
+    const user = res.locals.user;
+    const { _id } = user;
 
     const card = await cardModel.findOne({
-      _id,
+      author_id: _id,
+      _id: card_id,
     });
 
-    if (!card) throw new Error(`Card ${_id} has not been found.`);
+    if (!card) throw new Error(`Card ${card_id} has not been found.`);
 
     let studyRegime = true;
 
@@ -168,7 +150,8 @@ router.put("/answer", auth, async (req: TAnswerPutReq, res: TAnswerPutRes) => {
 
     await cardModel.updateOne(
       {
-        _id,
+        author_id: _id,
+        _id: card_id,
       },
       fields,
     );
@@ -197,7 +180,7 @@ interface IControlPutResBody {
   msg: "Study regime has been controlled";
 }
 
-type TControlPutRes = Response<IControlPutResBody | IResError>;
+type TControlPutRes = ResponseLocals<IControlPutResBody | IResError>;
 
 router.put(
   "/control",
@@ -206,16 +189,10 @@ router.put(
     try {
       const { _id_arr, study_regime } = req.body;
 
-      const server_id = req.user.server_id;
-
-      const user = await userModel.findOne({
-        server_id,
-      });
-
-      if (!user) throw new Error(`User ${server_id} has not been found.`);
+      const user = res.locals.user;
 
       await cardModel.updateMany(
-        { _id: { $in: _id_arr } },
+        { _id: { $in: _id_arr }, author_id: user._id },
         { studyRegime: study_regime },
       );
 
@@ -246,19 +223,13 @@ interface IDropPutResBody {
   lastRep: Date;
 }
 
-type TDropPutRes = Response<IDropPutResBody | IResError>;
+type TDropPutRes = ResponseLocals<IDropPutResBody | IResError>;
 
 router.put("/drop", auth, async (req: TDropPutReq, res: TDropPutRes) => {
   try {
     const { _id_arr } = req.body;
 
-    const server_id = req.user.server_id;
-
-    const user = await userModel.findOne({
-      server_id,
-    });
-
-    if (!user) throw new Error(`User ${server_id} has not been found.`);
+    const user = res.locals.user;
 
     const fields = {
       stage: 1,
@@ -267,7 +238,10 @@ router.put("/drop", auth, async (req: TDropPutReq, res: TDropPutRes) => {
       lastRep: new Date(),
     };
 
-    await cardModel.updateMany({ _id: { $in: _id_arr } }, fields);
+    await cardModel.updateMany(
+      { _id: { $in: _id_arr }, author_id: user._id },
+      fields,
+    );
 
     res.status(200).json(fields);
 
