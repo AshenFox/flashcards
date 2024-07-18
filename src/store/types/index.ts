@@ -390,7 +390,7 @@ export interface ControlCardAction {
   type: typeof CONTROL_CARD;
   payload: {
     _id: string;
-    type: "term" | "defenition";
+    type: "term" | "definition";
     value: string;
   };
 }

@@ -5,7 +5,7 @@ const Schema = mongoose.Schema;
 export interface ICardBase {
   moduleID: string;
   term: string;
-  defenition: string;
+  definition: string;
   imgurl: string;
   creation_date: Date;
   studyRegime: boolean;
@@ -13,6 +13,8 @@ export interface ICardBase {
   nextRep: Date;
   prevStage: Date;
   lastRep: Date;
+  author_id: string;
+  author: string;
 }
 
 export interface ICard extends ICardBase {
@@ -21,10 +23,10 @@ export interface ICard extends ICardBase {
 
 export type ICardSortObj = { [key in keyof ICard]?: SortOrder };
 
-const cardSchema = new Schema<ICard>({
+const CardSchema = new Schema<ICard>({
   moduleID: String,
   term: String,
-  defenition: String,
+  definition: String,
   imgurl: String,
   creation_date: Date,
   studyRegime: Boolean,
@@ -32,11 +34,10 @@ const cardSchema = new Schema<ICard>({
   nextRep: Date,
   prevStage: Date,
   lastRep: Date,
+  author_id: String,
+  author: String,
 });
 
-function cardModelGenerator(username: string) {
-  return mongoose.model<ICard>(`${username}'s cards`, cardSchema);
-}
+const cardModel = mongoose.model<ICard>(`Cards`, CardSchema);
 
-// module.exports = cardModelGenerator;
-export default cardModelGenerator;
+export default cardModel;

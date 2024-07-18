@@ -36,12 +36,12 @@ const EditCard = ({
 }: EditCardProps) => {
   const { control_card, edit_card } = useActions();
 
-  const { _id, term, defenition, gallery } = data || {};
+  const { _id, term, definition, gallery } = data || {};
 
   const { search } = gallery || {};
 
   const handleCardChange = useCallback(
-    (type: "term" | "defenition") => (e: ContentEditableEvent) => {
+    (type: "term" | "definition") => (e: ContentEditableEvent) => {
       control_card(_id, type, e.target.value);
       clearTimeout(timer.current);
       timer.current = setTimeout(async () => {
@@ -52,7 +52,7 @@ const EditCard = ({
     [_id, control_card, edit_card],
   );
 
-  console.log({ term, defenition });
+  console.log({ term, definition });
 
   const timer = useRef<ReturnType<typeof setTimeout>>(null);
 
@@ -89,9 +89,9 @@ const EditCard = ({
         <div className={s.definition}>
           <div className={s.definition_input}>
             <TextArea
-              html={defenition}
+              html={definition}
               disabled={loading}
-              onChange={handleCardChange("defenition")}
+              onChange={handleCardChange("definition")}
               id={`definition${data._id}`}
               isStyled
             />

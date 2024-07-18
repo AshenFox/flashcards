@@ -1,7 +1,8 @@
+import { FilterQuery } from "mongoose";
 import webpush from "web-push";
 
 import notificationModel from "../models//notification_model";
-import cardModelGenerator from "../models/card_model";
+import cardModel from "../models/card_model";
 import userModel, { IUser } from "../models/user_model";
 import { ICard } from "./../models/card_model";
 import sr_stages from "./sr_stages";
@@ -40,7 +41,11 @@ export const send_notifications = async () => {
       time: { $lt: now },
     };
 
-    if (!(await notificationModel.countDocuments(filterObj))) return; // false
+    const notificationsExist = Boolean(
+      await notificationModel.countDocuments(filterObj),
+    );
+
+    if (notificationsExist) return;
 
     let notifications = await notificationModel.find(filterObj);
 
@@ -118,11 +123,12 @@ interface INotif {
 
 const create_notifications = async (user: IUser) => {
   try {
-    await notificationModel.deleteMany({ user_id: user._id });
+    const { _id } = user;
 
-    const cardModel = cardModelGenerator(user.username);
+    await notificationModel.deleteMany({ user_id: _id });
 
-    const filterObj = {
+    const filterObj: FilterQuery<ICard> = {
+      author_id: _id,
       studyRegime: true,
     };
 

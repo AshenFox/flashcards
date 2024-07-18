@@ -26,9 +26,9 @@ const Card = ({ data, side = "definition", position = null }: CardProps) => {
 
   const isSR = _id_param === "sr";
 
-  const { _id, term, defenition, imgurl } = data;
+  const { _id, term, definition, imgurl } = data;
 
-  const formattedDefinition = defenition.replaceAll(
+  const formattedDefinition = definition.replaceAll(
     /\(( |\u00A0|&nbsp;)*\/(.*?)\/( |\u00A0|&nbsp;)*\)/g,
     (match, space1, transcription) => {
       return `( /<span class=${s.transcription_hidden}>${transcription}</span>/ )`;
@@ -66,7 +66,7 @@ const Card = ({ data, side = "definition", position = null }: CardProps) => {
     <div className={cardClassName}>
       <div className={frontClassName} onClick={clickSide("term")}>
         <Img
-          containerClass={clsx(s.img_container, !defenition && s.full)}
+          containerClass={clsx(s.img_container, !definition && s.full)}
           imgClass={s.img}
           url={imgurl}
         />
@@ -77,14 +77,14 @@ const Card = ({ data, side = "definition", position = null }: CardProps) => {
           />
         )}
 
-        {defenition && (
+        {definition && (
           <div className={clsx(s.definition_container, !imgurl && s.full)}>
             <TextArea html={formattedDefinition} className={s.definition} />
           </div>
         )}
         <Speaker
           _id={_id}
-          text={defenition}
+          text={definition}
           type={"definition"}
           className={s.speaker}
         />

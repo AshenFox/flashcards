@@ -6,7 +6,7 @@ import s from "./styles.module.scss";
 
 const optionsBy: Option[] = [
   { value: "term", label: "Term" },
-  { value: "defenition", label: "Definition" },
+  { value: "definition", label: "Definition" },
 ];
 
 const Param = () => {

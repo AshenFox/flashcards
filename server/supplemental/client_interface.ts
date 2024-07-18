@@ -37,6 +37,10 @@ class Client extends ImageSearch {
     this.error = true;
     this.errorDate = new Date();
   }
+
+  async search(inquiry: string, params: object) {
+    return await super.search(inquiry, params);
+  }
 }
 
 const client_interface: IClientInterface = {

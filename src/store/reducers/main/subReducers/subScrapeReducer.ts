@@ -17,7 +17,7 @@ const subScrapeReducer = (
           ...state.cards,
           [payload._id]: {
             ...state.cards[payload._id],
-            defenition: state.cards[payload._id].defenition + payload.result,
+            definition: state.cards[payload._id].definition + payload.result,
           },
         },
       };

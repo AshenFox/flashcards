@@ -15,7 +15,7 @@ export interface IModule {
 
 export type IModuleSortObj = { [key in keyof IModule]?: SortOrder };
 
-const moduleSchema = new Schema<IModule>({
+const ModuleSchema = new Schema<IModule>({
   title: String,
   author: String,
   author_id: String,
@@ -25,8 +25,6 @@ const moduleSchema = new Schema<IModule>({
   draft: Boolean,
 });
 
-function moduleModelGenerator(username: string) {
-  return mongoose.model<IModule>(`${username}'s module`, moduleSchema);
-}
+const moduleModel = mongoose.model<IModule>(`Modules`, ModuleSchema);
 
-export default moduleModelGenerator;
+export default moduleModel;

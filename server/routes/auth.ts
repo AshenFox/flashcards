@@ -2,8 +2,8 @@ import bcrypt from "bcryptjs";
 import config from "config";
 import express, { Request, Response } from "express";
 import jwt from "jsonwebtoken";
-import { v4 as uuidv4 } from "uuid";
 
+import { ResponseLocals } from "../@types/types";
 import userModel from "../models/user_model";
 import { check, ICheckResult } from "../supplemental/checks";
 import middleware from "../supplemental/middleware";
@@ -81,7 +81,6 @@ router.post("/entry/:type", async (req: TEntryPostReq, res: TEntryPostRes) => {
         });
       } else if (type === "sign_up") {
         const user_data = {
-          server_id: uuidv4(),
           username,
           email,
           registration_date: new Date(),
@@ -97,9 +96,9 @@ router.post("/entry/:type", async (req: TEntryPostReq, res: TEntryPostRes) => {
 
       if (!user) throw new Error("The user has not been found.");
 
-      const id = user.server_id;
+      const _id = user._id;
 
-      const token = await jwt.sign({ id }, config.get("jwtSecret"));
+      const token = jwt.sign({ _id }, config.get("jwtSecret"));
 
       res_data.token = token;
 
@@ -117,14 +116,14 @@ router.post("/entry/:type", async (req: TEntryPostReq, res: TEntryPostRes) => {
 // @desc ------- Authenticate
 // @access ----- Private
 
-type TAuthGetRes = Response<IUser | IResError | null>;
+type TAuthGetRes = ResponseLocals<IUser | IResError | null>;
 
 router.get("/", auth, async (req: Request, res: TAuthGetRes) => {
   try {
-    const { server_id } = req.user || {};
+    const _id = res.locals.user._id;
 
     const user = await userModel.findOne({
-      server_id,
+      _id,
     });
 
     if (user) user.password = "";

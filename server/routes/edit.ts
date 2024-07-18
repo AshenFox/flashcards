@@ -1,8 +1,8 @@
 import express, { Request, Response } from "express";
 
-import cardModelGenerator from "../models/card_model";
-import moduleModelGenerator from "../models/module_model";
-import userModel from "../models/user_model";
+import { ResponseLocals } from "../@types/types";
+import cardModel from "../models/card_model";
+import moduleModel from "../models/module_model";
 import middleware from "../supplemental/middleware";
 import { notification_timeout } from "../supplemental/notifications_control";
 import { ICard, ICardBase } from "./../models/card_model";
@@ -29,28 +29,20 @@ interface IModuleDeleteQuery extends qs.ParsedQs {
 
 type TModuleDeleteReq = Request<any, any, any, IModuleDeleteQuery>;
 
-type TModuleDeleteRes = Response<IResMessage | IResError>;
+type TModuleDeleteRes = ResponseLocals<IResMessage | IResError>;
 
 router.delete(
   "/module",
   auth,
   async (req: TModuleDeleteReq, res: TModuleDeleteRes) => {
     try {
-      let { _id } = req.query;
+      let { _id: module_id } = req.query;
 
-      const server_id = req.user.server_id;
+      const user = res.locals.user;
+      const { _id } = user;
 
-      const user = await userModel.findOne({
-        server_id,
-      });
-
-      if (!user) throw new Error(`User ${server_id} has not been found.`);
-
-      const moduleModel = moduleModelGenerator(user.username);
-      const cardModel = cardModelGenerator(user.username);
-
-      await moduleModel.deleteOne({ _id });
-      await cardModel.deleteMany({ moduleID: _id });
+      await moduleModel.deleteOne({ _id: module_id, author_id: _id });
+      await cardModel.deleteMany({ moduleID: module_id, author_id: _id });
 
       res.status(200).json({ msg: "The module has been deleted." });
 
@@ -74,37 +66,33 @@ interface ICardDeleteQuery extends qs.ParsedQs {
 
 type TCardDeleteReq = Request<any, any, any, ICardDeleteQuery>;
 
-type TCardDeleteRes = Response<IResMessage | IResError>;
+type TCardDeleteRes = ResponseLocals<IResMessage | IResError>;
 
 router.delete(
   "/card",
   auth,
   async (req: TCardDeleteReq, res: TCardDeleteRes) => {
     try {
-      let { _id } = req.query;
+      let { _id: card_id } = req.query;
 
-      const server_id = req.user.server_id;
+      const user = res.locals.user;
+      const { _id } = user;
 
-      const user = await userModel.findOne({
-        server_id,
-      });
+      const card = await cardModel.findOne({ _id: card_id, author_id: _id });
 
-      if (!user) throw new Error(`User ${server_id} has not been found.`);
+      if (!card) throw new Error(`Card ${card_id} has not been found.`);
 
-      const cardModel = cardModelGenerator(user.username);
-      const moduleModel = moduleModelGenerator(user.username);
-
-      const card = await cardModel.findOne({ _id });
-
-      if (!card) throw new Error(`Card ${_id} has not been found.`);
-
-      await cardModel.deleteOne({ _id });
+      await cardModel.deleteOne({ _id: card_id, author_id: _id });
 
       const number = await cardModel.countDocuments({
         moduleID: card.moduleID,
+        author_id: _id,
       });
 
-      await moduleModel.updateOne({ _id: card.moduleID }, { number });
+      await moduleModel.updateOne(
+        { _id: card.moduleID, author_id: _id },
+        { number },
+      );
 
       res.status(200).json({ msg: "The card has been deleted." });
 
@@ -130,28 +118,21 @@ router.put("/module", auth, async (req: TModulePutReq, res: TModulePutRes) => {
   try {
     const module_data = req.body;
 
-    const { _id } = module_data;
+    const { _id: module_id } = module_data;
 
-    const server_id = req.user.server_id;
+    const _id = res.locals.user._id;
 
-    const user = await userModel.findOne({
-      server_id,
+    const foundModule = await moduleModel.findOne({
+      author_id: _id,
+      _id: module_id,
     });
 
-    if (!user) throw new Error(`User ${server_id} has not been found.`);
+    if (!foundModule)
+      throw new Error(`Module ${module_id} has not been found.`);
 
-    const moduleModel = moduleModelGenerator(user.username);
+    foundModule.title = module_data.title;
 
-    /* eslint-disable */
-    const module = await moduleModel.findOne({
-      _id,
-    });
-
-    if (!module) throw new Error(`Module ${_id} has not been found.`);
-
-    module.title = module_data.title;
-
-    await module.save();
+    await foundModule.save();
 
     res.status(200).json({ msg: "The module has been edited." });
   } catch (err) {
@@ -174,26 +155,19 @@ router.put("/card", auth, async (req: TCardPutReq, res: TCardPutRes) => {
   try {
     const card_data = req.body;
 
-    const { _id } = card_data;
+    const { _id: card_id } = card_data;
 
-    const server_id = req.user.server_id;
-
-    const user = await userModel.findOne({
-      server_id,
-    });
-
-    if (!user) throw new Error(`User ${server_id} has not been found.`);
-
-    const cardModel = cardModelGenerator(user.username);
+    const _id = res.locals.user._id;
 
     const card = await cardModel.findOne({
-      _id,
+      author_id: _id,
+      _id: card_id,
     });
 
-    if (!card) throw new Error(`Card ${_id} has not been found.`);
+    if (!card) throw new Error(`Card ${card_id} has not been found.`);
 
     card.term = card_data.term;
-    card.defenition = card_data.defenition;
+    card.definition = card_data.definition;
     card.imgurl = card_data.imgurl;
 
     await card.save();
@@ -226,42 +200,38 @@ router.post(
     try {
       const { _id_arr } = req.body;
 
-      const server_id = req.user.server_id;
+      const user = res.locals.user;
+      const { _id } = user;
 
-      const user = await userModel.findOne({
-        server_id,
+      const draft = await moduleModel.findOne({
+        author_id: _id,
+        draft: true,
       });
 
-      if (!user) throw new Error(`User ${server_id} has not been found.`);
-
-      const moduleModel = moduleModelGenerator(user.username);
-      const cardModel = cardModelGenerator(user.username);
-
-      const draft = await moduleModel.findOne({ draft: true });
-
       if (!draft)
-        throw new Error(`Draf for user ${user.username} has not been found.`);
+        throw new Error(`Draft for user ${user.username} has not been found.`);
 
       const new_module = await moduleModel.create({
-        title: draft.title,
         author: user.username,
-        author_id: user.server_id,
+        author_id: user._id,
+        title: draft.title,
         number: _id_arr.length,
         creation_date: new Date(),
         draft: false,
       });
 
       await cardModel.updateMany(
-        { _id: { $in: _id_arr } },
+        { _id: { $in: _id_arr }, author_id: _id },
         { moduleID: new_module._id },
       );
 
       const number = await cardModel.countDocuments({
         moduleID: draft._id,
+        author_id: _id,
       });
 
       if (!number) {
-        await moduleModel.deleteOne({ draft: true });
+        await moduleModel.deleteOne({ author_id: _id, draft: true });
       } else {
         draft.title = "";
         draft.number = number;
@@ -294,34 +264,32 @@ router.post("/card", auth, async (req: TCardPostReq, res: TCardPostRes) => {
   try {
     const { module } = req.body;
 
-    const server_id = req.user.server_id;
-
-    const user = await userModel.findOne({
-      server_id,
-    });
-
-    if (!user) throw new Error(`User ${server_id} has not been found.`);
-
-    const cardModel = cardModelGenerator(user.username);
-    const moduleModel = moduleModelGenerator(user.username);
+    const user = res.locals.user;
+    const { _id } = user;
 
     const new_card = await cardModel.create({
       moduleID: module._id,
       term: "",
-      defenition: "",
+      definition: "",
       imgurl: "",
       creation_date: new Date(),
       studyRegime: false,
       stage: 1,
       nextRep: new Date(),
       prevStage: new Date(),
+      author_id: _id,
+      author: user.username,
     });
 
     const number = await cardModel.countDocuments({
+      author_id: _id,
       moduleID: module._id,
     });
 
-    await moduleModel.updateOne({ _id: module._id }, { number });
+    await moduleModel.updateOne(
+      { _id: module._id, author_id: _id },
+      { number },
+    );
 
     res.status(200).json(new_card);
   } catch (err) {
@@ -345,33 +313,27 @@ type TDraftGetRes = Response<IDraftGetResBody | IResError>;
 
 router.get("/draft", auth, async (req: Request, res: TDraftGetRes) => {
   try {
-    const server_id = req.user.server_id;
+    const user = res.locals.user;
+    const { _id } = user;
 
-    const user = await userModel.findOne({
-      server_id,
-    });
+    let foundModule: IModule | null;
+    let cards: ICard[];
 
-    if (!user) throw new Error(`User ${server_id} has not been found.`);
-
-    const cardModel = cardModelGenerator(user.username);
-    const moduleModel = moduleModelGenerator(user.username);
-
-    let module: IModule | null, cards: ICard[];
-
-    module = await moduleModel.findOne({
+    foundModule = await moduleModel.findOne({
+      author_id: _id,
       draft: true,
     });
 
-    if (module) {
+    if (foundModule) {
       cards = await cardModel
-        .find({ moduleID: module._id })
+        .find({ author_id: _id, moduleID: foundModule._id })
         .sort({ creation_date: 1 });
     } else {
       // Create a new draft
-      module = await moduleModel.create({
+      foundModule = await moduleModel.create({
         title: "",
         author: user.username,
-        author_id: user.server_id,
+        author_id: _id,
         number: 5,
         creation_date: new Date(),
         draft: true,
@@ -381,9 +343,9 @@ router.get("/draft", auth, async (req: Request, res: TDraftGetRes) => {
 
       for (let i = 0; i < 5; i++) {
         cardsData.push({
-          moduleID: module._id,
+          moduleID: foundModule._id,
           term: "",
-          defenition: "",
+          definition: "",
           imgurl: "",
           creation_date: new Date(Date.now() + i),
           studyRegime: false,
@@ -391,13 +353,15 @@ router.get("/draft", auth, async (req: Request, res: TDraftGetRes) => {
           nextRep: new Date(),
           prevStage: new Date(),
           lastRep: new Date(),
+          author_id: _id,
+          author: user.username,
         });
       }
 
       cards = await cardModel.create(cardsData);
     }
 
-    res.status(200).json({ module, cards });
+    res.status(200).json({ module: foundModule, cards });
   } catch (err) {
     console.error(err);
     res.status(500).json({ errorBody: "Server Error" });

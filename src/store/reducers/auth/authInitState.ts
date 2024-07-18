@@ -5,7 +5,6 @@ export interface User {
     mobile?: Subscription;
   };
   _id: string;
-  server_id: string;
   username: string;
   email: string;
   registration_date: string;

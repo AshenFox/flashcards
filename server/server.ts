@@ -30,9 +30,6 @@ if (dev && isHTTPS) {
   serverOptions.passphrase = "cats";
 }
 
-// Connect database
-connectDB();
-
 // Tune next.js
 const nextApp = next({ dev });
 
@@ -74,9 +71,10 @@ const webpushSubject = config.get("webpushSubject") as string;
 
 webpush.setVapidDetails(webpushSubject, publicVapidKey, privateVapidKey);
 
-let pushInterval = setInterval(async () => {
+let pushInterval: NodeJS.Timer | null = null;
+const pushIntervalCallback = async () => {
   await send_notifications();
-}, 5000);
+};
 
 // ----------
 // ----------
@@ -84,6 +82,9 @@ let pushInterval = setInterval(async () => {
 
 const start = async () => {
   try {
+    // Connect database
+    await connectDB();
+
     // Prepare next.js
     await nextApp.prepare();
     console.log(`Next.js is ready`);
@@ -98,6 +99,8 @@ const start = async () => {
     } else {
       expressServer.listen(port);
     }
+
+    pushInterval = setInterval(pushIntervalCallback, 5000);
 
     console.log(
       `Server is ready on http${isHTTPS ? "s" : ""}://localhost:${port}`,
