@@ -45,7 +45,7 @@ export const send_notifications = async () => {
       await notificationModel.countDocuments(filterObj),
     );
 
-    if (notificationsExist) return;
+    if (!notificationsExist) return;
 
     let notifications = await notificationModel.find(filterObj);
 
