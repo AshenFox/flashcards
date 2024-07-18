@@ -1,4 +1,5 @@
-import express, { Request, Response } from "express";
+import express, { Request } from "express";
+import { FilterQuery } from "mongoose";
 
 import { ResponseLocals } from "../@types/types";
 import cardModel, { ICard, ICardSortObj } from "../models/card_model";
@@ -56,13 +57,7 @@ router.get(
         author_id: _id,
       });
 
-      const filterObj: {
-        author_id: string;
-        draft: boolean;
-        title?: {
-          $regex: string;
-        };
-      } = {
+      const filterObj: FilterQuery<IModule> = {
         author_id: _id,
         draft: false,
       };
@@ -142,15 +137,11 @@ router.get("/cards", auth, async (req: TCardsGetReq, res: TCardsGetRes) => {
       draft: true,
     });
 
-    const filterObj: {
-      author_id: string;
-      moduleID?: { $ne: string };
-      term?: { $regex: string };
-      definition?: { $regex: string };
-    } = {
+    const filterObj: FilterQuery<ICard> = {
       author_id: _id,
-      moduleID: draft ? { $ne: draft._id } : undefined,
     };
+
+    if (draft) filterObj.moduleID = { $ne: draft._id };
 
     const sortObj: ICardSortObj = {};
 
@@ -263,12 +254,10 @@ router.get(
 
       if (!user) throw new Error(`User ${_id} has not been found.`);
 
-      const filterObj: {
-        moduleID: string;
-        author_id: string;
-        term?: { $regex: string };
-        definition?: { $regex: string };
-      } = { moduleID: module_id, author_id: _id };
+      const filterObj: FilterQuery<ICard> = {
+        moduleID: module_id,
+        author_id: _id,
+      };
 
       const sortObj: ICardSortObj = { creation_date: 1 };
 

@@ -166,11 +166,11 @@ router.get("/urban", auth, async (req: TUrbanGetReq, res: TUrbanGetRes) => {
   try {
     const { query } = req.query;
 
-    const respose = await axios.get(
+    const response = await axios.get(
       `https://www.urbandictionary.com/define.php?term=${query}`,
     );
 
-    const { data }: { data: string } = respose;
+    const { data }: { data: string } = response;
     const $ = cheerio.load(data);
 
     const result: TUrbanGetResBody = [];
