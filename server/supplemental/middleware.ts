@@ -29,8 +29,8 @@ const auth = async (req: Request, res: TAuthMiddleRes, next: NextFunction) => {
     res.locals.user = user;
 
     next();
-  } catch (err) {
-    res.status(401).json({ msg: err?.message || "Token is not valid" });
+  } catch (err: any) {
+    res.status(401).json({ msg: err?.message ?? "Token is not valid" });
   }
 };
 
