@@ -5,7 +5,6 @@
 /.pnp
 .pnp.js
 /.cert/
-/.vscode/
 
 # testing
 /coverage
