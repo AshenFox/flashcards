@@ -24,5 +24,6 @@ jobs:
         key: ${{ secrets.SSH_PRIVATE_KEY }}
         port: ${{ secrets.PORT }}
         script: |
+          echo ${{ secrets.PASSWORD }} & sudo -S su
           cd apps/flashcards
-          sudo git pull
+          git pull
