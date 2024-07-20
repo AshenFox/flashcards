@@ -23,7 +23,7 @@ jobs:
         passphrase: ${{ secrets.PASSPHRASE }}
         key: ${{ secrets.SSH_PRIVATE_KEY }}
         port: ${{ secrets.PORT }}
+        password: ${ secrets.PASSWORD }}
         script: |
-          echo ${{ secrets.PASSWORD }} | sudo -S su
           cd apps/flashcards
-          git pull
+          sudo git pull
