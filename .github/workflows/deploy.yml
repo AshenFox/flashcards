@@ -25,5 +25,6 @@ jobs:
         port: ${{ secrets.PORT }}
         password: ${{ secrets.PASSWORD }}
         script: |
-          echo "password"
+          cd apps/flashcards
+          echo ${{ secrets.PASSWORD }} | sudo -S git pull
           
