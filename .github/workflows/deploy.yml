@@ -26,5 +26,4 @@ jobs:
         script: |
           cd apps/flashcards
           echo ${{ secrets.PASSWORD }} | sudo -S git pull
-          git pull
           
