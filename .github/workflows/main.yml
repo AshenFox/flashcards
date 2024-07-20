@@ -25,4 +25,4 @@ jobs:
         port: ${{ secrets.PORT }}
         script: |
           cd apps/flashcards
-          git pull
+          sudo git pull
