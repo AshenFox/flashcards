@@ -1,4 +1,4 @@
-Посмотреть проект можно по ссылке - [Flashcards](https://fox-flash-cards.herokuapp.com/)
+Посмотреть проект можно по ссылке - [Flashcards](https://flashcards-ashenfox.duckdns.org/)
 
 Для входа можно использовать:  
 Логин: Testuser1  
