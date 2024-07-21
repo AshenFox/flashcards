@@ -25,5 +25,5 @@ jobs:
           port: ${{ secrets.PORT }}
           script: |
             cd apps/flashcards
-            echo ${{ secrets.PASSWORD }} | sudo -S git pull
-            echo ${{ secrets.PASSWORD }} | sudo -S docker ps
+            echo ${{ secrets.PASSWORD }} | sudo -S -k git pull
+            echo ${{ secrets.PASSWORD }} | sudo -S -k docker stop $(echo ${{ secrets.PASSWORD }} | sudo -S -k docker ps -a -q)
