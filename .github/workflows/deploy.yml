@@ -26,4 +26,4 @@ jobs:
           script: |
             cd apps/flashcards
             echo ${{ secrets.PASSWORD }} | sudo -S git pull
-            docker stop $(docker ps -a -q)
+            echo ${{ secrets.PASSWORD }} | sudo -S docker stop $(docker ps -a -q)
