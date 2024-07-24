@@ -2,11 +2,11 @@ import express, { Request } from "express";
 import { FilterQuery } from "mongoose";
 
 import { ResponseLocals } from "../@types/types";
-import cardModel, { ICard, ICardSortObj } from "../models/card_model";
+import cardModel, { Card, CardSortObj } from "../models/card_model";
 import moduleModel from "../models/module_model";
 import userModel from "../models/user_model";
 import middleware from "../supplemental/middleware";
-import { IModule, IModuleSortObj } from "./../models/module_model";
+import { Module, ModuleSortObj } from "./../models/module_model";
 
 const { auth } = middleware;
 const router = express.Router();
@@ -19,23 +19,23 @@ interface IResError {
 // @desc ------- Get user modules
 // @access ----- Private
 
-interface IModulesGetQuery extends qs.ParsedQs {
+interface ModulesGetQuery extends qs.ParsedQs {
   skip: string;
   filter: string;
   created: "newest" | "oldest";
 }
 
-type TModulesGetReq = Request<any, any, any, IModulesGetQuery>;
+type TModulesGetReq = Request<any, any, any, ModulesGetQuery>;
 
-interface IModulesGetResBody {
-  draft: null | IModule;
-  modules: IModule[];
+interface ModulesGetResBody {
+  draft: null | Module;
+  modules: Module[];
   modules_number: number;
   all_modules: boolean;
   all_modules_number: number;
 }
 
-type TModulesGetRes = ResponseLocals<IModulesGetResBody | IResError>;
+type TModulesGetRes = ResponseLocals<ModulesGetResBody | IResError>;
 
 router.get(
   "/modules",
@@ -57,12 +57,12 @@ router.get(
         author_id: _id,
       });
 
-      const filterObj: FilterQuery<IModule> = {
+      const filterObj: FilterQuery<Module> = {
         author_id: _id,
         draft: false,
       };
 
-      const sortObj: IModuleSortObj = {};
+      const sortObj: ModuleSortObj = {};
 
       if (created === "newest") sortObj.creation_date = -1;
       if (created === "oldest") sortObj.creation_date = 1;
@@ -84,7 +84,7 @@ router.get(
 
       const all_modules = all_modules_number <= (skipNum + 1) * 10;
 
-      const result: IModulesGetResBody = {
+      const result: ModulesGetResBody = {
         draft: null,
         modules,
         modules_number,
@@ -106,23 +106,23 @@ router.get(
 // @desc ------- Get user cards
 // @access ----- Private
 
-interface ICardsGetQuery extends qs.ParsedQs {
+interface CardsGetQuery extends qs.ParsedQs {
   skip: string;
   filter: string;
   by: "term" | "definition";
   created: "newest" | "oldest";
 }
 
-type TCardsGetReq = Request<any, any, any, ICardsGetQuery>;
+type TCardsGetReq = Request<any, any, any, CardsGetQuery>;
 
-interface ICardsGetResBody {
-  cards: ICard[];
+interface CardsGetResBody {
+  cards: Card[];
   cards_number: number;
   all_cards: boolean;
   all_cards_number: number;
 }
 
-type TCardsGetRes = ResponseLocals<ICardsGetResBody | IResError>;
+type TCardsGetRes = ResponseLocals<CardsGetResBody | IResError>;
 
 router.get("/cards", auth, async (req: TCardsGetReq, res: TCardsGetRes) => {
   try {
@@ -137,13 +137,13 @@ router.get("/cards", auth, async (req: TCardsGetReq, res: TCardsGetRes) => {
       draft: true,
     });
 
-    const filterObj: FilterQuery<ICard> = {
+    const filterObj: FilterQuery<Card> = {
       author_id: _id,
     };
 
     if (draft) filterObj.moduleID = { $ne: draft._id };
 
-    const sortObj: ICardSortObj = {};
+    const sortObj: CardSortObj = {};
 
     if (created === "newest") sortObj.creation_date = -1;
     if (created === "oldest") sortObj.creation_date = 1;
@@ -176,18 +176,18 @@ router.get("/cards", auth, async (req: TCardsGetReq, res: TCardsGetRes) => {
 // @desc ------- Get module with cards
 // @access ----- Private
 
-interface IModuleGetQuery extends qs.ParsedQs {
+interface ModuleGetQuery extends qs.ParsedQs {
   _id: string;
 }
 
-type TModuleGetReq = Request<any, any, any, IModuleGetQuery>;
+type TModuleGetReq = Request<any, any, any, ModuleGetQuery>;
 
-interface IModuleGetResBody {
-  module: IModule;
-  cards: ICard[];
+interface ModuleGetResBody {
+  module: Module;
+  cards: Card[];
 }
 
-type TModuleGetRes = ResponseLocals<IModuleGetResBody | IResError>;
+type TModuleGetRes = ResponseLocals<ModuleGetResBody | IResError>;
 
 router.get("/module", auth, async (req: TModuleGetReq, res: TModuleGetRes) => {
   try {
@@ -225,19 +225,19 @@ router.get("/module", auth, async (req: TModuleGetReq, res: TModuleGetRes) => {
 // @desc ------- Get only the module's cards
 // @access ----- Private
 
-interface IModuleCardsGetQuery extends qs.ParsedQs {
+interface ModuleCardsGetQuery extends qs.ParsedQs {
   _id: string;
   filter: string;
   by: "term" | "definition";
 }
 
-type TModuleCardsGetReq = Request<any, any, any, IModuleCardsGetQuery>;
+type TModuleCardsGetReq = Request<any, any, any, ModuleCardsGetQuery>;
 
-interface IModuleCardsGetResBody {
-  cards: ICard[];
+interface ModuleCardsGetResBody {
+  cards: Card[];
 }
 
-type TModuleCardsGetRes = ResponseLocals<IModuleCardsGetResBody | IResError>;
+type TModuleCardsGetRes = ResponseLocals<ModuleCardsGetResBody | IResError>;
 
 router.get(
   "/module/cards",
@@ -254,12 +254,12 @@ router.get(
 
       if (!user) throw new Error(`User ${_id} has not been found.`);
 
-      const filterObj: FilterQuery<ICard> = {
+      const filterObj: FilterQuery<Card> = {
         moduleID: module_id,
         author_id: _id,
       };
 
-      const sortObj: ICardSortObj = { creation_date: 1 };
+      const sortObj: CardSortObj = { creation_date: 1 };
 
       if (filter)
         filterObj[by] = {

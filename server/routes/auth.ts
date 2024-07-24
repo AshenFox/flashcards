@@ -7,7 +7,7 @@ import { ResponseLocals } from "../@types/types";
 import userModel from "../models/user_model";
 import { check, ICheckResult } from "../supplemental/checks";
 import middleware from "../supplemental/middleware";
-import { IUser } from "./../models/user_model";
+import { User } from "./../models/user_model";
 
 const { auth } = middleware;
 
@@ -73,7 +73,7 @@ router.post("/entry/:type", async (req: TEntryPostReq, res: TEntryPostRes) => {
     const res_data: IEntryPostResBody = { errors };
 
     if (errors.ok) {
-      let user: IUser | null = null;
+      let user: User | null = null;
 
       if (type === "log_in") {
         user = await userModel.findOne({
@@ -116,7 +116,7 @@ router.post("/entry/:type", async (req: TEntryPostReq, res: TEntryPostRes) => {
 // @desc ------- Authenticate
 // @access ----- Private
 
-type TAuthGetRes = ResponseLocals<IUser | IResError | null>;
+type TAuthGetRes = ResponseLocals<User | IResError | null>;
 
 router.get("/", auth, async (req: Request, res: TAuthGetRes) => {
   try {

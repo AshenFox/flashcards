@@ -3,7 +3,7 @@ import { PushSubscription } from "web-push";
 
 const Schema = mongoose.Schema;
 
-export interface IUser {
+export interface User {
   _id: string;
   username: string;
   email: string;
@@ -16,7 +16,7 @@ export interface IUser {
   };
 }
 
-const UserSchema = new Schema<IUser>({
+const UserSchema = new Schema<User>({
   username: String,
   email: String,
   password: String,
@@ -28,6 +28,6 @@ const UserSchema = new Schema<IUser>({
   },
 });
 
-const userModel = mongoose.model<IUser>("Users", UserSchema);
+const userModel = mongoose.model<User>("Users", UserSchema);
 
 export default userModel;

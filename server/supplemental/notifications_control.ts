@@ -3,8 +3,8 @@ import webpush from "web-push";
 
 import notificationModel from "../models//notification_model";
 import cardModel from "../models/card_model";
-import userModel, { IUser } from "../models/user_model";
-import { ICard } from "./../models/card_model";
+import userModel, { User } from "../models/user_model";
+import { Card } from "./../models/card_model";
 import sr_stages from "./sr_stages";
 
 // Tests
@@ -32,7 +32,7 @@ newNotif(); */
 export const send_notifications = async () => {
   try {
     const users: {
-      [key: string]: IUser;
+      [key: string]: User;
     } = {};
 
     const now = new Date(Date.now());
@@ -98,7 +98,7 @@ const usersNotifTimers: {
   [key: string]: ReturnType<typeof setTimeout>;
 } = {};
 
-export const notification_timeout = async (user: IUser) => {
+export const notification_timeout = async (user: User) => {
   try {
     if (usersNotifTimers[user._id]) clearTimeout(usersNotifTimers[user._id]);
 
@@ -112,7 +112,7 @@ export const notification_timeout = async (user: IUser) => {
 };
 
 interface INotif {
-  cards: ICard[];
+  cards: Card[];
   number: number;
   calcTime: Date;
   calcPrevStage: Date;
@@ -121,13 +121,13 @@ interface INotif {
   stage: number;
 }
 
-const create_notifications = async (user: IUser) => {
+const create_notifications = async (user: User) => {
   try {
     const { _id } = user;
 
     await notificationModel.deleteMany({ user_id: _id });
 
-    const filterObj: FilterQuery<ICard> = {
+    const filterObj: FilterQuery<Card> = {
       author_id: _id,
       studyRegime: true,
     };

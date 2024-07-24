@@ -5,8 +5,8 @@ import cardModel from "../models/card_model";
 import moduleModel from "../models/module_model";
 import middleware from "../supplemental/middleware";
 import { notification_timeout } from "../supplemental/notifications_control";
-import { ICard, ICardBase } from "./../models/card_model";
-import { IModule } from "./../models/module_model";
+import { Card, CardBase } from "./../models/card_model";
+import { Module } from "./../models/module_model";
 
 const { auth } = middleware;
 const router = express.Router();
@@ -23,11 +23,11 @@ interface IResMessage {
 // @desc ------- Delete a module
 // @access ----- Private
 
-interface IModuleDeleteQuery extends qs.ParsedQs {
+interface ModuleDeleteQuery extends qs.ParsedQs {
   _id: string;
 }
 
-type TModuleDeleteReq = Request<any, any, any, IModuleDeleteQuery>;
+type TModuleDeleteReq = Request<any, any, any, ModuleDeleteQuery>;
 
 type TModuleDeleteRes = ResponseLocals<IResMessage | IResError>;
 
@@ -60,11 +60,11 @@ router.delete(
 // @desc ------- Delete a card
 // @access ----- Private
 
-interface ICardDeleteQuery extends qs.ParsedQs {
+interface CardDeleteQuery extends qs.ParsedQs {
   _id: string;
 }
 
-type TCardDeleteReq = Request<any, any, any, ICardDeleteQuery>;
+type TCardDeleteReq = Request<any, any, any, CardDeleteQuery>;
 
 type TCardDeleteRes = ResponseLocals<IResMessage | IResError>;
 
@@ -110,7 +110,7 @@ router.delete(
 // @desc ------- Edit a module
 // @access ----- Private
 
-type TModulePutReq = Request<any, any, IModule>;
+type TModulePutReq = Request<any, any, Module>;
 
 type TModulePutRes = Response<IResMessage | IResError>;
 
@@ -147,7 +147,7 @@ router.put("/module", auth, async (req: TModulePutReq, res: TModulePutRes) => {
 // @desc ------- Edit a card
 // @access ----- Private
 
-type TCardPutReq = Request<any, any, ICard>;
+type TCardPutReq = Request<any, any, Card>;
 
 type TCardPutRes = Response<IResMessage | IResError>;
 
@@ -185,11 +185,11 @@ router.put("/card", auth, async (req: TCardPutReq, res: TCardPutRes) => {
 // @desc ------- Create a module
 // @access ----- Private
 
-interface IModulePostReqBody {
+interface ModulePostReqBody {
   _id_arr: string[];
 }
 
-type TModulePostReq = Request<any, any, IModulePostReqBody>;
+type TModulePostReq = Request<any, any, ModulePostReqBody>;
 
 type TModulePostRes = Response<IResMessage | IResError>;
 
@@ -252,13 +252,13 @@ router.post(
 // @desc ------- Create a card
 // @access ----- Private
 
-interface ICardPostReqBody {
-  module: IModule;
+interface CardPostReqBody {
+  module: Module;
 }
 
-type TCardPostReq = Request<any, any, ICardPostReqBody>;
+type TCardPostReq = Request<any, any, CardPostReqBody>;
 
-type TCardPostRes = Response<ICard | IResError>;
+type TCardPostRes = Response<Card | IResError>;
 
 router.post("/card", auth, async (req: TCardPostReq, res: TCardPostRes) => {
   try {
@@ -305,8 +305,8 @@ router.post("/card", auth, async (req: TCardPostReq, res: TCardPostRes) => {
 // @access ----- Private
 
 interface IDraftGetResBody {
-  module: IModule;
-  cards: ICard[];
+  module: Module;
+  cards: Card[];
 }
 
 type TDraftGetRes = Response<IDraftGetResBody | IResError>;
@@ -316,8 +316,8 @@ router.get("/draft", auth, async (req: Request, res: TDraftGetRes) => {
     const user = res.locals.user;
     const { _id } = user;
 
-    let foundModule: IModule | null;
-    let cards: ICard[];
+    let foundModule: Module | null;
+    let cards: Card[];
 
     foundModule = await moduleModel.findOne({
       author_id: _id,
@@ -339,7 +339,7 @@ router.get("/draft", auth, async (req: Request, res: TDraftGetRes) => {
         draft: true,
       });
 
-      const cardsData: ICardBase[] = [];
+      const cardsData: CardBase[] = [];
 
       for (let i = 0; i < 5; i++) {
         cardsData.push({

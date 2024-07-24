@@ -2,7 +2,7 @@ import mongoose, { SortOrder } from "mongoose";
 
 const Schema = mongoose.Schema;
 
-export interface ICardBase {
+export interface CardBase {
   moduleID: string;
   term: string;
   definition: string;
@@ -17,13 +17,13 @@ export interface ICardBase {
   author: string;
 }
 
-export interface ICard extends ICardBase {
+export interface Card extends CardBase {
   _id: string;
 }
 
-export type ICardSortObj = { [key in keyof ICard]?: SortOrder };
+export type CardSortObj = { [key in keyof Card]?: SortOrder };
 
-const CardSchema = new Schema<ICard>({
+const CardSchema = new Schema<Card>({
   moduleID: String,
   term: String,
   definition: String,
@@ -38,6 +38,6 @@ const CardSchema = new Schema<ICard>({
   author: String,
 });
 
-const cardModel = mongoose.model<ICard>(`Cards`, CardSchema);
+const cardModel = mongoose.model<Card>(`Cards`, CardSchema);
 
 export default cardModel;

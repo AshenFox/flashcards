@@ -3,7 +3,7 @@ import { FilterQuery } from "mongoose";
 
 import { ResponseLocals } from "../@types/types";
 import notificationModel from "../models//notification_model";
-import cardModel, { ICard, ICardSortObj } from "../models/card_model";
+import cardModel, { Card, CardSortObj } from "../models/card_model";
 import middleware from "../supplemental/middleware";
 import { notification_timeout } from "../supplemental/notifications_control";
 import sr_stages from "../supplemental/sr_stages";
@@ -19,17 +19,17 @@ interface IResError {
 // @desc ------- Get Study Regime cards
 // @access ----- Private
 
-interface ICardsGetQuery extends qs.ParsedQs {
+interface CardsGetQuery extends qs.ParsedQs {
   number: string;
 }
 
-type TCardsGetReq = Request<any, any, any, ICardsGetQuery>;
+type TCardsGetReq = Request<any, any, any, CardsGetQuery>;
 
-interface ICardsGetResBody {
-  cards: ICard[];
+interface CardsGetResBody {
+  cards: Card[];
 }
 
-type TCardsGetRes = ResponseLocals<ICardsGetResBody | IResError>;
+type TCardsGetRes = ResponseLocals<CardsGetResBody | IResError>;
 
 router.get("/cards", auth, async (req: TCardsGetReq, res: TCardsGetRes) => {
   try {
@@ -39,12 +39,12 @@ router.get("/cards", auth, async (req: TCardsGetReq, res: TCardsGetRes) => {
 
     const _id = res.locals.user._id;
 
-    const filterObj: FilterQuery<ICard> = {
+    const filterObj: FilterQuery<Card> = {
       author_id: _id,
       studyRegime: true,
       nextRep: { $lte: new Date() },
     };
-    const sortObj: ICardSortObj = { creation_date: -1 };
+    const sortObj: CardSortObj = { creation_date: -1 };
 
     const cards = await cardModel.find(filterObj).sort(sortObj).limit(numCards);
 
@@ -256,7 +256,7 @@ router.put("/drop", auth, async (req: TDropPutReq, res: TDropPutRes) => {
 
 export default router;
 
-const determine_stage = (card: ICard): number => {
+const determine_stage = (card: Card): number => {
   let delay = Date.now() - card.prevStage.getTime();
   let stage = card.stage;
 

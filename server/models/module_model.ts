@@ -2,7 +2,7 @@ import mongoose, { SortOrder } from "mongoose";
 
 const Schema = mongoose.Schema;
 
-export interface IModule {
+export interface Module {
   _id: string;
   title: string;
   author: string;
@@ -13,9 +13,9 @@ export interface IModule {
   draft: boolean;
 }
 
-export type IModuleSortObj = { [key in keyof IModule]?: SortOrder };
+export type ModuleSortObj = { [key in keyof Module]?: SortOrder };
 
-const ModuleSchema = new Schema<IModule>({
+const ModuleSchema = new Schema<Module>({
   title: String,
   author: String,
   author_id: String,
@@ -25,6 +25,6 @@ const ModuleSchema = new Schema<IModule>({
   draft: Boolean,
 });
 
-const moduleModel = mongoose.model<IModule>(`Modules`, ModuleSchema);
+const moduleModel = mongoose.model<Module>(`Modules`, ModuleSchema);
 
 export default moduleModel;
