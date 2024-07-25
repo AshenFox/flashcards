@@ -1,13 +1,12 @@
+import { User } from "@common/types";
+import userModel from "@models/user_model";
+import { check, ICheckResult } from "@supplemental/checks";
+import middleware from "@supplemental/middleware";
+import { ResponseLocals } from "@supplemental/types";
 import bcrypt from "bcryptjs";
 import config from "config";
 import express, { Request, Response } from "express";
 import jwt from "jsonwebtoken";
-
-import { ResponseLocals } from "../@types/types";
-import userModel from "../models/user_model";
-import { check, ICheckResult } from "../supplemental/checks";
-import middleware from "../supplemental/middleware";
-import { User } from "./../models/user_model";
 
 const { auth } = middleware;
 

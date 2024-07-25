@@ -10,7 +10,7 @@
     "build": "next build",
     "_start": "node server/server.js",
     "start": "node .server/server.js",
-    "build:server": "tsc --p ./server/tsconfig.server.json",
+    "build:server": "tsc --p ./server/tsconfig.json",
     "prod": "docker-compose -f docker-compose.prod.yaml up -d",
     "prod-rebuild": "docker-compose -f docker-compose.prod.yaml up -d --no-deps --build app",
     "lint": "next lint",

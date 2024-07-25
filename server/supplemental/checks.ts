@@ -1,6 +1,5 @@
+import userModel from "@models/user_model";
 import bcrypt from "bcryptjs";
-
-import userModel from "../models/user_model";
 
 const minLength = (str: string, length: number) => str.length <= length;
 

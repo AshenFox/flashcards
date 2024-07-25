@@ -1,25 +1,7 @@
+import { Card } from "@common/types";
 import mongoose, { SortOrder } from "mongoose";
 
 const Schema = mongoose.Schema;
-
-export interface CardBase {
-  moduleID: string;
-  term: string;
-  definition: string;
-  imgurl: string;
-  creation_date: Date;
-  studyRegime: boolean;
-  stage: number;
-  nextRep: Date;
-  prevStage: Date;
-  lastRep: Date;
-  author_id: string;
-  author: string;
-}
-
-export interface Card extends CardBase {
-  _id: string;
-}
 
 export type CardSortObj = { [key in keyof Card]?: SortOrder };
 

@@ -1,9 +1,9 @@
+import userModel from "@models/user_model";
 import config from "config";
 import { NextFunction, Request } from "express";
 import jwt from "jsonwebtoken";
 
-import { ResponseLocals } from "../@types/types";
-import userModel from "../models/user_model";
+import { ResponseLocals } from "./types";
 
 type TAuthMiddleRes = ResponseLocals<{ msg: string }>;
 

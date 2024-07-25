@@ -1,10 +1,10 @@
+import { Card, User } from "@common/types";
+import cardModel from "@models/card_model";
+import notificationModel from "@models/notification_model";
+import userModel from "@models/user_model";
 import { FilterQuery } from "mongoose";
 import webpush from "web-push";
 
-import notificationModel from "../models//notification_model";
-import cardModel from "../models/card_model";
-import userModel, { User } from "../models/user_model";
-import { Card } from "./../models/card_model";
 import sr_stages from "./sr_stages";
 
 // Tests

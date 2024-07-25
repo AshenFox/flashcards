@@ -1,7 +1,6 @@
+import client_interface from "@supplemental/client_interface";
+import middleware from "@supplemental/middleware";
 import express, { Request, Response } from "express";
-
-import client_interface from "../supplemental/client_interface";
-import middleware from "../supplemental/middleware";
 
 const { auth } = middleware;
 const router = express.Router();

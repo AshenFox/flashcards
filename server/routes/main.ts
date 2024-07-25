@@ -1,12 +1,12 @@
+import { Card, Module } from "@common/types";
+import cardModel, { CardSortObj } from "@models/card_model";
+import moduleModel from "@models/module_model";
+import { ModuleSortObj } from "@models/module_model";
+import userModel from "@models/user_model";
+import middleware from "@supplemental/middleware";
+import { ResponseLocals } from "@supplemental/types";
 import express, { Request } from "express";
 import { FilterQuery } from "mongoose";
-
-import { ResponseLocals } from "../@types/types";
-import cardModel, { Card, CardSortObj } from "../models/card_model";
-import moduleModel from "../models/module_model";
-import userModel from "../models/user_model";
-import middleware from "../supplemental/middleware";
-import { Module, ModuleSortObj } from "./../models/module_model";
 
 const { auth } = middleware;
 const router = express.Router();

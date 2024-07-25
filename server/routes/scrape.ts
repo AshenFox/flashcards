@@ -1,9 +1,8 @@
+import { ScrapingHeaders } from "@supplemental/axios";
+import middleware from "@supplemental/middleware";
 import axios from "axios";
 import cheerio from "cheerio";
 import express, { Request, Response } from "express";
-
-import middleware from "../supplemental/middleware";
-import { ScrapingHeaders } from "./../supplemental/axios";
 
 const { auth } = middleware;
 const router = express.Router();
