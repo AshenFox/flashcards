@@ -1,4 +1,5 @@
-import axios from "@server/supplemental/axios";
+import axios from "@common/axios";
+import { UserDto } from "@common/types";
 
 import {
   AUTHENTICATE,
@@ -11,7 +12,6 @@ import {
   LOG_OUT,
 } from "../types";
 import { AppActions } from "../types";
-import { User } from "./../reducers/auth/authInitState";
 import { LogInErrors, SignUpErrors } from "./../reducers/modal/modalInitState";
 import { ThunkActionApp } from "./../store";
 
@@ -132,7 +132,7 @@ export const authenticate = () => <ThunkActionApp>(async (
 
       if (token) {
         axios.defaults.headers.Authorization = `Bearer ${token}`;
-        const { data }: { data: User } = await axios.get(`/api/auth`);
+        const { data }: { data: UserDto } = await axios.get(`/api/auth`);
 
         if (pathname === "/") {
           window.location.replace("/home/modules");

@@ -1,4 +1,5 @@
-import { User } from "../reducers/auth/authInitState";
+import { UserDto } from "@common/types";
+
 import { Round } from "../reducers/game/gameInitState";
 import {
   Card,
@@ -100,7 +101,7 @@ export interface LogOutAction {
 
 export interface AuthenticateAction {
   type: typeof AUTHENTICATE;
-  payload: User;
+  payload: UserDto;
 }
 
 export interface ChangeAuthLoadingAction {

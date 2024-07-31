@@ -1,4 +1,5 @@
-import axios from "@server/supplemental/axios";
+import axios from "@common/axios";
+import { CardDto } from "@common/types";
 
 import { card_fields, module_fields } from "../reducers/main/mainInitState";
 import {
@@ -22,7 +23,6 @@ import {
 } from "../types";
 import { AppActions } from "../types";
 import {
-  CardBase,
   Cards,
   Module,
   SelectBy,
@@ -188,7 +188,7 @@ export const get_cards = (ignore?: boolean) => <ThunkActionApp>(async (
         data: {
           all_cards: boolean;
           all_cards_number: number;
-          cards: CardBase[];
+          cards: CardDto[];
           cards_number: number;
         };
       } = await axios.get("/api/main/cards", {
@@ -239,7 +239,7 @@ export const get_module_cards = (_id: string) => <ThunkActionApp>(async (
         data,
       }: {
         data: {
-          cards: CardBase[];
+          cards: CardDto[];
         };
       } = await axios.get("/api/main/module/cards", {
         params: {
@@ -284,7 +284,7 @@ export const get_module = (_id: string) => <ThunkActionApp>(async (
         data,
       }: {
         data: {
-          cards: CardBase[];
+          cards: CardDto[];
           module: Module;
         };
       } = await axios.get("/api/main/module", {
@@ -330,7 +330,7 @@ export const get_draft = () => <ThunkActionApp>(async (dispatch, getState) => {
         data,
       }: {
         data: {
-          cards: CardBase[];
+          cards: CardDto[];
           module: Module;
         };
       } = await axios.get("/api/edit/draft");
@@ -359,7 +359,7 @@ export const get_draft = () => <ThunkActionApp>(async (dispatch, getState) => {
 // ==============================
 // ==============================
 
-const arr_to_obj = (arr: CardBase[]): Cards => {
+const arr_to_obj = (arr: CardDto[]): Cards => {
   return Object.fromEntries(
     arr.map(card => [
       card._id,

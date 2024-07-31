@@ -1,3 +1,5 @@
+import { SwapDatesWithStrings } from "./utils";
+
 export type CardBase = {
   moduleID: string;
   term: string;
@@ -16,3 +18,5 @@ export type CardBase = {
 export type Card = CardBase & {
   _id: string;
 };
+
+export type CardDto = SwapDatesWithStrings<Card>;

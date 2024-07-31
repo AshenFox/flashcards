@@ -1,3 +1,5 @@
+import { SwapDatesWithStrings } from "./utils";
+
 export type Module = {
   _id: string;
   title: string;
@@ -8,3 +10,5 @@ export type Module = {
   creation_date: Date;
   draft: boolean;
 };
+
+export type ModuleDto = SwapDatesWithStrings<Module>;

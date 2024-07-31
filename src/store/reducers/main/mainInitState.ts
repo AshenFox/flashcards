@@ -1,3 +1,5 @@
+import { CardDto, ModuleDto } from "@common/types";
+
 export type MainState = {
   is_server: boolean;
   module: Module | false;
@@ -72,22 +74,7 @@ export interface CardFields {
   question: boolean;
 }
 
-export interface CardBase {
-  _id: string;
-  moduleID: string;
-  term: string;
-  definition: string;
-  imgurl: string;
-  creation_date: string;
-  studyRegime: boolean;
-  stage: number;
-  nextRep: string;
-  lastRep: string;
-  prevStage: string;
-  __v: number;
-}
-
-export interface Card extends CardFields, CardBase {}
+export type Card = CardDto & CardFields;
 
 export interface Cards {
   [key: string]: Card;
@@ -98,17 +85,7 @@ export interface ModuleFields {
   module_loading: boolean;
 }
 
-export interface Module extends ModuleFields {
-  cards: []; // ??????
-  _id: string;
-  title: string;
-  author: string;
-  aothor_id: string;
-  number: number;
-  creation_date: string;
-  draft: boolean;
-  __v: number;
-}
+export type Module = ModuleDto & ModuleFields;
 
 // =================================================
 

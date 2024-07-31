@@ -1,4 +1,5 @@
-import axios from "@server/supplemental/axios";
+import axios from "@common/axios";
+import { CardDto } from "@common/types";
 import sanitize from "sanitize-html";
 
 import { saveLastUpdate } from "../helper-functions";
@@ -34,12 +35,7 @@ import {
   SET_URL_OK,
 } from "../types";
 import { AppActions } from "../types";
-import {
-  Card,
-  CardBase,
-  ImgurlBase,
-  ImgurlObjs,
-} from "./../reducers/main/mainInitState";
+import { Card, ImgurlBase, ImgurlObjs } from "./../reducers/main/mainInitState";
 import { ThunkActionApp } from "./../store";
 
 // SET_CARDS_SAVE_POSITIVE
@@ -576,7 +572,7 @@ export const create_card = () => <ThunkActionApp>(async (
       } = getState();
       if (!user) return;
 
-      const { data }: { data: CardBase } = await axios.post("/api/edit/card", {
+      const { data }: { data: CardDto } = await axios.post("/api/edit/card", {
         module,
       });
 

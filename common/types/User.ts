@@ -1,5 +1,7 @@
 import { PushSubscription } from "web-push";
 
+import { SwapDatesWithStrings } from "./utils";
+
 export type User = {
   _id: string;
   username: string;
@@ -12,3 +14,5 @@ export type User = {
     mobile: PushSubscription;
   };
 };
+
+export type UserDto = SwapDatesWithStrings<User>;

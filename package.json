@@ -15,6 +15,8 @@
     "prod-rebuild": "docker-compose -f docker-compose.prod.yaml up -d --no-deps --build app",
     "lint": "next lint",
     "scp-config": "scp -r ./config/ user@host:~/apps/flashcards",
+    "typescript": "tsc --extendedDiagnostics --noEmit",
+    "eslint": "eslint ./",
     "eslint:fix": "eslint ./ --fix",
     "stylelint:fix": "stylelint '**/*.{css,scss}' --fix",
     "pretty": "prettier --write \"./**/*.{ts,tsx,js,css,scss}\"",
@@ -74,7 +76,7 @@
     "stylelint-config-standard-scss": "^13.1.0",
     "stylelint-order": "^6.0.4",
     "tsx": "^4.7.1",
-    "typescript": "^4.6.3",
+    "typescript": "^5.5.4",
     "typescript-plugin-css-modules": "^5.1.0"
   }
 }

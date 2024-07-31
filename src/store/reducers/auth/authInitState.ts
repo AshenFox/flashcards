@@ -1,18 +1,7 @@
-export interface User {
-  subscriptions: {
-    pc?: Subscription;
-    tablet?: Subscription;
-    mobile?: Subscription;
-  };
-  _id: string;
-  username: string;
-  email: string;
-  registration_date: string;
-  __v: number;
-}
+import { UserDto } from "@common/types";
 
 export interface AuthState {
-  user: false | User;
+  user: false | UserDto;
   loading: boolean;
 }
 

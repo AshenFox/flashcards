@@ -1,4 +1,5 @@
-import axios from "@server/supplemental/axios";
+import axios from "@common/axios";
+import { CardDto } from "@common/types";
 
 import { saveLastUpdate } from "../helper-functions";
 import { card_fields } from "../reducers/main/mainInitState";
@@ -16,7 +17,7 @@ import {
   SET_SR_LOADING,
 } from "../types";
 import { AppActions } from "../types";
-import { CardBase, Cards } from "./../reducers/main/mainInitState";
+import { Cards } from "./../reducers/main/mainInitState";
 import { ThunkActionApp } from "./../store";
 
 // SET_SR_COUNTER
@@ -336,7 +337,7 @@ export const get_sr_cards = (number: number) => <ThunkActionApp>(async (
         data: { cards },
       }: {
         data: {
-          cards: CardBase[];
+          cards: CardDto[];
         };
       } = await axios.get("/api/sr/cards", {
         params: {
@@ -371,7 +372,7 @@ export const get_sr_cards = (number: number) => <ThunkActionApp>(async (
 // ==============================
 // ==============================
 
-const arr_to_obj = (arr: CardBase[]): Cards => {
+const arr_to_obj = (arr: CardDto[]): Cards => {
   return Object.fromEntries(
     arr.map(card => [
       card._id,
