@@ -5,11 +5,13 @@ const db: string = config.get("mongoURI");
 
 const connectDB = async () => {
   try {
-    await mongoose.connect(db);
+    mongoose.set("strictQuery", false);
+    await mongoose.connect(db, {});
 
     console.log("MongoDB connected");
   } catch (err) {
     console.error(err);
+    console.log("MongoDB failed to connect");
     process.exit(1);
   }
 };
