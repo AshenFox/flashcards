@@ -9,6 +9,10 @@
   background-color: var(--header-color);
   transition: all 0.1s linear;
 
+  @media (hover: none) {
+    border-top: 1px solid var(--header-secondary-color);
+  }
+
   @media (max-width: $tablet) or (max-height: $h-mobile) {
     padding: 0.75rem 0;
   }
