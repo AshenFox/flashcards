@@ -32,7 +32,7 @@ const Save = () => {
       className={s.save}
       active={active}
       icon={<SaveIcon />}
-      tooltip="Save the card"
+      tooltip="Save all the cards"
       onClick={clickAllSave}
     />
   );

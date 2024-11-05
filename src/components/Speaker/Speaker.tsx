@@ -59,7 +59,10 @@ const Speaker = ({ _id, text, type, className, ref }: SpeakerProps) => {
         pitch: 1,
         rate: 1,
         volume: 1,
-        start: () => console.info("Start speaking..."),
+        start: () => {
+          console.info("Start speaking...");
+          set_voice_speaking(_id, type);
+        },
         pause: e => {
           console.info("Pause");
         },
@@ -68,11 +71,14 @@ const Speaker = ({ _id, text, type, className, ref }: SpeakerProps) => {
           set_voice_speaking();
         },
         error: e => {
-          console.info("Something vent wrong...", e);
+          console.info("Interrupted or something vent wrong...", e);
+          set_voice_speaking();
         },
       });
     },
     [
+      _id,
+      type,
       set_voice_speaking,
       voices.engBackup,
       voices.english,
@@ -92,18 +98,8 @@ const Speaker = ({ _id, text, type, className, ref }: SpeakerProps) => {
     } else {
       const textForSpeaking = filterLang(filteredText, language);
       speak(textForSpeaking, language);
-      set_voice_speaking(_id, type);
     }
-  }, [
-    _id,
-    active,
-    filteredText,
-    language,
-    set_voice_speaking,
-    speak,
-    cancel,
-    type,
-  ]);
+  }, [active, filteredText, language, set_voice_speaking, speak, cancel]);
 
   return (
     <div
