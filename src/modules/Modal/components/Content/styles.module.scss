@@ -26,6 +26,12 @@ html:global(.dark) .login_input {
 }
 
 .signup_input {
+  svg {
+    width: 3rem;
+    cursor: pointer;
+    fill: var(--stronger-subtle-text-color);
+  }
+
   &:global(.input__container) {
     height: 4.4rem;
     padding: 0.5rem 1.5rem;

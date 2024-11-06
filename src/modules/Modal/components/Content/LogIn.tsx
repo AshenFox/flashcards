@@ -1,5 +1,5 @@
+import Eye from "@modules/Modal/Eye";
 import { useActions, useAppSelector } from "@store/hooks";
-import { EyeClosedIcon, EyeIcon } from "@ui/Icons";
 import Input from "@ui/Input";
 import { Button } from "@ui/InteractiveElement";
 import TextLabel from "@ui/TextLabel";
@@ -11,14 +11,13 @@ import s from "./styles.module.scss";
 const LogIn = () => {
   const { change_modal, control_field, enter } = useActions();
 
-  const [isPasswordVisible, setIsPasswordVisible] = useState(false);
-
   const username = useAppSelector(s => s.modal.log_in.username);
   const password = useAppSelector(s => s.modal.log_in.password);
   const userErr = useAppSelector(s => s.modal.log_in_errors.username);
   const passErr = useAppSelector(s => s.modal.log_in_errors.password);
   const loading = useAppSelector(s => s.modal.loading);
 
+  const [isPasswordVisible, setIsPasswordVisible] = useState(false);
   const onPasswordVisibleButton = (e: MouseEvent<SVGElement>) => {
     e.preventDefault();
     setIsPasswordVisible(v => !v);
@@ -72,11 +71,10 @@ const LogIn = () => {
         onChange={onChange}
         onKeyDown={onKeyDown}
         after={
-          isPasswordVisible ? (
-            <EyeIcon onClick={onPasswordVisibleButton} />
-          ) : (
-            <EyeClosedIcon onClick={onPasswordVisibleButton} />
-          )
+          <Eye
+            isVisible={isPasswordVisible}
+            onClick={onPasswordVisibleButton}
+          />
         }
       />
       <TextLabel htmlFor="password" className={s.label}>

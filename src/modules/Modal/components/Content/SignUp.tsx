@@ -1,9 +1,10 @@
+import Eye from "@modules/Modal/Eye";
 import { useActions, useAppSelector } from "@store/hooks";
 import Input from "@ui/Input";
 import { Button } from "@ui/InteractiveElement";
 import TextLabel from "@ui/TextLabel";
 import clsx from "clsx";
-import { ChangeEvent, memo, MouseEvent, useRef } from "react";
+import { ChangeEvent, memo, MouseEvent, useRef, useState } from "react";
 
 import Error from "./components/Error/Error";
 import s from "./styles.module.scss";
@@ -19,6 +20,13 @@ const SignUp = () => {
   const emailErr = useAppSelector(s => s.modal.sign_up_errors.email);
   const ok = useAppSelector(s => s.modal.sign_up_errors.ok);
   const loading = useAppSelector(s => s.modal.loading);
+
+  const [isPasswordVisible, setIsPasswordVisible] = useState(false);
+
+  const onPasswordVisibleButton = (e: MouseEvent<SVGElement>) => {
+    e.preventDefault();
+    setIsPasswordVisible(v => !v);
+  };
 
   const onClickChangeModal =
     (value: "log_in") => (e: MouseEvent<HTMLButtonElement>) => {
@@ -93,7 +101,7 @@ const SignUp = () => {
       <TextLabel htmlFor="password">PASSWORD:</TextLabel>
       <Input
         name="password"
-        type="password"
+        type={isPasswordVisible ? "text" : "password"}
         className={clsx(
           s.signup_input,
           !!password && passErr.ok && !timers.current.password && s.success,
@@ -102,6 +110,12 @@ const SignUp = () => {
         placeholder="Enter a password"
         value={password}
         onChange={onChange}
+        after={
+          <Eye
+            isVisible={isPasswordVisible}
+            onClick={onPasswordVisibleButton}
+          />
+        }
       />
 
       <Button
