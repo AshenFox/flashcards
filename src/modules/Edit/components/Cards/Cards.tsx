@@ -21,6 +21,7 @@ const Cards = () => {
     <ContentWrapper>
       <div className={s.cards}>
         <Container>
+          {!!formatted_cards.length && <AddCard />}
           <div className={s.container}>
             {formatted_cards.map((card, i, arr) => (
               <EditCard
