@@ -1,7 +1,10 @@
 import config from "config";
 import mongoose from "mongoose";
 
-const db: string = config.get("mongoURI");
+const dev = process.env.NODE_ENV !== "production";
+const setting = dev ? "mongoURI_dev" : "mongoURI_prod";
+
+const db: string = config.get(setting);
 
 const connectDB = async () => {
   try {
