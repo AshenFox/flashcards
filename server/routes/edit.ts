@@ -82,6 +82,17 @@ router.delete(
 
       await cardModel.deleteOne({ _id: card_id, author_id: _id });
 
+      const cards = await cardModel
+        .find({ author_id: _id, moduleID: card.moduleID })
+        .sort({ order: 1 });
+
+      await Promise.all(
+        cards.map(async (card, i) => {
+          card.order = i;
+          return await card.save();
+        }),
+      );
+
       const number = await cardModel.countDocuments({
         moduleID: card.moduleID,
         author_id: _id,
@@ -252,6 +263,7 @@ router.post(
 
 interface CardPostReqBody {
   module: Module;
+  position?: "start" | "end";
 }
 
 type TCardPostReq = Request<any, any, CardPostReqBody>;
@@ -260,10 +272,27 @@ type TCardPostRes = Response<Card | IResError>;
 
 router.post("/card", auth, async (req: TCardPostReq, res: TCardPostRes) => {
   try {
-    const { module } = req.body;
+    const { module, position } = req.body;
 
     const user = res.locals.user;
     const { _id } = user;
+
+    const cards = await cardModel
+      .find({ author_id: _id, moduleID: module._id })
+      .sort({ order: 1 });
+
+    let order = cards.length;
+
+    if (position === "start") {
+      order = 0;
+
+      await Promise.all(
+        cards.map(async card => {
+          card.order += 1;
+          return await card.save();
+        }),
+      );
+    } else if (position === "end") order = cards.length;
 
     const new_card = await cardModel.create({
       moduleID: module._id,
@@ -273,6 +302,7 @@ router.post("/card", auth, async (req: TCardPostReq, res: TCardPostRes) => {
       creation_date: new Date(),
       studyRegime: false,
       stage: 1,
+      order,
       nextRep: new Date(),
       prevStage: new Date(),
       author_id: _id,
@@ -348,6 +378,7 @@ router.get("/draft", auth, async (req: Request, res: TDraftGetRes) => {
           creation_date: new Date(Date.now() + i),
           studyRegime: false,
           stage: 1,
+          order: i,
           nextRep: new Date(),
           prevStage: new Date(),
           lastRep: new Date(),

@@ -18,6 +18,7 @@ const CardSchema = new Schema<Card>({
   lastRep: Date,
   author_id: String,
   author: String,
+  order: Number,
 });
 
 const cardModel = mongoose.model<Card>(`Cards`, CardSchema);

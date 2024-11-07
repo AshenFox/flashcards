@@ -8,6 +8,7 @@ export type CardBase = {
   creation_date: Date;
   studyRegime: boolean;
   stage: number;
+  order: number;
   nextRep: Date;
   prevStage: Date;
   lastRep: Date;
