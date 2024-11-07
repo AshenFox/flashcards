@@ -87,7 +87,7 @@ const Dropdown = () => {
   const logOut = (e: ReactMouseEvent<HTMLButtonElement>) => log_out();
 
   const stylesHeader: CSSProperties = {
-    paddingTop: `${header_height - 0.7}px`,
+    paddingTop: `${header_height - 1}px`,
   };
 
   const className = clsx(
