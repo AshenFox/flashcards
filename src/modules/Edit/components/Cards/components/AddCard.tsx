@@ -3,12 +3,16 @@ import { memo, MouseEvent, useCallback } from "react";
 
 import s from "./styles.module.scss";
 
-const AddCard = () => {
+type AddCardProps = {
+  position: "start" | "end";
+};
+
+const AddCard = ({ position }: AddCardProps) => {
   const { create_card } = useActions();
 
   const clickAddcard = useCallback(
-    (e: MouseEvent<HTMLDivElement>) => create_card(),
-    [create_card],
+    (e: MouseEvent<HTMLDivElement>) => create_card(position),
+    [position, create_card],
   );
 
   return (

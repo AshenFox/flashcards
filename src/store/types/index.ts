@@ -504,7 +504,10 @@ export type CreateModuleAction = {
 
 export type CreateCardAction = {
   type: typeof CREATE_CARD;
-  payload: Card;
+  payload: {
+    card: Card;
+    position: "start" | "end";
+  };
 };
 
 export type SetCardSaveAction = {

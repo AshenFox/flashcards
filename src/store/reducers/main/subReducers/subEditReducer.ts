@@ -83,7 +83,7 @@ const subEditReducer = (
         ...state,
         cards: {
           ...state.cards,
-          [payload._id]: payload,
+          [payload.card._id]: payload.card,
         },
       };
 

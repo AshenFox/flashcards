@@ -561,10 +561,8 @@ export const create_module = () => <ThunkActionApp>(async (
   });
 
 // CREATE_CARD
-export const create_card = () => <ThunkActionApp>(async (
-    dispatch,
-    getState,
-  ) => {
+export const create_card = (position: "start" | "end") =>
+  <ThunkActionApp>(async (dispatch, getState) => {
     try {
       const {
         auth: { user },
@@ -574,6 +572,7 @@ export const create_card = () => <ThunkActionApp>(async (
 
       const { data }: { data: CardDto } = await axios.post("/api/edit/card", {
         module,
+        position,
       });
 
       const new_card: Card = {
@@ -581,7 +580,7 @@ export const create_card = () => <ThunkActionApp>(async (
         ...card_fields,
       };
 
-      dispatch({ type: CREATE_CARD, payload: new_card });
+      dispatch({ type: CREATE_CARD, payload: { card: new_card, position } });
 
       const scrollHeight = Math.max(
         document.body.scrollHeight,
