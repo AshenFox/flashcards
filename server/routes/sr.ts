@@ -11,27 +11,27 @@ import { FilterQuery } from "mongoose";
 const { auth } = middleware;
 const router = express.Router();
 
-interface IResError {
+type ResError = {
   errorBody: string;
-}
+};
 
 // @route ------ GET api/sr/cards
 // @desc ------- Get Study Regime cards
 // @access ----- Private
 
-interface CardsGetQuery extends qs.ParsedQs {
+type CardsGetQuery = qs.ParsedQs & {
   number: string;
-}
+};
 
-type TCardsGetReq = Request<any, any, any, CardsGetQuery>;
+type CardsGetReq = Request<any, any, any, CardsGetQuery>;
 
-interface CardsGetResBody {
+type CardsGetResBody = {
   cards: Card[];
-}
+};
 
-type TCardsGetRes = ResponseLocals<CardsGetResBody | IResError>;
+type CardsGetRes = ResponseLocals<CardsGetResBody | ResError>;
 
-router.get("/cards", auth, async (req: TCardsGetReq, res: TCardsGetRes) => {
+router.get("/cards", auth, async (req: CardsGetReq, res: CardsGetRes) => {
   try {
     let { number } = req.query;
 
@@ -59,16 +59,16 @@ router.get("/cards", auth, async (req: TCardsGetReq, res: TCardsGetRes) => {
 // @desc ------- Get Study Regime cards numbers
 // @access ----- Private
 
-interface ICountGetResBody {
+type CountGetResBody = {
   all_num: number;
   repeat_num: number;
   next_num: number;
   next_date: false | Date;
-}
+};
 
-type TCountGetRes = ResponseLocals<ICountGetResBody | IResError>;
+type CountGetRes = ResponseLocals<CountGetResBody | ResError>;
 
-router.get("/count", auth, async (req: Request, res: TCountGetRes) => {
+router.get("/count", auth, async (req: Request, res: CountGetRes) => {
   try {
     const _id = res.locals.user._id;
 
@@ -101,24 +101,24 @@ router.get("/count", auth, async (req: Request, res: TCountGetRes) => {
 // @desc ------- Edit card stage depending on the user's answer
 // @access ----- Private
 
-interface IAnswerPutBody {
+type AnswerPutBody = {
   _id: string;
   answer: number;
-}
+};
 
-type TAnswerPutReq = Request<any, any, IAnswerPutBody>;
+type AnswerPutReq = Request<any, any, AnswerPutBody>;
 
-interface IAnswerPutResBody {
+type AnswerPutResBody = {
   stage: number;
   nextRep: Date;
   prevStage: Date;
   lastRep: Date;
   studyRegime: boolean;
-}
+};
 
-type TAnswerPutRes = ResponseLocals<IAnswerPutResBody | IResError>;
+type AnswerPutRes = ResponseLocals<AnswerPutResBody | ResError>;
 
-router.put("/answer", auth, async (req: TAnswerPutReq, res: TAnswerPutRes) => {
+router.put("/answer", auth, async (req: AnswerPutReq, res: AnswerPutRes) => {
   try {
     const { _id: card_id, answer } = req.body;
 
@@ -169,63 +169,59 @@ router.put("/answer", auth, async (req: TAnswerPutReq, res: TAnswerPutRes) => {
 // @desc ------- Control on/off card/cards study regime
 // @access ----- Private
 
-interface IControlPutBody {
+type ControlPutBody = {
   _id_arr: string[];
   study_regime: boolean;
-}
+};
 
-type TControlPutReq = Request<any, any, IControlPutBody>;
+type ControlPutReq = Request<any, any, ControlPutBody>;
 
-interface IControlPutResBody {
+type ControlPutResBody = {
   msg: "Study regime has been controlled";
-}
+};
 
-type TControlPutRes = ResponseLocals<IControlPutResBody | IResError>;
+type ControlPutRes = ResponseLocals<ControlPutResBody | ResError>;
 
-router.put(
-  "/control",
-  auth,
-  async (req: TControlPutReq, res: TControlPutRes) => {
-    try {
-      const { _id_arr, study_regime } = req.body;
+router.put("/control", auth, async (req: ControlPutReq, res: ControlPutRes) => {
+  try {
+    const { _id_arr, study_regime } = req.body;
 
-      const user = res.locals.user;
+    const user = res.locals.user;
 
-      await cardModel.updateMany(
-        { _id: { $in: _id_arr }, author_id: user._id },
-        { studyRegime: study_regime },
-      );
+    await cardModel.updateMany(
+      { _id: { $in: _id_arr }, author_id: user._id },
+      { studyRegime: study_regime },
+    );
 
-      res.status(200).json({ msg: "Study regime has been controlled" });
+    res.status(200).json({ msg: "Study regime has been controlled" });
 
-      await notification_timeout(user);
-    } catch (err) {
-      console.error(err);
-      res.status(500).json({ errorBody: "Server Error" });
-    }
-  },
-);
+    await notification_timeout(user);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ errorBody: "Server Error" });
+  }
+});
 
 // @route ------ PUT api/sr/drop
 // @desc ------- Drop card/cards study regime
 // @access ----- Private
 
-interface IDropPutBody {
+type DropPutBody = {
   _id_arr: string[];
-}
+};
 
-type TDropPutReq = Request<any, any, IDropPutBody>;
+type DropPutReq = Request<any, any, DropPutBody>;
 
-interface IDropPutResBody {
+type DropPutResBody = {
   stage: number;
   nextRep: Date;
   prevStage: Date;
   lastRep: Date;
-}
+};
 
-type TDropPutRes = ResponseLocals<IDropPutResBody | IResError>;
+type DropPutRes = ResponseLocals<DropPutResBody | ResError>;
 
-router.put("/drop", auth, async (req: TDropPutReq, res: TDropPutRes) => {
+router.put("/drop", auth, async (req: DropPutReq, res: DropPutRes) => {
   try {
     const { _id_arr } = req.body;
 

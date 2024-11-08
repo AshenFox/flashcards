@@ -9,9 +9,9 @@ const router = express.Router();
 // @desc ------- Search images on google by query
 // @access ----- Private
 
-type TGetRes = Response<any | { errorBody: string }>;
+type GetRes = Response<any | { errorBody: string }>;
 
-router.get("/", auth, async (req: Request, res: TGetRes) => {
+router.get("/", auth, async (req: Request, res: GetRes) => {
   try {
     const { query } = req.query;
 

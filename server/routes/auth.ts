@@ -1,6 +1,6 @@
 import { User } from "@common/types";
 import userModel from "@models/user_model";
-import { check, ICheckResult } from "@supplemental/checks";
+import { check, CheckResult } from "@supplemental/checks";
 import middleware from "@supplemental/middleware";
 import { ResponseLocals } from "@supplemental/types";
 import bcrypt from "bcryptjs";
@@ -12,22 +12,22 @@ const { auth } = middleware;
 
 const router = express.Router();
 
-interface IResError {
+type ResError = {
   errorBody: string;
-}
+};
 
 // @route ------ POST api/auth/check/:type
 // @desc ------- Check form data of certain type
 // @access ----- Public
 
-interface ICheckPostParams {
+type CheckPostParams = {
   type: "log_in" | "sign_up";
-}
+};
 
-type TCheckPostReq = Request<ICheckPostParams>;
-type TCheckPostRes = Response<ICheckResult | IResError>;
+type CheckPostReq = Request<CheckPostParams>;
+type CheckPostRes = Response<CheckResult | ResError>;
 
-router.post("/check/:type", async (req: TCheckPostReq, res: TCheckPostRes) => {
+router.post("/check/:type", async (req: CheckPostReq, res: CheckPostRes) => {
   try {
     const { type } = req.params;
     const errors = await check(req.body, type);
@@ -42,26 +42,26 @@ router.post("/check/:type", async (req: TCheckPostReq, res: TCheckPostRes) => {
 // @desc ------- Entry a user
 // @access ----- Public
 
-interface IEntryPostParams {
+type EntryPostParams = {
   type: "log_in" | "sign_up";
-}
+};
 
-interface IEntryPostReqBody {
+type EntryPostReqBody = {
   username: string;
   email: string;
   password: string;
-}
+};
 
-type TEntryPostReq = Request<IEntryPostParams, any, IEntryPostReqBody>;
+type EntryPostReq = Request<EntryPostParams, any, EntryPostReqBody>;
 
-interface IEntryPostResBody {
-  errors: ICheckResult;
+type EntryPostResBody = {
+  errors: CheckResult;
   token?: string;
-}
+};
 
-type TEntryPostRes = Response<IEntryPostResBody | IResError>;
+type EntryPostRes = Response<EntryPostResBody | ResError>;
 
-router.post("/entry/:type", async (req: TEntryPostReq, res: TEntryPostRes) => {
+router.post("/entry/:type", async (req: EntryPostReq, res: EntryPostRes) => {
   try {
     const { type } = req.params;
 
@@ -69,7 +69,7 @@ router.post("/entry/:type", async (req: TEntryPostReq, res: TEntryPostRes) => {
 
     const { username, email, password } = req.body;
 
-    const res_data: IEntryPostResBody = { errors };
+    const res_data: EntryPostResBody = { errors };
 
     if (errors.ok) {
       let user: User | null = null;
@@ -115,9 +115,9 @@ router.post("/entry/:type", async (req: TEntryPostReq, res: TEntryPostRes) => {
 // @desc ------- Authenticate
 // @access ----- Private
 
-type TAuthGetRes = ResponseLocals<User | IResError | null>;
+type AuthGetRes = ResponseLocals<User | ResError | null>;
 
-router.get("/", auth, async (req: Request, res: TAuthGetRes) => {
+router.get("/", auth, async (req: Request, res: AuthGetRes) => {
   try {
     const _id = res.locals.user._id;
 

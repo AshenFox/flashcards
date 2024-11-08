@@ -2,17 +2,13 @@ import { useAppSelector } from "@store/hooks";
 import { CardsIcon, WriteIcon } from "@ui/Icons";
 import Skeleton from "@ui/Skeleton";
 import Link from "next/link";
-import { FC, memo } from "react";
+import { memo } from "react";
 
 import SrCounter from "./components/Counter/Counter";
 import InTime from "./components/InTime";
 import s from "./styles.module.scss";
 
-interface OwnProps {}
-
-type Props = OwnProps;
-
-const StudyRegime: FC<Props> = () => {
+const StudyRegime = () => {
   const all_num = useAppSelector(s => s.sr.all_num);
   const repeat_num = useAppSelector(s => s.sr.repeat_num);
   const counter = useAppSelector(s => s.sr.counter);

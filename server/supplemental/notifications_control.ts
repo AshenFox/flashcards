@@ -111,7 +111,7 @@ export const notification_timeout = async (user: User) => {
   }
 };
 
-interface INotif {
+type Notif = {
   cards: Card[];
   number: number;
   calcTime: Date;
@@ -119,7 +119,7 @@ interface INotif {
   time: Date;
   user_id: string;
   stage: number;
-}
+};
 
 const create_notifications = async (user: User) => {
   try {
@@ -136,8 +136,8 @@ const create_notifications = async (user: User) => {
 
     const cards = await cardModel.find(filterObj).sort({ nextRep: 1 });
 
-    const notifArr: INotif[] = [];
-    let notif: INotif | null = null;
+    const notifArr: Notif[] = [];
+    let notif: Notif | null = null;
     let remindTime: Date = new Date();
 
     for (let card of cards) {

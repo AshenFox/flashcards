@@ -9,30 +9,30 @@ import express, { Request, Response } from "express";
 const { auth } = middleware;
 const router = express.Router();
 
-interface IResError {
+type ResError = {
   errorBody: string;
-}
+};
 
-interface IResMessage {
+type ResMessage = {
   msg: string;
-}
+};
 
 // @route ------ DELETE api/edit/module
 // @desc ------- Delete a module
 // @access ----- Private
 
-interface ModuleDeleteQuery extends qs.ParsedQs {
+type ModuleDeleteQuery = qs.ParsedQs & {
   _id: string;
-}
+};
 
-type TModuleDeleteReq = Request<any, any, any, ModuleDeleteQuery>;
+type ModuleDeleteReq = Request<any, any, any, ModuleDeleteQuery>;
 
-type TModuleDeleteRes = ResponseLocals<IResMessage | IResError>;
+type ModuleDeleteRes = ResponseLocals<ResMessage | ResError>;
 
 router.delete(
   "/module",
   auth,
-  async (req: TModuleDeleteReq, res: TModuleDeleteRes) => {
+  async (req: ModuleDeleteReq, res: ModuleDeleteRes) => {
     try {
       let { _id: module_id } = req.query;
 
@@ -58,60 +58,56 @@ router.delete(
 // @desc ------- Delete a card
 // @access ----- Private
 
-interface CardDeleteQuery extends qs.ParsedQs {
+type CardDeleteQuery = qs.ParsedQs & {
   _id: string;
-}
+};
 
-type TCardDeleteReq = Request<any, any, any, CardDeleteQuery>;
+type CardDeleteReq = Request<any, any, any, CardDeleteQuery>;
 
-type TCardDeleteRes = ResponseLocals<IResMessage | IResError>;
+type CardDeleteRes = ResponseLocals<ResMessage | ResError>;
 
-router.delete(
-  "/card",
-  auth,
-  async (req: TCardDeleteReq, res: TCardDeleteRes) => {
-    try {
-      let { _id: card_id } = req.query;
+router.delete("/card", auth, async (req: CardDeleteReq, res: CardDeleteRes) => {
+  try {
+    let { _id: card_id } = req.query;
 
-      const user = res.locals.user;
-      const { _id } = user;
+    const user = res.locals.user;
+    const { _id } = user;
 
-      const card = await cardModel.findOne({ _id: card_id, author_id: _id });
+    const card = await cardModel.findOne({ _id: card_id, author_id: _id });
 
-      if (!card) throw new Error(`Card ${card_id} has not been found.`);
+    if (!card) throw new Error(`Card ${card_id} has not been found.`);
 
-      await cardModel.deleteOne({ _id: card_id, author_id: _id });
+    await cardModel.deleteOne({ _id: card_id, author_id: _id });
 
-      const cards = await cardModel
-        .find({ author_id: _id, moduleID: card.moduleID })
-        .sort({ order: 1 });
+    const cards = await cardModel
+      .find({ author_id: _id, moduleID: card.moduleID })
+      .sort({ order: 1 });
 
-      await Promise.all(
-        cards.map(async (card, i) => {
-          card.order = i;
-          return await card.save();
-        }),
-      );
+    await Promise.all(
+      cards.map(async (card, i) => {
+        card.order = i;
+        return await card.save();
+      }),
+    );
 
-      const number = await cardModel.countDocuments({
-        moduleID: card.moduleID,
-        author_id: _id,
-      });
+    const number = await cardModel.countDocuments({
+      moduleID: card.moduleID,
+      author_id: _id,
+    });
 
-      await moduleModel.updateOne(
-        { _id: card.moduleID, author_id: _id },
-        { number },
-      );
+    await moduleModel.updateOne(
+      { _id: card.moduleID, author_id: _id },
+      { number },
+    );
 
-      res.status(200).json({ msg: "The card has been deleted." });
+    res.status(200).json({ msg: "The card has been deleted." });
 
-      await notification_timeout(user);
-    } catch (err) {
-      console.error(err);
-      res.status(500).json({ errorBody: "Server Error" });
-    }
-  },
-);
+    await notification_timeout(user);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ errorBody: "Server Error" });
+  }
+});
 
 // ----------------
 
@@ -119,11 +115,11 @@ router.delete(
 // @desc ------- Edit a module
 // @access ----- Private
 
-type TModulePutReq = Request<any, any, Module>;
+type ModulePutReq = Request<any, any, Module>;
 
-type TModulePutRes = Response<IResMessage | IResError>;
+type ModulePutRes = Response<ResMessage | ResError>;
 
-router.put("/module", auth, async (req: TModulePutReq, res: TModulePutRes) => {
+router.put("/module", auth, async (req: ModulePutReq, res: ModulePutRes) => {
   try {
     const module_data = req.body;
 
@@ -156,11 +152,11 @@ router.put("/module", auth, async (req: TModulePutReq, res: TModulePutRes) => {
 // @desc ------- Edit a card
 // @access ----- Private
 
-type TCardPutReq = Request<any, any, Card>;
+type CardPutReq = Request<any, any, Card>;
 
-type TCardPutRes = Response<IResMessage | IResError>;
+type CardPutRes = Response<ResMessage | ResError>;
 
-router.put("/card", auth, async (req: TCardPutReq, res: TCardPutRes) => {
+router.put("/card", auth, async (req: CardPutReq, res: CardPutRes) => {
   try {
     const card_data = req.body;
 
@@ -194,66 +190,62 @@ router.put("/card", auth, async (req: TCardPutReq, res: TCardPutRes) => {
 // @desc ------- Create a module
 // @access ----- Private
 
-interface ModulePostReqBody {
+type ModulePostReqBody = {
   _id_arr: string[];
-}
+};
 
-type TModulePostReq = Request<any, any, ModulePostReqBody>;
+type ModulePostReq = Request<any, any, ModulePostReqBody>;
 
-type TModulePostRes = Response<IResMessage | IResError>;
+type ModulePostRes = Response<ResMessage | ResError>;
 
-router.post(
-  "/module",
-  auth,
-  async (req: TModulePostReq, res: TModulePostRes) => {
-    try {
-      const { _id_arr } = req.body;
+router.post("/module", auth, async (req: ModulePostReq, res: ModulePostRes) => {
+  try {
+    const { _id_arr } = req.body;
 
-      const user = res.locals.user;
-      const { _id } = user;
+    const user = res.locals.user;
+    const { _id } = user;
 
-      const draft = await moduleModel.findOne({
-        author_id: _id,
-        draft: true,
-      });
+    const draft = await moduleModel.findOne({
+      author_id: _id,
+      draft: true,
+    });
 
-      if (!draft)
-        throw new Error(`Draft for user ${user.username} has not been found.`);
+    if (!draft)
+      throw new Error(`Draft for user ${user.username} has not been found.`);
 
-      const new_module = await moduleModel.create({
-        author: user.username,
-        author_id: user._id,
-        title: draft.title,
-        number: _id_arr.length,
-        creation_date: new Date(),
-        draft: false,
-      });
+    const new_module = await moduleModel.create({
+      author: user.username,
+      author_id: user._id,
+      title: draft.title,
+      number: _id_arr.length,
+      creation_date: new Date(),
+      draft: false,
+    });
 
-      await cardModel.updateMany(
-        { _id: { $in: _id_arr }, author_id: _id },
-        { moduleID: new_module._id },
-      );
+    await cardModel.updateMany(
+      { _id: { $in: _id_arr }, author_id: _id },
+      { moduleID: new_module._id },
+    );
 
-      const number = await cardModel.countDocuments({
-        moduleID: draft._id,
-        author_id: _id,
-      });
+    const number = await cardModel.countDocuments({
+      moduleID: draft._id,
+      author_id: _id,
+    });
 
-      if (!number) {
-        await moduleModel.deleteOne({ author_id: _id, draft: true });
-      } else {
-        draft.title = "";
-        draft.number = number;
-        await draft.save();
-      }
-
-      res.status(200).json({ msg: "A new module has been created." });
-    } catch (err) {
-      console.error(err);
-      res.status(500).json({ errorBody: "Server Error" });
+    if (!number) {
+      await moduleModel.deleteOne({ author_id: _id, draft: true });
+    } else {
+      draft.title = "";
+      draft.number = number;
+      await draft.save();
     }
-  },
-);
+
+    res.status(200).json({ msg: "A new module has been created." });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ errorBody: "Server Error" });
+  }
+});
 
 // ----------------
 
@@ -261,16 +253,16 @@ router.post(
 // @desc ------- Create a card
 // @access ----- Private
 
-interface CardPostReqBody {
+type CardPostReqBody = {
   module: Module;
   position?: "start" | "end";
-}
+};
 
-type TCardPostReq = Request<any, any, CardPostReqBody>;
+type CardPostReq = Request<any, any, CardPostReqBody>;
 
-type TCardPostRes = Response<Card | IResError>;
+type CardPostRes = Response<Card | ResError>;
 
-router.post("/card", auth, async (req: TCardPostReq, res: TCardPostRes) => {
+router.post("/card", auth, async (req: CardPostReq, res: CardPostRes) => {
   try {
     const { module, position } = req.body;
 
@@ -332,14 +324,14 @@ router.post("/card", auth, async (req: TCardPostReq, res: TCardPostRes) => {
 // @desc ------- Get draft or create and get a new draft
 // @access ----- Private
 
-interface IDraftGetResBody {
+type DraftGetResBody = {
   module: Module;
   cards: Card[];
-}
+};
 
-type TDraftGetRes = Response<IDraftGetResBody | IResError>;
+type DraftGetRes = Response<DraftGetResBody | ResError>;
 
-router.get("/draft", auth, async (req: Request, res: TDraftGetRes) => {
+router.get("/draft", auth, async (req: Request, res: DraftGetRes) => {
   try {
     const user = res.locals.user;
     const { _id } = user;

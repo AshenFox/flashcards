@@ -7,9 +7,9 @@ const { auth } = middleware;
 
 const router = express.Router();
 
-interface IResError {
+type ResError = {
   errorBody: string;
-}
+};
 
 // @route ------ PUT api/notifications/subscribe
 // @desc ------- Update subscription
@@ -17,23 +17,23 @@ interface IResError {
 
 // "mobile" | "tablet" | "pc"
 
-interface ISubscribePutBody {
+type SubscribePutBody = {
   device: "mobile" | "tablet" | "pc";
   subscription: PushSubscription;
-}
+};
 
-type TSubscribePutReq = Request<any, any, ISubscribePutBody>;
+type SubscribePutReq = Request<any, any, SubscribePutBody>;
 
-interface ISubscribePutResBody {
+type SubscribePutResBody = {
   msg: string;
-}
+};
 
-type TSubscribePutRes = ResponseLocals<ISubscribePutResBody | IResError>;
+type SubscribePutRes = ResponseLocals<SubscribePutResBody | ResError>;
 
 router.put(
   "/subscribe",
   auth,
-  async (req: TSubscribePutReq, res: TSubscribePutRes) => {
+  async (req: SubscribePutReq, res: SubscribePutRes) => {
     try {
       const { device, subscription } = req.body;
 

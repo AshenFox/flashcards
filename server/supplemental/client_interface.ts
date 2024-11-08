@@ -17,11 +17,11 @@ declare global {
 const cse_id: string = config.get("cse_id");
 const keyArr: string[] = config.get("keyArr");
 
-interface IClientInterface {
+type ClientInterface = {
   clientArr: Client[];
   search(inquiry: string): Promise<any>;
   errCheck(client: Client): void;
-}
+};
 
 class Client extends ImageSearch {
   errorDate: Date | null;
@@ -43,7 +43,7 @@ class Client extends ImageSearch {
   }
 }
 
-const client_interface: IClientInterface = {
+const client_interface: ClientInterface = {
   clientArr: [],
 
   async search(inquiry: string) {

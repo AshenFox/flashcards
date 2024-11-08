@@ -1,28 +1,28 @@
 export type ErrorsArr = string[];
 
-export interface ErrorObj {
+export type ErrorObj = {
   ok: boolean;
   errors: ErrorsArr;
-}
+};
 
-export interface LogInErrors {
+export type LogInErrors = {
   ok: boolean;
   username: ErrorObj;
   password: ErrorObj;
-}
+};
 
-export interface SignUpErrors {
+export type SignUpErrors = {
   ok: boolean;
   username: ErrorObj;
   password: ErrorObj;
   email: ErrorObj;
-}
+};
 
 export type ModalType = "log_in" | "sign_up" | "delete";
 
-export type ModalInputFileds = "username" | "password" | "email";
+export type ModalInputFields = "username" | "password" | "email";
 
-export interface ModalState {
+export type ModalState = {
   is_modal: boolean;
   active_modal: ModalType;
   log_in: {
@@ -37,7 +37,7 @@ export interface ModalState {
   loading: boolean;
   log_in_errors: LogInErrors;
   sign_up_errors: SignUpErrors;
-}
+};
 
 const modalInitState: ModalState = {
   is_modal: false,

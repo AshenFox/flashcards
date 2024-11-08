@@ -693,7 +693,7 @@ const format_dictionary_result = (
   return formatedResult;
 };
 
-interface CodSection {
+type CodSection = {
   part_of_speech: string;
   sub_sections: {
     blocks: {
@@ -704,23 +704,23 @@ interface CodSection {
   }[];
   transcr_uk: string;
   transcr_us: string;
-}
+};
 
 type CodReply = CodSection[];
 
-interface CodDictResult {
+type CodDictResult = {
   type: "cod";
   data: CodReply;
-}
+};
 
-interface UrbanPanel {
+type UrbanPanel = {
   definition: string;
   example: string;
-}
+};
 
 type UrbanReply = UrbanPanel[];
 
-interface UrbanDictResult {
+type UrbanDictResult = {
   type: "urban";
   data: UrbanReply;
-}
+};

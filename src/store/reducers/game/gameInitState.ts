@@ -1,20 +1,20 @@
-export interface FlashcardsAnswer {
+export type FlashcardsAnswer = {
   id: string;
   answer: "correct" | "incorrect";
-}
+};
 
-export interface CardFields {
+export type CardFields = {
   answer: false | "correct" | "incorrect";
-}
+};
 
-export interface WriteCard extends CardFields {
+export type WriteCard = CardFields & {
   id: string;
   stage: number;
-}
+};
 
 export type Round = WriteCard[];
 
-export interface GameState {
+export type GameState = {
   flashcards: {
     progress: number;
     side: "definition" | "term";
@@ -31,7 +31,7 @@ export interface GameState {
     answered: Round;
     rounds: Round[];
   };
-}
+};
 
 // =========================
 

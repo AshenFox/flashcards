@@ -1,5 +1,5 @@
 import { ErrorObj } from "@store/reducers/modal/modalInitState";
-import { FC, memo } from "react";
+import { memo } from "react";
 
 import s from "./styles.module.scss";
 

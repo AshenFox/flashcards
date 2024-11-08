@@ -26,34 +26,34 @@ export type MainState = {
   scroll_top: boolean;
 };
 
-export interface SelectBy {
+export type SelectBy = {
   value: "term" | "definition";
   label: "Term" | "Definition";
-}
+};
 
-export interface SelectCreated {
+export type SelectCreated = {
   value: "newest" | "oldest";
   label: "Newest" | "Oldest";
-}
+};
 
-export interface ImgurlFields {
+export type ImgurlFields = {
   ok: Boolean;
-}
+};
 
-export interface ImgurlBase {
+export type ImgurlBase = {
   url: string;
   thumbnail?: string;
   snippet?: string;
   context?: string;
-}
+};
 
-export interface ImgurlObj extends ImgurlFields, ImgurlBase {}
+export type ImgurlObj = ImgurlFields & ImgurlBase & {};
 
-export interface ImgurlObjs {
+export type ImgurlObjs = {
   [key: string]: ImgurlObj;
-}
+};
 
-export interface CardFields {
+export type CardFields = {
   edit: boolean;
   gallery: {
     search: boolean;
@@ -72,18 +72,18 @@ export interface CardFields {
   };
   save: boolean;
   question: boolean;
-}
+};
 
 export type Card = CardDto & CardFields;
 
-export interface Cards {
+export type Cards = {
   [key: string]: Card;
-}
+};
 
-export interface ModuleFields {
+export type ModuleFields = {
   question: boolean;
   module_loading: boolean;
-}
+};
 
 export type Module = ModuleDto & ModuleFields;
 
