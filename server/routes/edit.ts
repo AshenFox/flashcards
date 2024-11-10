@@ -13,7 +13,7 @@ type ResError = {
   errorBody: string;
 };
 
-type ResMessage = {
+type ResBody = {
   msg: string;
 };
 
@@ -27,7 +27,7 @@ type ModuleDeleteQuery = qs.ParsedQs & {
 
 type ModuleDeleteReq = Request<any, any, any, ModuleDeleteQuery>;
 
-type ModuleDeleteRes = ResponseLocals<ResMessage | ResError>;
+type ModuleDeleteRes = ResponseLocals<ResBody | ResError>;
 
 router.delete(
   "/module",
@@ -64,7 +64,11 @@ type CardDeleteQuery = qs.ParsedQs & {
 
 type CardDeleteReq = Request<any, any, any, CardDeleteQuery>;
 
-type CardDeleteRes = ResponseLocals<ResMessage | ResError>;
+type CardDeleteResBody = {
+  cards: Card[];
+};
+
+type CardDeleteRes = ResponseLocals<(ResBody & CardDeleteResBody) | ResError>;
 
 router.delete("/card", auth, async (req: CardDeleteReq, res: CardDeleteRes) => {
   try {
@@ -90,17 +94,12 @@ router.delete("/card", auth, async (req: CardDeleteReq, res: CardDeleteRes) => {
       }),
     );
 
-    const number = await cardModel.countDocuments({
-      moduleID: card.moduleID,
-      author_id: _id,
-    });
-
     await moduleModel.updateOne(
       { _id: card.moduleID, author_id: _id },
-      { number },
+      { number: cards.length },
     );
 
-    res.status(200).json({ msg: "The card has been deleted." });
+    res.status(200).json({ msg: "The card has been deleted.", cards });
 
     await notification_timeout(user);
   } catch (err) {
@@ -117,7 +116,7 @@ router.delete("/card", auth, async (req: CardDeleteReq, res: CardDeleteRes) => {
 
 type ModulePutReq = Request<any, any, Module>;
 
-type ModulePutRes = Response<ResMessage | ResError>;
+type ModulePutRes = Response<ResBody | ResError>;
 
 router.put("/module", auth, async (req: ModulePutReq, res: ModulePutRes) => {
   try {
@@ -154,7 +153,7 @@ router.put("/module", auth, async (req: ModulePutReq, res: ModulePutRes) => {
 
 type CardPutReq = Request<any, any, Card>;
 
-type CardPutRes = Response<ResMessage | ResError>;
+type CardPutRes = Response<ResBody | ResError>;
 
 router.put("/card", auth, async (req: CardPutReq, res: CardPutRes) => {
   try {
@@ -196,7 +195,7 @@ type ModulePostReqBody = {
 
 type ModulePostReq = Request<any, any, ModulePostReqBody>;
 
-type ModulePostRes = Response<ResMessage | ResError>;
+type ModulePostRes = Response<ResBody | ResError>;
 
 router.post("/module", auth, async (req: ModulePostReq, res: ModulePostRes) => {
   try {
@@ -222,23 +221,39 @@ router.post("/module", auth, async (req: ModulePostReq, res: ModulePostRes) => {
       draft: false,
     });
 
-    await cardModel.updateMany(
-      { _id: { $in: _id_arr }, author_id: _id },
-      { moduleID: new_module._id },
+    const new_module_cards = await cardModel
+      .find({ _id: { $in: _id_arr }, author_id: _id })
+      .sort({ order: 1 });
+
+    await Promise.all(
+      new_module_cards.map(async (card, i) => {
+        card.order += i;
+        card.moduleID = new_module._id;
+        return await card.save();
+      }),
     );
 
-    const number = await cardModel.countDocuments({
-      moduleID: draft._id,
-      author_id: _id,
-    });
+    const draft_cards = await cardModel
+      .find({
+        moduleID: draft._id,
+        author_id: _id,
+      })
+      .sort({ order: 1 });
 
-    if (!number) {
+    if (!draft_cards.length) {
       await moduleModel.deleteOne({ author_id: _id, draft: true });
     } else {
       draft.title = "";
-      draft.number = number;
+      draft.number = draft_cards.length;
       await draft.save();
     }
+
+    await Promise.all(
+      draft_cards.map(async (card, i) => {
+        card.order += i;
+        return await card.save();
+      }),
+    );
 
     res.status(200).json({ msg: "A new module has been created." });
   } catch (err) {
@@ -258,9 +273,13 @@ type CardPostReqBody = {
   position?: "start" | "end";
 };
 
+type CardPostResBody = {
+  cards: Card[];
+};
+
 type CardPostReq = Request<any, any, CardPostReqBody>;
 
-type CardPostRes = Response<Card | ResError>;
+type CardPostRes = Response<CardPostResBody | ResError>;
 
 router.post("/card", auth, async (req: CardPostReq, res: CardPostRes) => {
   try {
@@ -269,7 +288,7 @@ router.post("/card", auth, async (req: CardPostReq, res: CardPostRes) => {
     const user = res.locals.user;
     const { _id } = user;
 
-    const cards = await cardModel
+    let cards = await cardModel
       .find({ author_id: _id, moduleID: module._id })
       .sort({ order: 1 });
 
@@ -286,7 +305,7 @@ router.post("/card", auth, async (req: CardPostReq, res: CardPostRes) => {
       );
     } else if (position === "end") order = cards.length;
 
-    const new_card = await cardModel.create({
+    await cardModel.create({
       moduleID: module._id,
       term: "",
       definition: "",
@@ -301,17 +320,19 @@ router.post("/card", auth, async (req: CardPostReq, res: CardPostRes) => {
       author: user.username,
     });
 
-    const number = await cardModel.countDocuments({
-      author_id: _id,
-      moduleID: module._id,
-    });
+    cards = await cardModel
+      .find({
+        author_id: _id,
+        moduleID: module._id,
+      })
+      .sort({ order: 1 });
 
     await moduleModel.updateOne(
       { _id: module._id, author_id: _id },
-      { number },
+      { number: cards.length },
     );
 
-    res.status(200).json(new_card);
+    res.status(200).json({ cards });
   } catch (err) {
     console.error(err);
     res.status(500).json({ errorBody: "Server Error" });

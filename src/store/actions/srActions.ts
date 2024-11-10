@@ -171,8 +171,6 @@ export const set_cards_sr_positive = (_id: string) => <ThunkActionApp>(async (
         },
       );
 
-      console.log(data);
-
       dispatch({
         type: SET_CARDS_SR_POSITIVE,
         payload: {

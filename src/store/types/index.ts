@@ -1,4 +1,4 @@
-import { UserDto } from "@common/types";
+import { CardDto, UserDto } from "@common/types";
 
 import { Round } from "../reducers/game/gameInitState";
 import {
@@ -483,7 +483,7 @@ export type DeleteModuleAction = {
 export type DeleteCardAction = {
   type: typeof DELETE_CARD;
   payload: {
-    _id: string;
+    cards: CardDto[];
   };
 };
 
@@ -505,8 +505,7 @@ export type CreateModuleAction = {
 export type CreateCardAction = {
   type: typeof CREATE_CARD;
   payload: {
-    card: Card;
-    position: "start" | "end";
+    cards: CardDto[];
   };
 };
 

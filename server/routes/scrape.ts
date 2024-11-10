@@ -53,8 +53,6 @@ router.get("/cod", auth, async (req: CodGetReq, res: TCodGetRes) => {
       },
     );
 
-    console.log({ response });
-
     const { data }: { data: string } = response;
     const $ = cheerio.load(data);
 
