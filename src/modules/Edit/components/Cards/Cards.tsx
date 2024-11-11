@@ -5,7 +5,7 @@ import { useAppSelector } from "@store/hooks";
 import ScrollLoader from "@ui/ScrollLoader";
 import { memo, useMemo } from "react";
 
-import { AddCard, Save } from "./components";
+import { Action, AddCard } from "./components";
 import s from "./styles.module.scss";
 
 const Cards = () => {
@@ -41,7 +41,7 @@ const Cards = () => {
           {!!formatted_cards.length && <AddCard position="end" />}
         </Container>
       </div>
-      {!!formatted_cards.length && <Save />}
+      {!!formatted_cards.length && <Action />}
     </ContentWrapper>
   );
 };

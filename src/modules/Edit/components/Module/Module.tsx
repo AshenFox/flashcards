@@ -1,25 +1,20 @@
 import Container from "@components/Container";
 import ContentWrapper from "@components/ContentWrapper";
+import { useSaveState } from "@modules/Edit/components/Save/useSaveActive";
 import { useActions, useAppSelector } from "@store/hooks";
 import TextArea from "@ui/TextArea";
 import TextLabel from "@ui/TextLabel";
-import { useRouter } from "next/router";
 import { memo, useCallback, useRef } from "react";
 import { ContentEditableEvent } from "react-contenteditable";
 
-import { Save } from "./components";
+import Save from "../Save/Save";
+import { SaveAllCards } from "./components";
 import s from "./styles.module.scss";
 
 const Module = () => {
   const { control_module, edit_module } = useActions();
 
-  const router = useRouter();
-  const { _id } = router.query;
-
-  const isDraft = _id === "draft";
-
   const currentModule = useAppSelector(s => s.main.module);
-  const cards = useAppSelector(s => s.main.cards);
   const loading = useAppSelector(s => s.main.loading);
 
   const { title, draft, _id: moduleId } = currentModule || {};
@@ -39,25 +34,7 @@ const Module = () => {
 
   const timer = useRef<ReturnType<typeof setTimeout>>(null);
 
-  const cardsArr = Object.values(cards);
-
-  let twoSaved = false;
-  let counter = 0;
-
-  if (draft) {
-    for (const card of cardsArr) {
-      if (card.save === true) {
-        ++counter;
-        if (counter >= 2) {
-          twoSaved = true;
-          break;
-        }
-      }
-    }
-  }
-
-  let active = draft ? !!(twoSaved && title) : !!title;
-  if (!cardsArr.length) active = true;
+  const { active } = useSaveState();
 
   const errMessage = draft
     ? "PLEASE ENTER A TITLE AND ENSURE SAVING OF AT LEAST 2 CARDS"
@@ -89,8 +66,9 @@ const Module = () => {
               </TextLabel>
             </div>
           </div>
-          {(draft || isDraft) && (
+          {draft && (
             <div className={s.control}>
+              <SaveAllCards />
               <Save />
             </div>
           )}

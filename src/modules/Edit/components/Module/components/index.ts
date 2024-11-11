@@ -1,1 +1,1 @@
-export { default as Save } from "./Save";
+export { default as SaveAllCards } from "./SaveAllCards";

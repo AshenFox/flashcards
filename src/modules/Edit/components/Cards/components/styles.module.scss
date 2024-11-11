@@ -1,10 +1,10 @@
 @import "@styles/vars";
 
-.save {
+.action {
   padding-bottom: 2rem;
 }
 
-.save_module {
+.action_module {
   text-align: center;
 
   @media (max-width: $mobile-sm) {

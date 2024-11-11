@@ -6,7 +6,7 @@
   background-color: var(--element-background-color);
 
   @media (max-width: $tablet) {
-    padding-bottom: 1.25rem;
+    padding-bottom: 1rem;
   }
 }
 
@@ -35,6 +35,7 @@
   padding-top: 1.5rem;
   border-top: 1px solid var(--element-border-color);
   margin-top: 3rem;
+  gap: 2.5rem;
 
   @media (max-width: $tablet) {
     padding-top: 1.25rem;
