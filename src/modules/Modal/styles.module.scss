@@ -54,6 +54,8 @@ $modal-background-color: #2b2a2c;
 
   @media (max-width: $mobile) {
     padding: 1.5rem;
+    border: none;
+    border-bottom: 1px solid var(--border-color);
   }
 }
 
