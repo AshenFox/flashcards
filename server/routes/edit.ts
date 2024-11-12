@@ -250,7 +250,7 @@ router.post("/module", auth, async (req: ModulePostReq, res: ModulePostRes) => {
 
     await Promise.all(
       draft_cards.map(async (card, i) => {
-        card.order += i;
+        card.order = i;
         return await card.save();
       }),
     );

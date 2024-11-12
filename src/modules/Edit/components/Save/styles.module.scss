@@ -3,3 +3,12 @@
 .save {
   font-size: 1.6rem;
 }
+
+html:global(.dark) .save:not(:global(.interactive_element__inactive)) {
+  background-color: var(--stronger-success-color);
+  color: var(--reverse-color);
+
+  &:hover {
+    background-color: var(--secondary-element-background-color);
+  }
+}
