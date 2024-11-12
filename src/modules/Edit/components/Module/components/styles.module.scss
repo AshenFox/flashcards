@@ -1,6 +1,10 @@
 @import "@styles/vars";
 
 .save {
+  :global(.tooltip__tooltip) {
+    right: 0;
+  }
+
   :global(.switch__checkbox):checked {
     & ~ :global(.tooltip__tooltip) {
       border-color: var(--success-color);

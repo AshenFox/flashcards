@@ -12,10 +12,10 @@ export const createClassName = ({
 }: InteractiveElementProps) =>
   clsx(
     s.interactive_element,
-    loading && active && s.loading,
-    !active && s.inactive,
-    pressed && s.pressed,
+    "interactive_element__element",
+    loading && active && "interactive_element__loading",
+    !active && "interactive_element__inactive",
+    pressed && "interactive_element__pressed",
     s[design],
     className,
-    "interactive_element__element",
   );

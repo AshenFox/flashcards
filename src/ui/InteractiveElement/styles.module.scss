@@ -18,19 +18,6 @@
   transform-origin: center;
 }
 
-.loading {
-  background-color: var(--active-color);
-  cursor: auto;
-
-  & span {
-    visibility: hidden;
-  }
-
-  & .spinner {
-    display: block;
-  }
-}
-
 .icon {
   fill: var(--text-color);
   transition: all 0.1s;
@@ -44,6 +31,21 @@
   font-size: 1.5rem;
   gap: 0.5rem;
   text-align: center;
+
+  &:global(.interactive_element__inactive) {
+    background-color: var(--stronger-danger-color);
+    color: var(--light-color);
+    cursor: auto;
+  }
+}
+
+.interactive_element:global(.interactive_element__loading) {
+  background-color: var(--active-color);
+  cursor: auto;
+
+  & .spinner {
+    display: block;
+  }
 }
 
 html:global(.light) .interactive_element {
@@ -56,6 +58,11 @@ html:global(.light) .interactive_element {
 
 html:global(.dark) .interactive_element {
   --border-color: var(--active-secondary-color);
+}
+
+.interactive_element:global(.interactive_element__inactive):hover {
+  background-color: var(--stronger-danger-color);
+  color: var(--light-color);
 }
 
 .plain {
@@ -124,7 +131,7 @@ html:global(.dark) .interactive_element {
     }
   }
 
-  &.pressed {
+  &:global(.interactive_element__pressed) {
     border-color: var(--active-color);
     background-color: var(--active-color);
     color: var(--active-secondary-color);
@@ -145,15 +152,8 @@ html:global(.dark) .interactive_element {
   }
 }
 
-.inactive {
-  background-color: var(--stronger-danger-color);
-  color: var(--light-color);
-  cursor: auto;
-
-  &:hover {
-    background-color: var(--stronger-danger-color);
-    color: var(--light-color);
-  }
+.interactive_element:global(.interactive_element__loading) span {
+  visibility: hidden;
 }
 
 .block {
@@ -188,7 +188,7 @@ html:global(.dark) .interactive_element {
       padding: 0.8rem 1.5rem;
     }
 
-    &.pressed {
+    &:global(.interactive_element__pressed) {
       border-color: var(--active-color);
 
       & span {
@@ -196,7 +196,7 @@ html:global(.dark) .interactive_element {
       }
     }
 
-    &.pressed + .interactive_element.outline {
+    &:global(.interactive_element__pressed) + .interactive_element.outline {
       border-color: var(--active-color);
     }
   }
