@@ -57,6 +57,7 @@ html:global(.dark) .login_input {
 
   @media (max-width: $mobile) {
     padding: 1.5rem;
+    border: none;
   }
 }
 
