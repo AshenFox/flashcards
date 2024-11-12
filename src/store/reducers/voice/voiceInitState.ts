@@ -30,11 +30,11 @@ export type Speaking =
     }
   | false;
 
-export interface VoiceState {
+export type VoiceState = {
   voices: Voices;
   speaking: Speaking;
   working: boolean;
-}
+};
 
 const voiceInitState: VoiceState = {
   voices: {},

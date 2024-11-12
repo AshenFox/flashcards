@@ -1,29 +1,11 @@
+import { Card } from "@common/types";
 import mongoose, { SortOrder } from "mongoose";
 
 const Schema = mongoose.Schema;
 
-export interface ICardBase {
-  moduleID: string;
-  term: string;
-  definition: string;
-  imgurl: string;
-  creation_date: Date;
-  studyRegime: boolean;
-  stage: number;
-  nextRep: Date;
-  prevStage: Date;
-  lastRep: Date;
-  author_id: string;
-  author: string;
-}
+export type CardSortObj = { [key in keyof Card]?: SortOrder };
 
-export interface ICard extends ICardBase {
-  _id: string;
-}
-
-export type ICardSortObj = { [key in keyof ICard]?: SortOrder };
-
-const CardSchema = new Schema<ICard>({
+const CardSchema = new Schema<Card>({
   moduleID: String,
   term: String,
   definition: String,
@@ -36,8 +18,9 @@ const CardSchema = new Schema<ICard>({
   lastRep: Date,
   author_id: String,
   author: String,
+  order: Number,
 });
 
-const cardModel = mongoose.model<ICard>(`Cards`, CardSchema);
+const cardModel = mongoose.model<Card>(`Cards`, CardSchema);
 
 export default cardModel;

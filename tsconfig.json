@@ -26,8 +26,9 @@
       "@helpers/*": ["src/helpers/*"],
       "@store/*": ["src/store/*"],
       "@config/*": ["config/*"],
+      "@public/*": ["public/*"],
       "@server/*": ["server/*"],
-      "@public/*": ["public/*"]
+      "@common/*": ["common/*"]
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],

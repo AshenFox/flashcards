@@ -1,11 +1,10 @@
+import { User } from "@common/types";
 import { Response } from "express";
 import { Document } from "mongoose";
 
-import { IUser } from "../models/user_model";
-
-export type UserDocument = Document<unknown, any, IUser> &
+export type UserDocument = Document<unknown, any, User> &
   Omit<
-    IUser &
+    User &
       Required<{
         _id: string;
       }>,

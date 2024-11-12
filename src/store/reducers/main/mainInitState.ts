@@ -1,3 +1,5 @@
+import { CardDto, ModuleDto } from "@common/types";
+
 export type MainState = {
   is_server: boolean;
   module: Module | false;
@@ -24,34 +26,34 @@ export type MainState = {
   scroll_top: boolean;
 };
 
-export interface SelectBy {
+export type SelectBy = {
   value: "term" | "definition";
   label: "Term" | "Definition";
-}
+};
 
-export interface SelectCreated {
+export type SelectCreated = {
   value: "newest" | "oldest";
   label: "Newest" | "Oldest";
-}
+};
 
-export interface ImgurlFields {
+export type ImgurlFields = {
   ok: Boolean;
-}
+};
 
-export interface ImgurlBase {
+export type ImgurlBase = {
   url: string;
   thumbnail?: string;
   snippet?: string;
   context?: string;
-}
+};
 
-export interface ImgurlObj extends ImgurlFields, ImgurlBase {}
+export type ImgurlObj = ImgurlFields & ImgurlBase & {};
 
-export interface ImgurlObjs {
+export type ImgurlObjs = {
   [key: string]: ImgurlObj;
-}
+};
 
-export interface CardFields {
+export type CardFields = {
   edit: boolean;
   gallery: {
     search: boolean;
@@ -70,45 +72,20 @@ export interface CardFields {
   };
   save: boolean;
   question: boolean;
-}
+};
 
-export interface CardBase {
-  _id: string;
-  moduleID: string;
-  term: string;
-  definition: string;
-  imgurl: string;
-  creation_date: string;
-  studyRegime: boolean;
-  stage: number;
-  nextRep: string;
-  lastRep: string;
-  prevStage: string;
-  __v: number;
-}
+export type Card = CardDto & CardFields;
 
-export interface Card extends CardFields, CardBase {}
-
-export interface Cards {
+export type Cards = {
   [key: string]: Card;
-}
+};
 
-export interface ModuleFields {
+export type ModuleFields = {
   question: boolean;
   module_loading: boolean;
-}
+};
 
-export interface Module extends ModuleFields {
-  cards: []; // ??????
-  _id: string;
-  title: string;
-  author: string;
-  aothor_id: string;
-  number: number;
-  creation_date: string;
-  draft: boolean;
-  __v: number;
-}
+export type Module = ModuleDto & ModuleFields;
 
 // =================================================
 

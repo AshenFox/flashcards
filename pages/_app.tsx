@@ -15,7 +15,7 @@ import store from "@store/store";
 import type { AppProps } from "next/app";
 import { Provider } from "react-redux";
 
-const MyApp: React.FC<AppProps> = ({ Component, pageProps }) => (
+const MyApp = ({ Component, pageProps }: AppProps) => (
   <Theme>
     <Head />
     <Provider store={store}>

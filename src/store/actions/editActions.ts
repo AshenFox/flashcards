@@ -1,9 +1,9 @@
-import axios from "@server/supplemental/axios";
+import axios from "@common/axios";
+import { CardDto } from "@common/types";
 import sanitize from "sanitize-html";
 
 import { saveLastUpdate } from "../helper-functions";
 import { url_fields } from "../reducers/main/mainInitState";
-import { card_fields } from "../reducers/main/mainInitState";
 import {
   CONTROL_CARD,
   CONTROL_GALLERY_QUERY,
@@ -34,12 +34,7 @@ import {
   SET_URL_OK,
 } from "../types";
 import { AppActions } from "../types";
-import {
-  Card,
-  CardBase,
-  ImgurlBase,
-  ImgurlObjs,
-} from "./../reducers/main/mainInitState";
+import { Card, ImgurlBase, ImgurlObjs } from "./../reducers/main/mainInitState";
 import { ThunkActionApp } from "./../store";
 
 // SET_CARDS_SAVE_POSITIVE
@@ -449,7 +444,7 @@ export const delete_card = (_id: string) => <ThunkActionApp>(async (
       } = getState();
       if (!user) return;
 
-      const { data }: { data: { msg: string } } = await axios.delete(
+      const res = await axios.delete<{ msg: string; cards: CardDto[] }>(
         "/api/edit/card",
         {
           params: {
@@ -461,7 +456,7 @@ export const delete_card = (_id: string) => <ThunkActionApp>(async (
       dispatch({
         type: DELETE_CARD,
         payload: {
-          _id,
+          cards: res.data.cards,
         },
       });
 
@@ -565,10 +560,8 @@ export const create_module = () => <ThunkActionApp>(async (
   });
 
 // CREATE_CARD
-export const create_card = () => <ThunkActionApp>(async (
-    dispatch,
-    getState,
-  ) => {
+export const create_card = (position: "start" | "end") =>
+  <ThunkActionApp>(async (dispatch, getState) => {
     try {
       const {
         auth: { user },
@@ -576,39 +569,48 @@ export const create_card = () => <ThunkActionApp>(async (
       } = getState();
       if (!user) return;
 
-      const { data }: { data: CardBase } = await axios.post("/api/edit/card", {
-        module,
-      });
-
-      const new_card: Card = {
-        ...data,
-        ...card_fields,
-      };
-
-      dispatch({ type: CREATE_CARD, payload: new_card });
-
-      const scrollHeight = Math.max(
-        document.body.scrollHeight,
-        document.documentElement.scrollHeight,
-        document.body.offsetHeight,
-        document.documentElement.offsetHeight,
-        document.body.clientHeight,
-        document.documentElement.clientHeight,
+      const res: { data: { cards: CardDto[] } } = await axios.post(
+        "/api/edit/card",
+        {
+          module,
+          position,
+        },
       );
+
+      dispatch({
+        type: CREATE_CARD,
+        payload: {
+          cards: res.data.cards,
+        },
+      });
 
       saveLastUpdate();
 
-      window.scrollTo(0, scrollHeight);
+      if (position === "end") {
+        const scrollHeight = Math.max(
+          document.body.scrollHeight,
+          document.documentElement.scrollHeight,
+          document.body.offsetHeight,
+          document.documentElement.offsetHeight,
+          document.body.clientHeight,
+          document.documentElement.clientHeight,
+        );
+
+        window.scrollTo({
+          behavior: "smooth",
+          top: scrollHeight,
+        });
+      }
     } catch (err) {
       console.error(err);
     }
   });
 
-// =============================
-// =============================
-// ======== Suplemental ========
-// =============================
-// =============================
+// ==============================
+// ==============================
+// ======== Supplemental ========
+// ==============================
+// ==============================
 
 const arr_to_obj = (arr: ImgurlBase[]): ImgurlObjs => {
   return Object.fromEntries(
@@ -697,7 +699,7 @@ const format_dictionary_result = (
   return formatedResult;
 };
 
-interface CodSection {
+type CodSection = {
   part_of_speech: string;
   sub_sections: {
     blocks: {
@@ -708,23 +710,23 @@ interface CodSection {
   }[];
   transcr_uk: string;
   transcr_us: string;
-}
+};
 
 type CodReply = CodSection[];
 
-interface CodDictResult {
+type CodDictResult = {
   type: "cod";
   data: CodReply;
-}
+};
 
-interface UrbanPanel {
+type UrbanPanel = {
   definition: string;
   example: string;
-}
+};
 
 type UrbanReply = UrbanPanel[];
 
-interface UrbanDictResult {
+type UrbanDictResult = {
   type: "urban";
   data: UrbanReply;
-}
+};

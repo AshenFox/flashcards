@@ -1,3 +1,13 @@
+// import routes
+import auth from "@routes/auth";
+import edit from "@routes/edit";
+import img_search from "@routes/img_search";
+import main from "@routes/main";
+import notifications from "@routes/notifications";
+import scrape from "@routes/scrape";
+import sr from "@routes/sr";
+import connectDB from "@supplemental/db";
+import { send_notifications } from "@supplemental/notifications_control";
 // dependencies
 import config from "config";
 import express from "express";
@@ -6,17 +16,6 @@ import http from "http";
 import https, { ServerOptions } from "https";
 import next from "next";
 import webpush from "web-push";
-
-// import routes
-import auth from "./routes/auth";
-import edit from "./routes/edit";
-import img_search from "./routes/img_search";
-import main from "./routes/main";
-import notifications from "./routes/notifications";
-import scrape from "./routes/scrape";
-import sr from "./routes/sr";
-import connectDB from "./supplemental/db";
-import { send_notifications } from "./supplemental/notifications_control";
 
 const port = process.env.PORT || 4000;
 const dev = process.env.NODE_ENV !== "production";

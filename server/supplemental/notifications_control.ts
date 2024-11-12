@@ -1,10 +1,10 @@
+import { Card, User } from "@common/types";
+import cardModel from "@models/card_model";
+import notificationModel from "@models/notification_model";
+import userModel from "@models/user_model";
 import { FilterQuery } from "mongoose";
 import webpush from "web-push";
 
-import notificationModel from "../models//notification_model";
-import cardModel from "../models/card_model";
-import userModel, { IUser } from "../models/user_model";
-import { ICard } from "./../models/card_model";
 import sr_stages from "./sr_stages";
 
 // Tests
@@ -32,7 +32,7 @@ newNotif(); */
 export const send_notifications = async () => {
   try {
     const users: {
-      [key: string]: IUser;
+      [key: string]: User;
     } = {};
 
     const now = new Date(Date.now());
@@ -98,7 +98,7 @@ const usersNotifTimers: {
   [key: string]: ReturnType<typeof setTimeout>;
 } = {};
 
-export const notification_timeout = async (user: IUser) => {
+export const notification_timeout = async (user: User) => {
   try {
     if (usersNotifTimers[user._id]) clearTimeout(usersNotifTimers[user._id]);
 
@@ -111,23 +111,23 @@ export const notification_timeout = async (user: IUser) => {
   }
 };
 
-interface INotif {
-  cards: ICard[];
+type Notif = {
+  cards: Card[];
   number: number;
   calcTime: Date;
   calcPrevStage: Date;
   time: Date;
   user_id: string;
   stage: number;
-}
+};
 
-const create_notifications = async (user: IUser) => {
+const create_notifications = async (user: User) => {
   try {
     const { _id } = user;
 
     await notificationModel.deleteMany({ user_id: _id });
 
-    const filterObj: FilterQuery<ICard> = {
+    const filterObj: FilterQuery<Card> = {
       author_id: _id,
       studyRegime: true,
     };
@@ -136,8 +136,8 @@ const create_notifications = async (user: IUser) => {
 
     const cards = await cardModel.find(filterObj).sort({ nextRep: 1 });
 
-    const notifArr: INotif[] = [];
-    let notif: INotif | null = null;
+    const notifArr: Notif[] = [];
+    let notif: Notif | null = null;
     let remindTime: Date = new Date();
 
     for (let card of cards) {

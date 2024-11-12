@@ -1,130 +1,126 @@
+import { Card, Module } from "@common/types";
+import cardModel, { CardSortObj } from "@models/card_model";
+import moduleModel from "@models/module_model";
+import { ModuleSortObj } from "@models/module_model";
+import userModel from "@models/user_model";
+import middleware from "@supplemental/middleware";
+import { ResponseLocals } from "@supplemental/types";
 import express, { Request } from "express";
 import { FilterQuery } from "mongoose";
-
-import { ResponseLocals } from "../@types/types";
-import cardModel, { ICard, ICardSortObj } from "../models/card_model";
-import moduleModel from "../models/module_model";
-import userModel from "../models/user_model";
-import middleware from "../supplemental/middleware";
-import { IModule, IModuleSortObj } from "./../models/module_model";
 
 const { auth } = middleware;
 const router = express.Router();
 
-interface IResError {
+type ResError = {
   errorBody: string;
-}
+};
 
 // @route ------ GET api/main/modules
 // @desc ------- Get user modules
 // @access ----- Private
 
-interface IModulesGetQuery extends qs.ParsedQs {
+type ModulesGetQuery = qs.ParsedQs & {
   skip: string;
   filter: string;
   created: "newest" | "oldest";
-}
+};
 
-type TModulesGetReq = Request<any, any, any, IModulesGetQuery>;
+type ModulesGetReq = Request<any, any, any, ModulesGetQuery>;
 
-interface IModulesGetResBody {
-  draft: null | IModule;
-  modules: IModule[];
+type ModulesGetResBody = {
+  draft: null | Module;
+  modules: Module[];
   modules_number: number;
   all_modules: boolean;
   all_modules_number: number;
-}
+};
 
-type TModulesGetRes = ResponseLocals<IModulesGetResBody | IResError>;
+type ModulesGetRes = ResponseLocals<ModulesGetResBody | ResError>;
 
-router.get(
-  "/modules",
-  auth,
-  async (req: TModulesGetReq, res: TModulesGetRes) => {
-    try {
-      const { skip, filter, created } = req.query;
+router.get("/modules", auth, async (req: ModulesGetReq, res: ModulesGetRes) => {
+  try {
+    const { skip, filter, created } = req.query;
 
-      const skipNum = parseInt(skip);
+    const skipNum = parseInt(skip);
 
-      const _id = res.locals.user._id;
+    const _id = res.locals.user._id;
 
-      const draft = await moduleModel.findOne({
-        author_id: _id,
-        draft: true,
-      });
+    const draft = await moduleModel.findOne({
+      author_id: _id,
+      draft: true,
+    });
 
-      let all_modules_number = await moduleModel.countDocuments({
-        author_id: _id,
-      });
+    let all_modules_number = await moduleModel.countDocuments({
+      author_id: _id,
+    });
 
-      const filterObj: FilterQuery<IModule> = {
-        author_id: _id,
-        draft: false,
+    const filterObj: FilterQuery<Module> = {
+      author_id: _id,
+      draft: false,
+    };
+
+    const sortObj: ModuleSortObj = {};
+
+    if (created === "newest") sortObj.creation_date = -1;
+    if (created === "oldest") sortObj.creation_date = 1;
+
+    if (filter)
+      filterObj.title = {
+        $regex: `${filter}(?!br>|r>|>|\/div>|div>|iv>|v>|nbsp;|bsp;|sp;|p;|;|\/span>|span>|pan>|an>|n>)`,
       };
 
-      const sortObj: IModuleSortObj = {};
+    const modules = await moduleModel
+      .find(filterObj)
+      .sort(sortObj)
+      .skip(skipNum * 10)
+      .limit(10);
 
-      if (created === "newest") sortObj.creation_date = -1;
-      if (created === "oldest") sortObj.creation_date = 1;
+    const modules_number = await moduleModel.countDocuments(filterObj);
 
-      if (filter)
-        filterObj.title = {
-          $regex: `${filter}(?!br>|r>|>|\/div>|div>|iv>|v>|nbsp;|bsp;|sp;|p;|;|\/span>|span>|pan>|an>|n>)`,
-        };
+    if (draft) --all_modules_number;
 
-      const modules = await moduleModel
-        .find(filterObj)
-        .sort(sortObj)
-        .skip(skipNum * 10)
-        .limit(10);
+    const all_modules = all_modules_number <= (skipNum + 1) * 10;
 
-      const modules_number = await moduleModel.countDocuments(filterObj);
+    const result: ModulesGetResBody = {
+      draft: null,
+      modules,
+      modules_number,
+      all_modules,
+      all_modules_number,
+    };
 
-      if (draft) --all_modules_number;
+    if (!filter) result.draft = draft;
 
-      const all_modules = all_modules_number <= (skipNum + 1) * 10;
-
-      const result: IModulesGetResBody = {
-        draft: null,
-        modules,
-        modules_number,
-        all_modules,
-        all_modules_number,
-      };
-
-      if (!filter) result.draft = draft;
-
-      res.status(200).json(result);
-    } catch (err) {
-      console.error(err);
-      res.status(500).json({ errorBody: "Server Error" });
-    }
-  },
-);
+    res.status(200).json(result);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ errorBody: "Server Error" });
+  }
+});
 
 // @route ------ GET api/main/cards
 // @desc ------- Get user cards
 // @access ----- Private
 
-interface ICardsGetQuery extends qs.ParsedQs {
+type CardsGetQuery = qs.ParsedQs & {
   skip: string;
   filter: string;
   by: "term" | "definition";
   created: "newest" | "oldest";
-}
+};
 
-type TCardsGetReq = Request<any, any, any, ICardsGetQuery>;
+type CardsGetReq = Request<any, any, any, CardsGetQuery>;
 
-interface ICardsGetResBody {
-  cards: ICard[];
+type CardsGetResBody = {
+  cards: Card[];
   cards_number: number;
   all_cards: boolean;
   all_cards_number: number;
-}
+};
 
-type TCardsGetRes = ResponseLocals<ICardsGetResBody | IResError>;
+type CardsGetRes = ResponseLocals<CardsGetResBody | ResError>;
 
-router.get("/cards", auth, async (req: TCardsGetReq, res: TCardsGetRes) => {
+router.get("/cards", auth, async (req: CardsGetReq, res: CardsGetRes) => {
   try {
     let { skip, filter, by, created } = req.query;
 
@@ -137,13 +133,13 @@ router.get("/cards", auth, async (req: TCardsGetReq, res: TCardsGetRes) => {
       draft: true,
     });
 
-    const filterObj: FilterQuery<ICard> = {
+    const filterObj: FilterQuery<Card> = {
       author_id: _id,
     };
 
     if (draft) filterObj.moduleID = { $ne: draft._id };
 
-    const sortObj: ICardSortObj = {};
+    const sortObj: CardSortObj = {};
 
     if (created === "newest") sortObj.creation_date = -1;
     if (created === "oldest") sortObj.creation_date = 1;
@@ -176,20 +172,20 @@ router.get("/cards", auth, async (req: TCardsGetReq, res: TCardsGetRes) => {
 // @desc ------- Get module with cards
 // @access ----- Private
 
-interface IModuleGetQuery extends qs.ParsedQs {
+type ModuleGetQuery = qs.ParsedQs & {
   _id: string;
-}
+};
 
-type TModuleGetReq = Request<any, any, any, IModuleGetQuery>;
+type ModuleGetReq = Request<any, any, any, ModuleGetQuery>;
 
-interface IModuleGetResBody {
-  module: IModule;
-  cards: ICard[];
-}
+type ModuleGetResBody = {
+  module: Module;
+  cards: Card[];
+};
 
-type TModuleGetRes = ResponseLocals<IModuleGetResBody | IResError>;
+type ModuleGetRes = ResponseLocals<ModuleGetResBody | ResError>;
 
-router.get("/module", auth, async (req: TModuleGetReq, res: TModuleGetRes) => {
+router.get("/module", auth, async (req: ModuleGetReq, res: ModuleGetRes) => {
   try {
     let { _id: module_id } = req.query;
 
@@ -201,7 +197,6 @@ router.get("/module", auth, async (req: TModuleGetReq, res: TModuleGetRes) => {
 
     if (!user) throw new Error(`User ${_id} has not been found.`);
 
-    /* eslint-disable */
     const foundModule = await moduleModel.findOne({
       _id: module_id,
       author_id: _id,
@@ -225,24 +220,24 @@ router.get("/module", auth, async (req: TModuleGetReq, res: TModuleGetRes) => {
 // @desc ------- Get only the module's cards
 // @access ----- Private
 
-interface IModuleCardsGetQuery extends qs.ParsedQs {
+type ModuleCardsGetQuery = qs.ParsedQs & {
   _id: string;
   filter: string;
   by: "term" | "definition";
-}
+};
 
-type TModuleCardsGetReq = Request<any, any, any, IModuleCardsGetQuery>;
+type ModuleCardsGetReq = Request<any, any, any, ModuleCardsGetQuery>;
 
-interface IModuleCardsGetResBody {
-  cards: ICard[];
-}
+type ModuleCardsGetResBody = {
+  cards: Card[];
+};
 
-type TModuleCardsGetRes = ResponseLocals<IModuleCardsGetResBody | IResError>;
+type ModuleCardsGetRes = ResponseLocals<ModuleCardsGetResBody | ResError>;
 
 router.get(
   "/module/cards",
   auth,
-  async (req: TModuleCardsGetReq, res: TModuleCardsGetRes) => {
+  async (req: ModuleCardsGetReq, res: ModuleCardsGetRes) => {
     try {
       let { _id: module_id, filter, by } = req.query;
 
@@ -254,12 +249,12 @@ router.get(
 
       if (!user) throw new Error(`User ${_id} has not been found.`);
 
-      const filterObj: FilterQuery<ICard> = {
+      const filterObj: FilterQuery<Card> = {
         moduleID: module_id,
         author_id: _id,
       };
 
-      const sortObj: ICardSortObj = { creation_date: 1 };
+      const sortObj: CardSortObj = { creation_date: 1 };
 
       if (filter)
         filterObj[by] = {

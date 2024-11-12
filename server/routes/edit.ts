@@ -1,40 +1,38 @@
+import { Card, CardBase, Module } from "@common/types";
+import cardModel from "@models/card_model";
+import moduleModel from "@models/module_model";
+import middleware from "@supplemental/middleware";
+import { notification_timeout } from "@supplemental/notifications_control";
+import { ResponseLocals } from "@supplemental/types";
 import express, { Request, Response } from "express";
-
-import { ResponseLocals } from "../@types/types";
-import cardModel from "../models/card_model";
-import moduleModel from "../models/module_model";
-import middleware from "../supplemental/middleware";
-import { notification_timeout } from "../supplemental/notifications_control";
-import { ICard, ICardBase } from "./../models/card_model";
-import { IModule } from "./../models/module_model";
 
 const { auth } = middleware;
 const router = express.Router();
 
-interface IResError {
+type ResError = {
   errorBody: string;
-}
+};
 
-interface IResMessage {
+type ResBody = {
   msg: string;
-}
+};
 
 // @route ------ DELETE api/edit/module
 // @desc ------- Delete a module
 // @access ----- Private
 
-interface IModuleDeleteQuery extends qs.ParsedQs {
+type ModuleDeleteQuery = qs.ParsedQs & {
   _id: string;
-}
+};
 
-type TModuleDeleteReq = Request<any, any, any, IModuleDeleteQuery>;
+type ModuleDeleteReq = Request<any, any, any, ModuleDeleteQuery>;
 
-type TModuleDeleteRes = ResponseLocals<IResMessage | IResError>;
+type ModuleDeleteRes = ResponseLocals<ResBody | ResError>;
 
 router.delete(
   "/module",
   auth,
-  async (req: TModuleDeleteReq, res: TModuleDeleteRes) => {
+  async (req: ModuleDeleteReq, res: ModuleDeleteRes) => {
     try {
       let { _id: module_id } = req.query;
 
@@ -60,49 +58,55 @@ router.delete(
 // @desc ------- Delete a card
 // @access ----- Private
 
-interface ICardDeleteQuery extends qs.ParsedQs {
+type CardDeleteQuery = qs.ParsedQs & {
   _id: string;
-}
+};
 
-type TCardDeleteReq = Request<any, any, any, ICardDeleteQuery>;
+type CardDeleteReq = Request<any, any, any, CardDeleteQuery>;
 
-type TCardDeleteRes = ResponseLocals<IResMessage | IResError>;
+type CardDeleteResBody = {
+  cards: Card[];
+};
 
-router.delete(
-  "/card",
-  auth,
-  async (req: TCardDeleteReq, res: TCardDeleteRes) => {
-    try {
-      let { _id: card_id } = req.query;
+type CardDeleteRes = ResponseLocals<(ResBody & CardDeleteResBody) | ResError>;
 
-      const user = res.locals.user;
-      const { _id } = user;
+router.delete("/card", auth, async (req: CardDeleteReq, res: CardDeleteRes) => {
+  try {
+    let { _id: card_id } = req.query;
 
-      const card = await cardModel.findOne({ _id: card_id, author_id: _id });
+    const user = res.locals.user;
+    const { _id } = user;
 
-      if (!card) throw new Error(`Card ${card_id} has not been found.`);
+    const card = await cardModel.findOne({ _id: card_id, author_id: _id });
 
-      await cardModel.deleteOne({ _id: card_id, author_id: _id });
+    if (!card) throw new Error(`Card ${card_id} has not been found.`);
 
-      const number = await cardModel.countDocuments({
-        moduleID: card.moduleID,
-        author_id: _id,
-      });
+    await cardModel.deleteOne({ _id: card_id, author_id: _id });
 
-      await moduleModel.updateOne(
-        { _id: card.moduleID, author_id: _id },
-        { number },
-      );
+    const cards = await cardModel
+      .find({ author_id: _id, moduleID: card.moduleID })
+      .sort({ order: 1 });
 
-      res.status(200).json({ msg: "The card has been deleted." });
+    await Promise.all(
+      cards.map(async (card, i) => {
+        card.order = i;
+        return await card.save();
+      }),
+    );
 
-      await notification_timeout(user);
-    } catch (err) {
-      console.error(err);
-      res.status(500).json({ errorBody: "Server Error" });
-    }
-  },
-);
+    await moduleModel.updateOne(
+      { _id: card.moduleID, author_id: _id },
+      { number: cards.length },
+    );
+
+    res.status(200).json({ msg: "The card has been deleted.", cards });
+
+    await notification_timeout(user);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ errorBody: "Server Error" });
+  }
+});
 
 // ----------------
 
@@ -110,11 +114,11 @@ router.delete(
 // @desc ------- Edit a module
 // @access ----- Private
 
-type TModulePutReq = Request<any, any, IModule>;
+type ModulePutReq = Request<any, any, Module>;
 
-type TModulePutRes = Response<IResMessage | IResError>;
+type ModulePutRes = Response<ResBody | ResError>;
 
-router.put("/module", auth, async (req: TModulePutReq, res: TModulePutRes) => {
+router.put("/module", auth, async (req: ModulePutReq, res: ModulePutRes) => {
   try {
     const module_data = req.body;
 
@@ -147,11 +151,11 @@ router.put("/module", auth, async (req: TModulePutReq, res: TModulePutRes) => {
 // @desc ------- Edit a card
 // @access ----- Private
 
-type TCardPutReq = Request<any, any, ICard>;
+type CardPutReq = Request<any, any, Card>;
 
-type TCardPutRes = Response<IResMessage | IResError>;
+type CardPutRes = Response<ResBody | ResError>;
 
-router.put("/card", auth, async (req: TCardPutReq, res: TCardPutRes) => {
+router.put("/card", auth, async (req: CardPutReq, res: CardPutRes) => {
   try {
     const card_data = req.body;
 
@@ -185,66 +189,78 @@ router.put("/card", auth, async (req: TCardPutReq, res: TCardPutRes) => {
 // @desc ------- Create a module
 // @access ----- Private
 
-interface IModulePostReqBody {
+type ModulePostReqBody = {
   _id_arr: string[];
-}
+};
 
-type TModulePostReq = Request<any, any, IModulePostReqBody>;
+type ModulePostReq = Request<any, any, ModulePostReqBody>;
 
-type TModulePostRes = Response<IResMessage | IResError>;
+type ModulePostRes = Response<ResBody | ResError>;
 
-router.post(
-  "/module",
-  auth,
-  async (req: TModulePostReq, res: TModulePostRes) => {
-    try {
-      const { _id_arr } = req.body;
+router.post("/module", auth, async (req: ModulePostReq, res: ModulePostRes) => {
+  try {
+    const { _id_arr } = req.body;
 
-      const user = res.locals.user;
-      const { _id } = user;
+    const user = res.locals.user;
+    const { _id } = user;
 
-      const draft = await moduleModel.findOne({
-        author_id: _id,
-        draft: true,
-      });
+    const draft = await moduleModel.findOne({
+      author_id: _id,
+      draft: true,
+    });
 
-      if (!draft)
-        throw new Error(`Draft for user ${user.username} has not been found.`);
+    if (!draft)
+      throw new Error(`Draft for user ${user.username} has not been found.`);
 
-      const new_module = await moduleModel.create({
-        author: user.username,
-        author_id: user._id,
-        title: draft.title,
-        number: _id_arr.length,
-        creation_date: new Date(),
-        draft: false,
-      });
+    const new_module = await moduleModel.create({
+      author: user.username,
+      author_id: user._id,
+      title: draft.title,
+      number: _id_arr.length,
+      creation_date: new Date(),
+      draft: false,
+    });
 
-      await cardModel.updateMany(
-        { _id: { $in: _id_arr }, author_id: _id },
-        { moduleID: new_module._id },
-      );
+    const new_module_cards = await cardModel
+      .find({ _id: { $in: _id_arr }, author_id: _id })
+      .sort({ order: 1 });
 
-      const number = await cardModel.countDocuments({
+    await Promise.all(
+      new_module_cards.map(async (card, i) => {
+        card.order += i;
+        card.moduleID = new_module._id;
+        return await card.save();
+      }),
+    );
+
+    const draft_cards = await cardModel
+      .find({
         moduleID: draft._id,
         author_id: _id,
-      });
+      })
+      .sort({ order: 1 });
 
-      if (!number) {
-        await moduleModel.deleteOne({ author_id: _id, draft: true });
-      } else {
-        draft.title = "";
-        draft.number = number;
-        await draft.save();
-      }
-
-      res.status(200).json({ msg: "A new module has been created." });
-    } catch (err) {
-      console.error(err);
-      res.status(500).json({ errorBody: "Server Error" });
+    if (!draft_cards.length) {
+      await moduleModel.deleteOne({ author_id: _id, draft: true });
+    } else {
+      draft.title = "";
+      draft.number = draft_cards.length;
+      await draft.save();
     }
-  },
-);
+
+    await Promise.all(
+      draft_cards.map(async (card, i) => {
+        card.order += i;
+        return await card.save();
+      }),
+    );
+
+    res.status(200).json({ msg: "A new module has been created." });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ errorBody: "Server Error" });
+  }
+});
 
 // ----------------
 
@@ -252,22 +268,44 @@ router.post(
 // @desc ------- Create a card
 // @access ----- Private
 
-interface ICardPostReqBody {
-  module: IModule;
-}
+type CardPostReqBody = {
+  module: Module;
+  position?: "start" | "end";
+};
 
-type TCardPostReq = Request<any, any, ICardPostReqBody>;
+type CardPostResBody = {
+  cards: Card[];
+};
 
-type TCardPostRes = Response<ICard | IResError>;
+type CardPostReq = Request<any, any, CardPostReqBody>;
 
-router.post("/card", auth, async (req: TCardPostReq, res: TCardPostRes) => {
+type CardPostRes = Response<CardPostResBody | ResError>;
+
+router.post("/card", auth, async (req: CardPostReq, res: CardPostRes) => {
   try {
-    const { module } = req.body;
+    const { module, position } = req.body;
 
     const user = res.locals.user;
     const { _id } = user;
 
-    const new_card = await cardModel.create({
+    let cards = await cardModel
+      .find({ author_id: _id, moduleID: module._id })
+      .sort({ order: 1 });
+
+    let order = cards.length;
+
+    if (position === "start") {
+      order = 0;
+
+      await Promise.all(
+        cards.map(async card => {
+          card.order += 1;
+          return await card.save();
+        }),
+      );
+    } else if (position === "end") order = cards.length;
+
+    await cardModel.create({
       moduleID: module._id,
       term: "",
       definition: "",
@@ -275,23 +313,26 @@ router.post("/card", auth, async (req: TCardPostReq, res: TCardPostRes) => {
       creation_date: new Date(),
       studyRegime: false,
       stage: 1,
+      order,
       nextRep: new Date(),
       prevStage: new Date(),
       author_id: _id,
       author: user.username,
     });
 
-    const number = await cardModel.countDocuments({
-      author_id: _id,
-      moduleID: module._id,
-    });
+    cards = await cardModel
+      .find({
+        author_id: _id,
+        moduleID: module._id,
+      })
+      .sort({ order: 1 });
 
     await moduleModel.updateOne(
       { _id: module._id, author_id: _id },
-      { number },
+      { number: cards.length },
     );
 
-    res.status(200).json(new_card);
+    res.status(200).json({ cards });
   } catch (err) {
     console.error(err);
     res.status(500).json({ errorBody: "Server Error" });
@@ -304,20 +345,20 @@ router.post("/card", auth, async (req: TCardPostReq, res: TCardPostRes) => {
 // @desc ------- Get draft or create and get a new draft
 // @access ----- Private
 
-interface IDraftGetResBody {
-  module: IModule;
-  cards: ICard[];
-}
+type DraftGetResBody = {
+  module: Module;
+  cards: Card[];
+};
 
-type TDraftGetRes = Response<IDraftGetResBody | IResError>;
+type DraftGetRes = Response<DraftGetResBody | ResError>;
 
-router.get("/draft", auth, async (req: Request, res: TDraftGetRes) => {
+router.get("/draft", auth, async (req: Request, res: DraftGetRes) => {
   try {
     const user = res.locals.user;
     const { _id } = user;
 
-    let foundModule: IModule | null;
-    let cards: ICard[];
+    let foundModule: Module | null;
+    let cards: Card[];
 
     foundModule = await moduleModel.findOne({
       author_id: _id,
@@ -339,7 +380,7 @@ router.get("/draft", auth, async (req: Request, res: TDraftGetRes) => {
         draft: true,
       });
 
-      const cardsData: ICardBase[] = [];
+      const cardsData: CardBase[] = [];
 
       for (let i = 0; i < 5; i++) {
         cardsData.push({
@@ -350,6 +391,7 @@ router.get("/draft", auth, async (req: Request, res: TDraftGetRes) => {
           creation_date: new Date(Date.now() + i),
           studyRegime: false,
           stage: 1,
+          order: i,
           nextRep: new Date(),
           prevStage: new Date(),
           lastRep: new Date(),

@@ -1,6 +1,6 @@
-export interface HeaderState {
+export type HeaderState = {
   dropdown_active: boolean;
-}
+};
 
 const headerInitState: HeaderState = {
   dropdown_active: false,

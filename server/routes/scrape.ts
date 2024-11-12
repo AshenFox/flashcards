@@ -1,49 +1,48 @@
+import middleware from "@supplemental/middleware";
+import { ScrapingHeaders } from "@supplemental/scrape";
 import axios from "axios";
 import cheerio from "cheerio";
 import express, { Request, Response } from "express";
 
-import middleware from "../supplemental/middleware";
-import { ScrapingHeaders } from "./../supplemental/axios";
-
 const { auth } = middleware;
 const router = express.Router();
 
-interface IResError {
+type ResError = {
   errorBody: string;
-}
+};
 
 // @route ------ GET api/scrape/cod
 // @desc ------- Scrape cambridge online dictionary
 // @access ----- Private
 
-interface TCodGetQuery extends qs.ParsedQs {
+type CodGetQuery = qs.ParsedQs & {
   query: string;
-}
+};
 
-type TCodGetReq = Request<any, any, any, TCodGetQuery>;
+type CodGetReq = Request<any, any, any, CodGetQuery>;
 
-interface CodBlock {
+type CodBlock = {
   definition?: string;
   examples?: string[];
-}
+};
 
-interface CodSubSection {
+type CodSubSection = {
   blocks?: CodBlock[];
   guideword?: string;
-}
+};
 
-interface CodSection {
+type CodSection = {
   part_of_speech?: string;
   sub_sections?: CodSubSection[];
   transcr_uk?: string;
   transcr_us?: string;
-}
+};
 
 type TCodGetResBody = CodSection[];
 
-type TCodGetRes = Response<TCodGetResBody | IResError>;
+type TCodGetRes = Response<TCodGetResBody | ResError>;
 
-router.get("/cod", auth, async (req: TCodGetReq, res: TCodGetRes) => {
+router.get("/cod", auth, async (req: CodGetReq, res: TCodGetRes) => {
   try {
     const { query } = req.query;
 
@@ -53,8 +52,6 @@ router.get("/cod", auth, async (req: TCodGetReq, res: TCodGetRes) => {
         headers: ScrapingHeaders,
       },
     );
-
-    console.log({ response });
 
     const { data }: { data: string } = response;
     const $ = cheerio.load(data);
@@ -147,22 +144,22 @@ router.get("/cod", auth, async (req: TCodGetReq, res: TCodGetRes) => {
 // @desc ------- Scrape urban dictionary
 // @access ----- Private
 
-interface TUrbanGetQuery extends qs.ParsedQs {
+type UrbanGetQuery = qs.ParsedQs & {
   query: string;
-}
+};
 
-type TUrbanGetReq = Request<any, any, any, TUrbanGetQuery>;
+type UrbanGetReq = Request<any, any, any, UrbanGetQuery>;
 
-interface UrbanPanel {
+type UrbanPanel = {
   definition?: string;
   example?: string;
-}
+};
 
-type TUrbanGetResBody = UrbanPanel[];
+type UrbanGetResBody = UrbanPanel[];
 
-type TUrbanGetRes = Response<TUrbanGetResBody | IResError>;
+type UrbanGetRes = Response<UrbanGetResBody | ResError>;
 
-router.get("/urban", auth, async (req: TUrbanGetReq, res: TUrbanGetRes) => {
+router.get("/urban", auth, async (req: UrbanGetReq, res: UrbanGetRes) => {
   try {
     const { query } = req.query;
 
@@ -173,7 +170,7 @@ router.get("/urban", auth, async (req: TUrbanGetReq, res: TUrbanGetRes) => {
     const { data }: { data: string } = response;
     const $ = cheerio.load(data);
 
-    const result: TUrbanGetResBody = [];
+    const result: UrbanGetResBody = [];
 
     const content = $("#ud-root");
 

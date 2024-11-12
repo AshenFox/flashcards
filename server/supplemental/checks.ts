@@ -1,6 +1,5 @@
+import userModel from "@models/user_model";
 import bcrypt from "bcryptjs";
-
-import userModel from "../models/user_model";
 
 const minLength = (str: string, length: number) => str.length <= length;
 
@@ -99,28 +98,28 @@ const emailRegExp =
   /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 const allCapitalRegExp = /[A-Z]/;
 
-interface ICheckData {
+type CheckData = {
   username: string;
   password: string;
   email: string;
-}
+};
 
-interface IField {
+type Field = {
   ok: boolean;
   errors: string[];
-}
+};
 
-export interface ICheckResult {
+export type CheckResult = {
   ok: boolean;
-  username?: IField;
-  password?: IField;
-  email?: IField;
-}
+  username?: Field;
+  password?: Field;
+  email?: Field;
+};
 
-export const check = async (data: ICheckData, type: "log_in" | "sign_up") => {
+export const check = async (data: CheckData, type: "log_in" | "sign_up") => {
   const { username, password, email } = data;
 
-  let result: ICheckResult = { ok: true };
+  let result: CheckResult = { ok: true };
 
   // Username checks
   if (typeof username !== "undefined") {

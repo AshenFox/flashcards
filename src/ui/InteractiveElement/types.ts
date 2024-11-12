@@ -1,3 +1,4 @@
+import { LinkProps as NextLinkProps } from "next/link";
 import { MouseEvent, ReactElement, SVGProps } from "react";
 
 export type Design = "plain" | "padded" | "outline";
@@ -20,6 +21,7 @@ export type ButtonProps = InteractiveElementProps & {
   onClick: (e: MouseEvent<HTMLButtonElement>) => void;
 };
 
-export type LinkProps = InteractiveElementProps & {
-  href: string;
-};
+export type LinkProps = NextLinkProps &
+  InteractiveElementProps & {
+    href: string;
+  };

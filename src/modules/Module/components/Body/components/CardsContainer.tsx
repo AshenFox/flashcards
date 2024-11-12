@@ -3,7 +3,7 @@ import EditCard from "@components/EditCard";
 import NotFound from "@components/NotFound";
 import { useAppSelector } from "@store/hooks";
 import ScrollLoader from "@ui/ScrollLoader";
-import { memo } from "react";
+import { memo, useMemo } from "react";
 
 const CardsContainer = () => {
   const cards = useAppSelector(s => s.main.cards);
@@ -11,7 +11,10 @@ const CardsContainer = () => {
   const search_cards = useAppSelector(s => s.main.search_cards);
   const select_by = useAppSelector(s => s.main.select_by);
 
-  const formatted_cards = Object.values(cards);
+  const formatted_cards = useMemo(
+    () => Object.values(cards).sort((a, b) => a.order - b.order),
+    [cards],
+  );
 
   return (
     <div>

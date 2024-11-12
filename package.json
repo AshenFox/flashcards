@@ -3,23 +3,23 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "_dev": "nodemon server/server.js",
-    "dev": "set NODE_OPTIONS=--openssl-legacy-provider && nodemon ./server/server.ts",
+    "dev": "set NODE_OPTIONS=--openssl-legacy-provider && nodemon ./server/index.ts",
     "devd": "docker-compose -f docker-compose.dev.yaml up",
     "devd-rebuild": "docker-compose -f docker-compose.dev.yaml up --no-deps --build app",
     "build": "next build",
-    "_start": "node server/server.js",
-    "start": "node .server/server.js",
-    "build:server": "tsc --p ./server/tsconfig.server.json",
+    "start": "node .server/server/index.js",
+    "build:server": "tsc --p ./server/tsconfig.json && tsc-alias -p ./server/tsconfig.json",
     "prod": "docker-compose -f docker-compose.prod.yaml up -d",
     "prod-rebuild": "docker-compose -f docker-compose.prod.yaml up -d --no-deps --build app",
     "lint": "next lint",
-    "scp-config": "scp -r ./config/ user@host:~/apps/flashcards",
+    "typescript": "tsc --extendedDiagnostics --noEmit",
+    "eslint": "eslint ./",
     "eslint:fix": "eslint ./ --fix",
     "stylelint:fix": "stylelint '**/*.{css,scss}' --fix",
     "pretty": "prettier --write \"./**/*.{ts,tsx,js,css,scss}\"",
     "kill": "taskkill /f /im node.exe",
-    "clean-repo": "java -jar ./bfg-1.14.0.jar --replace-text passwords.txt"
+    "clean-repo": "java -jar ./bfg-1.14.0.jar --replace-text passwords.txt",
+    "scp-config": "scp -r ./config/ user@host:~/apps/flashcards"
   },
   "dependencies": {
     "@types/bcryptjs": "^2.4.2",
@@ -73,8 +73,9 @@
     "stylelint-config-standard": "^36.0.0",
     "stylelint-config-standard-scss": "^13.1.0",
     "stylelint-order": "^6.0.4",
+    "tsc-alias": "^1.8.10",
     "tsx": "^4.7.1",
-    "typescript": "^4.6.3",
+    "typescript": "^5.5.4",
     "typescript-plugin-css-modules": "^5.1.0"
   }
 }

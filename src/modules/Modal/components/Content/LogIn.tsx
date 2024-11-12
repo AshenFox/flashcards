@@ -34,7 +34,6 @@ const LogIn = () => {
     };
 
   const onChange = (e: ChangeEvent<HTMLInputElement>) => {
-    // const target = e.target;
     const { value, name } = e.target;
 
     control_field("log_in", name, value);

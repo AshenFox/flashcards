@@ -1,7 +1,7 @@
-export interface DimenState {
+export type DimenState = {
   header_height: number;
   header_width: number;
-}
+};
 
 const dimenInitState: DimenState = {
   header_height: 0,

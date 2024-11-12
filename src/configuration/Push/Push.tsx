@@ -1,5 +1,5 @@
+import axios from "@common/axios";
 import config from "@config/default.json";
-import axios from "@server/supplemental/axios";
 import { useAppSelector } from "@store/hooks";
 import { memo } from "react";
 import { useEffect } from "react";

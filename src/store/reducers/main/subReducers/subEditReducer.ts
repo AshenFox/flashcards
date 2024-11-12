@@ -13,7 +13,7 @@ import {
   SET_MODULE_QUESTION,
 } from "../../../types";
 import { MainActions } from "../../../types";
-import initialState from "../mainInitState";
+import initialState, { card_fields } from "../mainInitState";
 import { MainState } from "./../mainInitState";
 
 const subEditReducer = (
@@ -74,17 +74,38 @@ const subEditReducer = (
       return {
         ...state,
         cards: Object.fromEntries(
-          Object.entries(state.cards).filter(([_id]) => _id !== payload._id),
+          payload.cards.map(card => {
+            const prevCard = state.cards[card._id];
+
+            return [
+              card._id,
+              {
+                ...prevCard,
+                ...card,
+              },
+            ];
+          }),
         ),
       };
 
     case CREATE_CARD:
       return {
         ...state,
-        cards: {
-          ...state.cards,
-          [payload._id]: payload,
-        },
+        cards: Object.fromEntries(
+          payload.cards.map(card => {
+            const prevCard = state.cards[card._id];
+
+            return [
+              card._id,
+              prevCard
+                ? {
+                    ...prevCard,
+                    ...card,
+                  }
+                : { ...card, ...card_fields },
+            ];
+          }),
+        ),
       };
 
     case SET_CARD_SAVE:

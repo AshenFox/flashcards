@@ -5,7 +5,7 @@ import { memo, useCallback } from "react";
 
 import s from "./styles.module.scss";
 
-const Save = () => {
+const SaveAllCards = () => {
   const { set_cards_save } = useActions();
 
   const cards = useAppSelector(s => s.main.cards);
@@ -38,4 +38,4 @@ const Save = () => {
   );
 };
 
-export default memo(Save);
+export default memo(SaveAllCards);

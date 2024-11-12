@@ -52,8 +52,6 @@ const EditCard = ({
     [_id, control_card, edit_card],
   );
 
-  console.log({ term, definition });
-
   const timer = useRef<ReturnType<typeof setTimeout>>(null);
 
   const deleteActive = number > 2;
@@ -65,7 +63,7 @@ const EditCard = ({
   return (
     <div ref={ref} className={clsx(s.card, game && s.game)}>
       <div className={s.header}>
-        <div className={s.number}>{index && index}</div>
+        <div className={s.number}>{!!index && index}</div>
         {draft && <Save data={data} />}
         {toggle ? (
           <Close data={data} />
