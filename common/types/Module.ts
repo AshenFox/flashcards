@@ -7,6 +7,7 @@ export type Module = {
   author_id: string;
   cards: string[];
   number: number;
+  numberSR: number;
   creation_date: Date;
   draft: boolean;
 };

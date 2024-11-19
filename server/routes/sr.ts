@@ -1,6 +1,7 @@
 import { Card } from "@common/types";
 import notificationModel from "@models//notification_model";
 import cardModel, { CardSortObj } from "@models/card_model";
+import moduleModel from "@models/module_model";
 import middleware from "@supplemental/middleware";
 import { notification_timeout } from "@supplemental/notifications_control";
 import sr_stages from "@supplemental/sr_stages";
@@ -156,6 +157,18 @@ router.put("/answer", auth, async (req: AnswerPutReq, res: AnswerPutRes) => {
       fields,
     );
 
+    const numberSR = await cardModel.countDocuments({
+      author_id: _id,
+      moduleID: card.moduleID,
+      studyRegime: true,
+    });
+    await moduleModel.updateOne(
+      { _id: card.moduleID, author_id: _id },
+      {
+        numberSR,
+      },
+    );
+
     res.status(200).json(fields);
 
     await notification_timeout(user);
@@ -187,9 +200,10 @@ router.put("/control", auth, async (req: ControlPutReq, res: ControlPutRes) => {
     const { _id_arr, study_regime } = req.body;
 
     const user = res.locals.user;
+    const { _id } = user;
 
     await cardModel.updateMany(
-      { _id: { $in: _id_arr }, author_id: user._id },
+      { _id: { $in: _id_arr }, author_id: _id },
       { studyRegime: study_regime },
     );
 

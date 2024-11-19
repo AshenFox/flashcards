@@ -11,6 +11,7 @@ const ModuleSchema = new Schema<Module>({
   author_id: String,
   cards: [String],
   number: Number,
+  numberSR: Number,
   creation_date: Date,
   draft: Boolean,
 });

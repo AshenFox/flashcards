@@ -96,7 +96,10 @@ router.delete("/card", auth, async (req: CardDeleteReq, res: CardDeleteRes) => {
 
     await moduleModel.updateOne(
       { _id: card.moduleID, author_id: _id },
-      { number: cards.length },
+      {
+        number: cards.length,
+        numberSR: cards.filter(card => card.studyRegime).length,
+      },
     );
 
     res.status(200).json({ msg: "The card has been deleted.", cards });
@@ -217,6 +220,7 @@ router.post("/module", auth, async (req: ModulePostReq, res: ModulePostRes) => {
       author_id: user._id,
       title: draft.title,
       number: _id_arr.length,
+      numberSR: 0,
       creation_date: new Date(),
       draft: false,
     });
@@ -329,7 +333,9 @@ router.post("/card", auth, async (req: CardPostReq, res: CardPostRes) => {
 
     await moduleModel.updateOne(
       { _id: module._id, author_id: _id },
-      { number: cards.length },
+      {
+        number: cards.length,
+      },
     );
 
     res.status(200).json({ cards });
@@ -376,6 +382,7 @@ router.get("/draft", auth, async (req: Request, res: DraftGetRes) => {
         author: user.username,
         author_id: _id,
         number: 5,
+        numberSR: 0,
         creation_date: new Date(),
         draft: true,
       });
