@@ -5,7 +5,7 @@ import NotFound from "@components/NotFound";
 import { useActions } from "@store/hooks";
 import { useAppSelector } from "@store/store";
 import ScrollLoader from "@ui/ScrollLoader";
-import React, { Fragment, memo } from "react";
+import React, { Fragment, memo, useEffect } from "react";
 
 import Divider from "../components/Divider";
 import s from "../styles.module.scss";
@@ -35,7 +35,15 @@ const Cards = () => {
     reset_fields_cards,
     set_select_created,
     set_select_by,
+    reset_search,
   } = useActions();
+
+  useEffect(() => {
+    return () => {
+      reset_fields_cards();
+      reset_search();
+    };
+  }, []);
 
   return (
     <>

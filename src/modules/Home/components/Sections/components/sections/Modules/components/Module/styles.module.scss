@@ -63,19 +63,37 @@
 .info {
   display: flex;
   margin-bottom: 0.5rem;
+  gap: 1rem;
+
+  div {
+    color: var(--stronger-subtle-text-color);
+    line-height: 1.5rem;
+  }
+
+  div:not(:first-child) {
+    padding-left: 1rem;
+    border-left: 1px solid var(--element-border-color);
+  }
 }
 
 .term_number {
-  padding-right: 1rem;
   color: var(--stronger-subtle-text-color);
-  line-height: 1.5rem;
+}
+
+div.sr {
+  display: inline-flex;
+  align-items: center;
+  color: var(--success-color);
+  gap: 0.5rem;
+
+  svg {
+    height: 1.5rem;
+    fill: var(--success-color);
+  }
 }
 
 .author {
-  padding-left: 1rem;
-  border-left: 1px solid var(--element-border-color);
   color: var(--stronger-subtle-text-color);
-  line-height: 1.5rem;
 }
 
 .title {

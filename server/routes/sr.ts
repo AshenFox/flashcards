@@ -212,22 +212,21 @@ router.put("/control", auth, async (req: ControlPutReq, res: ControlPutRes) => {
       author_id: _id,
     });
 
-    const moduleIncNumbers = Object.entries(
-      cards.reduce<{ [key: string]: number }>((res, card) => {
-        const current = res[card.moduleID] ?? 0;
-        res[card.moduleID] = current + 1;
-        return res;
-      }, {}),
-    );
+    const uniqueModuleIDs = [...new Set(cards.map(card => card.moduleID))];
 
     await Promise.all(
-      moduleIncNumbers.map(
-        async ([moduleID, inc]) =>
-          await moduleModel.updateOne(
-            { _id: moduleID, author_id: _id },
-            { $inc: { numberSR: study_regime ? inc : -inc } },
-          ),
-      ),
+      uniqueModuleIDs.map(async moduleID => {
+        const numberSR = await cardModel.countDocuments({
+          moduleID,
+          author_id: _id,
+          studyRegime: true,
+        });
+
+        await moduleModel.updateOne(
+          { _id: moduleID, author_id: _id },
+          { numberSR },
+        );
+      }),
     );
 
     res.status(200).json({ msg: "Study regime has been controlled" });

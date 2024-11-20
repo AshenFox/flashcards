@@ -3,7 +3,7 @@ import NotFound from "@components/NotFound";
 import { useActions } from "@store/hooks";
 import { useAppSelector } from "@store/store";
 import ScrollLoader from "@ui/ScrollLoader";
-import React, { Fragment, memo } from "react";
+import React, { Fragment, memo, useEffect } from "react";
 
 import Divider from "../components/Divider";
 import s from "../styles.module.scss";
@@ -26,7 +26,15 @@ const Modules = () => {
     control_search_modules,
     reset_fields_modules,
     set_select_created,
+    reset_search,
   } = useActions();
+
+  useEffect(() => {
+    return () => {
+      reset_fields_modules();
+      reset_search();
+    };
+  }, []);
 
   return (
     <>
