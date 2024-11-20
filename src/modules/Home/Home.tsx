@@ -72,14 +72,6 @@ const Home = () => {
     };
   }, [section]);
 
-  useEffect(() => {
-    return () => {
-      reset_fields_cards();
-      reset_fields_modules();
-      reset_search();
-    };
-  }, []);
-
   const loadContent = () => {
     if (!modules.length && section === "modules") get_modules(true);
     if (!cards.length && section === "cards") get_cards(true);
