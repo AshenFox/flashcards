@@ -207,6 +207,29 @@ router.put("/control", auth, async (req: ControlPutReq, res: ControlPutRes) => {
       { studyRegime: study_regime },
     );
 
+    const cards = await cardModel.find({
+      _id: { $in: _id_arr },
+      author_id: _id,
+    });
+
+    const moduleIncNumbers = Object.entries(
+      cards.reduce<{ [key: string]: number }>((res, card) => {
+        const current = res[card.moduleID] ?? 0;
+        res[card.moduleID] = current + 1;
+        return res;
+      }, {}),
+    );
+
+    await Promise.all(
+      moduleIncNumbers.map(
+        async ([moduleID, inc]) =>
+          await moduleModel.updateOne(
+            { _id: moduleID, author_id: _id },
+            { $inc: { numberSR: study_regime ? inc : -inc } },
+          ),
+      ),
+    );
+
     res.status(200).json({ msg: "Study regime has been controlled" });
 
     await notification_timeout(user);
