@@ -12,59 +12,63 @@
     fill: var(--icon-fill);
   }
 
-  :global(.indicator__dots) {
-    position: absolute;
-    top: -0.6rem;
-    left: -0.6rem;
-    width: 3.4rem;
-    height: 3.4rem;
-    animation: rotate 35s linear infinite;
-    opacity: 0;
-    transform-origin: center;
-    transition: all 0.2s;
-  }
+  :global {
+    .indicator__dots {
+      position: absolute;
+      top: -0.6rem;
+      left: -0.6rem;
+      width: 3.4rem;
+      height: 3.4rem;
+      animation: rotate 35s linear infinite;
+      opacity: 0;
+      transform-origin: center;
+      transition: all 0.2s;
+    }
 
-  :global(.indicator__dot) {
-    position: absolute;
-    width: 0.4rem;
-    height: 0.4rem;
-    border-radius: 50%;
-    background-color: var(--success-color);
-    transform: translate(-50%, -50%);
-  }
+    .indicator__dot {
+      position: absolute;
+      width: 0.4rem;
+      height: 0.4rem;
+      border-radius: 50%;
+      background-color: var(--success-color);
+      transform: translate(-50%, -50%);
+    }
 
-  :global(.tooltip__tooltip) {
-    top: -1rem;
-    left: 4rem;
-    width: max-content;
-    border-radius: 0.5rem;
+    .tooltip__tooltip {
+      top: -1rem;
+      left: 4rem;
+      width: max-content;
+      border-radius: 0.5rem;
 
-    span {
-      display: block;
-      margin: 0;
+      span {
+        display: block;
+        margin: 0;
 
-      &:not(:last-child) {
-        margin-bottom: 0.25rem;
+        &:not(:last-child) {
+          margin-bottom: 0.25rem;
+        }
       }
     }
   }
 
   &.small {
-    :global(.indicator__dots) {
-      top: -0.5rem;
-      left: -0.5rem;
-      width: 2.7rem;
-      height: 2.7rem;
-    }
+    :global {
+      .indicator__dots {
+        top: -0.5rem;
+        left: -0.5rem;
+        width: 2.7rem;
+        height: 2.7rem;
+      }
 
-    :global(.indicator__dot) {
-      width: 0.4rem;
-      height: 0.4rem;
-    }
+      .indicator__dot {
+        width: 0.4rem;
+        height: 0.4rem;
+      }
 
-    :global(.tooltip__tooltip) {
-      top: -6rem;
-      left: -1rem;
+      .tooltip__tooltip {
+        top: -6rem;
+        left: -1rem;
+      }
     }
 
     svg {
@@ -79,12 +83,14 @@
       fill: var(--success-color);
     }
 
-    :global(.indicator__dots) {
-      opacity: 1;
-    }
+    :global {
+      .indicator__dots {
+        opacity: 1;
+      }
 
-    :global(.tooltip__tooltip) {
-      color: var(--success-color);
+      .tooltip__tooltip {
+        color: var(--success-color);
+      }
     }
   }
 }

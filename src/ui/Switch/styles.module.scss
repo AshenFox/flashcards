@@ -4,12 +4,6 @@
   display: flex;
   align-items: center;
 
-  :global(.tooltip__tooltip) {
-    top: -3rem;
-    right: 1.5rem;
-    width: max-content;
-  }
-
   & svg {
     margin-right: 1rem;
     margin-left: auto;
@@ -17,56 +11,64 @@
     transition: all 0.2s;
   }
 
-  :global(.switch__switch) {
-    position: relative;
-    display: inline-flex;
-    width: 46px;
-    align-items: center;
-    padding: 2px;
-    border: 1px solid var(--icon-fill);
-    border-radius: 14px;
-    cursor: pointer;
-    transition: all 0.2s;
-
-    &::before {
-      display: inline-block;
-      flex-grow: 0;
-      content: "";
-      transition: all 0.2s;
+  :global {
+    .tooltip__tooltip {
+      top: -3rem;
+      right: 1.5rem;
+      width: max-content;
     }
 
-    &::after {
-      display: inline-block;
-      width: 18px;
-      height: 18px;
-      border-radius: 50%;
-      background-color: var(--icon-fill);
-      content: "";
-      transition: all 0.2s;
-    }
-
-    &.small {
-      width: 34px;
+    .switch__switch {
+      position: relative;
+      display: inline-flex;
+      width: 46px;
+      align-items: center;
       padding: 2px;
       border: 1px solid var(--icon-fill);
-      border-radius: 10px;
+      border-radius: 14px;
+      cursor: pointer;
+      transition: all 0.2s;
+
+      &::before {
+        display: inline-block;
+        flex-grow: 0;
+        content: "";
+        transition: all 0.2s;
+      }
 
       &::after {
-        width: 14px;
-        height: 14px;
+        display: inline-block;
+        width: 18px;
+        height: 18px;
+        border-radius: 50%;
+        background-color: var(--icon-fill);
+        content: "";
+        transition: all 0.2s;
+      }
+    }
+
+    .switch__checkbox {
+      display: none;
+
+      &:checked {
+        & ~ .switch__switch {
+          &::before {
+            flex-grow: 1;
+          }
+        }
       }
     }
   }
 
-  :global(.switch__checkbox) {
-    display: none;
+  :global(.switch__switch).small {
+    width: 34px;
+    padding: 2px;
+    border: 1px solid var(--icon-fill);
+    border-radius: 10px;
 
-    &:checked {
-      & ~ :global(.switch__switch) {
-        &::before {
-          flex-grow: 1;
-        }
-      }
+    &::after {
+      width: 14px;
+      height: 14px;
     }
   }
 }

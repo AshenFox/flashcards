@@ -42,7 +42,7 @@ const Switch = ({
   const innerIconSize = iconSize ?? small ? 17 : 28;
 
   return (
-    <div className={clsx(s.container, tooltipContainer, className)}>
+    <div className={clsx(s.container, tooltipContainer, className, "test")}>
       <input
         className={"switch__checkbox"}
         type="checkbox"

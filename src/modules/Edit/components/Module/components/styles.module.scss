@@ -1,26 +1,28 @@
 @import "@styles/vars";
 
 .save {
-  :global(.tooltip__tooltip) {
-    right: 0;
-  }
-
-  :global(.switch__checkbox):checked {
-    & ~ :global(.tooltip__tooltip) {
-      border-color: var(--success-color);
-      color: var(--success-color);
+  :global {
+    .tooltip__tooltip {
+      right: 0;
     }
 
-    & ~ :global(.switch__switch) {
-      border-color: var(--success-color);
-
-      &::after {
-        background-color: var(--success-color);
+    .switch__checkbox:checked {
+      & ~ .tooltip__tooltip {
+        border-color: var(--success-color);
+        color: var(--success-color);
       }
-    }
 
-    & ~ svg {
-      fill: var(--success-color);
+      & ~ .switch__switch {
+        border-color: var(--success-color);
+
+        &::after {
+          background-color: var(--success-color);
+        }
+      }
+
+      & ~ svg {
+        fill: var(--success-color);
+      }
     }
   }
 }
