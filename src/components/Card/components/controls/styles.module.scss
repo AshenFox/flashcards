@@ -44,7 +44,7 @@
     color: var(--danger-color);
   }
 
-  &[data-active="true"] {
+  &.question {
     :global(.tooltip__tooltip) {
       opacity: 0 !important;
     }

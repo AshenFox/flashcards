@@ -193,7 +193,11 @@ const Answer = ({ data }: AnswerProps) => {
         )}
       </div>
 
-      <div className={s.continue} data-correct={canContinue.current}>
+      <div
+        className={clsx(s.continue, {
+          [s.incorrect]: canContinue.current,
+        })}
+      >
         <Button onClick={clickContinue}>Click to continue</Button>
       </div>
     </div>

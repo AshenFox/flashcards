@@ -165,7 +165,7 @@ html:global(.dark) .item {
   transform: translateY(20rem);
   transition: all 0.5s;
 
-  &[data-active="true"] {
+  &.active {
     opacity: 1;
     transform: translateY(0);
   }
@@ -195,11 +195,11 @@ html:global(.dark) .item {
   transition: all 0.2s;
   user-select: none;
 
-  &[data-answer="true"] {
+  &.correct {
     background-color: var(--success-color);
   }
 
-  &[data-answer="false"] {
+  &.incorrect {
     background-color: var(--danger-color);
   }
 

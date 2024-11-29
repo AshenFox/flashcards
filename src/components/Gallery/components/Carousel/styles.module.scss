@@ -128,7 +128,7 @@
       }
     }
 
-    &[data-active="false"] {
+    &.disabled {
       button {
         border-color: var(--inactive-color);
         background-color: var(--inactive-color);

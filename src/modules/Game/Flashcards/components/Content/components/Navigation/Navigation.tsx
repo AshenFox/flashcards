@@ -94,18 +94,20 @@ const Navigation = () => {
   return (
     <div className={s.navigation}>
       {isSR && (
-        <div className={s.question} data-active={is_turned}>
+        <div
+          className={clsx(s.question, {
+            [s.active]: is_turned,
+          })}
+        >
           <p>Did you know the answer?</p>
           <div
-            className={s.answer}
-            data-answer="true"
+            className={clsx(s.answer, s.correct)}
             onClick={clickNavItem("next", "correct")}
           >
             <span>Yes</span>
           </div>
           <div
-            className={s.answer}
-            data-answer="false"
+            className={clsx(s.answer, s.incorrect)}
             onClick={clickNavItem("next", "incorrect")}
           >
             <span>No</span>

@@ -24,7 +24,7 @@
     }
   }
 
-  &[data-active="true"] {
+  &.active {
     :global(.tooltip__tooltip) {
       opacity: 0 !important;
     }

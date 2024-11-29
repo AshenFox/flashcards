@@ -54,16 +54,12 @@ const ConfirmPopup = ({
     >
       <p>{question}</p>
       <div
-        className={clsx(s.answer, "confirm-popup__answer")}
-        data-answer="true"
+        className={clsx(s.answer, s.yes, "confirm-popup__answer")}
         onClick={clickYes}
       >
         <span>Yes</span>
       </div>
-      <div
-        className={clsx(s.answer, "confirm-popup__answer")}
-        data-answer="false"
-      >
+      <div className={clsx(s.answer, s.no, "confirm-popup__answer")}>
         <span>No</span>
       </div>
     </div>

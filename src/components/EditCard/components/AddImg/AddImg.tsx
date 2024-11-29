@@ -2,6 +2,7 @@ import { useActions } from "@store/hooks";
 import { Card } from "@store/reducers/main/mainInitState";
 import { DeleteIcon, ImgIcon } from "@ui/Icons";
 import Img from "@ui/Img";
+import clsx from "clsx";
 import { memo, MouseEvent, useCallback, useRef } from "react";
 
 import s from "./styles.module.scss";
@@ -34,7 +35,12 @@ const AddImg = ({ data }: AddImgProps) => {
   const deleteEl = useRef<HTMLDivElement>(null);
 
   return (
-    <div className={s.add_img} onClick={clickImgSearch} data-imgurl={!!imgurl}>
+    <div
+      className={clsx(s.add_img, {
+        [s.empty]: !imgurl,
+      })}
+      onClick={clickImgSearch}
+    >
       <Img containerClass={s.container} imgClass={s.img} url={imgurl} />
       <div className={s.logo}>
         <ImgIcon />

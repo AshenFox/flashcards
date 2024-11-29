@@ -18,8 +18,9 @@ const SRDrop = () => {
 
   return (
     <div
-      className={clsx(s.drop, tooltipContainer)}
-      data-active={question}
+      className={clsx(s.drop, tooltipContainer, {
+        [s.active]: question,
+      })}
       onClick={clickDropSR}
     >
       <DropStudyRegimeIcon width="30" height="30" />

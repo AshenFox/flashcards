@@ -47,9 +47,7 @@ const Control = ({ direction, _id }: ControlProps) => {
 
   return (
     <div
-      className={clsx(s.control, s[direction])}
-      data-control_el="true"
-      data-active={active}
+      className={clsx(s.control, s[direction], { [s.disabled]: !active })}
       onClick={clickControl}
     >
       <button>

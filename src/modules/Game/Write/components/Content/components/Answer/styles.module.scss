@@ -165,8 +165,8 @@
   margin-top: 3rem;
   text-align: center;
 
-  &[data-correct="false"] {
-    & button {
+  &.incorrect {
+    button {
       background-color: var(--inactive-color);
       color: var(--inactive-secondary-color);
       cursor: auto;

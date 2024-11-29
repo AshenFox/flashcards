@@ -103,9 +103,10 @@ const Speaker = ({ _id, text, type, className, ref }: SpeakerProps) => {
 
   return (
     <div
-      className={clsx(s.speaker, className)}
-      data-active={active}
-      data-speaking={speakerSpeaking}
+      className={clsx(s.speaker, className, {
+        [s.disabled]: !active,
+        [s.speaking]: speakerSpeaking,
+      })}
       onClick={clickSpeaker}
       ref={ref}
     >

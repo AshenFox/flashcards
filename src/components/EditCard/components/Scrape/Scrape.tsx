@@ -24,7 +24,11 @@ const Scrape = ({ data }: ScrapeProps) => {
   );
 
   return (
-    <div className={s.scrape} data-loading={loading}>
+    <div
+      className={clsx(s.scrape, {
+        [s.loading]: loading,
+      })}
+    >
       <div
         className={clsx(s.button, s.cod, tooltipContainer)}
         onClick={clickScrapeButton("cod")}
