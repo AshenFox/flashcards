@@ -11,7 +11,14 @@ import TextLabel from "@ui/TextLabel";
 import { tooltipContainer } from "@ui/Tooltip";
 import clsx from "clsx";
 import { useRouter } from "next/router";
-import { ChangeEvent, memo, MouseEvent, useEffect, useRef } from "react";
+import {
+  ChangeEvent,
+  memo,
+  MouseEvent,
+  useCallback,
+  useEffect,
+  useRef,
+} from "react";
 
 import s from "./styles.module.scss";
 
@@ -48,22 +55,20 @@ const Answer = ({ data }: AnswerProps) => {
   const isEmpty = !answer && term;
   const copiedCorrectly = copy_answer === term.replace(/&nbsp;/g, " ").trim();
 
-  const isFirstRound = useRef(!rounds.length);
-  isFirstRound.current = !rounds.length;
-
-  const canContinue = useRef(false);
+  let isFirstRound = !rounds.length;
+  let canContinue = false;
 
   const copyAnswerInput = useRef<HTMLInputElement>(null);
 
   const gameAnswer = useRef<HTMLDivElement>(null);
 
   if (isCorrect) {
-    canContinue.current = true;
+    canContinue = true;
   } else {
     if (isEmpty) {
-      if (copiedCorrectly) canContinue.current = true;
+      if (copiedCorrectly) canContinue = true;
     } else {
-      canContinue.current = true;
+      canContinue = true;
     }
   }
 
@@ -72,17 +77,25 @@ const Answer = ({ data }: AnswerProps) => {
 
   const clickEdit = (e: MouseEvent<HTMLDivElement>) => set_card_edit(_id, true);
 
-  const continueGame = () => {
-    if (canContinue.current) {
-      if (isFirstRound.current && isSR) put_sr_answer(_id, isCorrect ? 1 : -1);
+  const continueGame = useCallback(() => {
+    if (canContinue) {
+      if (isFirstRound && isSR) put_sr_answer(_id, isCorrect ? 1 : -1);
       next_write_card();
     }
-  };
+  }, [
+    _id,
+    canContinue,
+    isCorrect,
+    isFirstRound,
+    isSR,
+    next_write_card,
+    put_sr_answer,
+  ]);
 
-  const overrideAnswer = () => {
-    if (isFirstRound.current && isSR) put_sr_answer(_id, 1);
+  const overrideAnswer = useCallback(() => {
+    if (isFirstRound && isSR) put_sr_answer(_id, 1);
     override_write_answer();
-  };
+  }, [_id, isFirstRound, isSR, override_write_answer, put_sr_answer]);
 
   const clickContinue = (e: MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
@@ -94,30 +107,35 @@ const Answer = ({ data }: AnswerProps) => {
     overrideAnswer();
   };
 
-  const keyDownControl = (e: KeyboardEvent) => {
-    if (e.key === "Enter") {
-      e.preventDefault();
+  const keyDownControl = useCallback(
+    (e: KeyboardEvent) => {
+      if (e.key === "Enter") {
+        e.preventDefault();
 
-      continueGame();
-    }
-
-    if (e.key === "o") {
-      if (!isCorrect && !isEmpty) {
-        overrideAnswer();
+        continueGame();
       }
-    }
-  };
+
+      if (e.key === "o") {
+        if (!isCorrect && !isEmpty) {
+          overrideAnswer();
+        }
+      }
+    },
+    [isCorrect, isEmpty, overrideAnswer, continueGame],
+  );
 
   useEffect(() => {
     if (gameAnswer.current) gameAnswer.current.focus();
     if (copyAnswerInput.current) copyAnswerInput.current.focus();
+  }, []);
 
+  useEffect(() => {
     window.addEventListener("keydown", keyDownControl);
 
     return () => {
       window.removeEventListener("keydown", keyDownControl);
     };
-  }, []);
+  }, [keyDownControl]);
 
   return (
     <div className={s.answer} tabIndex={0} ref={gameAnswer}>
@@ -195,7 +213,7 @@ const Answer = ({ data }: AnswerProps) => {
 
       <div
         className={clsx(s.continue, {
-          [s.incorrect]: canContinue.current,
+          [s.incorrect]: !canContinue,
         })}
       >
         <Button onClick={clickContinue}>Click to continue</Button>
