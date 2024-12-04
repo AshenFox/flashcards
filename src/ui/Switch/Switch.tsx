@@ -12,7 +12,7 @@ import s from "./styles.module.scss";
 
 type SwitchProps = {
   id: string;
-  active: boolean;
+  active?: boolean;
   className?: string;
   small?: boolean;
   icon?: ReactElement;

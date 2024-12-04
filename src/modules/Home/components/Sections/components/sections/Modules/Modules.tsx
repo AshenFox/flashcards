@@ -1,4 +1,4 @@
-import Filter, { Option } from "@components/Filter";
+import Filter, { Option } from "@components/NewFilter";
 import NotFound from "@components/NotFound";
 import { useActions } from "@store/hooks";
 import { useAppSelector } from "@store/store";

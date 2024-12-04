@@ -1,0 +1,92 @@
+@import "@styles/vars";
+
+.filter {
+  position: static;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: end;
+  gap: 1rem;
+  transition: all 0.2s;
+
+  @media (max-width: $mobile) {
+    flex-direction: column;
+  }
+}
+
+.search {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: end;
+  gap: 1rem;
+
+  :global(.input__container) {
+    width: 100%;
+    max-width: 30rem;
+  }
+
+  @media (max-width: $mobile) {
+    margin-right: 0;
+  }
+}
+
+.filter_btn {
+  padding: 0.1rem;
+  border-radius: 0.5rem;
+
+  svg {
+    width: 3rem;
+    fill: transparent;
+    stroke: var(--icon-fill);
+  }
+
+  &.active {
+    background-color: var(--active-color);
+
+    svg {
+      stroke: var(--active-secondary-color);
+    }
+  }
+
+  &:global(.interactive_element__element) {
+    &:hover {
+      svg {
+        fill: transparent;
+      }
+    }
+  }
+}
+
+.group {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 1rem;
+}
+
+.group_item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.select {
+  width: 11.5rem;
+  order: 2;
+}
+
+.select_label {
+  order: 1;
+  color: var(--stronger-subtle-text-color);
+  font-size: 1.4rem;
+}
+
+.toggle {
+  display: flex;
+  min-height: 3.5rem;
+  align-items: center;
+  order: 2;
+}

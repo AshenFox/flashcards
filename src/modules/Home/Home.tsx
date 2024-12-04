@@ -31,14 +31,7 @@ const Home = () => {
   const router = useRouter();
   const { section } = router.query;
 
-  const {
-    get_modules,
-    get_cards,
-    reset_fields_cards,
-    reset_fields_modules,
-    reset_search,
-    get_sr_count,
-  } = useActions();
+  const { get_modules, get_cards, reset_search, get_sr_count } = useActions();
 
   const modules = useAppSelector(s => s.main.modules);
   const cards = useAppSelector(s => s.main.cards);

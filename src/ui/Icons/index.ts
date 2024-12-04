@@ -10,6 +10,7 @@ export { default as EditIcon } from "./components/EditIcon";
 export { default as ExternalLinkIcon } from "./components/ExternalLinkIcon";
 export { default as EyeClosedIcon } from "./components/EyeClosedIcon";
 export { default as EyeIcon } from "./components/EyeIcon";
+export { default as FilterIcon } from "./components/FilterIcon";
 export { default as GameBackIcon } from "./components/GameBackIcon";
 export { default as GameOptionsIcon } from "./components/GameOptionsIcon";
 export { default as ImgIcon } from "./components/ImgIcon";
