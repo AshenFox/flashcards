@@ -1,6 +1,6 @@
 import { Option } from "@components/Filter";
-import { noop } from "@helpers/functions/noop";
-import { FilterIcon } from "@ui/Icons";
+import { FilterIcon, UndoIcon } from "@ui/Icons";
+import FilledFilterIcon from "@ui/Icons/components/FilledFilterIcon";
 import Input from "@ui/Input";
 import { Button } from "@ui/InteractiveElement";
 import Switch from "@ui/Switch";
@@ -66,16 +66,35 @@ const Filter = ({
             />
             <Button
               design="plain"
-              className={clsx(s.filter_btn, {
+              className={clsx(s.filter_btn, s.filter_icon, {
                 [s.active]: isFilterOpen,
               })}
-              icon={<FilterIcon />}
+              icon={true ? <FilterIcon /> : <FilledFilterIcon />}
               onClick={toggleFilter}
             />
+            {/* <Button
+              design="plain"
+              className={clsx(s.filter_btn, s.undo_icon)}
+              icon={<UndoIcon />}
+              onClick={toggleFilter}
+            /> */}
           </div>
         )}
         {isFilterOpen && (
           <div className={s.group}>
+            <div className={s.group_item}>
+              <Button
+                design="plain"
+                className={clsx(
+                  s.filter_btn,
+                  s.undo_icon /* {
+                [s.active]: isFilterOpen,
+              } */,
+                )}
+                icon={<UndoIcon />}
+                onClick={toggleFilter}
+              />
+            </div>
             {selects?.map(select => {
               const onChange = (value: Option) => {
                 select.setValue(value);

@@ -37,6 +37,7 @@ export const customStyles: StylesConfig<Option, false, GroupBase<Option>> = {
     ":hover": {
       borderColor: "var(--active-color)",
     },
+    boxShadow: "none",
     minHeight: "3.5rem",
     cursor: "pointer",
   }),

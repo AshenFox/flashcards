@@ -34,27 +34,44 @@
 }
 
 .filter_btn {
-  padding: 0.1rem;
+  width: 3.2rem;
+  height: 3.2rem;
   border-radius: 0.5rem;
 
   svg {
     width: 3rem;
-    fill: transparent;
-    stroke: var(--icon-fill);
   }
 
   &.active {
     background-color: var(--active-color);
+  }
+
+  &.undo_icon {
+    margin-right: 0.5rem;
 
     svg {
-      stroke: var(--active-secondary-color);
+      width: 2.5rem;
+      stroke: var(--icon-fill);
     }
   }
 
-  &:global(.interactive_element__element) {
-    &:hover {
-      svg {
-        fill: transparent;
+  &.filter_icon {
+    svg {
+      fill: var(--icon-fill);
+      stroke: transparent;
+    }
+
+    &.active svg {
+      fill: var(--active-secondary-color);
+    }
+
+    &:global(.interactive_element__element):hover svg {
+      fill: var(--icon-fill);
+    }
+
+    &.active:global(.interactive_element__element) {
+      &:hover svg {
+        fill: var(--active-secondary-color);
       }
     }
   }
