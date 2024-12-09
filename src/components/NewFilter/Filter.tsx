@@ -1,4 +1,5 @@
 import { Option } from "@components/Filter";
+import { noop } from "@helpers/functions/noop";
 import { FilterIcon, UndoIcon } from "@ui/Icons";
 import FilledFilterIcon from "@ui/Icons/components/FilledFilterIcon";
 import Input from "@ui/Input";
@@ -69,7 +70,7 @@ const Filter = ({
               className={clsx(s.filter_btn, s.filter_icon, {
                 [s.active]: isFilterOpen,
               })}
-              icon={true ? <FilterIcon /> : <FilledFilterIcon />}
+              icon={false ? <FilterIcon /> : <FilledFilterIcon />}
               onClick={toggleFilter}
             />
             {/* <Button
@@ -122,11 +123,37 @@ const Filter = ({
               );
             })}
             <div className={s.group_item}>
+              <label className={s.select_label}>SR</label>
+              <Select<Option>
+                instanceId={"testid"}
+                className={s.select}
+                options={[
+                  {
+                    value: "all",
+                    label: "All",
+                  },
+                  {
+                    value: "true",
+                    label: "in SR",
+                  },
+                  {
+                    value: "false",
+                    label: "outside SR",
+                  },
+                ]}
+                onChange={noop}
+                // value={null}
+                isSearchable={false}
+                theme={createCustomTheme}
+                styles={customStyles}
+              />
+            </div>
+            {/* <div className={s.group_item}>
               <div className={s.toggle}>
                 <Switch id="test" />
               </div>
               <label className={s.select_label}>SR Cards</label>
-            </div>
+            </div> */}
           </div>
         )}
       </div>
