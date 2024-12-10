@@ -13,6 +13,7 @@
 
   @media (max-width: $mobile) {
     flex-direction: column;
+    align-items: start;
   }
 }
 
@@ -29,7 +30,8 @@
   }
 
   @media (max-width: $mobile) {
-    margin-right: 0;
+    flex-direction: row-reverse;
+    justify-content: start;
   }
 }
 
@@ -40,54 +42,70 @@
 
   svg {
     width: 3rem;
+    fill: var(--icon-fill);
   }
 
   &.active {
     background-color: var(--active-color);
-  }
-
-  &.undo_icon {
-    margin-right: 0.5rem;
 
     svg {
-      width: 2.5rem;
-      stroke: var(--icon-fill);
-    }
-  }
-
-  &.filter_icon {
-    svg {
-      fill: var(--icon-fill);
-      stroke: transparent;
-    }
-
-    &.active svg {
       fill: var(--active-secondary-color);
     }
+  }
 
-    &:global(.interactive_element__element):hover svg {
-      fill: var(--icon-fill);
-    }
+  &.undo_icon svg {
+    width: 2.5rem;
+  }
 
-    &.active:global(.interactive_element__element) {
-      &:hover svg {
-        fill: var(--active-secondary-color);
-      }
+  &:global(.interactive_element__element):hover svg {
+    fill: var(--active-color);
+  }
+
+  &.active:global(.interactive_element__element) {
+    &:hover svg {
+      fill: var(--active-secondary-color);
     }
+  }
+}
+
+.group_container {
+  display: flex;
+  gap: 1rem;
+
+  @media (max-width: $mobile) {
+    flex-direction: row-reverse;
   }
 }
 
 .group {
   display: flex;
   flex-wrap: wrap;
-  align-items: flex-end;
-  gap: 1rem;
+  gap: 0.5rem 1rem;
 }
 
 .group_item {
   display: flex;
   flex-direction: column;
   gap: 0.2rem;
+
+  & .reset {
+    display: flex;
+    min-height: 3.5rem;
+    align-items: center;
+    padding-left: 1rem;
+    border-left: 1px solid var(--element-border-color);
+    margin-top: 2.1rem;
+    margin-left: 0.5rem;
+
+    @media (max-width: $mobile) {
+      padding: 0;
+      padding-right: 1rem;
+      border: none;
+      border-right: 1px solid var(--element-border-color);
+      margin-right: 0.5rem;
+      margin-left: 0;
+    }
+  }
 }
 
 .select {
@@ -99,11 +117,4 @@
   order: 1;
   color: var(--stronger-subtle-text-color);
   font-size: 1.4rem;
-}
-
-.toggle {
-  display: flex;
-  min-height: 3.5rem;
-  align-items: center;
-  order: 2;
 }

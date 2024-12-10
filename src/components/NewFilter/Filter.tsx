@@ -4,7 +4,6 @@ import { FilterIcon, UndoIcon } from "@ui/Icons";
 import FilledFilterIcon from "@ui/Icons/components/FilledFilterIcon";
 import Input from "@ui/Input";
 import { Button } from "@ui/InteractiveElement";
-import Switch from "@ui/Switch";
 import clsx from "clsx";
 import { ChangeEventHandler, memo, useCallback, useRef, useState } from "react";
 import Select, { Options } from "react-select";
@@ -67,93 +66,106 @@ const Filter = ({
             />
             <Button
               design="plain"
-              className={clsx(s.filter_btn, s.filter_icon, {
+              className={clsx(s.filter_btn, {
                 [s.active]: isFilterOpen,
               })}
               icon={false ? <FilterIcon /> : <FilledFilterIcon />}
               onClick={toggleFilter}
             />
-            {/* <Button
-              design="plain"
-              className={clsx(s.filter_btn, s.undo_icon)}
-              icon={<UndoIcon />}
-              onClick={toggleFilter}
-            /> */}
           </div>
         )}
         {isFilterOpen && (
-          <div className={s.group}>
-            <div className={s.group_item}>
-              <Button
-                design="plain"
-                className={clsx(
-                  s.filter_btn,
-                  s.undo_icon /* {
-                [s.active]: isFilterOpen,
-              } */,
-                )}
-                icon={<UndoIcon />}
-                onClick={toggleFilter}
-              />
+          <div className={s.group_container}>
+            <div className={s.group}>
+              {selects?.map(select => {
+                const onChange = (value: Option) => {
+                  select.setValue(value);
+
+                  if (search.value || select.alwaysReload) {
+                    resetData();
+                    getData();
+                  }
+                };
+
+                return (
+                  <div className={s.group_item} key={select.id}>
+                    <label className={s.select_label}>Date Order</label>
+                    <Select<Option>
+                      instanceId={select.id}
+                      className={s.select}
+                      options={select.options}
+                      onChange={onChange}
+                      value={select.value}
+                      isSearchable={false}
+                      theme={createCustomTheme}
+                      styles={customStyles}
+                    />
+                  </div>
+                );
+              })}
+              <div className={s.group_item}>
+                <label className={s.select_label}>SR</label>
+                <Select<Option>
+                  instanceId={"testid"}
+                  className={s.select}
+                  options={[
+                    {
+                      value: "all",
+                      label: "All",
+                    },
+                    {
+                      value: "true",
+                      label: "In",
+                    },
+                    {
+                      value: "false",
+                      label: "Out",
+                    },
+                  ]}
+                  onChange={noop}
+                  isSearchable={false}
+                  theme={createCustomTheme}
+                  styles={customStyles}
+                />
+              </div>
+              <div className={s.group_item}>
+                <label className={s.select_label}>SR</label>
+                <Select<Option>
+                  instanceId={"testid"}
+                  className={s.select}
+                  options={[
+                    {
+                      value: "all",
+                      label: "All",
+                    },
+                    {
+                      value: "true",
+                      label: "In",
+                    },
+                    {
+                      value: "false",
+                      label: "Out",
+                    },
+                  ]}
+                  onChange={noop}
+                  isSearchable={false}
+                  theme={createCustomTheme}
+                  styles={customStyles}
+                />
+              </div>
             </div>
-            {selects?.map(select => {
-              const onChange = (value: Option) => {
-                select.setValue(value);
-
-                if (search.value || select.alwaysReload) {
-                  resetData();
-                  getData();
-                }
-              };
-
-              return (
-                <div className={s.group_item} key={select.id}>
-                  <label className={s.select_label}>Date Order</label>
-                  <Select<Option>
-                    instanceId={select.id}
-                    className={s.select}
-                    options={select.options}
-                    onChange={onChange}
-                    value={select.value}
-                    isSearchable={false}
-                    theme={createCustomTheme}
-                    styles={customStyles}
+            <div className={s.group}>
+              <div className={s.group_item}>
+                <div className={s.reset}>
+                  <Button
+                    design="plain"
+                    className={clsx(s.filter_btn, s.undo_icon)}
+                    icon={<UndoIcon />}
+                    onClick={noop}
                   />
                 </div>
-              );
-            })}
-            <div className={s.group_item}>
-              <label className={s.select_label}>SR</label>
-              <Select<Option>
-                instanceId={"testid"}
-                className={s.select}
-                options={[
-                  {
-                    value: "all",
-                    label: "All",
-                  },
-                  {
-                    value: "true",
-                    label: "in SR",
-                  },
-                  {
-                    value: "false",
-                    label: "outside SR",
-                  },
-                ]}
-                onChange={noop}
-                // value={null}
-                isSearchable={false}
-                theme={createCustomTheme}
-                styles={customStyles}
-              />
-            </div>
-            {/* <div className={s.group_item}>
-              <div className={s.toggle}>
-                <Switch id="test" />
               </div>
-              <label className={s.select_label}>SR Cards</label>
-            </div> */}
+            </div>
           </div>
         )}
       </div>
