@@ -1,9 +1,7 @@
-import middleware from "@supplemental/middleware";
+import { auth } from "@supplemental/middleware";
 import { ResponseLocals } from "@supplemental/types";
 import express, { Request } from "express";
 import { PushSubscription } from "web-push";
-
-const { auth } = middleware;
 
 const router = express.Router();
 

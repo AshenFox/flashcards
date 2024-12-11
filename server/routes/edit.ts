@@ -1,12 +1,11 @@
 import { Card, CardBase, Module } from "@common/types";
 import cardModel from "@models/card_model";
 import moduleModel from "@models/module_model";
-import middleware from "@supplemental/middleware";
+import { auth } from "@supplemental/middleware";
 import { notification_timeout } from "@supplemental/notifications_control";
 import { ResponseLocals } from "@supplemental/types";
 import express, { Request, Response } from "express";
 
-const { auth } = middleware;
 const router = express.Router();
 
 type ResError = {

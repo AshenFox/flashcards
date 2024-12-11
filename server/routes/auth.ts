@@ -1,14 +1,12 @@
 import { User } from "@common/types";
 import userModel from "@models/user_model";
 import { check, CheckResult } from "@supplemental/checks";
-import middleware from "@supplemental/middleware";
+import { auth } from "@supplemental/middleware";
 import { ResponseLocals } from "@supplemental/types";
 import bcrypt from "bcryptjs";
 import config from "config";
 import express, { Request, Response } from "express";
 import jwt from "jsonwebtoken";
-
-const { auth } = middleware;
 
 const router = express.Router();
 

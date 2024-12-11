@@ -8,7 +8,11 @@ import { ResponseLocals } from "./types";
 
 type AuthMiddleRes = ResponseLocals<{ msg: string }>;
 
-const auth = async (req: Request, res: AuthMiddleRes, next: NextFunction) => {
+export const auth = async (
+  req: Request,
+  res: AuthMiddleRes,
+  next: NextFunction,
+) => {
   // Get token from headers
   const header = req.header("Authorization");
   const token = header && header.split(" ")[1];
@@ -35,7 +39,11 @@ const auth = async (req: Request, res: AuthMiddleRes, next: NextFunction) => {
   }
 };
 
-const query = async (req: Request, res: ResponseLocals, next: NextFunction) => {
+export const query = async (
+  req: Request,
+  res: ResponseLocals,
+  next: NextFunction,
+) => {
   try {
     const rawQuery = req.originalUrl.split("?")[1];
 
@@ -51,7 +59,3 @@ const query = async (req: Request, res: ResponseLocals, next: NextFunction) => {
     res.status(500).json({ msg: err?.message ?? "Query parsing error" });
   }
 };
-
-const middleware = { auth, query };
-
-export default middleware;

@@ -2,14 +2,13 @@ import { Card } from "@common/types";
 import notificationModel from "@models//notification_model";
 import cardModel, { CardSortObj } from "@models/card_model";
 import moduleModel from "@models/module_model";
-import middleware from "@supplemental/middleware";
+import { auth } from "@supplemental/middleware";
 import { notification_timeout } from "@supplemental/notifications_control";
 import sr_stages from "@supplemental/sr_stages";
 import { ResponseLocals } from "@supplemental/types";
 import express, { Request } from "express";
 import { FilterQuery } from "mongoose";
 
-const { auth } = middleware;
 const router = express.Router();
 
 type ResError = {

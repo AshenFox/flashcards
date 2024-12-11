@@ -3,12 +3,11 @@ import cardModel, { CardSortObj } from "@models/card_model";
 import moduleModel from "@models/module_model";
 import { ModuleSortObj } from "@models/module_model";
 import userModel from "@models/user_model";
-import middleware from "@supplemental/middleware";
+import { auth, query } from "@supplemental/middleware";
 import { ResponseLocals } from "@supplemental/types";
 import express, { Request } from "express";
 import { FilterQuery } from "mongoose";
 
-const { auth, query } = middleware;
 const router = express.Router();
 
 type ResError = {
@@ -55,8 +54,6 @@ router.get(
         draft = true,
         sr = false,
       } = res.locals.query;
-
-      // console.log({ page, "req.params": req.params });
 
       const _id = res.locals.user._id;
 

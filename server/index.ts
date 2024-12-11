@@ -10,7 +10,7 @@ import connectDB from "@supplemental/db";
 import { send_notifications } from "@supplemental/notifications_control";
 // dependencies
 import config from "config";
-import express from "express";
+import express, { query } from "express";
 import fs from "fs";
 import http from "http";
 import https, { ServerOptions } from "https";
