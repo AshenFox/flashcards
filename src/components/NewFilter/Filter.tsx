@@ -129,22 +129,18 @@ const Filter = ({
                 />
               </div>
               <div className={s.group_item}>
-                <label className={s.select_label}>SR</label>
+                <label className={s.select_label}>Draft</label>
                 <Select<Option>
                   instanceId={"testid"}
                   className={s.select}
                   options={[
                     {
-                      value: "all",
-                      label: "All",
-                    },
-                    {
                       value: "true",
-                      label: "In",
+                      label: "Show",
                     },
                     {
                       value: "false",
-                      label: "Out",
+                      label: "Hide",
                     },
                   ]}
                   onChange={noop}

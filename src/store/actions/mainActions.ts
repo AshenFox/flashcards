@@ -136,8 +136,8 @@ export const get_modules = (ignore?: boolean) => <ThunkActionApp>(async (
         };
       } = await axios.get("/api/main/modules", {
         params: {
-          skip: skip_modules,
-          filter: search_modules.value,
+          page: skip_modules,
+          search: search_modules.value,
           created: select_created.value,
         },
       });

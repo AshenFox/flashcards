@@ -8,7 +8,7 @@ import { ResponseLocals } from "@supplemental/types";
 import express, { Request } from "express";
 import { FilterQuery } from "mongoose";
 
-const { auth } = middleware;
+const { auth, query } = middleware;
 const router = express.Router();
 
 type ResError = {
@@ -19,10 +19,12 @@ type ResError = {
 // @desc ------- Get user modules
 // @access ----- Private
 
-type ModulesGetQuery = qs.ParsedQs & {
-  skip: string;
-  filter: string;
-  created: "newest" | "oldest";
+type ModulesGetQuery = {
+  page?: number;
+  search?: string;
+  created?: "newest" | "oldest";
+  draft?: boolean;
+  sr?: boolean;
 };
 
 type ModulesGetReq = Request<any, any, any, ModulesGetQuery>;
@@ -35,68 +37,86 @@ type ModulesGetResBody = {
   all_modules_number: number;
 };
 
-type ModulesGetRes = ResponseLocals<ModulesGetResBody | ResError>;
+type ModulesGetRes = ResponseLocals<
+  ModulesGetResBody | ResError,
+  ModulesGetQuery
+>;
 
-router.get("/modules", auth, async (req: ModulesGetReq, res: ModulesGetRes) => {
-  try {
-    const { skip, filter, created } = req.query;
+router.get(
+  "/modules",
+  auth,
+  query,
+  async (req: ModulesGetReq, res: ModulesGetRes) => {
+    try {
+      const {
+        page = 0,
+        search,
+        created = "newest",
+        draft = true,
+        sr = false,
+      } = res.locals.query;
 
-    const skipNum = parseInt(skip);
+      // console.log({ page, "req.params": req.params });
 
-    const _id = res.locals.user._id;
+      const _id = res.locals.user._id;
 
-    const draft = await moduleModel.findOne({
-      author_id: _id,
-      draft: true,
-    });
+      const draftModule = draft
+        ? await moduleModel.findOne({
+            author_id: _id,
+            draft: true,
+          })
+        : null;
 
-    let all_modules_number = await moduleModel.countDocuments({
-      author_id: _id,
-    });
+      let all_modules_number = await moduleModel.countDocuments({
+        author_id: _id,
+      });
 
-    const filterObj: FilterQuery<Module> = {
-      author_id: _id,
-      draft: false,
-    };
-
-    const sortObj: ModuleSortObj = {};
-
-    if (created === "newest") sortObj.creation_date = -1;
-    if (created === "oldest") sortObj.creation_date = 1;
-
-    if (filter)
-      filterObj.title = {
-        $regex: `${filter}(?!br>|r>|>|\/div>|div>|iv>|v>|nbsp;|bsp;|sp;|p;|;|\/span>|span>|pan>|an>|n>)`,
+      const filterObj: FilterQuery<Module> = {
+        author_id: _id,
+        draft: false,
       };
 
-    const modules = await moduleModel
-      .find(filterObj)
-      .sort(sortObj)
-      .skip(skipNum * 10)
-      .limit(10);
+      if (sr) filterObj.numberSR = { $gt: 0 };
 
-    const modules_number = await moduleModel.countDocuments(filterObj);
+      const sortObj: ModuleSortObj = {};
 
-    if (draft) --all_modules_number;
+      if (created === "newest") sortObj.creation_date = -1;
+      if (created === "oldest") sortObj.creation_date = 1;
 
-    const all_modules = all_modules_number <= (skipNum + 1) * 10;
+      if (search)
+        filterObj.title = {
+          $regex: `${search}(?!br>|r>|>|\/div>|div>|iv>|v>|nbsp;|bsp;|sp;|p;|;|\/span>|span>|pan>|an>|n>)`,
+        };
 
-    const result: ModulesGetResBody = {
-      draft: null,
-      modules,
-      modules_number,
-      all_modules,
-      all_modules_number,
-    };
+      const modules = await moduleModel
+        .find(filterObj)
+        .sort(sortObj)
+        .skip(page * 10)
+        .limit(10);
 
-    if (!filter) result.draft = draft;
+      const modules_number = await moduleModel.countDocuments(filterObj);
 
-    res.status(200).json(result);
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ errorBody: "Server Error" });
-  }
-});
+      if (draftModule) --all_modules_number;
+
+      const all_modules = all_modules_number <= (page + 1) * 10;
+
+      const result: ModulesGetResBody = {
+        draft: null,
+        modules,
+        modules_number,
+        all_modules,
+        all_modules_number,
+      };
+
+      if (!search) result.draft = draftModule;
+
+      res.status(200).json(result);
+    } catch (err) {
+      console.error(err);
+      res.status(500).json({ errorBody: "Server Error" });
+    }
+  },
+);
 
 // @route ------ GET api/main/cards
 // @desc ------- Get user cards

@@ -11,8 +11,12 @@ export type UserDocument = Document<unknown, any, User> &
     never
   >;
 
-export type Locals = object & {
+export type Locals<Query = any> = object & {
   user: UserDocument;
+  query: Query;
 };
 
-export type ResponseLocals<ResBody = any> = Response<ResBody, Locals>;
+export type ResponseLocals<ResBody = any, Query = any> = Response<
+  ResBody,
+  Locals<Query>
+>;
