@@ -116,6 +116,7 @@ export const get_modules = (ignore?: boolean) => <ThunkActionApp>(async (
           loading,
         },
       } = getState();
+
       if (!user || all_modules) return;
       if (!ignore && loading) return;
 

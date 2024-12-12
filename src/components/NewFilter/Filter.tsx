@@ -20,6 +20,7 @@ type FilterProps = {
   };
   selects?: {
     id: string;
+    // label: string;
     value: Option;
     options: Options<Option>;
     setValue: (value: Option) => void;
@@ -38,6 +39,7 @@ const Filter = ({
 }: FilterProps) => {
   const timer = useRef<ReturnType<typeof setTimeout>>(null);
   const [isFilterOpen, setIsFilterOpen] = useState(false);
+  const [isFilterEmpty, setIsFilterEmpty] = useState(true);
 
   const toggleFilter = useCallback(() => {
     setIsFilterOpen(prev => !prev);
@@ -48,6 +50,7 @@ const Filter = ({
     resetData();
 
     clearTimeout(timer.current);
+
     timer.current = setTimeout(() => {
       getData();
     }, 500);
@@ -66,10 +69,11 @@ const Filter = ({
             />
             <Button
               design="plain"
-              className={clsx(s.filter_btn, s.filter_icon, {
+              className={clsx(s.filter_btn, {
                 [s.active]: isFilterOpen,
+                [s.filled]: !isFilterEmpty,
               })}
-              icon={false ? <FilterIcon /> : <FilledFilterIcon />}
+              icon={isFilterEmpty ? <FilterIcon /> : <FilledFilterIcon />}
               onClick={toggleFilter}
             />
           </div>

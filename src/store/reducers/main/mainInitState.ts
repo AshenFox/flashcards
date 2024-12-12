@@ -1,29 +1,65 @@
 import { CardDto, ModuleDto } from "@common/types";
 
+export type DefaultFilters = {
+  [key: string]: string | number | boolean | undefined;
+};
+
+export type EntryCollection<Entry, Filters extends DefaultFilters> = {
+  entries: Entry[];
+  loading: boolean;
+  all?: number | null;
+  number?: number | null;
+  page?: number;
+  search?: string;
+  filters?: Filters;
+};
+
+export type HomeModuleFilters = DefaultFilters & {
+  created?: "newest" | "oldest";
+  draft?: boolean;
+  sr?: boolean;
+};
+
+export type HomeModulesCollection = EntryCollection<
+  Module[],
+  HomeModuleFilters
+>;
+
 export type MainState = {
   is_server: boolean;
+  loading: boolean;
+
   module: Module | false;
   draft: Module | false;
+
+  entries: {
+    homeModules: HomeModulesCollection;
+  };
+
+  // home modules
   modules: Module[];
-  cards: Cards;
   modules_number: number | false;
-  cards_number: number | false;
   all_modules: boolean;
-  all_cards: boolean;
   skip_modules: number;
-  skip_cards: number;
-  loading: boolean;
   all_modules_number: number | false;
+  search_modules: {
+    value: string;
+  };
+
+  // home cards
+  cards: Cards;
+  cards_number: number | false;
+  all_cards: boolean;
+  skip_cards: number;
   all_cards_number: number | false;
   search_cards: {
     value: string;
   };
-  search_modules: {
-    value: string;
-  };
+
   select_by: SelectBy;
   select_created: SelectCreated;
-  scroll_top: boolean;
+
+  scroll_top: boolean; // move to local component value
 };
 
 export type SelectBy = {
@@ -119,29 +155,52 @@ export const url_fields: ImgurlFields = {
   ok: false,
 };
 
+export const defaultHomeModulesFilters: HomeModuleFilters = {
+  created: "newest",
+  draft: true,
+};
+export const defaultHomeModules: HomeModulesCollection = {
+  entries: [],
+  loading: false,
+  all: null,
+  number: null,
+  page: 0,
+  search: "",
+  filters: defaultHomeModulesFilters,
+};
+
 const mainInitState: MainState = {
   is_server: true,
+  loading: false,
+
   module: false,
   draft: false,
+
+  entries: {
+    homeModules: defaultHomeModules,
+  },
+
   modules: [],
-  cards: {},
   modules_number: false,
-  cards_number: false,
   all_modules: false,
-  all_cards: false,
   skip_modules: 0,
-  skip_cards: 0,
-  loading: false,
   all_modules_number: false,
+  search_modules: {
+    value: "",
+  },
+
+  cards: {},
+  cards_number: false,
+  all_cards: false,
+  skip_cards: 0,
   all_cards_number: false,
   search_cards: {
     value: "",
   },
-  search_modules: {
-    value: "",
-  },
+
   select_by: { value: "term", label: "Term" },
   select_created: { value: "newest", label: "Newest" },
+
   scroll_top: false,
 };
 
