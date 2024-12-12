@@ -7,7 +7,7 @@
 .container {
   display: flex;
   flex-direction: column;
-  align-items: end;
+  align-items: flex-end;
   gap: 1rem;
   transition: all 0.2s;
 
@@ -21,7 +21,7 @@
   display: flex;
   width: 100%;
   align-items: center;
-  justify-content: end;
+  justify-content: flex-end;
   gap: 1rem;
 
   :global(.input__container) {
@@ -41,8 +41,15 @@
   border-radius: 0.5rem;
 
   svg {
-    width: 3rem;
+    width: 2.3rem;
+    height: 2.3rem;
     fill: var(--icon-fill);
+  }
+
+  &.filter_icon {
+    svg path:first-child {
+      opacity: 0.75;
+    }
   }
 
   &.active {
@@ -51,10 +58,6 @@
     svg {
       fill: var(--active-secondary-color);
     }
-  }
-
-  &.undo_icon svg {
-    width: 2.5rem;
   }
 
   &:global(.interactive_element__element):hover svg {

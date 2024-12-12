@@ -66,7 +66,7 @@ const Filter = ({
             />
             <Button
               design="plain"
-              className={clsx(s.filter_btn, {
+              className={clsx(s.filter_btn, s.filter_icon, {
                 [s.active]: isFilterOpen,
               })}
               icon={false ? <FilterIcon /> : <FilledFilterIcon />}
@@ -155,7 +155,7 @@ const Filter = ({
                 <div className={s.reset}>
                   <Button
                     design="plain"
-                    className={clsx(s.filter_btn, s.undo_icon)}
+                    className={clsx(s.filter_btn)}
                     icon={<UndoIcon />}
                     onClick={noop}
                   />

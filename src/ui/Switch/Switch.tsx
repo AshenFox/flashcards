@@ -39,7 +39,7 @@ const Switch = ({
   onTouchStart,
   onTouchEnd,
 }: SwitchProps) => {
-  const innerIconSize = iconSize ?? small ? 17 : 28;
+  const innerIconSize = iconSize ?? small ? 17 : 25;
 
   return (
     <div className={clsx(s.container, tooltipContainer, className, "test")}>

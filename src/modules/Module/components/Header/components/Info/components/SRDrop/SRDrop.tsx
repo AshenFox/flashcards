@@ -23,7 +23,7 @@ const SRDrop = () => {
       })}
       onClick={clickDropSR}
     >
-      <DropStudyRegimeIcon width="30" height="30" />
+      <DropStudyRegimeIcon width="25" height="25" />
       <Tooltip>Drop all cards study progress</Tooltip>
     </div>
   );
