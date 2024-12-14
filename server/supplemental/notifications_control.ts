@@ -1,8 +1,8 @@
-import { Card, User } from "@common/types";
 import cardModel from "@models/card_model";
 import notificationModel from "@models/notification_model";
 import userModel from "@models/user_model";
 import { FilterQuery } from "mongoose";
+import { Card, User } from "types/entities";
 import webpush from "web-push";
 
 import sr_stages from "./sr_stages";

@@ -1,4 +1,3 @@
-import { User } from "@common/types";
 import userModel from "@models/user_model";
 import { check, CheckResult } from "@supplemental/checks";
 import { auth } from "@supplemental/middleware";
@@ -7,6 +6,7 @@ import bcrypt from "bcryptjs";
 import config from "config";
 import express, { Request, Response } from "express";
 import jwt from "jsonwebtoken";
+import { User } from "types/entities";
 
 const router = express.Router();
 

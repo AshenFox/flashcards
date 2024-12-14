@@ -1,4 +1,3 @@
-import { Card } from "@common/types";
 import notificationModel from "@models//notification_model";
 import cardModel, { CardSortObj } from "@models/card_model";
 import moduleModel from "@models/module_model";
@@ -8,6 +7,7 @@ import sr_stages from "@supplemental/sr_stages";
 import { ResponseLocals } from "@supplemental/types";
 import express, { Request } from "express";
 import { FilterQuery } from "mongoose";
+import { Card } from "types/entities";
 
 const router = express.Router();
 

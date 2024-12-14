@@ -1,6 +1,6 @@
-import { User } from "@common/types";
 import { Response } from "express";
 import { Document } from "mongoose";
+import { User } from "types/entities";
 
 export type UserDocument = Document<unknown, any, User> &
   Omit<

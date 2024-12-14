@@ -1,4 +1,3 @@
-import { Card, Module } from "@common/types";
 import cardModel, { CardSortObj } from "@models/card_model";
 import moduleModel from "@models/module_model";
 import { ModuleSortObj } from "@models/module_model";
@@ -7,37 +6,23 @@ import { auth, query } from "@supplemental/middleware";
 import { ResponseLocals } from "@supplemental/types";
 import express, { Request } from "express";
 import { FilterQuery } from "mongoose";
+import { Card, Module } from "types/entities";
+import {
+  ModulesGetQuery,
+  ModulesGetResponse,
+  ResponseError,
+} from "types/methods";
 
 const router = express.Router();
-
-type ResError = {
-  errorBody: string;
-};
 
 // @route ------ GET api/main/modules
 // @desc ------- Get user modules
 // @access ----- Private
 
-type ModulesGetQuery = {
-  page?: number;
-  search?: string;
-  created?: "newest" | "oldest";
-  draft?: boolean;
-  sr?: boolean;
-};
-
 type ModulesGetReq = Request<any, any, any, ModulesGetQuery>;
 
-type ModulesGetResBody = {
-  draft: null | Module;
-  modules: Module[];
-  modules_number: number;
-  all_modules: boolean;
-  all_modules_number: number;
-};
-
 type ModulesGetRes = ResponseLocals<
-  ModulesGetResBody | ResError,
+  ModulesGetResponse | ResponseError,
   ModulesGetQuery
 >;
 
@@ -64,8 +49,9 @@ router.get(
           })
         : null;
 
-      let all_modules_number = await moduleModel.countDocuments({
+      let all = await moduleModel.countDocuments({
         author_id: _id,
+        draft: false,
       });
 
       const filterObj: FilterQuery<Module> = {
@@ -93,16 +79,14 @@ router.get(
 
       const modules_number = await moduleModel.countDocuments(filterObj);
 
-      if (draftModule) --all_modules_number;
+      const end = all <= (page + 1) * 10;
 
-      const all_modules = all_modules_number <= (page + 1) * 10;
-
-      const result: ModulesGetResBody = {
+      const result: ModulesGetResponse = {
         draft: null,
-        modules,
-        modules_number,
-        all_modules,
-        all_modules_number,
+        entries: modules,
+        number: modules_number,
+        end,
+        all,
       };
 
       if (!search) result.draft = draftModule;
@@ -135,7 +119,7 @@ type CardsGetResBody = {
   all_cards_number: number;
 };
 
-type CardsGetRes = ResponseLocals<CardsGetResBody | ResError>;
+type CardsGetRes = ResponseLocals<CardsGetResBody | ResponseError>;
 
 router.get("/cards", auth, async (req: CardsGetReq, res: CardsGetRes) => {
   try {
@@ -200,7 +184,7 @@ type ModuleGetResBody = {
   cards: Card[];
 };
 
-type ModuleGetRes = ResponseLocals<ModuleGetResBody | ResError>;
+type ModuleGetRes = ResponseLocals<ModuleGetResBody | ResponseError>;
 
 router.get("/module", auth, async (req: ModuleGetReq, res: ModuleGetRes) => {
   try {
@@ -249,7 +233,7 @@ type ModuleCardsGetResBody = {
   cards: Card[];
 };
 
-type ModuleCardsGetRes = ResponseLocals<ModuleCardsGetResBody | ResError>;
+type ModuleCardsGetRes = ResponseLocals<ModuleCardsGetResBody | ResponseError>;
 
 router.get(
   "/module/cards",
