@@ -1,4 +1,4 @@
-import { UserDto } from "@common/types";
+import { UserDto } from "@common/api/entities";
 
 export type AuthState = {
   user: false | UserDto;

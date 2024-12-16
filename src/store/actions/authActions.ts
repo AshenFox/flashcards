@@ -1,5 +1,5 @@
+import { UserDto } from "@common/api/entities";
 import axios from "@common/axios";
-import { UserDto } from "@common/types";
 
 import {
   AUTHENTICATE,

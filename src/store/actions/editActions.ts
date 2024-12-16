@@ -1,5 +1,5 @@
+import { CardDto } from "@common/api/entities";
 import axios from "@common/axios";
-import { CardDto } from "@common/types";
 import sanitize from "sanitize-html";
 
 import { saveLastUpdate } from "../helper-functions";

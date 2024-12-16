@@ -1,5 +1,5 @@
+import { ModuleDto } from "@common/api/entities";
 import { usePlug } from "@helpers/hooks/usePlug";
-import { Module as ModuleType } from "@store/reducers/main/mainInitState";
 import DateStr from "@ui/DateStr";
 import { StudyRegimeIcon } from "@ui/Icons";
 import TextArea from "@ui/TextArea";
@@ -10,7 +10,7 @@ import { memo } from "react";
 import s from "./styles.module.scss";
 
 type ModuleProps = {
-  data: ModuleType;
+  data: ModuleDto;
   filter?: string;
 };
 

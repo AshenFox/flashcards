@@ -1,5 +1,7 @@
 import { Module } from "types/entities";
 
+import { Pageable } from "./Pageable";
+
 export type ModulesGetQuery = {
   page?: number;
   search?: string;
@@ -10,8 +12,5 @@ export type ModulesGetQuery = {
 
 export type ModulesGetResponse = {
   draft: Module | null;
-  entries: Module[];
-  number: number;
-  all: number;
-  end: boolean;
+  modules: Pageable<Module>;
 };

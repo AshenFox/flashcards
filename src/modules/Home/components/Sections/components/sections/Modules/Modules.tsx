@@ -15,23 +15,23 @@ const optionsBy: Option[] = [
 ];
 
 const Modules = () => {
-  const modules = useAppSelector(s => s.main.modules);
+  const modules = useAppSelector(s => s.main.homeModules.entries);
   const draft = useAppSelector(s => s.main.draft);
   const loading = useAppSelector(s => s.main.loading);
-  const search_modules = useAppSelector(s => s.main.search_modules);
+  const search = useAppSelector(s => s.main.homeModules.search);
   const select_created = useAppSelector(s => s.main.select_created);
 
   const {
-    get_modules,
-    control_search_modules,
-    reset_fields_modules,
+    get_home_modules,
+    control_search_home_modules,
+    reset_home_modules,
     set_select_created,
     reset_search,
   } = useActions();
 
   useEffect(() => {
     return () => {
-      reset_fields_modules();
+      reset_home_modules();
       reset_search();
     };
   }, []);
@@ -40,11 +40,11 @@ const Modules = () => {
     <>
       <Filter
         className={s.filter}
-        getData={get_modules}
-        resetData={reset_fields_modules}
+        getData={get_home_modules}
+        resetData={reset_home_modules}
         search={{
-          value: search_modules.value,
-          setValue: control_search_modules,
+          value: search,
+          setValue: control_search_home_modules,
           placeholder: "Type to filter...",
         }}
         selects={[
@@ -73,7 +73,7 @@ const Modules = () => {
               prevDateString={prevDateString}
               curDateString={curDateString}
             />
-            <Module data={module} filter={search_modules.value} />
+            <Module data={module} filter={search} />
           </Fragment>
         );
       })}
@@ -81,7 +81,7 @@ const Modules = () => {
       {!loading && (
         <NotFound
           resultsFound={modules.length}
-          filterValue={search_modules.value}
+          filterValue={search}
           notFoundMsg={value => (
             <>
               No modules matching <b>{`"${value}"`}</b> found.

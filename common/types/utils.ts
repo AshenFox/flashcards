@@ -1,5 +1,5 @@
 // TO-DO: think about using ts-morph
-// Only for flat objects
+// Only for objects with primitive values
 export type JSONify<T> = {
   [k in keyof T]: T[k] extends Date
     ? string

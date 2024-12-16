@@ -76,7 +76,6 @@
     "stylelint-order": "^6.0.4",
     "tsc-alias": "^1.8.10",
     "tsx": "^4.7.1",
-    "typescript": "^5.5.4",
     "typescript-plugin-css-modules": "^5.1.0"
   }
 }

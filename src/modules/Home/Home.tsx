@@ -2,7 +2,7 @@ import Container from "@components/Container";
 import ContentWrapper from "@components/ContentWrapper";
 import { useActions, useAppSelector } from "@store/hooks";
 import { useRouter } from "next/router";
-import { memo, useEffect, useRef } from "react";
+import { memo, useCallback, useEffect } from "react";
 
 import Header from "./components/Header";
 import Sections from "./components/Sections";
@@ -31,53 +31,50 @@ const Home = () => {
   const router = useRouter();
   const { section } = router.query;
 
-  const { get_modules, get_cards, reset_search, get_sr_count } = useActions();
+  const { get_home_modules, get_cards, reset_search, get_sr_count } =
+    useActions();
 
-  const modules = useAppSelector(s => s.main.modules);
+  const modules = useAppSelector(s => s.main.homeModules.entries);
   const cards = useAppSelector(s => s.main.cards);
   const user = useAppSelector(s => s.auth.user);
 
+  const loadContent = useCallback(() => {
+    if (!modules.length && section === "modules") get_home_modules();
+    if (!cards.length && section === "cards") get_cards();
+    if (section === "sr") get_sr_count();
+  }, [
+    section,
+    cards.length,
+    modules.length,
+    get_cards,
+    get_home_modules,
+    get_sr_count,
+  ]);
+
   useEffect(() => {
     if (!user) return;
+
     reset_search();
     loadContent();
-  }, [user, section]);
+  }, [user, loadContent, reset_search]);
 
   useEffect(() => {
-    if (section === "modules") {
-      window.addEventListener("scroll", scrollModules.current);
-      window.removeEventListener("scroll", scrollCards.current);
-    }
+    const scrollModules = () =>
+      router.pathname === "/home/[section]" &&
+      checkBottom() &&
+      get_home_modules();
 
-    if (section === "cards") {
-      window.addEventListener("scroll", scrollCards.current);
-      window.removeEventListener("scroll", scrollModules.current);
-    }
+    const scrollCards = () =>
+      router.pathname === "/home/[section]" && checkBottom() && get_cards();
 
-    if (section === "sr") {
-      window.removeEventListener("scroll", scrollCards.current);
-      window.removeEventListener("scroll", scrollModules.current);
-    }
+    if (section === "modules") window.addEventListener("scroll", scrollModules);
+    if (section === "cards") window.addEventListener("scroll", scrollCards);
 
     return () => {
-      window.removeEventListener("scroll", scrollModules.current);
-      window.removeEventListener("scroll", scrollCards.current);
+      window.removeEventListener("scroll", scrollModules);
+      window.removeEventListener("scroll", scrollCards);
     };
-  }, [section]);
-
-  const loadContent = () => {
-    if (!modules.length && section === "modules") get_modules(true);
-    if (!cards.length && section === "cards") get_cards(true);
-    if (section === "sr") get_sr_count();
-  };
-
-  const scrollModules = useRef(
-    () =>
-      router.pathname === "/home/[section]" && checkBottom() && get_modules(),
-  );
-  const scrollCards = useRef(
-    () => router.pathname === "/home/[section]" && checkBottom() && get_cards(),
-  );
+  }, [section, router.pathname, get_cards, get_home_modules]);
 
   return (
     <ContentWrapper>

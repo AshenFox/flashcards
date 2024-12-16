@@ -83,10 +83,13 @@ router.get(
 
       const result: ModulesGetResponse = {
         draft: null,
-        entries: modules,
-        number: modules_number,
-        end,
-        all,
+        modules: {
+          page,
+          entries: modules,
+          number: modules_number,
+          end,
+          all,
+        },
       };
 
       if (!search) result.draft = draftModule;

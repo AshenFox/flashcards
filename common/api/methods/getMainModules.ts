@@ -1,13 +1,10 @@
-import { Override } from "@common/types";
-import { ModulesGetQuery, ModulesGetResponse } from "@server/types/methods";
+import { ModulesGetQuery } from "@server/types/methods";
 
 import { ModuleDto } from "../entities";
+import { PageableDto } from "./Pageable";
 
 export type ModulesGetQueryDto = ModulesGetQuery;
-export type ModulesGetResponseDto = Override<
-  ModulesGetResponse,
-  {
-    draft: ModuleDto | null;
-    entries: ModuleDto[];
-  }
->;
+export type ModulesGetResponseDto = {
+  draft: ModuleDto | null;
+  modules: PageableDto<ModuleDto>;
+};

@@ -1,4 +1,4 @@
-import { CardDto, ModuleDto } from "@common/types";
+import { CardDto, ModuleDto } from "@common/api/entities";
 
 export type DefaultFilters = {
   [key: string]: string | number | boolean | undefined;
@@ -9,6 +9,7 @@ export type EntryCollection<Entry, Filters extends DefaultFilters> = {
   loading: boolean;
   all?: number | null;
   number?: number | null;
+  end?: boolean;
   page?: number;
   search?: string;
   filters?: Filters;
@@ -21,7 +22,7 @@ export type HomeModuleFilters = DefaultFilters & {
 };
 
 export type HomeModulesCollection = EntryCollection<
-  Module[],
+  ModuleDto,
   HomeModuleFilters
 >;
 
@@ -30,21 +31,9 @@ export type MainState = {
   loading: boolean;
 
   module: Module | false;
-  draft: Module | false;
+  draft: ModuleDto | false;
 
-  entries: {
-    homeModules: HomeModulesCollection;
-  };
-
-  // home modules
-  modules: Module[];
-  modules_number: number | false;
-  all_modules: boolean;
-  skip_modules: number;
-  all_modules_number: number | false;
-  search_modules: {
-    value: string;
-  };
+  homeModules: HomeModulesCollection;
 
   // home cards
   cards: Cards;
@@ -176,18 +165,7 @@ const mainInitState: MainState = {
   module: false,
   draft: false,
 
-  entries: {
-    homeModules: defaultHomeModules,
-  },
-
-  modules: [],
-  modules_number: false,
-  all_modules: false,
-  skip_modules: 0,
-  all_modules_number: false,
-  search_modules: {
-    value: "",
-  },
+  homeModules: defaultHomeModules,
 
   cards: {},
   cards_number: false,

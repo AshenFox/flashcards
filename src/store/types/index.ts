@@ -1,4 +1,5 @@
-import { CardDto, UserDto } from "@common/types";
+import { CardDto, UserDto } from "@common/api/entities";
+import { ModulesGetResponseDto } from "@common/api/methods";
 
 import { Round } from "../reducers/game/gameInitState";
 import {
@@ -117,16 +118,15 @@ export type AuthActions =
 // main
 export const SET_IS_SERVER = "SET_IS_SERVER";
 export const SET_MAIN_LOADING = "SET_MAIN_LOADING";
-export const GET_MODULES = "GET_MODULES";
+export const GET_HOME_MODULES = "GET_HOME_MODULES";
 export const GET_CARDS = "GET_CARDS";
 export const SET_SKIP_CARDS = "SET_SKIP_CARDS";
-export const SET_SKIP_MODULES = "SET_SKIP_MODULES";
 export const CONTROL_SEARCH_CARDS = "CONTROL_SEARCH_CARDS";
-export const CONTROL_SEARCH_MODULES = "CONTROL_SEARCH_MODULES";
+export const CONTROL_SEARCH_HOME_MODULES = "CONTROL_SEARCH_HOME_MODULES";
 export const SET_SELECT_BY = "SET_SELECT_BY";
 export const SET_SELECT_CREATED = "SET_SELECT_CREATED";
 export const RESET_FIELDS_CARDS = "RESET_FIELDS_CARDS";
-export const RESET_FIELDS_MODULES = "RESET_FIELDS_MODULES";
+export const RESET_HOME_MODULES = "RESET_HOME_MODULES";
 export const RESET_SEARCH = "RESET_SEARCH";
 export const GET_MODULE = "GET_MODULE";
 export const GET_MODULE_CARDS = "GET_MODULE_CARDS";
@@ -145,15 +145,9 @@ export type SetMainLoadingAction = {
   payload: boolean;
 };
 
-export type GetModulesAction = {
-  type: typeof GET_MODULES;
-  payload: {
-    all_modules: boolean;
-    all_modules_number: number;
-    draft: Module | false;
-    modules: Module[];
-    modules_number: number;
-  };
+export type GetHomeModulesAction = {
+  type: typeof GET_HOME_MODULES;
+  payload: ModulesGetResponseDto;
 };
 
 export type GetCardsAction = {
@@ -173,11 +167,6 @@ export type SetSkipCardsAction = {
   payload: number;
 };
 
-export type SetSkipModulesAction = {
-  type: typeof SET_SKIP_MODULES;
-  payload: number;
-};
-
 export type ControlSearchCardsAction = {
   type: typeof CONTROL_SEARCH_CARDS;
   payload: {
@@ -185,8 +174,8 @@ export type ControlSearchCardsAction = {
   };
 };
 
-export type ControlSearchModulesAction = {
-  type: typeof CONTROL_SEARCH_MODULES;
+export type ControlSearchHomeModulesAction = {
+  type: typeof CONTROL_SEARCH_HOME_MODULES;
   payload: {
     value: string;
   };
@@ -207,8 +196,8 @@ export type ResetFieldsCardsAction = {
   payload?: {};
 };
 
-export type ResetFieldsModulesAction = {
-  type: typeof RESET_FIELDS_MODULES;
+export type ResetHomeModules = {
+  type: typeof RESET_HOME_MODULES;
   payload?: {};
 };
 
@@ -301,16 +290,15 @@ export const SET_MODULE_LOADING = "SET_MODULE_LOADING"; // edit
 export type SubMainActions =
   | SetIsServerAction
   | SetMainLoadingAction
-  | GetModulesAction
+  | GetHomeModulesAction
   | GetCardsAction
   | SetSkipCardsAction
-  | SetSkipModulesAction
   | ControlSearchCardsAction
-  | ControlSearchModulesAction
+  | ControlSearchHomeModulesAction
   | SetSelectByAction
   | SetSelectCreated
   | ResetFieldsCardsAction
-  | ResetFieldsModulesAction
+  | ResetHomeModules
   | ResetSearchAction
   | GetModuleAction
   | GetModuleCardsAction
