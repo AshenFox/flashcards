@@ -1,16 +1,12 @@
+import {
+  ModulesGetQueryCreator,
+  PageableCreator,
+} from "@common/creators/methods";
 import { Module } from "types/entities";
 
-import { Pageable } from "./Pageable";
-
-export type ModulesGetQuery = {
-  page?: number;
-  search?: string;
-  created?: "newest" | "oldest";
-  draft?: boolean;
-  sr?: boolean;
-};
-
+export type ModulesGetQuery = ModulesGetQueryCreator;
+export type ModulesPageable = PageableCreator<Module>;
 export type ModulesGetResponse = {
   draft: Module | null;
-  modules: Pageable<Module>;
+  modules: ModulesPageable;
 };

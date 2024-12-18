@@ -1,19 +1,4 @@
-export type CardBase = {
-  moduleID: string;
-  term: string;
-  definition: string;
-  imgurl: string;
-  creation_date: Date;
-  studyRegime: boolean;
-  stage: number;
-  order: number;
-  nextRep: Date;
-  prevStage: Date;
-  lastRep: Date;
-  author_id: string;
-  author: string;
-};
+import { CardCreator } from "@common/creators/entities";
 
-export type Card = CardBase & {
-  _id: string;
-};
+export type CardBase = Omit<CardCreator, "_id">;
+export type Card = CardCreator;

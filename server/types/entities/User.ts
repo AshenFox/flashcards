@@ -1,18 +1,9 @@
-import { PushSubscription } from "web-push";
+import {
+  SubscriptionCreator,
+  SubscriptionsCreator,
+  UserCreator,
+} from "@common/creators/entities";
 
-export type Subscription = PushSubscription;
-
-export type Subscriptions = {
-  pc: PushSubscription;
-  tablet: PushSubscription;
-  mobile: PushSubscription;
-};
-
-export type User = {
-  _id: string;
-  username: string;
-  email: string;
-  password: string;
-  registration_date: Date;
-  subscriptions: Subscriptions;
-};
+export type Subscription = SubscriptionCreator;
+export type Subscriptions = SubscriptionsCreator<Subscription>;
+export type User = UserCreator<Subscriptions>;

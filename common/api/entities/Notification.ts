@@ -1,4 +1,3 @@
-import { JSONify } from "@common/types";
-import { Notification } from "@server/types/entities";
+import { NotificationCreator } from "@common/creators/entities";
 
-export type NotificationDto = JSONify<Notification>;
+export type NotificationDto = NotificationCreator<{ isJson: true }>;

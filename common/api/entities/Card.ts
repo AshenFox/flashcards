@@ -1,4 +1,3 @@
-import { JSONify } from "@common/types";
-import { Card } from "@server/types/entities";
+import { CardCreator } from "@common/creators/entities";
 
-export type CardDto = JSONify<Card>;
+export type CardDto = CardCreator<{ isJson: true }>;

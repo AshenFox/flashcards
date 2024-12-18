@@ -1,10 +1,14 @@
-import { ModulesGetQuery } from "@server/types/methods";
+import {
+  ModulesGetQueryCreator,
+  ModulesGetResponseCreator,
+} from "@common/creators/methods";
+import { PageableCreator } from "@common/creators/methods";
 
 import { ModuleDto } from "../entities";
-import { PageableDto } from "./Pageable";
 
-export type ModulesGetQueryDto = ModulesGetQuery;
-export type ModulesGetResponseDto = {
-  draft: ModuleDto | null;
-  modules: PageableDto<ModuleDto>;
-};
+export type ModulesGetQueryDto = ModulesGetQueryCreator;
+export type ModulesPageableDto = PageableCreator<ModuleDto>;
+export type ModulesGetResponseDto = ModulesGetResponseCreator<
+  ModuleDto,
+  ModulesPageableDto
+>;

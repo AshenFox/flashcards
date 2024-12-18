@@ -1,4 +1,3 @@
-import { JSONify } from "@common/types";
-import { Module } from "@server/types/entities";
+import { ModuleCreator } from "@common/creators/entities";
 
-export type ModuleDto = JSONify<Module>;
+export type ModuleDto = ModuleCreator<{ isJson: true }>;

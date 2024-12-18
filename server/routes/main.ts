@@ -8,9 +8,9 @@ import express, { Request } from "express";
 import { FilterQuery } from "mongoose";
 import { Card, Module } from "types/entities";
 import {
+  ErrorResponse,
   ModulesGetQuery,
   ModulesGetResponse,
-  ResponseError,
 } from "types/methods";
 
 const router = express.Router();
@@ -22,7 +22,7 @@ const router = express.Router();
 type ModulesGetReq = Request<any, any, any, ModulesGetQuery>;
 
 type ModulesGetRes = ResponseLocals<
-  ModulesGetResponse | ResponseError,
+  ModulesGetResponse | ErrorResponse,
   ModulesGetQuery
 >;
 
@@ -122,7 +122,7 @@ type CardsGetResBody = {
   all_cards_number: number;
 };
 
-type CardsGetRes = ResponseLocals<CardsGetResBody | ResponseError>;
+type CardsGetRes = ResponseLocals<CardsGetResBody | ErrorResponse>;
 
 router.get("/cards", auth, async (req: CardsGetReq, res: CardsGetRes) => {
   try {
@@ -187,7 +187,7 @@ type ModuleGetResBody = {
   cards: Card[];
 };
 
-type ModuleGetRes = ResponseLocals<ModuleGetResBody | ResponseError>;
+type ModuleGetRes = ResponseLocals<ModuleGetResBody | ErrorResponse>;
 
 router.get("/module", auth, async (req: ModuleGetReq, res: ModuleGetRes) => {
   try {
@@ -236,7 +236,7 @@ type ModuleCardsGetResBody = {
   cards: Card[];
 };
 
-type ModuleCardsGetRes = ResponseLocals<ModuleCardsGetResBody | ResponseError>;
+type ModuleCardsGetRes = ResponseLocals<ModuleCardsGetResBody | ErrorResponse>;
 
 router.get(
   "/module/cards",
