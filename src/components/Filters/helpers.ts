@@ -1,11 +1,10 @@
+import { Option } from "@components/Filter";
 import {
   CSSObjectWithLabel,
   GroupBase,
   StylesConfig,
   ThemeConfig,
 } from "react-select";
-
-export type Option = { value: string; label: string };
 
 export const createCustomTheme: ThemeConfig = theme => ({
   ...theme,

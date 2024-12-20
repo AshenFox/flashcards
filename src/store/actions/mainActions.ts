@@ -2,7 +2,12 @@ import { CardDto } from "@common/api/entities";
 import { ModulesGetQueryDto, ModulesGetResponseDto } from "@common/api/methods";
 import axios from "@common/axios";
 
-import { card_fields, module_fields } from "../reducers/main/mainInitState";
+import {
+  card_fields,
+  EntryCollectionName,
+  FilterValue,
+  module_fields,
+} from "../reducers/main/mainInitState";
 import {
   CLEAR_MODULE,
   CONTROL_SEARCH_CARDS,
@@ -12,8 +17,11 @@ import {
   GET_MODULE,
   GET_MODULE_CARDS,
   RESET_FIELDS_CARDS,
-  RESET_HOME_MODULES,
+  RESET_HOME_MODULES_DATA,
+  RESET_HOME_MODULES_FILTERS,
   RESET_SEARCH,
+  SET_ENTRY_COLLECTION_FILTER,
+  SET_HOME_MODULES_LOADING,
   SET_IS_SERVER,
   SET_MAIN_LOADING,
   SET_SCROLL_TOP,
@@ -54,9 +62,14 @@ export const reset_fields_cards = (): AppActions => ({
   type: RESET_FIELDS_CARDS,
 });
 
-// RESET_HOME_MODULES
-export const reset_home_modules = (): AppActions => ({
-  type: RESET_HOME_MODULES,
+// RESET_HOME_MODULES_DATA
+export const reset_home_modules_data = (): AppActions => ({
+  type: RESET_HOME_MODULES_DATA,
+});
+
+// RESET_HOME_MODULES_FILTERS
+export const reset_home_modules_filters = (): AppActions => ({
+  type: RESET_HOME_MODULES_FILTERS,
 });
 
 // RESET_SEARCH
@@ -92,10 +105,24 @@ export const control_search_cards = (value: string): AppActions => ({
   },
 });
 
-// CONTROL_SEARCH_HOME_MODULES
+// SET_ENTITY_FILTERS
 export const control_search_home_modules = (value: string): AppActions => ({
   type: CONTROL_SEARCH_HOME_MODULES,
   payload: {
+    value,
+  },
+});
+
+// SET_ENTRY_COLLECTION_FILTER
+export const set_entry_collection_filter = (
+  entryCollection: EntryCollectionName,
+  filter: string,
+  value: FilterValue,
+): AppActions => ({
+  type: SET_ENTRY_COLLECTION_FILTER,
+  payload: {
+    entryCollection,
+    filter,
     value,
   },
 });
@@ -109,21 +136,23 @@ export const get_home_modules = () => <ThunkActionApp>(async (
       const {
         auth: { user },
         main: {
-          loading,
-          homeModules: { end, page, search, filters },
+          homeModules: {
+            loading,
+            data: { end, page },
+            filters,
+          },
         },
       } = getState();
 
       if (!user || end || loading) return;
 
       dispatch({
-        type: SET_MAIN_LOADING,
+        type: SET_HOME_MODULES_LOADING,
         payload: true,
       });
 
       const params: ModulesGetQueryDto = {
         page,
-        search,
         ...filters,
       };
 
@@ -140,7 +169,7 @@ export const get_home_modules = () => <ThunkActionApp>(async (
     }
 
     dispatch({
-      type: SET_MAIN_LOADING,
+      type: SET_HOME_MODULES_LOADING,
       payload: false,
     });
   });

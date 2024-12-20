@@ -1,9 +1,9 @@
-import Filter, { Option } from "@components/NewFilter";
+import Filter, { Option, SetFilterValue } from "@components/Filters";
 import NotFound from "@components/NotFound";
 import { useActions } from "@store/hooks";
 import { useAppSelector } from "@store/store";
 import ScrollLoader from "@ui/ScrollLoader";
-import React, { Fragment, memo, useEffect } from "react";
+import React, { Fragment, memo, useCallback, useEffect, useMemo } from "react";
 
 import Divider from "../components/Divider";
 import s from "../styles.module.scss";
@@ -15,47 +15,55 @@ const optionsBy: Option[] = [
 ];
 
 const Modules = () => {
-  const modules = useAppSelector(s => s.main.homeModules.entries);
+  const modules = useAppSelector(s => s.main.homeModules.data.entries);
   const draft = useAppSelector(s => s.main.draft);
-  const loading = useAppSelector(s => s.main.loading);
-  const search = useAppSelector(s => s.main.homeModules.search);
-  const select_created = useAppSelector(s => s.main.select_created);
+  const loading = useAppSelector(s => s.main.homeModules.loading);
+  const filters = useAppSelector(s => s.main.homeModules.filters);
+  const { search } = filters;
 
   const {
     get_home_modules,
-    control_search_home_modules,
-    reset_home_modules,
-    set_select_created,
-    reset_search,
+    reset_home_modules_data,
+    reset_home_modules_filters,
+    set_entry_collection_filter,
   } = useActions();
+
+  const setFilterValue = useCallback<SetFilterValue>(
+    (filter, value) => {
+      set_entry_collection_filter("homeModules", filter, value);
+    },
+    [set_entry_collection_filter],
+  );
 
   useEffect(() => {
     return () => {
-      reset_home_modules();
-      reset_search();
+      reset_home_modules_data;
+      reset_home_modules_filters;
     };
   }, []);
+
+  const filtersData = useMemo(
+    () => [
+      {
+        id: "created",
+        label: "Date Order",
+        options: optionsBy,
+        alwaysReload: true,
+      },
+    ],
+    [],
+  );
 
   return (
     <>
       <Filter
+        filtersValues={filters}
+        filtersData={filtersData}
+        placeholder={"Type to filter..."}
         className={s.filter}
+        setFilterValue={setFilterValue}
         getData={get_home_modules}
-        resetData={reset_home_modules}
-        search={{
-          value: search,
-          setValue: control_search_home_modules,
-          placeholder: "Type to filter...",
-        }}
-        selects={[
-          {
-            id: "created",
-            value: select_created,
-            options: optionsBy,
-            setValue: set_select_created,
-            alwaysReload: true,
-          },
-        ]}
+        resetData={reset_home_modules_data}
       />
       {draft && (
         <Fragment>

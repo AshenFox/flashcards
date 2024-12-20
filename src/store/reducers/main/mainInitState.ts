@@ -1,17 +1,20 @@
 import { CardDto, ModuleDto } from "@common/api/entities";
+import { ModulesPageableDto } from "@common/api/methods";
+import { PageableCreator } from "@common/creators/methods";
+
+export type FilterValue = string | number | boolean | undefined;
 
 export type DefaultFilters = {
-  [key: string]: string | number | boolean | undefined;
+  [key: string]: FilterValue;
+  search?: string;
 };
 
-export type EntryCollection<Entry, Filters extends DefaultFilters> = {
-  entries: Entry[];
+export type EntryCollection<
+  Pageable extends PageableCreator,
+  Filters extends DefaultFilters,
+> = {
   loading: boolean;
-  all?: number | null;
-  number?: number | null;
-  end?: boolean;
-  page?: number;
-  search?: string;
+  data: Pageable;
   filters?: Filters;
 };
 
@@ -22,9 +25,11 @@ export type HomeModuleFilters = DefaultFilters & {
 };
 
 export type HomeModulesCollection = EntryCollection<
-  ModuleDto,
+  ModulesPageableDto,
   HomeModuleFilters
 >;
+
+export type EntryCollectionName = "homeModules";
 
 export type MainState = {
   is_server: boolean;
@@ -145,16 +150,22 @@ export const url_fields: ImgurlFields = {
 };
 
 export const defaultHomeModulesFilters: HomeModuleFilters = {
+  search: "",
   created: "newest",
   draft: true,
 };
-export const defaultHomeModules: HomeModulesCollection = {
+
+export const defaultHomeModulesData: ModulesPageableDto = {
   entries: [],
-  loading: false,
   all: null,
   number: null,
   page: 0,
-  search: "",
+  end: false,
+};
+
+export const defaultHomeModules: HomeModulesCollection = {
+  loading: false,
+  data: defaultHomeModulesData,
   filters: defaultHomeModulesFilters,
 };
 

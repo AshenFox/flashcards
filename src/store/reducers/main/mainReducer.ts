@@ -1,14 +1,16 @@
 import {
   CLEAR_MODULE,
   CONTROL_SEARCH_CARDS,
-  CONTROL_SEARCH_HOME_MODULES,
   GET_CARDS,
   GET_HOME_MODULES,
   GET_MODULE,
   GET_MODULE_CARDS,
   RESET_FIELDS_CARDS,
-  RESET_HOME_MODULES,
+  RESET_HOME_MODULES_DATA,
+  RESET_HOME_MODULES_FILTERS,
   RESET_SEARCH,
+  SET_ENTRY_COLLECTION_FILTER,
+  SET_HOME_MODULES_LOADING,
   SET_IS_SERVER,
   SET_MAIN_LOADING,
   SET_SCROLL_TOP,
@@ -17,7 +19,11 @@ import {
   SET_SKIP_CARDS,
 } from "../../types";
 import { MainActions } from "../../types";
-import initialState, { defaultHomeModules, MainState } from "./mainInitState";
+import initialState, {
+  defaultHomeModulesData,
+  defaultHomeModulesFilters,
+  MainState,
+} from "./mainInitState";
 import subEditReducer from "./subReducers/subEditReducer";
 import subFlashcardsReducer from "./subReducers/subFlashcardsReducer";
 import subGalleryReducer from "./subReducers/subGalleryReducer";
@@ -71,6 +77,18 @@ const MainReducer = (state = initialState, action: MainActions): MainState => {
         cards: { ...state.cards, ...payload.cards },
       };
 
+    case SET_ENTRY_COLLECTION_FILTER:
+      return {
+        ...state,
+        [payload.entryCollection]: {
+          ...state[payload.entryCollection],
+          filters: {
+            ...state[payload.entryCollection].filters,
+            [payload.filter]: payload.value,
+          },
+        },
+      };
+
     case RESET_FIELDS_CARDS:
       return {
         ...state,
@@ -80,24 +98,24 @@ const MainReducer = (state = initialState, action: MainActions): MainState => {
         skip_cards: 0,
       };
 
-    case RESET_HOME_MODULES:
+    case RESET_HOME_MODULES_DATA:
       return {
         ...state,
+        draft: null,
         homeModules: {
-          // resets filters as well as everything else
-          ...defaultHomeModules,
+          ...state.homeModules,
+          data: defaultHomeModulesData,
         },
       };
 
-    /* case RESET_FIELDS_MODULES:
+    case RESET_HOME_MODULES_FILTERS:
       return {
         ...state,
-        modules: [],
-        draft: false,
-        modules_number: false,
-        all_modules: false,
-        skip_modules: 0,
-      }; */
+        homeModules: {
+          ...state.homeModules,
+          filters: defaultHomeModulesFilters,
+        },
+      };
 
     case RESET_SEARCH:
       return {
@@ -105,9 +123,6 @@ const MainReducer = (state = initialState, action: MainActions): MainState => {
         search_cards: {
           value: "",
         },
-        /* search_modules: {
-          value: "",
-        }, */
         select_by: { value: "term", label: "Term" },
         select_created: { value: "newest", label: "Newest" },
       };
@@ -138,15 +153,6 @@ const MainReducer = (state = initialState, action: MainActions): MainState => {
         },
       };
 
-    case CONTROL_SEARCH_HOME_MODULES:
-      return {
-        ...state,
-        homeModules: {
-          ...state.homeModules,
-          search: payload.value,
-        },
-      };
-
     case SET_MAIN_LOADING:
       return {
         ...state,
@@ -159,16 +165,31 @@ const MainReducer = (state = initialState, action: MainActions): MainState => {
         skip_cards: payload,
       };
 
+    case SET_HOME_MODULES_LOADING:
+      return {
+        ...state,
+        homeModules: {
+          ...state.homeModules,
+          loading: payload,
+        },
+      };
+
     case GET_HOME_MODULES:
       return {
         ...state,
         draft: payload.draft,
         homeModules: {
           ...state.homeModules,
-          ...payload.modules,
-          page: payload.modules.page + 1,
 
-          entries: [...state.homeModules.entries, ...payload.modules.entries],
+          data: {
+            ...state.homeModules.data,
+            ...payload.modules,
+            page: payload.modules.page + 1,
+            entries: [
+              ...state.homeModules.data.entries,
+              ...payload.modules.entries,
+            ],
+          },
         },
       };
 

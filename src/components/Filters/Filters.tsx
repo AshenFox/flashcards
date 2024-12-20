@@ -1,42 +1,35 @@
-import { Option } from "@components/Filter";
 import { noop } from "@helpers/functions/noop";
+import { DefaultFilters } from "@store/reducers/main/mainInitState";
 import { FilterIcon, UndoIcon } from "@ui/Icons";
 import FilledFilterIcon from "@ui/Icons/components/FilledFilterIcon";
 import Input from "@ui/Input";
 import { Button } from "@ui/InteractiveElement";
 import clsx from "clsx";
 import { ChangeEventHandler, memo, useCallback, useRef, useState } from "react";
-import Select, { Options } from "react-select";
 
-import { createCustomTheme, customStyles } from "./helpers";
+import Filter from "./Filter";
 import s from "./styles.module.scss";
+import { FilterData, SetFilterValue } from "./types";
 
-type FilterProps = {
+export type FiltersProps = {
+  filtersValues: DefaultFilters;
+  filtersData?: FilterData[];
+  placeholder?: string;
   className?: string;
-  search?: {
-    value: string;
-    setValue: (value: string) => void;
-    placeholder?: string;
-  };
-  selects?: {
-    id: string;
-    // label: string;
-    value: Option;
-    options: Options<Option>;
-    setValue: (value: Option) => void;
-    alwaysReload?: boolean;
-  }[];
+  setFilterValue?: SetFilterValue;
   getData: () => void;
   resetData: () => void;
 };
 
-const Filter = ({
+const Filters = ({
+  filtersValues,
+  filtersData,
+  placeholder,
   className,
-  search,
-  selects,
+  setFilterValue,
   getData,
   resetData,
-}: FilterProps) => {
+}: FiltersProps) => {
   const timer = useRef<ReturnType<typeof setTimeout>>(null);
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const [isFilterEmpty, setIsFilterEmpty] = useState(true);
@@ -46,68 +39,54 @@ const Filter = ({
   }, []);
 
   const onInnerSearchChange: ChangeEventHandler<HTMLInputElement> = e => {
-    search.setValue(e.target.value);
-    resetData();
+    setFilterValue("search", e.target.value);
 
     clearTimeout(timer.current);
 
     timer.current = setTimeout(() => {
+      resetData();
       getData();
-    }, 500);
+    }, 300);
   };
 
   return (
     <div className={clsx(s.filter, className)}>
       <div className={s.container}>
-        {!!search && (
-          <div className={s.search}>
-            <Input
-              placeholder={search.placeholder}
-              value={search.value}
-              onChange={onInnerSearchChange}
-              className={s.search}
-            />
-            <Button
-              design="plain"
-              className={clsx(s.filter_btn, {
-                [s.active]: isFilterOpen,
-                [s.filled]: !isFilterEmpty,
-              })}
-              icon={isFilterEmpty ? <FilterIcon /> : <FilledFilterIcon />}
-              onClick={toggleFilter}
-            />
-          </div>
-        )}
+        <div className={s.search}>
+          <Input
+            placeholder={placeholder}
+            value={filtersValues.search}
+            onChange={onInnerSearchChange}
+            className={s.search}
+          />
+          <Button
+            design="plain"
+            className={clsx(s.filter_btn, {
+              [s.active]: isFilterOpen,
+              [s.filled]: !isFilterEmpty,
+            })}
+            icon={isFilterEmpty ? <FilterIcon /> : <FilledFilterIcon />}
+            onClick={toggleFilter}
+          />
+        </div>
         {isFilterOpen && (
           <div className={s.group_container}>
             <div className={s.group}>
-              {selects?.map(select => {
-                const onChange = (value: Option) => {
-                  select.setValue(value);
-
-                  if (search.value || select.alwaysReload) {
-                    resetData();
-                    getData();
-                  }
-                };
+              {filtersData?.map(filter => {
+                const value = filtersValues[filter.id];
 
                 return (
-                  <div className={s.group_item} key={select.id}>
-                    <label className={s.select_label}>Date Order</label>
-                    <Select<Option>
-                      instanceId={select.id}
-                      className={s.select}
-                      options={select.options}
-                      onChange={onChange}
-                      value={select.value}
-                      isSearchable={false}
-                      theme={createCustomTheme}
-                      styles={customStyles}
-                    />
-                  </div>
+                  <Filter
+                    key={filter.id}
+                    value={value}
+                    filter={filter}
+                    setFilterValue={setFilterValue}
+                    getData={getData}
+                    resetData={resetData}
+                  />
                 );
               })}
-              <div className={s.group_item}>
+              {/* <div className={s.group_item}>
                 <label className={s.select_label}>SR</label>
                 <Select<Option>
                   instanceId={"testid"}
@@ -152,7 +131,7 @@ const Filter = ({
                   theme={createCustomTheme}
                   styles={customStyles}
                 />
-              </div>
+              </div> */}
             </div>
             <div className={s.group}>
               <div className={s.group_item}>
@@ -173,4 +152,4 @@ const Filter = ({
   );
 };
 
-export default memo(Filter);
+export default memo(Filters);

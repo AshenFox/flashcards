@@ -5,6 +5,8 @@ import { Round } from "../reducers/game/gameInitState";
 import {
   Card,
   Cards,
+  EntryCollectionName,
+  FilterValue,
   ImgurlObjs,
   Module,
   SelectBy,
@@ -118,7 +120,12 @@ export type AuthActions =
 // main
 export const SET_IS_SERVER = "SET_IS_SERVER";
 export const SET_MAIN_LOADING = "SET_MAIN_LOADING";
+export const SET_HOME_MODULES_LOADING = "SET_HOME_MODULES_LOADING";
 export const GET_HOME_MODULES = "GET_HOME_MODULES";
+export const SET_ENTRY_COLLECTION_FILTER = "SET_ENTRY_COLLECTION_FILTER";
+export const RESET_HOME_MODULES_DATA = "RESET_HOME_MODULES_DATA";
+export const RESET_HOME_MODULES_FILTERS = "RESET_HOME_MODULES_FILTERS";
+
 export const GET_CARDS = "GET_CARDS";
 export const SET_SKIP_CARDS = "SET_SKIP_CARDS";
 export const CONTROL_SEARCH_CARDS = "CONTROL_SEARCH_CARDS";
@@ -126,7 +133,6 @@ export const CONTROL_SEARCH_HOME_MODULES = "CONTROL_SEARCH_HOME_MODULES";
 export const SET_SELECT_BY = "SET_SELECT_BY";
 export const SET_SELECT_CREATED = "SET_SELECT_CREATED";
 export const RESET_FIELDS_CARDS = "RESET_FIELDS_CARDS";
-export const RESET_HOME_MODULES = "RESET_HOME_MODULES";
 export const RESET_SEARCH = "RESET_SEARCH";
 export const GET_MODULE = "GET_MODULE";
 export const GET_MODULE_CARDS = "GET_MODULE_CARDS";
@@ -145,9 +151,33 @@ export type SetMainLoadingAction = {
   payload: boolean;
 };
 
+export type SetHomeModulesLoading = {
+  type: typeof SET_HOME_MODULES_LOADING;
+  payload: boolean;
+};
+
 export type GetHomeModulesAction = {
   type: typeof GET_HOME_MODULES;
   payload: ModulesGetResponseDto;
+};
+
+export type SetEntryCollectionFilterAction = {
+  type: typeof SET_ENTRY_COLLECTION_FILTER;
+  payload: {
+    entryCollection: EntryCollectionName;
+    filter: string;
+    value: FilterValue;
+  };
+};
+
+export type ResetHomeModulesDataAction = {
+  type: typeof RESET_HOME_MODULES_DATA;
+  payload?: {};
+};
+
+export type ResetHomeModulesFiltersAction = {
+  type: typeof RESET_HOME_MODULES_FILTERS;
+  payload?: {};
 };
 
 export type GetCardsAction = {
@@ -196,10 +226,10 @@ export type ResetFieldsCardsAction = {
   payload?: {};
 };
 
-export type ResetHomeModules = {
+/* export type ResetHomeModules = {
   type: typeof RESET_HOME_MODULES;
   payload?: {};
-};
+}; */
 
 export type ResetSearchAction = {
   type: typeof RESET_SEARCH;
@@ -290,7 +320,11 @@ export const SET_MODULE_LOADING = "SET_MODULE_LOADING"; // edit
 export type SubMainActions =
   | SetIsServerAction
   | SetMainLoadingAction
+  | SetHomeModulesLoading
   | GetHomeModulesAction
+  | ResetHomeModulesDataAction
+  | ResetHomeModulesFiltersAction
+  | SetEntryCollectionFilterAction
   | GetCardsAction
   | SetSkipCardsAction
   | ControlSearchCardsAction
@@ -298,7 +332,7 @@ export type SubMainActions =
   | SetSelectByAction
   | SetSelectCreated
   | ResetFieldsCardsAction
-  | ResetHomeModules
+  // | ResetHomeModules
   | ResetSearchAction
   | GetModuleAction
   | GetModuleCardsAction

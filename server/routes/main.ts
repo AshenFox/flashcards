@@ -92,7 +92,7 @@ router.get(
         },
       };
 
-      if (!search) result.draft = draftModule;
+      if (draft) result.draft = draftModule;
 
       res.status(200).json(result);
     } catch (err) {
