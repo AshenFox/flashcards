@@ -69,6 +69,17 @@
       fill: var(--active-secondary-color);
     }
   }
+
+  &.disabled {
+    cursor: auto;
+    opacity: 0.5;
+
+    &:global(.interactive_element__element):hover {
+      svg {
+        fill: var(--icon-fill);
+      }
+    }
+  }
 }
 
 .group_container {

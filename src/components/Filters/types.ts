@@ -11,6 +11,6 @@ export type Option = { label: string; value: FilterValue };
 export type FilterData = {
   id: string;
   label: string;
+  defaultValue: FilterValue;
   options?: Options<Option>;
-  alwaysReload?: boolean;
 };

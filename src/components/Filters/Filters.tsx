@@ -1,11 +1,19 @@
-import { noop } from "@helpers/functions/noop";
 import { DefaultFilters } from "@store/reducers/main/mainInitState";
 import { FilterIcon, UndoIcon } from "@ui/Icons";
 import FilledFilterIcon from "@ui/Icons/components/FilledFilterIcon";
 import Input from "@ui/Input";
 import { Button } from "@ui/InteractiveElement";
 import clsx from "clsx";
-import { ChangeEventHandler, memo, useCallback, useRef, useState } from "react";
+import {
+  ChangeEventHandler,
+  memo,
+  useCallback,
+  useEffect,
+  useLayoutEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 
 import Filter from "./Filter";
 import s from "./styles.module.scss";
@@ -13,41 +21,93 @@ import { FilterData, SetFilterValue } from "./types";
 
 export type FiltersProps = {
   filtersValues: DefaultFilters;
-  filtersData?: FilterData[];
+  filtersData: FilterData[];
+  id?: string;
   placeholder?: string;
   className?: string;
+  alwaysReload?: boolean;
   setFilterValue?: SetFilterValue;
   getData: () => void;
   resetData: () => void;
+  resetFilters: () => void;
 };
 
 const Filters = ({
   filtersValues,
   filtersData,
+  id,
   placeholder,
   className,
+  alwaysReload,
   setFilterValue,
   getData,
   resetData,
+  resetFilters,
 }: FiltersProps) => {
   const timer = useRef<ReturnType<typeof setTimeout>>(null);
   const [isFilterOpen, setIsFilterOpen] = useState(false);
-  const [isFilterEmpty, setIsFilterEmpty] = useState(true);
+  const [areFiltersRestored, setAreFiltersRestored] = useState(false);
+
+  const isFilterEmpty = useMemo(
+    () =>
+      filtersData.every(
+        ({ id, defaultValue }) => defaultValue === filtersValues[id],
+      ),
+    [filtersData, filtersValues],
+  );
 
   const toggleFilter = useCallback(() => {
     setIsFilterOpen(prev => !prev);
   }, []);
 
-  const onInnerSearchChange: ChangeEventHandler<HTMLInputElement> = e => {
-    setFilterValue("search", e.target.value);
+  const onInnerSearchChange = useCallback<ChangeEventHandler<HTMLInputElement>>(
+    e => {
+      setFilterValue("search", e.target.value);
 
-    clearTimeout(timer.current);
+      clearTimeout(timer.current);
 
-    timer.current = setTimeout(() => {
-      resetData();
-      getData();
-    }, 300);
-  };
+      timer.current = setTimeout(() => {
+        resetData();
+        getData();
+      }, 300);
+    },
+    [getData, resetData, setFilterValue],
+  );
+
+  const onResetClick = useCallback(() => {
+    if (isFilterEmpty) return;
+    resetFilters();
+    resetData();
+    getData();
+  }, [isFilterEmpty, getData, resetFilters, resetData]);
+
+  useLayoutEffect(() => {
+    if (!id || areFiltersRestored) return;
+
+    const savedFilters =
+      (JSON.parse(localStorage.getItem(id)) as DefaultFilters) ?? {};
+
+    Object.entries(savedFilters).forEach(([id, value]) => {
+      setFilterValue(id, value);
+    });
+
+    setAreFiltersRestored(true);
+  }, [id, areFiltersRestored, setFilterValue]);
+
+  useEffect(() => {
+    if (!id || !areFiltersRestored) return;
+
+    localStorage.setItem(
+      id,
+      JSON.stringify({ ...filtersValues, search: undefined }),
+    );
+  }, [areFiltersRestored, filtersValues, id]);
+
+  useEffect(() => {
+    return () => {
+      setFilterValue("search", "");
+    };
+  }, [setFilterValue]);
 
   return (
     <div className={clsx(s.filter, className)}>
@@ -80,67 +140,24 @@ const Filters = ({
                     key={filter.id}
                     value={value}
                     filter={filter}
+                    alwaysReload={alwaysReload}
                     setFilterValue={setFilterValue}
                     getData={getData}
                     resetData={resetData}
                   />
                 );
               })}
-              {/* <div className={s.group_item}>
-                <label className={s.select_label}>SR</label>
-                <Select<Option>
-                  instanceId={"testid"}
-                  className={s.select}
-                  options={[
-                    {
-                      value: "all",
-                      label: "All",
-                    },
-                    {
-                      value: "true",
-                      label: "In",
-                    },
-                    {
-                      value: "false",
-                      label: "Out",
-                    },
-                  ]}
-                  onChange={noop}
-                  isSearchable={false}
-                  theme={createCustomTheme}
-                  styles={customStyles}
-                />
-              </div>
-              <div className={s.group_item}>
-                <label className={s.select_label}>Draft</label>
-                <Select<Option>
-                  instanceId={"testid"}
-                  className={s.select}
-                  options={[
-                    {
-                      value: "true",
-                      label: "Show",
-                    },
-                    {
-                      value: "false",
-                      label: "Hide",
-                    },
-                  ]}
-                  onChange={noop}
-                  isSearchable={false}
-                  theme={createCustomTheme}
-                  styles={customStyles}
-                />
-              </div> */}
             </div>
             <div className={s.group}>
               <div className={s.group_item}>
                 <div className={s.reset}>
                   <Button
                     design="plain"
-                    className={clsx(s.filter_btn)}
+                    className={clsx(s.filter_btn, {
+                      [s.disabled]: isFilterEmpty,
+                    })}
                     icon={<UndoIcon />}
-                    onClick={noop}
+                    onClick={onResetClick}
                   />
                 </div>
               </div>

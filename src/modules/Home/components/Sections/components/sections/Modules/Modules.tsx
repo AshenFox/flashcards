@@ -1,6 +1,11 @@
-import Filter, { Option, SetFilterValue } from "@components/Filters";
+import Filter, {
+  FilterData,
+  Option,
+  SetFilterValue,
+} from "@components/Filters";
 import NotFound from "@components/NotFound";
 import { useActions } from "@store/hooks";
+import { defaultHomeModulesFilters } from "@store/reducers/main/mainInitState";
 import { useAppSelector } from "@store/store";
 import ScrollLoader from "@ui/ScrollLoader";
 import React, { Fragment, memo, useCallback, useEffect, useMemo } from "react";
@@ -9,9 +14,35 @@ import Divider from "../components/Divider";
 import s from "../styles.module.scss";
 import Module from "./components/Module";
 
-const optionsBy: Option[] = [
-  { value: "newest", label: "Newest" },
-  { value: "oldest", label: "Oldest" },
+const filtersData: FilterData[] = [
+  {
+    id: "created",
+    label: "Date Order",
+    defaultValue: defaultHomeModulesFilters.created,
+    options: [
+      { value: "newest", label: "Newest" },
+      { value: "oldest", label: "Oldest" },
+    ],
+  },
+  {
+    id: "sr",
+    label: "SR",
+    defaultValue: defaultHomeModulesFilters.sr,
+    options: [
+      { value: undefined, label: "All" },
+      { value: true, label: "In" },
+      { value: false, label: "Out" },
+    ],
+  },
+  {
+    id: "draft",
+    label: "Draft",
+    defaultValue: defaultHomeModulesFilters.draft,
+    options: [
+      { value: true, label: "Show" },
+      { value: false, label: "Hide" },
+    ],
+  },
 ];
 
 const Modules = () => {
@@ -37,22 +68,9 @@ const Modules = () => {
 
   useEffect(() => {
     return () => {
-      reset_home_modules_data;
-      reset_home_modules_filters;
+      reset_home_modules_data();
     };
   }, []);
-
-  const filtersData = useMemo(
-    () => [
-      {
-        id: "created",
-        label: "Date Order",
-        options: optionsBy,
-        alwaysReload: true,
-      },
-    ],
-    [],
-  );
 
   return (
     <>
@@ -61,9 +79,11 @@ const Modules = () => {
         filtersData={filtersData}
         placeholder={"Type to filter..."}
         className={s.filter}
+        alwaysReload
         setFilterValue={setFilterValue}
         getData={get_home_modules}
         resetData={reset_home_modules_data}
+        resetFilters={reset_home_modules_filters}
       />
       {draft && (
         <Fragment>

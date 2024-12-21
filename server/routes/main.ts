@@ -37,7 +37,7 @@ router.get(
         search,
         created = "newest",
         draft = true,
-        sr = false,
+        sr,
       } = res.locals.query;
 
       const _id = res.locals.user._id;
@@ -59,7 +59,9 @@ router.get(
         draft: false,
       };
 
-      if (sr) filterObj.numberSR = { $gt: 0 };
+      if (typeof sr === "boolean") {
+        filterObj.numberSR = sr ? { $gt: 0 } : { $eq: 0 };
+      }
 
       const sortObj: ModuleSortObj = {};
 
@@ -79,7 +81,7 @@ router.get(
 
       const modules_number = await moduleModel.countDocuments(filterObj);
 
-      const end = all <= (page + 1) * 10;
+      const end = modules_number <= (page + 1) * 10;
 
       const result: ModulesGetResponse = {
         draft: null,

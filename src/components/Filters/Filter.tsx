@@ -9,6 +9,7 @@ import { FilterData, Option, SetFilterValue } from "./types";
 export type FilterProps = {
   value: FilterValue;
   filter: FilterData;
+  alwaysReload?: boolean;
   setFilterValue: SetFilterValue;
   getData: () => void;
   resetData: () => void;
@@ -17,11 +18,12 @@ export type FilterProps = {
 const Filter = ({
   value,
   filter,
+  alwaysReload,
   setFilterValue,
   resetData,
   getData,
 }: FilterProps) => {
-  const { id, label, options, alwaysReload } = filter;
+  const { id, label, options } = filter;
 
   const option = useMemo(
     () => options.find(option => option.value === value),
