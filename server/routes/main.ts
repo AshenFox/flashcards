@@ -8,6 +8,8 @@ import express, { Request } from "express";
 import { FilterQuery } from "mongoose";
 import { Card, Module } from "types/entities";
 import {
+  CardsGetQuery,
+  CardsGetResponse,
   ErrorResponse,
   ModulesGetQuery,
   ModulesGetResponse,
@@ -108,29 +110,22 @@ router.get(
 // @desc ------- Get user cards
 // @access ----- Private
 
-type CardsGetQuery = qs.ParsedQs & {
-  skip: string;
-  filter: string;
-  by: "term" | "definition";
-  created: "newest" | "oldest";
-};
-
 type CardsGetReq = Request<any, any, any, CardsGetQuery>;
 
-type CardsGetResBody = {
-  cards: Card[];
-  cards_number: number;
-  all_cards: boolean;
-  all_cards_number: number;
-};
-
-type CardsGetRes = ResponseLocals<CardsGetResBody | ErrorResponse>;
+type CardsGetRes = ResponseLocals<
+  CardsGetResponse | ErrorResponse,
+  CardsGetQuery
+>;
 
 router.get("/cards", auth, async (req: CardsGetReq, res: CardsGetRes) => {
   try {
-    let { skip, filter, by, created } = req.query;
-
-    const skipNum = parseInt(skip);
+    const {
+      page = 0,
+      search,
+      created = "newest",
+      by = "term",
+      sr,
+    } = res.locals.query;
 
     const _id = res.locals.user._id;
 
@@ -150,24 +145,26 @@ router.get("/cards", auth, async (req: CardsGetReq, res: CardsGetRes) => {
     if (created === "newest") sortObj.creation_date = -1;
     if (created === "oldest") sortObj.creation_date = 1;
 
-    const all_cards_number = await cardModel.countDocuments(filterObj);
+    const all = await cardModel.countDocuments(filterObj);
 
-    if (filter)
+    if (search)
       filterObj[by] = {
-        $regex: `${filter}(?!br>|r>|>|\/div>|div>|iv>|v>|nbsp;|bsp;|sp;|p;|;|\/span>|span>|pan>|an>|n>)`,
+        $regex: `${search}(?!br>|r>|>|\/div>|div>|iv>|v>|nbsp;|bsp;|sp;|p;|;|\/span>|span>|pan>|an>|n>)`,
       };
 
     const cards = await cardModel
       .find(filterObj)
       .sort(sortObj)
-      .skip(skipNum * 10)
+      .skip(page * 10)
       .limit(10);
 
     const cards_number = await cardModel.countDocuments(filterObj);
 
-    const all_cards = cards_number <= (skipNum + 1) * 10;
+    const end = cards_number <= (page + 1) * 10;
 
-    res.status(200).json({ cards, cards_number, all_cards, all_cards_number });
+    res
+      .status(200)
+      .json({ page, entries: cards, number: cards_number, end, all });
   } catch (err) {
     console.error(err);
     res.status(500).json({ errorBody: "Server Error" });
