@@ -22,6 +22,7 @@
     "scp-config": "scp -r ./config/ user@host:~/apps/flashcards"
   },
   "dependencies": {
+    "@reduxjs/toolkit": "^2.5.0",
     "@types/bcryptjs": "^2.4.2",
     "@types/cheerio": "^0.22.31",
     "@types/config": "^0.0.41",
