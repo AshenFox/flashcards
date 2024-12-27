@@ -11,6 +11,7 @@ import * as mainActions from "../actions/mainActions";
 import * as modalActions from "../actions/modalActions";
 import * as srActions from "../actions/srActions";
 import * as voiceActions from "../actions/voiceActions";
+// import { actions as newMainActions } from "../reducers/newMain/mainSlice";
 import { AppDispatch, RootState } from "../store";
 
 export const useAppDispatch = () => useDispatch<AppDispatch>();
@@ -33,6 +34,7 @@ export const useActions = () => {
           ...modalActions,
           ...srActions,
           ...voiceActions,
+          // ...newMainActions,
         },
         dispatch,
       ),

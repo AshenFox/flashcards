@@ -1,5 +1,8 @@
 import { CardDto, UserDto } from "@common/api/entities";
-import { ModulesGetResponseDto } from "@common/api/methods";
+import {
+  CardsGetResponseDto,
+  ModulesGetResponseDto,
+} from "@common/api/methods";
 
 import { Round } from "../reducers/game/gameInitState";
 import {
@@ -120,24 +123,32 @@ export type AuthActions =
 // main
 export const SET_IS_SERVER = "SET_IS_SERVER";
 export const SET_MAIN_LOADING = "SET_MAIN_LOADING";
+
+export const SET_ENTRY_COLLECTION_FILTER = "SET_ENTRY_COLLECTION_FILTER";
+
 export const SET_HOME_MODULES_LOADING = "SET_HOME_MODULES_LOADING";
 export const GET_HOME_MODULES = "GET_HOME_MODULES";
-export const SET_ENTRY_COLLECTION_FILTER = "SET_ENTRY_COLLECTION_FILTER";
 export const RESET_HOME_MODULES_DATA = "RESET_HOME_MODULES_DATA";
 export const RESET_HOME_MODULES_FILTERS = "RESET_HOME_MODULES_FILTERS";
 
-export const GET_CARDS = "GET_CARDS";
-export const SET_SKIP_CARDS = "SET_SKIP_CARDS";
-export const CONTROL_SEARCH_CARDS = "CONTROL_SEARCH_CARDS";
-export const CONTROL_SEARCH_HOME_MODULES = "CONTROL_SEARCH_HOME_MODULES";
+export const SET_HOME_CARDS_LOADING = "SET_HOME_CARDS_LOADING";
+export const GET_HOME_CARDS = "GET_HOME_CARDS";
+export const RESET_HOME_CARDS_DATA = "RESET_HOME_CARDS_DATA";
+export const RESET_HOME_CARDS_FILTERS = "RESET_HOME_CARDS_FILTERS";
+
+export const SET_SCROLL_TOP = "SET_SCROLL_TOP";
+
+// export const GET_CARDS = "GET_CARDS";
+// export const SET_SKIP_CARDS = "SET_SKIP_CARDS";
+// export const CONTROL_SEARCH_CARDS = "CONTROL_SEARCH_CARDS";
+// export const RESET_FIELDS_CARDS = "RESET_FIELDS_CARDS";
+// export const RESET_SEARCH = "RESET_SEARCH";
+
 export const SET_SELECT_BY = "SET_SELECT_BY";
 export const SET_SELECT_CREATED = "SET_SELECT_CREATED";
-export const RESET_FIELDS_CARDS = "RESET_FIELDS_CARDS";
-export const RESET_SEARCH = "RESET_SEARCH";
 export const GET_MODULE = "GET_MODULE";
 export const GET_MODULE_CARDS = "GET_MODULE_CARDS";
 export const CLEAR_MODULE = "CLEAR_MODULE";
-export const SET_SCROLL_TOP = "SET_SCROLL_TOP";
 
 export type SetIsServerAction = {
   type: typeof SET_IS_SERVER;
@@ -151,6 +162,15 @@ export type SetMainLoadingAction = {
   payload: boolean;
 };
 
+export type SetEntryCollectionFilterAction = {
+  type: typeof SET_ENTRY_COLLECTION_FILTER;
+  payload: {
+    entryCollection: EntryCollectionName;
+    filter: string;
+    value: FilterValue;
+  };
+};
+
 export type SetHomeModulesLoading = {
   type: typeof SET_HOME_MODULES_LOADING;
   payload: boolean;
@@ -159,15 +179,6 @@ export type SetHomeModulesLoading = {
 export type GetHomeModulesAction = {
   type: typeof GET_HOME_MODULES;
   payload: ModulesGetResponseDto;
-};
-
-export type SetEntryCollectionFilterAction = {
-  type: typeof SET_ENTRY_COLLECTION_FILTER;
-  payload: {
-    entryCollection: EntryCollectionName;
-    filter: string;
-    value: FilterValue;
-  };
 };
 
 export type ResetHomeModulesDataAction = {
@@ -180,7 +191,34 @@ export type ResetHomeModulesFiltersAction = {
   payload?: {};
 };
 
-export type GetCardsAction = {
+export type SetHomeCardsLoading = {
+  type: typeof SET_HOME_CARDS_LOADING;
+  payload: boolean;
+};
+
+export type GetHomeCardsAction = {
+  type: typeof GET_HOME_CARDS;
+  payload: CardsGetResponseDto;
+};
+
+export type ResetHomeCardsDataAction = {
+  type: typeof RESET_HOME_CARDS_DATA;
+  payload?: {};
+};
+
+export type ResetHomeCardsFiltersAction = {
+  type: typeof RESET_HOME_CARDS_FILTERS;
+  payload?: {};
+};
+
+export type SetScrollTopAction = {
+  type: typeof SET_SCROLL_TOP;
+  payload: {
+    value: boolean;
+  };
+};
+
+/* export type GetCardsAction = {
   type: typeof GET_CARDS;
   payload: {
     all_cards: boolean;
@@ -211,6 +249,16 @@ export type ControlSearchHomeModulesAction = {
   };
 };
 
+export type ResetFieldsCardsAction = {
+  type: typeof RESET_FIELDS_CARDS;
+  payload?: {};
+}; 
+
+export type ResetSearchAction = {
+  type: typeof RESET_SEARCH;
+  payload?: {};
+}; */
+
 export type SetSelectByAction = {
   type: typeof SET_SELECT_BY;
   payload: SelectBy;
@@ -219,21 +267,6 @@ export type SetSelectByAction = {
 export type SetSelectCreated = {
   type: typeof SET_SELECT_CREATED;
   payload: SelectCreated;
-};
-
-export type ResetFieldsCardsAction = {
-  type: typeof RESET_FIELDS_CARDS;
-  payload?: {};
-};
-
-/* export type ResetHomeModules = {
-  type: typeof RESET_HOME_MODULES;
-  payload?: {};
-}; */
-
-export type ResetSearchAction = {
-  type: typeof RESET_SEARCH;
-  payload?: {};
 };
 
 export type GetModuleAction = {
@@ -254,13 +287,6 @@ export type GetModuleCardsAction = {
 export type ClearModuleAction = {
   type: typeof CLEAR_MODULE;
   payload?: {};
-};
-
-export type SetScrollTopAction = {
-  type: typeof SET_SCROLL_TOP;
-  payload: {
-    value: boolean;
-  };
 };
 
 // header
@@ -325,15 +351,19 @@ export type SubMainActions =
   | ResetHomeModulesDataAction
   | ResetHomeModulesFiltersAction
   | SetEntryCollectionFilterAction
-  | GetCardsAction
-  | SetSkipCardsAction
-  | ControlSearchCardsAction
-  | ControlSearchHomeModulesAction
   | SetSelectByAction
   | SetSelectCreated
-  | ResetFieldsCardsAction
+  | SetHomeCardsLoading
+  | GetHomeCardsAction
+  | ResetHomeCardsDataAction
+  | ResetHomeCardsFiltersAction
+  // | GetCardsAction
+  // | SetSkipCardsAction
+  // | ControlSearchCardsAction
+  // | ControlSearchHomeModulesAction
+  // | ResetFieldsCardsAction
+  // | ResetSearchAction
   // | ResetHomeModules
-  | ResetSearchAction
   | GetModuleAction
   | GetModuleCardsAction
   | ClearModuleAction
@@ -867,3 +897,8 @@ export type AppActions =
   | GameActions
   | SrActions
   | HeaderActions;
+
+export type Action<P = unknown> = {
+  type: string;
+  payload: P;
+};

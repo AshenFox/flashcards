@@ -1,5 +1,10 @@
 import { CardDto } from "@common/api/entities";
-import { ModulesGetQueryDto, ModulesGetResponseDto } from "@common/api/methods";
+import {
+  CardsGetQueryDto,
+  CardsGetResponseDto,
+  ModulesGetQueryDto,
+  ModulesGetResponseDto,
+} from "@common/api/methods";
 import axios from "@common/axios";
 
 import {
@@ -10,24 +15,20 @@ import {
 } from "../reducers/main/mainInitState";
 import {
   CLEAR_MODULE,
-  CONTROL_SEARCH_CARDS,
-  CONTROL_SEARCH_HOME_MODULES,
-  GET_CARDS,
+  GET_HOME_CARDS,
   GET_HOME_MODULES,
   GET_MODULE,
   GET_MODULE_CARDS,
-  RESET_FIELDS_CARDS,
   RESET_HOME_MODULES_DATA,
   RESET_HOME_MODULES_FILTERS,
-  RESET_SEARCH,
   SET_ENTRY_COLLECTION_FILTER,
+  SET_HOME_CARDS_LOADING,
   SET_HOME_MODULES_LOADING,
   SET_IS_SERVER,
   SET_MAIN_LOADING,
   SET_SCROLL_TOP,
   SET_SELECT_BY,
   SET_SELECT_CREATED,
-  SET_SKIP_CARDS,
 } from "../types";
 import { AppActions } from "../types";
 import {
@@ -57,11 +58,6 @@ export const clear_module = (): AppActions => ({
   type: CLEAR_MODULE,
 });
 
-// RESET_FIELDS_CARDS
-export const reset_fields_cards = (): AppActions => ({
-  type: RESET_FIELDS_CARDS,
-});
-
 // RESET_HOME_MODULES_DATA
 export const reset_home_modules_data = (): AppActions => ({
   type: RESET_HOME_MODULES_DATA,
@@ -70,11 +66,6 @@ export const reset_home_modules_data = (): AppActions => ({
 // RESET_HOME_MODULES_FILTERS
 export const reset_home_modules_filters = (): AppActions => ({
   type: RESET_HOME_MODULES_FILTERS,
-});
-
-// RESET_SEARCH
-export const reset_search = (): AppActions => ({
-  type: RESET_SEARCH,
 });
 
 // SET_SELECT_BY
@@ -92,22 +83,6 @@ export const set_select_created = (value: SelectCreated): AppActions => ({
 // SET_SCROLL_TOP
 export const set_scroll_top = (value: boolean): AppActions => ({
   type: SET_SCROLL_TOP,
-  payload: {
-    value,
-  },
-});
-
-// CONTROL_SEARCH_CARDS
-export const control_search_cards = (value: string): AppActions => ({
-  type: CONTROL_SEARCH_CARDS,
-  payload: {
-    value,
-  },
-});
-
-// SET_ENTITY_FILTERS
-export const control_search_home_modules = (value: string): AppActions => ({
-  type: CONTROL_SEARCH_HOME_MODULES,
   payload: {
     value,
   },
@@ -180,6 +155,48 @@ export const get_cards = () => <ThunkActionApp>(async (dispatch, getState) => {
       const {
         auth: { user },
         main: {
+          homeCards: {
+            loading,
+            data: { end, page },
+            filters,
+          },
+        },
+      } = getState();
+      if (!user || end || loading) return;
+
+      dispatch({
+        type: SET_HOME_CARDS_LOADING,
+        payload: true,
+      });
+
+      const params: CardsGetQueryDto = {
+        page,
+        ...filters,
+      };
+
+      const { data } = await axios.get<CardsGetResponseDto>("/api/main/cards", {
+        params,
+      });
+
+      dispatch({
+        type: GET_HOME_CARDS,
+        payload: { ...data, cards: arr_to_obj(data.cards) },
+      });
+    } catch (err) {
+      console.error(err);
+    }
+
+    dispatch({
+      type: SET_MAIN_LOADING,
+      payload: false,
+    });
+  });
+
+/*   export const get_cards = () => <ThunkActionApp>(async (dispatch, getState) => {
+    try {
+      const {
+        auth: { user },
+        main: {
           skip_cards,
           all_cards,
           search_cards,
@@ -229,7 +246,7 @@ export const get_cards = () => <ThunkActionApp>(async (dispatch, getState) => {
       type: SET_MAIN_LOADING,
       payload: false,
     });
-  });
+  }); */
 
 // GET MODULE CARDS
 export const get_module_cards = (_id: string) => <ThunkActionApp>(async (
