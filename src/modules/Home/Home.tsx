@@ -31,7 +31,7 @@ const Home = () => {
   const router = useRouter();
   const { section } = router.query;
 
-  const { get_home_modules, get_cards, reset_search, get_sr_count } =
+  const { get_home_modules, get_cards, /* reset_search, */ get_sr_count } =
     useActions();
 
   const modules = useAppSelector(s => s.main.homeModules.data.entries);
@@ -54,9 +54,9 @@ const Home = () => {
   useEffect(() => {
     if (!user) return;
 
-    reset_search();
+    // reset_search();
     loadContent();
-  }, [user, loadContent, reset_search]);
+  }, [user, loadContent /* reset_search */]);
 
   useEffect(() => {
     const scrollModules = () =>

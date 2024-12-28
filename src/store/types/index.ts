@@ -22,6 +22,7 @@ import {
   SignUpErrors,
 } from "../reducers/modal/modalInitState";
 import { Speaking, Voices } from "../reducers/voice/voiceInitState";
+import { NewMainActions } from "./../reducers/newMain/slice";
 // modal
 export const CHANGE_MODAL = "CHANGE_MODAL";
 export const TOGGLE_MODAL = "TOGGLE_MODAL";
@@ -896,7 +897,8 @@ export type AppActions =
   | VoiceActions
   | GameActions
   | SrActions
-  | HeaderActions;
+  | HeaderActions
+  | NewMainActions;
 
 export type Action<P = unknown> = {
   type: string;
