@@ -1,6 +1,6 @@
 import Filter, { Option } from "@components/Filter";
 import { useActions, useAppSelector } from "@store/hooks";
-import { memo } from "react";
+import { memo, useCallback } from "react";
 
 import s from "./styles.module.scss";
 
@@ -16,15 +16,18 @@ const Param = () => {
 
   const { _id, number } = currentModule || {};
 
-  const {
-    control_search_cards,
-    reset_fields_cards,
-    set_select_by,
-    get_module_cards,
-  } = useActions();
+  const { controlSearchCards, resetFieldsCards, setSelectBy, getModuleCards } =
+    useActions();
+
+  const setValue = useCallback(
+    (value: string) => {
+      controlSearchCards({ value });
+    },
+    [controlSearchCards],
+  );
 
   const getData = () => {
-    get_module_cards(_id);
+    getModuleCards(_id);
   };
 
   return (
@@ -37,10 +40,10 @@ const Param = () => {
       <Filter
         className={s.search}
         getData={getData}
-        resetData={reset_fields_cards}
+        resetData={resetFieldsCards}
         search={{
           value: search_cards.value,
-          setValue: control_search_cards,
+          setValue,
           placeholder: "Type to filter by ...",
         }}
         selects={[
@@ -48,7 +51,7 @@ const Param = () => {
             id: "by",
             value: select_by,
             options: optionsBy,
-            setValue: set_select_by,
+            setValue: setSelectBy,
           },
         ]}
       />

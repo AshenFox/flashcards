@@ -12,7 +12,7 @@
     "prod": "docker-compose -f docker-compose.prod.yaml up -d",
     "prod-rebuild": "docker-compose -f docker-compose.prod.yaml up -d --no-deps --build app",
     "lint": "next lint",
-    "typescript": "tsc --extendedDiagnostics --noEmit",
+    "typescript": "tsc --extendedDiagnostics --noEmit --incremental false",
     "eslint": "eslint ./",
     "eslint:fix": "eslint ./ --fix",
     "stylelint:fix": "stylelint '**/*.{css,scss}' --fix",

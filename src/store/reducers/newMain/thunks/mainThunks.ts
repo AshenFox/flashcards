@@ -1,14 +1,13 @@
 import { CardDto } from "@common/api/entities";
 import { ModulesGetQueryDto, ModulesGetResponseDto } from "@common/api/methods";
 import axios from "@common/axios";
+import { ThunkActionApp } from "@store/store";
 
-import { ThunkActionApp } from "../../store";
-import { card_fields, module_fields } from "./initState";
-import { actions } from "./slice";
-import { Cards, Module } from "./types";
+import { card_fields, module_fields } from "../initState";
+import { mainActions } from "../slice";
+import { Cards, Module } from "../types";
 
-// GET MODULES NEW
-export const get_home_modules = () => <ThunkActionApp>(async (
+export const getHomeModules = () => <ThunkActionApp>(async (
     dispatch,
     getState,
   ) => {
@@ -26,7 +25,7 @@ export const get_home_modules = () => <ThunkActionApp>(async (
 
       if (!user || end || loading) return;
 
-      dispatch(actions.setHomeModulesLoading(true));
+      dispatch(mainActions.setHomeModulesLoading(true));
 
       const params: ModulesGetQueryDto = {
         page,
@@ -40,16 +39,15 @@ export const get_home_modules = () => <ThunkActionApp>(async (
         },
       );
 
-      actions.getHomeModules(data);
+      dispatch(mainActions.setHomeModules(data));
     } catch (err) {
       console.error(err);
     }
 
-    actions.setHomeModulesLoading(false);
+    dispatch(mainActions.setHomeModulesLoading(false));
   });
 
-// GET CARDS
-export const get_cards = () => <ThunkActionApp>(async (dispatch, getState) => {
+export const getCards = () => <ThunkActionApp>(async (dispatch, getState) => {
     try {
       const {
         auth: { user },
@@ -64,7 +62,7 @@ export const get_cards = () => <ThunkActionApp>(async (dispatch, getState) => {
       } = getState();
       if (!user || all_cards || loading) return;
 
-      dispatch(actions.setMainLoading(true));
+      dispatch(mainActions.setMainLoading(true));
 
       const {
         data,
@@ -84,7 +82,9 @@ export const get_cards = () => <ThunkActionApp>(async (dispatch, getState) => {
         },
       });
 
-      dispatch(actions.getCards({ ...data, cards: arr_to_obj(data.cards) }));
+      dispatch(
+        mainActions.setCards({ ...data, cards: arr_to_obj(data.cards) }),
+      );
       /* dispatch({
         type: SET_SKIP_CARDS,
         payload: skip_cards + 1,
@@ -93,7 +93,7 @@ export const get_cards = () => <ThunkActionApp>(async (dispatch, getState) => {
       console.error(err);
     }
 
-    dispatch(actions.setMainLoading(false));
+    dispatch(mainActions.setMainLoading(false));
   });
 
 /* export const get_cards = () => <ThunkActionApp>(async (dispatch, getState) => {
@@ -138,8 +138,7 @@ export const get_cards = () => <ThunkActionApp>(async (dispatch, getState) => {
     });
   }); */
 
-// GET MODULE CARDS
-export const get_module_cards = (_id: string) => <ThunkActionApp>(async (
+export const getModuleCards = (_id: string) => <ThunkActionApp>(async (
     dispatch,
     getState,
   ) => {
@@ -148,9 +147,10 @@ export const get_module_cards = (_id: string) => <ThunkActionApp>(async (
         auth: { user },
         main: { search_cards, select_by, select_created },
       } = getState();
+
       if (!user) return; // loading
 
-      dispatch(actions.setMainLoading(true));
+      dispatch(mainActions.setMainLoading(true));
 
       const {
         data,
@@ -167,16 +167,15 @@ export const get_module_cards = (_id: string) => <ThunkActionApp>(async (
         },
       });
 
-      dispatch(actions.getModuleCards({ cards: arr_to_obj(data.cards) }));
+      dispatch(mainActions.setModuleCards({ cards: arr_to_obj(data.cards) }));
     } catch (err) {
       console.error(err);
     }
 
-    dispatch(actions.setMainLoading(false));
+    dispatch(mainActions.setMainLoading(false));
   });
 
-// GET_MODULE
-export const get_module = (_id: string) => <ThunkActionApp>(async (
+export const getModule = (_id: string) => <ThunkActionApp>(async (
     dispatch,
     getState,
   ) => {
@@ -184,9 +183,10 @@ export const get_module = (_id: string) => <ThunkActionApp>(async (
       const {
         auth: { user },
       } = getState();
+
       if (!user) return; // loading
 
-      dispatch(actions.setMainLoading(true));
+      dispatch(mainActions.setMainLoading(true));
 
       const {
         data,
@@ -204,7 +204,7 @@ export const get_module = (_id: string) => <ThunkActionApp>(async (
       data.module = { ...data.module, ...module_fields };
 
       dispatch(
-        actions.getModule({
+        mainActions.setModule({
           ...data,
           cards: arr_to_obj(data.cards),
         }),
@@ -214,18 +214,17 @@ export const get_module = (_id: string) => <ThunkActionApp>(async (
       console.error(err);
     }
 
-    dispatch(actions.setMainLoading(false));
+    dispatch(mainActions.setMainLoading(false));
   });
 
-// GET_DRAFT
-export const get_draft = () => <ThunkActionApp>(async (dispatch, getState) => {
+export const getDraft = () => <ThunkActionApp>(async (dispatch, getState) => {
     try {
       const {
         auth: { user },
       } = getState();
       if (!user) return; // loading
 
-      dispatch(actions.setMainLoading(true));
+      dispatch(mainActions.setMainLoading(true));
 
       const {
         data,
@@ -239,7 +238,7 @@ export const get_draft = () => <ThunkActionApp>(async (dispatch, getState) => {
       data.module = { ...data.module, ...module_fields };
 
       dispatch(
-        actions.getModule({
+        mainActions.setModule({
           ...data,
           cards: arr_to_obj(data.cards),
         }),
@@ -249,7 +248,7 @@ export const get_draft = () => <ThunkActionApp>(async (dispatch, getState) => {
       console.error(err);
     }
 
-    dispatch(actions.setMainLoading(false));
+    dispatch(mainActions.setMainLoading(false));
   });
 
 // ==============================

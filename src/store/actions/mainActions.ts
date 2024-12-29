@@ -180,7 +180,7 @@ export const get_cards = () => <ThunkActionApp>(async (dispatch, getState) => {
 
       dispatch({
         type: GET_HOME_CARDS,
-        payload: { ...data, cards: arr_to_obj(data.cards) },
+        payload: { ...data, cards: arr_to_obj(data.entries) },
       });
     } catch (err) {
       console.error(err);

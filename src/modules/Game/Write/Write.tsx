@@ -10,7 +10,7 @@ import Progress from "./components/Progress";
 
 const Write = () => {
   const {
-    get_module_cards,
+    getModuleCards,
     clear_module,
     prepare_write,
     reset_all_game_fields,
@@ -37,7 +37,7 @@ const Write = () => {
   useEffect(() => {
     if (user) {
       if (isSR && typeof number === "string") get_sr_cards(+number);
-      else if (typeof _id === "string") get_module_cards(_id);
+      else if (typeof _id === "string") getModuleCards(_id);
     }
   }, [user]);
 

@@ -134,4 +134,4 @@ export type Module = ModuleDto & ModuleFields;
 
 // ===============================
 
-export type MainCaseReducer<P = unknown> = CaseReducer<MainState, Action<P>>;
+export type MainCaseReducer<P = undefined> = CaseReducer<MainState, Action<P>>;

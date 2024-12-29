@@ -15,11 +15,8 @@ import {
   SelectCreated,
 } from "../types";
 
-export const setIsServer: MainCaseReducer<{ value: boolean }> = (
-  state,
-  action,
-) => {
-  state.is_server = action.payload.value;
+export const setIsServer: MainCaseReducer = state => {
+  state.is_server = typeof document === "undefined";
 };
 
 export const clearModule: MainCaseReducer = state => {
@@ -27,7 +24,7 @@ export const clearModule: MainCaseReducer = state => {
   state.cards = {};
 };
 
-export const getModule: MainCaseReducer<{ cards: Cards; module: Module }> = (
+export const setModule: MainCaseReducer<{ cards: Cards; module: Module }> = (
   state,
   action,
 ) => {
@@ -35,7 +32,7 @@ export const getModule: MainCaseReducer<{ cards: Cards; module: Module }> = (
   state.cards = action.payload.cards;
 };
 
-export const getModuleCards: MainCaseReducer<{ cards: Cards }> = (
+export const setModuleCards: MainCaseReducer<{ cards: Cards }> = (
   state,
   action,
 ) => {
@@ -47,7 +44,7 @@ export const setEntryCollectionFilter: MainCaseReducer<{
   filter: string;
   value: FilterValue;
 }> = (state, action) => {
-  state[action.payload.entryCollection][action.payload.filter] =
+  state[action.payload.entryCollection].filters[action.payload.filter] =
     action.payload.value;
 };
 
@@ -113,7 +110,7 @@ export const setHomeModulesLoading: MainCaseReducer<boolean> = (
   state.homeModules.loading = action.payload;
 };
 
-export const getHomeModules: MainCaseReducer<{
+export const setHomeModules: MainCaseReducer<{
   draft: ModuleDto;
   modules: ModulesPageableDto;
 }> = (state, action) => {
@@ -125,6 +122,6 @@ export const getHomeModules: MainCaseReducer<{
   ];
 };
 
-export const getCards: MainCaseReducer<{ cards: Cards }> = (state, action) => {
+export const setCards: MainCaseReducer<{ cards: Cards }> = (state, action) => {
   state.cards = { ...state.cards, ...action.payload.cards };
 };

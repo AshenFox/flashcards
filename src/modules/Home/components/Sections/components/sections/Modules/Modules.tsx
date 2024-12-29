@@ -53,22 +53,26 @@ const Modules = () => {
   const { search } = filters;
 
   const {
-    get_home_modules,
-    reset_home_modules_data,
-    reset_home_modules_filters,
-    set_entry_collection_filter,
+    getHomeModules,
+    resetHomeModulesData,
+    resetHomeModulesFilters,
+    setEntryCollectionFilter,
   } = useActions();
 
   const setFilterValue = useCallback<SetFilterValue>(
     (filter, value) => {
-      set_entry_collection_filter("homeModules", filter, value);
+      setEntryCollectionFilter({
+        entryCollection: "homeModules",
+        filter,
+        value,
+      });
     },
-    [set_entry_collection_filter],
+    [setEntryCollectionFilter],
   );
 
   useEffect(() => {
     return () => {
-      reset_home_modules_data();
+      resetHomeModulesData();
     };
   }, []);
 
@@ -81,9 +85,9 @@ const Modules = () => {
         className={s.filter}
         alwaysReload
         setFilterValue={setFilterValue}
-        getData={get_home_modules}
-        resetData={reset_home_modules_data}
-        resetFilters={reset_home_modules_filters}
+        getData={getHomeModules}
+        resetData={resetHomeModulesData}
+        resetFilters={resetHomeModulesFilters}
       />
       {draft && (
         <Fragment>

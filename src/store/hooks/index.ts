@@ -7,11 +7,10 @@ import * as dimenActions from "../actions/dimenActions";
 import * as editActions from "../actions/editActions";
 import * as gameActions from "../actions/gameActions";
 import * as headerActions from "../actions/headerActions";
-import * as mainActions from "../actions/mainActions";
 import * as modalActions from "../actions/modalActions";
 import * as srActions from "../actions/srActions";
 import * as voiceActions from "../actions/voiceActions";
-import { actions as newMainActions } from "../reducers/newMain/slice";
+import { mainActions, mainThunks } from "../reducers/newMain/slice";
 import { AppDispatch, RootState } from "../store";
 
 export const useAppDispatch = () => useDispatch<AppDispatch>();
@@ -30,11 +29,11 @@ export const useActions = () => {
           ...editActions,
           ...gameActions,
           ...headerActions,
-          ...mainActions,
           ...modalActions,
           ...srActions,
           ...voiceActions,
-          ...newMainActions,
+          ...mainActions,
+          ...mainThunks,
         },
         dispatch,
       ),

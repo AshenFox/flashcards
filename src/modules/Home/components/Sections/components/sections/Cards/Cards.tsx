@@ -5,7 +5,7 @@ import NotFound from "@components/NotFound";
 import { useActions } from "@store/hooks";
 import { useAppSelector } from "@store/store";
 import ScrollLoader from "@ui/ScrollLoader";
-import React, { Fragment, memo, useEffect } from "react";
+import React, { Fragment, memo, useCallback, useEffect } from "react";
 
 import Divider from "../components/Divider";
 import s from "../styles.module.scss";
@@ -30,18 +30,25 @@ const Cards = () => {
   const formatted_cards = Object.values(cards);
 
   const {
-    get_cards,
-    control_search_cards,
-    reset_fields_cards,
-    set_select_created,
-    set_select_by,
-    reset_search,
+    getCards,
+    controlSearchCards,
+    resetFieldsCards,
+    setSelectCreated,
+    setSelectBy,
+    resetSearch,
   } = useActions();
+
+  const setValue = useCallback(
+    (value: string) => {
+      controlSearchCards({ value });
+    },
+    [controlSearchCards],
+  );
 
   useEffect(() => {
     return () => {
-      reset_fields_cards();
-      reset_search();
+      resetFieldsCards();
+      resetSearch();
     };
   }, []);
 
@@ -49,11 +56,11 @@ const Cards = () => {
     <>
       <Filter
         className={s.filter}
-        getData={get_cards}
-        resetData={reset_fields_cards}
+        getData={getCards}
+        resetData={resetFieldsCards}
         search={{
           value: search_cards.value,
-          setValue: control_search_cards,
+          setValue,
           placeholder: "Type to filter by ...",
         }}
         selects={[
@@ -61,13 +68,13 @@ const Cards = () => {
             id: "by",
             value: select_by,
             options: optionsBy,
-            setValue: set_select_by,
+            setValue: setSelectBy,
           },
           {
             id: "created",
             value: select_created,
             options: optionsCreated,
-            setValue: set_select_created,
+            setValue: setSelectCreated,
             alwaysReload: true,
           },
         ]}

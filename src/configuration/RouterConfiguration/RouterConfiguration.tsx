@@ -4,7 +4,7 @@ import { memo } from "react";
 import { useEffect, useRef } from "react";
 
 const RouterConfiguration = () => {
-  const { set_main_loading } = useActions();
+  const { setMainLoading } = useActions();
 
   const baseRef = useRef<string>(null);
 
@@ -12,7 +12,7 @@ const RouterConfiguration = () => {
     Router.events.on("routeChangeComplete", (url: string) => {
       const base = url.match(/\/.[^\/]*/)?.[0];
 
-      if (base !== baseRef.current) set_main_loading(true);
+      if (base !== baseRef.current) setMainLoading(true);
 
       baseRef.current = base;
     });
