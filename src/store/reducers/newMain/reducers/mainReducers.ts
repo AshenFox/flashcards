@@ -114,12 +114,14 @@ export const setHomeModules: MainCaseReducer<{
   draft: ModuleDto;
   modules: ModulesPageableDto;
 }> = (state, action) => {
-  state.draft = action.payload.draft;
-  state.homeModules.data.page = action.payload.modules.page + 1;
-  state.homeModules.data.entries = [
-    ...(state.homeModules.data.entries || []),
-    ...action.payload.modules.entries,
-  ];
+  const { draft, modules } = action.payload;
+
+  state.draft = draft;
+  state.homeModules.data = {
+    ...modules,
+    page: modules.page + 1,
+    entries: [...(state.homeModules.data.entries || []), ...modules.entries],
+  };
 };
 
 export const setCards: MainCaseReducer<{ cards: Cards }> = (state, action) => {
