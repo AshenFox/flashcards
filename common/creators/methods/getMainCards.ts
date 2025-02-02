@@ -1,4 +1,4 @@
-import { PageableCreator } from "./Pageable";
+import { PagedDataCreator } from "./pagedData";
 
 export type CardsGetQueryCreator = {
   page?: number;
@@ -8,4 +8,4 @@ export type CardsGetQueryCreator = {
   sr?: boolean;
 };
 
-export type CardsGetResponseCreator<Pageable = PageableCreator> = Pageable;
+export type CardsGetResponseCreator<PagedData = PagedDataCreator> = PagedData;

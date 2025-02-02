@@ -46,28 +46,28 @@ const filtersData: FilterData[] = [
 ];
 
 const Modules = () => {
-  const modules = useAppSelector(s => s.main.homeModules.data.entries);
+  const modules = useAppSelector(s => s.main.modules);
   const draft = useAppSelector(s => s.main.draft);
-  const loading = useAppSelector(s => s.main.homeModules.loading);
-  const filters = useAppSelector(s => s.main.homeModules.filters);
+  const loading = useAppSelector(s => s.main.sections.homeModules.loading);
+  const filters = useAppSelector(s => s.main.sections.homeModules.filters);
   const { search } = filters;
 
   const {
     getHomeModules,
     resetHomeModulesData,
     resetHomeModulesFilters,
-    setEntryCollectionFilter,
+    setSectionFilter,
   } = useActions();
 
   const setFilterValue = useCallback<SetFilterValue>(
     (filter, value) => {
-      setEntryCollectionFilter({
-        entryCollection: "homeModules",
+      setSectionFilter({
+        section: "homeModules",
         filter,
         value,
       });
     },
-    [setEntryCollectionFilter],
+    [setSectionFilter],
   );
 
   useEffect(() => {

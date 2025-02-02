@@ -1,16 +1,13 @@
 import { ModuleDto } from "@common/api/entities";
-import { ModulesPageableDto } from "@common/api/methods";
+import { ModulesPagedDataDto } from "@common/api/methods";
 
-import {
-  defaultHomeModulesData,
-  defaultHomeModulesFilters,
-} from "../initState";
+import { defaultHomeModulesFilters, defaultPagination } from "../initState";
 import {
   Cards,
-  EntryCollectionName,
   FilterValue,
   MainCaseReducer,
   Module,
+  SectionName,
   SelectBy,
   SelectCreated,
 } from "../types";
@@ -20,7 +17,7 @@ export const setIsServer: MainCaseReducer = state => {
 };
 
 export const clearModule: MainCaseReducer = state => {
-  state.module = false;
+  state.module = null;
   state.cards = {};
 };
 
@@ -39,12 +36,12 @@ export const setModuleCards: MainCaseReducer<{ cards: Cards }> = (
   state.cards = { ...state.cards, ...action.payload.cards };
 };
 
-export const setEntryCollectionFilter: MainCaseReducer<{
-  entryCollection: EntryCollectionName;
+export const setSectionFilter: MainCaseReducer<{
+  section: SectionName;
   filter: string;
   value: FilterValue;
 }> = (state, action) => {
-  state[action.payload.entryCollection].filters[action.payload.filter] =
+  state.sections[action.payload.section].filters[action.payload.filter] =
     action.payload.value;
 };
 
@@ -57,11 +54,12 @@ export const resetFieldsCards: MainCaseReducer = state => {
 
 export const resetHomeModulesData: MainCaseReducer = state => {
   state.draft = null;
-  state.homeModules.data = defaultHomeModulesData;
+  state.modules = [];
+  state.sections.homeModules.pagination = defaultPagination;
 };
 
 export const resetHomeModulesFilters: MainCaseReducer = state => {
-  state.homeModules.filters = defaultHomeModulesFilters;
+  state.sections.homeModules.filters = defaultHomeModulesFilters;
 };
 
 export const resetSearch: MainCaseReducer = state => {
@@ -107,20 +105,21 @@ export const setHomeModulesLoading: MainCaseReducer<boolean> = (
   state,
   action,
 ) => {
-  state.homeModules.loading = action.payload;
+  state.sections.homeModules.loading = action.payload;
 };
 
 export const setHomeModules: MainCaseReducer<{
   draft: ModuleDto;
-  modules: ModulesPageableDto;
+  modules: ModulesPagedDataDto;
 }> = (state, action) => {
   const { draft, modules } = action.payload;
 
   state.draft = draft;
-  state.homeModules.data = {
-    ...modules,
-    page: modules.page + 1,
-    entries: [...(state.homeModules.data.entries || []), ...modules.entries],
+  state.modules = [...(state.modules || []), ...modules.entries];
+
+  state.sections.homeModules.pagination = {
+    ...modules.pagination,
+    page: modules.pagination.page + 1,
   };
 };
 

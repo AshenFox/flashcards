@@ -15,10 +15,12 @@ export const getHomeModules = () => <ThunkActionApp>(async (
       const {
         auth: { user },
         main: {
-          homeModules: {
-            loading,
-            data: { end, page },
-            filters,
+          sections: {
+            homeModules: {
+              loading,
+              filters,
+              pagination: { end, page },
+            },
           },
         },
       } = getState();

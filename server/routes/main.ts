@@ -88,11 +88,13 @@ router.get(
       const result: ModulesGetResponse = {
         draft: null,
         modules: {
-          page,
           entries: modules,
-          number: modules_number,
-          end,
-          all,
+          pagination: {
+            page,
+            number: modules_number,
+            end,
+            all,
+          },
         },
       };
 
@@ -162,9 +164,10 @@ router.get("/cards", auth, async (req: CardsGetReq, res: CardsGetRes) => {
 
     const end = cards_number <= (page + 1) * 10;
 
-    res
-      .status(200)
-      .json({ page, entries: cards, number: cards_number, end, all });
+    res.status(200).json({
+      entries: cards,
+      pagination: { page, number: cards_number, end, all },
+    });
   } catch (err) {
     console.error(err);
     res.status(500).json({ errorBody: "Server Error" });

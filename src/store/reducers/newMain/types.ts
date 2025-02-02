@@ -1,6 +1,5 @@
 import { CardDto, ModuleDto } from "@common/api/entities";
-import { CardsPageableDto, ModulesPageableDto } from "@common/api/methods";
-import { PageableCreator } from "@common/creators/methods";
+import { PaginationDto } from "@common/api/methods/pagedData";
 import { CaseReducer } from "@reduxjs/toolkit";
 import { Action } from "@store/types";
 
@@ -11,13 +10,12 @@ export type DefaultFilters = {
   search?: string;
 };
 
-export type EntryCollection<
-  Pageable extends PageableCreator,
-  Filters extends DefaultFilters,
-> = {
+export type Pagination = PaginationDto;
+
+export type Section<Filters extends DefaultFilters> = {
   loading: boolean;
-  data: Pageable;
   filters?: Filters;
+  pagination?: Pagination;
 };
 
 export type HomeModuleFilters = DefaultFilters & {
@@ -26,10 +24,7 @@ export type HomeModuleFilters = DefaultFilters & {
   sr?: boolean;
 };
 
-export type HomeModulesCollection = EntryCollection<
-  ModulesPageableDto,
-  HomeModuleFilters
->;
+export type HomeModulesSection = Section<HomeModuleFilters>;
 
 export type HomeCardsFilters = DefaultFilters & {
   created?: "newest" | "oldest";
@@ -37,23 +32,19 @@ export type HomeCardsFilters = DefaultFilters & {
   sr?: boolean;
 };
 
-export type HomeCardsCollection = EntryCollection<
-  CardsPageableDto,
-  HomeCardsFilters
->;
+export type HomeCardsSection = Section<HomeCardsFilters>;
 
-export type EntryCollectionName = "homeModules" | "homeCards";
+export type SectionName = "homeModules" | "homeCards";
 
 export type MainState = {
   is_server: boolean;
+
   loading: boolean;
 
-  module: Module | false;
-  draft: ModuleDto | false;
+  module: Module | null;
+  modules: ModuleDto[];
 
-  homeModules: HomeModulesCollection;
-
-  homeCards: HomeCardsCollection;
+  draft: ModuleDto | false; // why we need this?
 
   // home cards
   cards: Cards;
@@ -63,6 +54,11 @@ export type MainState = {
   all_cards_number: number | false;
   search_cards: {
     value: string;
+  };
+
+  sections: {
+    homeModules: HomeModulesSection;
+    homeCards: HomeCardsSection;
   };
 
   select_by: SelectBy;
@@ -127,7 +123,7 @@ export type Cards = {
 
 export type ModuleFields = {
   question: boolean;
-  module_loading: boolean;
+  module_loading: boolean; // can be renamed
 };
 
 export type Module = ModuleDto & ModuleFields;

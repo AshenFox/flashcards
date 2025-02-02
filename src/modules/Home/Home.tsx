@@ -34,7 +34,7 @@ const Home = () => {
   const { getHomeModules, getCards, /* reset_search, */ get_sr_count } =
     useActions();
 
-  const modules = useAppSelector(s => s.main.homeModules.data.entries);
+  const modules = useAppSelector(s => s.main.modules);
   const cards = useAppSelector(s => s.main.cards);
   const user = useAppSelector(s => s.auth.user);
 

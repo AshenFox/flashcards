@@ -1,14 +1,13 @@
-import { CardsPageableDto, ModulesPageableDto } from "@common/api/methods";
-
 import {
   CardFields,
-  HomeCardsCollection,
   HomeCardsFilters,
+  HomeCardsSection,
   HomeModuleFilters,
-  HomeModulesCollection,
+  HomeModulesSection,
   ImgurlFields,
   MainState,
   ModuleFields,
+  Pagination,
 } from "./types";
 
 export const card_fields: CardFields = {
@@ -41,24 +40,23 @@ export const url_fields: ImgurlFields = {
   ok: false,
 };
 
-export const defaultHomeModulesFilters: HomeModuleFilters = {
-  search: "",
-  created: "newest",
-  draft: true,
-};
-
-export const defaultHomeModulesData: ModulesPageableDto = {
-  entries: [],
+export const defaultPagination: Pagination = {
   all: null,
   number: null,
   page: 0,
   end: false,
 };
 
-export const defaultHomeModules: HomeModulesCollection = {
+export const defaultHomeModulesFilters: HomeModuleFilters = {
+  search: "",
+  created: "newest",
+  draft: true,
+};
+
+export const defaultHomeModulesSection: HomeModulesSection = {
   loading: false,
-  data: defaultHomeModulesData,
   filters: defaultHomeModulesFilters,
+  pagination: defaultPagination,
 };
 
 export const defaultHomeCardsFilters: HomeCardsFilters = {
@@ -67,30 +65,20 @@ export const defaultHomeCardsFilters: HomeCardsFilters = {
   by: "term",
 };
 
-export const defaultHomeCardsData: CardsPageableDto = {
-  entries: [],
-  all: null,
-  number: null,
-  page: 0,
-  end: false,
-};
-
-export const defaultHomeCards: HomeCardsCollection = {
+export const defaultHomeCardsSection: HomeCardsSection = {
   loading: false,
-  data: defaultHomeCardsData,
   filters: defaultHomeCardsFilters,
+  pagination: defaultPagination,
 };
 
 const initState: MainState = {
   is_server: true,
   loading: false,
 
-  module: false,
+  module: null,
+  modules: [],
+
   draft: false,
-
-  homeModules: defaultHomeModules,
-
-  homeCards: defaultHomeCards,
 
   cards: {},
   cards_number: false,
@@ -99,6 +87,11 @@ const initState: MainState = {
   all_cards_number: false,
   search_cards: {
     value: "",
+  },
+
+  sections: {
+    homeModules: defaultHomeModulesSection,
+    homeCards: defaultHomeCardsSection,
   },
 
   select_by: { value: "term", label: "Term" },

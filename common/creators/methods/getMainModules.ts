@@ -1,5 +1,5 @@
 import { ModuleCreator } from "../entities";
-import { PageableCreator } from "./Pageable";
+import { PagedDataCreator } from "./pagedData";
 
 export type ModulesGetQueryCreator = {
   page?: number;
@@ -10,8 +10,8 @@ export type ModulesGetQueryCreator = {
 };
 export type ModulesGetResponseCreator<
   Module = ModuleCreator,
-  Pageable = PageableCreator,
+  PagedData = PagedDataCreator,
 > = {
   draft: Module | null;
-  modules: Pageable;
+  modules: PagedData;
 };
