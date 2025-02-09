@@ -78,22 +78,18 @@ const initState: MainState = {
   module: null,
   modules: [],
 
-  draft: false,
-
   cards: {},
-  cards_number: false,
-  all_cards: false,
-  skip_cards: 0,
-  all_cards_number: false,
-  search_cards: {
-    value: "",
-  },
+
+  draft: false,
 
   sections: {
     homeModules: defaultHomeModulesSection,
     homeCards: defaultHomeCardsSection,
   },
 
+  search_cards: {
+    value: "",
+  },
   select_by: { value: "term", label: "Term" },
   select_created: { value: "newest", label: "Newest" },
 

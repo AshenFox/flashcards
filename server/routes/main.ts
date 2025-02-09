@@ -119,60 +119,69 @@ type CardsGetRes = ResponseLocals<
   CardsGetQuery
 >;
 
-router.get("/cards", auth, async (req: CardsGetReq, res: CardsGetRes) => {
-  try {
-    const {
-      page = 0,
-      search,
-      created = "newest",
-      by = "term",
-      sr,
-    } = res.locals.query;
+router.get(
+  "/cards",
+  auth,
+  query,
+  async (req: CardsGetReq, res: CardsGetRes) => {
+    try {
+      const {
+        page = 0,
+        search,
+        created = "newest",
+        by = "term",
+        sr,
+      } = res.locals.query;
 
-    const _id = res.locals.user._id;
+      const _id = res.locals.user._id;
 
-    const draft = await moduleModel.findOne({
-      author_id: _id,
-      draft: true,
-    });
+      const draft = await moduleModel.findOne({
+        author_id: _id,
+        draft: true,
+      });
 
-    const filterObj: FilterQuery<Card> = {
-      author_id: _id,
-    };
-
-    if (draft) filterObj.moduleID = { $ne: draft._id };
-
-    const sortObj: CardSortObj = {};
-
-    if (created === "newest") sortObj.creation_date = -1;
-    if (created === "oldest") sortObj.creation_date = 1;
-
-    const all = await cardModel.countDocuments(filterObj);
-
-    if (search)
-      filterObj[by] = {
-        $regex: `${search}(?!br>|r>|>|\/div>|div>|iv>|v>|nbsp;|bsp;|sp;|p;|;|\/span>|span>|pan>|an>|n>)`,
+      const filterObj: FilterQuery<Card> = {
+        author_id: _id,
       };
 
-    const cards = await cardModel
-      .find(filterObj)
-      .sort(sortObj)
-      .skip(page * 10)
-      .limit(10);
+      if (draft) filterObj.moduleID = { $ne: draft._id };
 
-    const cards_number = await cardModel.countDocuments(filterObj);
+      const sortObj: CardSortObj = {};
 
-    const end = cards_number <= (page + 1) * 10;
+      if (created === "newest") sortObj.creation_date = -1;
+      if (created === "oldest") sortObj.creation_date = 1;
 
-    res.status(200).json({
-      entries: cards,
-      pagination: { page, number: cards_number, end, all },
-    });
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ errorBody: "Server Error" });
-  }
-});
+      const all = await cardModel.countDocuments(filterObj);
+
+      if (search)
+        filterObj[by] = {
+          $regex: `${search}(?!br>|r>|>|\/div>|div>|iv>|v>|nbsp;|bsp;|sp;|p;|;|\/span>|span>|pan>|an>|n>)`,
+        };
+
+      if (typeof sr === "boolean") {
+        filterObj.studyRegime = sr;
+      }
+
+      const cards = await cardModel
+        .find(filterObj)
+        .sort(sortObj)
+        .skip(page * 10)
+        .limit(10);
+
+      const cards_number = await cardModel.countDocuments(filterObj);
+
+      const end = cards_number <= (page + 1) * 10;
+
+      res.status(200).json({
+        entries: cards,
+        pagination: { page, number: cards_number, end, all },
+      });
+    } catch (err) {
+      console.error(err);
+      res.status(500).json({ errorBody: "Server Error" });
+    }
+  },
+);
 
 // @route ------ GET api/main/module
 // @desc ------- Get module with cards

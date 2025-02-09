@@ -1,5 +1,10 @@
 import { CardDto } from "@common/api/entities";
-import { ModulesGetQueryDto, ModulesGetResponseDto } from "@common/api/methods";
+import {
+  CardsGetQueryDto,
+  CardsGetResponseDto,
+  ModulesGetQueryDto,
+  ModulesGetResponseDto,
+} from "@common/api/methods";
 import axios from "@common/axios";
 import { ThunkActionApp } from "@store/store";
 
@@ -7,10 +12,7 @@ import { card_fields, module_fields } from "../initState";
 import { mainActions } from "../slice";
 import { Cards, Module } from "../types";
 
-export const getHomeModules = () => <ThunkActionApp>(async (
-    dispatch,
-    getState,
-  ) => {
+export const getModules = () => <ThunkActionApp>(async (dispatch, getState) => {
     try {
       const {
         auth: { user },
@@ -27,7 +29,9 @@ export const getHomeModules = () => <ThunkActionApp>(async (
 
       if (!user || end || loading) return;
 
-      dispatch(mainActions.setHomeModulesLoading(true));
+      dispatch(
+        mainActions.setSectionLoading({ value: true, section: "homeModules" }),
+      );
 
       const params: ModulesGetQueryDto = {
         page,
@@ -46,7 +50,9 @@ export const getHomeModules = () => <ThunkActionApp>(async (
       console.error(err);
     }
 
-    dispatch(mainActions.setHomeModulesLoading(false));
+    dispatch(
+      mainActions.setSectionLoading({ value: false, section: "homeModules" }),
+    );
   });
 
 export const getCards = () => <ThunkActionApp>(async (dispatch, getState) => {
@@ -54,91 +60,41 @@ export const getCards = () => <ThunkActionApp>(async (dispatch, getState) => {
       const {
         auth: { user },
         main: {
-          skip_cards,
-          all_cards,
-          search_cards,
-          select_by,
-          select_created,
-          loading,
-        },
-      } = getState();
-      if (!user || all_cards || loading) return;
-
-      dispatch(mainActions.setMainLoading(true));
-
-      const {
-        data,
-      }: {
-        data: {
-          all_cards: boolean;
-          all_cards_number: number;
-          cards: CardDto[];
-          cards_number: number;
-        };
-      } = await axios.get("/api/main/cards", {
-        params: {
-          skip: skip_cards,
-          filter: search_cards.value,
-          by: select_by.value,
-          created: select_created.value,
-        },
-      });
-
-      dispatch(
-        mainActions.setCards({ ...data, cards: arr_to_obj(data.cards) }),
-      );
-      /* dispatch({
-        type: SET_SKIP_CARDS,
-        payload: skip_cards + 1,
-      }); */
-    } catch (err) {
-      console.error(err);
-    }
-
-    dispatch(mainActions.setMainLoading(false));
-  });
-
-/* export const get_cards = () => <ThunkActionApp>(async (dispatch, getState) => {
-    try {
-      const {
-        auth: { user },
-        main: {
-          homeCards: {
-            loading,
-            data: { end, page },
-            filters,
+          sections: {
+            homeCards: {
+              loading,
+              filters,
+              pagination: { end, page },
+            },
           },
         },
       } = getState();
       if (!user || end || loading) return;
 
-      dispatch({
-        type: SET_HOME_CARDS_LOADING,
-        payload: true,
-      });
+      dispatch(
+        mainActions.setSectionLoading({ value: true, section: "homeCards" }),
+      );
 
       const params: CardsGetQueryDto = {
         page,
         ...filters,
       };
 
+      console.log({ params });
+
       const { data } = await axios.get<CardsGetResponseDto>("/api/main/cards", {
         params,
       });
 
-      dispatch({
-        type: GET_HOME_CARDS,
-        payload: { ...data, cards: arr_to_obj(data.cards) },
-      });
+      dispatch(mainActions.setCards(data));
     } catch (err) {
       console.error(err);
     }
 
-    dispatch({
-      type: SET_MAIN_LOADING,
-      payload: false,
-    });
-  }); */
+    dispatch(
+      mainActions.setSectionLoading({ value: false, section: "homeCards" }),
+    );
+  });
 
 export const getModuleCards = (_id: string) => <ThunkActionApp>(async (
     dispatch,

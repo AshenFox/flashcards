@@ -1,14 +1,10 @@
-import Filter, {
-  FilterData,
-  Option,
-  SetFilterValue,
-} from "@components/Filters";
+import Filter, { FilterData, SetFilterValue } from "@components/Filters";
 import NotFound from "@components/NotFound";
 import { useActions } from "@store/hooks";
 import { defaultHomeModulesFilters } from "@store/reducers/main/mainInitState";
 import { useAppSelector } from "@store/store";
 import ScrollLoader from "@ui/ScrollLoader";
-import React, { Fragment, memo, useCallback, useEffect, useMemo } from "react";
+import React, { Fragment, memo, useCallback, useEffect } from "react";
 
 import Divider from "../components/Divider";
 import s from "../styles.module.scss";
@@ -53,9 +49,9 @@ const Modules = () => {
   const { search } = filters;
 
   const {
-    getHomeModules,
+    getModules,
     resetHomeModulesData,
-    resetHomeModulesFilters,
+    resetSectionFilters,
     setSectionFilter,
   } = useActions();
 
@@ -70,11 +66,15 @@ const Modules = () => {
     [setSectionFilter],
   );
 
+  const resetFilters = useCallback(() => {
+    resetSectionFilters("homeModules");
+  }, [resetSectionFilters]);
+
   useEffect(() => {
     return () => {
       resetHomeModulesData();
     };
-  }, []);
+  }, [resetHomeModulesData]);
 
   return (
     <>
@@ -85,9 +85,9 @@ const Modules = () => {
         className={s.filter}
         alwaysReload
         setFilterValue={setFilterValue}
-        getData={getHomeModules}
+        getData={getModules}
         resetData={resetHomeModulesData}
-        resetFilters={resetHomeModulesFilters}
+        resetFilters={resetFilters}
       />
       {draft && (
         <Fragment>

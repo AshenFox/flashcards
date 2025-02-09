@@ -44,23 +44,18 @@ export type MainState = {
   module: Module | null;
   modules: ModuleDto[];
 
-  draft: ModuleDto | false; // why we need this?
-
-  // home cards
   cards: Cards;
-  cards_number: number | false;
-  all_cards: boolean;
-  skip_cards: number;
-  all_cards_number: number | false;
-  search_cards: {
-    value: string;
-  };
+
+  draft: ModuleDto | false; // why I need this?
 
   sections: {
     homeModules: HomeModulesSection;
     homeCards: HomeCardsSection;
   };
 
+  search_cards: {
+    value: string;
+  };
   select_by: SelectBy;
   select_created: SelectCreated;
 

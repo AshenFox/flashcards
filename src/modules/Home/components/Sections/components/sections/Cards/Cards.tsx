@@ -1,83 +1,95 @@
 import Card from "@components/Card";
 import EditCard from "@components/EditCard";
-import Filter, { Option } from "@components/Filter";
+import Filter, { FilterData, SetFilterValue } from "@components/Filters";
 import NotFound from "@components/NotFound";
 import { useActions } from "@store/hooks";
+import { defaultHomeCardsFilters } from "@store/reducers/main/mainInitState";
 import { useAppSelector } from "@store/store";
 import ScrollLoader from "@ui/ScrollLoader";
-import React, { Fragment, memo, useCallback, useEffect } from "react";
+import React, { Fragment, memo, useCallback, useEffect, useMemo } from "react";
 
 import Divider from "../components/Divider";
 import s from "../styles.module.scss";
 
-const optionsBy: Option[] = [
-  { value: "term", label: "Term" },
-  { value: "definition", label: "Definition" },
-];
-
-const optionsCreated: Option[] = [
-  { value: "newest", label: "Newest" },
-  { value: "oldest", label: "Oldest" },
+const filtersData: FilterData[] = [
+  {
+    id: "created",
+    label: "Date Order",
+    defaultValue: defaultHomeCardsFilters.created,
+    options: [
+      { value: "newest", label: "Newest" },
+      { value: "oldest", label: "Oldest" },
+    ],
+  },
+  {
+    id: "sr",
+    label: "SR",
+    defaultValue: defaultHomeCardsFilters.sr,
+    options: [
+      { value: undefined, label: "All" },
+      { value: true, label: "In" },
+      { value: false, label: "Out" },
+    ],
+  },
+  {
+    id: "by",
+    label: "By",
+    defaultValue: defaultHomeCardsFilters.by,
+    options: [
+      { value: "term", label: "Term" },
+      { value: "definition", label: "Definition" },
+    ],
+  },
 ];
 
 const Cards = () => {
-  const loading = useAppSelector(s => s.main.loading);
   const cards = useAppSelector(s => s.main.cards);
-  const search_cards = useAppSelector(s => s.main.search_cards);
-  const select_by = useAppSelector(s => s.main.select_by);
-  const select_created = useAppSelector(s => s.main.select_created);
+  const loading = useAppSelector(s => s.main.sections.homeCards.loading);
+  const filters = useAppSelector(s => s.main.sections.homeCards.filters);
+  const { search, by } = filters;
 
-  const formatted_cards = Object.values(cards);
+  const formatted_cards = useMemo(() => Object.values(cards), [cards]);
 
   const {
     getCards,
-    controlSearchCards,
-    resetFieldsCards,
-    setSelectCreated,
-    setSelectBy,
-    resetSearch,
+    resetHomeCardsData,
+    setSectionFilter,
+    resetSectionFilters,
   } = useActions();
 
-  const setValue = useCallback(
-    (value: string) => {
-      controlSearchCards({ value });
+  const setFilterValue = useCallback<SetFilterValue>(
+    (filter, value) => {
+      setSectionFilter({
+        section: "homeCards",
+        filter,
+        value,
+      });
     },
-    [controlSearchCards],
+    [setSectionFilter],
   );
+
+  const resetFilters = useCallback(() => {
+    resetSectionFilters("homeCards");
+  }, [resetSectionFilters]);
 
   useEffect(() => {
     return () => {
-      resetFieldsCards();
-      resetSearch();
+      resetHomeCardsData();
     };
   }, []);
 
   return (
     <>
       <Filter
+        filtersValues={filters}
+        filtersData={filtersData}
+        placeholder={"Type to filter..."}
         className={s.filter}
+        alwaysReload
+        setFilterValue={setFilterValue}
         getData={getCards}
-        resetData={resetFieldsCards}
-        search={{
-          value: search_cards.value,
-          setValue,
-          placeholder: "Type to filter by ...",
-        }}
-        selects={[
-          {
-            id: "by",
-            value: select_by,
-            options: optionsBy,
-            setValue: setSelectBy,
-          },
-          {
-            id: "created",
-            value: select_created,
-            options: optionsCreated,
-            setValue: setSelectCreated,
-            alwaysReload: true,
-          },
-        ]}
+        resetData={resetHomeCardsData}
+        resetFilters={resetFilters}
       />
       {formatted_cards.map((card, i) => {
         const prevDateString = formatted_cards[i - 1]?.creation_date;
@@ -92,12 +104,7 @@ const Cards = () => {
             {card.edit ? (
               <EditCard data={card} toggle={true} loading={loading} />
             ) : (
-              <Card
-                data={card}
-                filter={search_cards.value}
-                filterType={select_by.value}
-                isModuleLink
-              />
+              <Card data={card} filter={search} filterType={by} isModuleLink />
             )}
           </Fragment>
         );
@@ -106,7 +113,7 @@ const Cards = () => {
       {!loading && (
         <NotFound
           resultsFound={formatted_cards.length}
-          filterValue={search_cards.value}
+          filterValue={search}
           notFoundMsg={value => (
             <>
               No cards matching <b>{`"${value}"`}</b> found.

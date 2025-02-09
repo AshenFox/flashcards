@@ -1,7 +1,15 @@
-import { ModuleDto } from "@common/api/entities";
-import { ModulesPagedDataDto } from "@common/api/methods";
+import { CardDto } from "@common/api/entities";
+import {
+  CardsGetResponseDto,
+  ModulesGetResponseDto,
+} from "@common/api/methods";
 
-import { defaultHomeModulesFilters, defaultPagination } from "../initState";
+import {
+  card_fields,
+  defaultHomeCardsFilters,
+  defaultHomeModulesFilters,
+  defaultPagination,
+} from "../initState";
 import {
   Cards,
   FilterValue,
@@ -58,8 +66,21 @@ export const resetHomeModulesData: MainCaseReducer = state => {
   state.sections.homeModules.pagination = defaultPagination;
 };
 
-export const resetHomeModulesFilters: MainCaseReducer = state => {
-  state.sections.homeModules.filters = defaultHomeModulesFilters;
+export const resetHomeCardsData: MainCaseReducer = state => {
+  state.cards = {};
+  state.sections.homeModules.pagination = defaultPagination;
+};
+
+const defaultFilters = {
+  homeModules: defaultHomeModulesFilters,
+  homeCards: defaultHomeCardsFilters,
+};
+
+export const resetSectionFilters: MainCaseReducer<SectionName> = (
+  state,
+  action,
+) => {
+  state.sections[action.payload].filters = defaultFilters[action.payload];
 };
 
 export const resetSearch: MainCaseReducer = state => {
@@ -97,21 +118,19 @@ export const setMainLoading: MainCaseReducer<boolean> = (state, action) => {
   state.loading = action.payload;
 };
 
-export const setSkipCards: MainCaseReducer<number> = (state, action) => {
-  state.skip_cards = action.payload;
+export const setSectionLoading: MainCaseReducer<{
+  value: boolean;
+  section: SectionName;
+}> = (state, action) => {
+  const { value, section } = action.payload;
+
+  state.sections[section].loading = value;
 };
 
-export const setHomeModulesLoading: MainCaseReducer<boolean> = (
+export const setHomeModules: MainCaseReducer<ModulesGetResponseDto> = (
   state,
   action,
 ) => {
-  state.sections.homeModules.loading = action.payload;
-};
-
-export const setHomeModules: MainCaseReducer<{
-  draft: ModuleDto;
-  modules: ModulesPagedDataDto;
-}> = (state, action) => {
   const { draft, modules } = action.payload;
 
   state.draft = draft;
@@ -123,6 +142,28 @@ export const setHomeModules: MainCaseReducer<{
   };
 };
 
-export const setCards: MainCaseReducer<{ cards: Cards }> = (state, action) => {
-  state.cards = { ...state.cards, ...action.payload.cards };
+export const setCards: MainCaseReducer<CardsGetResponseDto> = (
+  state,
+  action,
+) => {
+  const { entries, pagination } = action.payload;
+
+  state.cards = { ...state.cards, ...arr_to_obj(entries) };
+
+  state.sections.homeCards.pagination = {
+    ...pagination,
+    page: pagination.page + 1,
+  };
+};
+
+const arr_to_obj = (arr: CardDto[]): Cards => {
+  return Object.fromEntries(
+    arr.map(card => [
+      card._id,
+      {
+        ...card,
+        ...card_fields,
+      },
+    ]),
+  );
 };

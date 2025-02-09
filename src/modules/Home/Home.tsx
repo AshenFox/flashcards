@@ -31,15 +31,14 @@ const Home = () => {
   const router = useRouter();
   const { section } = router.query;
 
-  const { getHomeModules, getCards, /* reset_search, */ get_sr_count } =
-    useActions();
+  const { getModules, getCards, get_sr_count } = useActions();
 
   const modules = useAppSelector(s => s.main.modules);
   const cards = useAppSelector(s => s.main.cards);
   const user = useAppSelector(s => s.auth.user);
 
   const loadContent = useCallback(() => {
-    if (!modules.length && section === "modules") getHomeModules();
+    if (!modules.length && section === "modules") getModules();
     if (!cards.length && section === "cards") getCards();
     if (section === "sr") get_sr_count();
   }, [
@@ -47,22 +46,19 @@ const Home = () => {
     cards.length,
     modules.length,
     getCards,
-    getHomeModules,
+    getModules,
     get_sr_count,
   ]);
 
   useEffect(() => {
     if (!user) return;
 
-    // reset_search();
     loadContent();
-  }, [user, loadContent /* reset_search */]);
+  }, [user, loadContent]);
 
   useEffect(() => {
     const scrollModules = () =>
-      router.pathname === "/home/[section]" &&
-      checkBottom() &&
-      getHomeModules();
+      router.pathname === "/home/[section]" && checkBottom() && getModules();
 
     const scrollCards = () =>
       router.pathname === "/home/[section]" && checkBottom() && getCards();
@@ -74,7 +70,7 @@ const Home = () => {
       window.removeEventListener("scroll", scrollModules);
       window.removeEventListener("scroll", scrollCards);
     };
-  }, [section, router.pathname, getCards, getHomeModules]);
+  }, [section, router.pathname, getCards, getModules]);
 
   return (
     <ContentWrapper>
