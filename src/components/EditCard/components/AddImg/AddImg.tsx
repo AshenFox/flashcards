@@ -12,7 +12,7 @@ type AddImgProps = {
 };
 
 const AddImg = ({ data }: AddImgProps) => {
-  const { set_gallery_search, set_card_imgurl, edit_card } = useActions();
+  const { set_gallery_search, setCardImgurl, edit_card } = useActions();
 
   const { _id, imgurl, gallery } = data || {};
 
@@ -26,10 +26,10 @@ const AddImg = ({ data }: AddImgProps) => {
 
   const clickImgDelete = useCallback(
     (e: MouseEvent<HTMLDivElement>) => {
-      set_card_imgurl(_id, "");
+      setCardImgurl({ _id, value: "" });
       edit_card(_id);
     },
-    [_id, edit_card, set_card_imgurl],
+    [_id, edit_card, setCardImgurl],
   );
 
   const deleteEl = useRef<HTMLDivElement>(null);

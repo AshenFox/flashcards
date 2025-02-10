@@ -15,16 +15,16 @@ export const setCardEdit: MainCaseReducer<{ _id: string; value: boolean }> = (
 export const controlCard: MainCaseReducer<{
   _id: string;
   type: "term" | "definition";
-  value: any;
+  value: string;
 }> = (state, { payload }) => {
   state.cards[payload._id][payload.type] = payload.value;
 };
 
-export const setCardImgurl: MainCaseReducer<{ _id: string; imgurl: string }> = (
+export const setCardImgurl: MainCaseReducer<{ _id: string; value: string }> = (
   state,
   { payload },
 ) => {
-  state.cards[payload._id].imgurl = payload.imgurl;
+  state.cards[payload._id].imgurl = payload.value;
 };
 
 export const controlModule: MainCaseReducer<{ value: string }> = (
@@ -36,7 +36,7 @@ export const controlModule: MainCaseReducer<{ value: string }> = (
   }
 };
 
-export const deleteCard: MainCaseReducer<{ cards: CardDto[] }> = (
+export const deleteCardReducer: MainCaseReducer<{ cards: CardDto[] }> = (
   state,
   { payload },
 ) => {
@@ -56,7 +56,7 @@ export const deleteCard: MainCaseReducer<{ cards: CardDto[] }> = (
   state.cards = updatedCards;
 };
 
-export const createCard: MainCaseReducer<{ cards: CardDto[] }> = (
+export const createCardReducer: MainCaseReducer<{ cards: CardDto[] }> = (
   state,
   { payload },
 ) => {
@@ -94,10 +94,9 @@ export const setCardsSave: MainCaseReducer<{ value: boolean }> = (
   });
 };
 
-export const setCardsSavePositive: MainCaseReducer<{ _id_arr: string[] }> = (
-  state,
-  { payload },
-) => {
+export const setCardsSavePositiveReducer: MainCaseReducer<{
+  _id_arr: string[];
+}> = (state, { payload }) => {
   payload._id_arr.forEach(_id => {
     if (state.cards[_id]) {
       state.cards[_id].save = true;

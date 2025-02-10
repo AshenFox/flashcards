@@ -68,7 +68,7 @@ export const resetHomeModulesData: MainCaseReducer = state => {
 
 export const resetHomeCardsData: MainCaseReducer = state => {
   state.cards = {};
-  state.sections.homeModules.pagination = defaultPagination;
+  state.sections.homeCards.pagination = defaultPagination;
 };
 
 const defaultFilters = {

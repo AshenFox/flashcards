@@ -80,8 +80,6 @@ export const getCards = () => <ThunkActionApp>(async (dispatch, getState) => {
         ...filters,
       };
 
-      console.log({ params });
-
       const { data } = await axios.get<CardsGetResponseDto>("/api/main/cards", {
         params,
       });

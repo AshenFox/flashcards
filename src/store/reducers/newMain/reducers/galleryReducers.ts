@@ -7,9 +7,9 @@ export const setGallerySearch: MainCaseReducer<{
   state.cards[payload._id].gallery.search = payload.value;
 };
 
-export const setUrlOk: MainCaseReducer<{
+export const setUrlOkReducer: MainCaseReducer<{
   _id: string;
-  index: number;
+  index: string;
   value: boolean;
   loaded: number;
   failed: number;
@@ -27,7 +27,7 @@ export const controlGalleryQuery: MainCaseReducer<{
   state.cards[payload._id].gallery.query = payload.value;
 };
 
-export const searchImages: MainCaseReducer<{
+export const searchImagesReducer: MainCaseReducer<{
   _id: string;
   imgurl_obj: ImgurlObjs;
   all: number;
@@ -54,28 +54,34 @@ export const resetGalleryFields: MainCaseReducer<{ _id: string }> = (
 
 export const setGalleryLoading: MainCaseReducer<{
   _id: string;
-  loading: boolean;
+  value: boolean;
 }> = (state, { payload }) => {
-  state.cards[payload._id].gallery.loading = payload.loading;
+  state.cards[payload._id].gallery.loading = payload.value;
 };
 
 export const setGalleryWidth: MainCaseReducer<{
   _id: string;
-  width: number;
+  value: number;
 }> = (state, { payload }) => {
-  state.cards[payload._id].gallery.width = payload.width;
+  const width = 2 + 15 * payload.value + 2 * (payload.value - 1);
+
+  state.cards[payload._id].gallery.width = width;
 };
 
 export const moveGallery: MainCaseReducer<{
   _id: string;
-  offset: number;
-}> = (state, { payload }) => {
-  state.cards[payload._id].gallery.position += payload.offset;
+  value: "left" | "right";
+}> = (state, { payload: { _id, value } }) => {
+  let offset = 0;
+  if (value === "left") offset = 17;
+  if (value === "right") offset = -17;
+
+  state.cards[_id].gallery.position += offset;
 };
 
 export const setGalleryError: MainCaseReducer<{
   _id: string;
-  error: boolean;
+  value: boolean;
 }> = (state, { payload }) => {
-  state.cards[payload._id].gallery.error = payload.error;
+  state.cards[payload._id].gallery.error = payload.value;
 };

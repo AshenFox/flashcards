@@ -1,6 +1,6 @@
 import { MainCaseReducer } from "../types";
 
-export const scrapeDictionary: MainCaseReducer<{
+export const scrapeDictionaryReducer: MainCaseReducer<{
   _id: string;
   result: string;
 }> = (state, { payload }) => {
@@ -12,10 +12,10 @@ export const scrapeDictionary: MainCaseReducer<{
 
 export const setScrapeLoading: MainCaseReducer<{
   _id: string;
-  loading: boolean;
+  value: boolean;
 }> = (state, { payload }) => {
   const card = state.cards[payload._id];
   if (card) {
-    card.scrape.loading = payload.loading;
+    card.scrape.loading = payload.value;
   }
 };

@@ -28,7 +28,7 @@ type AnswerProps = {
 
 const Answer = ({ data }: AnswerProps) => {
   const {
-    set_card_edit,
+    setCardEdit,
     set_write_copy_answer_field,
     next_write_card,
     override_write_answer,
@@ -75,7 +75,8 @@ const Answer = ({ data }: AnswerProps) => {
   const changeCopyAnswer = (e: ChangeEvent<HTMLInputElement>) =>
     set_write_copy_answer_field(e.target.value);
 
-  const clickEdit = (e: MouseEvent<HTMLDivElement>) => set_card_edit(_id, true);
+  const clickEdit = (e: MouseEvent<HTMLDivElement>) =>
+    setCardEdit({ _id, value: true });
 
   const continueGame = useCallback(() => {
     if (canContinue) {

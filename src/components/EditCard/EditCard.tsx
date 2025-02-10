@@ -34,7 +34,7 @@ const EditCard = ({
   game,
   number,
 }: EditCardProps) => {
-  const { control_card, edit_card } = useActions();
+  const { controlCard, edit_card } = useActions();
 
   const { _id, term, definition, gallery } = data || {};
 
@@ -42,14 +42,14 @@ const EditCard = ({
 
   const handleCardChange = useCallback(
     (type: "term" | "definition") => (e: ContentEditableEvent) => {
-      control_card(_id, type, e.target.value);
+      controlCard({ _id, type, value: e.target.value });
       clearTimeout(timer.current);
       timer.current = setTimeout(async () => {
         edit_card(_id);
         timer.current = null;
       }, 500);
     },
-    [_id, control_card, edit_card],
+    [_id, controlCard, edit_card],
   );
 
   const timer = useRef<ReturnType<typeof setTimeout>>(null);
