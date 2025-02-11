@@ -11,7 +11,7 @@ import SRDrop from "./components/SRDrop";
 import s from "./styles.module.scss";
 
 const Info = () => {
-  const { change_modal, toggle_modal, set_module_question, dropCardsSR } =
+  const { change_modal, toggle_modal, setModuleQuestion, dropCardsSR } =
     useActions();
 
   const currentModule = useAppSelector(s => s.main.module);
@@ -22,6 +22,8 @@ const Info = () => {
     change_modal(value);
     toggle_modal();
   };
+
+  const setActive = (value: boolean) => () => setModuleQuestion({ value });
 
   return (
     <div className={s.info}>
@@ -38,7 +40,7 @@ const Info = () => {
         <ConfirmPopup
           className={s.confirm}
           active={question}
-          setActive={set_module_question}
+          setActive={setActive}
           onConfirm={dropCardsSR}
           question="Drop all cards study progress?"
         />

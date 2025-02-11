@@ -14,12 +14,12 @@ type SRDropProps = {
 };
 
 const SRDrop = ({ data }: SRDropProps) => {
-  const { set_card_question } = useActions();
+  const { setCardQuestion } = useActions();
 
   const { question, _id } = data;
 
   const clickDropSR = (e: MouseEvent<HTMLDivElement>) =>
-    set_card_question(_id, true);
+    setCardQuestion({ _id, value: true });
 
   return (
     <div

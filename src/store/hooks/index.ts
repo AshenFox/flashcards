@@ -4,7 +4,6 @@ import { bindActionCreators } from "redux";
 
 import * as authActions from "../actions/authActions";
 import * as dimenActions from "../actions/dimenActions";
-import * as editActions from "../actions/editActions";
 import * as gameActions from "../actions/gameActions";
 import * as headerActions from "../actions/headerActions";
 import * as modalActions from "../actions/modalActions";
@@ -20,26 +19,22 @@ export const useAppSelector: TypedUseSelectorHook<RootState> = useSelector;
 export const useActions = () => {
   const dispatch = useAppDispatch();
 
-  const boundActions = useMemo(
-    () =>
-      bindActionCreators(
-        {
-          ...authActions,
-          ...dimenActions,
-          ...editActions,
-          ...gameActions,
-          ...headerActions,
-          ...modalActions,
-          ...voiceActions,
-          ...srActions,
-          ...srThunks,
-          ...mainActions,
-          ...mainThunks,
-        },
-        dispatch,
-      ),
-    [dispatch],
-  );
+  const boundActions = useMemo(() => {
+    const allActions = {
+      ...authActions,
+      ...dimenActions,
+      ...gameActions,
+      ...headerActions,
+      ...modalActions,
+      ...voiceActions,
+      ...srActions,
+      ...srThunks,
+      ...mainActions,
+      ...mainThunks,
+    };
+
+    return bindActionCreators(allActions, dispatch);
+  }, [dispatch]);
 
   return boundActions;
 };

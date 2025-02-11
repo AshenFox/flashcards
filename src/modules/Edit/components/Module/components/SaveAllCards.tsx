@@ -6,7 +6,7 @@ import { memo, useCallback } from "react";
 import s from "./styles.module.scss";
 
 const SaveAllCards = () => {
-  const { set_cards_save } = useActions();
+  const { setCardsSave } = useActions();
 
   const cards = useAppSelector(s => s.main.cards);
 
@@ -22,8 +22,8 @@ const SaveAllCards = () => {
   }
 
   const clickAllSave = useCallback(
-    () => set_cards_save(!active),
-    [active, set_cards_save],
+    () => setCardsSave({ value: !active }),
+    [active, setCardsSave],
   );
 
   return (

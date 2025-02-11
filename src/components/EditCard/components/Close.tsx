@@ -10,16 +10,16 @@ type CloseProps = {
 };
 
 const Close = ({ data }: CloseProps) => {
-  const { setCardEdit, reset_gallery_fields } = useActions();
+  const { setCardEdit, resetGalleryFields } = useActions();
 
   const { _id } = data || {};
 
   const clickClose = useCallback(
     (e: MouseEvent<HTMLDivElement>) => {
       setCardEdit({ _id, value: false });
-      reset_gallery_fields(_id);
+      resetGalleryFields({ _id });
     },
-    [_id, reset_gallery_fields, setCardEdit],
+    [_id, resetGalleryFields, setCardEdit],
   );
 
   return (

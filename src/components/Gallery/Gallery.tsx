@@ -24,7 +24,7 @@ type GalleryProps = {
 };
 
 const Gallery = ({ data, active, game = false }: GalleryProps) => {
-  const { control_gallery_query, search_images, reset_gallery_fields } =
+  const { controlGalleryQuery, resetGalleryFields, searchImages } =
     useActions();
 
   const { _id, gallery } = data || {};
@@ -34,8 +34,8 @@ const Gallery = ({ data, active, game = false }: GalleryProps) => {
   const [altPressed, setAltPressed] = useState(false);
 
   const addUrlFlag = useCallback(
-    () => control_gallery_query(_id, "@url - " + query),
-    [_id, control_gallery_query, query],
+    () => controlGalleryQuery({ _id, value: "@url - " + query }),
+    [_id, controlGalleryQuery, query],
   );
 
   useEffect(() => {
@@ -48,8 +48,8 @@ const Gallery = ({ data, active, game = false }: GalleryProps) => {
 
   const changeImgSearchbar = useCallback(
     (e: ChangeEvent<HTMLInputElement>) =>
-      control_gallery_query(_id, e.target.value),
-    [_id, control_gallery_query],
+      controlGalleryQuery({ _id, value: e.target.value }),
+    [_id, controlGalleryQuery],
   );
 
   const keyDownImgSearchbar = useCallback(
@@ -68,19 +68,19 @@ const Gallery = ({ data, active, game = false }: GalleryProps) => {
 
       if (key === "Enter") {
         e.preventDefault();
-        reset_gallery_fields(_id);
-        search_images(_id);
+        resetGalleryFields({ _id });
+        searchImages(_id);
       }
     },
-    [_id, reset_gallery_fields, search_images],
+    [_id, resetGalleryFields, searchImages],
   );
 
   const clickImgSearchbar = useCallback(
     (e: MouseEvent<SVGSVGElement>) => {
-      reset_gallery_fields(_id);
-      search_images(_id);
+      resetGalleryFields({ _id });
+      searchImages(_id);
     },
-    [_id, reset_gallery_fields, search_images],
+    [_id, resetGalleryFields, searchImages],
   );
 
   return (

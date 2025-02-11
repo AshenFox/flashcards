@@ -34,7 +34,7 @@ const EditCard = ({
   game,
   number,
 }: EditCardProps) => {
-  const { controlCard, edit_card } = useActions();
+  const { controlCard, editCard } = useActions();
 
   const { _id, term, definition, gallery } = data || {};
 
@@ -45,11 +45,11 @@ const EditCard = ({
       controlCard({ _id, type, value: e.target.value });
       clearTimeout(timer.current);
       timer.current = setTimeout(async () => {
-        edit_card(_id);
+        editCard(_id);
         timer.current = null;
       }, 500);
     },
-    [_id, controlCard, edit_card],
+    [_id, controlCard, editCard],
   );
 
   const timer = useRef<ReturnType<typeof setTimeout>>(null);

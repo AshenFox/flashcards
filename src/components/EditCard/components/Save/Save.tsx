@@ -11,7 +11,7 @@ type SaveProps = {
 };
 
 const Save = ({ data }: SaveProps) => {
-  const { set_card_save, set_cards_save_positive } = useActions();
+  const { setCardSave, setCardsSavePositive } = useActions();
 
   const { _id, save } = data;
 
@@ -21,20 +21,20 @@ const Save = ({ data }: SaveProps) => {
       clearTimeout(timer.current);
 
       if (timer.current) {
-        set_card_save(_id, !save);
+        setCardSave({ _id, value: !save });
       }
     },
-    [_id, save, set_card_save],
+    [_id, save, setCardSave],
   );
 
   const down = useCallback(
     (e: MouseEvent<HTMLLabelElement> | TouchEvent<HTMLLabelElement>) => {
       timer.current = setTimeout(() => {
         timer.current = null;
-        if (!save) set_cards_save_positive(_id);
+        if (!save) setCardsSavePositive(_id);
       }, 550);
     },
-    [_id, save, set_cards_save_positive],
+    [_id, save, setCardsSavePositive],
   );
 
   const timer = useRef<ReturnType<typeof setTimeout>>(null);

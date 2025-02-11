@@ -25,7 +25,7 @@ const Card = ({
   filter = null,
   filterType = null,
 }: CardProps) => {
-  const { set_card_question, dropCardSR } = useActions();
+  const { setCardQuestion, dropCardSR } = useActions();
 
   const {
     term = "",
@@ -59,9 +59,9 @@ const Card = ({
 
   const setActive = useCallback(
     (value: boolean) => {
-      set_card_question(_id, value);
+      setCardQuestion({ _id, value });
     },
-    [_id, set_card_question],
+    [_id, setCardQuestion],
   );
 
   return (
