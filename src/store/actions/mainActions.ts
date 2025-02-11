@@ -7,12 +7,8 @@ import {
 } from "@common/api/methods";
 import axios from "@common/axios";
 
-import {
-  card_fields,
-  EntryCollectionName,
-  FilterValue,
-  module_fields,
-} from "../reducers/main/mainInitState";
+import { card_fields, module_fields } from "../reducers/main/initState";
+import { FilterValue, SectionName } from "../reducers/main/types";
 import {
   CLEAR_MODULE,
   GET_HOME_CARDS,
@@ -36,7 +32,7 @@ import {
   Module,
   SelectBy,
   SelectCreated,
-} from "./../reducers/main/mainInitState";
+} from "./../reducers/main/types";
 import { ThunkActionApp } from "./../store";
 
 // SET_MAIN_LOADING
@@ -90,7 +86,7 @@ export const set_scroll_top = (value: boolean): AppActions => ({
 
 // SET_ENTRY_COLLECTION_FILTER
 export const set_entry_collection_filter = (
-  entryCollection: EntryCollectionName,
+  entryCollection: SectionName,
   filter: string,
   value: FilterValue,
 ): AppActions => ({

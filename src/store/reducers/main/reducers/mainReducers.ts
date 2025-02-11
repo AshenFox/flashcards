@@ -53,12 +53,12 @@ export const setSectionFilter: MainCaseReducer<{
     action.payload.value;
 };
 
-export const resetFieldsCards: MainCaseReducer = state => {
+/* export const resetFieldsCards: MainCaseReducer = state => {
   state.cards = {};
   state.cards_number = false;
   state.all_cards = false;
   state.skip_cards = 0;
-};
+}; */
 
 export const resetHomeModulesData: MainCaseReducer = state => {
   state.draft = null;

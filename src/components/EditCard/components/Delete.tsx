@@ -1,5 +1,5 @@
 import { useActions } from "@store/hooks";
-import { Card } from "@store/reducers/main/mainInitState";
+import { Card } from "@store/reducers/main/types";
 import { DeleteIcon } from "@ui/Icons";
 import clsx from "clsx";
 import { memo, MouseEvent, useCallback } from "react";

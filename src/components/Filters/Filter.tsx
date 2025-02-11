@@ -1,4 +1,4 @@
-import { FilterValue } from "@store/reducers/main/mainInitState";
+import { FilterValue } from "@store/reducers/main/types";
 import React, { memo, useCallback, useMemo } from "react";
 import Select from "react-select";
 

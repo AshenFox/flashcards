@@ -1,7 +1,7 @@
 import Gallery from "@components/Gallery";
 import { usePlug } from "@helpers/hooks/usePlug";
 import { useActions } from "@store/hooks";
-import { Card } from "@store/reducers/main/mainInitState";
+import { Card } from "@store/reducers/main/types";
 import TextArea from "@ui/TextArea";
 import TextLabel from "@ui/TextLabel";
 import clsx from "clsx";

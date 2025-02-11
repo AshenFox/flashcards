@@ -1,7 +1,7 @@
 import Filter, { FilterData, SetFilterValue } from "@components/Filters";
 import NotFound from "@components/NotFound";
 import { useActions } from "@store/hooks";
-import { defaultHomeModulesFilters } from "@store/reducers/main/mainInitState";
+import { defaultHomeModulesFilters } from "@store/reducers/main/initState";
 import { useAppSelector } from "@store/store";
 import ScrollLoader from "@ui/ScrollLoader";
 import React, { Fragment, memo, useCallback, useEffect } from "react";

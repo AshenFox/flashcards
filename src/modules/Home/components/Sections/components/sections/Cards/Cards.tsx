@@ -3,7 +3,7 @@ import EditCard from "@components/EditCard";
 import Filter, { FilterData, SetFilterValue } from "@components/Filters";
 import NotFound from "@components/NotFound";
 import { useActions } from "@store/hooks";
-import { defaultHomeCardsFilters } from "@store/reducers/main/mainInitState";
+import { defaultHomeCardsFilters } from "@store/reducers/main/initState";
 import { useAppSelector } from "@store/store";
 import ScrollLoader from "@ui/ScrollLoader";
 import React, { Fragment, memo, useCallback, useEffect, useMemo } from "react";

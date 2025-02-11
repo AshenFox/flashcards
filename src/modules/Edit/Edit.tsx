@@ -7,7 +7,7 @@ import Intro from "./components/Intro";
 import Module from "./components/Module";
 
 const Edit = () => {
-  const { getModule, getDraft, clear_module } = useActions();
+  const { getModule, getDraft, clearModule } = useActions();
 
   const router = useRouter();
   const { _id } = router.query;
@@ -16,17 +16,17 @@ const Edit = () => {
 
   useEffect(() => {
     if (user) {
-      clear_module();
+      clearModule();
       if (_id === "draft") getDraft();
       else if (typeof _id === "string") getModule(_id);
     }
-  }, [user, _id, clear_module, getDraft, getModule]);
+  }, [user, _id, clearModule, getDraft, getModule]);
 
   useEffect(() => {
     return () => {
-      clear_module();
+      clearModule();
     };
-  }, [clear_module]);
+  }, [clearModule]);
 
   return (
     <>

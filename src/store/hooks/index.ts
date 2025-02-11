@@ -8,9 +8,9 @@ import * as editActions from "../actions/editActions";
 import * as gameActions from "../actions/gameActions";
 import * as headerActions from "../actions/headerActions";
 import * as modalActions from "../actions/modalActions";
-import * as srActions from "../actions/srActions";
 import * as voiceActions from "../actions/voiceActions";
-import { mainActions, mainThunks } from "../reducers/newMain/slice";
+import { mainActions, mainThunks } from "../reducers/main/slice";
+import { srActions, srThunks } from "../reducers/sr/slice";
 import { AppDispatch, RootState } from "../store";
 
 export const useAppDispatch = () => useDispatch<AppDispatch>();
@@ -30,8 +30,9 @@ export const useActions = () => {
           ...gameActions,
           ...headerActions,
           ...modalActions,
-          ...srActions,
           ...voiceActions,
+          ...srActions,
+          ...srThunks,
           ...mainActions,
           ...mainThunks,
         },

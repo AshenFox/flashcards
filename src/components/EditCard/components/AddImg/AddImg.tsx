@@ -1,5 +1,5 @@
 import { useActions } from "@store/hooks";
-import { Card } from "@store/reducers/main/mainInitState";
+import { Card } from "@store/reducers/main/types";
 import { DeleteIcon, ImgIcon } from "@ui/Icons";
 import Img from "@ui/Img";
 import clsx from "clsx";

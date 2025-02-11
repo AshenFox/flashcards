@@ -1,7 +1,7 @@
 import Speaker from "@components/Speaker";
 import SRIndicator from "@components/SRIndicator";
 import { useActions, useAppSelector } from "@store/hooks";
-import { Card } from "@store/reducers/main/mainInitState";
+import { Card } from "@store/reducers/main/types";
 import { EditIcon } from "@ui/Icons";
 import Img from "@ui/Img";
 import Input from "@ui/Input";
@@ -32,7 +32,7 @@ const Answer = ({ data }: AnswerProps) => {
     set_write_copy_answer_field,
     next_write_card,
     override_write_answer,
-    put_sr_answer,
+    putSRAnswer,
   } = useActions();
 
   const router = useRouter();
@@ -80,7 +80,7 @@ const Answer = ({ data }: AnswerProps) => {
 
   const continueGame = useCallback(() => {
     if (canContinue) {
-      if (isFirstRound && isSR) put_sr_answer(_id, isCorrect ? 1 : -1);
+      if (isFirstRound && isSR) putSRAnswer(_id, isCorrect ? 1 : -1);
       next_write_card();
     }
   }, [
@@ -90,13 +90,13 @@ const Answer = ({ data }: AnswerProps) => {
     isFirstRound,
     isSR,
     next_write_card,
-    put_sr_answer,
+    putSRAnswer,
   ]);
 
   const overrideAnswer = useCallback(() => {
-    if (isFirstRound && isSR) put_sr_answer(_id, 1);
+    if (isFirstRound && isSR) putSRAnswer(_id, 1);
     override_write_answer();
-  }, [_id, isFirstRound, isSR, override_write_answer, put_sr_answer]);
+  }, [_id, isFirstRound, isSR, override_write_answer, putSRAnswer]);
 
   const clickContinue = (e: MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();

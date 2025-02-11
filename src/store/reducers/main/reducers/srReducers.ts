@@ -1,15 +1,17 @@
+import { CardDto } from "@common/api/entities";
 import { shuffle } from "@store/helper-functions";
 
-import { Cards, MainCaseReducer } from "../types";
+import { transformCards } from "../helpers";
+import { MainCaseReducer } from "../types";
 
-export const setCardSR: MainCaseReducer<{
+export const setCardSRReducer: MainCaseReducer<{
   _id: string;
   value: boolean;
 }> = (state, { payload }) => {
   state.cards[payload._id].studyRegime = payload.value;
 };
 
-export const setCardsSR: MainCaseReducer<{ value: boolean }> = (
+export const setCardsSRReducer: MainCaseReducer<{ value: boolean }> = (
   state,
   { payload },
 ) => {
@@ -18,7 +20,7 @@ export const setCardsSR: MainCaseReducer<{ value: boolean }> = (
   });
 };
 
-export const setCardsSRPositive: MainCaseReducer<{
+export const setCardsSRPositiveReducer: MainCaseReducer<{
   _id_arr: string[];
 }> = (state, { payload }) => {
   payload._id_arr.forEach(_id => {
@@ -28,7 +30,7 @@ export const setCardsSRPositive: MainCaseReducer<{
   });
 };
 
-export const dropCardSR: MainCaseReducer<{
+export const dropCardSRReducer: MainCaseReducer<{
   _id: string;
   stage: number;
   nextRep: string;
@@ -45,7 +47,14 @@ export const dropCardSR: MainCaseReducer<{
   }
 };
 
-export const putSRAnswer: MainCaseReducer<{
+export const setCardSRLoading: MainCaseReducer<{
+  _id: string;
+  value: boolean;
+}> = (state, { payload }) => {
+  state.cards[payload._id].sr.loading = payload.value;
+};
+
+export const putSRAnswerReducer: MainCaseReducer<{
   _id: string;
   stage: number;
   nextRep: string;
@@ -63,7 +72,7 @@ export const putSRAnswer: MainCaseReducer<{
   }
 };
 
-export const dropCardsSR: MainCaseReducer<{
+export const dropCardsSRReducer: MainCaseReducer<{
   stage: number;
   nextRep: string;
   prevStage: string;
@@ -77,10 +86,11 @@ export const dropCardsSR: MainCaseReducer<{
   });
 };
 
-export const getSRCards: MainCaseReducer<{
-  cards: Cards;
+export const getSRCardsReducer: MainCaseReducer<{
+  cards: CardDto[];
 }> = (state, { payload }) => {
-  const shuffledCards = shuffle(Object.entries(payload.cards)).sort(
+  const cards = transformCards(payload.cards);
+  const shuffledCards = shuffle(Object.entries(cards)).sort(
     (a, b) => a[1].stage - b[1].stage,
   );
   state.cards = Object.fromEntries(shuffledCards);

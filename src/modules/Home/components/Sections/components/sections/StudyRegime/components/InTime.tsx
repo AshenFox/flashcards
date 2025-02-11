@@ -5,7 +5,7 @@ import { memo } from "react";
 const InTime = () => {
   const next_num = useAppSelector(s => s.sr.next_num);
   const next_date = useAppSelector(s => s.sr.next_date);
-  const loading = useAppSelector(s => s.main.loading);
+  const loading = useAppSelector(s => s.sr.loading);
 
   return (
     <>

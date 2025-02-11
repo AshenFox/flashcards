@@ -10,9 +10,12 @@ export type DefaultFilters = {
   search?: string;
 };
 
-export type Pagination = PaginationDto;
+export type DefaultPagination = PaginationDto;
 
-export type Section<Filters extends DefaultFilters> = {
+export type Section<
+  Filters extends DefaultFilters | undefined = DefaultFilters,
+  Pagination extends DefaultPagination | undefined = DefaultPagination,
+> = {
   loading: boolean;
   filters?: Filters;
   pagination?: Pagination;
@@ -34,7 +37,9 @@ export type HomeCardsFilters = DefaultFilters & {
 
 export type HomeCardsSection = Section<HomeCardsFilters>;
 
-export type SectionName = "homeModules" | "homeCards";
+export type SRCardsSection = Section<undefined, undefined>;
+
+export type SectionName = "homeModules" | "homeCards" | "srCards";
 
 export type MainState = {
   is_server: boolean;
@@ -42,15 +47,15 @@ export type MainState = {
   loading: boolean;
 
   module: Module | null;
-  modules: ModuleDto[];
-
-  cards: Cards;
-
   draft: ModuleDto | false; // why I need this?
+
+  modules: ModuleDto[];
+  cards: Cards;
 
   sections: {
     homeModules: HomeModulesSection;
     homeCards: HomeCardsSection;
+    srCards: SRCardsSection;
   };
 
   search_cards: {
@@ -104,6 +109,9 @@ export type CardFields = {
     error: boolean; // ???
   };
   scrape: {
+    loading: boolean;
+  };
+  sr: {
     loading: boolean;
   };
   save: boolean;

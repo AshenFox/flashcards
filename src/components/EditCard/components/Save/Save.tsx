@@ -1,5 +1,5 @@
 import { useActions } from "@store/hooks";
-import { Card } from "@store/reducers/main/mainInitState";
+import { Card } from "@store/reducers/main/types";
 import { SaveIcon } from "@ui/Icons";
 import Switch from "@ui/Switch";
 import { memo, MouseEvent, TouchEvent, useCallback, useRef } from "react";

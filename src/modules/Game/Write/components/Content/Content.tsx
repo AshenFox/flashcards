@@ -10,7 +10,7 @@ import Round from "./components/Round";
 
 const Content = () => {
   const cards = useAppSelector(s => s.main.cards);
-  const loading = useAppSelector(s => s.main.loading);
+  const loading = useAppSelector(s => s.main.sections.srCards.loading);
   const is_init = useAppSelector(s => s.game.write.is_init);
   const remaining = useAppSelector(s => s.game.write.remaining);
   const answered = useAppSelector(s => s.game.write.answered);

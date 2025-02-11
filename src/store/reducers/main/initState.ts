@@ -1,5 +1,6 @@
 import {
   CardFields,
+  DefaultPagination,
   HomeCardsFilters,
   HomeCardsSection,
   HomeModuleFilters,
@@ -7,7 +8,7 @@ import {
   ImgurlFields,
   MainState,
   ModuleFields,
-  Pagination,
+  SRCardsSection,
 } from "./types";
 
 export const card_fields: CardFields = {
@@ -27,6 +28,9 @@ export const card_fields: CardFields = {
   scrape: {
     loading: false,
   },
+  sr: {
+    loading: false,
+  },
   save: true,
   question: false,
 };
@@ -40,7 +44,7 @@ export const url_fields: ImgurlFields = {
   ok: false,
 };
 
-export const defaultPagination: Pagination = {
+export const defaultPagination: DefaultPagination = {
   all: null,
   number: null,
   page: 0,
@@ -71,20 +75,24 @@ export const defaultHomeCardsSection: HomeCardsSection = {
   pagination: defaultPagination,
 };
 
+export const defaultCardsSRSection: SRCardsSection = {
+  loading: false,
+};
+
 const initState: MainState = {
   is_server: true,
   loading: false,
 
   module: null,
-  modules: [],
-
-  cards: {},
-
   draft: false,
+
+  modules: [],
+  cards: {},
 
   sections: {
     homeModules: defaultHomeModulesSection,
     homeCards: defaultHomeCardsSection,
+    srCards: defaultCardsSRSection,
   },
 
   search_cards: {

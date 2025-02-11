@@ -1,5 +1,5 @@
 import { useActions } from "@store/hooks";
-import { ImgurlObj } from "@store/reducers/main/mainInitState";
+import { ImgurlObj } from "@store/reducers/main/types";
 import clsx from "clsx";
 import { memo, SyntheticEvent, useCallback } from "react";
 

@@ -9,7 +9,7 @@ import ShuffleBtn from "./components/ControlButtons/ShuffleBtn";
 import Progress from "./components/Progress";
 
 const Flashcards = () => {
-  const { getModuleCards, clear_module, reset_all_game_fields, get_sr_cards } =
+  const { getModuleCards, clearModule, reset_all_game_fields, getSRCards } =
     useActions();
 
   const router = useRouter();
@@ -21,7 +21,7 @@ const Flashcards = () => {
 
   useEffect(() => {
     if (user) {
-      if (isSR && typeof number === "string") get_sr_cards(+number);
+      if (isSR && typeof number === "string") getSRCards(+number);
       else if (typeof _id === "string") getModuleCards(_id);
     }
   }, [user]);
@@ -29,7 +29,7 @@ const Flashcards = () => {
   useEffect(() => {
     return () => {
       reset_all_game_fields();
-      clear_module();
+      clearModule();
     };
   }, []);
 

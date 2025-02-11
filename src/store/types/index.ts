@@ -3,18 +3,19 @@ import {
   CardsGetResponseDto,
   ModulesGetResponseDto,
 } from "@common/api/methods";
+import { SrActions } from "@store/reducers/sr/slice";
 
 import { Round } from "../reducers/game/gameInitState";
 import {
   Card,
   Cards,
-  EntryCollectionName,
   FilterValue,
   ImgurlObjs,
   Module,
+  SectionName,
   SelectBy,
   SelectCreated,
-} from "../reducers/main/mainInitState";
+} from "../reducers/main/types";
 import {
   LogInErrors,
   ModalInputFields,
@@ -22,7 +23,7 @@ import {
   SignUpErrors,
 } from "../reducers/modal/modalInitState";
 import { Speaking, Voices } from "../reducers/voice/voiceInitState";
-import { NewMainActions } from "./../reducers/newMain/slice";
+import { MainActions } from "./../reducers/main/slice";
 // modal
 export const CHANGE_MODAL = "CHANGE_MODAL";
 export const TOGGLE_MODAL = "TOGGLE_MODAL";
@@ -166,7 +167,7 @@ export type SetMainLoadingAction = {
 export type SetEntryCollectionFilterAction = {
   type: typeof SET_ENTRY_COLLECTION_FILTER;
   payload: {
-    entryCollection: EntryCollectionName;
+    entryCollection: SectionName;
     filter: string;
     value: FilterValue;
   };
@@ -865,40 +866,47 @@ export type DropCardsSRAction = {
   };
 };
 
-export type SrActions =
+/* export type SrActions =
   | GetSRCountAction
   | SetSRCounterAction
-  | SetSRLoadingAction;
+  | SetSRLoadingAction; */
 
-export type SubSrActions =
+/* export type SubSrActions =
   | GetSRCardsAction
   | PutSRAnswerAction
   | SetCardSRAction
   | SetCardsSRAction
   | SetCardsSRPositiveAction
   | DropCardSRAction
-  | DropCardsSRAction;
+  | DropCardsSRAction; */
 
-export type MainActions =
+/* export type MainActions =
   | SubMainActions
   | SubEditActions
   | SubFlashcardsActions
   | SubGalleryActions
   | SubScrapeActions
-  | SubSrActions;
+  | SubSrActions; */
 
+// ===========
+// ===========
+// ===========
+// ===========
+// ===========
 // ===========
 
 export type AppActions =
   | AuthActions
   | ModalActions
-  | MainActions
   | DimenActions
   | VoiceActions
   | GameActions
   | SrActions
   | HeaderActions
-  | NewMainActions;
+  | MainActions;
+
+export type InferActions<T> =
+  T extends Record<string, (...args: any[]) => infer R> ? R : never;
 
 export type Action<P = unknown> = {
   type: string;

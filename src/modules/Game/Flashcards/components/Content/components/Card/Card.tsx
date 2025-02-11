@@ -1,7 +1,7 @@
 import Speaker from "@components/Speaker";
 import SRIndicator from "@components/SRIndicator";
 import { useActions } from "@store/hooks";
-import { Card as CardType } from "@store/reducers/main/mainInitState";
+import { Card as CardType } from "@store/reducers/main/types";
 import { EditIcon } from "@ui/Icons";
 import Img from "@ui/Img";
 import TextArea from "@ui/TextArea";

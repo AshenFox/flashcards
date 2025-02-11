@@ -3,7 +3,7 @@ import axios from "@common/axios";
 import sanitize from "sanitize-html";
 
 import { saveLastUpdate } from "../helper-functions";
-import { url_fields } from "../reducers/main/mainInitState";
+import { url_fields } from "../reducers/main/initState";
 import {
   CONTROL_CARD,
   CONTROL_GALLERY_QUERY,
@@ -34,7 +34,7 @@ import {
   SET_URL_OK,
 } from "../types";
 import { AppActions } from "../types";
-import { Card, ImgurlBase, ImgurlObjs } from "./../reducers/main/mainInitState";
+import { ImgurlBase, ImgurlObjs } from "./../reducers/main/types";
 import { ThunkActionApp } from "./../store";
 
 // SET_CARDS_SAVE_POSITIVE

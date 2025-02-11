@@ -1,5 +1,5 @@
 import { useActions } from "@store/hooks";
-import { Card } from "@store/reducers/main/mainInitState";
+import { Card } from "@store/reducers/main/types";
 import { CloseIcon } from "@ui/Icons";
 import { memo, MouseEvent, useCallback } from "react";
 

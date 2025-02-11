@@ -1,4 +1,4 @@
-import { DefaultFilters } from "@store/reducers/main/mainInitState";
+import { DefaultFilters } from "@store/reducers/main/types";
 import { FilterIcon, UndoIcon } from "@ui/Icons";
 import FilledFilterIcon from "@ui/Icons/components/FilledFilterIcon";
 import Input from "@ui/Input";

@@ -1,5 +1,5 @@
 import { useActions } from "@store/hooks";
-import { Card } from "@store/reducers/main/mainInitState";
+import { Card } from "@store/reducers/main/types";
 import { ArrowRightIcon } from "@ui/Icons";
 import Input from "@ui/Input";
 import clsx from "clsx";

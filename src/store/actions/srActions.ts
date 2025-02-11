@@ -2,7 +2,7 @@ import { CardDto } from "@common/api/entities";
 import axios from "@common/axios";
 
 import { saveLastUpdate } from "../helper-functions";
-import { card_fields } from "../reducers/main/mainInitState";
+import { card_fields } from "../reducers/main/initState";
 import {
   DROP_CARD_SR,
   DROP_CARDS_SR,
@@ -17,7 +17,7 @@ import {
   SET_SR_LOADING,
 } from "../types";
 import { AppActions } from "../types";
-import { Cards } from "./../reducers/main/mainInitState";
+import { Cards } from "./../reducers/main/types";
 import { ThunkActionApp } from "./../store";
 
 // SET_SR_COUNTER
