@@ -2,7 +2,7 @@ import { combineReducers } from "redux";
 
 import authReducer from "./auth/authReducer";
 import dimenReducer from "./dimen/dimenReducer";
-import gameReducer from "./game/gameReducer";
+import gameReducer from "./game/slice";
 import headerReducer from "./header/headerReducer";
 import mainReducer from "./main/slice";
 import modalReducer from "./modal/modalReducer";

@@ -5,24 +5,24 @@ import { memo, MouseEvent } from "react";
 
 const ShuffleBtn = () => {
   const {
-    set_flashcards_shuffled,
-    sort_flashcards,
-    shuffle_flashcards,
-    reset_flashcards_progress,
+    shuffleFlashcards,
+    sortFlashcards,
+    setFlashcardsShuffled,
+    resetFlashcardsProgress,
   } = useActions();
 
   const shuffled = useAppSelector(s => s.game.flashcards.shuffled);
 
   const clickShuffle = (e: MouseEvent<HTMLButtonElement>) => {
     if (shuffled) {
-      sort_flashcards();
-      set_flashcards_shuffled(false);
+      sortFlashcards();
+      setFlashcardsShuffled({ value: false });
     } else {
-      shuffle_flashcards();
-      set_flashcards_shuffled(true);
+      shuffleFlashcards();
+      setFlashcardsShuffled({ value: true });
     }
 
-    reset_flashcards_progress();
+    resetFlashcardsProgress();
   };
 
   return (

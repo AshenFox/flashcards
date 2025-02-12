@@ -1,3 +1,6 @@
+import { CaseReducer } from "@reduxjs/toolkit";
+import { Action } from "@store/types";
+
 export type FlashcardsAnswer = {
   id: string;
   answer: "correct" | "incorrect";
@@ -33,29 +36,4 @@ export type GameState = {
   };
 };
 
-// =========================
-
-const gameInitState: GameState = {
-  flashcards: {
-    progress: 0,
-    side: "definition",
-    shuffled: false,
-    answers: [],
-    is_turned: false,
-  },
-  write: {
-    is_init: false,
-    all_cards_num: 0,
-    remaining: [],
-    answer: "",
-    copy_answer: "",
-    answered: [],
-    rounds: [],
-  },
-};
-
-export const card_fields: CardFields = {
-  answer: false,
-};
-
-export default gameInitState;
+export type GameCaseReducer<P = undefined> = CaseReducer<GameState, Action<P>>;

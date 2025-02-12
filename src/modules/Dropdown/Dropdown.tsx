@@ -22,12 +22,12 @@ import s from "./styles.module.scss";
 
 const Dropdown = () => {
   const {
+    shuffleFlashcards,
+    sortFlashcards,
+    setFlashcardsShuffled,
     log_out,
-    set_flashcards_shuffled,
-    sort_flashcards,
-    shuffle_flashcards,
-    reset_flashcards_progress,
-    prepare_write,
+    resetFlashcardsProgress,
+    prepareWrite,
     set_dropdown,
   } = useActions();
 
@@ -71,18 +71,18 @@ const Dropdown = () => {
 
   const clickShuffle = (e: ReactMouseEvent<HTMLButtonElement>) => {
     if (shuffled) {
-      sort_flashcards();
-      set_flashcards_shuffled(false);
+      sortFlashcards();
+      setFlashcardsShuffled({ value: false });
     } else {
-      shuffle_flashcards();
-      set_flashcards_shuffled(true);
+      shuffleFlashcards();
+      setFlashcardsShuffled({ value: true });
     }
 
-    reset_flashcards_progress();
+    resetFlashcardsProgress();
   };
 
   const clickStartOver = (e: ReactMouseEvent<HTMLButtonElement>) =>
-    prepare_write();
+    prepareWrite();
 
   const logOut = (e: ReactMouseEvent<HTMLButtonElement>) => log_out();
 

@@ -29,9 +29,9 @@ type AnswerProps = {
 const Answer = ({ data }: AnswerProps) => {
   const {
     setCardEdit,
-    set_write_copy_answer_field,
-    next_write_card,
-    override_write_answer,
+    setWriteCopyAnswerField,
+    nextWriteCard,
+    overrideWriteAnswer,
     putSRAnswer,
   } = useActions();
 
@@ -73,7 +73,7 @@ const Answer = ({ data }: AnswerProps) => {
   }
 
   const changeCopyAnswer = (e: ChangeEvent<HTMLInputElement>) =>
-    set_write_copy_answer_field(e.target.value);
+    setWriteCopyAnswerField({ value: e.target.value });
 
   const clickEdit = (e: MouseEvent<HTMLDivElement>) =>
     setCardEdit({ _id, value: true });
@@ -81,22 +81,22 @@ const Answer = ({ data }: AnswerProps) => {
   const continueGame = useCallback(() => {
     if (canContinue) {
       if (isFirstRound && isSR) putSRAnswer(_id, isCorrect ? 1 : -1);
-      next_write_card();
+      nextWriteCard();
     }
   }, [
-    _id,
     canContinue,
     isCorrect,
     isFirstRound,
+    _id,
     isSR,
-    next_write_card,
+    nextWriteCard,
     putSRAnswer,
   ]);
 
   const overrideAnswer = useCallback(() => {
     if (isFirstRound && isSR) putSRAnswer(_id, 1);
-    override_write_answer();
-  }, [_id, isFirstRound, isSR, override_write_answer, putSRAnswer]);
+    overrideWriteAnswer();
+  }, [_id, isFirstRound, isSR, overrideWriteAnswer, putSRAnswer]);
 
   const clickContinue = (e: MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();

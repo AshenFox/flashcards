@@ -19,7 +19,7 @@ type CardProps = {
 };
 
 const Card = ({ data, side = "definition", position = null }: CardProps) => {
-  const { set_flashcards_side, setCardEdit } = useActions();
+  const { setFlashcardsSide, setCardEdit } = useActions();
 
   const router = useRouter();
   const { _id: _id_param } = router.query;
@@ -57,7 +57,7 @@ const Card = ({ data, side = "definition", position = null }: CardProps) => {
       if ((e.target as HTMLElement).closest(`.${s.transcription_hidden}`))
         return;
 
-      set_flashcards_side(value);
+      setFlashcardsSide({ value });
     };
 
   const clickEdit = (e: MouseEvent<HTMLDivElement>) =>

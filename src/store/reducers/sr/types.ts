@@ -10,6 +10,4 @@ export type SrState = {
   loading: boolean;
 };
 
-// ===============================
-
 export type SrCaseReducer<P = undefined> = CaseReducer<SrState, Action<P>>;

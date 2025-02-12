@@ -1,7 +1,7 @@
 import { UserDto } from "@common/api/entities";
+import { GameActions } from "@store/reducers/game/slice";
 import { SrActions } from "@store/reducers/sr/slice";
 
-import { Round } from "../reducers/game/gameInitState";
 import {
   LogInErrors,
   ModalInputFields,
@@ -151,138 +151,6 @@ export type SetVoiceSpeakingAction = {
 
 export type VoiceActions = InitEasySpeechAction | SetVoiceSpeakingAction;
 
-// falshcards
-export const SET_FLASHCARDS_PROGRESS = "SET_FLASHCARDS_PROGRESS";
-export const RESET_FLASHCARDS_PROGRESS = "RESET_FLASHCARDS_PROGRESS";
-export const SET_FLASHCARDS_SHUFFLED = "SET_FLASHCARDS_SHUFFLED";
-export const SET_FLASHCARDS_SIDE = "SET_FLASHCARDS_SIDE";
-export const SAVE_FLASHCARDS_ANSWER = "SAVE_FLASHCARDS_ANSWER";
-
-export type SetFlashcardsProgressAction = {
-  type: typeof SET_FLASHCARDS_PROGRESS;
-  payload: {
-    value?: number;
-  };
-};
-
-export type ResetFlashcardsProgressAction = {
-  type: typeof RESET_FLASHCARDS_PROGRESS;
-  payload?: {};
-};
-
-export type SetFlashcardsShuffledAction = {
-  type: typeof SET_FLASHCARDS_SHUFFLED;
-  payload: {
-    value: boolean;
-  };
-};
-
-export type SetFlashcardsSideAction = {
-  type: typeof SET_FLASHCARDS_SIDE;
-  payload: {
-    value: "definition" | "term";
-  };
-};
-
-export type SaveFlashcardsAnswerAction = {
-  type: typeof SAVE_FLASHCARDS_ANSWER;
-  payload: {
-    id: string;
-    card_answer: "correct" | "incorrect";
-  };
-};
-
-export type FlashcardsActions =
-  | SetFlashcardsProgressAction
-  | ResetFlashcardsProgressAction
-  | SetFlashcardsShuffledAction
-  | SetFlashcardsSideAction
-  | SaveFlashcardsAnswerAction;
-
-// write
-export const PREPARE_WRITE = "PREPARE_WRITE";
-export const SET_WRITE_IS_INIT = "SET_WRITE_IS_INIT";
-export const SET_WRITE_ANSWER_FIELD = "SET_WRITE_ANSWER_FIELD";
-export const SET_WRITE_COPY_ANSWER_FIELD = "SET_WRITE_COPY_ANSWER_FIELD";
-export const CHECK_WRITE_ANSWER = "CHECK_WRITE_ANSWER";
-export const NEXT_WRITE_CARD = "NEXT_WRITE_CARD";
-export const OVERRIDE_WRITE_ANSWER = "OVERRIDE_WRITE_ANSWER";
-export const NEXT_WRITE_ROUND = "NEXT_WRITE_ROUND";
-
-export type PrepareWriteAction = {
-  type: typeof PREPARE_WRITE;
-  payload: {
-    remaining: Round;
-  };
-};
-
-export type SetWriteIsInitAction = {
-  type: typeof SET_WRITE_IS_INIT;
-  payload: {
-    value: boolean;
-  };
-};
-
-export type SetWriteAnswerFieldAction = {
-  type: typeof SET_WRITE_ANSWER_FIELD;
-  payload: {
-    value: string;
-  };
-};
-
-export type SetWriteCopyAnswerFieldAction = {
-  type: typeof SET_WRITE_COPY_ANSWER_FIELD;
-  payload: {
-    value: string;
-  };
-};
-
-export type CheckWriteAnswerAction = {
-  type: typeof CHECK_WRITE_ANSWER;
-  payload: {
-    card_answer: "correct" | "incorrect";
-    answer: string;
-  };
-};
-
-export type NextWriteCardAction = {
-  type: typeof NEXT_WRITE_CARD;
-  payload?: {};
-};
-
-export type OverrideWriteAnswerAction = {
-  type: typeof OVERRIDE_WRITE_ANSWER;
-  payload?: {};
-};
-
-export type NextWriteRoundAction = {
-  type: typeof NEXT_WRITE_ROUND;
-  payload?: {};
-};
-
-export type WriteActions =
-  | PrepareWriteAction
-  | SetWriteIsInitAction
-  | SetWriteAnswerFieldAction
-  | SetWriteCopyAnswerFieldAction
-  | CheckWriteAnswerAction
-  | NextWriteCardAction
-  | OverrideWriteAnswerAction
-  | NextWriteRoundAction;
-
-// game
-export const RESET_ALL_GAME_FIELDS = "RESET_ALL_GAME_FIELDS";
-
-export type ResetAllGameFieldsAction = {
-  type: typeof RESET_ALL_GAME_FIELDS;
-  payload?: {};
-};
-
-export type GameActions =
-  | ResetAllGameFieldsAction
-  | WriteActions
-  | FlashcardsActions;
-
 // ===========
 // ===========
 // ===========
@@ -295,10 +163,10 @@ export type AppActions =
   | ModalActions
   | DimenActions
   | VoiceActions
-  | GameActions
   | HeaderActions
   | SrActions // updated
-  | MainActions;
+  | MainActions
+  | GameActions;
 
 export type InferActions<T> =
   T extends Record<string, (...args: any[]) => infer R> ? R : never;

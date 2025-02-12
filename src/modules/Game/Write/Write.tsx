@@ -10,10 +10,10 @@ import Progress from "./components/Progress";
 
 const Write = () => {
   const {
-    getModuleCards,
     clearModule,
-    prepare_write,
-    reset_all_game_fields,
+    resetAllGameFields,
+    getModuleCards,
+    prepareWrite,
     getSRCards,
   } = useActions();
 
@@ -29,7 +29,7 @@ const Write = () => {
 
   useEffect(() => {
     return () => {
-      reset_all_game_fields();
+      resetAllGameFields();
       clearModule();
     };
   }, []);
@@ -43,7 +43,7 @@ const Write = () => {
 
   useEffect(() => {
     if (length) {
-      prepare_write();
+      prepareWrite();
       // cardPrev.current = cards;
     }
   }, [length]);
