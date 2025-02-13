@@ -1,9 +1,9 @@
 import { CardDto } from "@common/api/entities";
 import {
-  CardsGetQueryDto,
-  CardsGetResponseDto,
-  ModulesGetQueryDto,
-  ModulesGetResponseDto,
+  GetMainCardsQueryDto,
+  GetMainCardsResponseDto,
+  GetMainModulesQueryDto,
+  GetMainModulesResponseDto,
 } from "@common/api/methods";
 import axios from "@common/axios";
 import { ThunkActionApp } from "@store/store";
@@ -33,12 +33,12 @@ export const getModules = () => <ThunkActionApp>(async (dispatch, getState) => {
         mainActions.setSectionLoading({ value: true, section: "homeModules" }),
       );
 
-      const params: ModulesGetQueryDto = {
+      const params: GetMainModulesQueryDto = {
         page,
         ...filters,
       };
 
-      const { data } = await axios.get<ModulesGetResponseDto>(
+      const { data } = await axios.get<GetMainModulesResponseDto>(
         "/api/main/modules",
         {
           params,
@@ -75,14 +75,17 @@ export const getCards = () => <ThunkActionApp>(async (dispatch, getState) => {
         mainActions.setSectionLoading({ value: true, section: "homeCards" }),
       );
 
-      const params: CardsGetQueryDto = {
+      const params: GetMainCardsQueryDto = {
         page,
         ...filters,
       };
 
-      const { data } = await axios.get<CardsGetResponseDto>("/api/main/cards", {
-        params,
-      });
+      const { data } = await axios.get<GetMainCardsResponseDto>(
+        "/api/main/cards",
+        {
+          params,
+        },
+      );
 
       dispatch(mainActions.setCards(data));
     } catch (err) {
@@ -144,14 +147,10 @@ export const getModule = (_id: string) => <ThunkActionApp>(async (
 
       dispatch(mainActions.setMainLoading(true));
 
-      const {
-        data,
-      }: {
-        data: {
-          cards: CardDto[];
-          module: Module;
-        };
-      } = await axios.get("/api/main/module", {
+      const { data } = await axios.get<{
+        cards: CardDto[];
+        module: Module;
+      }>("/api/main/module", {
         params: {
           _id,
         },

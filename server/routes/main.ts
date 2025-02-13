@@ -8,11 +8,11 @@ import express, { Request } from "express";
 import { FilterQuery } from "mongoose";
 import { Card, Module } from "types/entities";
 import {
-  CardsGetQuery,
-  CardsGetResponse,
   ErrorResponse,
-  ModulesGetQuery,
-  ModulesGetResponse,
+  GetMainCardsQuery,
+  GetMainCardsResponse,
+  GetMainModulesQuery,
+  GetMainModulesResponse,
 } from "types/methods";
 
 const router = express.Router();
@@ -21,11 +21,11 @@ const router = express.Router();
 // @desc ------- Get user modules
 // @access ----- Private
 
-type ModulesGetReq = Request<any, any, any, ModulesGetQuery>;
+type ModulesGetReq = Request<any, any, any, GetMainModulesQuery>;
 
 type ModulesGetRes = ResponseLocals<
-  ModulesGetResponse | ErrorResponse,
-  ModulesGetQuery
+  GetMainModulesResponse | ErrorResponse,
+  GetMainModulesQuery
 >;
 
 router.get(
@@ -85,7 +85,7 @@ router.get(
 
       const end = modules_number <= (page + 1) * 10;
 
-      const result: ModulesGetResponse = {
+      const result: GetMainModulesResponse = {
         draft: null,
         modules: {
           entries: modules,
@@ -112,11 +112,11 @@ router.get(
 // @desc ------- Get user cards
 // @access ----- Private
 
-type CardsGetReq = Request<any, any, any, CardsGetQuery>;
+type CardsGetReq = Request<any, any, any, GetMainCardsQuery>;
 
 type CardsGetRes = ResponseLocals<
-  CardsGetResponse | ErrorResponse,
-  CardsGetQuery
+  GetMainCardsResponse | ErrorResponse,
+  GetMainCardsQuery
 >;
 
 router.get(

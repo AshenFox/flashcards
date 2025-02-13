@@ -1,6 +1,6 @@
 import Card from "@components/Card";
 import EditCard from "@components/EditCard";
-import Filter, { FilterData, SetFilterValue } from "@components/Filters";
+import Filters, { FilterData, SetFilterValue } from "@components/Filters";
 import NotFound from "@components/NotFound";
 import { useActions } from "@store/hooks";
 import { defaultHomeCardsFilters } from "@store/reducers/main/initState";
@@ -80,7 +80,7 @@ const Cards = () => {
 
   return (
     <>
-      <Filter
+      <Filters
         filtersValues={filters}
         filtersData={filtersData}
         placeholder={"Type to filter..."}

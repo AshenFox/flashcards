@@ -1,4 +1,4 @@
-import Filter, { FilterData, SetFilterValue } from "@components/Filters";
+import Filters, { FilterData, SetFilterValue } from "@components/Filters";
 import NotFound from "@components/NotFound";
 import { useActions } from "@store/hooks";
 import { defaultHomeModulesFilters } from "@store/reducers/main/initState";
@@ -78,7 +78,7 @@ const Modules = () => {
 
   return (
     <>
-      <Filter
+      <Filters
         filtersValues={filters}
         filtersData={filtersData}
         placeholder={"Type to filter..."}

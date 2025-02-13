@@ -1,7 +1,7 @@
 import { CardDto } from "@common/api/entities";
 import {
-  CardsGetResponseDto,
-  ModulesGetResponseDto,
+  GetMainCardsResponseDto,
+  GetMainModulesResponseDto,
 } from "@common/api/methods";
 
 import {
@@ -53,12 +53,9 @@ export const setSectionFilter: MainCaseReducer<{
     action.payload.value;
 };
 
-/* export const resetFieldsCards: MainCaseReducer = state => {
+export const resetModuleCardsData: MainCaseReducer = state => {
   state.cards = {};
-  state.cards_number = false;
-  state.all_cards = false;
-  state.skip_cards = 0;
-}; */
+};
 
 export const resetHomeModulesData: MainCaseReducer = state => {
   state.draft = null;
@@ -127,7 +124,7 @@ export const setSectionLoading: MainCaseReducer<{
   state.sections[section].loading = value;
 };
 
-export const setHomeModules: MainCaseReducer<ModulesGetResponseDto> = (
+export const setHomeModules: MainCaseReducer<GetMainModulesResponseDto> = (
   state,
   action,
 ) => {
@@ -142,7 +139,7 @@ export const setHomeModules: MainCaseReducer<ModulesGetResponseDto> = (
   };
 };
 
-export const setCards: MainCaseReducer<CardsGetResponseDto> = (
+export const setCards: MainCaseReducer<GetMainCardsResponseDto> = (
   state,
   action,
 ) => {

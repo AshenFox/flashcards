@@ -1,14 +1,14 @@
-import { ModuleCreator } from "../entities";
-import { PagedDataCreator } from "./pagedData";
+import { ModuleCreator } from "../../entities";
+import { PagedDataCreator } from "../pagedData";
 
-export type ModulesGetQueryCreator = {
+export type GetMainModulesQueryCreator = {
   page?: number;
   search?: string;
   created?: "newest" | "oldest";
   draft?: boolean;
   sr?: boolean;
 };
-export type ModulesGetResponseCreator<
+export type GetMainModulesResponseCreator<
   Module = ModuleCreator,
   PagedData = PagedDataCreator,
 > = {
