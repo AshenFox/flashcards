@@ -1,7 +1,7 @@
 import { PagedDataCreator } from "../pagedData";
 
 export type GetMainModuleCardsQueryCreator = {
-  _id: string;
+  _id?: string;
   search?: string;
   created?: "newest" | "oldest";
   by?: "term" | "definition";

@@ -11,6 +11,10 @@ import {
   ErrorResponse,
   GetMainCardsQuery,
   GetMainCardsResponse,
+  GetMainModuleCardsQuery,
+  GetMainModuleCardsResponse,
+  GetMainModuleQuery,
+  GetMainModuleResponse,
   GetMainModulesQuery,
   GetMainModulesResponse,
 } from "types/methods";
@@ -187,74 +191,113 @@ router.get(
 // @desc ------- Get module with cards
 // @access ----- Private
 
-type ModuleGetQuery = qs.ParsedQs & {
-  _id: string;
-};
+type GetMainModuleReq = Request<any, any, any, GetMainModuleQuery>;
 
-type ModuleGetReq = Request<any, any, any, ModuleGetQuery>;
+type GetMainModuleRes = ResponseLocals<
+  GetMainModuleResponse | ErrorResponse,
+  GetMainModuleQuery
+>;
 
-type ModuleGetResBody = {
-  module: Module;
-  cards: Card[];
-};
+router.get(
+  "/module",
+  auth,
+  query,
+  async (req: GetMainModuleReq, res: GetMainModuleRes) => {
+    try {
+      const {
+        _id: module_id,
+        search,
+        created = "newest",
+        by = "term",
+        sr,
+      } = res.locals.query;
 
-type ModuleGetRes = ResponseLocals<ModuleGetResBody | ErrorResponse>;
+      const _id = res.locals.user._id;
 
-router.get("/module", auth, async (req: ModuleGetReq, res: ModuleGetRes) => {
-  try {
-    let { _id: module_id } = req.query;
+      const user = await userModel.findOne({
+        _id,
+      });
 
-    const _id = res.locals.user._id;
+      if (!user) throw new Error(`User ${_id} has not been found.`);
 
-    const user = await userModel.findOne({
-      _id,
-    });
+      const foundModule = await moduleModel.findOne({
+        _id: module_id,
+        author_id: _id,
+      });
 
-    if (!user) throw new Error(`User ${_id} has not been found.`);
+      if (!foundModule)
+        throw new Error(`Module ${module_id} has not been found.`);
+      if (foundModule.draft) throw new Error("Can not get draft");
 
-    const foundModule = await moduleModel.findOne({
-      _id: module_id,
-      author_id: _id,
-    });
+      const filterObj: FilterQuery<Card> = {
+        moduleID: module_id,
+        author_id: _id,
+      };
 
-    if (!foundModule) throw new Error(`Module ${_id} has not been found.`);
-    if (foundModule.draft) throw new Error("Can not get draft");
+      const sortObj: CardSortObj = {
+        creation_date: 1,
+      };
 
-    const cards = await cardModel
-      .find({ moduleID: module_id, author_id: _id })
-      .sort({ creation_date: 1 });
+      if (created === "newest") sortObj.creation_date = -1;
+      if (created === "oldest") sortObj.creation_date = 1;
 
-    res.status(200).json({ module: foundModule, cards });
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ errorBody: "Server Error" });
-  }
-});
+      const all = await cardModel.countDocuments(filterObj);
+
+      if (search)
+        filterObj[by] = {
+          $regex: `${search}(?!br>|r>|>|\/div>|div>|iv>|v>|nbsp;|bsp;|sp;|p;|;|\/span>|span>|pan>|an>|n>)`,
+        };
+
+      if (typeof sr === "boolean") {
+        filterObj.studyRegime = sr;
+      }
+
+      const cards = await cardModel.find(filterObj).sort(sortObj);
+      const cards_number = await cardModel.countDocuments(filterObj);
+
+      res.status(200).json({
+        module: foundModule,
+        cards: {
+          entries: cards,
+          pagination: {
+            page: 0,
+            number: cards_number,
+            end: true,
+            all,
+          },
+        },
+      });
+    } catch (err) {
+      console.error(err);
+      res.status(500).json({ errorBody: "Server Error" });
+    }
+  },
+);
 
 // @route ------ GET api/main/module/cards
 // @desc ------- Get only the module's cards
 // @access ----- Private
 
-type ModuleCardsGetQuery = qs.ParsedQs & {
-  _id: string;
-  filter: string;
-  by: "term" | "definition";
-};
+type GetMainModuleCardsReq = Request<any, any, any, GetMainModuleCardsQuery>;
 
-type ModuleCardsGetReq = Request<any, any, any, ModuleCardsGetQuery>;
-
-type ModuleCardsGetResBody = {
-  cards: Card[];
-};
-
-type ModuleCardsGetRes = ResponseLocals<ModuleCardsGetResBody | ErrorResponse>;
+type GetMainModuleCardsRes = ResponseLocals<
+  GetMainModuleCardsResponse | ErrorResponse,
+  GetMainModuleCardsQuery
+>;
 
 router.get(
   "/module/cards",
   auth,
-  async (req: ModuleCardsGetReq, res: ModuleCardsGetRes) => {
+  query,
+  async (req: GetMainModuleCardsReq, res: GetMainModuleCardsRes) => {
     try {
-      let { _id: module_id, filter, by } = req.query;
+      const {
+        _id: module_id,
+        search,
+        created = "newest",
+        by = "term",
+        sr,
+      } = res.locals.query;
 
       const _id = res.locals.user._id;
 
@@ -271,14 +314,32 @@ router.get(
 
       const sortObj: CardSortObj = { creation_date: 1 };
 
-      if (filter)
+      if (created === "newest") sortObj.creation_date = -1;
+      if (created === "oldest") sortObj.creation_date = 1;
+
+      const all = await cardModel.countDocuments(filterObj);
+
+      if (search)
         filterObj[by] = {
-          $regex: `${filter}(?!br>|r>|>|\/div>|div>|iv>|v>|nbsp;|bsp;|sp;|p;|;|\/span>|span>|pan>|an>|n>)`,
+          $regex: `${search}(?!br>|r>|>|\/div>|div>|iv>|v>|nbsp;|bsp;|sp;|p;|;|\/span>|span>|pan>|an>|n>)`,
         };
 
-      const cards = await cardModel.find(filterObj).sort(sortObj);
+      if (typeof sr === "boolean") {
+        filterObj.studyRegime = sr;
+      }
 
-      res.status(200).json({ cards });
+      const cards = await cardModel.find(filterObj).sort(sortObj);
+      const cards_number = await cardModel.countDocuments(filterObj);
+
+      res.status(200).json({
+        entries: cards,
+        pagination: {
+          page: 0,
+          number: cards_number,
+          end: true,
+          all,
+        },
+      });
     } catch (err) {
       console.error(err);
       res.status(500).json({ errorBody: "Server Error" });
