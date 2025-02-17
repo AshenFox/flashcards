@@ -43,7 +43,7 @@ const filtersData: FilterData[] = [
 
 const Modules = () => {
   const modules = useAppSelector(s => s.main.modules);
-  const draft = useAppSelector(s => s.main.draft);
+  const draft = useAppSelector(s => s.main.module);
   const loading = useAppSelector(s => s.main.sections.homeModules.loading);
   const filters = useAppSelector(s => s.main.sections.homeModules.filters);
   const { search } = filters;

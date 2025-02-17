@@ -26,7 +26,6 @@ const MyApp = ({ Component, pageProps }: AppProps) => (
       </AuthWrapper>
       <AuthSpinner />
       <Voice />
-      <RouterConfiguration />
       <TabUpdateController />
     </Provider>
     <PasteControl />

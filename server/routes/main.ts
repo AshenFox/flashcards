@@ -1,7 +1,6 @@
 import cardModel, { CardSortObj } from "@models/card_model";
 import moduleModel from "@models/module_model";
 import { ModuleSortObj } from "@models/module_model";
-import userModel from "@models/user_model";
 import { auth, query } from "@supplemental/middleware";
 import { ResponseLocals } from "@supplemental/types";
 import express, { Request } from "express";

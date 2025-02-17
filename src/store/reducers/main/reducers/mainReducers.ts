@@ -58,7 +58,7 @@ export const setSectionFilter: MainCaseReducer<{
 };
 
 export const resetHomeModulesData: MainCaseReducer = state => {
-  state.draft = null;
+  state.module = null;
   state.modules = [];
   state.sections.homeModules.pagination = defaultPagination;
 };
@@ -88,10 +88,6 @@ export const setScrollTop: MainCaseReducer<{ value: boolean }> = (
   state.scroll_top = action.payload.value;
 };
 
-export const setMainLoading: MainCaseReducer<boolean> = (state, action) => {
-  state.loading = action.payload;
-};
-
 export const setSectionLoading: MainCaseReducer<{
   value: boolean;
   section: SectionName;
@@ -107,7 +103,7 @@ export const setHomeModules: MainCaseReducer<GetMainModulesResponseDto> = (
 ) => {
   const { draft, modules } = action.payload;
 
-  state.draft = draft;
+  state.module = { ...draft, ...module_fields };
   state.modules = [...(state.modules || []), ...modules.entries];
 
   state.sections.homeModules.pagination = {

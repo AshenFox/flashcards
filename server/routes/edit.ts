@@ -4,7 +4,13 @@ import { auth } from "@supplemental/middleware";
 import { notification_timeout } from "@supplemental/notifications_control";
 import { ResponseLocals } from "@supplemental/types";
 import express, { Request, Response } from "express";
+import { FilterQuery } from "mongoose";
 import { Card, CardBase, Module } from "types/entities";
+import {
+  ErrorResponse,
+  GetEditDraftQuery,
+  GetEditDraftResponse,
+} from "types/methods";
 
 const router = express.Router();
 
@@ -350,71 +356,92 @@ router.post("/card", auth, async (req: CardPostReq, res: CardPostRes) => {
 // @desc ------- Get draft or create and get a new draft
 // @access ----- Private
 
-type DraftGetResBody = {
-  module: Module;
-  cards: Card[];
-};
+type GetMainModuleReq = Request<any, any, any, GetEditDraftQuery>;
 
-type DraftGetRes = Response<DraftGetResBody | ResError>;
+type GetMainModuleRes = ResponseLocals<
+  GetEditDraftResponse | ErrorResponse,
+  GetEditDraftQuery
+>;
 
-router.get("/draft", auth, async (req: Request, res: DraftGetRes) => {
-  try {
-    const user = res.locals.user;
-    const { _id } = user;
+router.get(
+  "/draft",
+  auth,
+  async (req: GetMainModuleReq, res: GetMainModuleRes) => {
+    try {
+      const user = res.locals.user;
+      const { _id } = user;
 
-    let foundModule: Module | null;
-    let cards: Card[];
+      let foundModule: Module | null;
+      let cards: Card[];
 
-    foundModule = await moduleModel.findOne({
-      author_id: _id,
-      draft: true,
-    });
-
-    if (foundModule) {
-      cards = await cardModel
-        .find({ author_id: _id, moduleID: foundModule._id })
-        .sort({ creation_date: 1 });
-    } else {
-      // Create a new draft
-      foundModule = await moduleModel.create({
-        title: "",
-        author: user.username,
+      foundModule = await moduleModel.findOne({
         author_id: _id,
-        number: 5,
-        numberSR: 0,
-        creation_date: new Date(),
         draft: true,
       });
 
-      const cardsData: CardBase[] = [];
+      const filterObj: FilterQuery<Card> = {
+        author_id: _id,
+      };
 
-      for (let i = 0; i < 5; i++) {
-        cardsData.push({
-          moduleID: foundModule._id,
-          term: "",
-          definition: "",
-          imgurl: "",
-          creation_date: new Date(Date.now() + i),
-          studyRegime: false,
-          stage: 1,
-          order: i,
-          nextRep: new Date(),
-          prevStage: new Date(),
-          lastRep: new Date(),
-          author_id: _id,
+      if (foundModule) {
+        filterObj.moduleID = foundModule._id;
+
+        cards = await cardModel.find(filterObj).sort({ creation_date: 1 });
+      } else {
+        // Create a new draft
+        foundModule = await moduleModel.create({
+          title: "",
           author: user.username,
+          author_id: _id,
+          number: 5,
+          numberSR: 0,
+          creation_date: new Date(),
+          draft: true,
         });
+
+        const cardsData: CardBase[] = [];
+
+        for (let i = 0; i < 5; i++) {
+          cardsData.push({
+            moduleID: foundModule._id,
+            term: "",
+            definition: "",
+            imgurl: "",
+            creation_date: new Date(Date.now() + i),
+            studyRegime: false,
+            stage: 1,
+            order: i,
+            nextRep: new Date(),
+            prevStage: new Date(),
+            lastRep: new Date(),
+            author_id: _id,
+            author: user.username,
+          });
+        }
+
+        cards = await cardModel.create(cardsData);
       }
 
-      cards = await cardModel.create(cardsData);
-    }
+      const all = await cardModel.countDocuments(filterObj);
 
-    res.status(200).json({ module: foundModule, cards });
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ errorBody: "Server Error" });
-  }
-});
+      res.status(200).json({
+        module: foundModule,
+        cards: {
+          entries: cards,
+          pagination: {
+            page: 0,
+            number: all,
+            all,
+            end: true,
+          },
+        },
+      });
+    } catch (err) {
+      console.error(err);
+      res.status(500).json({ errorBody: "Server Error" });
+    }
+  },
+);
 
 // ----------------
 

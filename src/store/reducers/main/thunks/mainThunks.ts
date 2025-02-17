@@ -1,4 +1,3 @@
-import { CardDto } from "@common/api/entities";
 import {
   GetMainCardsQueryDto,
   GetMainCardsResponseDto,
@@ -8,12 +7,11 @@ import {
   GetMainModulesQueryDto,
   GetMainModulesResponseDto,
 } from "@common/api/methods";
+import { GetEditDraftResponseDto } from "@common/api/methods/edit/getEditDraft";
 import axios from "@common/axios";
 import { ThunkActionApp } from "@store/store";
 
-import { card_fields, module_fields } from "../initState";
 import { mainActions } from "../slice";
-import { Cards, Module } from "../types";
 
 export const getModules = () => <ThunkActionApp>(async (dispatch, getState) => {
     try {
@@ -182,48 +180,29 @@ export const getDraft = () => <ThunkActionApp>(async (dispatch, getState) => {
     try {
       const {
         auth: { user },
+        main: {
+          sections: {
+            editDraft: { loading },
+          },
+        },
       } = getState();
-      if (!user) return; // loading
 
-      dispatch(mainActions.setMainLoading(true));
-
-      const {
-        data,
-      }: {
-        data: {
-          cards: CardDto[];
-          module: Module;
-        };
-      } = await axios.get("/api/edit/draft");
-
-      data.module = { ...data.module, ...module_fields };
+      if (!user || loading) return;
 
       dispatch(
-        mainActions.setModule({
-          ...data,
-          cards: arr_to_obj(data.cards),
-        }),
+        mainActions.setSectionLoading({ value: true, section: "editDraft" }),
       );
+
+      const { data } =
+        await axios.get<GetEditDraftResponseDto>("/api/edit/draft");
+
+      dispatch(mainActions.setModule(data));
     } catch (err) {
       window.location.replace(`/home/modules`);
       console.error(err);
     }
 
-    dispatch(mainActions.setMainLoading(false));
+    dispatch(
+      mainActions.setSectionLoading({ value: false, section: "editDraft" }),
+    );
   });
-
-// ==============================
-// ==============================
-// ==============================
-
-const arr_to_obj = (arr: CardDto[]): Cards => {
-  return Object.fromEntries(
-    arr.map(card => [
-      card._id,
-      {
-        ...card,
-        ...card_fields,
-      },
-    ]),
-  );
-};

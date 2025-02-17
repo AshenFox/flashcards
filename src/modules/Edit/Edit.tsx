@@ -2,7 +2,7 @@ import { useRouter } from "next/router";
 import { memo, useEffect } from "react";
 
 import { useActions, useAppSelector } from "../../store/hooks";
-import CardsContainer from "./components/Cards/Cards";
+import Cards from "./components/Cards";
 import Intro from "./components/Intro";
 import Module from "./components/Module";
 
@@ -32,7 +32,7 @@ const Edit = () => {
     <>
       <Intro />
       <Module />
-      <CardsContainer />
+      <Cards />
     </>
   );
 };

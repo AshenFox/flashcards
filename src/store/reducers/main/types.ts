@@ -46,20 +46,20 @@ export type ModuleSection = Section<ModuleFilters>;
 
 export type ModuleCardsSection = Section<undefined>;
 
+export type EditDraftSection = Section<undefined>;
+
 export type SectionName =
   | "homeModules"
   | "homeCards"
   | "srCards"
   | "module"
-  | "moduleCards";
+  | "moduleCards"
+  | "editDraft";
 
 export type MainState = {
   is_server: boolean;
 
-  loading: boolean; // remove
-
   module: Module | null;
-  draft: ModuleDto | false; // why I need this?
 
   modules: ModuleDto[];
   cards: Cards;
@@ -70,6 +70,7 @@ export type MainState = {
     srCards: SRCardsSection;
     module: ModuleSection;
     moduleCards: ModuleCardsSection;
+    editDraft: EditDraftSection;
   };
 
   scroll_top: boolean; // move to local component value

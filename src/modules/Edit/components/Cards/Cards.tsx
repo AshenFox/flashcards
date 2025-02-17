@@ -11,7 +11,9 @@ import s from "./styles.module.scss";
 const Cards = () => {
   const cards = useAppSelector(s => s.main.cards);
   const currentModule = useAppSelector(s => s.main.module);
-  const loading = useAppSelector(s => s.main.loading);
+  const loading = useAppSelector(
+    s => s.main.sections.editDraft.loading || s.main.sections.module.loading,
+  );
 
   const { draft } = currentModule || {};
 

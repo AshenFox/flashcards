@@ -15,7 +15,9 @@ const Module = () => {
   const { controlModule, editModule } = useActions();
 
   const currentModule = useAppSelector(s => s.main.module);
-  const loading = useAppSelector(s => s.main.loading);
+  const loading = useAppSelector(
+    s => s.main.sections.editDraft.loading || s.main.sections.module.loading,
+  );
 
   const { title, draft, _id: moduleId } = currentModule || {};
 

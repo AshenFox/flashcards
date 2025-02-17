@@ -1,6 +1,7 @@
 import {
   CardFields,
   DefaultPagination,
+  EditDraftSection,
   HomeCardsFilters,
   HomeCardsSection,
   HomeModulesFilters,
@@ -99,12 +100,15 @@ export const defaultModuleCardsSection: ModuleCardsSection = {
   pagination: defaultPagination,
 };
 
+export const defaultEditDraftSection: EditDraftSection = {
+  loading: false,
+  pagination: defaultPagination,
+};
+
 const initState: MainState = {
   is_server: true,
-  loading: false,
 
   module: null,
-  draft: false,
 
   modules: [],
   cards: {},
@@ -115,6 +119,7 @@ const initState: MainState = {
     srCards: defaultCardsSRSection,
     module: defaultModuleSection,
     moduleCards: defaultModuleCardsSection,
+    editDraft: defaultEditDraftSection,
   },
 
   scroll_top: false,

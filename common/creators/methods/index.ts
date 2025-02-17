@@ -1,3 +1,4 @@
+export type * from "./edit/getEditDraft";
 export type * from "./errorResponse";
 export type * from "./main/getMainCards";
 export type * from "./main/getMainModule";
