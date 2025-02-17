@@ -37,7 +37,7 @@ const Info = () => {
           Created <DateStr date={creation_date} /> by
         </span>
         <span className={s.nickname}>
-          {module ? author : <Skeleton width={100} />}
+          {currentModule ? author : <Skeleton width={100} />}
         </span>
       </div>
 
