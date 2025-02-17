@@ -19,7 +19,10 @@ const Content = () => {
   const progress = useAppSelector(s => s.game.flashcards.progress);
   const side = useAppSelector(s => s.game.flashcards.side);
   const cards = useAppSelector(s => s.main.cards);
-  const loading = useAppSelector(s => s.main.sections.srCards.loading);
+  const loadingSrCards = useAppSelector(s => s.main.sections.srCards.loading);
+  const loadingModuleCards = useAppSelector(
+    s => s.main.sections.moduleCards.loading,
+  );
 
   const formatted_cards = Object.values(cards);
   const { length } = formatted_cards;
@@ -63,7 +66,7 @@ const Content = () => {
 
   return (
     <ContentContainer
-      loading={loading || !length}
+      loading={loadingSrCards || loadingModuleCards || !length}
       isScrollable={isEdit || (isSR && isEnd)}
     >
       <div className={s.container}>{content}</div>

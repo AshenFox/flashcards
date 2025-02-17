@@ -9,7 +9,7 @@ import ShuffleBtn from "./components/ControlButtons/ShuffleBtn";
 import Progress from "./components/Progress";
 
 const Flashcards = () => {
-  const { getModuleCards, clearModule, resetAllGameFields, getSRCards } =
+  const { getModuleCards, resetModuleData, resetAllGameFields, getSRCards } =
     useActions();
 
   const router = useRouter();
@@ -29,7 +29,7 @@ const Flashcards = () => {
   useEffect(() => {
     return () => {
       resetAllGameFields();
-      clearModule();
+      resetModuleData();
     };
   }, []);
 

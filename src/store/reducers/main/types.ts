@@ -21,30 +21,42 @@ export type Section<
   pagination?: Pagination;
 };
 
-export type HomeModuleFilters = DefaultFilters & {
+export type HomeModulesFilters = DefaultFilters & {
   created?: "newest" | "oldest";
   draft?: boolean;
   sr?: boolean;
 };
-
-export type HomeModulesSection = Section<HomeModuleFilters>;
+export type HomeModulesSection = Section<HomeModulesFilters>;
 
 export type HomeCardsFilters = DefaultFilters & {
   created?: "newest" | "oldest";
   by?: "term" | "definition";
   sr?: boolean;
 };
-
 export type HomeCardsSection = Section<HomeCardsFilters>;
 
 export type SRCardsSection = Section<undefined, undefined>;
 
-export type SectionName = "homeModules" | "homeCards" | "srCards";
+export type ModuleFilters = DefaultFilters & {
+  created?: "newest" | "oldest";
+  by?: "term" | "definition";
+  sr?: boolean;
+};
+export type ModuleSection = Section<ModuleFilters>;
+
+export type ModuleCardsSection = Section<undefined>;
+
+export type SectionName =
+  | "homeModules"
+  | "homeCards"
+  | "srCards"
+  | "module"
+  | "moduleCards";
 
 export type MainState = {
   is_server: boolean;
 
-  loading: boolean;
+  loading: boolean; // remove
 
   module: Module | null;
   draft: ModuleDto | false; // why I need this?
@@ -56,25 +68,11 @@ export type MainState = {
     homeModules: HomeModulesSection;
     homeCards: HomeCardsSection;
     srCards: SRCardsSection;
+    module: ModuleSection;
+    moduleCards: ModuleCardsSection;
   };
-
-  search_cards: {
-    value: string;
-  };
-  select_by: SelectBy;
-  select_created: SelectCreated;
 
   scroll_top: boolean; // move to local component value
-};
-
-export type SelectBy = {
-  value: "term" | "definition";
-  label: "Term" | "Definition";
-};
-
-export type SelectCreated = {
-  value: "newest" | "oldest";
-  label: "Newest" | "Oldest";
 };
 
 export type ImgurlFields = {

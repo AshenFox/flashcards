@@ -19,6 +19,8 @@ import {
   GetMainModulesResponse,
 } from "types/methods";
 
+import { filterRegex } from "./../../common/functions/filterRegex";
+
 const router = express.Router();
 
 // @route ------ GET api/main/modules
@@ -76,7 +78,7 @@ router.get(
 
       if (search)
         filterObj.title = {
-          $regex: `${search}(?!br>|r>|>|\/div>|div>|iv>|v>|nbsp;|bsp;|sp;|p;|;|\/span>|span>|pan>|an>|n>)`,
+          $regex: filterRegex(search),
         };
 
       const modules = await moduleModel
@@ -159,7 +161,7 @@ router.get(
 
       if (search)
         filterObj[by] = {
-          $regex: `${search}(?!br>|r>|>|\/div>|div>|iv>|v>|nbsp;|bsp;|sp;|p;|;|\/span>|span>|pan>|an>|n>)`,
+          $regex: filterRegex(search),
         };
 
       if (typeof sr === "boolean") {
@@ -214,12 +216,6 @@ router.get(
 
       const _id = res.locals.user._id;
 
-      const user = await userModel.findOne({
-        _id,
-      });
-
-      if (!user) throw new Error(`User ${_id} has not been found.`);
-
       const foundModule = await moduleModel.findOne({
         _id: module_id,
         author_id: _id,
@@ -234,9 +230,7 @@ router.get(
         author_id: _id,
       };
 
-      const sortObj: CardSortObj = {
-        creation_date: 1,
-      };
+      const sortObj: CardSortObj = {};
 
       if (created === "newest") sortObj.creation_date = -1;
       if (created === "oldest") sortObj.creation_date = 1;
@@ -245,7 +239,7 @@ router.get(
 
       if (search)
         filterObj[by] = {
-          $regex: `${search}(?!br>|r>|>|\/div>|div>|iv>|v>|nbsp;|bsp;|sp;|p;|;|\/span>|span>|pan>|an>|n>)`,
+          $regex: filterRegex(search),
         };
 
       if (typeof sr === "boolean") {
@@ -291,21 +285,9 @@ router.get(
   query,
   async (req: GetMainModuleCardsReq, res: GetMainModuleCardsRes) => {
     try {
-      const {
-        _id: module_id,
-        search,
-        created = "newest",
-        by = "term",
-        sr,
-      } = res.locals.query;
+      const { _id: module_id } = res.locals.query;
 
       const _id = res.locals.user._id;
-
-      const user = await userModel.findOne({
-        _id,
-      });
-
-      if (!user) throw new Error(`User ${_id} has not been found.`);
 
       const filterObj: FilterQuery<Card> = {
         moduleID: module_id,
@@ -314,28 +296,15 @@ router.get(
 
       const sortObj: CardSortObj = { creation_date: 1 };
 
-      if (created === "newest") sortObj.creation_date = -1;
-      if (created === "oldest") sortObj.creation_date = 1;
-
       const all = await cardModel.countDocuments(filterObj);
 
-      if (search)
-        filterObj[by] = {
-          $regex: `${search}(?!br>|r>|>|\/div>|div>|iv>|v>|nbsp;|bsp;|sp;|p;|;|\/span>|span>|pan>|an>|n>)`,
-        };
-
-      if (typeof sr === "boolean") {
-        filterObj.studyRegime = sr;
-      }
-
       const cards = await cardModel.find(filterObj).sort(sortObj);
-      const cards_number = await cardModel.countDocuments(filterObj);
 
       res.status(200).json({
         entries: cards,
         pagination: {
           page: 0,
-          number: cards_number,
+          number: all,
           end: true,
           all,
         },

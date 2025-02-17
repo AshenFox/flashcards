@@ -1,6 +1,8 @@
 import { CardDto } from "@common/api/entities";
 import {
   GetMainCardsResponseDto,
+  GetMainModuleCardsResponseDto,
+  GetMainModuleResponseDto,
   GetMainModulesResponseDto,
 } from "@common/api/methods";
 
@@ -8,40 +10,42 @@ import {
   card_fields,
   defaultHomeCardsFilters,
   defaultHomeModulesFilters,
+  defaultModuleFilters,
   defaultPagination,
+  module_fields,
 } from "../initState";
-import {
-  Cards,
-  FilterValue,
-  MainCaseReducer,
-  Module,
-  SectionName,
-  SelectBy,
-  SelectCreated,
-} from "../types";
+import { Cards, FilterValue, MainCaseReducer, SectionName } from "../types";
 
 export const setIsServer: MainCaseReducer = state => {
   state.is_server = typeof document === "undefined";
 };
 
-export const clearModule: MainCaseReducer = state => {
+export const resetModuleData: MainCaseReducer = (state, action) => {
   state.module = null;
   state.cards = {};
 };
 
-export const setModule: MainCaseReducer<{ cards: Cards; module: Module }> = (
-  state,
-  action,
-) => {
-  state.module = action.payload.module;
-  state.cards = action.payload.cards;
+export const resetModuleCardsData: MainCaseReducer = state => {
+  state.cards = {};
 };
 
-export const setModuleCards: MainCaseReducer<{ cards: Cards }> = (
+export const setModule: MainCaseReducer<GetMainModuleResponseDto> = (
   state,
   action,
 ) => {
-  state.cards = { ...state.cards, ...action.payload.cards };
+  const { module, cards } = action.payload;
+
+  state.module = { ...module, ...module_fields };
+  state.cards = arr_to_obj(cards.entries);
+
+  state.sections.module.pagination = cards.pagination;
+};
+
+export const setModuleCards: MainCaseReducer<GetMainModuleCardsResponseDto> = (
+  state,
+  action,
+) => {
+  state.cards = { ...state.cards, ...arr_to_obj(action.payload.entries) };
 };
 
 export const setSectionFilter: MainCaseReducer<{
@@ -51,10 +55,6 @@ export const setSectionFilter: MainCaseReducer<{
 }> = (state, action) => {
   state.sections[action.payload.section].filters[action.payload.filter] =
     action.payload.value;
-};
-
-export const resetModuleCardsData: MainCaseReducer = state => {
-  state.cards = {};
 };
 
 export const resetHomeModulesData: MainCaseReducer = state => {
@@ -71,6 +71,7 @@ export const resetHomeCardsData: MainCaseReducer = state => {
 const defaultFilters = {
   homeModules: defaultHomeModulesFilters,
   homeCards: defaultHomeCardsFilters,
+  module: defaultModuleFilters,
 };
 
 export const resetSectionFilters: MainCaseReducer<SectionName> = (
@@ -80,35 +81,11 @@ export const resetSectionFilters: MainCaseReducer<SectionName> = (
   state.sections[action.payload].filters = defaultFilters[action.payload];
 };
 
-export const resetSearch: MainCaseReducer = state => {
-  state.search_cards = { value: "" };
-  state.select_by = { value: "term", label: "Term" };
-  state.select_created = { value: "newest", label: "Newest" };
-};
-
-export const setSelectBy: MainCaseReducer<SelectBy> = (state, action) => {
-  state.select_by = action.payload;
-};
-
-export const setSelectCreated: MainCaseReducer<SelectCreated> = (
-  state,
-  action,
-) => {
-  state.select_created = action.payload;
-};
-
 export const setScrollTop: MainCaseReducer<{ value: boolean }> = (
   state,
   action,
 ) => {
   state.scroll_top = action.payload.value;
-};
-
-export const controlSearchCards: MainCaseReducer<{ value: string }> = (
-  state,
-  action,
-) => {
-  state.search_cards = { value: action.payload.value };
 };
 
 export const setMainLoading: MainCaseReducer<boolean> = (state, action) => {

@@ -4,6 +4,7 @@
   display: flex;
   justify-content: space-between;
   padding-bottom: 3rem;
+  gap: 1rem;
 
   @media (max-width: $tablet) {
     flex-direction: column;
@@ -23,4 +24,10 @@
   color: var(--stronger-subtle-text-color);
   font-size: 2rem;
   font-weight: bold;
+  line-height: 4rem;
+  text-align: center;
+}
+
+.filter {
+  flex: 1;
 }

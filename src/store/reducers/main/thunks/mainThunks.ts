@@ -2,6 +2,9 @@ import { CardDto } from "@common/api/entities";
 import {
   GetMainCardsQueryDto,
   GetMainCardsResponseDto,
+  GetMainModuleCardsResponseDto,
+  GetMainModuleQueryDto,
+  GetMainModuleResponseDto,
   GetMainModulesQueryDto,
   GetMainModulesResponseDto,
 } from "@common/api/methods";
@@ -104,34 +107,32 @@ export const getModuleCards = (_id: string) => <ThunkActionApp>(async (
     try {
       const {
         auth: { user },
-        main: { search_cards, select_by, select_created },
+        main: {
+          sections: {
+            moduleCards: { loading },
+          },
+        },
       } = getState();
 
-      if (!user) return; // loading
+      if (!user || loading) return;
 
-      dispatch(mainActions.setMainLoading(true));
+      mainActions.setSectionLoading({ value: true, section: "moduleCards" });
 
-      const {
-        data,
-      }: {
-        data: {
-          cards: CardDto[];
-        };
-      } = await axios.get("/api/main/module/cards", {
-        params: {
-          _id,
-          filter: search_cards.value,
-          by: select_by.value,
-          created: select_created.value,
+      const { data } = await axios.get<GetMainModuleCardsResponseDto>(
+        "/api/main/module/cards",
+        {
+          params: {
+            _id,
+          },
         },
-      });
+      );
 
-      dispatch(mainActions.setModuleCards({ cards: arr_to_obj(data.cards) }));
+      dispatch(mainActions.setModuleCards(data));
     } catch (err) {
       console.error(err);
     }
 
-    dispatch(mainActions.setMainLoading(false));
+    mainActions.setSectionLoading({ value: false, section: "moduleCards" });
   });
 
 export const getModule = (_id: string) => <ThunkActionApp>(async (
@@ -141,35 +142,40 @@ export const getModule = (_id: string) => <ThunkActionApp>(async (
     try {
       const {
         auth: { user },
+        main: {
+          sections: {
+            module: { loading, filters },
+          },
+        },
       } = getState();
 
-      if (!user) return; // loading
-
-      dispatch(mainActions.setMainLoading(true));
-
-      const { data } = await axios.get<{
-        cards: CardDto[];
-        module: Module;
-      }>("/api/main/module", {
-        params: {
-          _id,
-        },
-      });
-
-      data.module = { ...data.module, ...module_fields };
+      if (!user || loading) return;
 
       dispatch(
-        mainActions.setModule({
-          ...data,
-          cards: arr_to_obj(data.cards),
-        }),
+        mainActions.setSectionLoading({ value: true, section: "module" }),
       );
+
+      const params: GetMainModuleQueryDto = {
+        _id,
+        ...filters,
+      };
+
+      const { data } = await axios.get<GetMainModuleResponseDto>(
+        "/api/main/module",
+        {
+          params,
+        },
+      );
+
+      dispatch(mainActions.setModule(data));
     } catch (err) {
       window.location.replace(`/home/modules`);
       console.error(err);
     }
 
-    dispatch(mainActions.setMainLoading(false));
+    dispatch(
+      mainActions.setSectionLoading({ value: false, section: "module" }),
+    );
   });
 
 export const getDraft = () => <ThunkActionApp>(async (dispatch, getState) => {

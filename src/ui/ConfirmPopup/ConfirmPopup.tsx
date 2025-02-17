@@ -19,27 +19,27 @@ const ConfirmPopup = ({
   onConfirm,
 }: ConfirmPopupProps) => {
   useEffect(() => {
+    const deactivateConfirm = (e: MouseEvent) => {
+      let questionEl = (e.target as HTMLElement).closest(`.${s.confirm}`);
+      let questionAnswerEl = (e.target as HTMLElement).closest(`.${s.answer}`);
+
+      if (questionEl) {
+        if (questionAnswerEl) setActive(false);
+      } else {
+        setActive(false);
+      }
+    };
+
     setTimeout(
       () =>
         active
-          ? window.addEventListener("click", deactivateConfirm.current)
-          : window.removeEventListener("click", deactivateConfirm.current),
-      0,
+          ? window.addEventListener("click", deactivateConfirm)
+          : window.removeEventListener("click", deactivateConfirm),
+      10,
     );
 
-    return () => window.removeEventListener("click", deactivateConfirm.current);
-  }, [active]);
-
-  const deactivateConfirm = useRef((e: MouseEvent) => {
-    let questionEl = (e.target as HTMLElement).closest(`.${s.confirm}`);
-    let questionAnswerEl = (e.target as HTMLElement).closest(`.${s.answer}`);
-
-    if (questionEl) {
-      if (questionAnswerEl) setActive(false);
-    } else {
-      setActive(false);
-    }
-  });
+    return () => window.removeEventListener("click", deactivateConfirm);
+  }, [active, setActive]);
 
   const clickYes = (e: ReactMouseEvent<HTMLDivElement>) => onConfirm?.();
 

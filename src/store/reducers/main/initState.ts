@@ -3,11 +3,14 @@ import {
   DefaultPagination,
   HomeCardsFilters,
   HomeCardsSection,
-  HomeModuleFilters,
+  HomeModulesFilters,
   HomeModulesSection,
   ImgurlFields,
   MainState,
+  ModuleCardsSection,
   ModuleFields,
+  ModuleFilters,
+  ModuleSection,
   SRCardsSection,
 } from "./types";
 
@@ -51,7 +54,7 @@ export const defaultPagination: DefaultPagination = {
   end: false,
 };
 
-export const defaultHomeModulesFilters: HomeModuleFilters = {
+export const defaultHomeModulesFilters: HomeModulesFilters = {
   search: "",
   created: "newest",
   draft: true,
@@ -79,6 +82,23 @@ export const defaultCardsSRSection: SRCardsSection = {
   loading: false,
 };
 
+export const defaultModuleFilters: ModuleFilters = {
+  search: "",
+  created: "newest",
+  by: "term",
+};
+
+export const defaultModuleSection: ModuleSection = {
+  loading: false,
+  filters: defaultModuleFilters,
+  pagination: defaultPagination,
+};
+
+export const defaultModuleCardsSection: ModuleCardsSection = {
+  loading: false,
+  pagination: defaultPagination,
+};
+
 const initState: MainState = {
   is_server: true,
   loading: false,
@@ -93,13 +113,9 @@ const initState: MainState = {
     homeModules: defaultHomeModulesSection,
     homeCards: defaultHomeCardsSection,
     srCards: defaultCardsSRSection,
+    module: defaultModuleSection,
+    moduleCards: defaultModuleCardsSection,
   },
-
-  search_cards: {
-    value: "",
-  },
-  select_by: { value: "term", label: "Term" },
-  select_created: { value: "newest", label: "Newest" },
 
   scroll_top: false,
 };

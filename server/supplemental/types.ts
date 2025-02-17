@@ -2,7 +2,7 @@ import { Response } from "express";
 import { Document } from "mongoose";
 import { User } from "types/entities";
 
-export type UserDocument = Document<unknown, any, User> &
+export type UserDocument = Document<unknown, unknown, User> &
   Omit<
     User &
       Required<{
@@ -11,12 +11,12 @@ export type UserDocument = Document<unknown, any, User> &
     never
   >;
 
-export type Locals<Query = any> = object & {
+export type Locals<Query = unknown> = object & {
   user: UserDocument;
   query: Query;
 };
 
-export type ResponseLocals<ResBody = any, Query = any> = Response<
+export type ResponseLocals<ResBody = unknown, Query = unknown> = Response<
   ResBody,
   Locals<Query>
 >;

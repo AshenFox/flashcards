@@ -1,4 +1,5 @@
 import { ModuleDto } from "@common/api/entities";
+import { filterRegex } from "@common/functions/filterRegex";
 import { usePlug } from "@helpers/hooks/usePlug";
 import DateStr from "@ui/DateStr";
 import { StudyRegimeIcon } from "@ui/Icons";
@@ -18,10 +19,7 @@ const Module = ({ data, filter = null }: ModuleProps) => {
   const { title, author, number, numberSR, draft, _id, creation_date } =
     data ?? {};
 
-  const filterRegExp = new RegExp(
-    `${filter}(?!br>|r>|>|\/div>|div>|iv>|v>|nbsp;|bsp;|sp;|p;|;|\/span>|span>|pan>|an>|n>)`,
-    "g",
-  );
+  const filterRegExp = new RegExp(filterRegex(filter), "g");
 
   const replacement = `<span class='${s.highlighted_text}'>${filter}</span>`;
 

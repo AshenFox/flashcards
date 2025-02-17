@@ -4,7 +4,7 @@ import DateStr from "@ui/DateStr";
 import { DeleteIcon, EditIcon } from "@ui/Icons";
 import Skeleton from "@ui/Skeleton";
 import Link from "next/link";
-import { memo, MouseEvent } from "react";
+import { memo, MouseEvent, useCallback } from "react";
 
 import SR from "./components/SR";
 import SRDrop from "./components/SRDrop";
@@ -23,7 +23,12 @@ const Info = () => {
     toggle_modal();
   };
 
-  const setActive = (value: boolean) => () => setModuleQuestion({ value });
+  const setActive = useCallback(
+    (value: boolean) => {
+      setModuleQuestion({ value });
+    },
+    [setModuleQuestion],
+  );
 
   return (
     <div className={s.info}>

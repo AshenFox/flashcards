@@ -1,3 +1,4 @@
+import { filterRegex } from "@common/functions/filterRegex";
 import Speaker from "@components/Speaker";
 import { usePlug } from "@helpers/hooks/usePlug";
 import { useActions } from "@store/hooks";
@@ -37,10 +38,7 @@ const Card = ({
     question,
   } = data;
 
-  const filterRegExp = new RegExp(
-    `${filter}(?!br>|r>|>|\/div>|div>|iv>|v>|nbsp;|bsp;|sp;|p;|;|\/span>|span>|pan>|an>|n>)`,
-    "g",
-  );
+  const filterRegExp = new RegExp(filterRegex(filter), "g");
 
   const replacement = `<span class=${s.highlighted_text}>${filter}</span>`;
 
