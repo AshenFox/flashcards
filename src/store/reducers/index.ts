@@ -1,6 +1,6 @@
 import { combineReducers } from "redux";
 
-import authReducer from "./auth/authReducer";
+import authReducer from "./auth/slice";
 import dimenReducer from "./dimen/dimenReducer";
 import gameReducer from "./game/slice";
 import headerReducer from "./header/headerReducer";

@@ -1,4 +1,4 @@
-import { UserDto } from "@common/api/entities";
+import { AuthActions } from "@store/reducers/auth/slice";
 import { GameActions } from "@store/reducers/game/slice";
 import { SrActions } from "@store/reducers/sr/slice";
 
@@ -19,6 +19,7 @@ export const CHANGE_MODAL_LOADING = "CHANGE_MODAL_LOADING";
 export const CLEAR_LOG_IN = "CLEAR_LOG_IN";
 export const CLEAR_SIGN_UP = "CLEAR_SIGN_UP";
 export const ENTER = "ENTER";
+export const CHECK_FIELD = "CHECK_FIELD";
 
 export type ChangeModalAction = {
   type: typeof CHANGE_MODAL;
@@ -83,32 +84,6 @@ export type ModalActions =
   | CheckFieldAction
   | EnterAction;
 
-// auth
-export const CHECK_FIELD = "CHECK_FIELD";
-export const LOG_OUT = "LOG_OUT";
-export const AUTHENTICATE = "AUTHENTICATE";
-export const CHANGE_AUTH_LOADING = "CHANGE_AUTH_LOADING";
-
-export type LogOutAction = {
-  type: typeof LOG_OUT;
-  payload?: {};
-};
-
-export type AuthenticateAction = {
-  type: typeof AUTHENTICATE;
-  payload: UserDto;
-};
-
-export type ChangeAuthLoadingAction = {
-  type: typeof CHANGE_AUTH_LOADING;
-  payload: boolean;
-};
-
-export type AuthActions =
-  | LogOutAction
-  | AuthenticateAction
-  | ChangeAuthLoadingAction;
-
 // header
 export const SET_DROPDOWN = "SET_DROPDOWN";
 
@@ -159,14 +134,14 @@ export type VoiceActions = InitEasySpeechAction | SetVoiceSpeakingAction;
 // ===========
 
 export type AppActions =
-  | AuthActions
   | ModalActions
   | DimenActions
   | VoiceActions
   | HeaderActions
   | SrActions // updated
   | MainActions
-  | GameActions;
+  | GameActions
+  | AuthActions;
 
 export type InferActions<T> =
   T extends Record<string, (...args: any[]) => infer R> ? R : never;

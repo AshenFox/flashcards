@@ -1,17 +1,12 @@
-import { UserDto } from "@common/api/entities";
 import axios from "@common/axios";
 
 import {
-  AUTHENTICATE,
-  CHANGE_AUTH_LOADING,
   CHANGE_MODAL_LOADING,
   CHECK_FIELD,
   CLEAR_LOG_IN,
   CLEAR_SIGN_UP,
   ENTER,
-  LOG_OUT,
 } from "../types";
-import { AppActions } from "../types";
 import { LogInErrors, SignUpErrors } from "./../reducers/modal/modalInitState";
 import { ThunkActionApp } from "./../store";
 
@@ -110,54 +105,3 @@ export const check_field = (type: string) => <ThunkActionApp>(async (
       payload: false,
     });
   });
-
-// AUTHENTICATE
-
-export const authenticate = () => <ThunkActionApp>(async (
-    dispatch,
-    getState,
-  ) => {
-    const pathname = window.location.pathname;
-    try {
-      dispatch({
-        type: CHANGE_AUTH_LOADING,
-        payload: true,
-      });
-
-      const token = localStorage.getItem("value");
-
-      if (!token && pathname !== "/") {
-        throw new Error("Authentication error - not allowed");
-      }
-
-      if (token) {
-        axios.defaults.headers.Authorization = `Bearer ${token}`;
-        const { data }: { data: UserDto } = await axios.get(`/api/auth`);
-
-        if (pathname === "/") {
-          window.location.replace("/home/modules");
-          throw new Error("Authentication error - logged in");
-        }
-
-        dispatch({ type: AUTHENTICATE, payload: data });
-      }
-    } catch (err) {
-      console.error(err);
-      if (pathname !== "/") window.location.replace("/");
-      return;
-    }
-
-    dispatch({ type: CHANGE_AUTH_LOADING, payload: false });
-  });
-
-// LOG_OUT
-export const log_out = (): AppActions => {
-  const pathname = window.location.pathname;
-
-  localStorage.removeItem("value");
-  axios.defaults.headers.Authorization = undefined;
-
-  if (pathname !== "/") window.location.replace("/");
-
-  return { type: LOG_OUT };
-};

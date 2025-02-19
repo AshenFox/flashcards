@@ -1,4 +1,6 @@
 import { UserDto } from "@common/api/entities";
+import { CaseReducer } from "@reduxjs/toolkit";
+import { Action } from "@store/types";
 
 export type AuthState = {
   user: false | UserDto;
@@ -14,6 +16,4 @@ export type Subscription = {
   };
 };
 
-const authInitState: AuthState = { user: false, loading: true };
-
-export default authInitState;
+export type AuthCaseReducer<P = undefined> = CaseReducer<AuthState, Action<P>>;

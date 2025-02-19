@@ -15,7 +15,7 @@ import Item from "./components/Item";
 import s from "./styles.module.scss";
 
 const Right = () => {
-  const { change_modal, toggle_modal, set_dropdown, log_out } = useActions();
+  const { change_modal, toggle_modal, set_dropdown, logOut } = useActions();
 
   const router = useRouter();
 
@@ -61,7 +61,7 @@ const Right = () => {
             </Item>
           )}
 
-          <Item onClick={log_out} className={clsx(s.item, isGame && s.isGame)}>
+          <Item onClick={logOut} className={clsx(s.item, isGame && s.isGame)}>
             Log out
           </Item>
 

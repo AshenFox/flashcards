@@ -20,7 +20,3 @@ export type UserCreator<
   registration_date: DateJSON<Options["isJson"]>;
   subscriptions: Subscriptions;
 };
-
-export type SubscriptionDto = SubscriptionCreator;
-export type SubscriptionsDto = SubscriptionsCreator<SubscriptionDto>;
-export type UserDto = UserCreator<SubscriptionsDto, { isJson: true }>;
