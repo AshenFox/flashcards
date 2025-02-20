@@ -1,10 +1,9 @@
-import middleware from "@supplemental/middleware";
+import { auth } from "@supplemental/middleware";
 import { ScrapingHeaders } from "@supplemental/scrape";
 import axios from "axios";
 import cheerio from "cheerio";
 import express, { Request, Response } from "express";
 
-const { auth } = middleware;
 const router = express.Router();
 
 type ResError = {

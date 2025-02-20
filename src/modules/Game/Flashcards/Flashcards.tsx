@@ -9,12 +9,8 @@ import ShuffleBtn from "./components/ControlButtons/ShuffleBtn";
 import Progress from "./components/Progress";
 
 const Flashcards = () => {
-  const {
-    get_module_cards,
-    clear_module,
-    reset_all_game_fields,
-    get_sr_cards,
-  } = useActions();
+  const { getModuleCards, resetModuleData, resetAllGameFields, getSRCards } =
+    useActions();
 
   const router = useRouter();
   const { _id, number } = router.query;
@@ -25,15 +21,15 @@ const Flashcards = () => {
 
   useEffect(() => {
     if (user) {
-      if (isSR && typeof number === "string") get_sr_cards(+number);
-      else if (typeof _id === "string") get_module_cards(_id);
+      if (isSR && typeof number === "string") getSRCards(+number);
+      else if (typeof _id === "string") getModuleCards(_id);
     }
   }, [user]);
 
   useEffect(() => {
     return () => {
-      reset_all_game_fields();
-      clear_module();
+      resetAllGameFields();
+      resetModuleData();
     };
   }, []);
 

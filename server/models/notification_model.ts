@@ -1,5 +1,5 @@
-import { Notification } from "@common/types";
 import mongoose from "mongoose";
+import { Notification } from "types/entities";
 
 const Schema = mongoose.Schema;
 

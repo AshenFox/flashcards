@@ -22,13 +22,13 @@ import s from "./styles.module.scss";
 
 const Dropdown = () => {
   const {
-    log_out,
-    set_flashcards_shuffled,
-    sort_flashcards,
-    shuffle_flashcards,
-    reset_flashcards_progress,
-    prepare_write,
-    set_dropdown,
+    shuffleFlashcards,
+    sortFlashcards,
+    setFlashcardsShuffled,
+    logOut,
+    resetFlashcardsProgress,
+    prepareWrite,
+    setDropdown,
   } = useActions();
 
   const shuffled = useAppSelector(s => s.game.flashcards.shuffled);
@@ -50,9 +50,9 @@ const Dropdown = () => {
     const menuItemEl = (e.target as HTMLElement).closest(".header__menu-item");
 
     if (menuEl) {
-      if (menuItemEl) set_dropdown(false);
+      if (menuItemEl) setDropdown({ value: false });
     } else {
-      set_dropdown(false);
+      setDropdown({ value: false });
     }
   });
 
@@ -71,20 +71,20 @@ const Dropdown = () => {
 
   const clickShuffle = (e: ReactMouseEvent<HTMLButtonElement>) => {
     if (shuffled) {
-      sort_flashcards();
-      set_flashcards_shuffled(false);
+      sortFlashcards();
+      setFlashcardsShuffled({ value: false });
     } else {
-      shuffle_flashcards();
-      set_flashcards_shuffled(true);
+      shuffleFlashcards();
+      setFlashcardsShuffled({ value: true });
     }
 
-    reset_flashcards_progress();
+    resetFlashcardsProgress();
   };
 
   const clickStartOver = (e: ReactMouseEvent<HTMLButtonElement>) =>
-    prepare_write();
+    prepareWrite();
 
-  const logOut = (e: ReactMouseEvent<HTMLButtonElement>) => log_out();
+  const onLogOutClick = (e: ReactMouseEvent<HTMLButtonElement>) => logOut();
 
   const stylesHeader: CSSProperties = {
     paddingTop: `${header_height - 1}px`,
@@ -104,7 +104,7 @@ const Dropdown = () => {
         </Item>
       )}
       {!isSettings && <Item href="/settings">Settings</Item>}
-      <Item onClick={logOut}>Log out</Item>
+      <Item onClick={onLogOutClick}>Log out</Item>
 
       {(isFlashcards || isWrite) && !isSR && <Divider>Options:</Divider>}
 

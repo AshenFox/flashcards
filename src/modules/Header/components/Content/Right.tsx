@@ -15,7 +15,7 @@ import Item from "./components/Item";
 import s from "./styles.module.scss";
 
 const Right = () => {
-  const { change_modal, toggle_modal, set_dropdown, log_out } = useActions();
+  const { changeModal, toggleModal, setDropdown, logOut } = useActions();
 
   const router = useRouter();
 
@@ -28,17 +28,17 @@ const Right = () => {
 
   const activateDropdown = useCallback(
     (e: MouseEvent<HTMLButtonElement>) => {
-      set_dropdown(true);
+      setDropdown({ value: true });
     },
-    [set_dropdown],
+    [setDropdown],
   );
 
   const openModal = useCallback(
     (value: "log_in" | "sign_up") => (e: MouseEvent<HTMLButtonElement>) => {
-      change_modal(value);
-      toggle_modal();
+      changeModal({ active_modal: value });
+      toggleModal();
     },
-    [change_modal, toggle_modal],
+    [changeModal, toggleModal],
   );
 
   return (
@@ -61,7 +61,7 @@ const Right = () => {
             </Item>
           )}
 
-          <Item onClick={log_out} className={clsx(s.item, isGame && s.isGame)}>
+          <Item onClick={logOut} className={clsx(s.item, isGame && s.isGame)}>
             Log out
           </Item>
 

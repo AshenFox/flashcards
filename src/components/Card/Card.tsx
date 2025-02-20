@@ -1,7 +1,8 @@
+import { filterRegex } from "@common/functions/filterRegex";
 import Speaker from "@components/Speaker";
 import { usePlug } from "@helpers/hooks/usePlug";
 import { useActions } from "@store/hooks";
-import { Card as CardType } from "@store/reducers/main/mainInitState";
+import { Card as CardType } from "@store/reducers/main/types";
 import ConfirmPopup from "@ui/ConfirmPopup";
 import DateStr from "@ui/DateStr";
 import Img from "@ui/Img";
@@ -25,7 +26,7 @@ const Card = ({
   filter = null,
   filterType = null,
 }: CardProps) => {
-  const { set_card_question, drop_card_sr } = useActions();
+  const { setCardQuestion, dropCardSR } = useActions();
 
   const {
     term = "",
@@ -37,10 +38,7 @@ const Card = ({
     question,
   } = data;
 
-  const filterRegExp = new RegExp(
-    `${filter}(?!br>|r>|>|\/div>|div>|iv>|v>|nbsp;|bsp;|sp;|p;|;|\/span>|span>|pan>|an>|n>)`,
-    "g",
-  );
+  const filterRegExp = new RegExp(filterRegex(filter), "g");
 
   const replacement = `<span class=${s.highlighted_text}>${filter}</span>`;
 
@@ -54,14 +52,14 @@ const Card = ({
   const [visible, ref, Plug] = usePlug(s.card);
 
   const onConfirm = useCallback(() => {
-    drop_card_sr(_id);
-  }, [_id, drop_card_sr]);
+    dropCardSR(_id);
+  }, [_id, dropCardSR]);
 
   const setActive = useCallback(
     (value: boolean) => {
-      set_card_question(_id, value);
+      setCardQuestion({ _id, value });
     },
-    [_id, set_card_question],
+    [_id, setCardQuestion],
   );
 
   return (

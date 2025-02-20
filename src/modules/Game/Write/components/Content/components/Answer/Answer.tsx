@@ -1,7 +1,7 @@
 import Speaker from "@components/Speaker";
 import SRIndicator from "@components/SRIndicator";
 import { useActions, useAppSelector } from "@store/hooks";
-import { Card } from "@store/reducers/main/mainInitState";
+import { Card } from "@store/reducers/main/types";
 import { EditIcon } from "@ui/Icons";
 import Img from "@ui/Img";
 import Input from "@ui/Input";
@@ -28,11 +28,11 @@ type AnswerProps = {
 
 const Answer = ({ data }: AnswerProps) => {
   const {
-    set_card_edit,
-    set_write_copy_answer_field,
-    next_write_card,
-    override_write_answer,
-    put_sr_answer,
+    setCardEdit,
+    setWriteCopyAnswerField,
+    nextWriteCard,
+    overrideWriteAnswer,
+    putSRAnswer,
   } = useActions();
 
   const router = useRouter();
@@ -73,29 +73,30 @@ const Answer = ({ data }: AnswerProps) => {
   }
 
   const changeCopyAnswer = (e: ChangeEvent<HTMLInputElement>) =>
-    set_write_copy_answer_field(e.target.value);
+    setWriteCopyAnswerField({ value: e.target.value });
 
-  const clickEdit = (e: MouseEvent<HTMLDivElement>) => set_card_edit(_id, true);
+  const clickEdit = (e: MouseEvent<HTMLDivElement>) =>
+    setCardEdit({ _id, value: true });
 
   const continueGame = useCallback(() => {
     if (canContinue) {
-      if (isFirstRound && isSR) put_sr_answer(_id, isCorrect ? 1 : -1);
-      next_write_card();
+      if (isFirstRound && isSR) putSRAnswer(_id, isCorrect ? 1 : -1);
+      nextWriteCard();
     }
   }, [
-    _id,
     canContinue,
     isCorrect,
     isFirstRound,
+    _id,
     isSR,
-    next_write_card,
-    put_sr_answer,
+    nextWriteCard,
+    putSRAnswer,
   ]);
 
   const overrideAnswer = useCallback(() => {
-    if (isFirstRound && isSR) put_sr_answer(_id, 1);
-    override_write_answer();
-  }, [_id, isFirstRound, isSR, override_write_answer, put_sr_answer]);
+    if (isFirstRound && isSR) putSRAnswer(_id, 1);
+    overrideWriteAnswer();
+  }, [_id, isFirstRound, isSR, overrideWriteAnswer, putSRAnswer]);
 
   const clickContinue = (e: MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();

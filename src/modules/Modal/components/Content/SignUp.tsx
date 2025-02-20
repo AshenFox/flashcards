@@ -1,5 +1,6 @@
 import Eye from "@modules/Modal/Eye";
 import { useActions, useAppSelector } from "@store/hooks";
+import { ModalInputFields } from "@store/reducers/modal/types";
 import Input from "@ui/Input";
 import { Button } from "@ui/InteractiveElement";
 import TextLabel from "@ui/TextLabel";
@@ -10,7 +11,7 @@ import Error from "./components/Error/Error";
 import s from "./styles.module.scss";
 
 const SignUp = () => {
-  const { change_modal, control_field, enter, check_field } = useActions();
+  const { changeModal, controlField, enter, checkField } = useActions();
 
   const username = useAppSelector(s => s.modal.sign_up.username);
   const password = useAppSelector(s => s.modal.sign_up.password);
@@ -30,7 +31,7 @@ const SignUp = () => {
 
   const onClickChangeModal =
     (value: "log_in") => (e: MouseEvent<HTMLButtonElement>) => {
-      change_modal(value);
+      changeModal({ active_modal: value });
     };
 
   const onCLickLoadingButton =
@@ -41,16 +42,16 @@ const SignUp = () => {
   const onChange = (e: ChangeEvent<HTMLInputElement>) => {
     const target = e.target;
     const value = target.value;
-    const name = target.name;
+    const name = target.name as ModalInputFields;
 
-    control_field("sign_up", name, value);
+    controlField({ field: "sign_up", name, value });
 
     // Timer control
     let timer = timers.current[name];
 
     if (timer) clearTimeout(timer);
     timers.current[name] = setTimeout(() => {
-      check_field(name);
+      checkField(name);
       timers.current[name] = null;
     }, 500);
   };
@@ -74,7 +75,7 @@ const SignUp = () => {
         type="text"
         className={clsx(
           s.signup_input,
-          !!username && userErr.ok && !timers.current.username && s.success,
+          !!username && userErr?.ok && !timers.current.username && s.success,
         )}
         id="username"
         placeholder="Enter a user name"

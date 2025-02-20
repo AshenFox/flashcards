@@ -1,5 +1,5 @@
 import { useActions } from "@store/hooks";
-import { Card } from "@store/reducers/main/mainInitState";
+import { Card } from "@store/reducers/main/types";
 import { DeleteIcon, ImgIcon } from "@ui/Icons";
 import Img from "@ui/Img";
 import clsx from "clsx";
@@ -12,24 +12,24 @@ type AddImgProps = {
 };
 
 const AddImg = ({ data }: AddImgProps) => {
-  const { set_gallery_search, set_card_imgurl, edit_card } = useActions();
+  const { setGallerySearch, setCardImgurl, editCard } = useActions();
 
   const { _id, imgurl, gallery } = data || {};
 
   const clickImgSearch = useCallback(
     (e: MouseEvent<HTMLDivElement>) => {
-      if (imgurl && e.target === deleteEl.current) return;
-      set_gallery_search(_id, !gallery.search);
+      if (imgurl && deleteEl.current?.contains(e.target as Node)) return;
+      setGallerySearch({ _id, value: !gallery.search });
     },
-    [_id, gallery.search, imgurl, set_gallery_search],
+    [_id, gallery.search, imgurl, setGallerySearch],
   );
 
   const clickImgDelete = useCallback(
     (e: MouseEvent<HTMLDivElement>) => {
-      set_card_imgurl(_id, "");
-      edit_card(_id);
+      setCardImgurl({ _id, value: "" });
+      editCard(_id);
     },
-    [_id, edit_card, set_card_imgurl],
+    [_id, editCard, setCardImgurl],
   );
 
   const deleteEl = useRef<HTMLDivElement>(null);

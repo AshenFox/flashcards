@@ -1,7 +1,7 @@
 import Speaker from "@components/Speaker";
 import SRIndicator from "@components/SRIndicator";
 import { useActions, useAppSelector } from "@store/hooks";
-import { Card } from "@store/reducers/main/mainInitState";
+import { Card } from "@store/reducers/main/types";
 import Img from "@ui/Img";
 import Input from "@ui/Input";
 import TextArea from "@ui/TextArea";
@@ -26,7 +26,7 @@ type QuestionProps = {
 };
 
 const Question = ({ data }: QuestionProps) => {
-  const { set_write_answer_field, check_write_answer } = useActions();
+  const { setWriteAnswerField, checkWriteAnswer } = useActions();
 
   const router = useRouter();
 
@@ -44,29 +44,29 @@ const Question = ({ data }: QuestionProps) => {
   );
 
   const changeAnswer = (e: ChangeEvent<HTMLInputElement>) =>
-    set_write_answer_field(e.target.value);
+    setWriteAnswerField({ value: e.target.value });
 
   const keyDownAnswer = useCallback(
     (e: KeyboardEvent) => {
       if (e.key === "Enter") {
         e.preventDefault();
-        check_write_answer();
+        checkWriteAnswer();
       }
     },
-    [check_write_answer],
+    [checkWriteAnswer],
   );
 
   const clickAnswer = useCallback(
     (e: MouseEvent<HTMLButtonElement>) => {
       e.preventDefault();
-      check_write_answer();
+      checkWriteAnswer();
     },
-    [check_write_answer],
+    [checkWriteAnswer],
   );
 
   const clickNotKnow = useCallback(() => {
-    check_write_answer(true);
-  }, [check_write_answer]);
+    checkWriteAnswer(true);
+  }, [checkWriteAnswer]);
 
   const disableDefault = useCallback<FormEventHandler<HTMLFormElement>>(e => {
     e.preventDefault();

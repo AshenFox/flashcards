@@ -1,8 +1,8 @@
 import { useActions } from "@store/hooks";
-import { Card } from "@store/reducers/main/mainInitState";
+import { Card } from "@store/reducers/main/types";
 import { DropStudyRegimeIcon } from "@ui/Icons";
 import Tooltip, { tooltipContainer } from "@ui/Tooltip";
-import clsx, { ClassValue } from "clsx";
+import clsx from "clsx";
 import { memo, MouseEvent } from "react";
 
 import s from "./styles.module.scss";
@@ -14,12 +14,12 @@ type SRDropProps = {
 };
 
 const SRDrop = ({ data }: SRDropProps) => {
-  const { set_card_question } = useActions();
+  const { setCardQuestion } = useActions();
 
   const { question, _id } = data;
 
   const clickDropSR = (e: MouseEvent<HTMLDivElement>) =>
-    set_card_question(_id, true);
+    setCardQuestion({ _id, value: true });
 
   return (
     <div

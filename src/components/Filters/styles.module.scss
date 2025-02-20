@@ -1,0 +1,134 @@
+@import "@styles/vars";
+
+.filter {
+  position: static;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 1rem;
+  transition: all 0.2s;
+
+  @media (max-width: $mobile) {
+    flex-direction: column;
+    align-items: start;
+  }
+}
+
+.search {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 1rem;
+
+  :global(.input__container) {
+    width: 100%;
+    max-width: 30rem;
+  }
+
+  @media (max-width: $mobile) {
+    flex-direction: row-reverse;
+    justify-content: start;
+  }
+}
+
+.filter_btn {
+  width: 3.2rem;
+  height: 3.2rem;
+  border-radius: 0.5rem;
+
+  svg {
+    width: 2.3rem;
+    height: 2.3rem;
+    fill: var(--icon-fill);
+  }
+
+  &.filled {
+    svg path:first-child {
+      opacity: 0.75;
+    }
+  }
+
+  &.active {
+    background-color: var(--active-color);
+
+    svg {
+      fill: var(--active-secondary-color);
+    }
+  }
+
+  &:global(.interactive_element__element):hover svg {
+    fill: var(--active-color);
+  }
+
+  &.active:global(.interactive_element__element) {
+    &:hover svg {
+      fill: var(--active-secondary-color);
+    }
+  }
+
+  &.disabled {
+    cursor: auto;
+    opacity: 0.5;
+
+    &:global(.interactive_element__element):hover {
+      svg {
+        fill: var(--icon-fill);
+      }
+    }
+  }
+}
+
+.group_container {
+  display: flex;
+  gap: 1rem;
+
+  @media (max-width: $mobile) {
+    flex-direction: row-reverse;
+  }
+}
+
+.group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 1rem;
+}
+
+.group_item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+
+  & .reset {
+    display: flex;
+    min-height: 3.5rem;
+    align-items: center;
+    padding-left: 1rem;
+    border-left: 1px solid var(--element-border-color);
+    margin-top: 2.1rem;
+    margin-left: 0.5rem;
+
+    @media (max-width: $mobile) {
+      padding: 0;
+      padding-right: 1rem;
+      border: none;
+      border-right: 1px solid var(--element-border-color);
+      margin-right: 0.5rem;
+      margin-left: 0;
+    }
+  }
+}
+
+.select {
+  width: 11.5rem;
+  order: 2;
+}
+
+.select_label {
+  order: 1;
+  color: var(--stronger-subtle-text-color);
+  font-size: 1.4rem;
+}

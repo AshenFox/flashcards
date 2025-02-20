@@ -6,8 +6,7 @@ import Body from "./components/Body/Body";
 import Header from "./components/Header/Header";
 
 const Module = () => {
-  const { get_module, clear_module, reset_fields_cards, reset_search } =
-    useActions();
+  const { getModule, resetModuleData, resetSectionFilters } = useActions();
 
   const router = useRouter();
   const { _id } = router.query;
@@ -15,16 +14,16 @@ const Module = () => {
   const user = useAppSelector(s => s.auth.user);
 
   useEffect(() => {
-    if (user && typeof _id === "string") get_module(_id);
+    if (user && typeof _id === "string") getModule(_id);
   }, [user]);
 
   useEffect(() => {
     return () => {
-      clear_module();
-      reset_fields_cards();
-      reset_search();
+      resetModuleData();
+      // think how you can save filters value for each specific module
+      resetSectionFilters("module");
     };
-  }, []);
+  }, [resetModuleData, resetSectionFilters]);
 
   return (
     <>

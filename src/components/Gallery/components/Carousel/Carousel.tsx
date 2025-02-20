@@ -1,4 +1,4 @@
-import { Card } from "@store/reducers/main/mainInitState";
+import { Card } from "@store/reducers/main/types";
 import clsx from "clsx";
 import { CSSProperties, memo, useMemo } from "react";
 

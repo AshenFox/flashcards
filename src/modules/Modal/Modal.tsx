@@ -6,7 +6,7 @@ import Content from "./components/Content";
 import s from "./styles.module.scss";
 
 const Modal = () => {
-  const { toggle_modal } = useActions();
+  const { toggleModal } = useActions();
 
   const is_modal = useAppSelector(s => s.modal.is_modal);
   const active_modal = useAppSelector(s => s.modal.active_modal);
@@ -47,10 +47,10 @@ const Modal = () => {
   }, [is_modal]);
 
   const onMouseDown = (e: MouseEvent<HTMLDivElement>) => {
-    if (e.target === modalEl.current) toggle_modal();
+    if (e.target === modalEl.current) toggleModal();
   };
 
-  const closeClick = (e: MouseEvent<HTMLDivElement>) => toggle_modal();
+  const closeClick = (e: MouseEvent<HTMLDivElement>) => toggleModal();
 
   return (
     <div

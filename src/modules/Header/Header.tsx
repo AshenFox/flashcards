@@ -12,7 +12,7 @@ import s from "./styles.module.scss";
 const Header = () => {
   const router = useRouter();
 
-  const { set_header_dimen } = useActions();
+  const { setHeaderDimen } = useActions();
 
   const user = useAppSelector(s => s.auth.user);
   const loading = useAppSelector(s => s.auth.loading);
@@ -20,12 +20,12 @@ const Header = () => {
   const isGame = getIsGame(router.pathname);
 
   const onSizeChange = useCallback(
-    () => set_header_dimen(headerEl.current),
-    [set_header_dimen],
+    () => setHeaderDimen({ el: headerEl.current }),
+    [setHeaderDimen],
   );
   const onSizeChangeDelayed = useCallback(
-    () => setTimeout(() => set_header_dimen(headerEl.current), 110),
-    [set_header_dimen],
+    () => setTimeout(() => setHeaderDimen({ el: headerEl.current }), 110),
+    [setHeaderDimen],
   );
 
   useEffect(() => {
@@ -47,8 +47,8 @@ const Header = () => {
   }, [onSizeChange, onSizeChangeDelayed]);
 
   useEffect(() => {
-    set_header_dimen(headerEl.current);
-  }, [user, loading, set_header_dimen]);
+    setHeaderDimen({ el: headerEl.current });
+  }, [user, loading, setHeaderDimen]);
 
   const headerEl = useRef<HTMLElement>(null);
 

@@ -5,7 +5,7 @@ import Score from "./component/Score";
 import s from "./styles.module.scss";
 
 const Round = () => {
-  const { next_write_round } = useActions();
+  const { nextWriteRound } = useActions();
 
   const answered = useAppSelector(s => s.game.write.answered);
   const rounds = useAppSelector(s => s.game.write.rounds);
@@ -31,12 +31,12 @@ const Round = () => {
   const roundNum = rounds.length + 1;
 
   const clickContinue = (e: MouseEvent<HTMLButtonElement>) => {
-    next_write_round();
+    nextWriteRound();
   };
 
   const keyDownContinue = (e: KeyboardEvent) => {
     if (e.key === "Enter") {
-      next_write_round();
+      nextWriteRound();
     }
   };
 

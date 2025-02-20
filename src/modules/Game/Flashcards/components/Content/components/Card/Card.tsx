@@ -1,7 +1,7 @@
 import Speaker from "@components/Speaker";
 import SRIndicator from "@components/SRIndicator";
 import { useActions } from "@store/hooks";
-import { Card as CardType } from "@store/reducers/main/mainInitState";
+import { Card as CardType } from "@store/reducers/main/types";
 import { EditIcon } from "@ui/Icons";
 import Img from "@ui/Img";
 import TextArea from "@ui/TextArea";
@@ -19,7 +19,7 @@ type CardProps = {
 };
 
 const Card = ({ data, side = "definition", position = null }: CardProps) => {
-  const { set_flashcards_side, set_card_edit } = useActions();
+  const { setFlashcardsSide, setCardEdit } = useActions();
 
   const router = useRouter();
   const { _id: _id_param } = router.query;
@@ -57,10 +57,11 @@ const Card = ({ data, side = "definition", position = null }: CardProps) => {
       if ((e.target as HTMLElement).closest(`.${s.transcription_hidden}`))
         return;
 
-      set_flashcards_side(value);
+      setFlashcardsSide({ value });
     };
 
-  const clickEdit = (e: MouseEvent<HTMLDivElement>) => set_card_edit(_id, true);
+  const clickEdit = (e: MouseEvent<HTMLDivElement>) =>
+    setCardEdit({ _id, value: true });
 
   return (
     <div className={cardClassName}>

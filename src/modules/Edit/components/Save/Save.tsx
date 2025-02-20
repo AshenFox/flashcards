@@ -7,15 +7,15 @@ import s from "./styles.module.scss";
 import { useSaveState } from "./useSaveActive";
 
 const Save = () => {
-  const { create_module } = useActions();
+  const { createModule } = useActions();
 
   const { active, loading } = useSaveState();
 
   const clickSave = useCallback(
     (e: MouseEvent<HTMLButtonElement>) => {
-      if (active) create_module();
+      if (active) createModule();
     },
-    [active, create_module],
+    [active, createModule],
   );
 
   return (

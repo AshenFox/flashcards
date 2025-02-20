@@ -12,7 +12,7 @@
     "prod": "docker-compose -f docker-compose.prod.yaml up -d",
     "prod-rebuild": "docker-compose -f docker-compose.prod.yaml up -d --no-deps --build app",
     "lint": "next lint",
-    "typescript": "tsc --extendedDiagnostics --noEmit",
+    "typescript": "tsc --extendedDiagnostics --noEmit --incremental false",
     "eslint": "eslint ./",
     "eslint:fix": "eslint ./ --fix",
     "stylelint:fix": "stylelint '**/*.{css,scss}' --fix",
@@ -22,6 +22,7 @@
     "scp-config": "scp -r ./config/ user@host:~/apps/flashcards"
   },
   "dependencies": {
+    "@reduxjs/toolkit": "^2.5.0",
     "@types/bcryptjs": "^2.4.2",
     "@types/cheerio": "^0.22.31",
     "@types/config": "^0.0.41",
@@ -49,6 +50,7 @@
     "next-themes": "^0.3.0",
     "normalize.css": "^8.0.1",
     "npm": "^8.6.0",
+    "query-string": "^7.1.3",
     "react": "^18.3.1",
     "react-contenteditable": "^3.3.7",
     "react-dom": "^18.3.1",
@@ -75,7 +77,6 @@
     "stylelint-order": "^6.0.4",
     "tsc-alias": "^1.8.10",
     "tsx": "^4.7.1",
-    "typescript": "^5.5.4",
     "typescript-plugin-css-modules": "^5.1.0"
   }
 }

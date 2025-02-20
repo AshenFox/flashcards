@@ -3,11 +3,11 @@ import { memo, useEffect } from "react";
 import { useActions } from "../../store/hooks";
 
 const Voice = () => {
-  const { init_easy_speech } = useActions();
+  const { initEasySpeech } = useActions();
 
   useEffect(() => {
-    init_easy_speech();
-  }, [init_easy_speech]);
+    initEasySpeech();
+  }, [initEasySpeech]);
 
   return <></>;
 };

@@ -7,9 +7,9 @@ import { memo, useMemo } from "react";
 
 const CardsContainer = () => {
   const cards = useAppSelector(s => s.main.cards);
-  const loading = useAppSelector(s => s.main.loading);
-  const search_cards = useAppSelector(s => s.main.search_cards);
-  const select_by = useAppSelector(s => s.main.select_by);
+  const loading = useAppSelector(s => s.main.sections.module.loading);
+  const search = useAppSelector(s => s.main.sections.module.filters.search);
+  const by = useAppSelector(s => s.main.sections.module.filters.by);
 
   const formatted_cards = useMemo(
     () => Object.values(cards).sort((a, b) => a.order - b.order),
@@ -27,19 +27,14 @@ const CardsContainer = () => {
             loading={loading}
           />
         ) : (
-          <Card
-            key={card._id}
-            data={card}
-            filter={search_cards.value}
-            filterType={select_by.value}
-          />
+          <Card key={card._id} data={card} filter={search} filterType={by} />
         ),
       )}
       {loading && <ScrollLoader active={loading} />}
       {!loading && (
         <NotFound
           resultsFound={formatted_cards.length}
-          filterValue={search_cards.value}
+          filterValue={search}
           notFoundMsg={value => (
             <>
               No cards matching <b>{`"${value}"`}</b> found.

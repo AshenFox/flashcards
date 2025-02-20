@@ -8,8 +8,12 @@ const ItemsNumber = () => {
   const router = useRouter();
   const { section } = router.query;
 
-  const all_modules_number = useAppSelector(s => s.main.all_modules_number);
-  const all_cards_number = useAppSelector(s => s.main.all_cards_number);
+  const all_modules_number = useAppSelector(
+    s => s.main.sections.homeModules.pagination.all,
+  );
+  const all_cards_number = useAppSelector(
+    s => s.main.sections.homeCards.pagination.all,
+  );
 
   return (
     <div className={s.number}>

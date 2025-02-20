@@ -7,7 +7,7 @@ import { memo, MouseEvent } from "react";
 import s from "./styles.module.scss";
 
 const SR = () => {
-  const { set_cards_sr } = useActions();
+  const { setCardsSR } = useActions();
 
   const cards = useAppSelector(s => s.main.cards);
 
@@ -22,8 +22,7 @@ const SR = () => {
     }
   }
 
-  const clickSwitch = (e: MouseEvent<HTMLLabelElement>) =>
-    set_cards_sr(!active);
+  const clickSwitch = (e: MouseEvent<HTMLLabelElement>) => setCardsSR(!active);
 
   return (
     <Switch
