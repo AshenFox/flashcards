@@ -3,13 +3,13 @@ import { useActions, useAppSelector } from "@store/hooks";
 import { memo, useEffect } from "react";
 
 const Finish = () => {
-  const { next_write_round } = useActions();
+  const { nextWriteRound } = useActions();
 
   const all_cards_num = useAppSelector(s => s.game.write.all_cards_num);
   const rounds = useAppSelector(s => s.game.write.rounds);
 
   useEffect(() => {
-    if (all_cards_num) next_write_round();
+    if (all_cards_num) nextWriteRound();
   }, []);
 
   return (

@@ -1,5 +1,6 @@
+import { ModuleDto } from "@common/api/entities";
+import { filterRegex } from "@common/functions/filterRegex";
 import { usePlug } from "@helpers/hooks/usePlug";
-import { Module as ModuleType } from "@store/reducers/main/mainInitState";
 import DateStr from "@ui/DateStr";
 import { StudyRegimeIcon } from "@ui/Icons";
 import TextArea from "@ui/TextArea";
@@ -10,7 +11,7 @@ import { memo } from "react";
 import s from "./styles.module.scss";
 
 type ModuleProps = {
-  data: ModuleType;
+  data: ModuleDto;
   filter?: string;
 };
 
@@ -18,10 +19,7 @@ const Module = ({ data, filter = null }: ModuleProps) => {
   const { title, author, number, numberSR, draft, _id, creation_date } =
     data ?? {};
 
-  const filterRegExp = new RegExp(
-    `${filter}(?!br>|r>|>|\/div>|div>|iv>|v>|nbsp;|bsp;|sp;|p;|;|\/span>|span>|pan>|an>|n>)`,
-    "g",
-  );
+  const filterRegExp = new RegExp(filterRegex(filter), "g");
 
   const replacement = `<span class='${s.highlighted_text}'>${filter}</span>`;
 

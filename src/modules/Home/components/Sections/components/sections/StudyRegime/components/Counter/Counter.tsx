@@ -13,12 +13,12 @@ import {
 import s from "./styles.module.scss";
 
 const Counter = () => {
-  const { set_sr_counter } = useActions();
+  const { setSRCounter } = useActions();
 
   const counter = useAppSelector(s => s.sr.counter);
 
   const handleCounterChange = (e: ChangeEvent<HTMLInputElement>) =>
-    set_sr_counter(null, e.target.value);
+    setSRCounter(null, e.target.value);
 
   const intervalRef = useRef<ReturnType<typeof setInterval>>(null);
   const timeoutRef = useRef<ReturnType<typeof setTimeout>>(null);
@@ -27,8 +27,8 @@ const Counter = () => {
   const single =
     (value: "stepUp" | "stepDown") => (e: MouseEvent<HTMLDivElement>) => {
       if (blockSingle.current) return;
-      if (value === "stepUp") set_sr_counter(1);
-      if (value === "stepDown") set_sr_counter(-1);
+      if (value === "stepUp") setSRCounter(1);
+      if (value === "stepDown") setSRCounter(-1);
     };
 
   const multiple =
@@ -39,8 +39,8 @@ const Counter = () => {
         blockSingle.current = true;
 
         intervalRef.current = setInterval(() => {
-          if (value === "stepUp") set_sr_counter(5);
-          if (value === "stepDown") set_sr_counter(-5);
+          if (value === "stepUp") setSRCounter(5);
+          if (value === "stepDown") setSRCounter(-5);
         }, 100);
       }, 500);
     };

@@ -1,5 +1,5 @@
-import { Module } from "@common/types";
 import mongoose, { SortOrder } from "mongoose";
+import { Module } from "types/entities";
 
 const Schema = mongoose.Schema;
 

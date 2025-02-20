@@ -1,61 +1,93 @@
-import Filter, { Option } from "@components/Filter";
+import Filters, { FilterData, SetFilterValue } from "@components/Filters";
 import NotFound from "@components/NotFound";
 import { useActions } from "@store/hooks";
+import { defaultHomeModulesFilters } from "@store/reducers/main/initState";
 import { useAppSelector } from "@store/store";
 import ScrollLoader from "@ui/ScrollLoader";
-import React, { Fragment, memo, useEffect } from "react";
+import React, { Fragment, memo, useCallback, useEffect } from "react";
 
 import Divider from "../components/Divider";
 import s from "../styles.module.scss";
 import Module from "./components/Module";
 
-const optionsBy: Option[] = [
-  { value: "newest", label: "Newest" },
-  { value: "oldest", label: "Oldest" },
+const filtersData: FilterData[] = [
+  {
+    id: "created",
+    label: "Date Order",
+    defaultValue: defaultHomeModulesFilters.created,
+    options: [
+      { value: "newest", label: "Newest" },
+      { value: "oldest", label: "Oldest" },
+    ],
+  },
+  {
+    id: "sr",
+    label: "SR",
+    defaultValue: defaultHomeModulesFilters.sr,
+    options: [
+      { value: undefined, label: "All" },
+      { value: true, label: "In" },
+      { value: false, label: "Out" },
+    ],
+  },
+  {
+    id: "draft",
+    label: "Draft",
+    defaultValue: defaultHomeModulesFilters.draft,
+    options: [
+      { value: true, label: "Show" },
+      { value: false, label: "Hide" },
+    ],
+  },
 ];
 
 const Modules = () => {
   const modules = useAppSelector(s => s.main.modules);
-  const draft = useAppSelector(s => s.main.draft);
-  const loading = useAppSelector(s => s.main.loading);
-  const search_modules = useAppSelector(s => s.main.search_modules);
-  const select_created = useAppSelector(s => s.main.select_created);
+  const draft = useAppSelector(s => s.main.module);
+  const loading = useAppSelector(s => s.main.sections.homeModules.loading);
+  const filters = useAppSelector(s => s.main.sections.homeModules.filters);
+  const { search } = filters;
 
   const {
-    get_modules,
-    control_search_modules,
-    reset_fields_modules,
-    set_select_created,
-    reset_search,
+    getModules,
+    resetHomeModulesData,
+    resetSectionFilters,
+    setSectionFilter,
   } = useActions();
+
+  const setFilterValue = useCallback<SetFilterValue>(
+    (filter, value) => {
+      setSectionFilter({
+        section: "homeModules",
+        filter,
+        value,
+      });
+    },
+    [setSectionFilter],
+  );
+
+  const resetFilters = useCallback(() => {
+    resetSectionFilters("homeModules");
+  }, [resetSectionFilters]);
 
   useEffect(() => {
     return () => {
-      reset_fields_modules();
-      reset_search();
+      resetHomeModulesData();
     };
-  }, []);
+  }, [resetHomeModulesData]);
 
   return (
     <>
-      <Filter
+      <Filters
+        filtersValues={filters}
+        filtersData={filtersData}
+        placeholder={"Type to filter..."}
         className={s.filter}
-        getData={get_modules}
-        resetData={reset_fields_modules}
-        search={{
-          value: search_modules.value,
-          setValue: control_search_modules,
-          placeholder: "Type to filter...",
-        }}
-        selects={[
-          {
-            id: "created",
-            value: select_created,
-            options: optionsBy,
-            setValue: set_select_created,
-            alwaysReload: true,
-          },
-        ]}
+        alwaysReload
+        setFilterValue={setFilterValue}
+        getData={getModules}
+        resetData={resetHomeModulesData}
+        resetFilters={resetFilters}
       />
       {draft && (
         <Fragment>
@@ -73,7 +105,7 @@ const Modules = () => {
               prevDateString={prevDateString}
               curDateString={curDateString}
             />
-            <Module data={module} filter={search_modules.value} />
+            <Module data={module} filter={search} />
           </Fragment>
         );
       })}
@@ -81,7 +113,7 @@ const Modules = () => {
       {!loading && (
         <NotFound
           resultsFound={modules.length}
-          filterValue={search_modules.value}
+          filterValue={search}
           notFoundMsg={value => (
             <>
               No modules matching <b>{`"${value}"`}</b> found.

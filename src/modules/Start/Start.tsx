@@ -5,11 +5,11 @@ import { memo, MouseEvent } from "react";
 import s from "./styles.module.scss";
 
 const Start = () => {
-  const { change_modal, toggle_modal } = useActions();
+  const { changeModal, toggleModal } = useActions();
 
   const click = (value: "log_in") => (e: MouseEvent<HTMLButtonElement>) => {
-    change_modal(value);
-    toggle_modal();
+    changeModal({ active_modal: value });
+    toggleModal();
   };
 
   return (

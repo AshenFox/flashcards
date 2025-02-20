@@ -1,5 +1,5 @@
 import { useActions } from "@store/hooks";
-import { Card } from "@store/reducers/main/mainInitState";
+import { Card } from "@store/reducers/main/types";
 import { CloseIcon } from "@ui/Icons";
 import { memo, MouseEvent, useCallback } from "react";
 
@@ -10,16 +10,16 @@ type CloseProps = {
 };
 
 const Close = ({ data }: CloseProps) => {
-  const { set_card_edit, reset_gallery_fields } = useActions();
+  const { setCardEdit, resetGalleryFields } = useActions();
 
   const { _id } = data || {};
 
   const clickClose = useCallback(
     (e: MouseEvent<HTMLDivElement>) => {
-      set_card_edit(_id, false);
-      reset_gallery_fields(_id);
+      setCardEdit({ _id, value: false });
+      resetGalleryFields({ _id });
     },
-    [_id, reset_gallery_fields, set_card_edit],
+    [_id, resetGalleryFields, setCardEdit],
   );
 
   return (

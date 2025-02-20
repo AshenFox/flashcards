@@ -4,14 +4,14 @@ import DateStr from "@ui/DateStr";
 import { DeleteIcon, EditIcon } from "@ui/Icons";
 import Skeleton from "@ui/Skeleton";
 import Link from "next/link";
-import { memo, MouseEvent } from "react";
+import { memo, MouseEvent, useCallback } from "react";
 
 import SR from "./components/SR";
 import SRDrop from "./components/SRDrop";
 import s from "./styles.module.scss";
 
 const Info = () => {
-  const { change_modal, toggle_modal, set_module_question, drop_cards_sr } =
+  const { changeModal, toggleModal, setModuleQuestion, dropCardsSR } =
     useActions();
 
   const currentModule = useAppSelector(s => s.main.module);
@@ -19,9 +19,16 @@ const Info = () => {
   const { author, _id, creation_date, question } = currentModule || {};
 
   const openModal = (value: "delete") => (e: MouseEvent<HTMLDivElement>) => {
-    change_modal(value);
-    toggle_modal();
+    changeModal({ active_modal: value });
+    toggleModal();
   };
+
+  const setActive = useCallback(
+    (value: boolean) => {
+      setModuleQuestion({ value });
+    },
+    [setModuleQuestion],
+  );
 
   return (
     <div className={s.info}>
@@ -30,7 +37,7 @@ const Info = () => {
           Created <DateStr date={creation_date} /> by
         </span>
         <span className={s.nickname}>
-          {module ? author : <Skeleton width={100} />}
+          {currentModule ? author : <Skeleton width={100} />}
         </span>
       </div>
 
@@ -38,8 +45,8 @@ const Info = () => {
         <ConfirmPopup
           className={s.confirm}
           active={question}
-          setActive={set_module_question}
-          onConfirm={drop_cards_sr}
+          setActive={setActive}
+          onConfirm={dropCardsSR}
           question="Drop all cards study progress?"
         />
         <SRDrop />

@@ -165,8 +165,8 @@
   margin-top: 3rem;
   text-align: center;
 
-  &[data-correct="false"] {
-    & button {
+  &.incorrect {
+    button {
       background-color: var(--inactive-color);
       color: var(--inactive-secondary-color);
       cursor: auto;
@@ -227,6 +227,6 @@
   }
 
   & :global(.input__input) {
-    font-size: 1.5rem;
+    font-size: 1.7rem;
   }
 }

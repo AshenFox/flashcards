@@ -1,5 +1,5 @@
 import { useActions } from "@store/hooks";
-import { Card } from "@store/reducers/main/mainInitState";
+import { Card } from "@store/reducers/main/types";
 import { EditIcon } from "@ui/Icons";
 import clsx from "clsx";
 import { memo, MouseEvent } from "react";
@@ -11,11 +11,12 @@ type EditProps = {
 };
 
 const Edit = ({ data }: EditProps) => {
-  const { set_card_edit } = useActions();
+  const { setCardEdit } = useActions();
 
   const { _id } = data;
 
-  const clickEdit = (e: MouseEvent<HTMLDivElement>) => set_card_edit(_id, true);
+  const clickEdit = (e: MouseEvent<HTMLDivElement>) =>
+    setCardEdit({ _id, value: true });
 
   return (
     <div className={clsx(s.controls_item, s.edit)} onClick={clickEdit}>

@@ -5,25 +5,28 @@
   padding-left: 1.5rem;
   border-right: 1px solid var(--element-border-color);
 
-  :global(.tooltip__tooltip) {
-    left: 1.5rem;
-  }
-
-  :global(.switch__checkbox):checked {
-    & ~ :global(.tooltip__tooltip) {
-      color: var(--success-color);
+  :global {
+    .tooltip__tooltip {
+      left: 1.5rem;
     }
 
-    & ~ :global(.switch__switch) {
-      border-color: var(--success-color);
-
-      &::after {
-        background-color: var(--success-color);
+    .switch__checkbox:checked {
+      & ~ .tooltip__tooltip {
+        border-color: var(--success-color);
+        color: var(--success-color);
       }
-    }
 
-    & ~ svg {
-      fill: var(--success-color);
+      & ~ .switch__switch {
+        border-color: var(--success-color);
+
+        &::after {
+          background-color: var(--success-color);
+        }
+      }
+
+      & ~ svg {
+        fill: var(--success-color);
+      }
     }
   }
 }

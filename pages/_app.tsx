@@ -3,7 +3,6 @@ import "react-loading-skeleton/dist/skeleton.css";
 
 import Head from "@configuration/Head";
 import PasteControl from "@configuration/PasteControl";
-import RouterConfiguration from "@configuration/RouterConfiguration";
 import TabUpdateController from "@configuration/TabUpdateController";
 import Theme from "@configuration/Theme";
 import Voice from "@configuration/Voice";
@@ -26,7 +25,6 @@ const MyApp = ({ Component, pageProps }: AppProps) => (
       </AuthWrapper>
       <AuthSpinner />
       <Voice />
-      <RouterConfiguration />
       <TabUpdateController />
     </Provider>
     <PasteControl />

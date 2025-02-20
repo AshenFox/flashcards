@@ -11,7 +11,7 @@ type ControlProps = {
 };
 
 const Control = ({ direction, _id }: ControlProps) => {
-  const { move_gallery } = useActions();
+  const { moveGallery } = useActions();
 
   const cards = useAppSelector(s => s.main.cards);
 
@@ -40,16 +40,14 @@ const Control = ({ direction, _id }: ControlProps) => {
 
   const clickControl = useCallback(
     (e: MouseEvent<HTMLDivElement>) => {
-      if (active) move_gallery(_id, direction);
+      if (active) moveGallery({ _id, value: direction });
     },
-    [_id, active, direction, move_gallery],
+    [_id, active, direction, moveGallery],
   );
 
   return (
     <div
-      className={clsx(s.control, s[direction])}
-      data-control_el="true"
-      data-active={active}
+      className={clsx(s.control, s[direction], { [s.disabled]: !active })}
       onClick={clickControl}
     >
       <button>

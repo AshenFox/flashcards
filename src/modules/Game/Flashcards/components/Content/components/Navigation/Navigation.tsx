@@ -8,10 +8,10 @@ import s from "./styles.module.scss";
 
 const Navigation = () => {
   const {
-    set_flashcards_progress,
-    save_flashcards_answer,
-    set_flashcards_side,
-    put_sr_answer,
+    saveFlashcardsAnswer,
+    setFlashcardsSide,
+    setFlashcardsProgress,
+    putSRAnswer,
   } = useActions();
 
   const router = useRouter();
@@ -28,12 +28,16 @@ const Navigation = () => {
     (value: "next" | "prev", cardAnswer?: "correct" | "incorrect") =>
     (e: MouseEvent<HTMLDivElement | HTMLButtonElement>) => {
       if (value === "next" && isSR) {
-        if (cardAnswer === "correct") put_sr_answer(activeCardData._id, 1);
-        if (cardAnswer === "incorrect") put_sr_answer(activeCardData._id, -1);
+        const { _id } = activeCardData;
+        if (cardAnswer === "correct") putSRAnswer(_id, 1);
+        if (cardAnswer === "incorrect") putSRAnswer(_id, -1);
 
-        save_flashcards_answer(activeCardData._id, cardAnswer);
+        saveFlashcardsAnswer({
+          _id,
+          answer: cardAnswer,
+        });
       }
-      set_flashcards_progress(value);
+      setFlashcardsProgress(value);
     };
 
   const cardsArr = Object.values(cards);
@@ -52,36 +56,43 @@ const Navigation = () => {
     const keyDown = (e: KeyboardEvent) => {
       if (e.key === "ArrowUp" || e.key === "ArrowDown") {
         if (sideRef.current === "term") {
-          set_flashcards_side("definition");
+          setFlashcardsSide({ value: "definition" });
           return;
         }
         if (sideRef.current === "definition") {
-          set_flashcards_side("term");
+          setFlashcardsSide({ value: "term" });
           return;
         }
       }
 
       if (isSR && isTurnedRef.current) {
+        const _id = _idRef.current;
         if (e.key === "ArrowRight") {
-          put_sr_answer(_idRef.current, 1);
-          save_flashcards_answer(_idRef.current, "correct");
-          set_flashcards_progress("next");
+          putSRAnswer(_id, 1);
+          saveFlashcardsAnswer({
+            _id,
+            answer: "correct",
+          });
+          setFlashcardsProgress("next");
         }
 
         if (e.key === "ArrowLeft") {
-          put_sr_answer(_idRef.current, -1);
-          save_flashcards_answer(_idRef.current, "incorrect");
-          set_flashcards_progress("next");
+          putSRAnswer(_id, -1);
+          saveFlashcardsAnswer({
+            _id,
+            answer: "incorrect",
+          });
+          setFlashcardsProgress("next");
         }
       }
 
       if (!isSR) {
         if (e.key === "ArrowLeft") {
-          set_flashcards_progress("prev");
+          setFlashcardsProgress("prev");
         }
 
         if (e.key === "ArrowRight") {
-          set_flashcards_progress("next");
+          setFlashcardsProgress("next");
         }
       }
     };
@@ -94,18 +105,20 @@ const Navigation = () => {
   return (
     <div className={s.navigation}>
       {isSR && (
-        <div className={s.question} data-active={is_turned}>
+        <div
+          className={clsx(s.question, {
+            [s.active]: is_turned,
+          })}
+        >
           <p>Did you know the answer?</p>
           <div
-            className={s.answer}
-            data-answer="true"
+            className={clsx(s.answer, s.correct)}
             onClick={clickNavItem("next", "correct")}
           >
             <span>Yes</span>
           </div>
           <div
-            className={s.answer}
-            data-answer="false"
+            className={clsx(s.answer, s.incorrect)}
             onClick={clickNavItem("next", "incorrect")}
           >
             <span>No</span>

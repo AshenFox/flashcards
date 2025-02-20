@@ -10,11 +10,11 @@ import Progress from "./components/Progress";
 
 const Write = () => {
   const {
-    get_module_cards,
-    clear_module,
-    prepare_write,
-    reset_all_game_fields,
-    get_sr_cards,
+    resetModuleData,
+    resetAllGameFields,
+    getModuleCards,
+    prepareWrite,
+    getSRCards,
   } = useActions();
 
   const cards = useAppSelector(s => s.main.cards);
@@ -29,22 +29,21 @@ const Write = () => {
 
   useEffect(() => {
     return () => {
-      reset_all_game_fields();
-      clear_module();
+      resetAllGameFields();
+      resetModuleData();
     };
   }, []);
 
   useEffect(() => {
     if (user) {
-      if (isSR && typeof number === "string") get_sr_cards(+number);
-      else if (typeof _id === "string") get_module_cards(_id);
+      if (isSR && typeof number === "string") getSRCards(+number);
+      else if (typeof _id === "string") getModuleCards(_id);
     }
   }, [user]);
 
   useEffect(() => {
     if (length) {
-      prepare_write();
-      // cardPrev.current = cards;
+      prepareWrite();
     }
   }, [length]);
 

@@ -7,12 +7,14 @@
     margin-right: 1.3rem;
   }
 
-  :global(.switch__checkbox):checked {
-    & ~ :global(.switch__switch) {
-      border-color: var(--success-color);
+  :global {
+    .switch__checkbox:checked {
+      & ~ .switch__switch {
+        border-color: var(--success-color);
 
-      &::after {
-        background-color: var(--success-color);
+        &::after {
+          background-color: var(--success-color);
+        }
       }
     }
   }
@@ -42,7 +44,7 @@
     color: var(--danger-color);
   }
 
-  &[data-active="true"] {
+  &.question {
     :global(.tooltip__tooltip) {
       opacity: 0 !important;
     }

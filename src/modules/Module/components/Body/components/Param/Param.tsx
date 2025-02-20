@@ -1,31 +1,72 @@
-import Filter, { Option } from "@components/Filter";
+import Filters, { FilterData, SetFilterValue } from "@components/Filters";
 import { useActions, useAppSelector } from "@store/hooks";
-import { memo } from "react";
+import { defaultModuleFilters } from "@store/reducers/main/initState";
+import { memo, useCallback } from "react";
 
 import s from "./styles.module.scss";
 
-const optionsBy: Option[] = [
-  { value: "term", label: "Term" },
-  { value: "definition", label: "Definition" },
+const filtersData: FilterData[] = [
+  {
+    id: "created",
+    label: "Date Order",
+    defaultValue: defaultModuleFilters.created,
+    options: [
+      { value: "newest", label: "Newest" },
+      { value: "oldest", label: "Oldest" },
+    ],
+  },
+  {
+    id: "sr",
+    label: "SR",
+    defaultValue: defaultModuleFilters.sr,
+    options: [
+      { value: undefined, label: "All" },
+      { value: true, label: "In" },
+      { value: false, label: "Out" },
+    ],
+  },
+  {
+    id: "by",
+    label: "By",
+    defaultValue: defaultModuleFilters.by,
+    options: [
+      { value: "term", label: "Term" },
+      { value: "definition", label: "Definition" },
+    ],
+  },
 ];
 
 const Param = () => {
-  const search_cards = useAppSelector(s => s.main.search_cards);
-  const select_by = useAppSelector(s => s.main.select_by);
   const currentModule = useAppSelector(s => s.main.module);
+  const filters = useAppSelector(s => s.main.sections.module.filters);
 
   const { _id, number } = currentModule || {};
 
   const {
-    control_search_cards,
-    reset_fields_cards,
-    set_select_by,
-    get_module_cards,
+    setSectionFilter,
+    resetSectionFilters,
+    resetModuleCardsData,
+    getModule,
   } = useActions();
 
-  const getData = () => {
-    get_module_cards(_id);
-  };
+  const setFilterValue = useCallback<SetFilterValue>(
+    (filter, value) => {
+      setSectionFilter({
+        section: "module",
+        filter,
+        value,
+      });
+    },
+    [setSectionFilter],
+  );
+
+  const resetFilters = useCallback(() => {
+    resetSectionFilters("module");
+  }, [resetSectionFilters]);
+
+  const getData = useCallback(() => {
+    getModule(_id);
+  }, [_id, getModule]);
 
   return (
     <div className={s.param}>
@@ -34,23 +75,16 @@ const Param = () => {
         <span>{number ? number : 0}</span>
         <span>{" )"}</span>
       </div>
-      <Filter
-        className={s.search}
+      <Filters
+        filtersValues={filters}
+        filtersData={filtersData}
+        placeholder={"Type to filter..."}
+        className={s.filter}
+        alwaysReload
+        setFilterValue={setFilterValue}
         getData={getData}
-        resetData={reset_fields_cards}
-        search={{
-          value: search_cards.value,
-          setValue: control_search_cards,
-          placeholder: "Type to filter by ...",
-        }}
-        selects={[
-          {
-            id: "by",
-            value: select_by,
-            options: optionsBy,
-            setValue: set_select_by,
-          },
-        ]}
+        resetData={resetModuleCardsData}
+        resetFilters={resetFilters}
       />
     </div>
   );

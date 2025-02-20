@@ -1,5 +1,5 @@
 import { useActions } from "@store/hooks";
-import { Card } from "@store/reducers/main/mainInitState";
+import { Card } from "@store/reducers/main/types";
 import Tooltip, { tooltipContainer } from "@ui/Tooltip";
 import clsx from "clsx";
 import { memo, MouseEvent, useCallback } from "react";
@@ -11,20 +11,24 @@ type ScrapeProps = {
 };
 
 const Scrape = ({ data }: ScrapeProps) => {
-  const { scrape_dictionary } = useActions();
+  const { scrapeDictionary } = useActions();
   const { _id, scrape } = data || {};
 
   const { loading } = scrape || {};
 
   const clickScrapeButton = useCallback(
     (value: "cod" | "urban") => (e: MouseEvent<HTMLDivElement>) => {
-      scrape_dictionary(_id, value);
+      scrapeDictionary(_id, value);
     },
-    [_id, scrape_dictionary],
+    [_id, scrapeDictionary],
   );
 
   return (
-    <div className={s.scrape} data-loading={loading}>
+    <div
+      className={clsx(s.scrape, {
+        [s.loading]: loading,
+      })}
+    >
       <div
         className={clsx(s.button, s.cod, tooltipContainer)}
         onClick={clickScrapeButton("cod")}

@@ -12,7 +12,7 @@ const StudyRegime = () => {
   const all_num = useAppSelector(s => s.sr.all_num);
   const repeat_num = useAppSelector(s => s.sr.repeat_num);
   const counter = useAppSelector(s => s.sr.counter);
-  const loading = useAppSelector(s => s.main.loading);
+  const loading = useAppSelector(s => s.sr.loading);
 
   return (
     <div className={s.study_regime}>

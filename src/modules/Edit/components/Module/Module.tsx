@@ -12,24 +12,26 @@ import { SaveAllCards } from "./components";
 import s from "./styles.module.scss";
 
 const Module = () => {
-  const { control_module, edit_module } = useActions();
+  const { controlModule, editModule } = useActions();
 
   const currentModule = useAppSelector(s => s.main.module);
-  const loading = useAppSelector(s => s.main.loading);
+  const loading = useAppSelector(
+    s => s.main.sections.editDraft.loading || s.main.sections.module.loading,
+  );
 
   const { title, draft, _id: moduleId } = currentModule || {};
 
   const handleModuleChange = useCallback(
     (e: ContentEditableEvent) => {
-      control_module(e.target.value);
+      controlModule({ value: e.target.value });
 
       clearTimeout(timer.current);
       timer.current = setTimeout(async () => {
-        edit_module();
+        editModule();
         timer.current = null;
       }, 500);
     },
-    [control_module, edit_module],
+    [controlModule, editModule],
   );
 
   const timer = useRef<ReturnType<typeof setTimeout>>(null);

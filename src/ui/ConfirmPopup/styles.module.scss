@@ -45,7 +45,7 @@
     animation: pulse 1.25s linear infinite;
   }
 
-  &[data-answer="false"] {
+  &.no {
     background-color: var(--success-color);
 
     &:hover {
@@ -54,7 +54,7 @@
     }
   }
 
-  &[data-answer="true"] {
+  &.yes {
     background-color: var(--danger-color);
 
     &:hover {

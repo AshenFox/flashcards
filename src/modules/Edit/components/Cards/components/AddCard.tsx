@@ -8,11 +8,11 @@ type AddCardProps = {
 };
 
 const AddCard = ({ position }: AddCardProps) => {
-  const { create_card } = useActions();
+  const { createCard } = useActions();
 
   const clickAddcard = useCallback(
-    (e: MouseEvent<HTMLDivElement>) => create_card(position),
-    [position, create_card],
+    (e: MouseEvent<HTMLDivElement>) => createCard(position),
+    [position, createCard],
   );
 
   return (

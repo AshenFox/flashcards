@@ -1,5 +1,5 @@
 import { useActions } from "@store/hooks";
-import { ImgurlObj } from "@store/reducers/main/mainInitState";
+import { ImgurlObj } from "@store/reducers/main/types";
 import clsx from "clsx";
 import { memo, SyntheticEvent, useCallback } from "react";
 
@@ -12,22 +12,22 @@ type ItemProps = {
 };
 
 const Item = ({ _id, index, data }: ItemProps) => {
-  const { set_url_ok, set_card_imgurl, edit_card } = useActions();
+  const { setCardImgurl, setUrlOk, editCard } = useActions();
 
   const { url, ok } = data;
 
   const error = useCallback(
-    (e: SyntheticEvent<HTMLImageElement>) => set_url_ok(_id, index, false),
-    [_id, index, set_url_ok],
+    (e: SyntheticEvent<HTMLImageElement>) => setUrlOk(_id, index, false),
+    [_id, index, setUrlOk],
   );
   const load = useCallback(
-    (e: SyntheticEvent<HTMLImageElement>) => set_url_ok(_id, index, true),
-    [_id, index, set_url_ok],
+    (e: SyntheticEvent<HTMLImageElement>) => setUrlOk(_id, index, true),
+    [_id, index, setUrlOk],
   );
 
   const clickGalleryItem = () => {
-    set_card_imgurl(_id, url);
-    edit_card(_id);
+    setCardImgurl({ _id, value: url });
+    editCard(_id);
   };
 
   return (

@@ -7,22 +7,23 @@ import { memo, MouseEvent } from "react";
 import s from "./styles.module.scss";
 
 const SRDrop = () => {
-  const { set_module_question } = useActions();
+  const { setModuleQuestion } = useActions();
 
   const currentModule = useAppSelector(s => s.main.module);
 
   const { question } = currentModule || {};
 
   const clickDropSR = (e: MouseEvent<HTMLDivElement>) =>
-    set_module_question(true);
+    setModuleQuestion({ value: true });
 
   return (
     <div
-      className={clsx(s.drop, tooltipContainer)}
-      data-active={question}
+      className={clsx(s.drop, tooltipContainer, {
+        [s.active]: question,
+      })}
       onClick={clickDropSR}
     >
-      <DropStudyRegimeIcon width="30" height="30" />
+      <DropStudyRegimeIcon width="25" height="25" />
       <Tooltip>Drop all cards study progress</Tooltip>
     </div>
   );

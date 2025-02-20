@@ -6,7 +6,7 @@ import ItemsNumber from "./components/ItemsNumber";
 import Navigation from "./components/Navigation";
 import s from "./styles.module.scss";
 
-const Headers = () => {
+const Header = () => {
   const user = useAppSelector(s => s.auth.user);
 
   const { username } = user || {};
@@ -22,4 +22,4 @@ const Headers = () => {
   );
 };
 
-export default memo(Headers);
+export default memo(Header);

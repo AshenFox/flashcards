@@ -1,8 +1,7 @@
 import client_interface from "@supplemental/client_interface";
-import middleware from "@supplemental/middleware";
+import { auth } from "@supplemental/middleware";
 import express, { Request, Response } from "express";
 
-const { auth } = middleware;
 const router = express.Router();
 
 // @route ------ GET api/imgsearch

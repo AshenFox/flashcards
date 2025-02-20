@@ -19,7 +19,9 @@ const Content = () => {
   const progress = useAppSelector(s => s.game.flashcards.progress);
   const side = useAppSelector(s => s.game.flashcards.side);
   const cards = useAppSelector(s => s.main.cards);
-  const loading = useAppSelector(s => s.main.loading);
+  const loading = useAppSelector(
+    s => s.main.sections.srCards.loading || s.main.sections.moduleCards.loading,
+  );
 
   const formatted_cards = Object.values(cards);
   const { length } = formatted_cards;

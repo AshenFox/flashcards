@@ -1,7 +1,7 @@
 import Speaker from "@components/Speaker";
 import SRIndicator from "@components/SRIndicator";
 import { useActions, useAppSelector } from "@store/hooks";
-import { Card } from "@store/reducers/main/mainInitState";
+import { Card } from "@store/reducers/main/types";
 import { EditIcon } from "@ui/Icons";
 import Img from "@ui/Img";
 import Input from "@ui/Input";
@@ -11,7 +11,14 @@ import TextLabel from "@ui/TextLabel";
 import { tooltipContainer } from "@ui/Tooltip";
 import clsx from "clsx";
 import { useRouter } from "next/router";
-import { ChangeEvent, memo, MouseEvent, useEffect, useRef } from "react";
+import {
+  ChangeEvent,
+  memo,
+  MouseEvent,
+  useCallback,
+  useEffect,
+  useRef,
+} from "react";
 
 import s from "./styles.module.scss";
 
@@ -21,11 +28,11 @@ type AnswerProps = {
 
 const Answer = ({ data }: AnswerProps) => {
   const {
-    set_card_edit,
-    set_write_copy_answer_field,
-    next_write_card,
-    override_write_answer,
-    put_sr_answer,
+    setCardEdit,
+    setWriteCopyAnswerField,
+    nextWriteCard,
+    overrideWriteAnswer,
+    putSRAnswer,
   } = useActions();
 
   const router = useRouter();
@@ -48,41 +55,48 @@ const Answer = ({ data }: AnswerProps) => {
   const isEmpty = !answer && term;
   const copiedCorrectly = copy_answer === term.replace(/&nbsp;/g, " ").trim();
 
-  const isFirstRound = useRef(!rounds.length);
-  isFirstRound.current = !rounds.length;
-
-  const canContinue = useRef(false);
+  let isFirstRound = !rounds.length;
+  let canContinue = false;
 
   const copyAnswerInput = useRef<HTMLInputElement>(null);
 
   const gameAnswer = useRef<HTMLDivElement>(null);
 
   if (isCorrect) {
-    canContinue.current = true;
+    canContinue = true;
   } else {
     if (isEmpty) {
-      if (copiedCorrectly) canContinue.current = true;
+      if (copiedCorrectly) canContinue = true;
     } else {
-      canContinue.current = true;
+      canContinue = true;
     }
   }
 
   const changeCopyAnswer = (e: ChangeEvent<HTMLInputElement>) =>
-    set_write_copy_answer_field(e.target.value);
+    setWriteCopyAnswerField({ value: e.target.value });
 
-  const clickEdit = (e: MouseEvent<HTMLDivElement>) => set_card_edit(_id, true);
+  const clickEdit = (e: MouseEvent<HTMLDivElement>) =>
+    setCardEdit({ _id, value: true });
 
-  const continueGame = () => {
-    if (canContinue.current) {
-      if (isFirstRound.current && isSR) put_sr_answer(_id, isCorrect ? 1 : -1);
-      next_write_card();
+  const continueGame = useCallback(() => {
+    if (canContinue) {
+      if (isFirstRound && isSR) putSRAnswer(_id, isCorrect ? 1 : -1);
+      nextWriteCard();
     }
-  };
+  }, [
+    canContinue,
+    isCorrect,
+    isFirstRound,
+    _id,
+    isSR,
+    nextWriteCard,
+    putSRAnswer,
+  ]);
 
-  const overrideAnswer = () => {
-    if (isFirstRound.current && isSR) put_sr_answer(_id, 1);
-    override_write_answer();
-  };
+  const overrideAnswer = useCallback(() => {
+    if (isFirstRound && isSR) putSRAnswer(_id, 1);
+    overrideWriteAnswer();
+  }, [_id, isFirstRound, isSR, overrideWriteAnswer, putSRAnswer]);
 
   const clickContinue = (e: MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
@@ -94,30 +108,35 @@ const Answer = ({ data }: AnswerProps) => {
     overrideAnswer();
   };
 
-  const keyDownControl = (e: KeyboardEvent) => {
-    if (e.key === "Enter") {
-      e.preventDefault();
+  const keyDownControl = useCallback(
+    (e: KeyboardEvent) => {
+      if (e.key === "Enter") {
+        e.preventDefault();
 
-      continueGame();
-    }
-
-    if (e.key === "o") {
-      if (!isCorrect && !isEmpty) {
-        overrideAnswer();
+        continueGame();
       }
-    }
-  };
+
+      if (e.key === "o") {
+        if (!isCorrect && !isEmpty) {
+          overrideAnswer();
+        }
+      }
+    },
+    [isCorrect, isEmpty, overrideAnswer, continueGame],
+  );
 
   useEffect(() => {
     if (gameAnswer.current) gameAnswer.current.focus();
     if (copyAnswerInput.current) copyAnswerInput.current.focus();
+  }, []);
 
+  useEffect(() => {
     window.addEventListener("keydown", keyDownControl);
 
     return () => {
       window.removeEventListener("keydown", keyDownControl);
     };
-  }, []);
+  }, [keyDownControl]);
 
   return (
     <div className={s.answer} tabIndex={0} ref={gameAnswer}>
@@ -193,7 +212,11 @@ const Answer = ({ data }: AnswerProps) => {
         )}
       </div>
 
-      <div className={s.continue} data-correct={canContinue.current}>
+      <div
+        className={clsx(s.continue, {
+          [s.incorrect]: !canContinue,
+        })}
+      >
         <Button onClick={clickContinue}>Click to continue</Button>
       </div>
     </div>

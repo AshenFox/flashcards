@@ -1,4 +1,4 @@
-import { Card } from "@store/reducers/main/mainInitState";
+import { Card } from "@store/reducers/main/types";
 import clsx from "clsx";
 import { CSSProperties, memo, useMemo } from "react";
 
@@ -29,7 +29,7 @@ const Carousel = ({ data, game = false }: CarouselProps) => {
     <div className={clsx(s.carousel, (loading || error) && s.hide)}>
       <Control _id={_id} direction={"left"} />
       <div className={clsx(s.window, game && s.game)}>
-        <div className={s.track} data-animated="false" style={windowStyles}>
+        <div className={s.track} style={windowStyles}>
           {imgurl_arr.map((item, i) => {
             return <Item key={i} index={`${i}`} data={item} _id={_id} />;
           })}

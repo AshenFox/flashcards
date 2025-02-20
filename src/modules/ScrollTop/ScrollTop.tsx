@@ -7,7 +7,7 @@ import { useEffect, useRef } from "react";
 import s from "./styles.module.scss";
 
 const ScrollTop = () => {
-  const { set_scroll_top } = useActions();
+  const { setScrollTop } = useActions();
 
   const scroll_top = useAppSelector(s => s.main.scroll_top);
 
@@ -16,9 +16,11 @@ const ScrollTop = () => {
 
   useEffect(() => {
     const onScroll = (e: Event) => {
-      if (window.scrollY > 100 && !scroll_top_ref.current) set_scroll_top(true);
+      if (window.scrollY > 100 && !scroll_top_ref.current)
+        setScrollTop({ value: true });
 
-      if (window.scrollY < 100 && scroll_top_ref.current) set_scroll_top(false);
+      if (window.scrollY < 100 && scroll_top_ref.current)
+        setScrollTop({ value: false });
     };
 
     window.addEventListener("scroll", onScroll);

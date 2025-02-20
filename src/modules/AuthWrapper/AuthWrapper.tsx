@@ -6,10 +6,10 @@ type AuthWrapperProps = {
 };
 
 const AuthWrapper = ({ children }: AuthWrapperProps) => {
-  const { authenticate, set_is_server } = useActions();
+  const { authenticate, setIsServer } = useActions();
 
   useEffect(() => {
-    set_is_server();
+    setIsServer();
     authenticate();
   }, []);
 

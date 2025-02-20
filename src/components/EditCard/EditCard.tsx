@@ -1,7 +1,7 @@
 import Gallery from "@components/Gallery";
 import { usePlug } from "@helpers/hooks/usePlug";
 import { useActions } from "@store/hooks";
-import { Card } from "@store/reducers/main/mainInitState";
+import { Card } from "@store/reducers/main/types";
 import TextArea from "@ui/TextArea";
 import TextLabel from "@ui/TextLabel";
 import clsx from "clsx";
@@ -34,7 +34,7 @@ const EditCard = ({
   game,
   number,
 }: EditCardProps) => {
-  const { control_card, edit_card } = useActions();
+  const { controlCard, editCard } = useActions();
 
   const { _id, term, definition, gallery } = data || {};
 
@@ -42,14 +42,14 @@ const EditCard = ({
 
   const handleCardChange = useCallback(
     (type: "term" | "definition") => (e: ContentEditableEvent) => {
-      control_card(_id, type, e.target.value);
+      controlCard({ _id, type, value: e.target.value });
       clearTimeout(timer.current);
       timer.current = setTimeout(async () => {
-        edit_card(_id);
+        editCard(_id);
         timer.current = null;
       }, 500);
     },
-    [_id, control_card, edit_card],
+    [_id, controlCard, editCard],
   );
 
   const timer = useRef<ReturnType<typeof setTimeout>>(null);

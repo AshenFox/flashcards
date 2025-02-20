@@ -12,7 +12,7 @@ import s from "./styles.module.scss";
 
 type SwitchProps = {
   id: string;
-  active: boolean;
+  active?: boolean;
   className?: string;
   small?: boolean;
   icon?: ReactElement;
@@ -39,10 +39,10 @@ const Switch = ({
   onTouchStart,
   onTouchEnd,
 }: SwitchProps) => {
-  const innerIconSize = iconSize ?? small ? 17 : 28;
+  const innerIconSize = iconSize ?? small ? 17 : 25;
 
   return (
-    <div className={clsx(s.container, tooltipContainer, className)}>
+    <div className={clsx(s.container, tooltipContainer, className, "test")}>
       <input
         className={"switch__checkbox"}
         type="checkbox"
