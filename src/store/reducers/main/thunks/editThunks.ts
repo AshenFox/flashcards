@@ -6,7 +6,14 @@ import sanitize from "sanitize-html";
 
 import { url_fields } from "../initState";
 import { mainActions } from "../slice";
-import { ImgurlBase, ImgurlObjs } from "../types";
+import {
+  CodDictResult,
+  CodReply,
+  ImgurlBase,
+  ImgurlObjs,
+  UrbanDictResult,
+  UrbanReply,
+} from "../types";
 
 export const setCardsSavePositive = (_id: string) => <ThunkActionApp>(async (
     dispatch,
@@ -68,12 +75,12 @@ export const scrapeDictionary = (_id: string, value: "cod" | "urban") =>
       let result: string;
 
       if (value === "cod") {
-        const { data }: { data: CodReply } = await axios.get(url, params);
+        const { data } = await axios.get<CodReply>(url, params);
         result = sanitize(format_dictionary_result({ type: "cod", data }));
       }
 
       if (value === "urban") {
-        const { data }: { data: UrbanReply } = await axios.get(url, params);
+        const { data } = await axios.get<UrbanReply>(url, params);
         result = sanitize(format_dictionary_result({ type: "urban", data }));
       }
 
@@ -138,7 +145,7 @@ export const searchImages = (_id: string) => <ThunkActionApp>(async (
         dispatch(
           mainActions.searchImagesReducer({
             _id,
-            imgurl_obj: arr_to_obj([{ url }]),
+            imgurl_obj: imgUrlArrToObj([{ url }]),
             all: 1,
           }),
         );
@@ -153,7 +160,7 @@ export const searchImages = (_id: string) => <ThunkActionApp>(async (
         );
 
         const all = data.length;
-        const imgurl_obj = arr_to_obj(data);
+        const imgurl_obj = imgUrlArrToObj(data);
 
         dispatch(mainActions.searchImagesReducer({ _id, imgurl_obj, all }));
       }
@@ -338,7 +345,7 @@ export const createCard = (position: "start" | "end") =>
 // ==============================
 // ==============================
 
-const arr_to_obj = (arr: ImgurlBase[]): ImgurlObjs => {
+export const imgUrlArrToObj = (arr: ImgurlBase[]): ImgurlObjs => {
   return Object.fromEntries(
     arr.map((url, i) => [
       i,
@@ -423,36 +430,4 @@ const format_dictionary_result = (
   }
 
   return formattedResult;
-};
-
-type CodSection = {
-  part_of_speech: string;
-  sub_sections: {
-    blocks: {
-      definition: string;
-      examples: string[];
-    }[];
-    guideword: string;
-  }[];
-  transcr_uk: string;
-  transcr_us: string;
-};
-
-type CodReply = CodSection[];
-
-type CodDictResult = {
-  type: "cod";
-  data: CodReply;
-};
-
-type UrbanPanel = {
-  definition: string;
-  example: string;
-};
-
-type UrbanReply = UrbanPanel[];
-
-type UrbanDictResult = {
-  type: "urban";
-  data: UrbanReply;
 };

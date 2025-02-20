@@ -1,13 +1,13 @@
 import { combineReducers } from "redux";
 
 import authReducer from "./auth/slice";
-import dimenReducer from "./dimen/dimenReducer";
+import dimenReducer from "./dimen/slice";
 import gameReducer from "./game/slice";
-import headerReducer from "./header/headerReducer";
+import headerReducer from "./header/slice";
 import mainReducer from "./main/slice";
 import modalReducer from "./modal/slice";
 import srReducer from "./sr/slice";
-import voiceReducer from "./voice/voiceReducer";
+import voiceReducer from "./voice/slice";
 
 export default combineReducers({
   modal: modalReducer,

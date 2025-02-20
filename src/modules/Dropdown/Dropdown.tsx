@@ -28,7 +28,7 @@ const Dropdown = () => {
     logOut,
     resetFlashcardsProgress,
     prepareWrite,
-    set_dropdown,
+    setDropdown,
   } = useActions();
 
   const shuffled = useAppSelector(s => s.game.flashcards.shuffled);
@@ -50,9 +50,9 @@ const Dropdown = () => {
     const menuItemEl = (e.target as HTMLElement).closest(".header__menu-item");
 
     if (menuEl) {
-      if (menuItemEl) set_dropdown(false);
+      if (menuItemEl) setDropdown({ value: false });
     } else {
-      set_dropdown(false);
+      setDropdown({ value: false });
     }
   });
 

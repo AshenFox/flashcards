@@ -1,5 +1,5 @@
 import { useActions, useAppSelector } from "@store/hooks";
-import { EasySpeechStatus } from "@store/reducers/voice/voiceInitState";
+import { EasySpeechStatus } from "@store/reducers/voice/types";
 import { SpeakerIcon } from "@ui/Icons";
 import clsx from "clsx";
 import EasySpeech from "easy-speech";
@@ -16,7 +16,7 @@ type SpeakerProps = {
 };
 
 const Speaker = ({ _id, text, type, className, ref }: SpeakerProps) => {
-  const { set_voice_speaking } = useActions();
+  const { setVoiceSpeaking } = useActions();
 
   const { voices, working, speaking } = useAppSelector(({ voice }) => voice);
 
@@ -61,25 +61,25 @@ const Speaker = ({ _id, text, type, className, ref }: SpeakerProps) => {
         volume: 1,
         start: () => {
           console.info("Start speaking...");
-          set_voice_speaking(_id, type);
+          setVoiceSpeaking({ _id, type });
         },
         pause: e => {
           console.info("Pause");
         },
         end: () => {
           console.info("Done speaking...");
-          set_voice_speaking();
+          setVoiceSpeaking();
         },
         error: e => {
           console.info("Interrupted or something vent wrong...", e);
-          set_voice_speaking();
+          setVoiceSpeaking();
         },
       });
     },
     [
       _id,
       type,
-      set_voice_speaking,
+      setVoiceSpeaking,
       voices.engBackup,
       voices.english,
       voices.rusBackup,
@@ -94,12 +94,12 @@ const Speaker = ({ _id, text, type, className, ref }: SpeakerProps) => {
 
     if (status.speechSynthesis.speaking) {
       cancel();
-      set_voice_speaking();
+      setVoiceSpeaking();
     } else {
       const textForSpeaking = filterLang(filteredText, language);
       speak(textForSpeaking, language);
     }
-  }, [active, filteredText, language, set_voice_speaking, speak, cancel]);
+  }, [active, filteredText, language, setVoiceSpeaking, speak, cancel]);
 
   return (
     <div

@@ -1,3 +1,6 @@
+import { CaseReducer } from "@reduxjs/toolkit";
+import { Action } from "@store/types";
+
 export type EasySpeechStatus = {
   status: string;
   initialized: boolean;
@@ -36,10 +39,7 @@ export type VoiceState = {
   working: boolean;
 };
 
-const voiceInitState: VoiceState = {
-  voices: {},
-  speaking: false,
-  working: false,
-};
-
-export default voiceInitState;
+export type VoiceCaseReducer<P = undefined> = CaseReducer<
+  VoiceState,
+  Action<P>
+>;

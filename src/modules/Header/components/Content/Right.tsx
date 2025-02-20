@@ -15,7 +15,7 @@ import Item from "./components/Item";
 import s from "./styles.module.scss";
 
 const Right = () => {
-  const { changeModal, toggleModal, set_dropdown, logOut } = useActions();
+  const { changeModal, toggleModal, setDropdown, logOut } = useActions();
 
   const router = useRouter();
 
@@ -28,9 +28,9 @@ const Right = () => {
 
   const activateDropdown = useCallback(
     (e: MouseEvent<HTMLButtonElement>) => {
-      set_dropdown(true);
+      setDropdown({ value: true });
     },
-    [set_dropdown],
+    [setDropdown],
   );
 
   const openModal = useCallback(

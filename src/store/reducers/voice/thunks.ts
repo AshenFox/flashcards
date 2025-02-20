@@ -1,28 +1,10 @@
+import { ThunkActionApp } from "@store/store";
 import EasySpeech from "easy-speech";
 
-import { ThunkActionApp } from "../store";
-import { INIT_EASY_SPEECH, SET_VOICE_SPEAKING } from "../types";
-import { AppActions } from "../types";
-import { EasySpeechStatus, Voices } from "./../reducers/voice/voiceInitState";
+import { voiceActions } from "./slice";
+import { EasySpeechStatus, Voices } from "./types";
 
-// SET_VOICE_SPEAKING
-export const set_voice_speaking = (
-  _id?: string,
-  type?: "term" | "definition",
-): AppActions => {
-  const payload = {
-    _id,
-    type,
-  };
-
-  return {
-    type: SET_VOICE_SPEAKING,
-    payload: _id && type ? payload : false,
-  };
-};
-
-// INIT_EASY_SPEECH
-export const init_easy_speech = () => <ThunkActionApp>(async dispatch => {
+export const initEasySpeech = () => <ThunkActionApp>(async dispatch => {
     const status = EasySpeech.status() as EasySpeechStatus;
 
     if (status?.initialized) {
@@ -66,11 +48,10 @@ export const init_easy_speech = () => <ThunkActionApp>(async dispatch => {
       console.error(err);
     }
 
-    dispatch({
-      type: INIT_EASY_SPEECH,
-      payload: {
+    dispatch(
+      voiceActions.initEasySpeechReducer({
         voices,
         working,
-      },
-    });
+      }),
+    );
   });

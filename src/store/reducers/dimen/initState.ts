@@ -1,7 +1,4 @@
-export type DimenState = {
-  header_height: number;
-  header_width: number;
-};
+import { DimenState } from "./types";
 
 const dimenInitState: DimenState = {
   header_height: 0,
