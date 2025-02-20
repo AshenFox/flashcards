@@ -4,11 +4,11 @@ import { bindActionCreators } from "redux";
 
 import * as dimenActions from "../actions/dimenActions";
 import * as headerActions from "../actions/headerActions";
-import * as modalActions from "../actions/modalActions";
 import * as voiceActions from "../actions/voiceActions";
 import { authActions, authThunks } from "../reducers/auth/slice";
 import { gameActions, gameThunks } from "../reducers/game/slice";
 import { mainActions, mainThunks } from "../reducers/main/slice";
+import { modalActions, modalThunks } from "../reducers/modal/slice";
 import { srActions, srThunks } from "../reducers/sr/slice";
 import { AppDispatch, RootState } from "../store";
 
@@ -23,8 +23,9 @@ export const useActions = () => {
     const allActions = {
       ...dimenActions,
       ...headerActions,
-      ...modalActions,
       ...voiceActions,
+      ...modalActions,
+      ...modalThunks,
       ...authActions,
       ...authThunks,
       ...gameActions,

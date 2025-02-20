@@ -15,7 +15,7 @@ import Item from "./components/Item";
 import s from "./styles.module.scss";
 
 const Right = () => {
-  const { change_modal, toggle_modal, set_dropdown, logOut } = useActions();
+  const { changeModal, toggleModal, set_dropdown, logOut } = useActions();
 
   const router = useRouter();
 
@@ -35,10 +35,10 @@ const Right = () => {
 
   const openModal = useCallback(
     (value: "log_in" | "sign_up") => (e: MouseEvent<HTMLButtonElement>) => {
-      change_modal(value);
-      toggle_modal();
+      changeModal({ active_modal: value });
+      toggleModal();
     },
-    [change_modal, toggle_modal],
+    [changeModal, toggleModal],
   );
 
   return (

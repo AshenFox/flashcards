@@ -25,7 +25,7 @@ const Dropdown = () => {
     shuffleFlashcards,
     sortFlashcards,
     setFlashcardsShuffled,
-    log_out,
+    logOut,
     resetFlashcardsProgress,
     prepareWrite,
     set_dropdown,
@@ -84,7 +84,7 @@ const Dropdown = () => {
   const clickStartOver = (e: ReactMouseEvent<HTMLButtonElement>) =>
     prepareWrite();
 
-  const logOut = (e: ReactMouseEvent<HTMLButtonElement>) => log_out();
+  const onLogOutClick = (e: ReactMouseEvent<HTMLButtonElement>) => logOut();
 
   const stylesHeader: CSSProperties = {
     paddingTop: `${header_height - 1}px`,
@@ -104,7 +104,7 @@ const Dropdown = () => {
         </Item>
       )}
       {!isSettings && <Item href="/settings">Settings</Item>}
-      <Item onClick={logOut}>Log out</Item>
+      <Item onClick={onLogOutClick}>Log out</Item>
 
       {(isFlashcards || isWrite) && !isSR && <Divider>Options:</Divider>}
 

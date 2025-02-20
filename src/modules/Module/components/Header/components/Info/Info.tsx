@@ -11,7 +11,7 @@ import SRDrop from "./components/SRDrop";
 import s from "./styles.module.scss";
 
 const Info = () => {
-  const { change_modal, toggle_modal, setModuleQuestion, dropCardsSR } =
+  const { changeModal, toggleModal, setModuleQuestion, dropCardsSR } =
     useActions();
 
   const currentModule = useAppSelector(s => s.main.module);
@@ -19,8 +19,8 @@ const Info = () => {
   const { author, _id, creation_date, question } = currentModule || {};
 
   const openModal = (value: "delete") => (e: MouseEvent<HTMLDivElement>) => {
-    change_modal(value);
-    toggle_modal();
+    changeModal({ active_modal: value });
+    toggleModal();
   };
 
   const setActive = useCallback(

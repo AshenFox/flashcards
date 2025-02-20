@@ -1,88 +1,10 @@
 import { AuthActions } from "@store/reducers/auth/slice";
 import { GameActions } from "@store/reducers/game/slice";
+import { ModalActions } from "@store/reducers/modal/slice";
 import { SrActions } from "@store/reducers/sr/slice";
 
-import {
-  LogInErrors,
-  ModalInputFields,
-  ModalType,
-  SignUpErrors,
-} from "../reducers/modal/modalInitState";
 import { Speaking, Voices } from "../reducers/voice/voiceInitState";
 import { MainActions } from "./../reducers/main/slice";
-
-// modal
-export const CHANGE_MODAL = "CHANGE_MODAL";
-export const TOGGLE_MODAL = "TOGGLE_MODAL";
-export const CONTROL_FIELD = "CONTROL_FIELD";
-export const CHANGE_MODAL_LOADING = "CHANGE_MODAL_LOADING";
-export const CLEAR_LOG_IN = "CLEAR_LOG_IN";
-export const CLEAR_SIGN_UP = "CLEAR_SIGN_UP";
-export const ENTER = "ENTER";
-export const CHECK_FIELD = "CHECK_FIELD";
-
-export type ChangeModalAction = {
-  type: typeof CHANGE_MODAL;
-  payload: {
-    active_modal: ModalType;
-  };
-};
-
-export type ToggleModalAction = {
-  type: typeof TOGGLE_MODAL;
-  payload?: {};
-};
-
-export type ControlFieldAction = {
-  type: typeof CONTROL_FIELD;
-  payload: {
-    field: ModalType;
-    name: ModalInputFields;
-    value: string;
-  };
-};
-
-export type ChangeModalLoadingAction = {
-  type: typeof CHANGE_MODAL_LOADING;
-  payload: boolean;
-};
-
-export type ClearLogInAction = {
-  type: typeof CLEAR_LOG_IN;
-  payload?: {};
-};
-
-export type ClearSignUpAction = {
-  type: typeof CLEAR_SIGN_UP;
-  payload?: {};
-};
-
-type CheckFieldActionPayload = SignUpErrors & {
-  type: ModalInputFields;
-};
-
-export type CheckFieldAction = {
-  type: typeof CHECK_FIELD;
-  payload: CheckFieldActionPayload;
-};
-
-export type EnterAction = {
-  type: typeof ENTER;
-  payload: {
-    log_in_errors?: LogInErrors;
-    sign_up_errors?: SignUpErrors;
-  };
-};
-
-export type ModalActions =
-  | ChangeModalAction
-  | ToggleModalAction
-  | ControlFieldAction
-  | ChangeModalLoadingAction
-  | ClearLogInAction
-  | ClearSignUpAction
-  | CheckFieldAction
-  | EnterAction;
 
 // header
 export const SET_DROPDOWN = "SET_DROPDOWN";
@@ -134,11 +56,11 @@ export type VoiceActions = InitEasySpeechAction | SetVoiceSpeakingAction;
 // ===========
 
 export type AppActions =
-  | ModalActions
   | DimenActions
   | VoiceActions
   | HeaderActions
   | SrActions // updated
+  | ModalActions
   | MainActions
   | GameActions
   | AuthActions;

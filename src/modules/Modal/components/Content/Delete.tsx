@@ -6,7 +6,7 @@ import { memo, MouseEvent } from "react";
 import s from "./styles.module.scss";
 
 const Delete = () => {
-  const { deleteModule, toggle_modal } = useActions();
+  const { deleteModule, toggleModal } = useActions();
 
   const currentModule = useAppSelector(s => s.main.module);
 
@@ -14,7 +14,7 @@ const Delete = () => {
 
   const clickDelete = (e: MouseEvent<HTMLButtonElement>) => deleteModule(_id);
 
-  const close = (e: MouseEvent<HTMLButtonElement>) => toggle_modal();
+  const close = (e: MouseEvent<HTMLButtonElement>) => toggleModal();
 
   return (
     <>
