@@ -103,7 +103,9 @@ export const setHomeModules: MainCaseReducer<GetMainModulesResponseDto> = (
 ) => {
   const { draft, modules } = action.payload;
 
-  state.module = { ...draft, ...module_fields };
+  if (draft) state.module = { ...draft, ...module_fields };
+  else state.module = null;
+
   state.modules = [...(state.modules || []), ...modules.entries];
 
   state.sections.homeModules.pagination = {
