@@ -1,11 +1,8 @@
+import { filterRegex } from "@flashcards/common/src/functions/filterRegex";
 import cardModel, { CardSortObj } from "@models/card_model";
 import moduleModel from "@models/module_model";
 import { ModuleSortObj } from "@models/module_model";
-import { auth, query } from "@supplemental/middleware";
-import { ResponseLocals } from "@supplemental/types";
-import express, { Request } from "express";
-import { FilterQuery } from "mongoose";
-import { Card, Module } from "types/entities";
+import { Card, Module } from "@serverTypes/entities";
 import {
   ErrorResponse,
   GetMainCardsQuery,
@@ -16,9 +13,11 @@ import {
   GetMainModuleResponse,
   GetMainModulesQuery,
   GetMainModulesResponse,
-} from "types/methods";
-
-import { filterRegex } from "./../../common/functions/filterRegex";
+} from "@serverTypes/methods";
+import { auth, query } from "@supplemental/middleware";
+import { ResponseLocals } from "@supplemental/types";
+import express, { Request } from "express";
+import { FilterQuery } from "mongoose";
 
 const router = express.Router();
 

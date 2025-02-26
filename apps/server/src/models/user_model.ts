@@ -1,5 +1,5 @@
+import { User } from "@serverTypes/entities";
 import mongoose from "mongoose";
-import { User } from "types/entities";
 
 const Schema = mongoose.Schema;
 

@@ -1,16 +1,16 @@
 import cardModel from "@models/card_model";
 import moduleModel from "@models/module_model";
+import { Card, CardBase, Module } from "@serverTypes/entities";
+import {
+  ErrorResponse,
+  GetEditDraftQuery,
+  GetEditDraftResponse,
+} from "@serverTypes/methods";
 import { auth } from "@supplemental/middleware";
 import { notification_timeout } from "@supplemental/notifications_control";
 import { ResponseLocals } from "@supplemental/types";
 import express, { Request, Response } from "express";
 import { FilterQuery } from "mongoose";
-import { Card, CardBase, Module } from "types/entities";
-import {
-  ErrorResponse,
-  GetEditDraftQuery,
-  GetEditDraftResponse,
-} from "types/methods";
 
 const router = express.Router();
 

@@ -1,3 +1,3 @@
-import { NotificationCreator } from "@common/creators/entities";
+import { NotificationCreator } from "@flashcards/common/src/creators/entities";
 
 export type Notification = NotificationCreator;

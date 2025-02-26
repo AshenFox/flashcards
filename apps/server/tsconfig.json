@@ -2,29 +2,25 @@
   "compilerOptions": {
     "target": "es2016",
     "module": "commonjs",
-    "rootDirs": [
-      "./",
-      "../common"
-    ],
+    "rootDirs": ["./"],
     "allowJs": true,
-    "outDir": "../.server",
+    "outDir": "./.server",
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
     "strict": true,
     "noImplicitAny": true,
     "skipLibCheck": true,
-    "baseUrl": "./",
     "paths": {
-      "@models/*": ["models/*"],
-      "@routes/*": ["routes/*"],
-      "@supplemental/*": ["supplemental/*"],
-      "@entities/*": ["@entities/*"],
-      "@common/*": ["../common/*"]
+      "@models/*": ["./src/models/*"],
+      "@routes/*": ["./src/routes/*"],
+      "@supplemental/*": ["./src/supplemental/*"],
+      "@serverTypes/*": ["./src/types/*"]
     }
   },
   "ts-node": {
     "files": true
   },
+  "references": [{ "path": "../../packages/common" }],
   "files": ["./@types/index.d.ts"],
   "include": ["**/*"]
 }

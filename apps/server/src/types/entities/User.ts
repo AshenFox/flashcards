@@ -2,7 +2,7 @@ import {
   SubscriptionCreator,
   SubscriptionsCreator,
   UserCreator,
-} from "@common/creators/entities";
+} from "@flashcards/common/src/creators/entities";
 
 export type Subscription = SubscriptionCreator;
 export type Subscriptions = SubscriptionsCreator<Subscription>;

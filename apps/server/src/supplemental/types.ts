@@ -1,6 +1,6 @@
+import { User } from "@serverTypes/entities";
 import { Response } from "express";
 import { Document } from "mongoose";
-import { User } from "types/entities";
 
 export type UserDocument = Document<unknown, unknown, User> &
   Omit<

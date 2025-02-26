@@ -2,8 +2,8 @@ import {
   GetMainCardsQueryCreator,
   GetMainCardsResponseCreator,
   PagedDataCreator,
-} from "@common/creators/methods";
-import { Card } from "types/entities";
+} from "@flashcards/common/src/creators/methods";
+import { Card } from "@serverTypes/entities";
 
 export type GetMainCardsQuery = GetMainCardsQueryCreator;
 export type MainCardsPageable = PagedDataCreator<Card>;

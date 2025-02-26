@@ -1,5 +1,5 @@
+import { Card } from "@serverTypes/entities";
 import mongoose, { SortOrder } from "mongoose";
-import { Card } from "types/entities";
 
 const Schema = mongoose.Schema;
 
