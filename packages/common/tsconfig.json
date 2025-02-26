@@ -4,7 +4,7 @@
     "module": "commonjs",
     "rootDirs": ["./"],
     "allowJs": true,
-    "outDir": "./.common",
+    "outDir": "../../.common",
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
     "strict": true,

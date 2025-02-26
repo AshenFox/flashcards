@@ -8,11 +8,11 @@
     "apps/client"
   ],
   "scripts": {
-    "dev": "set NODE_OPTIONS=--openssl-legacy-provider && nodemon ./server/index.ts",
+    "dev": "set NODE_OPTIONS=--openssl-legacy-provider && nodemon ./apps/server/src/index.ts",
     "devd": "docker-compose -f docker-compose.dev.yaml up",
     "devd-rebuild": "docker-compose -f docker-compose.dev.yaml up --no-deps --build app",
     "build": "next build",
-    "start": "node .server/server/index.js",
+    "start": "node .server/src/index.js",
     "build:server": "tsc --p ./server/tsconfig.json && tsc-alias -p ./server/tsconfig.json",
     "prod": "docker-compose -f docker-compose.prod.yaml up -d",
     "prod-rebuild": "docker-compose -f docker-compose.prod.yaml up -d --no-deps --build app",

@@ -18,6 +18,7 @@ import fs from "fs";
 import http from "http";
 import https, { ServerOptions } from "https";
 import next from "next";
+import path from "path";
 import webpush from "web-push";
 
 const port = process.env.PORT || 4000;
@@ -33,7 +34,7 @@ if (dev && isHTTPS) {
 }
 
 // Tune next.js
-const nextApp = next({ dev, dir: "../client" });
+const nextApp = next({ dev, dir: path.join(__dirname, "../../client") });
 
 const handle = nextApp.getRequestHandler();
 
