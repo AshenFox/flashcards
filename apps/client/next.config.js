@@ -1,4 +1,5 @@
 module.exports = {
+  transpilePackages: ["@flashcards/common"],
   typescript: {
     ignoreBuildErrors: true,
   },
