@@ -1,4 +1,6 @@
-// import routes
+import "./setup";
+
+// routes
 import auth from "@routes/auth";
 import edit from "@routes/edit";
 import img_search from "@routes/img_search";
@@ -6,6 +8,7 @@ import main from "@routes/main";
 import notifications from "@routes/notifications";
 import scrape from "@routes/scrape";
 import sr from "@routes/sr";
+// supplemental
 import connectDB from "@supplemental/db";
 import { send_notifications } from "@supplemental/notifications_control";
 // dependencies
