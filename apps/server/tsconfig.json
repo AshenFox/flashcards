@@ -4,7 +4,7 @@
     "module": "commonjs",
     "rootDirs": ["./"],
     "allowJs": true,
-    "outDir": "../../.server",
+    "outDir": "../.server",
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
     "strict": true,

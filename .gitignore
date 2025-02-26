@@ -10,13 +10,13 @@
 /coverage
 
 # server
-/.server
+.server
 
 # common
-/.common
+.common
 
 # next.js
-/.next/
+.next
 /out/
 
 # production
