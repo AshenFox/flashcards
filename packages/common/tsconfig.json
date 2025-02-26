@@ -4,27 +4,20 @@
     "module": "commonjs",
     "rootDirs": [
       "./",
-      "../common"
     ],
     "allowJs": true,
-    "outDir": "../.server",
+    "outDir": "./.common",
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
     "strict": true,
     "noImplicitAny": true,
     "skipLibCheck": true,
-    "baseUrl": "./",
     "paths": {
-      "@models/*": ["models/*"],
-      "@routes/*": ["routes/*"],
-      "@supplemental/*": ["supplemental/*"],
-      "@entities/*": ["@entities/*"],
-      "@common/*": ["../common/*"]
+      "@common/*": ["./src/*"]
     }
   },
   "ts-node": {
     "files": true
   },
-  "files": ["./@types/index.d.ts"],
   "include": ["**/*"]
 }

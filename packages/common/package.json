@@ -1,0 +1,18 @@
+{
+  "name": "@flashcards/common",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "build": "tsc -p ./tsconfig.json"
+  },
+  "dependencies": {
+    "axios": "^1.6.7",
+    "web-push": "^3.4.4"
+  },
+  "devDependencies": {
+    "@types/web-push": "^3.3.2",
+    "tsc-alias": "^1.8.10",
+    "tsx": "^4.7.1",
+    "typescript": "^5.7.3"
+  }
+}
