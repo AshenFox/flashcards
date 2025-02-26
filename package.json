@@ -2,6 +2,10 @@
   "name": "flashcards",
   "version": "1.0.0",
   "private": true,
+  "workspaces": [
+    "packages/*", 
+    "apps/*"
+  ],
   "scripts": {
     "dev": "set NODE_OPTIONS=--openssl-legacy-provider && nodemon ./server/index.ts",
     "devd": "docker-compose -f docker-compose.dev.yaml up",
