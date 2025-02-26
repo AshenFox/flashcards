@@ -1,6 +1,6 @@
 {
   "name": "flashcards",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "private": true,
   "scripts": {
     "dev": "set NODE_OPTIONS=--openssl-legacy-provider && nodemon ./server/index.ts",
