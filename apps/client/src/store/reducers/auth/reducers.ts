@@ -1,4 +1,4 @@
-import { UserDto } from "@common/api/entities";
+import { UserDto } from "@flashcards/common/src/api/entities";
 
 import { AuthCaseReducer } from "./types";
 

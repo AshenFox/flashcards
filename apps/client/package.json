@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "private": true,
   "dependencies": {
-    "common": "*",
+    "@flashcards/common": "*",
     "@reduxjs/toolkit": "^2.5.0",
     "clsx": "^2.1.0",
     "easy-speech": "^2.4.0",
@@ -37,4 +37,3 @@
     "typescript-plugin-css-modules": "^5.1.0"
   }
 }
-  

@@ -1,5 +1,5 @@
-import { filterRegex } from "@common/functions/filterRegex";
 import Speaker from "@components/Speaker";
+import { filterRegex } from "@flashcards/common/src/functions/filterRegex";
 import { usePlug } from "@helpers/hooks/usePlug";
 import { useActions } from "@store/hooks";
 import { Card as CardType } from "@store/reducers/main/types";

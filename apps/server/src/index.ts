@@ -33,7 +33,7 @@ if (dev && isHTTPS) {
 }
 
 // Tune next.js
-const nextApp = next({ dev });
+const nextApp = next({ dev, dir: "../client" });
 
 const handle = nextApp.getRequestHandler();
 

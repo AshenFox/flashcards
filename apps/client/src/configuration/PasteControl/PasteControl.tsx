@@ -1,4 +1,4 @@
-import sanConfig from "@config/sanitize-config.json";
+import sanitizeConfig from "@config/sanitize-config.json";
 import { memo, useEffect } from "react";
 import sanitize from "sanitize-html";
 
@@ -10,7 +10,7 @@ const PasteControl = () => {
 
       const cleanText = sanitize(
         e.clipboardData.getData("text/plain"),
-        sanConfig,
+        sanitizeConfig,
       );
 
       document.execCommand("insertHTML", false, cleanText);

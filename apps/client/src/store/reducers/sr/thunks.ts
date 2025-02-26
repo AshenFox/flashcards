@@ -1,4 +1,4 @@
-import axios from "@common/axios";
+import axios from "@flashcards/common/src/axios";
 import { ThunkActionApp } from "@store/store";
 
 import { srActions } from "./slice";

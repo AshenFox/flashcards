@@ -1,5 +1,5 @@
-import { CardDto, ModuleDto } from "@common/api/entities";
-import { PaginationDto } from "@common/api/methods/pagedData";
+import { CardDto, ModuleDto } from "@flashcards/common/src/api/entities";
+import { PaginationDto } from "@flashcards/common/src/api/methods/pagedData";
 import { CaseReducer } from "@reduxjs/toolkit";
 import { Action } from "@store/types";
 

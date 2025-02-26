@@ -1,4 +1,4 @@
-import { Override } from "@common/types";
+import { Override } from "@flashcards/common/src/types";
 import { clsx } from "clsx";
 import React, { LegacyRef, memo } from "react";
 import ContentEditable, {

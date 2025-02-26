@@ -14,6 +14,7 @@
     "isolatedModules": true,
     "jsx": "preserve",
     "incremental": true,
+    "composite": true,
     "plugins": [{ "name": "typescript-plugin-css-modules" }],
     "baseUrl": "./",
     "paths": {
@@ -25,12 +26,12 @@
       "@styles/*": ["src/styles/*"],
       "@helpers/*": ["src/helpers/*"],
       "@store/*": ["src/store/*"],
-      "@config/*": ["config/*"],
       "@public/*": ["public/*"],
       "@server/*": ["server/*"],
-      "@common/*": ["common/*"]
+      "@config/*": ["../../config/*"]
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
-  "exclude": ["node_modules", "server"]
+  "exclude": ["node_modules", "server"],
+  "references": [{ "path": "../../packages/common" }]
 }

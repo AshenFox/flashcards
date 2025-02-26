@@ -1,5 +1,5 @@
-import { CardDto } from "@common/api/entities";
-import axios from "@common/axios";
+import { CardDto } from "@flashcards/common/src/api/entities";
+import axios from "@flashcards/common/src/axios";
 import { saveLastUpdate } from "@store/helper-functions";
 import { ThunkActionApp } from "@store/store";
 import sanitize from "sanitize-html";

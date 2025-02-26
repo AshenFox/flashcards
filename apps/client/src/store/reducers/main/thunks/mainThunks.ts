@@ -6,9 +6,9 @@ import {
   GetMainModuleResponseDto,
   GetMainModulesQueryDto,
   GetMainModulesResponseDto,
-} from "@common/api/methods";
-import { GetEditDraftResponseDto } from "@common/api/methods/edit/getEditDraft";
-import axios from "@common/axios";
+} from "@flashcards/common/src/api/methods";
+import { GetEditDraftResponseDto } from "@flashcards/common/src/api/methods/edit/getEditDraft";
+import axios from "@flashcards/common/src/axios";
 import { ThunkActionApp } from "@store/store";
 
 import { mainActions } from "../slice";

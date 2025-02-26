@@ -1,10 +1,10 @@
-import { CardDto } from "@common/api/entities";
+import { CardDto } from "@flashcards/common/src/api/entities";
 import {
   GetMainCardsResponseDto,
   GetMainModuleCardsResponseDto,
   GetMainModuleResponseDto,
   GetMainModulesResponseDto,
-} from "@common/api/methods";
+} from "@flashcards/common/src/api/methods";
 
 import {
   card_fields,
