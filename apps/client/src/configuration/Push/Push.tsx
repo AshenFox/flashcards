@@ -1,5 +1,5 @@
-import config from "@config/default.json";
 import axios from "@flashcards/common/src/axios";
+import flashcardsConfig from "@flashcards/config";
 import { useAppSelector } from "@store/hooks";
 import { memo } from "react";
 import { useEffect } from "react";
@@ -56,7 +56,9 @@ const preparePush = async (device: "mobile" | "tablet" | "pc") => {
 
       const subscription = await register.pushManager.subscribe({
         userVisibleOnly: true,
-        applicationServerKey: urlBase64ToUint8Array(config.publicVapidKey),
+        applicationServerKey: urlBase64ToUint8Array(
+          flashcardsConfig.publicVapidKey,
+        ),
       });
 
       await sendSubscription(device, subscription);

@@ -34,7 +34,8 @@ if (dev && isHTTPS) {
 }
 
 // Tune next.js
-const nextApp = next({ dev, dir: path.join(__dirname, "../../client") });
+const nextDir = path.dirname(require.resolve("@flashcards/client"));
+const nextApp = next({ dev, dir: nextDir });
 
 const handle = nextApp.getRequestHandler();
 

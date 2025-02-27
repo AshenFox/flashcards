@@ -2,12 +2,15 @@
   "name": "@flashcards/server",
   "version": "1.0.0",
   "private": true,
+  "main": "src/index.ts",
   "scripts": {
     "build": "tsc --build ../../packages/common/tsconfig.json ./tsconfig.json && tsc-alias -p ../../packages/common/tsconfig.json ./tsconfig.json",
     "dev": "tsx --tsconfig ./tsconfig.json ./src/index.ts"
   },
   "dependencies": {
     "@flashcards/common": "*",
+    "@flashcards/config": "*",
+    "@flashcards/client": "*",
     "bcryptjs": "^2.4.3",
     "cheerio": "^1.0.0-rc.3",
     "express": "^4.17.1",

@@ -25,9 +25,7 @@
       "@styles/*": ["src/styles/*"],
       "@helpers/*": ["src/helpers/*"],
       "@store/*": ["src/store/*"],
-      "@public/*": ["public/*"],
-      "@server/*": ["server/*"],
-      "@config/*": ["../../config/*"]
+      "@public/*": ["public/*"]
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
