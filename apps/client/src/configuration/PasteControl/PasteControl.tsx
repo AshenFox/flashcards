@@ -1,4 +1,4 @@
-import sanitizeConfig from "@config/sanitize-config.json";
+import { sanitizeConfig } from "@flashcards/config";
 import { memo, useEffect } from "react";
 import sanitize from "sanitize-html";
 

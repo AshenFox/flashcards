@@ -1,3 +1,4 @@
 import path from "path";
 
-process.env.NODE_CONFIG_DIR = path.join(__dirname, "../../../config");
+const configDir = path.dirname(require.resolve("@flashcards/config"));
+process.env.NODE_CONFIG_DIR = configDir;

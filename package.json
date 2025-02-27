@@ -4,6 +4,7 @@
   "private": true,
   "workspaces": [
     "packages/common",
+    "packages/config",
     "apps/server",
     "apps/client"
   ],
@@ -25,7 +26,6 @@
     "scp-config": "scp -r ./config/ user@host:~/apps/flashcards"
   },
   "dependencies": {
-    "config": "^3.3.2",
     "npm": "^8.6.0"
   },
   "devDependencies": {
