@@ -9,12 +9,6 @@
 # testing
 /coverage
 
-# server
-.server
-
-# common
-.common
-
 # next.js
 .next
 /out/
@@ -22,6 +16,9 @@
 # production
 /build
 config
+.server
+.common
+.client
 
 # misc
 .DS_Store
