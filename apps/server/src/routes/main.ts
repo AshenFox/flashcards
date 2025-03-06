@@ -1,4 +1,4 @@
-import { filterRegex } from "@flashcards/common/src/functions/filterRegex";
+import { filterRegex } from "@flashcards/common";
 import cardModel, { CardSortObj } from "@models/card_model";
 import moduleModel from "@models/module_model";
 import { ModuleSortObj } from "@models/module_model";

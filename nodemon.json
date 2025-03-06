@@ -1,6 +1,7 @@
 {
   "ignore": ["apps/client/*", ".next/*"],
   "execMap": {
-    "ts": "npx tsx --tsconfig ./apps/server/tsconfig.json"
+    "ts-common": "npx tsx --tsconfig ./packages/common/tsconfig.json",
+    "ts-server": "npx tsx --tsconfig ./apps/server/tsconfig.json"
   }
 }

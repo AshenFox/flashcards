@@ -4,7 +4,7 @@
     "module": "commonjs",
     "rootDirs": ["./"],
     "allowJs": true,
-    "outDir": "../.server",
+    "outDir": "./.build",
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
     "strict": true,
@@ -21,7 +21,12 @@
   "ts-node": {
     "files": true
   },
-  "references": [{ "path": "../../packages/common" }],
+  "references": [
+    {
+      "path": "../../packages/common"
+      // "outDir": "../../packages/common/.build",
+    }
+  ],
   "files": ["./@types/index.d.ts"],
   "include": ["**/*"]
 }
