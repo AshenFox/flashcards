@@ -12,7 +12,10 @@
       "@routes/*": ["./src/routes/*"],
       "@supplemental/*": ["./src/supplemental/*"],
       "@serverTypes/*": ["./src/types/*"]
-    }
+    },
+    "sourceMap": true,
+    "declaration": true,
+    "declarationMap": true
   },
   "files": ["./@types/index.d.ts"],
   "include": ["src/**/*"]

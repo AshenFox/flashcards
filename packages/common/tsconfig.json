@@ -9,7 +9,10 @@
     "skipLibCheck": true,
     "paths": {
       "@common/*": ["./src/*"]
-    }
+    },
+    "composite": true,
+    "declaration": true,
+    "declarationMap": true
   },
   "include": ["src/**/*"]
 }

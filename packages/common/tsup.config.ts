@@ -5,7 +5,7 @@ export default defineConfig(options => ({
   outDir: ".build",
   format: ["cjs"],
   target: "es2016",
-  sourcemap: true,
+  sourcemap: "inline",
   minify: !options.watch,
   dts: options.watch
     ? {

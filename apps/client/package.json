@@ -2,7 +2,7 @@
   "name": "@flashcards/client",
   "version": "1.0.0",
   "private": true,
-  "main": "./src/index.ts",
+  "main": "./package.json",
   "scripts": {
     "build": "next build",
     "lint": "next lint"
