@@ -23,7 +23,9 @@
     "pretty": "prettier --write \"./**/*.{ts,tsx,js,css,scss}\"",
     "kill": "taskkill /f /im node.exe",
     "clean-repo": "java -jar ./bfg-1.14.0.jar --replace-text passwords.txt",
-    "scp-config": "scp -r ./config/ user@host:~/apps/flashcards"
+    "scp-config": "scp -r ./config/ user@host:~/apps/flashcards",
+    "devTest": "concurrently \"npm run dev -w @flashcards/common\" \"npm run dev -w @flashcards/server\"",
+    "buildTest": "npm run build -w @flashcards/common && npm run build -w @flashcards/server"
   },
   "dependencies": {
     "npm": "^8.6.0"

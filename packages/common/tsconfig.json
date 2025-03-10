@@ -2,21 +2,14 @@
   "compilerOptions": {
     "target": "es2016",
     "module": "commonjs",
-    "rootDirs": ["./"],
     "allowJs": true,
-    "outDir": "./.build",
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
     "strict": true,
-    "noImplicitAny": true,
     "skipLibCheck": true,
-    "composite": true,
     "paths": {
       "@common/*": ["./src/*"]
     }
   },
-  "ts-node": {
-    "files": true
-  },
-  "include": ["**/*"]
+  "include": ["src/**/*"]
 }

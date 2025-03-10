@@ -4,15 +4,14 @@
   "private": true,
   "main": "src/index.ts",
   "scripts": {
-    "build": "tsc --build ../../packages/common/tsconfig.json ./tsconfig.json && tsc-alias -p ../../packages/common/tsconfig.json ./tsconfig.json",
-    "testBuild": "tsc --build ./tsconfig.json && tsc-alias -p ./tsconfig.json",
-    "dev": "tsx --tsconfig ./tsconfig.json ./src/index.ts",
-    "start": "node ../.server/src/index.js"
+    "dev": "tsup-node --watch",
+    "build": "tsup-node",
+    "start": "node .build/index.js"
   },
   "dependencies": {
+    "@flashcards/client": "*",
     "@flashcards/common": "*",
     "@flashcards/config": "*",
-    "@flashcards/client": "*",
     "bcryptjs": "^2.4.3",
     "cheerio": "^1.0.0-rc.3",
     "express": "^4.17.1",
@@ -31,7 +30,6 @@
     "@types/node": "^17.0.23",
     "@types/uuid": "^8.3.4",
     "@types/web-push": "^3.3.2",
-    "tsc-alias": "^1.8.10",
-    "tsx": "^4.7.1"
+    "tsup": "^8.4.0"
   }
 }
