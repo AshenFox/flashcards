@@ -1,4 +1,4 @@
-import axios from "@flashcards/common/src/axios";
+import { axiosInstance } from "@flashcards/common";
 import { ThunkActionApp } from "@store/store";
 
 import { srActions } from "./slice";
@@ -35,7 +35,7 @@ export const getSRCount = () => <ThunkActionApp>(async dispatch => {
     try {
       dispatch(srActions.setSRLoading({ value: true }));
 
-      const { data } = await axios.get<{
+      const { data } = await axiosInstance.get<{
         all_num: number;
         repeat_num: number;
         next_num: number;

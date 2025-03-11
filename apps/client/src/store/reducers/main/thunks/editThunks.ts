@@ -1,5 +1,5 @@
-import { CardDto } from "@flashcards/common/src/api/entities";
-import axios from "@flashcards/common/src/axios";
+import { CardDto } from "@flashcards/common";
+import { axiosInstance } from "@flashcards/common";
 import { saveLastUpdate } from "@store/helper-functions";
 import { ThunkActionApp } from "@store/store";
 import sanitize from "sanitize-html";
@@ -75,12 +75,12 @@ export const scrapeDictionary = (_id: string, value: "cod" | "urban") =>
       let result: string;
 
       if (value === "cod") {
-        const { data } = await axios.get<CodReply>(url, params);
+        const { data } = await axiosInstance.get<CodReply>(url, params);
         result = sanitize(format_dictionary_result({ type: "cod", data }));
       }
 
       if (value === "urban") {
-        const { data } = await axios.get<UrbanReply>(url, params);
+        const { data } = await axiosInstance.get<UrbanReply>(url, params);
         result = sanitize(format_dictionary_result({ type: "urban", data }));
       }
 
@@ -150,7 +150,7 @@ export const searchImages = (_id: string) => <ThunkActionApp>(async (
           }),
         );
       } else {
-        let { data }: { data: ImgurlBase[] } = await axios.get(
+        let { data }: { data: ImgurlBase[] } = await axiosInstance.get(
           "/api/imgsearch",
           {
             params: {
@@ -186,7 +186,7 @@ export const deleteModule = _id => <ThunkActionApp>(async (
       if (!user || module_loading) return;
       dispatch(mainActions.setModuleLoading({ value: true }));
 
-      await axios.delete<{ msg: string }>("/api/edit/module", {
+      await axiosInstance.delete<{ msg: string }>("/api/edit/module", {
         params: {
           _id,
         },
@@ -211,7 +211,7 @@ export const deleteCard = (_id: string) => <ThunkActionApp>(async (
       } = getState();
       if (!user) return;
 
-      const res = await axios.delete<{ msg: string; cards: CardDto[] }>(
+      const res = await axiosInstance.delete<{ msg: string; cards: CardDto[] }>(
         "/api/edit/card",
         {
           params: {
@@ -237,7 +237,7 @@ export const editModule = () => <ThunkActionApp>(async (_, getState) => {
 
       if (!user) return;
 
-      await axios.put<{ msg: string }>("/api/edit/module", module);
+      await axiosInstance.put<{ msg: string }>("/api/edit/module", module);
 
       saveLastUpdate();
     } catch (err) {
@@ -256,7 +256,7 @@ export const editCard = (_id: string) => <ThunkActionApp>(async (
       } = getState();
       if (!user) return;
 
-      await axios.put<{ msg: string }>("/api/edit/card", cards[_id]);
+      await axiosInstance.put<{ msg: string }>("/api/edit/card", cards[_id]);
 
       saveLastUpdate();
     } catch (err) {
@@ -288,7 +288,7 @@ export const createModule = () => <ThunkActionApp>(async (
         if (card.save) _id_arr.push(card._id);
       }
 
-      await axios.post<{ msg: string }>("/api/edit/module", {
+      await axiosInstance.post<{ msg: string }>("/api/edit/module", {
         _id_arr,
       });
 
@@ -310,10 +310,13 @@ export const createCard = (position: "start" | "end") =>
       } = getState();
       if (!user) return;
 
-      const res = await axios.post<{ cards: CardDto[] }>("/api/edit/card", {
-        module,
-        position,
-      });
+      const res = await axiosInstance.post<{ cards: CardDto[] }>(
+        "/api/edit/card",
+        {
+          module,
+          position,
+        },
+      );
 
       dispatch(mainActions.createCardReducer({ cards: res.data.cards }));
 

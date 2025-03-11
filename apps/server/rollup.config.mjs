@@ -1,11 +1,10 @@
 import terser from "@rollup/plugin-terser";
 import typescript from "@rollup/plugin-typescript";
 import { defineConfig } from "rollup";
-import del from "rollup-plugin-delete";
 import multiInput from "rollup-plugin-multi-input";
 import tscAlias from "rollup-plugin-tsc-alias";
 
-const isDev = process.env.NODE_ENV !== "production";
+const isDev = process.env.NODE_ENV === "development";
 
 const config = defineConfig({
   input: "src/**/*.{ts,js}",
@@ -17,16 +16,15 @@ const config = defineConfig({
   cache: isDev,
 
   plugins: [
-    del({ targets: ".build", runOnce: true }),
     {
       ...multiInput(),
       buildStart: null,
     },
     typescript({
       tsconfig: "tsconfig.json",
-      sourceMap: isDev,
-      declaration: isDev,
-      declarationMap: isDev,
+      sourceMap: true,
+      declaration: true,
+      declarationMap: true,
     }),
     tscAlias(),
 

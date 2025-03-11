@@ -1,4 +1,4 @@
-import { CardDto } from "@flashcards/common/src/api/entities";
+import { CardDto } from "@flashcards/common";
 import { shuffle } from "@store/helper-functions";
 
 import { transformCards } from "../helpers";

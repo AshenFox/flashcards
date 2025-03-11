@@ -10,11 +10,12 @@
     "apps/client"
   ],
   "scripts": {
-    "dev": "set NODE_OPTIONS=--openssl-legacy-provider && nodemon ./apps/server/src/index.ts",
+    "start": "npm run start -w @flashcards/server",
+    "dev": "node ./dev.js",
+    "build": "npm run build -w @flashcards/common && npm run build -w @flashcards/server && npm run build -w @flashcards/client",
+    "cleanBuild": "rimraf \"**/.build\"",
     "devd": "docker-compose -f docker-compose.dev.yaml up",
     "devd-rebuild": "docker-compose -f docker-compose.dev.yaml up --no-deps --build app",
-    "start": "node apps/.server/src/index.js",
-    "build:server": "tsc --p ./server/tsconfig.json && tsc-alias -p ./server/tsconfig.json",
     "prod": "docker-compose -f docker-compose.prod.yaml up -d",
     "prod-rebuild": "docker-compose -f docker-compose.prod.yaml up -d --no-deps --build app",
     "typescript": "tsc --extendedDiagnostics --noEmit --incremental false",
@@ -24,11 +25,10 @@
     "pretty": "prettier --write \"./**/*.{ts,tsx,js,css,scss}\"",
     "kill": "taskkill /f /im node.exe",
     "clean-repo": "java -jar ./bfg-1.14.0.jar --replace-text passwords.txt",
-    "scp-config": "scp -r ./config/ user@host:~/apps/flashcards",
-    "devTest": "npm run buildTest && node ./concurrently.js",
-    "buildTest": "npm run build -w @flashcards/common && npm run build -w @flashcards/server"
+    "scp-config": "scp -r ./config/ user@host:~/apps/flashcards"
   },
   "devDependencies": {
+    "@flashcards/config": "^1.0.0",
     "@rollup/plugin-alias": "^5.1.1",
     "@rollup/plugin-terser": "^0.4.4",
     "@rollup/plugin-typescript": "^12.1.2",
@@ -38,7 +38,6 @@
     "nodemon": "^3.1.9",
     "prettier": "3.2.5",
     "rollup": "^4.35.0",
-    "rollup-plugin-delete": "^3.0.1",
     "rollup-plugin-multi-input": "^1.5.0",
     "rollup-plugin-tsc-alias": "^1.1.3"
   }

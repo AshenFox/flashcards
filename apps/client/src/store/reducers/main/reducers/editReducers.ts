@@ -1,4 +1,4 @@
-import { CardDto } from "@flashcards/common/src/api/entities";
+import { CardDto } from "@flashcards/common";
 
 import { card_fields } from "../initState";
 import { MainCaseReducer } from "../types";

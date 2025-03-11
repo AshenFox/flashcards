@@ -6,9 +6,9 @@ import {
   GetMainModuleResponseDto,
   GetMainModulesQueryDto,
   GetMainModulesResponseDto,
-} from "@flashcards/common/src/api/methods";
-import { GetEditDraftResponseDto } from "@flashcards/common/src/api/methods/edit/getEditDraft";
-import axios from "@flashcards/common/src/axios";
+} from "@flashcards/common";
+import { GetEditDraftResponseDto } from "@flashcards/common";
+import { axiosInstance } from "@flashcards/common";
 import { ThunkActionApp } from "@store/store";
 
 import { mainActions } from "../slice";
@@ -39,7 +39,7 @@ export const getModules = () => <ThunkActionApp>(async (dispatch, getState) => {
         ...filters,
       };
 
-      const { data } = await axios.get<GetMainModulesResponseDto>(
+      const { data } = await axiosInstance.get<GetMainModulesResponseDto>(
         "/api/main/modules",
         {
           params,
@@ -81,7 +81,7 @@ export const getCards = () => <ThunkActionApp>(async (dispatch, getState) => {
         ...filters,
       };
 
-      const { data } = await axios.get<GetMainCardsResponseDto>(
+      const { data } = await axiosInstance.get<GetMainCardsResponseDto>(
         "/api/main/cards",
         {
           params,
@@ -116,7 +116,7 @@ export const getModuleCards = (_id: string) => <ThunkActionApp>(async (
 
       mainActions.setSectionLoading({ value: true, section: "moduleCards" });
 
-      const { data } = await axios.get<GetMainModuleCardsResponseDto>(
+      const { data } = await axiosInstance.get<GetMainModuleCardsResponseDto>(
         "/api/main/module/cards",
         {
           params: {
@@ -158,7 +158,7 @@ export const getModule = (_id: string) => <ThunkActionApp>(async (
         ...filters,
       };
 
-      const { data } = await axios.get<GetMainModuleResponseDto>(
+      const { data } = await axiosInstance.get<GetMainModuleResponseDto>(
         "/api/main/module",
         {
           params,
@@ -194,7 +194,7 @@ export const getDraft = () => <ThunkActionApp>(async (dispatch, getState) => {
       );
 
       const { data } =
-        await axios.get<GetEditDraftResponseDto>("/api/edit/draft");
+        await axiosInstance.get<GetEditDraftResponseDto>("/api/edit/draft");
 
       dispatch(mainActions.setModule(data));
     } catch (err) {

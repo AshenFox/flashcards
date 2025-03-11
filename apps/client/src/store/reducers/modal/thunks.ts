@@ -1,4 +1,4 @@
-import axios from "@flashcards/common/src/axios";
+import { axiosInstance } from "@flashcards/common";
 import { ThunkActionApp } from "@store/store";
 
 import { modalActions } from "./slice";
@@ -21,14 +21,14 @@ export const enter = (type: "log_in" | "sign_up") => <ThunkActionApp>(async (
 
       const {
         data: { token, errors },
-      } = await axios.post<{
+      } = await axiosInstance.post<{
         token: string;
         errors: LogInErrors | SignUpErrors;
       }>(`/api/auth/entry/${type}`, type === "log_in" ? log_in : sign_up);
 
       if (token) {
         localStorage.setItem("value", token);
-        axios.defaults.headers.Authorization = `Bearer ${token}`;
+        axiosInstance.defaults.headers.Authorization = `Bearer ${token}`;
       }
 
       dispatch(modalActions.enterReducer({ [`${type}_errors`]: errors }));
@@ -58,7 +58,7 @@ export const checkField = (type: string) => <ThunkActionApp>(async (
 
       dispatch(modalActions.changeModalLoading({ value: true }));
 
-      const { data } = await axios.post<SignUpErrors>(
+      const { data } = await axiosInstance.post<SignUpErrors>(
         `/api/auth/check/sign_up`,
         sign_up,
       );

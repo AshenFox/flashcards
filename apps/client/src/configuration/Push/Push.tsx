@@ -1,4 +1,4 @@
-import axios from "@flashcards/common/src/axios";
+import { axiosInstance } from "@flashcards/common";
 import flashcardsConfig from "@flashcards/config";
 import { useAppSelector } from "@store/hooks";
 import { memo } from "react";
@@ -75,7 +75,7 @@ const sendSubscription = async (
   subscription: PushSubscription,
 ) => {
   try {
-    const { data }: { data: { msg: string } } = await axios.put(
+    const { data }: { data: { msg: string } } = await axiosInstance.put(
       "/api/notifications/subscribe",
       {
         device,

@@ -5,7 +5,8 @@
   "main": "./package.json",
   "scripts": {
     "build": "next build",
-    "lint": "next lint"
+    "lint": "next lint",
+    "ts": "tsc --extendedDiagnostics --noEmit --incremental false"
   },
   "dependencies": {
     "@flashcards/common": "*",

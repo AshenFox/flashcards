@@ -4,4 +4,4 @@ export * from "./creators/entities";
 export * from "./creators/methods";
 export * from "./functions/filterRegex";
 export * from "./types";
-export { default as axios } from "@common/axios";
+export { default as axiosInstance } from "@common/axiosInstance";

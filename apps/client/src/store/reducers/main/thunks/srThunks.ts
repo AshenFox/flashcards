@@ -1,5 +1,5 @@
-import { CardDto } from "@flashcards/common/src/api/entities";
-import axios from "@flashcards/common/src/axios";
+import { CardDto } from "@flashcards/common";
+import { axiosInstance } from "@flashcards/common";
 import { saveLastUpdate } from "@store/helper-functions";
 import { ThunkActionApp } from "@store/store";
 
@@ -16,7 +16,7 @@ export const dropCardsSR = () => <ThunkActionApp>(async (
 
       const _id_arr = Object.keys(cards);
 
-      const { data } = await axios.put<{
+      const { data } = await axiosInstance.put<{
         stage: number;
         nextRep: string;
         prevStage: string;
@@ -44,7 +44,7 @@ export const dropCardSR = (_id: string) => <ThunkActionApp>(async dispatch => {
           prevStage: string;
           lastRep: string;
         };
-      } = await axios.put("/api/sr/drop", {
+      } = await axiosInstance.put("/api/sr/drop", {
         _id_arr: [_id],
       });
 
@@ -59,7 +59,7 @@ export const dropCardSR = (_id: string) => <ThunkActionApp>(async dispatch => {
 export const setCardSR = (_id: string, value: boolean) =>
   <ThunkActionApp>(async dispatch => {
     try {
-      await axios.put<{ msg: string }>("/api/sr/control", {
+      await axiosInstance.put<{ msg: string }>("/api/sr/control", {
         _id_arr: [_id],
         study_regime: value,
       });
@@ -96,7 +96,7 @@ export const setCardsSRPositive = (_id: string) => <ThunkActionApp>(async (
         }
       }
 
-      await axios.put<{ msg: string }>("/api/sr/control", {
+      await axiosInstance.put<{ msg: string }>("/api/sr/control", {
         _id_arr,
         study_regime: true,
       });
@@ -120,7 +120,7 @@ export const setCardsSR = (value: boolean) => <ThunkActionApp>(async (
 
       const _id_arr = Object.keys(cards);
 
-      await axios.put<{ msg: string }>("/api/sr/control", {
+      await axiosInstance.put<{ msg: string }>("/api/sr/control", {
         _id_arr,
         study_regime: value,
       });
@@ -142,7 +142,7 @@ export const putSRAnswer = (_id: string, answer: 1 | -1) =>
 
       dispatch(mainActions.setCardSRLoading({ _id, value: true }));
 
-      const { data } = await axios.put<{
+      const { data } = await axiosInstance.put<{
         stage: number;
         nextRep: string;
         prevStage: string;
@@ -180,7 +180,7 @@ export const getSRCards = (number: number) => <ThunkActionApp>(async (
 
       const {
         data: { cards },
-      } = await axios.get<{
+      } = await axiosInstance.get<{
         cards: CardDto[];
       }>("/api/sr/cards", {
         params: {

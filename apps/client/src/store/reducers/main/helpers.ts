@@ -1,4 +1,4 @@
-import { CardDto } from "@flashcards/common/src/api/entities";
+import { CardDto } from "@flashcards/common";
 
 import { card_fields, url_fields } from "./initState";
 import { Cards, ImgurlBase, ImgurlObjs } from "./types";

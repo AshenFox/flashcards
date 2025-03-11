@@ -1,5 +1,5 @@
-import { CardDto, ModuleDto } from "@flashcards/common/src/api/entities";
-import { PaginationDto } from "@flashcards/common/src/api/methods/pagedData";
+import { CardDto, ModuleDto } from "@flashcards/common";
+import { PaginationDto } from "@flashcards/common";
 import { CaseReducer } from "@reduxjs/toolkit";
 import { Action } from "@store/types";
 
@@ -77,7 +77,7 @@ export type MainState = {
 };
 
 export type ImgurlFields = {
-  ok: Boolean;
+  ok: boolean;
 };
 
 export type ImgurlBase = {

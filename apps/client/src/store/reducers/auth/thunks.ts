@@ -1,5 +1,5 @@
-import { UserDto } from "@flashcards/common/src/api/entities";
-import axios from "@flashcards/common/src/axios";
+import { UserDto } from "@flashcards/common";
+import { axiosInstance } from "@flashcards/common";
 import { ThunkActionApp } from "@store/store";
 
 import { authActions } from "./slice";
@@ -19,8 +19,8 @@ export const authenticate = () => <ThunkActionApp>(async (
       }
 
       if (token) {
-        axios.defaults.headers.Authorization = `Bearer ${token}`;
-        const { data } = await axios.get<UserDto>(`/api/auth`);
+        axiosInstance.defaults.headers.Authorization = `Bearer ${token}`;
+        const { data } = await axiosInstance.get<UserDto>(`/api/auth`);
 
         if (pathname === "/") {
           window.location.replace("/home/modules");
@@ -42,7 +42,7 @@ export const logOut = () => <ThunkActionApp>((dispatch, getState) => {
     const pathname = window.location.pathname;
 
     localStorage.removeItem("value");
-    axios.defaults.headers.Authorization = undefined;
+    axiosInstance.defaults.headers.Authorization = undefined;
 
     if (pathname !== "/") window.location.replace("/");
 

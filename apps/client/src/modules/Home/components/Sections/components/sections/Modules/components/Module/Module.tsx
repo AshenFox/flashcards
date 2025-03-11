@@ -1,5 +1,5 @@
-import { ModuleDto } from "@flashcards/common/src/api/entities";
-import { filterRegex } from "@flashcards/common/src/functions/filterRegex";
+import { ModuleDto } from "@flashcards/common";
+import { filterRegex } from "@flashcards/common";
 import { usePlug } from "@helpers/hooks/usePlug";
 import DateStr from "@ui/DateStr";
 import { StudyRegimeIcon } from "@ui/Icons";

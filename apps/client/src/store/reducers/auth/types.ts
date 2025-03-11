@@ -1,4 +1,4 @@
-import { UserDto } from "@flashcards/common/src/api/entities";
+import { UserDto } from "@flashcards/common";
 import { CaseReducer } from "@reduxjs/toolkit";
 import { Action } from "@store/types";
 
