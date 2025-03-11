@@ -5,8 +5,7 @@ import del from "rollup-plugin-delete";
 import multiInput from "rollup-plugin-multi-input";
 import tscAlias from "rollup-plugin-tsc-alias";
 
-const watch = process.env.ROLLUP_WATCH;
-const isDev = !!watch;
+const isDev = process.env.NODE_ENV !== "production";
 
 const config = defineConfig({
   input: "src/**/*.{ts,js}",

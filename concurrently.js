@@ -4,7 +4,7 @@ const commands = [
   {
     command: "npm run buildDev -w @flashcards/common",
     name: "Common",
-    prefixColor: "red",
+    prefixColor: "blue",
   },
   {
     command: "npm run buildDev -w @flashcards/server",
@@ -12,7 +12,7 @@ const commands = [
     prefixColor: "green",
   },
   {
-    command: "npm run dev -w @flashcards/server",
+    command: "nodemon --config nodemon.json",
     name: "Dev",
     prefixColor: "yellow",
   },

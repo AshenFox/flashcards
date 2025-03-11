@@ -25,7 +25,7 @@
     "kill": "taskkill /f /im node.exe",
     "clean-repo": "java -jar ./bfg-1.14.0.jar --replace-text passwords.txt",
     "scp-config": "scp -r ./config/ user@host:~/apps/flashcards",
-    "devTest": "node ./concurrently.js",
+    "devTest": "npm run buildTest && node ./concurrently.js",
     "buildTest": "npm run build -w @flashcards/common && npm run build -w @flashcards/server"
   },
   "devDependencies": {
@@ -35,7 +35,7 @@
     "concurrently": "^9.1.2",
     "eslint-plugin-import": "^2.29.1",
     "eslint-plugin-simple-import-sort": "^12.1.0",
-    "nodemon": "^2.0.22",
+    "nodemon": "^3.1.9",
     "prettier": "3.2.5",
     "rollup": "^4.35.0",
     "rollup-plugin-delete": "^3.0.1",

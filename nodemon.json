@@ -1,7 +1,6 @@
 {
-  "ignore": ["apps/client/*", ".next/*"],
-  "execMap": {
-    "ts-common": "npx tsx --tsconfig ./packages/common/tsconfig.json",
-    "ts-server": "npx tsx --tsconfig ./apps/server/tsconfig.json"
-  }
+  "watch": ["./apps/server/.build", "./packages/common/.build"],
+  "exec": "npm run dev -w @flashcards/server",
+  "delay": "1000",
+  "legacyWatch": true
 }
