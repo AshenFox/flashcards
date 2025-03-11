@@ -1,3 +1,3 @@
-import { ErrorResponseCreator } from "@flashcards/common/src/creators/methods";
+import { ErrorResponseCreator } from "@flashcards/common";
 
 export type ErrorResponse = ErrorResponseCreator;

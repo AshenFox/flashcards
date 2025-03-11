@@ -2,7 +2,7 @@ import {
   GetMainCardsQueryCreator,
   GetMainCardsResponseCreator,
   PagedDataCreator,
-} from "@flashcards/common/src/creators/methods";
+} from "@flashcards/common";
 import { Card } from "@serverTypes/entities";
 
 export type GetMainCardsQuery = GetMainCardsQueryCreator;

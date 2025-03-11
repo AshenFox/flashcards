@@ -2,7 +2,7 @@ import {
   GetEditDraftQueryCreator,
   GetEditDraftResponseCreator,
   PagedDataCreator,
-} from "@flashcards/common/src/creators/methods";
+} from "@flashcards/common";
 
 import { Card, Module } from "../../entities";
 

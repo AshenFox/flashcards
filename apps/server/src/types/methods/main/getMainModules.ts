@@ -2,7 +2,7 @@ import {
   GetMainModulesQueryCreator,
   GetMainModulesResponseCreator,
   PagedDataCreator,
-} from "@flashcards/common/src/creators/methods";
+} from "@flashcards/common";
 import { Module } from "@serverTypes/entities";
 
 export type GetMainModulesQuery = GetMainModulesQueryCreator;

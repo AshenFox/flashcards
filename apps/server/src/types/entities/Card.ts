@@ -1,4 +1,4 @@
-import { CardCreator } from "@flashcards/common/src/creators/entities";
+import { CardCreator } from "@flashcards/common";
 
 export type CardBase = Omit<CardCreator, "_id">;
 export type Card = CardCreator;

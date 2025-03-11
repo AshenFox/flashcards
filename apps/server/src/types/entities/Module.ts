@@ -1,3 +1,3 @@
-import { ModuleCreator } from "@flashcards/common/src/creators/entities";
+import { ModuleCreator } from "@flashcards/common";
 
 export type Module = ModuleCreator;
