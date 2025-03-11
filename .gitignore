@@ -10,16 +10,12 @@
 /coverage
 
 # next.js
-.next
 /out/
 
 # production
-/build
 config
 .build
-.server
-.common
-.client
+.rollup.cache
 
 # misc
 .DS_Store
@@ -36,8 +32,6 @@ yarn-error.log*
 .env.test.local
 .env.production.local
 
-# vercel
-.vercel
 
 # git rm -r --cached myFolder
 # git commit . -m "Remove duplicated directory"

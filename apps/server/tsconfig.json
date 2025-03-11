@@ -1,10 +1,14 @@
 {
   "compilerOptions": {
+    "rootDir": "./src",
+    "outDir": "./.build",
+    "tsBuildInfoFile": "./.build/tsconfig.tsbuildinfo",
     "target": "es2016",
-    "module": "commonjs",
+    "module": "ESNext",
     "allowJs": true,
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
+    "typeRoots": ["./@types"],
     "strict": true,
     "skipLibCheck": true,
     "paths": {
@@ -13,10 +17,11 @@
       "@supplemental/*": ["./src/supplemental/*"],
       "@serverTypes/*": ["./src/types/*"]
     },
-    "sourceMap": true,
+    "moduleResolution": "bundler",
     "declaration": true,
-    "declarationMap": true
+    "declarationMap": true,
+    "sourceMap": true,
+    "pretty": true
   },
-  "files": ["./@types/index.d.ts"],
   "include": ["src/**/*"]
 }
