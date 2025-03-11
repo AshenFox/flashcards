@@ -189,7 +189,7 @@ router.get("/urban", auth, async (req: UrbanGetReq, res: UrbanGetRes) => {
         .find(".example")
         .contents()
         .each((i, el) => {
-          let name = $(el).get(0).name;
+          let name = ($(el)?.get(0) as { name?: string })?.name;
 
           if (name === "br") {
             example = example + "<br>";

@@ -115,11 +115,12 @@ const start = async () => {
   }
 };
 
-process.on("SIGINT", async () => {
+const shutDown = async () => {
   console.log("\nGracefully shutting down from SIGINT (Ctrl-C)");
   await nextApp.close();
   process.exit(0);
-});
+};
+process.on("SIGINT", shutDown);
 
 start();
 

@@ -2,14 +2,19 @@ import concurrently from "concurrently";
 
 const commands = [
   {
-    command: "npm run dev -w @flashcards/common",
+    command: "npm run buildDev -w @flashcards/common",
     name: "Common",
     prefixColor: "red",
   },
   {
-    command: "npm run dev -w @flashcards/server",
+    command: "npm run buildDev -w @flashcards/server",
     name: "Server",
     prefixColor: "green",
+  },
+  {
+    command: "npm run dev -w @flashcards/server",
+    name: "Dev",
+    prefixColor: "yellow",
   },
 ];
 

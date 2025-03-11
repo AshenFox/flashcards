@@ -1,0 +1,6 @@
+{
+  "watch": ["./.build"],
+  "exec": "wait-on .build/index.js && node .build/index.js",
+  "delay": "1000",
+  "legacyWatch": true
+}
