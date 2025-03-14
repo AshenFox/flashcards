@@ -20,6 +20,7 @@
     "eslint:fix": "eslint ./**/* --fix"
   },
   "dependencies": {
+    "@flashcards/eslint": "*",
     "axios": "^1.6.7",
     "web-push": "^3.4.4"
   },

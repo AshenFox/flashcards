@@ -6,6 +6,7 @@
   "workspaces": [
     "packages/common",
     "packages/config",
+    "packages/eslint",
     "apps/server",
     "apps/client"
   ],
@@ -27,17 +28,11 @@
     "scp-config": "scp -r ./config/ user@host:~/apps/flashcards"
   },
   "devDependencies": {
-    "@eslint/js": "^8.56.0",
-    "@flashcards/config": "*",
     "@rollup/plugin-alias": "^5.1.1",
     "@rollup/plugin-terser": "^0.4.4",
     "@rollup/plugin-typescript": "^12.1.2",
-    "@typescript-eslint/parser": "^8.26.1",
     "concurrently": "^9.1.2",
     "dotenv": "^16.4.7",
-    "eslint": "^8.57.1",
-    "eslint-plugin-import": "^2.29.1",
-    "eslint-plugin-simple-import-sort": "^12.1.0",
     "nodemon": "^3.1.9",
     "prettier": "3.2.5",
     "rimraf": "^6.0.1",

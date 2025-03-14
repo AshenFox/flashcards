@@ -2,7 +2,6 @@
   "name": "@flashcards/server",
   "version": "1.0.0",
   "private": true,
-  "type": "module",
   "main": "src/index.ts",
   "scripts": {
     "start": "node .build/index.js",
@@ -17,6 +16,7 @@
     "@flashcards/client": "*",
     "@flashcards/common": "*",
     "@flashcards/config": "*",
+    "@flashcards/eslint": "*",
     "bcryptjs": "^2.4.3",
     "cheerio": "^1.0.0-rc.3",
     "express": "^4.17.1",
