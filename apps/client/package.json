@@ -3,10 +3,14 @@
   "version": "1.0.0",
   "private": true,
   "main": "./package.json",
+  "type": "module",
   "scripts": {
     "build": "next build",
     "lint": "next lint",
-    "ts": "tsc --extendedDiagnostics --noEmit --incremental false"
+    "ts": "tsc --extendedDiagnostics --noEmit --incremental false",
+    "eslint": "eslint ./",
+    "eslint:fix": "eslint ./ --fix",
+    "stylelint:fix": "stylelint '**/*.{css,scss}' --fix"
   },
   "dependencies": {
     "@flashcards/common": "*",

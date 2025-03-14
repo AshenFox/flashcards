@@ -2,12 +2,16 @@
   "name": "@flashcards/server",
   "version": "1.0.0",
   "private": true,
+  "type": "module",
   "main": "src/index.ts",
   "scripts": {
     "start": "node .build/index.js",
     "dev": "wait-on .build/index.js && node .build/index.js",
     "buildDev": "rollup -c -w",
-    "build": "rollup -c"
+    "build": "rollup -c",
+    "ts": "tsc --extendedDiagnostics --noEmit --incremental false",
+    "eslint": "eslint ./**/*",
+    "eslint:fix": "eslint ./**/* --fix"
   },
   "dependencies": {
     "@flashcards/client": "*",
