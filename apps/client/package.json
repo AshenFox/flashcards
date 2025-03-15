@@ -10,6 +10,7 @@
     "ts": "tsc --extendedDiagnostics --noEmit --incremental false",
     "eslint": "eslint ./",
     "eslint:fix": "eslint ./ --fix",
+    "stylelint": "stylelint '**/*.{css,scss}'",
     "stylelint:fix": "stylelint '**/*.{css,scss}' --fix"
   },
   "dependencies": {

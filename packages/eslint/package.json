@@ -3,7 +3,8 @@
   "version": "1.0.0",
   "private": true,
   "exports": {
-    "./eslint-base": "./eslint-base.js"
+    "./eslint-base": "./eslint-base.js",
+    "./eslint-server-base": "./eslint-server-base.js"
   },
   "devDependencies": {
     "@eslint/js": "^8.56.0",
