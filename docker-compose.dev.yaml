@@ -1,4 +1,4 @@
-version: '3.8'
+version: "3.8"
 
 services:
   app:
@@ -6,15 +6,9 @@ services:
       context: .
       dockerfile: Dockerfile.dev
     environment:
-      - CHOKIDAR_USEPOLLING=true
       - NODE_OPTIONS=--openssl-legacy-provider
     volumes:
-      - ./components:/app/components
-      - ./pages:/app/pages
-      - ./public:/app/public
-      - ./server:/app/server
-      - ./store:/app/store
-      - ./styles:/app/styles
-      - /app/node_modules
+      - ./apps:/app/apps
+      - ./packages:/app/packages
     ports:
       - 4000:4000

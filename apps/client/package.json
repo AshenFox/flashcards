@@ -1,0 +1,52 @@
+{
+  "name": "@flashcards/client",
+  "version": "1.0.0",
+  "private": true,
+  "main": "./package.json",
+  "type": "module",
+  "scripts": {
+    "build": "next build",
+    "lint": "next lint",
+    "ts": "tsc --extendedDiagnostics --noEmit --incremental false",
+    "eslint": "eslint ./",
+    "eslint:fix": "eslint ./ --fix",
+    "stylelint": "stylelint '**/*.{css,scss}'",
+    "stylelint:fix": "stylelint '**/*.{css,scss}' --fix"
+  },
+  "dependencies": {
+    "@flashcards/common": "*",
+    "@flashcards/config": "*",
+    "@flashcards/eslint": "*",
+    "@reduxjs/toolkit": "^2.5.0",
+    "clsx": "^2.1.0",
+    "easy-speech": "^2.4.0",
+    "eslint-config-next": "^14.2.3",
+    "next": "^14.2.3",
+    "next-themes": "^0.3.0",
+    "normalize.css": "^8.0.1",
+    "react": "^18.3.1",
+    "react-contenteditable": "^3.3.7",
+    "react-dom": "^18.3.1",
+    "react-loading-skeleton": "^3.4.0",
+    "react-redux": "^7.2.2",
+    "react-select": "^5.8.0",
+    "redux": "^4.0.5",
+    "redux-devtools-extension": "^2.13.8",
+    "redux-thunk": "^2.3.0",
+    "sanitize-html": "^2.13.0"
+  },
+  "devDependencies": {
+    "@types/config": "^0.0.41",
+    "@types/react": "^18.2.66",
+    "@types/react-dom": "^18.2.22",
+    "@types/react-redux": "^7.1.23",
+    "@types/sanitize-html": "^2.6.2",
+    "stylelint": "^16.5.0",
+    "stylelint-config-idiomatic-order": "^10.0.0",
+    "stylelint-config-standard": "^36.0.0",
+    "stylelint-config-standard-scss": "^13.1.0",
+    "stylelint-order": "^6.0.4",
+    "sass": "^1.29.0",
+    "typescript-plugin-css-modules": "^5.1.0"
+  }
+}

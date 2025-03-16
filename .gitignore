@@ -1,7 +1,7 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
 # dependencies
-/node_modules
+node_modules
 /.pnp
 .pnp.js
 /.cert/
@@ -9,16 +9,13 @@
 # testing
 /coverage
 
-# server
-/.server
-
 # next.js
-/.next/
 /out/
 
 # production
-/build
-/config
+config
+.build
+.rollup.cache
 
 # misc
 .DS_Store
@@ -35,8 +32,6 @@ yarn-error.log*
 .env.test.local
 .env.production.local
 
-# vercel
-.vercel
 
 # git rm -r --cached myFolder
 # git commit . -m "Remove duplicated directory"
