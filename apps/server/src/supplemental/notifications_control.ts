@@ -52,7 +52,7 @@ export const send_notifications = async () => {
     for (let notif of notifications) {
       const _id = notif.user_id;
 
-      if (!users.hasOwnProperty(_id)) {
+      if (!users[_id]) {
         const user = await userModel.findOne({ _id });
         if (user) users[_id] = user;
       }
