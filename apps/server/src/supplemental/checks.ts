@@ -93,9 +93,9 @@ const incorrectPassword = async (username: string, password: string) => {
 const isEmpty = (str: string) => !str;
 
 const userRegExp = /[A-z0-9]/;
-const passRegExp = /[A-z0-9"!#$%&'()*+,.:;<=>?@\]\[^_`{}~"\/\\\-]/;
+const passRegExp = /[A-z0-9"!#$%&'()*+,.:;<=>?@\]^_`{}~"/\\-]/;
 const emailRegExp =
-  /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+  /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z0-9]+\.)+[a-zA-Z]{2,}))$/;
 const allCapitalRegExp = /[A-Z]/;
 
 type CheckData = {
