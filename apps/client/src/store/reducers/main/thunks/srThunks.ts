@@ -81,7 +81,7 @@ export const setCardsSRPositive = (_id: string) => <ThunkActionApp>(async (
         main: { cards },
       } = getState();
 
-      const cards_arr = Object.values(cards);
+      const cards_arr = Object.values(cards).sort((a, b) => a.order - b.order);
       let _id_arr: string[] = [];
 
       for (const card of cards_arr) {
