@@ -1,7 +1,7 @@
 import { useActions } from "@store/hooks";
 import { Card } from "@store/reducers/main/types";
+import Checkbox from "@ui/Checkbox";
 import { SaveIcon } from "@ui/Icons";
-import Switch from "@ui/Switch";
 import { memo, MouseEvent, TouchEvent, useCallback, useRef } from "react";
 
 import s from "./styles.module.scss";
@@ -40,7 +40,7 @@ const Save = ({ data }: SaveProps) => {
   const timer = useRef<ReturnType<typeof setTimeout>>(null);
 
   return (
-    <Switch
+    <Checkbox
       id={`switch-save${_id}`}
       className={s.save}
       active={save}
