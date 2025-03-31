@@ -1,6 +1,7 @@
+import { PaginationDto } from "@flashcards/common";
 import { useAppSelector } from "@store/store";
 import { useRouter } from "next/router";
-import React, { memo } from "react";
+import React, { memo, useCallback, useEffect, useState } from "react";
 
 import s from "./styles.module.scss";
 
@@ -8,19 +9,49 @@ const ItemsNumber = () => {
   const router = useRouter();
   const { section } = router.query;
 
-  const all_modules_number = useAppSelector(
-    s => s.main.sections.homeModules.pagination.all,
+  const homeModulesPagination = useAppSelector(
+    s => s.main.sections.homeModules.pagination,
   );
-  const all_cards_number = useAppSelector(
-    s => s.main.sections.homeCards.pagination.all,
+  const homeCardsPagination = useAppSelector(
+    s => s.main.sections.homeCards.pagination,
   );
+
+  const [modulesPagination, setModulesPagination] = useState<PaginationDto>(
+    homeModulesPagination,
+  );
+  const [cardsPagination, setCardsPagination] =
+    useState<PaginationDto>(homeCardsPagination);
+
+  useEffect(() => {
+    if (typeof homeModulesPagination.all === "number") {
+      setModulesPagination(homeModulesPagination);
+    }
+  }, [homeModulesPagination]);
+
+  useEffect(() => {
+    if (typeof homeCardsPagination.all === "number") {
+      setCardsPagination(homeCardsPagination);
+    }
+  }, [homeCardsPagination]);
+
+  const renderCount = useCallback((pagination: PaginationDto) => {
+    if (typeof pagination.all !== "number") return null;
+
+    if (pagination.number !== pagination.all) {
+      return `All: ${pagination.all} | Found: ${pagination.number}`;
+    }
+
+    return `All: ${pagination.all}`;
+  }, []);
+
+  if (section === "sr") {
+    return null;
+  }
 
   return (
     <div className={s.number}>
-      {section === "cards" &&
-        `All cards: ${all_cards_number ? all_cards_number : "0"}`}
-      {section === "modules" &&
-        `All modules: ${all_modules_number ? all_modules_number : "0"}`}
+      {section === "cards" && renderCount(cardsPagination)}
+      {section === "modules" && renderCount(modulesPagination)}
     </div>
   );
 };
