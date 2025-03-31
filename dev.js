@@ -21,7 +21,7 @@ const commands = [
   },
   {
     command: "nodemon --config nodemon.json",
-    name: "Dev",
+    name: "Client",
     prefixColor: "yellow",
   },
 ];
