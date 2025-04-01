@@ -73,19 +73,19 @@ export const send_notifications = async () => {
         payload.body = "You still have cards to repeat :)";
       }
 
-      const { pc, tablet, mobile } = users[_id].subscriptions;
+      const subscriptions = users[_id].subscriptions;
+      const payloadJSON = JSON.stringify(payload);
 
       const errCallback = (err: any) => {
         console.log("Something went wrong: ", err);
       };
 
-      const payloadJSON = JSON.stringify(payload);
-
-      if (pc) webpush.sendNotification(pc, payloadJSON).catch(errCallback);
-      if (tablet)
-        webpush.sendNotification(tablet, payloadJSON).catch(errCallback);
-      if (mobile)
-        webpush.sendNotification(mobile, payloadJSON).catch(errCallback);
+      // Send notification to all user's subscriptions
+      subscriptions.forEach(subscription => {
+        webpush
+          .sendNotification(subscription.subscriptionData, payloadJSON)
+          .catch(errCallback);
+      });
 
       await notificationModel.deleteOne({ _id: notif._id });
     }

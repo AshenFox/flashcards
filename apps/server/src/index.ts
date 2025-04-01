@@ -107,7 +107,7 @@ const start = async () => {
     pushInterval = setInterval(pushIntervalCallback, 5000);
 
     console.log(
-      `Server is ready on http${isHTTPS ? "s" : ""}://localhost:${port}`,
+      `App is ready on http${isHTTPS ? "s" : ""}://localhost:${port}`,
     );
   } catch (err) {
     console.error(err);

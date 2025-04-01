@@ -189,7 +189,7 @@ type ControlPutBody = {
 type ControlPutReq = Request<any, any, ControlPutBody>;
 
 type ControlPutResBody = {
-  msg: "Study regime has been controlled";
+  msg: string;
 };
 
 type ControlPutRes = ResponseLocals<ControlPutResBody | ResError>;

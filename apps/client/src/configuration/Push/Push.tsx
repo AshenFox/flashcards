@@ -75,13 +75,10 @@ const sendSubscription = async (
   subscription: PushSubscription,
 ) => {
   try {
-    const { data }: { data: { msg: string } } = await axiosInstance.put(
-      "/api/notifications/subscribe",
-      {
-        device,
-        subscription,
-      },
-    );
+    await axiosInstance.put<{ msg: string }>("/api/notifications/subscribe", {
+      device,
+      subscription,
+    });
   } catch (err) {
     console.log(err);
   }
