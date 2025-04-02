@@ -1,42 +1,43 @@
 import { Subscription, Subscriptions } from "@serverTypes/entities";
+import { ErrorResponse } from "@serverTypes/methods";
+import {
+  DeleteNotificationsSubscriptionParams,
+  DeleteNotificationsSubscriptionResponse,
+  GetNotificationsSubscriptionsResponse,
+  PostNotificationsSubscribeQuery,
+  PostNotificationsSubscribeResponse,
+  PutNotificationsSubscriptionBody,
+  PutNotificationsSubscriptionParams,
+  PutNotificationsSubscriptionResponse,
+} from "@serverTypes/methods";
 import { auth } from "@supplemental/middleware";
 import { ResponseLocals } from "@supplemental/types";
 import express, { Request } from "express";
 import { Types } from "mongoose";
-import { PushSubscription } from "web-push";
 
 const router = express.Router();
-
-type ResError = {
-  errorBody: string;
-};
 
 // @route ------ POST api/notifications/subscribe
 // @desc ------- Create new subscription
 // @access ----- Private
 
-type SubscribePutBody = {
-  name: string;
-  subscription: PushSubscription;
-};
+type SubscribePostReq = Request<any, any, PostNotificationsSubscribeQuery>;
 
-type SubscribePutReq = Request<any, any, SubscribePutBody>;
-
-type SubscribePutResBody = Subscription;
-
-type SubscribePutRes = ResponseLocals<SubscribePutResBody | ResError>;
+type SubscribePostRes = ResponseLocals<
+  PostNotificationsSubscribeResponse | ErrorResponse
+>;
 
 router.post(
   "/subscribe",
   auth,
-  async (req: SubscribePutReq, res: SubscribePutRes) => {
+  async (req: SubscribePostReq, res: SubscribePostRes) => {
     try {
-      const { name, subscription } = req.body;
+      const { name, subscriptionData } = req.body;
       const user = res.locals.user;
 
       // Check if subscription with this endpoint already exists
       const existingSubscription = user.subscriptions.find(
-        sub => sub.subscriptionData.endpoint === subscription.endpoint,
+        sub => sub.subscriptionData.endpoint === subscriptionData.endpoint,
       );
 
       if (existingSubscription) {
@@ -51,7 +52,7 @@ router.post(
         _id: new Types.ObjectId(),
         name,
         subscriptionDate: new Date(),
-        subscriptionData: subscription,
+        subscriptionData,
       };
 
       (user.subscriptions as Subscriptions).push(newSubscription);
@@ -69,11 +70,9 @@ router.post(
 // @desc ------- Get all subscriptions for the user
 // @access ----- Private
 
-type GetSubscriptionsResBody = {
-  subscriptions: Subscription[];
-};
-
-type GetSubscriptionsRes = ResponseLocals<GetSubscriptionsResBody | ResError>;
+type GetSubscriptionsRes = ResponseLocals<
+  GetNotificationsSubscriptionsResponse | ErrorResponse
+>;
 
 router.get(
   "/subscriptions",
@@ -81,9 +80,9 @@ router.get(
   async (req: Request, res: GetSubscriptionsRes) => {
     try {
       const user = res.locals.user;
-      const subscriptions = user.subscriptions as Subscriptions;
+      const subscriptions = user.subscriptions;
 
-      res.status(200).json({ subscriptions });
+      res.status(200).json(subscriptions);
     } catch (err) {
       console.error(err);
       res.status(500).json({ errorBody: "Server Error" });
@@ -95,33 +94,27 @@ router.get(
 // @desc ------- Update a specific subscription
 // @access ----- Private
 
-type UpdateSubscriptionBody = {
-  name?: string;
-};
-
-type UpdateSubscriptionReq = Request<
-  { id: string },
+type PutSubscriptionReq = Request<
+  PutNotificationsSubscriptionParams,
   any,
-  UpdateSubscriptionBody
+  PutNotificationsSubscriptionBody
 >;
 
-type UpdateSubscriptionResBody = Subscription;
-
-type UpdateSubscriptionRes = ResponseLocals<
-  UpdateSubscriptionResBody | ResError
+type PutSubscriptionRes = ResponseLocals<
+  PutNotificationsSubscriptionResponse | ErrorResponse
 >;
 
 router.put(
-  "/subscription/:id",
+  "/subscription/:_id",
   auth,
-  async (req: UpdateSubscriptionReq, res: UpdateSubscriptionRes) => {
+  async (req: PutSubscriptionReq, res: PutSubscriptionRes) => {
     try {
-      const { id } = req.params;
+      const { _id } = req.params;
       const { name } = req.body;
       const user = res.locals.user;
 
       const subscription = (user.subscriptions as Subscriptions).find(
-        (sub: Subscription) => sub._id.toString() === id,
+        (sub: Subscription) => sub._id.toString() === _id,
       );
 
       if (!subscription) {
@@ -147,26 +140,22 @@ router.put(
 // @desc ------- Delete a specific subscription
 // @access ----- Private
 
-type DeleteSubscriptionReq = Request<{ id: string }>;
-
-type DeleteSubscriptionResBody = {
-  msg: string;
-};
+type DeleteSubscriptionReq = Request<DeleteNotificationsSubscriptionParams>;
 
 type DeleteSubscriptionRes = ResponseLocals<
-  DeleteSubscriptionResBody | ResError
+  DeleteNotificationsSubscriptionResponse | ErrorResponse
 >;
 
 router.delete(
-  "/subscription/:id",
+  "/subscription/:_id",
   auth,
   async (req: DeleteSubscriptionReq, res: DeleteSubscriptionRes) => {
     try {
-      const { id } = req.params;
+      const { _id } = req.params;
       const user = res.locals.user;
 
       const subscriptionIndex = (user.subscriptions as Subscriptions).findIndex(
-        (sub: Subscription) => sub._id.toString() === id,
+        (sub: Subscription) => sub._id.toString() === _id,
       );
 
       if (subscriptionIndex === -1) {
