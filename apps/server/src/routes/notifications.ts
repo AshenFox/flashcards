@@ -159,7 +159,7 @@ router.delete(
       );
 
       if (subscriptionIndex === -1) {
-        res.status(404).json({ errorBody: "Subscription not found" });
+        res.status(202).json({ msg: "Subscription not found" });
         return;
       }
 
