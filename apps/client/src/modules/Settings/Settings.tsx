@@ -13,13 +13,12 @@ import React, {
   MouseEventHandler,
   useCallback,
   useEffect,
-  useRef,
   useState,
 } from "react";
 
 import s from "./styles.module.scss";
 
-interface Subscription {
+type Subscription = {
   _id: string;
   name: string;
   subscriptionDate: Date;
@@ -30,7 +29,12 @@ interface Subscription {
       auth: string;
     };
   };
-}
+};
+
+type Permission = {
+  status: PermissionStatus;
+  state: PermissionState;
+};
 
 type CurrentSubscription = {
   data: Subscription;
@@ -44,15 +48,21 @@ const Settings = () => {
 
   const user = useAppSelector(state => state.auth.user);
 
-  const [isLoading, setIsLoading] = useState(true);
+  const [isSubscriptionsLoading, setIsSubscriptionsLoading] = useState(true);
+  const [isSubscribing, setIsSubscribing] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
+
   const [subscriptions, setSubscriptions] = useState<Subscription[]>([]);
   const [currentSubscription, setCurrentSubscription] =
-    useState<CurrentSubscription>(null);
+    useState<CurrentSubscription | null>(null);
 
   const [registration, setRegistration] =
     useState<ServiceWorkerRegistration | null>(null);
-  const [permissionStatus, setPermissionStatus] =
-    useState<PermissionStatus | null>(null);
+  const [permission, setPermission] = useState<Permission | null>(null);
+
+  const updatePermission = useCallback((status: PermissionStatus) => {
+    setPermission({ status, state: status.state });
+  }, []);
 
   useEffect(() => {
     if (!subscriptions) return;
@@ -63,7 +73,7 @@ const Settings = () => {
 
   const loadSubscriptions = useCallback(async () => {
     try {
-      setIsLoading(true);
+      setIsSubscriptionsLoading(true);
       const response = await axiosInstance.get(
         "/api/notifications/subscriptions",
       );
@@ -71,7 +81,7 @@ const Settings = () => {
     } catch (err) {
       console.error(err);
     } finally {
-      setIsLoading(false);
+      setIsSubscriptionsLoading(false);
     }
   }, []);
 
@@ -79,13 +89,13 @@ const Settings = () => {
     const registration = await registerServiceWorker();
     setRegistration(registration);
 
-    const permissionStatus = await navigator.permissions.query({
+    const permission = await navigator.permissions.query({
       name: "notifications",
     });
-    setPermissionStatus(permissionStatus);
+    updatePermission(permission);
 
     await loadSubscriptions();
-  }, [loadSubscriptions]);
+  }, [loadSubscriptions, updatePermission]);
 
   useEffect(() => {
     if (!user) return;
@@ -93,12 +103,15 @@ const Settings = () => {
   }, [user, preparePush]);
 
   const handleSubscribe = useCallback(async () => {
+    setIsSubscribing(true);
     await subscribeToPush(registration);
     await loadSubscriptions();
+    setIsSubscribing(false);
   }, [registration, loadSubscriptions]);
 
   const handleDelete = useCallback(
     async (id: string) => {
+      setIsDeleting(true);
       try {
         if (currentSubscription?.data._id === id) {
           await currentSubscription?.subscription.unsubscribe();
@@ -109,6 +122,8 @@ const Settings = () => {
         await loadSubscriptions();
       } catch (err) {
         console.error(err);
+      } finally {
+        setIsDeleting(false);
       }
     },
     [currentSubscription, loadSubscriptions],
@@ -126,21 +141,24 @@ const Settings = () => {
   };
 
   useEffect(() => {
-    if (!permissionStatus) return;
+    if (!permission) return;
 
     const onChange = (e: Event) => {
-      const status = (e.target as PermissionStatus).state;
+      const permission = e.target as PermissionStatus;
+      const state = permission.state;
 
-      if (status === "denied" || status === "prompt")
+      updatePermission(permission);
+
+      if (state === "denied" || state === "prompt")
         handleDelete(currentSubscription?.data._id);
     };
 
-    permissionStatus?.addEventListener("change", onChange);
+    permission?.status.addEventListener("change", onChange);
 
     return () => {
-      permissionStatus?.removeEventListener("change", onChange);
+      permission?.status.removeEventListener("change", onChange);
     };
-  }, [permissionStatus, currentSubscription, handleDelete]);
+  }, [permission, currentSubscription, handleDelete, updatePermission]);
 
   const changeTheme: MouseEventHandler = () => {
     if (theme === "system") {
@@ -151,8 +169,6 @@ const Settings = () => {
       setTheme("dark");
     }
   };
-
-  console.log(registration, permissionStatus, currentSubscription);
 
   return (
     <ContentWrapper tagType="main">
@@ -179,46 +195,46 @@ const Settings = () => {
           </div>
           <div className={s.notifications}>
             <h2>Push Notifications</h2>
-            {permissionStatus?.state === "denied" && "Permission denied"}
+            {permission?.state === "denied" && "No permission "}
             {!currentSubscription &&
+              !isSubscriptionsLoading &&
               registration?.active?.state === "activated" &&
-              (permissionStatus?.state === "granted" ||
-                permissionStatus?.state === "prompt") && (
+              (permission?.state === "granted" ||
+                permission?.state === "prompt") && (
                 <Button onClick={handleSubscribe}>Enable Notifications</Button>
               )}
-            {isLoading ? (
-              <p>Loading subscriptions...</p>
-            ) : (
-              <div className={s.subscriptions}>
-                {subscriptions.map(sub => {
-                  const isCurrent =
-                    currentSubscription?.data.subscriptionData.endpoint ===
-                    sub.subscriptionData.endpoint;
-                  return (
-                    <div
-                      key={sub._id}
-                      className={`${s.subscription} ${isCurrent ? s.current : ""}`}
+
+            {isSubscriptionsLoading && <p>Loading subscriptions...</p>}
+
+            <div className={s.subscriptions}>
+              {subscriptions.map(sub => {
+                const isCurrent =
+                  currentSubscription?.data.subscriptionData.endpoint ===
+                  sub.subscriptionData.endpoint;
+                return (
+                  <div
+                    key={sub._id}
+                    className={`${s.subscription} ${isCurrent ? s.current : ""}`}
+                  >
+                    <input
+                      type="text"
+                      value={sub.name}
+                      onChange={e => handleRename(sub._id, e.target.value)}
+                    />
+                    <div className="test">{sub.name}</div>
+                    <Button
+                      onClick={() => handleDelete(sub._id)}
+                      design="outline"
                     >
-                      <input
-                        type="text"
-                        value={sub.name}
-                        onChange={e => handleRename(sub._id, e.target.value)}
-                      />
-                      <div className="test">{sub.name}</div>
-                      <Button
-                        onClick={() => handleDelete(sub._id)}
-                        design="outline"
-                      >
-                        Delete
-                      </Button>
-                      {isCurrent && (
-                        <span className={s.currentBadge}>Current Device</span>
-                      )}
-                    </div>
-                  );
-                })}
-              </div>
-            )}
+                      Delete
+                    </Button>
+                    {isCurrent && (
+                      <span className={s.currentBadge}>Current Device</span>
+                    )}
+                  </div>
+                );
+              })}
+            </div>
           </div>
         </div>
       </Container>
