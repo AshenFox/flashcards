@@ -5,14 +5,18 @@ import flashcardsConfig from "@flashcards/config";
 import { useIsMounted } from "@helpers/hooks/useIsMounted";
 import { useUserThemePreference } from "@helpers/hooks/useUserThemePreference";
 import { useAppSelector } from "@store/hooks";
-import { MoonIcon, SunIcon } from "@ui/Icons";
+import { DeleteIcon, MoonIcon, SunIcon } from "@ui/Icons";
+import Input from "@ui/Input";
 import { Button, Link } from "@ui/InteractiveElement";
+import Spinner from "@ui/Spinner";
+import clsx from "clsx";
 import { useTheme } from "next-themes";
 import React, {
   memo,
   MouseEventHandler,
   useCallback,
   useEffect,
+  useMemo,
   useState,
 } from "react";
 
@@ -113,13 +117,13 @@ const Settings = () => {
     async (id: string) => {
       setIsDeleting(true);
       try {
+        await axiosInstance.delete(`/api/notifications/subscription/${id}`);
+        await loadSubscriptions();
+
         if (currentSubscription?.data._id === id) {
           await currentSubscription?.subscription.unsubscribe();
           setCurrentSubscription(null);
         }
-
-        await axiosInstance.delete(`/api/notifications/subscription/${id}`);
-        await loadSubscriptions();
       } catch (err) {
         console.error(err);
       } finally {
@@ -170,6 +174,12 @@ const Settings = () => {
     }
   };
 
+  const otherSubscriptions = useMemo(
+    () =>
+      subscriptions.filter(sub => sub._id !== currentSubscription?.data._id),
+    [subscriptions, currentSubscription],
+  );
+
   return (
     <ContentWrapper tagType="main">
       <Container>
@@ -178,62 +188,94 @@ const Settings = () => {
             <h1 className={s.title}>Settings</h1>
             <Link href={"/home/modules"}>Return</Link>
           </div>
-          <div className={s.theme}>
-            {isMounted && (
-              <Button
-                onClick={changeTheme}
-                design={"plain"}
-                icon={theme === "dark" ? <SunIcon /> : <MoonIcon />}
-                iconSize={25}
-              >
-                {theme === "dark" ||
-                (theme === "system" && preference === "dark")
-                  ? "light"
-                  : "dark"}
-              </Button>
-            )}
-          </div>
-          <div className={s.notifications}>
-            <h2>Push Notifications</h2>
-            {permission?.state === "denied" && "No permission "}
-            {!currentSubscription &&
-              !isSubscriptionsLoading &&
-              registration?.active?.state === "activated" &&
-              (permission?.state === "granted" ||
-                permission?.state === "prompt") && (
-                <Button onClick={handleSubscribe}>Enable Notifications</Button>
+          <div className={clsx(s.section, s.theme)}>
+            <h2>Theme</h2>
+            <div className={s.body}>
+              {isMounted && (
+                <Button
+                  onClick={changeTheme}
+                  design={"plain"}
+                  icon={theme === "dark" ? <SunIcon /> : <MoonIcon />}
+                  iconSize={25}
+                >
+                  {theme === "dark" ||
+                  (theme === "system" && preference === "dark")
+                    ? "light"
+                    : "dark"}
+                </Button>
               )}
+            </div>
+          </div>
+          <div className={clsx(s.section, s.notifications)}>
+            <h2>Push Notifications</h2>
+            {isSubscriptionsLoading && (
+              <Spinner variant="secondary" className={s.loader} />
+            )}
 
-            {isSubscriptionsLoading && <p>Loading subscriptions...</p>}
-
-            <div className={s.subscriptions}>
-              {subscriptions.map(sub => {
-                const isCurrent =
-                  currentSubscription?.data.subscriptionData.endpoint ===
-                  sub.subscriptionData.endpoint;
-                return (
-                  <div
-                    key={sub._id}
-                    className={`${s.subscription} ${isCurrent ? s.current : ""}`}
-                  >
-                    <input
-                      type="text"
-                      value={sub.name}
-                      onChange={e => handleRename(sub._id, e.target.value)}
+            <div className={s.body}>
+              <div className={s.subscriptions}>
+                <h3>Current Device</h3>
+                {currentSubscription && (
+                  <div className={s.subscription}>
+                    <Input
+                      value={currentSubscription.data.name}
+                      onChange={e =>
+                        handleRename(
+                          currentSubscription.data._id,
+                          e.target.value,
+                        )
+                      }
+                      className={s.input}
                     />
-                    <div className="test">{sub.name}</div>
                     <Button
-                      onClick={() => handleDelete(sub._id)}
-                      design="outline"
-                    >
-                      Delete
-                    </Button>
-                    {isCurrent && (
-                      <span className={s.currentBadge}>Current Device</span>
-                    )}
+                      className={s.delete}
+                      onClick={() => handleDelete(currentSubscription.data._id)}
+                      design="plain"
+                      icon={<DeleteIcon />}
+                    />
                   </div>
-                );
-              })}
+                )}
+                {!currentSubscription &&
+                  registration?.active?.state === "activated" &&
+                  (permission?.state === "granted" ||
+                    permission?.state === "prompt") && (
+                    <div className={s.subscription}>
+                      <Button onClick={handleSubscribe} loading={isSubscribing}>
+                        Enable Notifications
+                      </Button>
+                    </div>
+                  )}
+                {permission?.state === "denied" && (
+                  <div className={clsx(s.subscription, s.noPermission)}>
+                    <span>No permission</span>
+                  </div>
+                )}
+
+                {!!otherSubscriptions.length && (
+                  <>
+                    <h3>Other Devices</h3>
+                    {otherSubscriptions.map(sub => {
+                      return (
+                        <div key={sub._id} className={s.subscription}>
+                          <Input
+                            value={sub.name}
+                            onChange={e =>
+                              handleRename(sub._id, e.target.value)
+                            }
+                            className={s.input}
+                          />
+                          <Button
+                            className={s.delete}
+                            onClick={() => handleDelete(sub._id)}
+                            design="plain"
+                            icon={<DeleteIcon />}
+                          />
+                        </div>
+                      );
+                    })}
+                  </>
+                )}
+              </div>
             </div>
           </div>
         </div>
@@ -245,16 +287,29 @@ const Settings = () => {
 export default memo(Settings);
 
 export const urlBase64ToUint8Array = (base64String: string) => {
-  const padding = "=".repeat((4 - (base64String.length % 4)) % 4);
-  const base64 = (base64String + padding).replace(/-/g, "+").replace(/_/g, "/");
+  // Remove any whitespace and ensure proper base64 format
+  const base64 = base64String.trim();
 
-  const rawData = window.atob(base64);
-  const outputArray = new Uint8Array(rawData.length);
+  // Add padding if needed
+  const padding = "=".repeat((4 - (base64.length % 4)) % 4);
+  const base64WithPadding = base64 + padding;
 
-  for (let i = 0; i < rawData.length; ++i) {
-    outputArray[i] = rawData.charCodeAt(i);
+  // Convert to URL-safe base64
+  const urlSafeBase64 = base64WithPadding.replace(/-/g, "+").replace(/_/g, "/");
+
+  try {
+    // Try using atob first
+    const rawData = window.atob(urlSafeBase64);
+    const outputArray = new Uint8Array(rawData.length);
+
+    for (let i = 0; i < rawData.length; ++i) {
+      outputArray[i] = rawData.charCodeAt(i);
+    }
+
+    return outputArray;
+  } catch (err) {
+    console.error(err);
   }
-  return outputArray;
 };
 
 const getBrowserInfo = () => {
@@ -300,6 +355,7 @@ export const subscribeToPush = async (
         flashcardsConfig.publicVapidKey,
       ),
     });
+    console.log("fire!");
 
     const { browser, os, platform } = getBrowserInfo();
     const subscriptionName = `${browser} on ${os} (${platform})`;
@@ -312,7 +368,6 @@ export const subscribeToPush = async (
     return subscription;
   } catch (err) {
     console.error(err);
-    throw err;
   }
 };
 
