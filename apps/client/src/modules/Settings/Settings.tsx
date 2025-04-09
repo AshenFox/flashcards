@@ -12,11 +12,13 @@ import Spinner from "@ui/Spinner";
 import clsx from "clsx";
 import { useTheme } from "next-themes";
 import React, {
+  ChangeEvent,
   memo,
   MouseEventHandler,
   useCallback,
   useEffect,
   useMemo,
+  useRef,
   useState,
 } from "react";
 
@@ -55,6 +57,9 @@ const Settings = () => {
   const [isSubscriptionsLoading, setIsSubscriptionsLoading] = useState(true);
   const [isSubscribing, setIsSubscribing] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
+
+  const generalLoading = isSubscriptionsLoading || isSubscribing || isDeleting;
+  const controlsActive = !generalLoading;
 
   const [subscriptions, setSubscriptions] = useState<Subscription[]>([]);
   const [currentSubscription, setCurrentSubscription] =
@@ -133,16 +138,37 @@ const Settings = () => {
     [currentSubscription, loadSubscriptions],
   );
 
-  const handleRename = async (id: string, newName: string) => {
+  const handleRename = useCallback(async (id: string, newName: string) => {
     try {
       await axiosInstance.put(`/api/notifications/subscription/${id}`, {
         name: newName,
       });
-      await loadSubscriptions();
     } catch (err) {
       console.error(err);
     }
-  };
+  }, []);
+
+  const timers = useRef<{ [key: string]: NodeJS.Timeout }>({});
+
+  const onNameChange = useCallback(
+    (id: string) => (e: ChangeEvent<HTMLInputElement>) => {
+      setSubscriptions(prev => {
+        const newSubscriptions = prev.map(sub => {
+          if (sub._id === id) return { ...sub, name: e.target.value };
+          return sub;
+        });
+
+        return newSubscriptions;
+      });
+
+      clearTimeout(timers.current[id]);
+
+      timers.current[id] = setTimeout(() => {
+        handleRename(id, e.target.value);
+      }, 300);
+    },
+    [handleRename],
+  );
 
   useEffect(() => {
     if (!permission) return;
@@ -208,7 +234,7 @@ const Settings = () => {
           </div>
           <div className={clsx(s.section, s.notifications)}>
             <h2>Push Notifications</h2>
-            {isSubscriptionsLoading && (
+            {generalLoading && (
               <Spinner variant="secondary" className={s.loader} />
             )}
 
@@ -219,19 +245,16 @@ const Settings = () => {
                   <div className={s.subscription}>
                     <Input
                       value={currentSubscription.data.name}
-                      onChange={e =>
-                        handleRename(
-                          currentSubscription.data._id,
-                          e.target.value,
-                        )
-                      }
+                      onChange={onNameChange(currentSubscription.data._id)}
                       className={s.input}
+                      disabled={generalLoading}
                     />
                     <Button
                       className={s.delete}
                       onClick={() => handleDelete(currentSubscription.data._id)}
                       design="plain"
                       icon={<DeleteIcon />}
+                      active={controlsActive}
                     />
                   </div>
                 )}
@@ -240,7 +263,11 @@ const Settings = () => {
                   (permission?.state === "granted" ||
                     permission?.state === "prompt") && (
                     <div className={s.subscription}>
-                      <Button onClick={handleSubscribe} loading={isSubscribing}>
+                      <Button
+                        onClick={handleSubscribe}
+                        active={controlsActive}
+                        className={s.enable}
+                      >
                         Enable Notifications
                       </Button>
                     </div>
@@ -259,16 +286,16 @@ const Settings = () => {
                         <div key={sub._id} className={s.subscription}>
                           <Input
                             value={sub.name}
-                            onChange={e =>
-                              handleRename(sub._id, e.target.value)
-                            }
+                            onChange={onNameChange(sub._id)}
                             className={s.input}
+                            disabled={generalLoading}
                           />
                           <Button
                             className={s.delete}
                             onClick={() => handleDelete(sub._id)}
                             design="plain"
                             icon={<DeleteIcon />}
+                            active={controlsActive}
                           />
                         </div>
                       );
@@ -355,7 +382,6 @@ export const subscribeToPush = async (
         flashcardsConfig.publicVapidKey,
       ),
     });
-    console.log("fire!");
 
     const { browser, os, platform } = getBrowserInfo();
     const subscriptionName = `${browser} on ${os} (${platform})`;

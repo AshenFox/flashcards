@@ -74,6 +74,11 @@
       color: var(--text-color);
     }
 
+    .enable:global(.interactive_element__inactive) {
+      background-color: var(--secondary-element-background-color);
+      color: var(--reverse-color);
+    }
+
     .delete {
       display: flex;
       width: 4rem;
@@ -89,6 +94,14 @@
       &:hover {
         svg {
           fill: var(--danger-color);
+        }
+      }
+
+      &:global(.interactive_element__inactive) {
+        background-color: transparent;
+
+        svg {
+          fill: var(--icon-fill);
         }
       }
     }
