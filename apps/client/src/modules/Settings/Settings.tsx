@@ -234,12 +234,13 @@ const Settings = () => {
           </div>
           <div className={clsx(s.section, s.notifications)}>
             <h2>Push Notifications</h2>
-            {generalLoading && (
-              <Spinner variant="secondary" className={s.loader} />
-            )}
 
             <div className={s.body}>
               <div className={s.subscriptions}>
+                {generalLoading && (
+                  <Spinner variant="secondary" className={s.loader} />
+                )}
+
                 <h3>Current Device</h3>
                 {currentSubscription && (
                   <div className={s.subscription}>
