@@ -1,0 +1,16 @@
+.theme {
+  span {
+    font-size: 1.7rem;
+    text-transform: capitalize;
+  }
+
+  /* stylelint-disable-next-line selector-id-pattern */
+  svg:global(#icon__sun) {
+    stroke: var(--text-color);
+  }
+
+  /* stylelint-disable-next-line selector-id-pattern */
+  &:hover svg:global(#icon__sun) {
+    stroke: var(--stronger-subtle-text-color);
+  }
+}
