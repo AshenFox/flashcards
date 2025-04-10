@@ -1,74 +1,43 @@
 import { DeleteIcon } from "@ui/Icons";
 import Input from "@ui/Input";
 import { Button } from "@ui/InteractiveElement";
-import {
-  ChangeEvent,
-  Dispatch,
-  memo,
-  SetStateAction,
-  useCallback,
-  useRef,
-} from "react";
+import { ChangeEvent, useCallback } from "react";
 
+import { usePushNotifications } from "../context";
 import s from "../styles.module.scss";
 import { Subscription as SubscriptionType } from "../types";
 
 type Props = {
   subscription: SubscriptionType;
-  isCurrentDevice?: boolean;
-  onDelete: (id: string) => Promise<void>;
-  onRename: (id: string, newName: string) => Promise<void>;
-  setSubscriptions: Dispatch<SetStateAction<SubscriptionType[]>>;
-  disabled?: boolean;
 };
 
-const Subscription = ({
-  subscription,
-  onDelete,
-  onRename,
-  setSubscriptions,
-  disabled = false,
-}: Props) => {
-  const timer = useRef<NodeJS.Timeout | null>(null);
+const Subscription = ({ subscription }: Props) => {
+  const { handleRename, handleDelete, isLoading } = usePushNotifications();
 
-  const handleRename = useCallback(
-    (e: ChangeEvent<HTMLInputElement>) => {
-      setSubscriptions(prev => {
-        const newSubscriptions = prev.map(sub => {
-          if (sub._id === subscription._id)
-            return { ...sub, name: e.target.value };
-          return sub;
-        });
-
-        return newSubscriptions;
-      });
-
-      clearTimeout(timer.current);
-
-      timer.current = setTimeout(() => {
-        onRename(subscription._id, e.target.value);
-      }, 300);
+  const onRename = useCallback(
+    async (e: ChangeEvent<HTMLInputElement>) => {
+      await handleRename(subscription._id, e.target.value);
     },
-    [subscription._id, onRename, setSubscriptions],
+    [subscription._id, handleRename],
   );
 
   return (
     <div className={s.subscription}>
       <Input
         value={subscription.name}
-        onChange={handleRename}
+        onChange={onRename}
         className={s.input}
-        disabled={disabled}
+        disabled={isLoading}
       />
       <Button
         className={s.delete}
-        onClick={() => onDelete(subscription._id)}
+        onClick={() => handleDelete(subscription._id)}
         design="plain"
         icon={<DeleteIcon />}
-        active={!disabled}
+        active={!isLoading}
       />
     </div>
   );
 };
 
-export default memo(Subscription);
+export default Subscription;

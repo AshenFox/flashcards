@@ -110,7 +110,7 @@ router.put(
   async (req: PutSubscriptionReq, res: PutSubscriptionRes) => {
     try {
       const { _id } = req.params;
-      const { name } = req.body;
+      const { name, subscriptionData } = req.body;
       const user = res.locals.user;
 
       const subscription = (user.subscriptions as Subscriptions).find(
@@ -122,10 +122,7 @@ router.put(
         return;
       }
 
-      if (name) {
-        subscription.name = name;
-        subscription.subscriptionDate = new Date();
-      }
+      subscription.name = name ?? "";
 
       await user.save();
       res.status(200).json(subscription);
