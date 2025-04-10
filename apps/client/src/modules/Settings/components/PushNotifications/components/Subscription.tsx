@@ -1,7 +1,7 @@
 import { DeleteIcon } from "@ui/Icons";
 import Input from "@ui/Input";
 import { Button } from "@ui/InteractiveElement";
-import { ChangeEvent, useCallback } from "react";
+import { ChangeEvent, memo, useCallback, useRef } from "react";
 
 import { usePushNotifications } from "../context";
 import s from "../styles.module.scss";
@@ -12,13 +12,30 @@ type Props = {
 };
 
 const Subscription = ({ subscription }: Props) => {
-  const { handleRename, handleDelete, isLoading } = usePushNotifications();
+  const { handleRename, handleDelete, setSubscriptions, isLoading } =
+    usePushNotifications();
+
+  const timer = useRef<NodeJS.Timeout | null>(null);
 
   const onRename = useCallback(
     async (e: ChangeEvent<HTMLInputElement>) => {
-      await handleRename(subscription._id, e.target.value);
+      setSubscriptions(prev => {
+        const newSubscriptions = prev.map(sub => {
+          if (sub._id === subscription._id)
+            return { ...sub, name: e.target.value };
+          return sub;
+        });
+
+        return newSubscriptions;
+      });
+
+      clearTimeout(timer.current);
+
+      timer.current = setTimeout(async () => {
+        await handleRename(subscription._id, e.target.value);
+      }, 300);
     },
-    [subscription._id, handleRename],
+    [subscription._id, handleRename, setSubscriptions],
   );
 
   return (
@@ -40,4 +57,4 @@ const Subscription = ({ subscription }: Props) => {
   );
 };
 
-export default Subscription;
+export default memo(Subscription);
