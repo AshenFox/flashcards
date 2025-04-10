@@ -1,3 +1,4 @@
+import Spinner from "@ui/Spinner";
 import clsx from "clsx";
 import { cloneElement, memo } from "react";
 
@@ -17,7 +18,10 @@ const Inner = ({ loading, children, icon, iconSize }: InnerProps) => {
         <span className="interactive_element__text">{children}</span>
       )}
       {typeof loading !== "undefined" && (
-        <div className={clsx(s.spinner, "interactive_element__spinner")} />
+        <Spinner
+          variant="secondary"
+          className={clsx(s.spinner, "interactive_element__spinner")}
+        />
       )}
     </>
   );

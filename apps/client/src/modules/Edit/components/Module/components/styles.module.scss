@@ -3,7 +3,9 @@
 .save {
   :global {
     .tooltip__tooltip {
+      top: -2.5rem;
       right: 0;
+      width: max-content;
     }
 
     .switch__checkbox:checked {

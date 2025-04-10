@@ -1,0 +1,81 @@
+@import "@styles/vars";
+
+.container {
+  position: relative;
+  display: flex;
+  align-items: center;
+
+  svg {
+    margin-right: 1rem;
+    margin-left: auto;
+    fill: var(--icon-fill);
+    transition: all 0.2s;
+  }
+}
+
+.label {
+  position: relative;
+  display: inline-block;
+  width: 24px;
+  height: 24px;
+  border: 1px solid var(--icon-fill);
+  border-radius: 4px;
+  background-color: transparent;
+  cursor: pointer;
+  transition: all 0.2s ease;
+
+  &::after {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 6px;
+    height: 12px;
+    border: solid white;
+    border-width: 0 2px 2px 0;
+    content: "";
+    opacity: 0;
+    transform: rotate(45deg) scale(0) translate(-50%, -50%);
+    transform-origin: top left;
+    transition: all 0.2s ease;
+  }
+
+  &.small {
+    width: 18px;
+    height: 18px;
+
+    &::after {
+      width: 4px;
+      height: 8px;
+      border-width: 0 2px 2px 0;
+    }
+  }
+}
+
+.checkbox {
+  position: absolute;
+  width: 0;
+  height: 0;
+  cursor: pointer;
+  opacity: 0;
+
+  &:checked {
+    & ~ .label {
+      border-color: var(--success-color);
+      background-color: var(--success-color);
+
+      &::after {
+        opacity: 1;
+        transform: rotate(45deg) scale(1) translate(-60%, -60%);
+      }
+    }
+
+    & ~ svg {
+      fill: var(--success-color);
+    }
+
+    & ~ :global(.tooltip__tooltip) {
+      border-color: var(--success-color);
+      color: var(--success-color);
+    }
+  }
+}

@@ -5,6 +5,12 @@
   border-right: 1px solid var(--element-border-color);
 
   :global {
+    .tooltip__tooltip {
+      top: -3rem;
+      right: 1.5rem;
+      width: max-content;
+    }
+
     .switch__checkbox:checked {
       & ~ .tooltip__tooltip {
         border-color: var(--success-color);

@@ -1,18 +1,26 @@
 import { User } from "@serverTypes/entities";
-import mongoose from "mongoose";
-
-const Schema = mongoose.Schema;
+import mongoose, { Schema, Types } from "mongoose";
 
 const UserSchema = new Schema<User>({
   username: String,
   email: String,
   password: String,
   registration_date: Date,
-  subscriptions: {
-    pc: Object,
-    tablet: Object,
-    mobile: Object,
-  },
+  subscriptions: [
+    {
+      _id: { type: Types.ObjectId, required: true },
+      name: String,
+      subscriptionDate: Date,
+      subscriptionData: {
+        endpoint: String,
+        expirationTime: Number,
+        keys: {
+          p256dh: String,
+          auth: String,
+        },
+      },
+    },
+  ],
 });
 
 const userModel = mongoose.model<User>("Users", UserSchema);

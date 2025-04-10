@@ -1,13 +1,18 @@
 import { DateJSON } from "@common/types";
+import { Types } from "mongoose";
 import { PushSubscription } from "web-push";
 
-export type SubscriptionCreator = PushSubscription;
-
-export type SubscriptionsCreator<Subscription = SubscriptionCreator> = {
-  pc: Subscription;
-  tablet: Subscription;
-  mobile: Subscription;
+export type SubscriptionCreator<
+  Options extends { isJson: boolean } = { isJson: false },
+> = {
+  _id: Types.ObjectId;
+  name: string;
+  subscriptionDate: DateJSON<Options["isJson"]>;
+  subscriptionData: PushSubscription;
 };
+
+export type SubscriptionsCreator<Subscription = SubscriptionCreator> =
+  Subscription[];
 
 export type UserCreator<
   Subscriptions = SubscriptionsCreator,

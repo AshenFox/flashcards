@@ -5,7 +5,7 @@ export const setHeaderDimen: DimenCaseReducer<{ el: HTMLElement }> = (
   action,
 ) => {
   Object.assign(state, {
-    header_height: action.payload.el.getBoundingClientRect().height,
-    header_width: action.payload.el.getBoundingClientRect().width,
+    header_height: action.payload.el?.getBoundingClientRect?.()?.height,
+    header_width: action.payload.el?.getBoundingClientRect?.()?.width,
   });
 };

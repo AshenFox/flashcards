@@ -1,6 +1,6 @@
 import { useActions, useAppSelector } from "@store/hooks";
+import Checkbox from "@ui/Checkbox";
 import { SaveIcon } from "@ui/Icons";
-import Switch from "@ui/Switch";
 import { memo, useCallback } from "react";
 
 import s from "./styles.module.scss";
@@ -27,7 +27,7 @@ const SaveAllCards = () => {
   );
 
   return (
-    <Switch
+    <Checkbox
       id={"switch-save-main"}
       className={s.save}
       active={active}
