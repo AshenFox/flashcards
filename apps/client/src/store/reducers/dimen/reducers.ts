@@ -1,11 +1,11 @@
 import { DimenCaseReducer } from "./types";
 
-export const setHeaderDimen: DimenCaseReducer<{ el: HTMLElement }> = (
-  state,
-  action,
-) => {
+export const setHeaderDimen: DimenCaseReducer<{
+  height: number;
+  width: number;
+}> = (state, action) => {
   Object.assign(state, {
-    header_height: action.payload.el?.getBoundingClientRect?.()?.height,
-    header_width: action.payload.el?.getBoundingClientRect?.()?.width,
+    header_height: action.payload.height,
+    header_width: action.payload.width,
   });
 };

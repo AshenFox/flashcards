@@ -35,12 +35,20 @@ export const initEasySpeech = () => <ThunkActionApp>(async dispatch => {
       const voicesArr = EasySpeech.voices();
 
       voicesArr.forEach(voice => {
-        if (voice.name === "Google US English") voices.english = voice;
-        if (voice.name === "Google русский") voices.russian = voice;
+        const voiceData = {
+          voiceURI: voice.voiceURI,
+          name: voice.name,
+          lang: voice.lang,
+          localService: voice.localService,
+          default: voice.default,
+        };
+
+        if (voice.name === "Google US English") voices.english = voiceData;
+        if (voice.name === "Google русский") voices.russian = voiceData;
         if (/en.+US/.test(voice.lang) && !voices.engBackup)
-          voices.engBackup = voice;
+          voices.engBackup = voiceData;
         if (/ru.+RU/.test(voice.lang) && !voices.rusBackup)
-          voices.rusBackup = voice;
+          voices.rusBackup = voiceData;
       });
 
       if (!voices.engBackup && !voices.rusBackup) working = false;

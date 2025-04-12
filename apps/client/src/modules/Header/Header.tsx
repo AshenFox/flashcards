@@ -19,12 +19,22 @@ const Header = () => {
 
   const isGame = getIsGame(router.pathname);
 
-  const onSizeChange = useCallback(
-    () => setHeaderDimen({ el: headerEl.current }),
-    [setHeaderDimen],
-  );
+  const onSizeChange = useCallback(() => {
+    const rect = headerEl.current?.getBoundingClientRect();
+    setHeaderDimen({
+      height: rect?.height ?? 0,
+      width: rect?.width ?? 0,
+    });
+  }, [setHeaderDimen]);
   const onSizeChangeDelayed = useCallback(
-    () => setTimeout(() => setHeaderDimen({ el: headerEl.current }), 110),
+    () =>
+      setTimeout(() => {
+        const rect = headerEl.current?.getBoundingClientRect();
+        setHeaderDimen({
+          height: rect?.height ?? 0,
+          width: rect?.width ?? 0,
+        });
+      }, 110),
     [setHeaderDimen],
   );
 
@@ -47,7 +57,11 @@ const Header = () => {
   }, [onSizeChange, onSizeChangeDelayed]);
 
   useEffect(() => {
-    setHeaderDimen({ el: headerEl.current });
+    const rect = headerEl.current?.getBoundingClientRect();
+    setHeaderDimen({
+      height: rect?.height ?? 0,
+      width: rect?.width ?? 0,
+    });
   }, [user, loading, setHeaderDimen]);
 
   const headerEl = useRef<HTMLElement>(null);
