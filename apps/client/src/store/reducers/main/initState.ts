@@ -71,6 +71,7 @@ export const defaultHomeCardsFilters: HomeCardsFilters = {
   search: "",
   created: "newest",
   by: "term",
+  sr: "all",
 };
 
 export const defaultHomeCardsSection: HomeCardsSection = {

@@ -26,9 +26,10 @@ const filtersData: FilterData[] = [
     label: "SR",
     defaultValue: defaultHomeCardsFilters.sr,
     options: [
-      { value: undefined, label: "All" },
-      { value: true, label: "In" },
-      { value: false, label: "Out" },
+      { value: "all", label: "All" },
+      { value: "in-lowest", label: "In Lowest" },
+      { value: "in-highest", label: "In Highest" },
+      { value: "out", label: "Out" },
     ],
   },
   {

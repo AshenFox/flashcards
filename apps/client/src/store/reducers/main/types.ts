@@ -31,7 +31,7 @@ export type HomeModulesSection = Section<HomeModulesFilters>;
 export type HomeCardsFilters = DefaultFilters & {
   created?: "newest" | "oldest";
   by?: "term" | "definition";
-  sr?: boolean;
+  sr?: "all" | "in-lowest" | "in-highest" | "out";
 };
 export type HomeCardsSection = Section<HomeCardsFilters>;
 

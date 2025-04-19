@@ -152,6 +152,8 @@ router.get(
 
       const sortObj: CardSortObj = {};
 
+      if (sr === "in-highest") sortObj.stage = -1;
+      if (sr === "in-lowest") sortObj.stage = 1;
       if (created === "newest") sortObj.creation_date = -1;
       if (created === "oldest") sortObj.creation_date = 1;
 
@@ -162,8 +164,8 @@ router.get(
           $regex: filterRegex(search),
         };
 
-      if (typeof sr === "boolean") {
-        filterObj.studyRegime = sr;
+      if (sr === "in-lowest" || sr === "in-highest") {
+        filterObj.studyRegime = true;
       }
 
       const cards = await cardModel
