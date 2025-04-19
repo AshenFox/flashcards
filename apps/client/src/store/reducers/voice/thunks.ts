@@ -34,6 +34,11 @@ export const initEasySpeech = () => <ThunkActionApp>(async dispatch => {
 
       const voicesArr = EasySpeech.voices();
 
+      // Check if user is on Chrome desktop
+      const isChromeDesktop =
+        /Chrome/.test(navigator.userAgent) &&
+        !/Mobile|Android|iPhone|iPad|iPod/.test(navigator.userAgent);
+
       voicesArr.forEach(voice => {
         const voiceData = {
           voiceURI: voice.voiceURI,
@@ -43,8 +48,17 @@ export const initEasySpeech = () => <ThunkActionApp>(async dispatch => {
           default: voice.default,
         };
 
-        if (voice.name === "Google US English") voices.english = voiceData;
-        if (voice.name === "Google русский") voices.russian = voiceData;
+        // TO-DO:
+        // This is a Chrome-specific workaround because Chrome has a bug with Google voices in the current version of the browser 135
+        if (isChromeDesktop) {
+          if (voice.name === "Microsoft Zira - English (United States)")
+            voices.english = voiceData;
+          if (voice.name === "Microsoft Irina - Russian (Russia)")
+            voices.russian = voiceData;
+        } else {
+          if (voice.name === "Google US English") voices.english = voiceData;
+          if (voice.name === "Google русский") voices.russian = voiceData;
+        }
         if (/en.+US/.test(voice.lang) && !voices.engBackup)
           voices.engBackup = voiceData;
         if (/ru.+RU/.test(voice.lang) && !voices.rusBackup)
