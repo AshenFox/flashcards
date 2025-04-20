@@ -115,11 +115,15 @@ const Cards = () => {
         <NotFound
           resultsFound={formatted_cards.length}
           filterValue={search}
-          notFoundMsg={value => (
-            <>
-              No cards matching <b>{`"${value}"`}</b> found.
-            </>
-          )}
+          notFoundMsg={value =>
+            value ? (
+              <>
+                No cards matching <b>{`"${value}"`}</b> found.
+              </>
+            ) : (
+              <>No cards found.</>
+            )
+          }
           nothingMsg={<>You don&apos;t have any cards yet.</>}
         />
       )}

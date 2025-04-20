@@ -86,8 +86,9 @@ export const defaultCardsSRSection: SRCardsSection = {
 
 export const defaultModuleFilters: ModuleFilters = {
   search: "",
-  created: "newest",
+  created: "no-order",
   by: "term",
+  sr: "all",
 };
 
 export const defaultModuleSection: ModuleSection = {

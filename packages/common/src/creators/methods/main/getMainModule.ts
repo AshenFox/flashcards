@@ -5,9 +5,9 @@ import { PagedDataCreator } from "../pagedData";
 export type GetMainModuleQueryCreator = {
   _id?: string;
   search?: string;
-  created?: "newest" | "oldest";
+  created?: "newest" | "oldest" | "no-order";
   by?: "term" | "definition";
-  sr?: boolean;
+  sr?: "all" | "in-lowest" | "in-highest" | "out";
 };
 
 export type GetMainModuleResponseCreator<
