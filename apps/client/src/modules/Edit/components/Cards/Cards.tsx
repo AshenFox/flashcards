@@ -17,10 +17,7 @@ const Cards = () => {
 
   const { draft } = currentModule || {};
 
-  const formatted_cards = useMemo(
-    () => Object.values(cards).sort((a, b) => a.order - b.order),
-    [cards],
-  );
+  const formatted_cards = useMemo(() => Object.values(cards), [cards]);
 
   return (
     <ContentWrapper>

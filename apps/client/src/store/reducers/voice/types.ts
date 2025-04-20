@@ -19,11 +19,19 @@ export type EasySpeechStatus = {
   handlers: any;
 };
 
+export type VoiceData = {
+  voiceURI: string;
+  name: string;
+  lang: string;
+  localService: boolean;
+  default: boolean;
+};
+
 export type Voices = {
-  rusBackup?: SpeechSynthesisVoice;
-  engBackup?: SpeechSynthesisVoice;
-  english?: SpeechSynthesisVoice;
-  russian?: SpeechSynthesisVoice;
+  english?: VoiceData;
+  russian?: VoiceData;
+  engBackup?: VoiceData;
+  rusBackup?: VoiceData;
 };
 
 export type Speaking =

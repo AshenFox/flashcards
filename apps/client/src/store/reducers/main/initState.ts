@@ -71,6 +71,7 @@ export const defaultHomeCardsFilters: HomeCardsFilters = {
   search: "",
   created: "newest",
   by: "term",
+  sr: "all",
 };
 
 export const defaultHomeCardsSection: HomeCardsSection = {
@@ -85,8 +86,9 @@ export const defaultCardsSRSection: SRCardsSection = {
 
 export const defaultModuleFilters: ModuleFilters = {
   search: "",
-  created: "newest",
+  created: "no-order",
   by: "term",
+  sr: "all",
 };
 
 export const defaultModuleSection: ModuleSection = {

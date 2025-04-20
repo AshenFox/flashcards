@@ -152,6 +152,8 @@ router.get(
 
       const sortObj: CardSortObj = {};
 
+      if (sr === "in-highest") sortObj.stage = -1;
+      if (sr === "in-lowest") sortObj.stage = 1;
       if (created === "newest") sortObj.creation_date = -1;
       if (created === "oldest") sortObj.creation_date = 1;
 
@@ -162,8 +164,10 @@ router.get(
           $regex: filterRegex(search),
         };
 
-      if (typeof sr === "boolean") {
-        filterObj.studyRegime = sr;
+      if (sr === "in-lowest" || sr === "in-highest") {
+        filterObj.studyRegime = true;
+      } else if (sr === "out") {
+        filterObj.studyRegime = false;
       }
 
       const cards = await cardModel
@@ -230,8 +234,12 @@ router.get(
 
       const sortObj: CardSortObj = {};
 
+      if (sr === "in-highest") sortObj.stage = -1;
+      if (sr === "in-lowest") sortObj.stage = 1;
       if (created === "newest") sortObj.creation_date = -1;
       if (created === "oldest") sortObj.creation_date = 1;
+
+      if (!sortObj.stage && !sortObj.creation_date) sortObj.order = 1;
 
       const all = await cardModel.countDocuments(filterObj);
 
@@ -240,8 +248,10 @@ router.get(
           $regex: filterRegex(search),
         };
 
-      if (typeof sr === "boolean") {
-        filterObj.studyRegime = sr;
+      if (sr === "in-lowest" || sr === "in-highest") {
+        filterObj.studyRegime = true;
+      } else if (sr === "out") {
+        filterObj.studyRegime = false;
       }
 
       const cards = await cardModel.find(filterObj).sort(sortObj);

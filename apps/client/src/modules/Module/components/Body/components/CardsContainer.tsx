@@ -11,10 +11,7 @@ const CardsContainer = () => {
   const search = useAppSelector(s => s.main.sections.module.filters.search);
   const by = useAppSelector(s => s.main.sections.module.filters.by);
 
-  const formatted_cards = useMemo(
-    () => Object.values(cards).sort((a, b) => a.order - b.order),
-    [cards],
-  );
+  const formatted_cards = useMemo(() => Object.values(cards), [cards]);
 
   return (
     <div>
@@ -35,11 +32,15 @@ const CardsContainer = () => {
         <NotFound
           resultsFound={formatted_cards.length}
           filterValue={search}
-          notFoundMsg={value => (
-            <>
-              No cards matching <b>{`"${value}"`}</b> found.
-            </>
-          )}
+          notFoundMsg={value =>
+            value ? (
+              <>
+                No cards matching <b>{`"${value}"`}</b> found.
+              </>
+            ) : (
+              <>No cards found.</>
+            )
+          }
         />
       )}
     </div>

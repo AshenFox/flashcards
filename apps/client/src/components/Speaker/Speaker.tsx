@@ -1,9 +1,9 @@
 import { useActions, useAppSelector } from "@store/hooks";
-import { EasySpeechStatus } from "@store/reducers/voice/types";
+import { EasySpeechStatus, VoiceData } from "@store/reducers/voice/types";
 import { SpeakerIcon } from "@ui/Icons";
 import clsx from "clsx";
 import EasySpeech from "easy-speech";
-import { ForwardedRef, memo, useCallback, useMemo } from "react";
+import { ForwardedRef, memo, useCallback, useEffect, useMemo } from "react";
 
 import s from "./styles.module.scss";
 
@@ -33,25 +33,22 @@ const Speaker = ({ _id, text, type, className, ref }: SpeakerProps) => {
 
   const speak = useCallback(
     async (text: string, language: "english" | "russian") => {
-      let voice: SpeechSynthesisVoice;
+      let voiceData: VoiceData | undefined;
+      let voice: SpeechSynthesisVoice | undefined;
 
       if (language === "english") {
-        if (voices.english) {
-          voice = voices.english;
-        } else if (voices.engBackup) {
-          voice = voices.engBackup;
-        } else {
-          return;
-        }
+        voiceData = voices.english || voices.engBackup;
       } else if (language === "russian") {
-        if (voices.russian) {
-          voice = voices.russian;
-        } else if (voices.rusBackup) {
-          voice = voices.rusBackup;
-        } else {
-          return;
-        }
+        voiceData = voices.russian || voices.rusBackup;
       }
+
+      if (!voiceData) return;
+
+      // Get the actual SpeechSynthesisVoice object
+      const availableVoices = EasySpeech.voices();
+      voice = availableVoices.find(v => v.voiceURI === voiceData?.voiceURI);
+
+      if (!voice) return;
 
       await EasySpeech.speak({
         text,

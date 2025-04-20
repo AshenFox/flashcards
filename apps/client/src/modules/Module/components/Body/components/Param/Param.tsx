@@ -11,6 +11,7 @@ const filtersData: FilterData[] = [
     label: "Date Order",
     defaultValue: defaultModuleFilters.created,
     options: [
+      { value: "no-order", label: "No order" },
       { value: "newest", label: "Newest" },
       { value: "oldest", label: "Oldest" },
     ],
@@ -20,9 +21,10 @@ const filtersData: FilterData[] = [
     label: "SR",
     defaultValue: defaultModuleFilters.sr,
     options: [
-      { value: undefined, label: "All" },
-      { value: true, label: "In" },
-      { value: false, label: "Out" },
+      { value: "all", label: "All" },
+      { value: "in-lowest", label: "In Lowest" },
+      { value: "in-highest", label: "In Highest" },
+      { value: "out", label: "Out" },
     ],
   },
   {
