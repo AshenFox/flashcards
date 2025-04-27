@@ -34,11 +34,13 @@ const Info = () => {
     <div className={s.info}>
       <div className={s.author}>
         <span className={s.created}>
-          Created <DateStr date={creation_date} /> by
+          {creation_date && (
+            <>
+              Created <DateStr date={creation_date} /> by
+            </>
+          )}
         </span>
-        <span className={s.nickname}>
-          {currentModule ? author : <Skeleton width={100} />}
-        </span>
+        <span className={s.nickname}>{author}</span>
       </div>
 
       <div className={s.nav}>

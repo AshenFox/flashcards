@@ -18,12 +18,14 @@
 
 .created {
   display: block;
+  min-height: 1.6rem;
   color: var(--subtle-text-color);
   font-size: 1.2rem;
 }
 
 .nickname {
   display: block;
+  min-height: 2.5rem;
   color: var(--stronger-subtle-text-color);
   font-size: 1.8rem;
   font-weight: bold;
