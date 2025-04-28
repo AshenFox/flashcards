@@ -1,9 +1,6 @@
-import { filterRegex } from "@flashcards/common";
-import cardModel, { CardSortObj } from "@models/card_model";
-import moduleModel from "@models/module_model";
-import { ModuleSortObj } from "@models/module_model";
-import { Card, Module } from "@serverTypes/entities";
+import { filterRegex, Module } from "@flashcards/common";
 import {
+  Card,
   ErrorResponse,
   GetMainCardsQuery,
   GetMainCardsResponse,
@@ -13,7 +10,10 @@ import {
   GetMainModuleResponse,
   GetMainModulesQuery,
   GetMainModulesResponse,
-} from "@serverTypes/methods";
+} from "@flashcards/common";
+import cardModel, { CardSortObj } from "@models/card_model";
+import moduleModel from "@models/module_model";
+import { ModuleSortObj } from "@models/module_model";
 import { auth, query } from "@supplemental/middleware";
 import { ResponseLocals } from "@supplemental/types";
 import express, { Request } from "express";

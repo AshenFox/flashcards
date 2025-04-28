@@ -1,11 +1,13 @@
-import cardModel from "@models/card_model";
-import moduleModel from "@models/module_model";
-import { Card, CardBase, Module } from "@serverTypes/entities";
 import {
+  Card,
+  CardBase,
   ErrorResponse,
   GetEditDraftQuery,
   GetEditDraftResponse,
-} from "@serverTypes/methods";
+  Module,
+} from "@flashcards/common";
+import cardModel from "@models/card_model";
+import moduleModel from "@models/module_model";
 import { auth } from "@supplemental/middleware";
 import { notification_timeout } from "@supplemental/notifications_control";
 import { ResponseLocals } from "@supplemental/types";

@@ -1,4 +1,4 @@
-import { User } from "@serverTypes/entities";
+import { User } from "@flashcards/common";
 import { Response } from "express";
 import { Document } from "mongoose";
 

@@ -1,4 +1,4 @@
-import { User } from "@serverTypes/entities";
+import { User } from "@flashcards/common";
 import mongoose, { Schema, Types } from "mongoose";
 
 const UserSchema = new Schema<User>({

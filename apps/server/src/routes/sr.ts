@@ -1,7 +1,7 @@
+import { Card } from "@flashcards/common";
 import notificationModel from "@models//notification_model";
 import cardModel, { CardSortObj } from "@models/card_model";
 import moduleModel from "@models/module_model";
-import { Card } from "@serverTypes/entities";
 import { auth } from "@supplemental/middleware";
 import { notification_timeout } from "@supplemental/notifications_control";
 import sr_stages from "@supplemental/sr_stages";
