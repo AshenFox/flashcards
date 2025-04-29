@@ -6,23 +6,20 @@ import {
   SubscriptionCreator,
   SubscriptionDto,
 } from "../../entities/User";
-type PostNotificationsSubscribeQueryCreator = {
+
+type QueryCreator = {
   name: string;
   subscriptionData: PushSubscription;
 };
 
-type PostNotificationsSubscribeResponseCreator<
-  Subscription extends SubscriptionCreator<DefaultOptions>,
-> = Subscription;
+type ResponseCreator<Subscription extends SubscriptionCreator<DefaultOptions>> =
+  Subscription;
 
 // server types
-export type PostNotificationsSubscribeQuery =
-  PostNotificationsSubscribeQueryCreator;
-export type PostNotificationsSubscribeResponse =
-  PostNotificationsSubscribeResponseCreator<Subscription>;
+export type PostNotificationsSubscribeQuery = QueryCreator;
+export type PostNotificationsSubscribeResponse = ResponseCreator<Subscription>;
 
 // api types
-export type PostNotificationsSubscribeQueryDto =
-  PostNotificationsSubscribeQueryCreator;
+export type PostNotificationsSubscribeQueryDto = QueryCreator;
 export type PostNotificationsSubscribeResponseDto =
-  PostNotificationsSubscribeResponseCreator<SubscriptionDto>;
+  ResponseCreator<SubscriptionDto>;

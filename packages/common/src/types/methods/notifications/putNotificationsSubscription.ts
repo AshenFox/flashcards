@@ -6,31 +6,26 @@ import {
   SubscriptionCreator,
   SubscriptionDto,
 } from "../../entities/User";
-type PutNotificationsSubscriptionParamsCreator = {
+type ParamsCreator = {
   _id: string;
 };
 
-type PutNotificationsSubscriptionBodyCreator = {
+type BodyCreator = {
   name?: string;
   subscriptionData?: PushSubscription;
 };
 
-type PutNotificationsSubscriptionResponseCreator<
-  Subscription extends SubscriptionCreator<DefaultOptions>,
-> = Subscription;
+type ResponseCreator<Subscription extends SubscriptionCreator<DefaultOptions>> =
+  Subscription;
 
 // server types
-export type PutNotificationsSubscriptionParams =
-  PutNotificationsSubscriptionParamsCreator;
-export type PutNotificationsSubscriptionBody =
-  PutNotificationsSubscriptionBodyCreator;
+export type PutNotificationsSubscriptionParams = ParamsCreator;
+export type PutNotificationsSubscriptionBody = BodyCreator;
 export type PutNotificationsSubscriptionResponse =
-  PutNotificationsSubscriptionResponseCreator<Subscription>;
+  ResponseCreator<Subscription>;
 
 // api types
-export type PutNotificationsSubscriptionParamsDto =
-  PutNotificationsSubscriptionParamsCreator;
-export type PutNotificationsSubscriptionBodyDto =
-  PutNotificationsSubscriptionBodyCreator;
+export type PutNotificationsSubscriptionParamsDto = ParamsCreator;
+export type PutNotificationsSubscriptionBodyDto = BodyCreator;
 export type PutNotificationsSubscriptionResponseDto =
-  PutNotificationsSubscriptionResponseCreator<SubscriptionDto>;
+  ResponseCreator<SubscriptionDto>;

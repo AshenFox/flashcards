@@ -7,7 +7,7 @@ import {
   PaginationDto,
 } from "../pagedData";
 
-type GetMainCardsQueryCreator = {
+type QueryCreator = {
   page?: number;
   search?: string;
   created?: "newest" | "oldest";
@@ -15,18 +15,16 @@ type GetMainCardsQueryCreator = {
   sr?: "all" | "in-lowest" | "in-highest" | "out";
 };
 
-type GetMainCardsResponseCreator<
+type ResponseCreator<
   PagedData extends PagedDataCreator<unknown, PaginationCreator>,
 > = PagedData;
 
 // server types
-export type GetMainCardsQuery = GetMainCardsQueryCreator;
+export type GetMainCardsQuery = QueryCreator;
 export type GetMainCardsPageable = PagedDataCreator<Card, Pagination>;
-export type GetMainCardsResponse =
-  GetMainCardsResponseCreator<GetMainCardsPageable>;
+export type GetMainCardsResponse = ResponseCreator<GetMainCardsPageable>;
 
 // api types
-export type GetMainCardsQueryDto = GetMainCardsQueryCreator;
+export type GetMainCardsQueryDto = QueryCreator;
 export type GetMainCardsPageableDto = PagedDataCreator<CardDto, PaginationDto>;
-export type GetMainCardsResponseDto =
-  GetMainCardsResponseCreator<GetMainCardsPageableDto>;
+export type GetMainCardsResponseDto = ResponseCreator<GetMainCardsPageableDto>;

@@ -7,25 +7,25 @@ import {
   PaginationDto,
 } from "../pagedData";
 
-type GetMainModuleCardsQueryCreator = {
+type QueryCreator = {
   _id?: string;
 };
 
-type GetMainModuleCardsResponseCreator<
+type ResponseCreator<
   PagedData extends PagedDataCreator<unknown, PaginationCreator>,
 > = PagedData;
 
 // server types
-export type GetMainModuleCardsQuery = GetMainModuleCardsQueryCreator;
+export type GetMainModuleCardsQuery = QueryCreator;
 export type GetMainModuleCardsPageable = PagedDataCreator<Card, Pagination>;
 export type GetMainModuleCardsResponse =
-  GetMainModuleCardsResponseCreator<GetMainModuleCardsPageable>;
+  ResponseCreator<GetMainModuleCardsPageable>;
 
 // api types
-export type GetMainModuleCardsQueryDto = GetMainModuleCardsQueryCreator;
+export type GetMainModuleCardsQueryDto = QueryCreator;
 export type GetMainModuleCardsPageableDto = PagedDataCreator<
   CardDto,
   PaginationDto
 >;
 export type GetMainModuleCardsResponseDto =
-  GetMainModuleCardsResponseCreator<GetMainModuleCardsPageableDto>;
+  ResponseCreator<GetMainModuleCardsPageableDto>;

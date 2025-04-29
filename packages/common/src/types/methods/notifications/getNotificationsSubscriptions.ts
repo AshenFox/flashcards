@@ -6,7 +6,7 @@ import {
 } from "@common/types/entities/User";
 import { DefaultOptions } from "@common/types/utils";
 
-type GetNotificationsSubscriptionsResponseCreator<
+type ResponseCreator<
   Subscriptions extends SubscriptionsCreator<
     SubscriptionCreator<DefaultOptions>
   >,
@@ -14,8 +14,8 @@ type GetNotificationsSubscriptionsResponseCreator<
 
 // server types
 export type GetNotificationsSubscriptionsResponse =
-  GetNotificationsSubscriptionsResponseCreator<Subscriptions>;
+  ResponseCreator<Subscriptions>;
 
 // api types
 export type GetNotificationsSubscriptionsResponseDto =
-  GetNotificationsSubscriptionsResponseCreator<SubscriptionsDto>;
+  ResponseCreator<SubscriptionsDto>;

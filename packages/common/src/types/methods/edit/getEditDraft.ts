@@ -14,30 +14,30 @@ import {
   PaginationDto,
 } from "../pagedData";
 
-type GetEditDraftQueryCreator = {
+type QueryCreator = {
   _id?: string;
 };
 
-type GetEditDraftResponseCreator<
-  Module = ModuleCreator<DefaultOptions>,
-  PagedData = PagedDataCreator<unknown, PaginationCreator>,
+type ResponseCreator<
+  Module extends ModuleCreator<DefaultOptions>,
+  PagedData extends PagedDataCreator<any, PaginationCreator>,
 > = {
   module: Module;
   cards: PagedData;
 };
 
 // server types
-export type GetEditDraftQuery = GetEditDraftQueryCreator;
+export type GetEditDraftQuery = QueryCreator;
 export type GetEditDraftPageable = PagedDataCreator<Card, Pagination>;
-export type GetEditDraftResponse = GetEditDraftResponseCreator<
+export type GetEditDraftResponse = ResponseCreator<
   Module,
   GetEditDraftPageable
 >;
 
 // api types
-export type GetEditDraftQueryDto = GetEditDraftQueryCreator;
+export type GetEditDraftQueryDto = QueryCreator;
 export type GetEditDraftPageableDto = PagedDataCreator<CardDto, PaginationDto>;
-export type GetEditDraftResponseDto = GetEditDraftResponseCreator<
+export type GetEditDraftResponseDto = ResponseCreator<
   ModuleDto,
   GetEditDraftPageableDto
 >;

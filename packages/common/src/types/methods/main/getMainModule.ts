@@ -14,7 +14,7 @@ import {
   PaginationDto,
 } from "../pagedData";
 
-type GetMainModuleQueryCreator = {
+type QueryCreator = {
   _id?: string;
   search?: string;
   created?: "newest" | "oldest" | "no-order";
@@ -22,7 +22,7 @@ type GetMainModuleQueryCreator = {
   sr?: "all" | "in-lowest" | "in-highest" | "out";
 };
 
-type GetMainModuleResponseCreator<
+type ResponseCreator<
   Module extends ModuleCreator<DefaultOptions>,
   PagedData extends PagedDataCreator<unknown, PaginationCreator>,
 > = {
@@ -31,17 +31,17 @@ type GetMainModuleResponseCreator<
 };
 
 // server types
-export type GetMainModuleQuery = GetMainModuleQueryCreator;
+export type GetMainModuleQuery = QueryCreator;
 export type GetMainModulePageable = PagedDataCreator<Card, Pagination>;
-export type GetMainModuleResponse = GetMainModuleResponseCreator<
+export type GetMainModuleResponse = ResponseCreator<
   Module,
   GetMainModulePageable
 >;
 
 // api types
-export type GetMainModuleQueryDto = GetMainModuleQueryCreator;
+export type GetMainModuleQueryDto = QueryCreator;
 export type GetMainModulePageableDto = PagedDataCreator<CardDto, PaginationDto>;
-export type GetMainModuleResponseDto = GetMainModuleResponseCreator<
+export type GetMainModuleResponseDto = ResponseCreator<
   ModuleDto,
   GetMainModulePageableDto
 >;

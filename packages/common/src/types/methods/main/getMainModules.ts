@@ -8,14 +8,14 @@ import {
   PaginationDto,
 } from "../pagedData";
 
-type GetMainModulesQueryCreator = {
+type QueryCreator = {
   page?: number;
   search?: string;
   created?: "newest" | "oldest";
   draft?: boolean;
   sr?: boolean;
 };
-type GetMainModulesResponseCreator<
+type ResponseCreator<
   Module extends ModuleCreator<DefaultOptions>,
   PagedData extends PagedDataCreator<unknown, PaginationCreator>,
 > = {
@@ -24,20 +24,20 @@ type GetMainModulesResponseCreator<
 };
 
 // server types
-export type GetMainModulesQuery = GetMainModulesQueryCreator;
+export type GetMainModulesQuery = QueryCreator;
 export type GetMainModulesPageable = PagedDataCreator<Module, Pagination>;
-export type GetMainModulesResponse = GetMainModulesResponseCreator<
+export type GetMainModulesResponse = ResponseCreator<
   Module,
   GetMainModulesPageable
 >;
 
 // api types
-export type GetMainModulesQueryDto = GetMainModulesQueryCreator;
+export type GetMainModulesQueryDto = QueryCreator;
 export type GetMainModulesPageableDto = PagedDataCreator<
   ModuleDto,
   PaginationDto
 >;
-export type GetMainModulesResponseDto = GetMainModulesResponseCreator<
+export type GetMainModulesResponseDto = ResponseCreator<
   ModuleDto,
   GetMainModulesPageableDto
 >;

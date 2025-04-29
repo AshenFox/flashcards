@@ -14,9 +14,7 @@ export type SubscriptionsCreator<
 > = Subscription[];
 
 export type UserCreator<
-  Subscriptions extends SubscriptionsCreator<
-    SubscriptionCreator<DefaultOptions>
-  >,
+  Subscriptions extends SubscriptionsCreator<any>,
   Options extends DefaultOptions = DefaultOptions,
 > = {
   _id: string;
