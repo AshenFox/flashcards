@@ -30,7 +30,7 @@
 
   button {
     padding-bottom: 1rem;
-    border-bottom: 5px solid var(--success-color);
+    border-bottom: 5px solid var(--border-color);
     font-size: 1.5rem;
     text-transform: uppercase;
   }
@@ -41,4 +41,12 @@
       color: var(--active-color);
     }
   }
+}
+
+html:global(.light) .addcard button {
+  --border-color: #{$teal};
+}
+
+html:global(.dark) .addcard button {
+  --border-color: var(--active-color);
 }

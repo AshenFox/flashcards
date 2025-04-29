@@ -7,7 +7,7 @@ import Navigation from "./components/Navigation";
 import s from "./styles.module.scss";
 
 const Header = () => {
-  const username = useAppSelector(s => s.auth.user.username);
+  const username = useAppSelector(s => s.auth.user?.username);
 
   return (
     <div className={s.header}>

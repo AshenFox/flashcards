@@ -24,7 +24,7 @@ const Header = () => {
               <h1>{title}</h1>
             </div>
             <div className={s.return}>
-              <Link href={"/home/modules"}>Return</Link>
+              <Link isReturn>Return</Link>
             </div>
           </div>
           <Study />
