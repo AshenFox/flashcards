@@ -2,7 +2,7 @@ import { useActions, useAppSelector } from "@store/hooks";
 import ConfirmPopup from "@ui/ConfirmPopup";
 import DateStr from "@ui/DateStr";
 import { DeleteIcon, EditIcon } from "@ui/Icons";
-import Skeleton from "@ui/Skeleton";
+import Tooltip from "@ui/Tooltip";
 import Link from "next/link";
 import { memo, MouseEvent, useCallback } from "react";
 
@@ -54,12 +54,19 @@ const Info = () => {
         <SRDrop />
         <SR />
         <Link href={`/edit/${_id}`}>
-          <div className={s.nav_item}>
+          <div className={s.nav_item} data-tooltip-id="edit-module">
             <EditIcon width="25" height="25" />
           </div>
+          <Tooltip id="edit-module">Edit module</Tooltip>
         </Link>
-        <div className={s.nav_item} onClick={openModal("delete")}>
+
+        <div
+          className={s.nav_item}
+          onClick={openModal("delete")}
+          data-tooltip-id="delete-module"
+        >
           <DeleteIcon width="25" height="25" />
+          <Tooltip id="delete-module">Delete module</Tooltip>
         </div>
       </div>
     </div>

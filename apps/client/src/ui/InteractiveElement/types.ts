@@ -12,6 +12,7 @@ export type InnerProps = {
 };
 
 export type InteractiveElementProps = InnerProps & {
+  id?: string;
   className?: string;
   active?: boolean;
   design?: "plain" | "padded" | "outline";

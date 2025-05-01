@@ -57,6 +57,10 @@
     vertical-align: middle;
   }
 
+  & :global(.tooltip__tooltip) {
+    color: var(--danger-color);
+  }
+
   &:hover {
     & svg {
       fill: var(--danger-color);

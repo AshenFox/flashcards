@@ -1,13 +1,11 @@
 import Speaker from "@components/Speaker";
-import SRIndicator from "@components/SRIndicator";
+import { SRIndicator, SRInfoTooltip } from "@components/SRIndicator";
 import { useActions, useAppSelector } from "@store/hooks";
 import { Card } from "@store/reducers/main/types";
 import Img from "@ui/Img";
 import Input from "@ui/Input";
 import TextArea from "@ui/TextArea";
 import TextLabel from "@ui/TextLabel";
-import { tooltipContainer } from "@ui/Tooltip";
-import clsx from "clsx";
 import { useRouter } from "next/router";
 import {
   ChangeEvent,
@@ -86,14 +84,20 @@ const Question = ({ data }: QuestionProps) => {
     };
   }, [keyDownAnswer]);
 
+  const tooltipId = `question_${_id}`;
+
   return (
     <div className={s.question}>
       <div className={s.container}>
         {isSR && (
-          <SRIndicator
-            data={data}
-            className={clsx(s.sr_indicator, tooltipContainer)}
-          />
+          <>
+            <SRIndicator
+              id={tooltipId}
+              stage={data.stage}
+              className={s.sr_indicator}
+            />
+            <SRInfoTooltip id={tooltipId} data={data} />
+          </>
         )}
         {term && (
           <div className={s.do_not_know}>

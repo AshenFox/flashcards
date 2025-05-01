@@ -1,7 +1,7 @@
 import { useActions } from "@store/hooks";
 import { Card } from "@store/reducers/main/types";
 import { DropStudyRegimeIcon } from "@ui/Icons";
-import Tooltip, { tooltipContainer } from "@ui/Tooltip";
+import Tooltip from "@ui/Tooltip";
 import clsx from "clsx";
 import { memo, MouseEvent } from "react";
 
@@ -21,15 +21,17 @@ const SRDrop = ({ data }: SRDropProps) => {
   const clickDropSR = (e: MouseEvent<HTMLDivElement>) =>
     setCardQuestion({ _id, value: true });
 
+  const id = `sr-drop-card-${_id}`;
+
   return (
     <div
-      className={clsx(s.controls_item, s.sr_drop, tooltipContainer, {
+      className={clsx(s.controls_item, s.sr_drop, {
         [s.question]: question,
       })}
       onClick={clickDropSR}
     >
-      <DropStudyRegimeIcon height="19" width="19" />
-      <Tooltip>Drop card study progress</Tooltip>
+      <DropStudyRegimeIcon height="19" width="19" data-tooltip-id={id} />
+      <Tooltip id={id}>Drop card study progress</Tooltip>
     </div>
   );
 };

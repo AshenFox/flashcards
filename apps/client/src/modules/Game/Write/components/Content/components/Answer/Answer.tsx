@@ -1,5 +1,5 @@
 import Speaker from "@components/Speaker";
-import SRIndicator from "@components/SRIndicator";
+import { SRIndicator, SRInfoTooltip } from "@components/SRIndicator";
 import { useActions, useAppSelector } from "@store/hooks";
 import { Card } from "@store/reducers/main/types";
 import { EditIcon } from "@ui/Icons";
@@ -8,7 +8,6 @@ import Input from "@ui/Input";
 import { Button } from "@ui/InteractiveElement";
 import TextArea from "@ui/TextArea";
 import TextLabel from "@ui/TextLabel";
-import { tooltipContainer } from "@ui/Tooltip";
 import clsx from "clsx";
 import { useRouter } from "next/router";
 import {
@@ -138,13 +137,19 @@ const Answer = ({ data }: AnswerProps) => {
     };
   }, [keyDownControl]);
 
+  const tooltipId = `answer_${_id}`;
+
   return (
     <div className={s.answer} tabIndex={0} ref={gameAnswer}>
       {isSR && (
-        <SRIndicator
-          data={data}
-          className={clsx(s.sr_indicator, tooltipContainer)}
-        />
+        <>
+          <SRIndicator
+            id={tooltipId}
+            stage={data.stage}
+            className={s.sr_indicator}
+          />
+          <SRInfoTooltip id={tooltipId} data={data} />
+        </>
       )}
       <div className={clsx(s.edit, isSR && s.sr)} onClick={clickEdit}>
         <EditIcon width="21" height="21" />

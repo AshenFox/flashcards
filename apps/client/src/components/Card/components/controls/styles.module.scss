@@ -27,6 +27,7 @@
   & svg {
     margin-right: 1rem;
     fill: var(--icon-fill);
+    outline: none;
     transition: all 0.2s;
   }
 
@@ -36,11 +37,7 @@
     }
   }
 
-  :global(.tooltip__tooltip) {
-    top: -3rem;
-    left: -1rem;
-    width: max-content;
-    margin-right: 1rem;
+  :global(.tooltip__tooltip.react-tooltip) {
     color: var(--danger-color);
   }
 

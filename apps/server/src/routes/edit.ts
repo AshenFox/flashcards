@@ -388,7 +388,7 @@ router.get(
       if (foundModule) {
         filterObj.moduleID = foundModule._id;
 
-        cards = await cardModel.find(filterObj).sort({ creation_date: 1 });
+        cards = await cardModel.find(filterObj).sort({ order: 1 });
       } else {
         // Create a new draft
         foundModule = await moduleModel.create({

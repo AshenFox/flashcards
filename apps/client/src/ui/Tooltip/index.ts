@@ -1,5 +1,2 @@
-import s from "./styles.module.scss";
-
-export const tooltipContainer = s.container;
-
+export type { TooltipProps } from "./Tooltip";
 export { default } from "./Tooltip";

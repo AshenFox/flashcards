@@ -1,4 +1,5 @@
-import SRIndicator from "@components/SRIndicator";
+import { SRIndicator } from "@components/SRIndicator";
+import SRInfoTooltip from "@components/SRIndicator/SRInfoTooltip";
 import { useActions } from "@store/hooks";
 import { Card } from "@store/reducers/main/types";
 import Switch from "@ui/Switch";
@@ -39,14 +40,20 @@ const SR = ({ data }: SRProps) => {
   );
 
   const timer = useRef<ReturnType<typeof setTimeout>>(null);
+  const id = `card_sr_${_id}`;
 
   return (
     <Switch
-      id={`card_sr_${_id}`}
+      id={id}
       className={clsx(s.controls_item, s.sr)}
       active={studyRegime}
       small
-      icon={<SRIndicator data={data} small active={studyRegime} />}
+      icon={
+        <>
+          <SRIndicator stage={data.stage} active={studyRegime} small />
+          <SRInfoTooltip id={id} data={data} />
+        </>
+      }
       onMouseDown={down}
       onMouseUp={up}
       onTouchStart={down}

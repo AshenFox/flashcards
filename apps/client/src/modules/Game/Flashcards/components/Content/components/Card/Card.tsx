@@ -1,11 +1,10 @@
 import Speaker from "@components/Speaker";
-import SRIndicator from "@components/SRIndicator";
+import { SRIndicator, SRInfoTooltip } from "@components/SRIndicator";
 import { useActions } from "@store/hooks";
 import { Card as CardType } from "@store/reducers/main/types";
 import { EditIcon } from "@ui/Icons";
 import Img from "@ui/Img";
 import TextArea from "@ui/TextArea";
-import { tooltipContainer } from "@ui/Tooltip";
 import clsx from "clsx";
 import { useRouter } from "next/router";
 import { memo, MouseEvent } from "react";
@@ -63,6 +62,9 @@ const Card = ({ data, side = "definition", position = null }: CardProps) => {
   const clickEdit = (e: MouseEvent<HTMLDivElement>) =>
     setCardEdit({ _id, value: true });
 
+  const tooltipTermId = `term_${_id}`;
+  const tooltipDefinitionId = `definition_${_id}`;
+
   return (
     <div className={cardClassName}>
       <div className={frontClassName} onClick={clickSide("term")}>
@@ -72,10 +74,14 @@ const Card = ({ data, side = "definition", position = null }: CardProps) => {
           url={imgurl}
         />
         {isSR && (
-          <SRIndicator
-            data={data}
-            className={clsx(s.sr_indicator, tooltipContainer)}
-          />
+          <>
+            <SRIndicator
+              id={tooltipTermId}
+              stage={data.stage}
+              className={clsx(s.sr_indicator)}
+            />
+            <SRInfoTooltip id={tooltipTermId} place={"right"} data={data} />
+          </>
         )}
 
         {definition && (
@@ -95,10 +101,18 @@ const Card = ({ data, side = "definition", position = null }: CardProps) => {
       </div>
       <div className={backClassName} onClick={clickSide("definition")}>
         {isSR && (
-          <SRIndicator
-            data={data}
-            className={clsx(s.sr_indicator, tooltipContainer)}
-          />
+          <>
+            <SRIndicator
+              id={tooltipDefinitionId}
+              stage={data.stage}
+              className={clsx(s.sr_indicator)}
+            />
+            <SRInfoTooltip
+              id={tooltipDefinitionId}
+              place={"right"}
+              data={data}
+            />
+          </>
         )}
         <div className={s.term_container}>
           <TextArea html={term} className={s.term} />

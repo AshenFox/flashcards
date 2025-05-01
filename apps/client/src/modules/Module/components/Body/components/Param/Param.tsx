@@ -78,6 +78,7 @@ const Param = () => {
         <span>{" )"}</span>
       </div>
       <Filters
+        id="module-param-filters"
         filtersValues={filters}
         filtersData={filtersData}
         placeholder={"Type to filter..."}
