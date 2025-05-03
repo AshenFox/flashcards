@@ -11,9 +11,8 @@ import Study from "./components/Study/Study";
 import s from "./styles.module.scss";
 
 const Header = () => {
-  const currentModule = useAppSelector(s => s.main.module);
-
-  const { title } = currentModule || {};
+  const title = useAppSelector(s => s.main.module?.title);
+  const loading = useAppSelector(s => s.main.sections?.module.loading);
 
   return (
     <div className={s.header}>
@@ -21,7 +20,9 @@ const Header = () => {
         <Container>
           <div className={s.top}>
             <div className={clsx(s.title, !title && s.noTitle)}>
-              <h1>{title}</h1>
+              <h1>
+                {loading && !title ? <Skeleton width={"15rem"} /> : title}
+              </h1>
             </div>
             <div className={s.return}>
               <Link isReturn>Return</Link>

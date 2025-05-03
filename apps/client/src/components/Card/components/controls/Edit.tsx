@@ -19,18 +19,18 @@ const Edit = ({ data }: EditProps) => {
   const clickEdit = (e: MouseEvent<HTMLDivElement>) =>
     setCardEdit({ _id, value: true });
 
-  const id = `edit-card-${_id}`;
+  const editCardBtnId = `edit-card-${_id}`;
 
   return (
     <>
       <div
         className={clsx(s.controls_item, s.edit)}
         onClick={clickEdit}
-        data-tooltip-id={id}
+        data-tooltip-id={editCardBtnId}
       >
         <EditIcon width="19" height="19" />
       </div>
-      <Tooltip id={id}>Edit card</Tooltip>
+      <Tooltip id={editCardBtnId}>Edit card</Tooltip>
     </>
   );
 };

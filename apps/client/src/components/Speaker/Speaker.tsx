@@ -1,9 +1,10 @@
 import { useActions, useAppSelector } from "@store/hooks";
 import { EasySpeechStatus, VoiceData } from "@store/reducers/voice/types";
 import { SpeakerIcon } from "@ui/Icons";
+import Tooltip from "@ui/Tooltip";
 import clsx from "clsx";
 import EasySpeech from "easy-speech";
-import { ForwardedRef, memo, useCallback, useEffect, useMemo } from "react";
+import { ForwardedRef, memo, useCallback, useMemo } from "react";
 
 import s from "./styles.module.scss";
 
@@ -98,17 +99,27 @@ const Speaker = ({ _id, text, type, className, ref }: SpeakerProps) => {
     }
   }, [active, filteredText, language, setVoiceSpeaking, speak, cancel]);
 
+  const id = `speaker-${_id}-${type}`;
+
   return (
-    <div
-      className={clsx(s.speaker, className, {
-        [s.disabled]: !active,
-        [s.speaking]: speakerSpeaking,
-      })}
-      onClick={clickSpeaker}
-      ref={ref}
-    >
-      <SpeakerIcon />
-    </div>
+    <>
+      <div
+        className={clsx(s.speaker, className, {
+          [s.disabled]: !active,
+          [s.speaking]: speakerSpeaking,
+        })}
+        onClick={clickSpeaker}
+        ref={ref}
+        data-tooltip-id={id}
+      >
+        <SpeakerIcon />
+      </div>
+      {active && (
+        <Tooltip id={id}>
+          {speaking ? "Stop speaking" : "Speak " + type}
+        </Tooltip>
+      )}
+    </>
   );
 };
 

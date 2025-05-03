@@ -8,6 +8,7 @@ import Input from "@ui/Input";
 import { Button } from "@ui/InteractiveElement";
 import TextArea from "@ui/TextArea";
 import TextLabel from "@ui/TextLabel";
+import Tooltip from "@ui/Tooltip";
 import clsx from "clsx";
 import { useRouter } from "next/router";
 import {
@@ -137,23 +138,29 @@ const Answer = ({ data }: AnswerProps) => {
     };
   }, [keyDownControl]);
 
-  const tooltipId = `answer_${_id}`;
+  const tooltipSRId = `answer_sr_${_id}`;
+  const tooltipEditId = `answer_edit_${_id}`;
 
   return (
     <div className={s.answer} tabIndex={0} ref={gameAnswer}>
       {isSR && (
         <>
           <SRIndicator
-            id={tooltipId}
+            id={tooltipSRId}
             stage={data.stage}
             className={s.sr_indicator}
           />
-          <SRInfoTooltip id={tooltipId} data={data} />
+          <SRInfoTooltip id={tooltipSRId} data={data} place="right" />
         </>
       )}
-      <div className={clsx(s.edit, isSR && s.sr)} onClick={clickEdit}>
+      <div
+        className={clsx(s.edit, isSR && s.sr)}
+        onClick={clickEdit}
+        data-tooltip-id={tooltipEditId}
+      >
         <EditIcon width="21" height="21" />
       </div>
+      <Tooltip id={tooltipEditId}>Edit card</Tooltip>
       <h1 className={clsx(s.type, activeCard.answer && s[activeCard.answer])}>
         {activeCard.answer}
       </h1>

@@ -12,7 +12,7 @@ const Header = () => {
   return (
     <div className={s.header}>
       <div className={s.nickname}>
-        <h1>{username ? username : <Skeleton width={250} />}</h1>
+        <h1>{username ? username : <Skeleton width={"25rem"} />}</h1>
       </div>
       <Navigation />
       <ItemsNumber />

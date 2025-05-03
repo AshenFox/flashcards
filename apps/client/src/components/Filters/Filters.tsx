@@ -111,6 +111,7 @@ const Filters = ({
   }, [setFilterValue]);
 
   const filterBtnId = `${id}-filter-btn`;
+  const resetBtnId = `${id}-reset-btn`;
 
   return (
     <div className={clsx(s.filter, className)}>
@@ -159,6 +160,7 @@ const Filters = ({
               <div className={s.group_item}>
                 <div className={s.reset}>
                   <Button
+                    id={resetBtnId}
                     design="plain"
                     className={clsx(s.filter_btn, {
                       [s.disabled]: isFilterEmpty,
@@ -166,6 +168,9 @@ const Filters = ({
                     icon={<UndoIcon />}
                     onClick={onResetClick}
                   />
+                  {!isFilterEmpty && (
+                    <Tooltip id={resetBtnId}>Reset filters</Tooltip>
+                  )}
                 </div>
               </div>
             </div>

@@ -35,7 +35,7 @@
 }
 
 html:global(.light) .bar {
-  --default-background-color: #{$languid-lavender};
+  --default-background-color: #{$pale-teal};
   --red-background-color: #{$light-red};
   --green-background-color: #{$magic-mint};
 }
@@ -68,7 +68,7 @@ html:global(.dark) .bar {
 }
 
 html .fill {
-  --default-background-color: #{$regalia};
+  --default-background-color: #{$teal};
   --red-background-color: #{$bittersweet};
   --green-background-color: #{$crayola};
 }

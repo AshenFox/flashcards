@@ -3,11 +3,11 @@
 
 .speaker {
   display: flex;
-  animation-duration: 1.5s;
-  animation-iteration-count: infinite;
   cursor: pointer;
 
   svg {
+    animation-duration: 1.5s;
+    animation-iteration-count: infinite;
     fill: var(--icon-fill);
     transition: all 0.2s;
   }
@@ -20,10 +20,9 @@
 
   &.speaking {
     svg {
+      animation-name: example;
       fill: var(--active-color);
     }
-
-    animation-name: example;
   }
 
   &.disabled {

@@ -28,7 +28,6 @@
   transition: all 0.1s linear;
 
   &:global(.interactive_element__inactive) {
-    background-color: var(--stronger-danger-color);
     color: var(--light-color);
     cursor: auto;
     pointer-events: none;
@@ -84,6 +83,10 @@ html:global(.dark) .interactive_element {
   &:hover {
     background-color: var(--alternative-active-color);
     color: var(--active-secondary-color);
+  }
+
+  &:global(.interactive_element__inactive) {
+    background-color: var(--stronger-danger-color);
   }
 }
 

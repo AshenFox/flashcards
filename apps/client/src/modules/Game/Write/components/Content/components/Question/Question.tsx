@@ -96,7 +96,7 @@ const Question = ({ data }: QuestionProps) => {
               stage={data.stage}
               className={s.sr_indicator}
             />
-            <SRInfoTooltip id={tooltipId} data={data} />
+            <SRInfoTooltip id={tooltipId} data={data} place="right" />
           </>
         )}
         {term && (

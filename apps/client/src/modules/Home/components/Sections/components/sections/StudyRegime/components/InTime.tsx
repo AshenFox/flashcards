@@ -11,11 +11,17 @@ const InTime = () => {
     <>
       {!!next_num && next_date && (
         <>
-          <span>
-            {loading ? <Skeleton width={25} /> : next_num} card
-            {next_num > 1 || next_num < 1 ? "s" : ""}
-          </span>{" "}
-          to repeat {getTimeIntervalStr(next_date)}.
+          {loading ? (
+            <Skeleton width={"15rem"} />
+          ) : (
+            <>
+              <span>
+                {next_num} card
+                {next_num > 1 || next_num < 1 ? "s" : ""}
+              </span>{" "}
+              to repeat {getTimeIntervalStr(next_date)}.
+            </>
+          )}
         </>
       )}
     </>

@@ -1,0 +1,15 @@
+@import "@styles/vars";
+
+.skeleton {
+  color: inherit;
+}
+
+html:global(.light) .skeleton {
+  --skeleton-base-color: #{$concrete};
+  --skeleton-highlight-color: var(--element-border-color);
+}
+
+html:global(.dark) .skeleton {
+  --skeleton-base-color: #{$charcoal};
+  --skeleton-highlight-color: var(--element-border-color);
+}
