@@ -15,7 +15,7 @@ const Settings = () => {
         <div className={s.settings}>
           <div className={s.header}>
             <h1 className={s.title}>Settings</h1>
-            <Link href={"/home/modules"}>Return</Link>
+            <Link isReturn>Return</Link>
           </div>
           <div className={clsx(s.section)}>
             <h2>Theme</h2>

@@ -8,8 +8,13 @@
 
 .top {
   display: flex;
+  align-items: center;
   justify-content: space-between;
-  margin-bottom: 3rem;
+  margin-bottom: 2rem;
+
+  h1 {
+    line-height: 3.1rem;
+  }
 
   @media (max-width: $tablet) {
     flex-direction: column-reverse;

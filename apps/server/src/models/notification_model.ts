@@ -1,4 +1,4 @@
-import { Notification } from "@serverTypes/entities";
+import { Notification } from "@flashcards/common";
 import mongoose from "mongoose";
 
 const Schema = mongoose.Schema;

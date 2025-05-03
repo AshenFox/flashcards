@@ -1,7 +1,7 @@
+import { Card, User } from "@flashcards/common";
 import cardModel from "@models/card_model";
 import notificationModel from "@models/notification_model";
 import userModel from "@models/user_model";
-import { Card, User } from "@serverTypes/entities";
 import { FilterQuery } from "mongoose";
 import webpush from "web-push";
 

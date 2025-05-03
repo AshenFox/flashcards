@@ -12,6 +12,7 @@ const Button = (props: ButtonProps) => {
     <button
       className={createClassName(props)}
       onClick={active ? onClick : noop}
+      data-tooltip-id={props.id}
     >
       <Inner {...props} />
     </button>

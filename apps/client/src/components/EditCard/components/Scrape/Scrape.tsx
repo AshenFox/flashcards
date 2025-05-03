@@ -1,6 +1,6 @@
 import { useActions } from "@store/hooks";
 import { Card } from "@store/reducers/main/types";
-import Tooltip, { tooltipContainer } from "@ui/Tooltip";
+import Tooltip from "@ui/Tooltip";
 import clsx from "clsx";
 import { memo, MouseEvent, useCallback } from "react";
 
@@ -23,6 +23,9 @@ const Scrape = ({ data }: ScrapeProps) => {
     [_id, scrapeDictionary],
   );
 
+  const cambridgeId = `scrape-cambridge-${_id}`;
+  const urbanId = `scrape-urban-${_id}`;
+
   return (
     <div
       className={clsx(s.scrape, {
@@ -30,18 +33,22 @@ const Scrape = ({ data }: ScrapeProps) => {
       })}
     >
       <div
-        className={clsx(s.button, s.cod, tooltipContainer)}
+        className={clsx(s.button, s.cod)}
         onClick={clickScrapeButton("cod")}
+        data-tooltip-id={cambridgeId}
       >
         <div className={s.background}></div>
-        <Tooltip>Search in Cambridge Online Dictionary</Tooltip>
+        <Tooltip id={cambridgeId}>
+          Search in Cambridge Online Dictionary
+        </Tooltip>
       </div>
       <div
-        className={clsx(s.button, s.urban, tooltipContainer)}
+        className={clsx(s.button, s.urban)}
         onClick={clickScrapeButton("urban")}
+        data-tooltip-id={urbanId}
       >
         <div className={s.background}></div>
-        <Tooltip>Search in Urban Dictionary</Tooltip>
+        <Tooltip id={urbanId}>Search in Urban Dictionary</Tooltip>
       </div>
     </div>
   );

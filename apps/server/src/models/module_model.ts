@@ -1,4 +1,4 @@
-import { Module } from "@serverTypes/entities";
+import { Module } from "@flashcards/common";
 import mongoose, { SortOrder } from "mongoose";
 
 const Schema = mongoose.Schema;

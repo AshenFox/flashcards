@@ -13,8 +13,9 @@ const Subscriptions = () => {
     currentSubscription,
     registration,
     permission,
-    handleSubscribe,
     isLoading,
+    pushPrepared,
+    handleSubscribe,
   } = usePushNotifications();
 
   const otherSubscriptions = subscriptions.filter(
@@ -25,35 +26,40 @@ const Subscriptions = () => {
     <div className={s.subscriptions}>
       {isLoading && <Spinner variant="secondary" />}
 
-      <h3>Current Device</h3>
-      {currentSubscription && (
-        <Subscription subscription={currentSubscription.data} />
-      )}
-      {!currentSubscription &&
-        registration?.active?.state === "activated" &&
-        (permission?.state === "granted" || permission?.state === "prompt") && (
-          <div className={s.subscription}>
-            <Button
-              onClick={handleSubscribe}
-              active={!isLoading}
-              className={s.enable}
-            >
-              Enable Notifications
-            </Button>
-          </div>
-        )}
-      {permission?.state === "denied" && (
-        <div className={clsx(s.subscription, s.noPermission)}>
-          <span>No permission</span>
-        </div>
-      )}
-
-      {!!otherSubscriptions.length && (
+      {pushPrepared && (
         <>
-          <h3>Other Devices</h3>
-          {otherSubscriptions.map(sub => (
-            <Subscription key={sub._id} subscription={sub} />
-          ))}
+          <h3>Current Device</h3>
+          {currentSubscription && (
+            <Subscription subscription={currentSubscription.data} />
+          )}
+          {!currentSubscription &&
+            registration?.active?.state === "activated" &&
+            (permission?.state === "granted" ||
+              permission?.state === "prompt") && (
+              <div className={s.subscription}>
+                <Button
+                  onClick={handleSubscribe}
+                  active={!isLoading}
+                  className={s.enable}
+                >
+                  Enable Notifications
+                </Button>
+              </div>
+            )}
+          {permission?.state === "denied" && (
+            <div className={clsx(s.subscription, s.noPermission)}>
+              <span>No permission</span>
+            </div>
+          )}
+
+          {!!otherSubscriptions.length && (
+            <>
+              <h3>Other Devices</h3>
+              {otherSubscriptions.map(sub => (
+                <Subscription key={sub._id} subscription={sub} />
+              ))}
+            </>
+          )}
         </>
       )}
     </div>

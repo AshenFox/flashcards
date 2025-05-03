@@ -17,15 +17,18 @@ $orange-peel: #ff9800;
 $orange: #ff5722;
 $jade: #00ad57;
 $violet: #6400bb;
+$pale-teal: #c2e2e2;
+$teal: #00a9a6;
 
 $concrete: #f3f3f3;
-$super-silver: #eee;
+$mint-cream: #f2f2f2;
 $silver-foil: #979797;
+$charcoal: #3d3d3d;
 $quartz: #4b4b4b;
 $jet: #363636;
 $raisin-black: #232323;
 
-$lotion: #fdfdfd;
+$ivory: #fffefc;
 $anti-flash-white: #f0f0f0;
 $gainsboro: #dbdbdb;
 $philippine-silver: #b6b6b6;
@@ -61,10 +64,10 @@ html.dark {
 
 html.light {
   /* general app element colors */
-  --app-background-color: #{$super-silver};
-  --element-background-color: #{$lotion};
+  --app-background-color: #{$mint-cream};
+  --element-background-color: #{$ivory};
   --element-border-color: #{$gainsboro};
-  --secondary-element-background-color: #{$jade};
+  --secondary-element-background-color: #{$teal};
   --icon-fill: #{$davys-grey};
   --input-border-color: #{$jet};
   --divider-color: #{$philippine-silver};

@@ -15,25 +15,21 @@ const Left = () => {
   const isSR = getIsSR(_id);
   const isGame = getIsGame(router.pathname);
 
-  const user = useAppSelector(s => s.auth.user);
   const loading = useAppSelector(s => s.auth.loading);
 
   return (
     <div className={s.left}>
-      {!loading && (
-        <>
-          {user && isGame && (
-            <Item
-              href={isSR ? "/home/sr" : `/module/${_id}`}
-              icon={<GameBackIcon />}
-              iconSize={25}
-              className={s.back}
-            />
-          )}
-
-          <Logo />
-        </>
+      {isGame && (
+        <Item
+          href={isSR ? "/home/sr" : `/module/${_id}`}
+          icon={<GameBackIcon />}
+          iconSize={25}
+          className={s.back}
+          active={!loading}
+        />
       )}
+
+      <Logo />
     </div>
   );
 };

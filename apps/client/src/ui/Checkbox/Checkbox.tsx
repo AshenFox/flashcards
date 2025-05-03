@@ -1,4 +1,3 @@
-import Tooltip, { tooltipContainer } from "@ui/Tooltip";
 import clsx from "clsx";
 import {
   cloneElement,
@@ -42,7 +41,7 @@ const Checkbox = ({
   const innerIconSize = iconSize ?? small ? 17 : 25;
 
   return (
-    <div className={clsx(s.container, tooltipContainer, className)}>
+    <div className={clsx(s.container, className)}>
       <input
         className={clsx(s.checkbox, "checkbox__input")}
         type="checkbox"
@@ -52,7 +51,6 @@ const Checkbox = ({
       />
       {!!icon &&
         cloneElement(icon, { width: innerIconSize, height: innerIconSize })}
-      {tooltip && <Tooltip>{tooltip}</Tooltip>}
       <label
         className={clsx(s.label, "checkbox__label", small && s.small)}
         htmlFor={id}

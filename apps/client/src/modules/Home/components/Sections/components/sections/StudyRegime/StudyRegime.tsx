@@ -20,11 +20,17 @@ const StudyRegime = () => {
         <div className={s.title}>Study Regime</div>
         <ul className={s.info}>
           <li>
-            <span>
-              {loading ? <Skeleton width={25} /> : all_num} card
-              {all_num > 1 || all_num < 1 ? "s" : ""}
-            </span>{" "}
-            in the regime.
+            {loading ? (
+              <Skeleton width={"15rem"} />
+            ) : (
+              <>
+                <span>
+                  {all_num} card
+                  {all_num > 1 || all_num < 1 ? "s" : ""}
+                </span>{" "}
+                in the regime.
+              </>
+            )}
           </li>
           <li>
             <InTime />
@@ -34,12 +40,18 @@ const StudyRegime = () => {
 
       <div className={s.repeat}>
         <p>
-          Currently you have{" "}
-          <span>
-            {loading ? <Skeleton width={25} /> : repeat_num} card
-            {repeat_num > 1 || repeat_num < 1 ? "s" : ""}
-          </span>{" "}
-          to repeat.
+          {loading ? (
+            <Skeleton width={"20rem"} />
+          ) : (
+            <>
+              Currently you have{" "}
+              <span>
+                {repeat_num} card
+                {repeat_num > 1 || repeat_num < 1 ? "s" : ""}
+              </span>{" "}
+              to repeat.
+            </>
+          )}
         </p>
         {!!repeat_num && (
           <>

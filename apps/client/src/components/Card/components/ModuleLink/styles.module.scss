@@ -19,10 +19,4 @@
       fill: var(--active-color);
     }
   }
-
-  :global(.tooltip__tooltip) {
-    top: -3.25rem;
-    right: 0;
-    width: max-content;
-  }
 }

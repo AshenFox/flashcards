@@ -2,12 +2,11 @@
 
 .drop {
   display: flex;
-  padding-right: 0.65rem;
+  padding-right: 1.65rem;
   border-right: 1px solid var(--element-border-color);
   cursor: pointer;
 
   & svg {
-    margin-right: 1rem;
     fill: var(--icon-fill);
     transition: all 0.2s;
   }

@@ -79,6 +79,7 @@ const Modules = () => {
   return (
     <>
       <Filters
+        id="home-modules-filters"
         filtersValues={filters}
         filtersData={filtersData}
         placeholder={"Type to filter..."}

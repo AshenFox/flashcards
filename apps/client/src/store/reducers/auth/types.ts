@@ -3,7 +3,7 @@ import { CaseReducer } from "@reduxjs/toolkit";
 import { Action } from "@store/types";
 
 export type AuthState = {
-  user: false | UserDto;
+  user: UserDto;
   loading: boolean;
 };
 

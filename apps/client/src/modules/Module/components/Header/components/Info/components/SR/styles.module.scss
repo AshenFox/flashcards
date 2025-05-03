@@ -5,6 +5,11 @@
   padding-left: 1.5rem;
   border-right: 1px solid var(--element-border-color);
 
+  svg {
+    width: 25px;
+    height: 25px;
+  }
+
   :global {
     .tooltip__tooltip {
       left: 1.5rem;

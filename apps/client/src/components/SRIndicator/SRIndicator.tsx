@@ -1,17 +1,12 @@
-import DateStr from "@ui/DateStr";
 import { StudyRegimeIcon } from "@ui/Icons";
-import Tooltip from "@ui/Tooltip";
 import clsx from "clsx";
 import { memo, ReactElement, useMemo } from "react";
 
 import s from "./styles.module.scss";
 
 export type SRIndicatorProps = {
-  data: {
-    stage: number;
-    nextRep: string;
-    prevStage: string;
-  };
+  stage: number;
+  id?: string;
   active?: boolean;
   small?: boolean;
   className?: string;
@@ -24,13 +19,12 @@ const radius = 2;
 const diameter = radius * 2;
 
 const SRIndicator = ({
-  data,
+  stage,
+  id,
   active = true,
   small = false,
   className,
 }: SRIndicatorProps) => {
-  const { stage, nextRep, prevStage } = data;
-
   const dots = useMemo(() => {
     let angle = 120;
 
@@ -69,17 +63,9 @@ const SRIndicator = ({
         small && s.small,
         className,
       )}
+      data-tooltip-id={id}
     >
       <StudyRegimeIcon />
-      <Tooltip>
-        <span>SR Stage: {stage}</span>
-        <span>
-          Next repeat: <DateStr date={nextRep} />
-        </span>
-        <span>
-          Drop stage: <DateStr date={prevStage} />
-        </span>
-      </Tooltip>
       <div className={"indicator__dots"}>{dots}</div>
     </div>
   );

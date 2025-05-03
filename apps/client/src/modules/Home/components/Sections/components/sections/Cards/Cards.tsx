@@ -82,6 +82,7 @@ const Cards = () => {
   return (
     <>
       <Filters
+        id="home-cards-filters"
         filtersValues={filters}
         filtersData={filtersData}
         placeholder={"Type to filter..."}

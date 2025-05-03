@@ -3,6 +3,7 @@ import { FilterIcon, UndoIcon } from "@ui/Icons";
 import FilledFilterIcon from "@ui/Icons/components/FilledFilterIcon";
 import Input from "@ui/Input";
 import { Button } from "@ui/InteractiveElement";
+import Tooltip from "@ui/Tooltip";
 import clsx from "clsx";
 import {
   ChangeEventHandler,
@@ -109,6 +110,9 @@ const Filters = ({
     };
   }, [setFilterValue]);
 
+  const filterBtnId = `${id}-filter-btn`;
+  const resetBtnId = `${id}-reset-btn`;
+
   return (
     <div className={clsx(s.filter, className)}>
       <div className={s.container}>
@@ -127,7 +131,11 @@ const Filters = ({
             })}
             icon={isFilterEmpty ? <FilterIcon /> : <FilledFilterIcon />}
             onClick={toggleFilter}
+            id={filterBtnId}
           />
+          <Tooltip id={filterBtnId}>
+            {isFilterOpen ? "Close filters" : "Open filters"}
+          </Tooltip>
         </div>
         {isFilterOpen && (
           <div className={s.group_container}>
@@ -152,6 +160,7 @@ const Filters = ({
               <div className={s.group_item}>
                 <div className={s.reset}>
                   <Button
+                    id={resetBtnId}
                     design="plain"
                     className={clsx(s.filter_btn, {
                       [s.disabled]: isFilterEmpty,
@@ -159,6 +168,9 @@ const Filters = ({
                     icon={<UndoIcon />}
                     onClick={onResetClick}
                   />
+                  {!isFilterEmpty && (
+                    <Tooltip id={resetBtnId}>Reset filters</Tooltip>
+                  )}
                 </div>
               </div>
             </div>

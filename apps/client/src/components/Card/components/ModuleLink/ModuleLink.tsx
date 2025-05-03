@@ -1,5 +1,5 @@
 import { ExternalLinkIcon } from "@ui/Icons";
-import Tooltip, { tooltipContainer } from "@ui/Tooltip";
+import Tooltip from "@ui/Tooltip";
 import clsx from "clsx";
 import Link from "next/link";
 import React, { memo } from "react";
@@ -11,11 +11,13 @@ type ModuleLinkProps = {
 };
 
 const ModuleLink = ({ moduleId }: ModuleLinkProps) => {
+  const id = `module-link-${moduleId}`;
+
   return (
     <Link href={`/module/${moduleId}`}>
-      <div className={clsx(s.module_link, tooltipContainer)}>
+      <div className={clsx(s.module_link)} data-tooltip-id={id}>
         <ExternalLinkIcon />
-        <Tooltip>To the card&apos;s module</Tooltip>
+        <Tooltip id={id}>To the card&apos;s module</Tooltip>
       </div>
     </Link>
   );

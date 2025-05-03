@@ -1,15 +1,16 @@
-import { Subscription, Subscriptions } from "@serverTypes/entities";
-import { ErrorResponse } from "@serverTypes/methods";
 import {
   DeleteNotificationsSubscriptionParams,
   DeleteNotificationsSubscriptionResponse,
+  ErrorResponse,
   GetNotificationsSubscriptionsResponse,
   PostNotificationsSubscribeQuery,
   PostNotificationsSubscribeResponse,
   PutNotificationsSubscriptionBody,
   PutNotificationsSubscriptionParams,
   PutNotificationsSubscriptionResponse,
-} from "@serverTypes/methods";
+  Subscription,
+  Subscriptions,
+} from "@flashcards/common";
 import { auth } from "@supplemental/middleware";
 import { ResponseLocals } from "@supplemental/types";
 import express, { Request } from "express";
@@ -125,6 +126,7 @@ router.put(
       subscription.name = name ?? "";
 
       await user.save();
+
       res.status(200).json(subscription);
     } catch (err) {
       console.error(err);

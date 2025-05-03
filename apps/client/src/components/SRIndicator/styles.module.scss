@@ -1,6 +1,12 @@
 @import "@styles/vars";
 @import "@styles/animations";
 
+.info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
 .indicator {
   position: relative;
   display: flex;
@@ -33,22 +39,6 @@
       background-color: var(--success-color);
       transform: translate(-50%, -50%);
     }
-
-    .tooltip__tooltip {
-      top: -1rem;
-      left: 4rem;
-      width: max-content;
-      border-radius: 0.5rem;
-
-      span {
-        display: block;
-        margin: 0;
-
-        &:not(:last-child) {
-          margin-bottom: 0.25rem;
-        }
-      }
-    }
   }
 
   &.small {
@@ -63,11 +53,6 @@
       .indicator__dot {
         width: 0.4rem;
         height: 0.4rem;
-      }
-
-      .tooltip__tooltip {
-        top: -6rem;
-        left: -1rem;
       }
     }
 
@@ -87,10 +72,10 @@
       .indicator__dots {
         opacity: 1;
       }
+    }
 
-      .tooltip__tooltip {
-        color: var(--success-color);
-      }
+    & ~ :global(.tooltip__tooltip) .info {
+      color: var(--success-color);
     }
   }
 }

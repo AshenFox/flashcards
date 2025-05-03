@@ -7,14 +7,12 @@ import Navigation from "./components/Navigation";
 import s from "./styles.module.scss";
 
 const Header = () => {
-  const user = useAppSelector(s => s.auth.user);
-
-  const { username } = user || {};
+  const username = useAppSelector(s => s.auth.user?.username);
 
   return (
     <div className={s.header}>
       <div className={s.nickname}>
-        <h1>{username ? username : <Skeleton width={250} />}</h1>
+        <h1>{username ? username : <Skeleton width={"25rem"} />}</h1>
       </div>
       <Navigation />
       <ItemsNumber />

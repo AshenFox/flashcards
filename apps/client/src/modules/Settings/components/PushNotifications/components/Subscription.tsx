@@ -1,6 +1,7 @@
 import { DeleteIcon } from "@ui/Icons";
 import Input from "@ui/Input";
 import { Button } from "@ui/InteractiveElement";
+import Tooltip from "@ui/Tooltip";
 import { ChangeEvent, memo, useCallback, useRef } from "react";
 
 import { usePushNotifications } from "../context";
@@ -38,6 +39,8 @@ const Subscription = ({ subscription }: Props) => {
     [subscription._id, handleRename, setSubscriptions],
   );
 
+  const deleteBtnId = `subscription_delete_${subscription._id}`;
+
   return (
     <div className={s.subscription}>
       <Input
@@ -47,12 +50,16 @@ const Subscription = ({ subscription }: Props) => {
         disabled={isLoading}
       />
       <Button
+        id={deleteBtnId}
         className={s.delete}
         onClick={() => handleDelete(subscription._id)}
         design="plain"
         icon={<DeleteIcon />}
         active={!isLoading}
       />
+      <Tooltip id={deleteBtnId} offset={5}>
+        Delete subscription
+      </Tooltip>
     </div>
   );
 };

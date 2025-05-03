@@ -19,6 +19,7 @@ type ItemProps = {
   iconSize?: number;
   padded?: boolean;
   className?: string;
+  active?: boolean;
 };
 
 const Item = ({
@@ -29,6 +30,7 @@ const Item = ({
   icon,
   iconSize = 20,
   className = "",
+  active = true,
 }: ItemProps) => {
   const innerClassName = useMemo(
     () => clsx(s.item, padded ? s.padded : s.plain, className),
@@ -43,6 +45,7 @@ const Item = ({
         iconSize={iconSize}
         design={padded ? "padded" : "plain"}
         className={innerClassName}
+        active={active}
       >
         {children}
       </Button>
@@ -56,6 +59,7 @@ const Item = ({
       iconSize={iconSize}
       className={innerClassName}
       design="plain"
+      active={active}
     >
       {children}
     </Link>

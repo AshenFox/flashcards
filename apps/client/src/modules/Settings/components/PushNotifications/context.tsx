@@ -21,6 +21,7 @@ type PushNotificationsContextType = {
   registration: ServiceWorkerRegistration | null;
   permission: Permission | null;
   isLoading: boolean;
+  pushPrepared: boolean;
   handleDelete: (id: string) => Promise<void>;
   handleRename: (id: string, newName: string) => Promise<void>;
   handleSubscribe: () => Promise<void>;
@@ -55,6 +56,7 @@ export const PushNotificationsProvider: React.FC<{
   const [registration, setRegistration] =
     useState<ServiceWorkerRegistration | null>(null);
   const [permission, setPermission] = useState<Permission | null>(null);
+  const [pushPrepared, setPushPrepared] = useState(false);
 
   const updatePermission = useCallback((status: PermissionStatus) => {
     setPermission({ status, state: status.state });
@@ -91,6 +93,7 @@ export const PushNotificationsProvider: React.FC<{
     updatePermission(permission);
 
     await loadSubscriptions();
+    setPushPrepared(true);
   }, [loadSubscriptions, updatePermission]);
 
   useEffect(() => {
@@ -162,6 +165,7 @@ export const PushNotificationsProvider: React.FC<{
       registration,
       permission,
       isLoading,
+      pushPrepared,
       handleDelete,
       handleRename,
       handleSubscribe,
@@ -173,6 +177,7 @@ export const PushNotificationsProvider: React.FC<{
       registration,
       permission,
       isLoading,
+      pushPrepared,
       handleDelete,
       handleRename,
       handleSubscribe,

@@ -1,6 +1,7 @@
 import { useActions, useAppSelector } from "@store/hooks";
 import { StudyRegimeIcon } from "@ui/Icons";
 import Switch from "@ui/Switch";
+import Tooltip from "@ui/Tooltip";
 import clsx from "clsx";
 import { memo, MouseEvent } from "react";
 
@@ -29,9 +30,13 @@ const SR = () => {
       id={`module-sr-control`}
       className={clsx(s.sr_control)}
       active={active}
-      icon={<StudyRegimeIcon />}
+      icon={
+        <>
+          <StudyRegimeIcon />
+          <Tooltip id={`module-sr-control`}>All cards study regime</Tooltip>
+        </>
+      }
       onClick={clickSwitch}
-      tooltip={"All cards study regime"}
     />
   );
 };

@@ -2,7 +2,6 @@ import Container from "@components/Container";
 import { useAppSelector } from "@store/store";
 import { TriangleLeftIcon } from "@ui/Icons";
 import { Link } from "@ui/InteractiveElement";
-import { useRouter } from "next/router";
 import { CSSProperties, memo, ReactNode } from "react";
 
 import s from "./styles.module.scss";
@@ -14,12 +13,7 @@ type ControlsProps = {
 };
 
 const Controls = ({ title, titleIcon, children }: ControlsProps) => {
-  const router = useRouter();
-  const { _id } = router.query;
-
   const header_height = useAppSelector(s => s.dimen.header_height);
-
-  const isSR = _id === "sr";
 
   const styles: CSSProperties = { top: `${header_height}px` };
 
@@ -28,7 +22,7 @@ const Controls = ({ title, titleIcon, children }: ControlsProps) => {
       <div className={s.controls} style={styles}>
         <div className={s.back}>
           <Link
-            href={isSR ? "/home/sr" : `/module/${_id}`}
+            isReturn
             design="plain"
             icon={<TriangleLeftIcon />}
             iconSize={15}

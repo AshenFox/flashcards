@@ -1,6 +1,7 @@
 import { useActions } from "@store/hooks";
 import { Card } from "@store/reducers/main/types";
 import { EditIcon } from "@ui/Icons";
+import Tooltip from "@ui/Tooltip";
 import clsx from "clsx";
 import { memo, MouseEvent } from "react";
 
@@ -18,10 +19,19 @@ const Edit = ({ data }: EditProps) => {
   const clickEdit = (e: MouseEvent<HTMLDivElement>) =>
     setCardEdit({ _id, value: true });
 
+  const editCardBtnId = `edit-card-${_id}`;
+
   return (
-    <div className={clsx(s.controls_item, s.edit)} onClick={clickEdit}>
-      <EditIcon width="19" height="19" />
-    </div>
+    <>
+      <div
+        className={clsx(s.controls_item, s.edit)}
+        onClick={clickEdit}
+        data-tooltip-id={editCardBtnId}
+      >
+        <EditIcon width="19" height="19" />
+      </div>
+      <Tooltip id={editCardBtnId}>Edit card</Tooltip>
+    </>
   );
 };
 
