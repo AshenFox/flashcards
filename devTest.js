@@ -1,11 +1,12 @@
-import { watch } from "rollup";
-import { loadConfigFile } from "rollup/loadConfigFile";
 import path from "path";
-import { exec } from "child_process";
 import util from "util";
 import { fileURLToPath } from "url";
-import chalk from "chalk";
-import concurrently from "concurrently";
+import { config } from "dotenv";
+import { spawn, exec, fork } from "child_process";
+import nodemon from "nodemon";
+
+config({ path: ".env" });
+console.log({ NODE_ENV: process.env.NODE_ENV });
 
 const execPromise = util.promisify(exec);
 
@@ -14,80 +15,108 @@ const __dirname = path.dirname(__filename);
 
 const rollupOrder = [
   {
-    name: "Common build",
-    color: chalk.blue,
+    name: "Common",
+    color: "blue",
     packagePath: "packages/common",
-    config: undefined,
-    watchers: [],
   },
-  /* {
-    name: "Server build",
-    color: chalk.green,
+  {
+    name: "Server",
+    color: "green",
     packagePath: "apps/server",
-    config: undefined,
-    watchers: [],
-  }, */
+  },
 ];
 
-const commands = [
+/* const commands = [
   {
     command: "npx nodemon --config nodemon.json",
     name: "Client",
     prefixColor: "yellow",
   },
-];
+]; */
 
-const deployBundleWatcher = async data => {
-  const { packagePath, color, name } = data;
+// Function containing the logic for the child process
+function childLogic() {
+  const PACKAGE_PATH = process.env.PACKAGE_PATH;
+  const NAME = process.env.NAME;
+  const COLOR = process.env.COLOR;
 
-  const configPath = path.resolve(__dirname, packagePath, "rollup.config.mjs");
-  // process.chdir(path.resolve(__dirname, packagePath));
+  const chalk = require("chalk");
+  const path = require("path");
+  const { loadConfigFile } = require("rollup/loadConfigFile");
+  const { watch } = require("rollup");
 
-  const config = await loadConfigFile(configPath, {
-    format: "es",
-  });
+  const prefix = message => chalk[COLOR](`[${NAME}]`) + " " + message;
 
-  data.config = config;
+  const configPath = path.resolve(__dirname, "rollup.config.mjs");
 
-  for await (const options of config.options) {
-    const watcher = watch(options);
+  loadConfigFile(configPath).then(config => {
+    for (const options of config.options) {
+      const watcher = watch(options);
 
-    const watcherPromise = new Promise((resolve, reject) => {
       watcher.on("event", event => {
         switch (event.code) {
           case "START":
-            console.log(
-              `▶  Starting build for ${path.basename(config.name ?? "")}`,
-            );
+            console.log(prefix(`▶  Starting build for ${NAME}`));
+            process.send?.("START");
             break;
           case "BUNDLE_END":
             event.result.close();
-            console.log(
-              `✔  Bundled ${path.basename(config.name ?? "")} in ${event.duration}ms`,
-            );
-
+            console.log(prefix(`Bundled ${NAME} in ${event.duration}ms`));
+            process.send?.("BUNDLE_END");
             break;
           case "END":
-            // first successful bundle
-            resolve();
+            console.log(prefix(`✔  Build complete for ${NAME}`));
+            process.send?.("END");
             break;
           case "ERROR":
-            console.error(
-              `❌ Error building ${path.basename(config.name ?? "")}`,
-              event.error,
-            );
-            reject();
-            // process.exit(1);
+            console.error(prefix(`❌ Error building ${NAME}`), event.error);
+            process.send?.("ERROR");
             break;
         }
       });
+    }
+  });
+
+  process.on("exit", (code, signal) => {
+    console.log(`child exited (${code || signal})`);
+    process.send?.("EXIT");
+  });
+}
+
+// Convert the function to a string for execution in a child process
+const childLogicString = `(${childLogic.toString()})();`;
+
+// Function to spawn a child process for each package
+async function spawnChildProcess(data) {
+  const { packagePath, color, name } = data;
+  const pkgDir = path.resolve(__dirname, packagePath);
+
+  await new Promise((resolve, reject) => {
+    const child = spawn(process.execPath, ["-e", childLogicString], {
+      cwd: pkgDir,
+      stdio: ["inherit", "inherit", "inherit", "ipc"],
+      env: {
+        ...process.env,
+        COLOR: color,
+        PACKAGE_PATH: packagePath,
+        NAME: name,
+      },
     });
 
-    data.watchers.push(watcher);
+    child.on("message", message => {
+      // console.log("CHILD message", message);
 
-    await watcherPromise;
-  }
-};
+      switch (message) {
+        case "ERROR":
+          reject();
+          break;
+        case "END":
+          resolve();
+          break;
+      }
+    });
+  });
+}
 
 (async () => {
   await execPromise("npm run cleanBuild").then(({ stdout, stderr }) => {
@@ -95,20 +124,38 @@ const deployBundleWatcher = async data => {
     console.error(stderr);
   });
 
-  console.log(rollupOrder);
-
-  // Kick off watchers for each package
+  // Kick off child processes for each package
   for await (const data of rollupOrder) {
-    await deployBundleWatcher(data);
+    await spawnChildProcess(data);
   }
 
   console.log("🎉 All initial builds complete — launching dev server…\n");
 
-  // now start your nodemon (or whatever) …
-  /* const server = spawn("nodemon", ["--config", "nodemon.json"], {
-    stdio: "inherit",
+  // Use nodemon API to start the server
+  nodemon({
+    script: "nodemon.json",
+    exec: "npm run dev -w @flashcards/server",
+    watch: ["./apps/server/.build", "./packages/common/.build"],
+    ext: "*",
+    delay: "1000",
+    stdout: "inherit",
+    legacyWatch: true,
   });
-  server.on("exit", code => process.exit(code)); */
+
+  nodemon
+    .on("start", function () {
+      console.log("Nodemon has started");
+    })
+    .on("quit", function () {
+      console.log("Nodemon has quit");
+      process.exit();
+    })
+    .on("restart", function (files) {
+      console.log("Nodemon restarted due to: ", files);
+    })
+    .on("log", function (log) {
+      console.log(log.colour);
+    });
 
   /* await execPromise("npx nodemon --config nodemon.json").then(
     ({ stdout, stderr }) => {
