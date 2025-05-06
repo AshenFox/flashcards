@@ -1,6 +1,0 @@
-{
-  "watch": ["./apps/server/.build", "./packages/common/.build"],
-  "exec": "npm run dev -w @flashcards/server",
-  "delay": "1000",
-  "legacyWatch": true
-}
