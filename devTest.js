@@ -4,6 +4,7 @@ import { fileURLToPath } from "url";
 import { config } from "dotenv";
 import { spawn, exec, fork } from "child_process";
 import nodemon from "nodemon";
+import chalk from "chalk";
 
 config({ path: ".env" });
 console.log({ NODE_ENV: process.env.NODE_ENV });
@@ -15,28 +16,19 @@ const __dirname = path.dirname(__filename);
 
 const rollupOrder = [
   {
-    name: "Common",
+    name: "Common build",
     color: "blue",
     packagePath: "packages/common",
   },
   {
-    name: "Server",
+    name: "Server build",
     color: "green",
     packagePath: "apps/server",
   },
 ];
 
-/* const commands = [
-  {
-    command: "npx nodemon --config nodemon.json",
-    name: "Client",
-    prefixColor: "yellow",
-  },
-]; */
-
 // Function containing the logic for the child process
 function childLogic() {
-  const PACKAGE_PATH = process.env.PACKAGE_PATH;
   const NAME = process.env.NAME;
   const COLOR = process.env.COLOR;
 
@@ -103,9 +95,9 @@ async function spawnChildProcess(data) {
       },
     });
 
-    child.on("message", message => {
-      // console.log("CHILD message", message);
+    data.child = child;
 
+    child.on("message", message => {
       switch (message) {
         case "ERROR":
           reject();
@@ -131,42 +123,33 @@ async function spawnChildProcess(data) {
 
   console.log("🎉 All initial builds complete — launching dev server…\n");
 
+  const prefix = message => chalk.yellow(`[App]`) + " " + message;
+
   // Use nodemon API to start the server
-  nodemon({
+  const appMonitor = nodemon({
     script: "nodemon.json",
     exec: "npm run dev -w @flashcards/server",
     watch: ["./apps/server/.build", "./packages/common/.build"],
     ext: "*",
     delay: "1000",
-    stdout: "inherit",
+    /* stderr: false,
+    stdout: false,
+    stdin: "inherit", */
     legacyWatch: true,
   });
 
-  nodemon
-    .on("start", function () {
-      console.log("Nodemon has started");
-    })
-    .on("quit", function () {
-      console.log("Nodemon has quit");
-      process.exit();
-    })
-    .on("restart", function (files) {
-      console.log("Nodemon restarted due to: ", files);
-    })
-    .on("log", function (log) {
-      console.log(log.colour);
-    });
-
-  /* await execPromise("npx nodemon --config nodemon.json").then(
-    ({ stdout, stderr }) => {
-      console.log(stdout);
-      console.error(stderr);
-    },
-  ); */
-
-  /* await concurrently(commands, {
-    killOthers: ["failure"],
-    restartTries: 3,
-    prefix: "[{name}]",
-  }).result; */
+  nodemon.on("log", function (log) {
+    console.log(prefix(log.colour));
+  });
+  nodemon.on("readable", (...args) => {
+    console.log(prefix("readable"), args);
+  });
+  // capture child stdout
+  nodemon.on("stdout", chunk => {
+    process.stdout.write(prefix(chunk.toString()));
+  });
+  // capture child stderr
+  nodemon.on("stderr", chunk => {
+    process.stderr.write(prefix(chunk.toString()));
+  });
 })();
