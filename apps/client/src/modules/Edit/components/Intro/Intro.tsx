@@ -9,6 +9,9 @@ import { memo } from "react";
 import s from "./styles.module.scss";
 
 const Intro = () => {
+  const draft = useAppSelector(s => s.main.module?.draft);
+  const _id = useAppSelector(s => s.main.module?._id);
+
   return (
     <div className={s.intro}>
       <ContentWrapper tagType="section">
@@ -18,7 +21,9 @@ const Intro = () => {
               <h2>Edit the study set</h2>
             </div>
             <div className={s.return}>
-              <Link isReturn>Return</Link>
+              <Link href={draft ? "/home/modules" : `/module/${_id}`}>
+                Return
+              </Link>
             </div>
           </div>
         </Container>

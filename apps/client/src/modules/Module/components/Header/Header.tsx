@@ -25,7 +25,7 @@ const Header = () => {
               </h1>
             </div>
             <div className={s.return}>
-              <Link isReturn>Return</Link>
+              <Link href={"/home/modules"}>Return</Link>
             </div>
           </div>
           <Study />

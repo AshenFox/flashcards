@@ -1,6 +1,7 @@
 import Filters, { FilterData, SetFilterValue } from "@components/Filters";
 import { useActions, useAppSelector } from "@store/hooks";
 import { defaultModuleFilters } from "@store/reducers/main/initState";
+import Skeleton from "@ui/Skeleton";
 import { memo, useCallback } from "react";
 
 import s from "./styles.module.scss";
@@ -39,10 +40,10 @@ const filtersData: FilterData[] = [
 ];
 
 const Param = () => {
-  const currentModule = useAppSelector(s => s.main.module);
+  const _id = useAppSelector(s => s.main.module?._id);
+  const number = useAppSelector(s => s.main.module?.number);
   const filters = useAppSelector(s => s.main.sections.module.filters);
-
-  const { _id, number } = currentModule || {};
+  const loading = useAppSelector(s => s.main.sections.module.loading);
 
   const {
     setSectionFilter,
@@ -73,9 +74,15 @@ const Param = () => {
   return (
     <div className={s.param}>
       <div className={s.count}>
-        <span>{"Terms in this set ( "}</span>
-        <span>{number ? number : 0}</span>
-        <span>{" )"}</span>
+        {loading ? (
+          <Skeleton width={"20rem"} />
+        ) : (
+          <>
+            <span>{"Terms in this set ( "}</span>
+            <span>{number ? number : 0}</span>
+            <span>{" )"}</span>
+          </>
+        )}
       </div>
       <Filters
         id="module-param-filters"

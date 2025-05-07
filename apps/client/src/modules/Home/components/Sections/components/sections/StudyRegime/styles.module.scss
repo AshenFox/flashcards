@@ -51,15 +51,23 @@
 }
 
 .repeat {
-  text-align: right;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
 
   @media (max-width: $tablet) {
+    align-items: flex-start;
     align-self: flex-start;
     margin-top: 1rem;
-    text-align: left;
   }
 
   p {
+    text-align: right;
+
+    @media (max-width: $tablet) {
+      text-align: left;
+    }
+
     span {
       color: var(--accentuated-color);
     }
@@ -111,6 +119,7 @@
   display: flex;
   margin-bottom: 1rem;
   gap: 1rem;
+  justify-self: flex-end;
 
   @media (max-width: $tablet) {
     justify-content: flex-start;

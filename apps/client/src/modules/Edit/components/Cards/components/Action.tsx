@@ -8,12 +8,13 @@ import s from "./styles.module.scss";
 
 const Action = () => {
   const draft = useAppSelector(s => s.main.module?.draft);
+  const _id = useAppSelector(s => s.main.module?._id);
 
   return (
     <div className={s.action}>
       <Container>
         <div className={s.action_module}>
-          {draft ? <Save /> : <Link isReturn>Return</Link>}
+          {draft ? <Save /> : <Link href={`/module/${_id}`}>Return</Link>}
         </div>
       </Container>
     </div>
