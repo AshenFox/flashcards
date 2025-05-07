@@ -4,7 +4,7 @@ import Skeleton from "@ui/Skeleton";
 import Link from "next/link";
 import { memo } from "react";
 
-import SrCounter from "./components/Counter/Counter";
+import Counter from "./components/Counter/Counter";
 import InTime from "./components/InTime";
 import s from "./styles.module.scss";
 
@@ -20,7 +20,7 @@ const StudyRegime = () => {
         <div className={s.title}>Study Regime</div>
         <ul className={s.info}>
           <li>
-            {loading ? (
+            {typeof all_num === "undefined" || loading ? (
               <Skeleton width={"15rem"} />
             ) : (
               <>
@@ -40,7 +40,7 @@ const StudyRegime = () => {
 
       <div className={s.repeat}>
         <p>
-          {loading ? (
+          {typeof repeat_num === "undefined" || loading ? (
             <Skeleton width={"20rem"} />
           ) : (
             <>
@@ -53,11 +53,11 @@ const StudyRegime = () => {
             </>
           )}
         </p>
-        {!!repeat_num && (
+        {!!repeat_num && !loading && (
           <>
             <p>Repeat with:</p>
             <div className={s.methods}>
-              <SrCounter />
+              <Counter />
               <Link
                 href={"/flashcards/sr" + (counter ? `?number=${counter}` : "")}
               >
