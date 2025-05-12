@@ -1,4 +1,5 @@
 import { axiosInstance } from "@flashcards/common";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import {
   createContext,
   useCallback,
@@ -25,7 +26,7 @@ type PushNotificationsContextType = {
   handleDelete: (id: string) => Promise<void>;
   handleRename: (id: string, newName: string) => Promise<void>;
   handleSubscribe: () => Promise<void>;
-  setSubscriptions: React.Dispatch<React.SetStateAction<Subscription[]>>;
+  setSubscriptionName: (value: string, subscriptionId: string) => void;
 };
 
 const PushNotificationsContext =
@@ -41,22 +42,51 @@ export const usePushNotifications = () => {
   return context;
 };
 
+const queryKey = ["notifications", "subscriptions"];
+
 export const PushNotificationsProvider: React.FC<{
   children: React.ReactNode;
 }> = ({ children }) => {
-  const [isSubscriptionsLoading, setIsSubscriptionsLoading] = useState(true);
+  const qc = useQueryClient();
+
   const [isDeleting, setIsDeleting] = useState(false);
   const [isSubscribing, setIsSubscribing] = useState(false);
 
-  const isLoading = isSubscriptionsLoading || isDeleting || isSubscribing;
-
-  const [subscriptions, setSubscriptions] = useState<Subscription[]>([]);
   const [currentSubscription, setCurrentSubscription] =
     useState<CurrentSubscription | null>(null);
   const [registration, setRegistration] =
     useState<ServiceWorkerRegistration | null>(null);
   const [permission, setPermission] = useState<Permission | null>(null);
   const [pushPrepared, setPushPrepared] = useState(false);
+
+  const {
+    data: subscriptions,
+    isLoading: isSubscriptionsLoading,
+    refetch: refetchSubscriptions,
+  } = useQuery({
+    queryKey,
+    queryFn: async () =>
+      (
+        await axiosInstance.get<Subscription[]>(
+          "/api/notifications/subscriptions",
+        )
+      ).data,
+    enabled: false,
+    initialData: [],
+  });
+
+  const setSubscriptionName = useCallback(
+    (value: string, subscriptionId: string) => {
+      qc.setQueryData(queryKey, (prev: Subscription[]) =>
+        prev.map(sub =>
+          sub._id === subscriptionId ? { ...sub, name: value } : sub,
+        ),
+      );
+    },
+    [qc],
+  );
+
+  const isLoading = isSubscriptionsLoading || isDeleting || isSubscribing;
 
   const updatePermission = useCallback((status: PermissionStatus) => {
     setPermission({ status, state: status.state });
@@ -69,20 +99,6 @@ export const PushNotificationsProvider: React.FC<{
     });
   }, [subscriptions, registration]);
 
-  const loadSubscriptions = useCallback(async () => {
-    try {
-      setIsSubscriptionsLoading(true);
-      const response = await axiosInstance.get(
-        "/api/notifications/subscriptions",
-      );
-      setSubscriptions(response.data);
-    } catch (err) {
-      console.error(err);
-    } finally {
-      setIsSubscriptionsLoading(false);
-    }
-  }, []);
-
   const preparePush = useCallback(async () => {
     const registration = await registerServiceWorker();
     setRegistration(registration);
@@ -92,9 +108,9 @@ export const PushNotificationsProvider: React.FC<{
     });
     updatePermission(permission);
 
-    await loadSubscriptions();
+    await refetchSubscriptions();
     setPushPrepared(true);
-  }, [loadSubscriptions, updatePermission]);
+  }, [refetchSubscriptions, updatePermission]);
 
   useEffect(() => {
     preparePush();
@@ -104,16 +120,16 @@ export const PushNotificationsProvider: React.FC<{
     if (!registration) return;
     setIsSubscribing(true);
     await subscribeToPush(registration);
-    await loadSubscriptions();
+    await refetchSubscriptions();
     setIsSubscribing(false);
-  }, [registration, loadSubscriptions]);
+  }, [registration, refetchSubscriptions]);
 
   const handleDelete = useCallback(
     async (id: string) => {
       setIsDeleting(true);
       try {
         await axiosInstance.delete(`/api/notifications/subscription/${id}`);
-        await loadSubscriptions();
+        await refetchSubscriptions();
 
         if (currentSubscription?.data._id === id) {
           await currentSubscription?.subscription.unsubscribe();
@@ -125,7 +141,7 @@ export const PushNotificationsProvider: React.FC<{
         setIsDeleting(false);
       }
     },
-    [currentSubscription, loadSubscriptions],
+    [currentSubscription, refetchSubscriptions],
   );
 
   const handleRename = useCallback(async (id: string, newName: string) => {
@@ -169,7 +185,7 @@ export const PushNotificationsProvider: React.FC<{
       handleDelete,
       handleRename,
       handleSubscribe,
-      setSubscriptions,
+      setSubscriptionName,
     }),
     [
       subscriptions,
@@ -181,7 +197,7 @@ export const PushNotificationsProvider: React.FC<{
       handleDelete,
       handleRename,
       handleSubscribe,
-      setSubscriptions,
+      setSubscriptionName,
     ],
   );
 
