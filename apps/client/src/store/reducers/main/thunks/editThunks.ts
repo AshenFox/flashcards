@@ -264,10 +264,8 @@ export const editCard = (_id: string) => <ThunkActionApp>(async (
     }
   });
 
-export const createModule = () => <ThunkActionApp>(async (
-    dispatch,
-    getState,
-  ) => {
+export const createModule = (saveAllCards: boolean = false) =>
+  <ThunkActionApp>(async (dispatch, getState) => {
     try {
       const {
         auth: { user },
@@ -285,19 +283,19 @@ export const createModule = () => <ThunkActionApp>(async (
       const cards_arr = Object.values(cards);
 
       for (const card of cards_arr) {
-        if (card.save) _id_arr.push(card._id);
+        if (card.save || saveAllCards) _id_arr.push(card._id);
       }
 
       await axiosInstance.post<{ msg: string }>("/api/edit/module", {
         _id_arr,
       });
 
+      window.location.replace("/home/modules");
       saveLastUpdate();
     } catch (err) {
       console.error(err);
     }
 
-    window.location.replace("/home/modules");
     dispatch(mainActions.setModuleLoading({ value: false }));
   });
 

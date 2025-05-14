@@ -1,8 +1,15 @@
-import { createContext, ReactNode, useContext, useState } from "react";
+import { useActions } from "@store/hooks";
+import {
+  createContext,
+  ReactNode,
+  useCallback,
+  useContext,
+  useState,
+} from "react";
 
 interface EditContextType {
   selectionActive: boolean;
-  setSelectionActive: (value: boolean) => void;
+  toggleSelectionActive: () => void;
 }
 
 const EditContext = createContext<EditContextType | undefined>(undefined);
@@ -13,9 +20,15 @@ interface EditContextProviderProps {
 
 export const EditContextProvider = ({ children }: EditContextProviderProps) => {
   const [selectionActive, setSelectionActive] = useState(false);
+  const { setCardsSave } = useActions();
+
+  const toggleSelectionActive = useCallback(() => {
+    setSelectionActive(prev => !prev);
+    setCardsSave({ value: false });
+  }, [setCardsSave]);
 
   return (
-    <EditContext.Provider value={{ selectionActive, setSelectionActive }}>
+    <EditContext.Provider value={{ selectionActive, toggleSelectionActive }}>
       {children}
     </EditContext.Provider>
   );

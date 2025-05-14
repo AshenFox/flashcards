@@ -14,7 +14,7 @@ import { SaveAllCards } from "./components";
 import s from "./styles.module.scss";
 
 const Module = () => {
-  const { selectionActive, setSelectionActive } = useEditContext();
+  const { selectionActive, toggleSelectionActive } = useEditContext();
   const { controlModule, editModule } = useActions();
 
   const currentModule = useAppSelector(s => s.main.module);
@@ -36,10 +36,6 @@ const Module = () => {
     },
     [controlModule, editModule],
   );
-
-  const toggleSelectionMode = useCallback(() => {
-    setSelectionActive(!selectionActive);
-  }, [selectionActive, setSelectionActive]);
 
   const timer = useRef<ReturnType<typeof setTimeout>>(null);
 
@@ -82,7 +78,7 @@ const Module = () => {
                 <Save />
                 <Button
                   className={s.toggle_selection}
-                  onClick={toggleSelectionMode}
+                  onClick={toggleSelectionActive}
                   design="plain"
                 >
                   {selectionActive ? "Stop Selection" : "Select"}

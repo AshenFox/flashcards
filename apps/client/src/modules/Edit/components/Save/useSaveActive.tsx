@@ -1,6 +1,8 @@
+import { useEditContext } from "@modules/Edit/context";
 import { useAppSelector } from "@store/store";
 
 export const useSaveState = () => {
+  const { selectionActive } = useEditContext();
   const currentModule = useAppSelector(s => s.main.module);
   const cards = useAppSelector(s => s.main.cards);
 
@@ -11,7 +13,7 @@ export const useSaveState = () => {
   let twoSaved = false;
   let counter = 0;
 
-  if (draft) {
+  if (draft && selectionActive) {
     for (const card of cardsArr) {
       if (card.save === true) {
         ++counter;
@@ -21,6 +23,8 @@ export const useSaveState = () => {
         }
       }
     }
+  } else {
+    twoSaved = true;
   }
 
   let active = draft ? !!(twoSaved && title) : !!title;

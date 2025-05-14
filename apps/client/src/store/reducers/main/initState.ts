@@ -35,7 +35,7 @@ export const card_fields: CardFields = {
   sr: {
     loading: false,
   },
-  save: true,
+  save: false,
   question: false,
 };
 
@@ -124,7 +124,6 @@ const initState: MainState = {
     editDraft: defaultEditDraftSection,
   },
 
-  selectionActive: false,
   scroll_top: false,
 };
 

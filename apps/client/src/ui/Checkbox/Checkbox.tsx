@@ -16,6 +16,7 @@ type CheckboxProps = {
   small?: boolean;
   icon?: ReactElement;
   iconSize?: number;
+  isGroupSelection?: boolean;
   onClick?: MouseEventHandler<HTMLLabelElement>;
   onMouseDown?: MouseEventHandler<HTMLLabelElement>;
   onMouseUp?: MouseEventHandler<HTMLLabelElement>;
@@ -26,10 +27,11 @@ type CheckboxProps = {
 const Checkbox = ({
   id,
   active,
-  small = false,
   className,
   icon,
   iconSize,
+  small = false,
+  isGroupSelection = false,
   onClick,
   onMouseDown,
   onMouseUp,
@@ -50,7 +52,12 @@ const Checkbox = ({
       {!!icon &&
         cloneElement(icon, { width: innerIconSize, height: innerIconSize })}
       <label
-        className={clsx(s.label, "checkbox__label", small && s.small)}
+        className={clsx(
+          s.label,
+          "checkbox__label",
+          small && s.small,
+          isGroupSelection && s.groupSelection,
+        )}
         htmlFor={id}
         onClick={onClick}
         onMouseDown={onMouseDown}
