@@ -45,11 +45,12 @@ const Module = () => {
 
   const { active } = useSaveState();
 
-  const errMessage = draft
-    ? "PLEASE ENTER A TITLE AND ENSURE SAVING OF AT LEAST 2 CARDS"
-    : "PLEASE ENTER A TITLE";
+  const errMessage =
+    draft && selectionActive
+      ? "PLEASE ENTER A TITLE AND ENSURE SAVING OF AT LEAST 2 CARDS"
+      : "PLEASE ENTER A TITLE";
 
-  const textAreaId = `module${moduleId}`;
+  const textAreaId = `module_${moduleId}`;
 
   return (
     <div className={s.module}>

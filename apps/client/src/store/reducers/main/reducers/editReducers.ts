@@ -130,3 +130,28 @@ export const setModuleLoading: MainCaseReducer<{ value: boolean }> = (
     state.module.module_loading = payload.value;
   }
 };
+
+export const toggleSelectionMode: MainCaseReducer = state => {
+  state.selection.active = !state.selection.active;
+  if (!state.selection.active) state.selection.selectedIds = [];
+};
+
+export const toggleCardSelection: MainCaseReducer<{ cardId: string }> = (
+  state,
+  { payload },
+) => {
+  const index = state.selection.selectedIds.indexOf(payload.cardId);
+  if (index === -1) {
+    state.selection.selectedIds.push(payload.cardId);
+  } else {
+    state.selection.selectedIds.splice(index, 1);
+  }
+};
+
+export const selectAllCards: MainCaseReducer = state => {
+  state.selection.selectedIds = Object.keys(state.cards);
+};
+
+export const deselectAllCards: MainCaseReducer = state => {
+  state.selection.selectedIds = [];
+};

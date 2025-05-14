@@ -35,6 +35,7 @@ const SaveAllCards = () => {
       active={active}
       icon={<Tooltip id={id}>Select all cards</Tooltip>}
       onClick={clickAllSave}
+      isGroupSelection
     />
   );
 };
