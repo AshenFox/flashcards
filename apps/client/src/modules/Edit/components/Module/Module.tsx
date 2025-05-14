@@ -3,8 +3,8 @@ import ContentWrapper from "@components/ContentWrapper";
 import { useSaveState } from "@modules/Edit/components/Save/useSaveActive";
 import { useEditContext } from "@modules/Edit/context";
 import { useActions, useAppSelector } from "@store/hooks";
+import Input from "@ui/Input";
 import { Button } from "@ui/InteractiveElement";
-import TextArea from "@ui/TextArea";
 import TextLabel from "@ui/TextLabel";
 import { memo, useCallback, useRef } from "react";
 import { ContentEditableEvent } from "react-contenteditable";
@@ -46,7 +46,7 @@ const Module = () => {
       ? "PLEASE ENTER A TITLE AND ENSURE SAVING OF AT LEAST 2 CARDS"
       : "PLEASE ENTER A TITLE";
 
-  const textAreaId = `module_${moduleId}`;
+  const inputId = `module_${moduleId}`;
 
   return (
     <div className={s.module}>
@@ -54,17 +54,16 @@ const Module = () => {
         <Container>
           <div className={s.content}>
             <div className={s.title}>
-              <TextArea
-                html={title ?? ""}
-                disabled={loading}
-                className={s.textarea}
+              <Input
+                value={title ?? ""}
                 onChange={handleModuleChange}
-                isStyled
+                className={s.input}
                 error={!active}
-                id={textAreaId}
+                id={inputId}
+                disabled={loading}
               />
               <TextLabel
-                htmlFor={textAreaId}
+                htmlFor={inputId}
                 errorMessage={errMessage}
                 error={!active}
               >
