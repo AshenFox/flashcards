@@ -16,7 +16,6 @@ type CheckboxProps = {
   small?: boolean;
   icon?: ReactElement;
   iconSize?: number;
-  tooltip?: string;
   onClick?: MouseEventHandler<HTMLLabelElement>;
   onMouseDown?: MouseEventHandler<HTMLLabelElement>;
   onMouseUp?: MouseEventHandler<HTMLLabelElement>;
@@ -31,7 +30,6 @@ const Checkbox = ({
   className,
   icon,
   iconSize,
-  tooltip,
   onClick,
   onMouseDown,
   onMouseUp,
@@ -41,7 +39,7 @@ const Checkbox = ({
   const innerIconSize = iconSize ?? small ? 17 : 25;
 
   return (
-    <div className={clsx(s.container, className)}>
+    <div className={clsx(s.container, className)} data-tooltip-id={id}>
       <input
         className={clsx(s.checkbox, "checkbox__input")}
         type="checkbox"

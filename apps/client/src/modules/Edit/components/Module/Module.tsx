@@ -1,7 +1,9 @@
 import Container from "@components/Container";
 import ContentWrapper from "@components/ContentWrapper";
 import { useSaveState } from "@modules/Edit/components/Save/useSaveActive";
+import { useEditContext } from "@modules/Edit/context";
 import { useActions, useAppSelector } from "@store/hooks";
+import { Button } from "@ui/InteractiveElement";
 import TextArea from "@ui/TextArea";
 import TextLabel from "@ui/TextLabel";
 import { memo, useCallback, useRef } from "react";
@@ -12,6 +14,7 @@ import { SaveAllCards } from "./components";
 import s from "./styles.module.scss";
 
 const Module = () => {
+  const { selectionActive, setSelectionActive } = useEditContext();
   const { controlModule, editModule } = useActions();
 
   const currentModule = useAppSelector(s => s.main.module);
@@ -33,6 +36,10 @@ const Module = () => {
     },
     [controlModule, editModule],
   );
+
+  const toggleSelectionMode = useCallback(() => {
+    setSelectionActive(!selectionActive);
+  }, [selectionActive, setSelectionActive]);
 
   const timer = useRef<ReturnType<typeof setTimeout>>(null);
 
@@ -70,8 +77,19 @@ const Module = () => {
           </div>
           {draft && (
             <div className={s.control}>
-              <SaveAllCards />
-              <Save />
+              <div className={s.left}>
+                <Save />
+                <Button
+                  className={s.toggle_selection}
+                  onClick={toggleSelectionMode}
+                  design="plain"
+                >
+                  {selectionActive ? "Stop Selection" : "Select"}
+                </Button>
+              </div>
+              <div className={s.right}>
+                {selectionActive && <SaveAllCards />}
+              </div>
             </div>
           )}
         </Container>

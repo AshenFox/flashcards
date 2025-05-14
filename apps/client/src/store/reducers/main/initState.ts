@@ -124,6 +124,7 @@ const initState: MainState = {
     editDraft: defaultEditDraftSection,
   },
 
+  selectionActive: false,
   scroll_top: false,
 };
 

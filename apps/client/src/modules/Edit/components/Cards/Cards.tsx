@@ -1,6 +1,7 @@
 import Container from "@components/Container";
 import ContentWrapper from "@components/ContentWrapper";
 import EditCard from "@components/EditCard";
+import { useEditContext } from "@modules/Edit/context";
 import { useAppSelector } from "@store/hooks";
 import ScrollLoader from "@ui/ScrollLoader";
 import { memo, useMemo } from "react";
@@ -10,12 +11,11 @@ import s from "./styles.module.scss";
 
 const Cards = () => {
   const cards = useAppSelector(s => s.main.cards);
-  const currentModule = useAppSelector(s => s.main.module);
   const loading = useAppSelector(
     s => s.main.sections.editDraft.loading || s.main.sections.module.loading,
   );
 
-  const { draft } = currentModule || {};
+  const { selectionActive } = useEditContext();
 
   const formatted_cards = useMemo(() => Object.values(cards), [cards]);
 
@@ -31,7 +31,7 @@ const Cards = () => {
                 data={card}
                 index={card.order + 1}
                 loading={loading}
-                draft={draft}
+                selectionActive={selectionActive}
                 number={arr.length}
               />
             ))}

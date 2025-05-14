@@ -5,6 +5,7 @@ import { useActions, useAppSelector } from "../../store/hooks";
 import Cards from "./components/Cards";
 import Intro from "./components/Intro";
 import Module from "./components/Module";
+import { EditContextProvider } from "./context";
 
 const Edit = () => {
   const { getModule, getDraft, resetModuleData } = useActions();
@@ -29,11 +30,11 @@ const Edit = () => {
   }, [resetModuleData]);
 
   return (
-    <>
+    <EditContextProvider>
       <Intro />
       <Module />
       <Cards />
-    </>
+    </EditContextProvider>
   );
 };
 

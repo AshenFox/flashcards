@@ -1,7 +1,7 @@
 import { useActions } from "@store/hooks";
 import { Card } from "@store/reducers/main/types";
 import Checkbox from "@ui/Checkbox";
-import { SaveIcon } from "@ui/Icons";
+import Tooltip from "@ui/Tooltip";
 import { memo, MouseEvent, TouchEvent, useCallback, useRef } from "react";
 
 import s from "./styles.module.scss";
@@ -39,14 +39,15 @@ const Save = ({ data }: SaveProps) => {
 
   const timer = useRef<ReturnType<typeof setTimeout>>(null);
 
+  const id = `switch-save${_id}`;
+
   return (
     <Checkbox
-      id={`switch-save${_id}`}
+      id={id}
       className={s.save}
       active={save}
       small
-      icon={<SaveIcon />}
-      tooltip="Save the card"
+      icon={<Tooltip id={id}>Select the card</Tooltip>}
       onMouseDown={down}
       onMouseUp={up}
       onTouchStart={down}
