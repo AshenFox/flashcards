@@ -61,6 +61,7 @@ html:global(.dark) .interactive_element {
 }
 
 .plain {
+  &:global(.interactive_element__inactive),
   &:hover {
     color: var(--stronger-subtle-text-color);
 
