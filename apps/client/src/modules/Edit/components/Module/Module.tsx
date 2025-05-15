@@ -10,7 +10,7 @@ import { memo, useCallback, useRef } from "react";
 import { ContentEditableEvent } from "react-contenteditable";
 
 import Save from "../Save/Save";
-import { SaveAllCards } from "./components";
+import { ExportCards, SaveAllCards } from "./components";
 import s from "./styles.module.scss";
 
 const Module = () => {
@@ -84,7 +84,12 @@ const Module = () => {
                 </Button>
               </div>
               <div className={s.right}>
-                {selectionActive && <SaveAllCards />}
+                {selectionActive && (
+                  <>
+                    <SaveAllCards />
+                    <ExportCards />
+                  </>
+                )}
               </div>
             </div>
           )}

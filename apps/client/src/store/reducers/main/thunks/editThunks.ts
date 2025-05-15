@@ -340,6 +340,47 @@ export const createCard = (position: "start" | "end") =>
     }
   });
 
+export const exportSelectedCards = () => <ThunkActionApp>(async (
+    _,
+    getState,
+  ) => {
+    try {
+      const {
+        main: { cards },
+      } = getState();
+
+      const selectedCards = Object.values(cards)
+        .filter(card => card.save)
+        .map(card => {
+          const exportCard = { ...card };
+          delete exportCard.edit;
+          delete exportCard.gallery;
+          delete exportCard.scrape;
+          delete exportCard.sr;
+          delete exportCard.save;
+          delete exportCard.question;
+          return exportCard;
+        });
+
+      if (selectedCards.length === 0) {
+        console.error("No cards selected for export");
+        return;
+      }
+
+      const dataStr = JSON.stringify(selectedCards, null, 2);
+      const dataUri = `data:application/json;charset=utf-8,${encodeURIComponent(dataStr)}`;
+
+      const exportFileDefaultName = `flashcards_export_${new Date().toISOString().slice(0, 10)}_${new Date().toLocaleTimeString().replace(/:/g, "-")}.json`;
+
+      const linkElement = document.createElement("a");
+      linkElement.setAttribute("href", dataUri);
+      linkElement.setAttribute("download", exportFileDefaultName);
+      linkElement.click();
+    } catch (err) {
+      console.error("Error exporting cards:", err);
+    }
+  });
+
 // ==============================
 // ==============================
 // ======== Supplemental ========
