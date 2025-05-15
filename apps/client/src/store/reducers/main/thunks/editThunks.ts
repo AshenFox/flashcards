@@ -352,13 +352,17 @@ export const exportSelectedCards = () => <ThunkActionApp>(async (
       const selectedCards = Object.values(cards)
         .filter(card => card.save)
         .map(card => {
-          const exportCard = { ...card };
-          delete exportCard.edit;
-          delete exportCard.gallery;
-          delete exportCard.scrape;
-          delete exportCard.sr;
-          delete exportCard.save;
-          delete exportCard.question;
+          const exportCard = {
+            _id: card._id,
+            moduleID: card.moduleID,
+            term: card.term,
+            definition: card.definition,
+            imgurl: card.imgurl,
+            author_id: card.author_id,
+            author: card.author,
+            order: card.order,
+          };
+
           return exportCard;
         });
 
