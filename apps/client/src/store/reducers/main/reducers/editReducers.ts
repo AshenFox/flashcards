@@ -131,7 +131,7 @@ export const setModuleLoading: MainCaseReducer<{ value: boolean }> = (
   }
 };
 
-export const importCardsReducer: MainCaseReducer<{ cards: CardDto[] }> = (
+export const importCards: MainCaseReducer<{ cards: CardDto[] }> = (
   state,
   { payload },
 ) => {

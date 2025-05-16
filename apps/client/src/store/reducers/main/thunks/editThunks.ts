@@ -385,32 +385,6 @@ export const exportSelectedCards = () => <ThunkActionApp>(async (
     }
   });
 
-export const importCards = (cards: CardDto[]) => <ThunkActionApp>(async (
-    dispatch,
-    getState,
-  ) => {
-    try {
-      const {
-        auth: { user },
-        main: { module },
-      } = getState();
-      if (!user) return;
-
-      const res = await axiosInstance.put<{ cards: CardDto[] }>(
-        "/api/edit/cards",
-        {
-          moduleId: module._id,
-          cards,
-        },
-      );
-
-      dispatch(mainActions.importCardsReducer({ cards: res.data.cards }));
-      saveLastUpdate();
-    } catch (err) {
-      console.error("Error importing cards:", err);
-    }
-  });
-
 // ==============================
 // ==============================
 // ======== Supplemental ========
