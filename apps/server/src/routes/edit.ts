@@ -72,6 +72,7 @@ type CardDeleteQuery = qs.ParsedQs & {
 type CardDeleteReq = Request<any, any, any, CardDeleteQuery>;
 
 type CardDeleteResBody = {
+  msg: string;
   cards: Card[];
 };
 
@@ -444,6 +445,118 @@ router.get(
     }
   },
 );
+
+// ----------------
+
+// @route ------ PUT api/edit/cards
+// @desc ------- Edit multiple cards or create new ones
+// @access ----- Private
+
+type CardsEditReqBody = {
+  moduleId: string;
+  cards: Array<{
+    _id?: string;
+    term?: string;
+    definition?: string;
+    imgurl?: string;
+  }>;
+};
+
+type CardsEditResBody = {
+  cards: Card[];
+};
+
+type CardsEditReq = Request<any, any, CardsEditReqBody>;
+
+type CardsEditRes = Response<CardsEditResBody | ResError>;
+
+router.put("/cards", auth, async (req: CardsEditReq, res: CardsEditRes) => {
+  try {
+    const { moduleId, cards: cardsData } = req.body;
+
+    const _id = res.locals.user._id;
+    const username = res.locals.user.username;
+
+    // Verify module exists and belongs to user
+    const module = await moduleModel.findOne({
+      _id: moduleId,
+      author_id: _id,
+    });
+
+    if (!module) {
+      throw new Error(`Module ${moduleId} not found or access denied`);
+    }
+
+    const oldCardsData = cardsData.filter(card => !!card._id);
+    const newCardsData = cardsData.filter(card => !card._id);
+    const offset = newCardsData.length;
+
+    // Process each card
+    for await (const cardData of oldCardsData) {
+      // Update existing card
+
+      const oldCard = await cardModel.findOne({
+        _id: cardData._id,
+        author_id: _id,
+        moduleID: moduleId,
+      });
+
+      if (!oldCard) throw new Error(`Card ${cardData._id} not found`);
+
+      if (cardData.term !== undefined) oldCard.term = cardData.term;
+      if (cardData.definition !== undefined)
+        oldCard.definition = cardData.definition;
+      if (cardData.imgurl !== undefined) oldCard.imgurl = cardData.imgurl;
+      oldCard.order = oldCard.order + offset;
+
+      await oldCard.save();
+    }
+
+    let count = 0;
+    for await (const cardData of newCardsData) {
+      await cardModel.create({
+        moduleID: moduleId,
+        term: cardData.term || "",
+        definition: cardData.definition || "",
+        imgurl: cardData.imgurl || "",
+        creation_date: new Date(),
+        studyRegime: false,
+        stage: 1,
+        order: count,
+        nextRep: new Date(),
+        prevStage: new Date(),
+        lastRep: new Date(),
+        author_id: _id,
+        author: username,
+      });
+      count += 1;
+    }
+
+    // Re-fetch cards and reorder them properly
+    const allCards = await cardModel
+      .find({ moduleID: moduleId, author_id: _id })
+      .sort({ order: 1 }); // Order by order field
+
+    // Update module card count
+    await moduleModel.updateOne(
+      { _id: moduleId, author_id: _id },
+      {
+        number: allCards.length,
+        numberSR: allCards.filter(card => card.studyRegime).length,
+      },
+    );
+
+    // Return the updated cards in correct order
+    const updatedCards = await cardModel
+      .find({ moduleID: moduleId, author_id: _id })
+      .sort({ order: 1 });
+
+    res.status(200).json({ cards: updatedCards });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ errorBody: "Server Error" });
+  }
+});
 
 // ----------------
 
