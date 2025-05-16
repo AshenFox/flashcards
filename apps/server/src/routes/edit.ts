@@ -494,7 +494,6 @@ router.put("/cards", auth, async (req: CardsEditReq, res: CardsEditRes) => {
     // Process each card
     for await (const cardData of oldCardsData) {
       // Update existing card
-
       const oldCard = await cardModel.findOne({
         _id: cardData._id,
         author_id: _id,

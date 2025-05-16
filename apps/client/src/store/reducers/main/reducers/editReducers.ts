@@ -130,3 +130,25 @@ export const setModuleLoading: MainCaseReducer<{ value: boolean }> = (
     state.module.module_loading = payload.value;
   }
 };
+
+export const importCardsReducer: MainCaseReducer<{ cards: CardDto[] }> = (
+  state,
+  { payload },
+) => {
+  const updatedCards = Object.fromEntries(
+    payload.cards.map(card => {
+      const prevCard = state.cards[card._id];
+
+      return [
+        card._id,
+        prevCard
+          ? {
+              ...prevCard,
+              ...card,
+            }
+          : { ...card, ...card_fields },
+      ];
+    }),
+  );
+  state.cards = updatedCards;
+};

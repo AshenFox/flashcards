@@ -10,7 +10,7 @@ import { memo, useCallback, useRef } from "react";
 import { ContentEditableEvent } from "react-contenteditable";
 
 import Save from "../Save/Save";
-import { ExportCards, SaveAllCards } from "./components";
+import { ExportCards, ImportCards, SaveAllCards } from "./components";
 import s from "./styles.module.scss";
 
 const Module = () => {
@@ -90,6 +90,7 @@ const Module = () => {
                     <ExportCards />
                   </>
                 )}
+                <ImportCards />
               </div>
             </div>
           )}
