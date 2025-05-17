@@ -500,7 +500,10 @@ router.put("/cards", auth, async (req: CardsEditReq, res: CardsEditRes) => {
         moduleID: moduleId,
       });
 
-      if (!oldCard) throw new Error(`Card ${cardData._id} not found`);
+      if (!oldCard) {
+        newCardsData.push(cardData);
+        continue;
+      }
 
       if (cardData.term !== undefined) oldCard.term = cardData.term;
       if (cardData.definition !== undefined)

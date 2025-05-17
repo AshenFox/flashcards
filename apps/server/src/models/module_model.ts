@@ -9,9 +9,9 @@ const ModuleSchema = new Schema<Module>({
   title: String,
   author: String,
   author_id: String,
-  cards: [String],
-  number: Number,
-  numberSR: Number,
+  cards: [{ type: Schema.Types.ObjectId, ref: "Cards" }],
+  number: Number, // delete later
+  numberSR: Number, // delete later
   creation_date: Date,
   draft: Boolean,
 });

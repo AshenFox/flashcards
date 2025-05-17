@@ -1,15 +1,15 @@
 import { DateJSON, DefaultOptions } from "@common/types";
+import { Types } from "mongoose";
 
 export type CardCreator<Options extends DefaultOptions> = {
   _id: string;
-  moduleID: string;
+  moduleID: Types.ObjectId;
   term: string;
   definition: string;
   imgurl: string;
   creation_date: DateJSON<Options["isJson"]>;
   studyRegime: boolean;
   stage: number;
-  order: number;
   nextRep: DateJSON<Options["isJson"]>;
   prevStage: DateJSON<Options["isJson"]>;
   lastRep: DateJSON<Options["isJson"]>;

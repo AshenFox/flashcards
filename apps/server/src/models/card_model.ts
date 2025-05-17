@@ -8,7 +8,11 @@ export type CardSortObj = {
 };
 
 const CardSchema = new Schema<Card>({
-  moduleID: String,
+  moduleID: {
+    type: Schema.Types.ObjectId,
+    ref: "Modules",
+    required: true,
+  },
   term: String,
   definition: String,
   imgurl: String,
@@ -20,7 +24,7 @@ const CardSchema = new Schema<Card>({
   lastRep: Date,
   author_id: String,
   author: String,
-  order: Number,
+  order: Number, // delete later
 });
 
 const cardModel = mongoose.model<Card>(`Cards`, CardSchema);
