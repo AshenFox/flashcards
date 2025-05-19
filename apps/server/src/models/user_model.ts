@@ -1,6 +1,8 @@
 import { User } from "@flashcards/common";
 import mongoose, { Schema, Types } from "mongoose";
 
+export const userModelName = "Users";
+
 const UserSchema = new Schema<User>({
   username: String,
   email: String,
@@ -23,6 +25,6 @@ const UserSchema = new Schema<User>({
   ],
 });
 
-const userModel = mongoose.model<User>("Users", UserSchema);
+const userModel = mongoose.model<User>(userModelName, UserSchema);
 
 export default userModel;

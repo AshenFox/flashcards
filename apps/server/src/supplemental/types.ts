@@ -1,12 +1,12 @@
 import { User } from "@flashcards/common";
 import { Response } from "express";
-import { Document } from "mongoose";
+import { Document, Types } from "mongoose";
 
 export type UserDocument = Document<unknown, unknown, User> &
   Omit<
     User &
       Required<{
-        _id: string;
+        _id: Types.ObjectId;
       }>,
     never
   >;

@@ -2,7 +2,7 @@ import { Card, User } from "@flashcards/common";
 import cardModel from "@models/card_model";
 import notificationModel from "@models/notification_model";
 import userModel from "@models/user_model";
-import { FilterQuery } from "mongoose";
+import { FilterQuery, Types } from "mongoose";
 import webpush from "web-push";
 
 import sr_stages from "./sr_stages";
@@ -50,7 +50,7 @@ export const send_notifications = async () => {
     let notifications = await notificationModel.find(filterObj);
 
     for (let notif of notifications) {
-      const _id = notif.user_id;
+      const _id = notif.user_id.toString();
 
       if (!users[_id]) {
         const user = await userModel.findOne({ _id });
@@ -100,11 +100,13 @@ const usersNotifTimers: {
 
 export const notification_timeout = async (user: User) => {
   try {
-    if (usersNotifTimers[user._id]) clearTimeout(usersNotifTimers[user._id]);
+    const _id = user._id.toString();
 
-    usersNotifTimers[user._id] = setTimeout(async () => {
+    if (usersNotifTimers[_id]) clearTimeout(usersNotifTimers[_id]);
+
+    usersNotifTimers[_id] = setTimeout(async () => {
       await create_notifications(user); // !!!
-      delete usersNotifTimers[user._id];
+      delete usersNotifTimers[_id];
     }, 500);
   } catch (err) {
     console.error(err);
@@ -117,7 +119,7 @@ type Notif = {
   calcTime: Date;
   calcPrevStage: Date;
   time: Date;
-  user_id: string;
+  user_id: Types.ObjectId;
   stage: number;
 };
 

@@ -16,7 +16,7 @@ export type UserCreator<
   Subscriptions extends SubscriptionsCreator<any>,
   Options extends DefaultOptions = DefaultOptions,
 > = {
-  _id: string;
+  _id: ObjectIdJSON<Options["isJson"]>;
   username: string;
   email: string;
   password: string;

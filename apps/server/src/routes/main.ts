@@ -252,16 +252,19 @@ router.get(
         filterObj.studyRegime = false;
       }
 
-      const { cards } = await moduleModel.populate<{ cards: Card[] }>(
-        foundModule.toObject<Module>(),
-        {
-          path: "cards",
-          match: filterObj,
-          options: {
-            sort: Object.keys(sortObj).length > 0 ? sortObj : undefined,
-          },
-        },
-      );
+      const cards =
+        (
+          await moduleModel.populate<{ cards: Card[] }>(
+            foundModule.toObject<Module>(),
+            {
+              path: "cards",
+              match: filterObj,
+              options: {
+                sort: Object.keys(sortObj).length > 0 ? sortObj : undefined,
+              },
+            },
+          )
+        )?.cards ?? [];
       const cards_number = await cardModel.countDocuments(filterObj);
 
       res.status(200).json({
