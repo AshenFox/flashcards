@@ -10,11 +10,23 @@ const ModuleSchema = new Schema<Module>({
   author: String,
   author_id: String,
   cards: [{ type: Schema.Types.ObjectId, ref: "Cards" }],
-  number: Number, // delete later
-  numberSR: Number, // delete later
+  // number: Number, // delete later
+  // numberSR: Number, // delete later
   creation_date: Date,
   draft: Boolean,
 });
+
+// number of cards where studyRegime=true
+ModuleSchema.virtual("numberSR", {
+  ref: "Cards",
+  localField: "_id",
+  foreignField: "moduleID",
+  count: true,
+  match: { studyRegime: true },
+});
+
+ModuleSchema.set("toObject", { virtuals: true });
+ModuleSchema.set("toJSON", { virtuals: true });
 
 const moduleModel = mongoose.model<Module>(`Modules`, ModuleSchema);
 

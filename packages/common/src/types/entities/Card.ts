@@ -1,9 +1,8 @@
-import { DateJSON, DefaultOptions } from "@common/types";
-import { Types } from "mongoose";
+import { DateJSON, DefaultOptions, ObjectIdJSON } from "@common/types";
 
 export type CardCreator<Options extends DefaultOptions> = {
   _id: string;
-  moduleID: Types.ObjectId;
+  moduleID: ObjectIdJSON<Options["isJson"]>;
   term: string;
   definition: string;
   imgurl: string;

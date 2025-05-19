@@ -24,7 +24,7 @@ const CardSchema = new Schema<Card>({
   lastRep: Date,
   author_id: String,
   author: String,
-  order: Number, // delete later
+  // order: Number, // delete later
 });
 
 const cardModel = mongoose.model<Card>(`Cards`, CardSchema);

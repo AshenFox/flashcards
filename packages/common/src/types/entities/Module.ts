@@ -1,12 +1,12 @@
-import { DateJSON, DefaultOptions } from "@common/types";
-import { Types } from "mongoose";
+import { DateJSON, DefaultOptions, ObjectIdJSON } from "@common/types";
 
 export type ModuleCreator<Options extends DefaultOptions> = {
   _id: string;
   title: string;
   author: string;
   author_id: string;
-  cards: Types.ObjectId[];
+  numberSR?: number;
+  cards: ObjectIdJSON<Options["isJson"]>[];
   creation_date: DateJSON<Options["isJson"]>;
   draft: boolean;
 };
