@@ -1,15 +1,6 @@
-export type Subscription = {
-  _id: string;
-  name: string;
-  subscriptionDate: Date;
-  subscriptionData: {
-    endpoint: string;
-    keys: {
-      p256dh: string;
-      auth: string;
-    };
-  };
-};
+import { SubscriptionDto } from "@flashcards/common";
+
+export type Subscription = SubscriptionDto;
 
 export type Permission = {
   status: PermissionStatus;

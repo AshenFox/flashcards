@@ -7,8 +7,14 @@ export type CardSortObj = {
   [key in keyof Card]?: SortOrder | { $meta: "textScore" };
 };
 
+export const cardModelName = "Cards";
+
 const CardSchema = new Schema<Card>({
-  moduleID: String,
+  moduleID: {
+    type: Schema.Types.ObjectId,
+    ref: "Modules",
+    required: true,
+  },
   term: String,
   definition: String,
   imgurl: String,
@@ -18,11 +24,14 @@ const CardSchema = new Schema<Card>({
   nextRep: Date,
   prevStage: Date,
   lastRep: Date,
-  author_id: String,
+  author_id: {
+    type: Schema.Types.ObjectId,
+    ref: "Users",
+    required: true,
+  },
   author: String,
-  order: Number,
 });
 
-const cardModel = mongoose.model<Card>(`Cards`, CardSchema);
+const cardModel = mongoose.model<Card>(cardModelName, CardSchema);
 
 export default cardModel;

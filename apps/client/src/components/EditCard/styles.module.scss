@@ -31,11 +31,12 @@
 .delete,
 .close {
   display: flex;
-  margin-left: 2rem;
+  margin-left: 1.5rem;
   cursor: pointer;
   text-align: right;
 
   & svg {
+    height: 1.8rem;
     fill: var(--icon-fill);
     transition: fill 0.1s;
   }

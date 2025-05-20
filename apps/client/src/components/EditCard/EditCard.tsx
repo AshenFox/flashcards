@@ -18,7 +18,7 @@ import s from "./styles.module.scss";
 type EditCardProps = {
   data: Card;
   loading?: boolean;
-  draft?: boolean;
+  selectionActive?: boolean;
   index?: number;
   toggle?: boolean;
   game?: boolean;
@@ -28,7 +28,7 @@ type EditCardProps = {
 const EditCard = ({
   data,
   loading = false,
-  draft,
+  selectionActive = false,
   index,
   toggle,
   game,
@@ -64,7 +64,7 @@ const EditCard = ({
     <div ref={ref} className={clsx(s.card, game && s.game)}>
       <div className={s.header}>
         <div className={s.number}>{!!index && index}</div>
-        {draft && <Save data={data} />}
+        {selectionActive && <Save data={data} />}
         {toggle ? (
           <Close data={data} />
         ) : (

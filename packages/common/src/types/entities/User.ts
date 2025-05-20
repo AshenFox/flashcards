@@ -1,9 +1,8 @@
-import { DateJSON, DefaultOptions } from "@common/types";
-import { Types } from "mongoose";
+import { DateJSON, DefaultOptions, ObjectIdJSON } from "@common/types";
 import { PushSubscription } from "web-push";
 
 export type SubscriptionCreator<Options extends DefaultOptions> = {
-  _id: Types.ObjectId;
+  _id: ObjectIdJSON<Options["isJson"]>;
   name: string;
   subscriptionDate: DateJSON<Options["isJson"]>;
   subscriptionData: PushSubscription;
@@ -17,7 +16,7 @@ export type UserCreator<
   Subscriptions extends SubscriptionsCreator<any>,
   Options extends DefaultOptions = DefaultOptions,
 > = {
-  _id: string;
+  _id: ObjectIdJSON<Options["isJson"]>;
   username: string;
   email: string;
   password: string;

@@ -16,7 +16,7 @@ type CheckboxProps = {
   small?: boolean;
   icon?: ReactElement;
   iconSize?: number;
-  tooltip?: string;
+  isGroupSelection?: boolean;
   onClick?: MouseEventHandler<HTMLLabelElement>;
   onMouseDown?: MouseEventHandler<HTMLLabelElement>;
   onMouseUp?: MouseEventHandler<HTMLLabelElement>;
@@ -27,11 +27,11 @@ type CheckboxProps = {
 const Checkbox = ({
   id,
   active,
-  small = false,
   className,
   icon,
   iconSize,
-  tooltip,
+  small = false,
+  isGroupSelection = false,
   onClick,
   onMouseDown,
   onMouseUp,
@@ -41,7 +41,7 @@ const Checkbox = ({
   const innerIconSize = iconSize ?? small ? 17 : 25;
 
   return (
-    <div className={clsx(s.container, className)}>
+    <div className={clsx(s.container, className)} data-tooltip-id={id}>
       <input
         className={clsx(s.checkbox, "checkbox__input")}
         type="checkbox"
@@ -52,7 +52,12 @@ const Checkbox = ({
       {!!icon &&
         cloneElement(icon, { width: innerIconSize, height: innerIconSize })}
       <label
-        className={clsx(s.label, "checkbox__label", small && s.small)}
+        className={clsx(
+          s.label,
+          "checkbox__label",
+          small && s.small,
+          isGroupSelection && s.groupSelection,
+        )}
         htmlFor={id}
         onClick={onClick}
         onMouseDown={onMouseDown}

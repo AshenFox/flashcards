@@ -23,7 +23,7 @@ export const setCardsSavePositive = (_id: string) => <ThunkActionApp>(async (
       main: { cards },
     } = getState();
 
-    const cards_arr = Object.values(cards).sort((a, b) => a.order - b.order);
+    const cards_arr = Object.values(cards);
     let _id_arr: string[] = [];
 
     for (const card of cards_arr) {
@@ -264,10 +264,8 @@ export const editCard = (_id: string) => <ThunkActionApp>(async (
     }
   });
 
-export const createModule = () => <ThunkActionApp>(async (
-    dispatch,
-    getState,
-  ) => {
+export const createModule = (saveAllCards: boolean = false) =>
+  <ThunkActionApp>(async (dispatch, getState) => {
     try {
       const {
         auth: { user },
@@ -285,19 +283,19 @@ export const createModule = () => <ThunkActionApp>(async (
       const cards_arr = Object.values(cards);
 
       for (const card of cards_arr) {
-        if (card.save) _id_arr.push(card._id);
+        if (card.save || saveAllCards) _id_arr.push(card._id);
       }
 
       await axiosInstance.post<{ msg: string }>("/api/edit/module", {
         _id_arr,
       });
 
+      window.location.replace("/home/modules");
       saveLastUpdate();
     } catch (err) {
       console.error(err);
     }
 
-    window.location.replace("/home/modules");
     dispatch(mainActions.setModuleLoading({ value: false }));
   });
 
@@ -339,6 +337,50 @@ export const createCard = (position: "start" | "end") =>
       }
     } catch (err) {
       console.error(err);
+    }
+  });
+
+export const exportSelectedCards = () => <ThunkActionApp>(async (
+    _,
+    getState,
+  ) => {
+    try {
+      const {
+        main: { cards },
+      } = getState();
+
+      const selectedCards = Object.values(cards)
+        .filter(card => card.save)
+        .map(card => {
+          const exportCard = {
+            _id: card._id,
+            moduleID: card.moduleID,
+            term: card.term,
+            definition: card.definition,
+            imgurl: card.imgurl,
+            author_id: card.author_id,
+            author: card.author,
+          };
+
+          return exportCard;
+        });
+
+      if (selectedCards.length === 0) {
+        console.error("No cards selected for export");
+        return;
+      }
+
+      const dataStr = JSON.stringify(selectedCards, null, 2);
+      const dataUri = `data:application/json;charset=utf-8,${encodeURIComponent(dataStr)}`;
+
+      const exportFileDefaultName = `flashcards_export_${new Date().toISOString().slice(0, 10)}_${new Date().toLocaleTimeString().replace(/:/g, "-")}.json`;
+
+      const linkElement = document.createElement("a");
+      linkElement.setAttribute("href", dataUri);
+      linkElement.setAttribute("download", exportFileDefaultName);
+      linkElement.click();
+    } catch (err) {
+      console.error("Error exporting cards:", err);
     }
   });
 

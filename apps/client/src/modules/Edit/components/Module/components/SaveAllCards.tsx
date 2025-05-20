@@ -1,6 +1,6 @@
 import { useActions, useAppSelector } from "@store/hooks";
 import Checkbox from "@ui/Checkbox";
-import { SaveIcon } from "@ui/Icons";
+import Tooltip from "@ui/Tooltip";
 import { memo, useCallback } from "react";
 
 import s from "./styles.module.scss";
@@ -26,14 +26,16 @@ const SaveAllCards = () => {
     [active, setCardsSave],
   );
 
+  const id = "switch-save-main";
+
   return (
     <Checkbox
-      id={"switch-save-main"}
+      id={id}
       className={s.save}
       active={active}
-      icon={<SaveIcon />}
-      tooltip="Save all the cards"
+      icon={<Tooltip id={id}>Select all cards</Tooltip>}
       onClick={clickAllSave}
+      isGroupSelection
     />
   );
 };

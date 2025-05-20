@@ -35,7 +35,7 @@ export const card_fields: CardFields = {
   sr: {
     loading: false,
   },
-  save: true,
+  save: false,
   question: false,
 };
 

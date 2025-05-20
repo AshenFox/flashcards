@@ -65,9 +65,8 @@ router.get(
         draft: false,
       };
 
-      if (typeof sr === "boolean") {
+      if (typeof sr === "boolean")
         filterObj.numberSR = sr ? { $gt: 0 } : { $eq: 0 };
-      }
 
       const sortObj: ModuleSortObj = {};
 
@@ -81,6 +80,7 @@ router.get(
 
       const modules = await moduleModel
         .find(filterObj)
+        .populate("numberSR")
         .sort(sortObj)
         .skip(page * 10)
         .limit(10);
@@ -239,8 +239,6 @@ router.get(
       if (created === "newest") sortObj.creation_date = -1;
       if (created === "oldest") sortObj.creation_date = 1;
 
-      if (!sortObj.stage && !sortObj.creation_date) sortObj.order = 1;
-
       const all = await cardModel.countDocuments(filterObj);
 
       if (search)
@@ -254,7 +252,19 @@ router.get(
         filterObj.studyRegime = false;
       }
 
-      const cards = await cardModel.find(filterObj).sort(sortObj);
+      const cards =
+        (
+          await moduleModel.populate<{ cards: Card[] }>(
+            foundModule.toObject<Module>(),
+            {
+              path: "cards",
+              match: filterObj,
+              options: {
+                sort: Object.keys(sortObj).length > 0 ? sortObj : undefined,
+              },
+            },
+          )
+        )?.cards ?? [];
       const cards_number = await cardModel.countDocuments(filterObj);
 
       res.status(200).json({

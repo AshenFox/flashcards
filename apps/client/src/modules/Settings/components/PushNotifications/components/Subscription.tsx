@@ -13,30 +13,21 @@ type Props = {
 };
 
 const Subscription = ({ subscription }: Props) => {
-  const { handleRename, handleDelete, setSubscriptions, isLoading } =
+  const { handleRename, handleDelete, setSubscriptionName, isLoading } =
     usePushNotifications();
 
   const timer = useRef<NodeJS.Timeout | null>(null);
 
   const onRename = useCallback(
     async (e: ChangeEvent<HTMLInputElement>) => {
-      setSubscriptions(prev => {
-        const newSubscriptions = prev.map(sub => {
-          if (sub._id === subscription._id)
-            return { ...sub, name: e.target.value };
-          return sub;
-        });
-
-        return newSubscriptions;
-      });
-
+      setSubscriptionName(e.target.value, subscription._id);
       clearTimeout(timer.current);
 
       timer.current = setTimeout(async () => {
         await handleRename(subscription._id, e.target.value);
       }, 300);
     },
-    [subscription._id, handleRename, setSubscriptions],
+    [subscription._id, handleRename, setSubscriptionName],
   );
 
   const deleteBtnId = `subscription_delete_${subscription._id}`;

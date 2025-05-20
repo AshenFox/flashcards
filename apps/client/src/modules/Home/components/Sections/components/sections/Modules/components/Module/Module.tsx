@@ -16,7 +16,7 @@ type ModuleProps = {
 };
 
 const Module = ({ data, filter = null }: ModuleProps) => {
-  const { title, author, number, numberSR, draft, _id, creation_date } =
+  const { title, author, numberSR, draft, _id, creation_date, cards } =
     data ?? {};
 
   const filterRegExp = new RegExp(filterRegex(filter), "g");
@@ -49,7 +49,7 @@ const Module = ({ data, filter = null }: ModuleProps) => {
           </div>
           <div className={s.main}>
             <div className={s.info}>
-              <div className={s.term_number}>{number} Terms</div>
+              <div className={s.term_number}>{cards.length} Terms</div>
               {!!numberSR && (
                 <div className={s.sr}>
                   <StudyRegimeIcon />

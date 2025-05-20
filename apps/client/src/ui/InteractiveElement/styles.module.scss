@@ -35,7 +35,6 @@
 }
 
 .interactive_element:global(.interactive_element__loading) {
-  background-color: var(--active-color);
   cursor: auto;
 
   & .spinner {
@@ -43,7 +42,7 @@
   }
 }
 
-html:global(.light) .interactive_element {
+html:global(.light) .interactive_element.padded {
   --border-color: var(--light-color);
 
   &:hover .spinner {
@@ -51,8 +50,13 @@ html:global(.light) .interactive_element {
   }
 }
 
-html:global(.dark) .interactive_element {
+html:global(.dark) .interactive_element.padded {
   --border-color: var(--active-secondary-color);
+}
+
+html:global(.light) .interactive_element.plain,
+html:global(.dark) .interactive_element.plain {
+  --border-color: var(--active-color);
 }
 
 .interactive_element:global(.interactive_element__inactive):hover {
@@ -61,6 +65,7 @@ html:global(.dark) .interactive_element {
 }
 
 .plain {
+  &:global(.interactive_element__inactive),
   &:hover {
     color: var(--stronger-subtle-text-color);
 
@@ -87,6 +92,10 @@ html:global(.dark) .interactive_element {
 
   &:global(.interactive_element__inactive) {
     background-color: var(--stronger-danger-color);
+  }
+
+  &:global(.interactive_element__loading) {
+    background-color: var(--active-color);
   }
 }
 

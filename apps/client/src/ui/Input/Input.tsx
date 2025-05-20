@@ -15,6 +15,7 @@ type InputProps = InputHTMLAttributes<HTMLInputElement> & {
   before?: ReactNode;
   after?: ReactNode;
   inputRef?: MutableRefObject<HTMLInputElement>;
+  error?: boolean;
 };
 
 const Input = ({
@@ -25,6 +26,7 @@ const Input = ({
   after,
   inputRef,
   movingBorder,
+  error,
   ...rest
 }: InputProps) => {
   const innerInputRef = useRef<HTMLInputElement>(null);
@@ -41,6 +43,7 @@ const Input = ({
         movingBorder && s.movingBorder,
         "input__container",
         className,
+        error && s.error,
       )}
       onClick={onContainerClick}
     >

@@ -1,17 +1,20 @@
 import Container from "@components/Container";
 import ContentWrapper from "@components/ContentWrapper";
 import { useSaveState } from "@modules/Edit/components/Save/useSaveActive";
+import { useEditContext } from "@modules/Edit/context";
 import { useActions, useAppSelector } from "@store/hooks";
-import TextArea from "@ui/TextArea";
+import Input from "@ui/Input";
+import { Button } from "@ui/InteractiveElement";
 import TextLabel from "@ui/TextLabel";
 import { memo, useCallback, useRef } from "react";
 import { ContentEditableEvent } from "react-contenteditable";
 
 import Save from "../Save/Save";
-import { SaveAllCards } from "./components";
+import { ExportCards, ImportCards, SaveAllCards } from "./components";
 import s from "./styles.module.scss";
 
 const Module = () => {
+  const { selectionActive, toggleSelectionActive } = useEditContext();
   const { controlModule, editModule } = useActions();
 
   const currentModule = useAppSelector(s => s.main.module);
@@ -38,11 +41,12 @@ const Module = () => {
 
   const { active } = useSaveState();
 
-  const errMessage = draft
-    ? "PLEASE ENTER A TITLE AND ENSURE SAVING OF AT LEAST 2 CARDS"
-    : "PLEASE ENTER A TITLE";
+  const errMessage =
+    draft && selectionActive
+      ? "PLEASE ENTER A TITLE AND ENSURE SAVING OF AT LEAST 2 CARDS"
+      : "PLEASE ENTER A TITLE";
 
-  const textAreaId = `module${moduleId}`;
+  const inputId = `module_${moduleId}`;
 
   return (
     <div className={s.module}>
@@ -50,17 +54,16 @@ const Module = () => {
         <Container>
           <div className={s.content}>
             <div className={s.title}>
-              <TextArea
-                html={title ?? ""}
-                disabled={loading}
-                className={s.textarea}
+              <Input
+                value={title ?? ""}
                 onChange={handleModuleChange}
-                isStyled
+                className={s.input}
                 error={!active}
-                id={textAreaId}
+                id={inputId}
+                disabled={loading}
               />
               <TextLabel
-                htmlFor={textAreaId}
+                htmlFor={inputId}
                 errorMessage={errMessage}
                 error={!active}
               >
@@ -68,12 +71,29 @@ const Module = () => {
               </TextLabel>
             </div>
           </div>
-          {draft && (
-            <div className={s.control}>
-              <SaveAllCards />
-              <Save />
+
+          <div className={s.control}>
+            <div className={s.left}>
+              {draft && <Save />}
+
+              <Button
+                className={s.toggle_selection}
+                onClick={toggleSelectionActive}
+                design="plain"
+              >
+                {selectionActive ? "Stop Selection" : "Select"}
+              </Button>
             </div>
-          )}
+            <div className={s.right}>
+              {selectionActive && (
+                <>
+                  <SaveAllCards />
+                  <ExportCards />
+                </>
+              )}
+              <ImportCards />
+            </div>
+          </div>
         </Container>
       </ContentWrapper>
     </div>

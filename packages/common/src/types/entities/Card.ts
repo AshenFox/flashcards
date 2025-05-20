@@ -1,19 +1,18 @@
-import { DateJSON, DefaultOptions } from "@common/types";
+import { DateJSON, DefaultOptions, ObjectIdJSON } from "@common/types";
 
 export type CardCreator<Options extends DefaultOptions> = {
-  _id: string;
-  moduleID: string;
+  _id: ObjectIdJSON<Options["isJson"]>;
+  moduleID: ObjectIdJSON<Options["isJson"]>;
   term: string;
   definition: string;
   imgurl: string;
   creation_date: DateJSON<Options["isJson"]>;
   studyRegime: boolean;
   stage: number;
-  order: number;
   nextRep: DateJSON<Options["isJson"]>;
   prevStage: DateJSON<Options["isJson"]>;
   lastRep: DateJSON<Options["isJson"]>;
-  author_id: string;
+  author_id: ObjectIdJSON<Options["isJson"]>;
   author: string;
 };
 

@@ -31,7 +31,8 @@
 
 .control {
   display: flex;
-  justify-content: flex-end;
+  min-height: 4rem;
+  justify-content: space-between;
   padding-top: 1.5rem;
   border-top: 1px solid var(--element-border-color);
   margin-top: 3rem;
@@ -40,9 +41,20 @@
   @media (max-width: $tablet) {
     padding-top: 1.25rem;
   }
+
+  & .left,
+  & .right {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+  }
 }
 
-.textarea {
+.toggle_selection {
+  font-size: 1.6rem;
+}
+
+.input {
   min-height: 4.5rem;
   padding: 1rem 0;
 }

@@ -12,7 +12,7 @@ import { auth } from "@supplemental/middleware";
 import { notification_timeout } from "@supplemental/notifications_control";
 import { ResponseLocals } from "@supplemental/types";
 import express, { Request, Response } from "express";
-import { FilterQuery } from "mongoose";
+import { AnyKeys, FilterQuery, Types } from "mongoose";
 
 const router = express.Router();
 
@@ -72,6 +72,7 @@ type CardDeleteQuery = qs.ParsedQs & {
 type CardDeleteReq = Request<any, any, any, CardDeleteQuery>;
 
 type CardDeleteResBody = {
+  msg: string;
   cards: Card[];
 };
 
@@ -88,27 +89,22 @@ router.delete("/card", auth, async (req: CardDeleteReq, res: CardDeleteRes) => {
 
     if (!card) throw new Error(`Card ${card_id} has not been found.`);
 
-    await cardModel.deleteOne({ _id: card_id, author_id: _id });
-
-    const cards = await cardModel
-      .find({ author_id: _id, moduleID: card.moduleID })
-      .sort({ order: 1 });
-
-    await Promise.all(
-      cards.map(async (card, i) => {
-        card.order = i;
-        return await card.save();
-      }),
-    );
-
     await moduleModel.updateOne(
       { _id: card.moduleID, author_id: _id },
       {
-        number: cards.length,
-        numberSR: cards.filter(card => card.studyRegime).length,
+        $pull: { cards: card_id },
       },
     );
+    await cardModel.deleteOne({ _id: card_id, author_id: _id });
 
+    const { cards = [] } =
+      (await moduleModel
+        .findOne({ _id: card.moduleID, author_id: _id })
+        .populate<{ cards: Card[] }>({
+          path: "cards",
+        })) ?? {};
+
+    // I'm only sending the cards to the client and not the module which can lead to client not being able to update the module's card count
     res.status(200).json({ msg: "The card has been deleted.", cards });
 
     await notification_timeout(user);
@@ -214,7 +210,7 @@ router.post("/module", auth, async (req: ModulePostReq, res: ModulePostRes) => {
     const user = res.locals.user;
     const { _id } = user;
 
-    const draft = await moduleModel.findOne({
+    let draft = await moduleModel.findOne({
       author_id: _id,
       draft: true,
     });
@@ -222,49 +218,47 @@ router.post("/module", auth, async (req: ModulePostReq, res: ModulePostRes) => {
     if (!draft)
       throw new Error(`Draft for user ${user.username} has not been found.`);
 
+    const ref_id_arr = _id_arr.map(id => new Types.ObjectId(id));
+
     const new_module = await moduleModel.create({
       author: user.username,
       author_id: user._id,
       title: draft.title,
-      number: _id_arr.length,
-      numberSR: 0,
       creation_date: new Date(),
       draft: false,
+      cards: ref_id_arr,
     });
 
-    const new_module_cards = await cardModel
-      .find({ _id: { $in: _id_arr }, author_id: _id })
-      .sort({ order: 1 });
+    const new_module_cards = await cardModel.find({
+      _id: { $in: _id_arr },
+      author_id: _id,
+    });
 
     await Promise.all(
-      new_module_cards.map(async (card, i) => {
-        card.order = i;
-        card.moduleID = new_module._id;
+      new_module_cards.map(async card => {
+        card.moduleID = new Types.ObjectId(new_module._id);
         return await card.save();
       }),
     );
 
-    const draft_cards = await cardModel
-      .find({
-        moduleID: draft._id,
-        author_id: _id,
-      })
-      .sort({ order: 1 });
+    await moduleModel.updateOne(
+      { _id: draft._id },
+      { $pull: { cards: { $in: ref_id_arr } } },
+    );
 
-    if (!draft_cards.length) {
-      await moduleModel.deleteOne({ author_id: _id, draft: true });
-    } else {
-      draft.title = "";
-      draft.number = draft_cards.length;
-      await draft.save();
+    draft = await moduleModel.findOne({
+      author_id: _id,
+      draft: true,
+    });
+
+    if (draft) {
+      if (!draft.cards.length) {
+        await moduleModel.deleteOne({ author_id: _id, draft: true });
+      } else {
+        draft.title = "";
+        await draft.save();
+      }
     }
-
-    await Promise.all(
-      draft_cards.map(async (card, i) => {
-        card.order = i;
-        return await card.save();
-      }),
-    );
 
     res.status(200).json({ msg: "A new module has been created." });
   } catch (err) {
@@ -299,24 +293,7 @@ router.post("/card", auth, async (req: CardPostReq, res: CardPostRes) => {
     const user = res.locals.user;
     const { _id } = user;
 
-    let cards = await cardModel
-      .find({ author_id: _id, moduleID: module._id })
-      .sort({ order: 1 });
-
-    let order = cards.length;
-
-    if (position === "start") {
-      order = 0;
-
-      await Promise.all(
-        cards.map(async card => {
-          card.order += 1;
-          return await card.save();
-        }),
-      );
-    } else if (position === "end") order = cards.length;
-
-    await cardModel.create({
+    const new_card = await cardModel.create({
       moduleID: module._id,
       term: "",
       definition: "",
@@ -324,26 +301,36 @@ router.post("/card", auth, async (req: CardPostReq, res: CardPostRes) => {
       creation_date: new Date(),
       studyRegime: false,
       stage: 1,
-      order,
       nextRep: new Date(),
       prevStage: new Date(),
       author_id: _id,
       author: user.username,
     });
 
-    cards = await cardModel
-      .find({
-        author_id: _id,
-        moduleID: module._id,
-      })
-      .sort({ order: 1 });
+    let push: AnyKeys<Module> = {};
+
+    if (position === "end") {
+      push = { cards: new_card._id };
+    } else if (position === "start") {
+      push = {
+        cards: {
+          $each: [new_card._id],
+          $position: 0,
+        },
+      };
+    }
 
     await moduleModel.updateOne(
       { _id: module._id, author_id: _id },
-      {
-        number: cards.length,
-      },
+      { $push: push },
     );
+
+    const { cards = [] } =
+      (await moduleModel
+        .findOne({ _id: module._id, author_id: _id })
+        .populate<{ cards: Card[] }>({
+          path: "cards",
+        })) ?? {};
 
     res.status(200).json({ cards });
   } catch (err) {
@@ -373,10 +360,8 @@ router.get(
       const user = res.locals.user;
       const { _id } = user;
 
-      let foundModule: Module | null;
       let cards: Card[];
-
-      foundModule = await moduleModel.findOne({
+      let foundModule = await moduleModel.findOne({
         author_id: _id,
         draft: true,
       });
@@ -388,31 +373,38 @@ router.get(
       if (foundModule) {
         filterObj.moduleID = foundModule._id;
 
-        cards = await cardModel.find(filterObj).sort({ order: 1 });
+        cards =
+          (
+            await moduleModel.populate<{ cards: Card[] }>(
+              foundModule.toObject<Module>(),
+              {
+                path: "cards",
+              },
+            )
+          )?.cards ?? [];
       } else {
         // Create a new draft
         foundModule = await moduleModel.create({
           title: "",
           author: user.username,
           author_id: _id,
-          number: 5,
-          numberSR: 0,
+          cards: [],
           creation_date: new Date(),
           draft: true,
         });
+        filterObj.moduleID = foundModule._id;
 
         const cardsData: CardBase[] = [];
 
         for (let i = 0; i < 5; i++) {
           cardsData.push({
-            moduleID: foundModule._id,
+            moduleID: new Types.ObjectId(foundModule._id),
             term: "",
             definition: "",
             imgurl: "",
             creation_date: new Date(Date.now() + i),
             studyRegime: false,
             stage: 1,
-            order: i,
             nextRep: new Date(),
             prevStage: new Date(),
             lastRep: new Date(),
@@ -422,6 +414,8 @@ router.get(
         }
 
         cards = await cardModel.create(cardsData);
+        foundModule.cards = cards.map(card => new Types.ObjectId(card._id));
+        await foundModule.save();
       }
 
       const all = await cardModel.countDocuments(filterObj);
@@ -444,6 +438,118 @@ router.get(
     }
   },
 );
+
+// ----------------
+
+// @route ------ PUT api/edit/cards
+// @desc ------- Edit multiple cards or create new ones
+// @access ----- Private
+
+type CardsEditReqBody = {
+  moduleId: string;
+  cards: Array<{
+    _id?: string;
+    term?: string;
+    definition?: string;
+    imgurl?: string;
+  }>;
+};
+
+type CardsEditResBody = {
+  cards: Card[];
+};
+
+type CardsEditReq = Request<any, any, CardsEditReqBody>;
+
+type CardsEditRes = Response<CardsEditResBody | ResError>;
+
+router.put("/cards", auth, async (req: CardsEditReq, res: CardsEditRes) => {
+  try {
+    const { moduleId, cards: cardsData } = req.body;
+
+    const _id = res.locals.user._id;
+    const username = res.locals.user.username;
+
+    // Verify module exists and belongs to user
+    const module = await moduleModel.findOne({
+      _id: moduleId,
+      author_id: _id,
+    });
+
+    if (!module) {
+      throw new Error(`Module ${moduleId} not found or access denied`);
+    }
+
+    const oldCardsData = cardsData.filter(card => !!card._id);
+    const newCardsData = cardsData.filter(card => !card._id);
+
+    // Process each card
+    for await (const cardData of oldCardsData) {
+      // Update existing card
+      const oldCard = await cardModel.findOne({
+        _id: cardData._id,
+        author_id: _id,
+        moduleID: moduleId,
+      });
+
+      if (!oldCard) {
+        newCardsData.push(cardData);
+        continue;
+      }
+
+      if (cardData.term !== undefined) oldCard.term = cardData.term;
+      if (cardData.definition !== undefined)
+        oldCard.definition = cardData.definition;
+      if (cardData.imgurl !== undefined) oldCard.imgurl = cardData.imgurl;
+
+      await oldCard.save();
+    }
+
+    const newCards = await cardModel.create(
+      newCardsData.map((cardData, i) => ({
+        moduleID: moduleId,
+        term: cardData.term || "",
+        definition: cardData.definition || "",
+        imgurl: cardData.imgurl || "",
+        creation_date: new Date(Date.now() + i),
+        studyRegime: false,
+        stage: 1,
+        nextRep: new Date(),
+        prevStage: new Date(),
+        lastRep: new Date(),
+        author_id: _id,
+        author: username,
+      })),
+    );
+
+    await moduleModel.updateOne(
+      { _id: moduleId, author_id: _id },
+      {
+        $push: {
+          cards: {
+            $each: newCards.map(card => new Types.ObjectId(card._id)),
+            $position: 0,
+          },
+        },
+      },
+    );
+
+    // Return the updated cards in correct order
+    const updatedCards =
+      (
+        await moduleModel
+          .findOne({ _id: moduleId, author_id: _id })
+          .populate<{ cards: Card[] }>({
+            path: "cards",
+          })
+      )?.cards ?? [];
+
+    res.status(200).json({ cards: updatedCards });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ errorBody: "Server Error" });
+  }
+});
 
 // ----------------
 
