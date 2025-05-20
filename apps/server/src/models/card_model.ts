@@ -9,8 +9,6 @@ export type CardSortObj = {
   [key in keyof Card]?: SortOrder | { $meta: "textScore" };
 };
 
-export const cardModelName = "Cards";
-
 const CardSchema = new Schema<Card>({
   moduleID: {
     type: Schema.Types.ObjectId,
@@ -34,7 +32,7 @@ const CardSchema = new Schema<Card>({
   author: String,
 });
 
-const cardModel = mongoose.model<Card>(cardModelName, CardSchema);
+const cardModel = mongoose.model<Card>("Cards", CardSchema);
 
 /**
  * Updates the numberSR field on a module to reflect the current count of cards in study regime
