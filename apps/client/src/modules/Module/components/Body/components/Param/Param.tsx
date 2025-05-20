@@ -41,7 +41,7 @@ const filtersData: FilterData[] = [
 
 const Param = () => {
   const _id = useAppSelector(s => s.main.module?._id);
-  const number = useAppSelector(s => s.main.module?.number);
+  const number = useAppSelector(s => s.main.module?.cards.length);
   const filters = useAppSelector(s => s.main.sections.module.filters);
   const loading = useAppSelector(s => s.main.sections.module.loading);
 

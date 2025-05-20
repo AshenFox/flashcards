@@ -71,29 +71,29 @@ const Module = () => {
               </TextLabel>
             </div>
           </div>
-          {draft && (
-            <div className={s.control}>
-              <div className={s.left}>
-                <Save />
-                <Button
-                  className={s.toggle_selection}
-                  onClick={toggleSelectionActive}
-                  design="plain"
-                >
-                  {selectionActive ? "Stop Selection" : "Select"}
-                </Button>
-              </div>
-              <div className={s.right}>
-                {selectionActive && (
-                  <>
-                    <SaveAllCards />
-                    <ExportCards />
-                  </>
-                )}
-                <ImportCards />
-              </div>
+
+          <div className={s.control}>
+            <div className={s.left}>
+              {draft && <Save />}
+
+              <Button
+                className={s.toggle_selection}
+                onClick={toggleSelectionActive}
+                design="plain"
+              >
+                {selectionActive ? "Stop Selection" : "Select"}
+              </Button>
             </div>
-          )}
+            <div className={s.right}>
+              {selectionActive && (
+                <>
+                  <SaveAllCards />
+                  <ExportCards />
+                </>
+              )}
+              <ImportCards />
+            </div>
+          </div>
         </Container>
       </ContentWrapper>
     </div>

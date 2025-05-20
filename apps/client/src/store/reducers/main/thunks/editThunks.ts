@@ -23,7 +23,7 @@ export const setCardsSavePositive = (_id: string) => <ThunkActionApp>(async (
       main: { cards },
     } = getState();
 
-    const cards_arr = Object.values(cards).sort((a, b) => a.order - b.order);
+    const cards_arr = Object.values(cards);
     let _id_arr: string[] = [];
 
     for (const card of cards_arr) {
@@ -360,7 +360,6 @@ export const exportSelectedCards = () => <ThunkActionApp>(async (
             imgurl: card.imgurl,
             author_id: card.author_id,
             author: card.author,
-            order: card.order,
           };
 
           return exportCard;

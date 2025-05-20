@@ -31,6 +31,7 @@
 
 .control {
   display: flex;
+  min-height: 4rem;
   justify-content: space-between;
   padding-top: 1.5rem;
   border-top: 1px solid var(--element-border-color);

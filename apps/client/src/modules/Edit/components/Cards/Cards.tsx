@@ -25,11 +25,11 @@ const Cards = () => {
         <Container>
           {!!formatted_cards.length && <AddCard position="start" />}
           <div className={s.container}>
-            {formatted_cards.map((card, _, arr) => (
+            {formatted_cards.map((card, i, arr) => (
               <EditCard
                 key={card._id}
                 data={card}
-                index={card.order + 1}
+                index={i + 1}
                 loading={loading}
                 selectionActive={selectionActive}
                 number={arr.length}
