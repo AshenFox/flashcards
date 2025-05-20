@@ -1,6 +1,8 @@
 import { Card } from "@flashcards/common";
 import mongoose, { SortOrder } from "mongoose";
 
+import moduleModel from "./module_model";
+
 const Schema = mongoose.Schema;
 
 export type CardSortObj = {
@@ -33,5 +35,28 @@ const CardSchema = new Schema<Card>({
 });
 
 const cardModel = mongoose.model<Card>(cardModelName, CardSchema);
+
+/**
+ * Updates the numberSR field on a module to reflect the current count of cards in study regime
+ * @param moduleId The ID of the module to update
+ * @param authorId The ID of the author of the module and cards
+ */
+export async function updateModuleNumberSR(
+  moduleId: mongoose.Types.ObjectId,
+  authorId: mongoose.Types.ObjectId,
+) {
+  if (!moduleId || !authorId) return;
+
+  const numberSR = await cardModel.countDocuments({
+    moduleID: moduleId,
+    author_id: authorId,
+    studyRegime: true,
+  });
+
+  await moduleModel.updateOne(
+    { _id: moduleId, author_id: authorId },
+    { numberSR },
+  );
+}
 
 export default cardModel;

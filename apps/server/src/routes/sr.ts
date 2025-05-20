@@ -1,7 +1,9 @@
 import { Card } from "@flashcards/common";
 import notificationModel from "@models//notification_model";
-import cardModel, { CardSortObj } from "@models/card_model";
-import moduleModel from "@models/module_model";
+import cardModel, {
+  CardSortObj,
+  updateModuleNumberSR,
+} from "@models/card_model";
 import { auth } from "@supplemental/middleware";
 import { notification_timeout } from "@supplemental/notifications_control";
 import sr_stages from "@supplemental/sr_stages";
@@ -156,17 +158,7 @@ router.put("/answer", auth, async (req: AnswerPutReq, res: AnswerPutRes) => {
       fields,
     );
 
-    const numberSR = await cardModel.countDocuments({
-      author_id: _id,
-      moduleID: card.moduleID,
-      studyRegime: true,
-    });
-    await moduleModel.updateOne(
-      { _id: card.moduleID, author_id: _id },
-      {
-        numberSR,
-      },
-    );
+    await updateModuleNumberSR(card.moduleID, _id);
 
     res.status(200).json(fields);
 
@@ -213,20 +205,9 @@ router.put("/control", auth, async (req: ControlPutReq, res: ControlPutRes) => {
 
     const uniqueModuleIDs = [...new Set(cards.map(card => card.moduleID))];
 
-    await Promise.all(
-      uniqueModuleIDs.map(async moduleID => {
-        const numberSR = await cardModel.countDocuments({
-          moduleID,
-          author_id: _id,
-          studyRegime: true,
-        });
-
-        await moduleModel.updateOne(
-          { _id: moduleID, author_id: _id },
-          { numberSR },
-        );
-      }),
-    );
+    for (const moduleId of uniqueModuleIDs) {
+      await updateModuleNumberSR(moduleId, _id);
+    }
 
     res.status(200).json({ msg: "Study regime has been controlled" });
 
