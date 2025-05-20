@@ -30,7 +30,6 @@ const CardSchema = new Schema<Card>({
     required: true,
   },
   author: String,
-  // order: Number, // delete later
 });
 
 const cardModel = mongoose.model<Card>(cardModelName, CardSchema);

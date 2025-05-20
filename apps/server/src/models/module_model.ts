@@ -19,8 +19,6 @@ const ModuleSchema = new Schema<Module>({
     required: true,
   },
   cards: [{ type: Schema.Types.ObjectId, ref: cardModelName }],
-  // number: Number, // delete later
-  // numberSR: Number, // delete later
   creation_date: Date,
   draft: Boolean,
 });

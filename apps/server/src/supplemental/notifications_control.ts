@@ -15,7 +15,7 @@ import sr_stages from "./sr_stages";
     let notif = await notificationModel.create({
       time: new Date(Date.now() - 5000),
       number: 5,
-      user_id: "5e05ebcab5aee800e02ca833",
+      user_id: new Types.ObjectId("5e05ebcab5aee800e02ca833"),
     });
 
     console.log(notif);
