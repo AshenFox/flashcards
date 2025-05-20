@@ -71,7 +71,8 @@ async function migrateCards() {
  * Migrates the modules collection by:
  * - Converting author_id to ObjectId
  * - Setting up proper card references
- * - Removing legacy number/numberSR fields
+ * - Removing legacy number field
+ * - Calculating numberSR based on cards with studyRegime true
  */
 async function migrateModules() {
   const modules = await moduleModel.find().lean();
@@ -89,6 +90,9 @@ async function migrateModules() {
 
     const newCardIds = cards.map(c => new Types.ObjectId(c._id));
 
+    // Count cards with studyRegime: true
+    const studyRegimeCount = cards.filter(card => card.studyRegime).length;
+
     // Update module with new card references and remove legacy fields
     await moduleModel.updateOne(
       { _id: modId },
@@ -96,12 +100,15 @@ async function migrateModules() {
         $set: {
           cards: newCardIds,
           author_id: new Types.ObjectId(mod.author_id),
+          numberSR: studyRegimeCount,
         },
-        $unset: { number: "", numberSR: "" },
+        $unset: { number: "" },
       },
     );
 
-    console.log(`Module ${modId} updated with ${newCardIds.length} cards`);
+    console.log(
+      `Module ${modId} updated with ${newCardIds.length} cards, ${studyRegimeCount} in study regime`,
+    );
   }
 }
 
