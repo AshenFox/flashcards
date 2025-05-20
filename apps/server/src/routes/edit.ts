@@ -6,7 +6,7 @@ import {
   GetEditDraftResponse,
   Module,
 } from "@flashcards/common";
-import cardModel from "@models/card_model";
+import cardModel, { updateModuleNumberSR } from "@models/card_model";
 import moduleModel from "@models/module_model";
 import { auth } from "@supplemental/middleware";
 import { notification_timeout } from "@supplemental/notifications_control";
@@ -89,17 +89,22 @@ router.delete("/card", auth, async (req: CardDeleteReq, res: CardDeleteRes) => {
 
     if (!card) throw new Error(`Card ${card_id} has not been found.`);
 
+    const moduleId = card.moduleID;
+
     await moduleModel.updateOne(
-      { _id: card.moduleID, author_id: _id },
+      { _id: moduleId, author_id: _id },
       {
         $pull: { cards: card_id },
       },
     );
     await cardModel.deleteOne({ _id: card_id, author_id: _id });
 
+    // Update numberSR after deleting the card
+    await updateModuleNumberSR(moduleId, _id);
+
     const { cards = [] } =
       (await moduleModel
-        .findOne({ _id: card.moduleID, author_id: _id })
+        .findOne({ _id: moduleId, author_id: _id })
         .populate<{ cards: Card[] }>({
           path: "cards",
         })) ?? {};
@@ -246,6 +251,10 @@ router.post("/module", auth, async (req: ModulePostReq, res: ModulePostRes) => {
       { $pull: { cards: { $in: ref_id_arr } } },
     );
 
+    // Update the numberSR field for both the draft and the new module
+    await updateModuleNumberSR(draft._id, _id);
+    await updateModuleNumberSR(new_module._id, _id);
+
     draft = await moduleModel.findOne({
       author_id: _id,
       draft: true,
@@ -303,6 +312,7 @@ router.post("/card", auth, async (req: CardPostReq, res: CardPostRes) => {
       stage: 1,
       nextRep: new Date(),
       prevStage: new Date(),
+      lastRep: new Date(),
       author_id: _id,
       author: user.username,
     });
@@ -324,6 +334,10 @@ router.post("/card", auth, async (req: CardPostReq, res: CardPostRes) => {
       { _id: module._id, author_id: _id },
       { $push: push },
     );
+
+    // Module numberSR shouldn't change as new cards start with studyRegime: false
+    // But we'll update it anyway to ensure consistency
+    await updateModuleNumberSR(module._id, _id);
 
     const { cards = [] } =
       (await moduleModel
@@ -533,6 +547,9 @@ router.put("/cards", auth, async (req: CardsEditReq, res: CardsEditRes) => {
         },
       },
     );
+
+    // Update numberSR after creating new cards
+    await updateModuleNumberSR(new Types.ObjectId(moduleId), _id);
 
     // Return the updated cards in correct order
     const updatedCards =
