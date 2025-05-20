@@ -18,18 +18,13 @@ const ModuleSchema = new Schema<Module>({
     ref: userModelName,
     required: true,
   },
+  numberSR: {
+    type: Number,
+    default: 0,
+  },
   cards: [{ type: Schema.Types.ObjectId, ref: cardModelName }],
   creation_date: Date,
   draft: Boolean,
-});
-
-// number of cards where studyRegime=true
-ModuleSchema.virtual("numberSR", {
-  ref: cardModelName,
-  localField: "_id",
-  foreignField: "moduleID",
-  count: true,
-  match: { studyRegime: true },
 });
 
 ModuleSchema.set("toObject", { virtuals: true });

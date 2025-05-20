@@ -5,7 +5,7 @@ export type ModuleCreator<Options extends DefaultOptions> = {
   title: string;
   author: string;
   author_id: ObjectIdJSON<Options["isJson"]>;
-  numberSR?: number;
+  numberSR: number;
   cards: ObjectIdJSON<Options["isJson"]>[];
   creation_date: DateJSON<Options["isJson"]>;
   draft: boolean;
