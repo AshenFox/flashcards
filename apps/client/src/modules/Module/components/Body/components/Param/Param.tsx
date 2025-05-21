@@ -74,7 +74,7 @@ const Param = () => {
   return (
     <div className={s.param}>
       <div className={s.count}>
-        {loading ? (
+        {loading && !number ? (
           <Skeleton width={"20rem"} />
         ) : (
           <>
