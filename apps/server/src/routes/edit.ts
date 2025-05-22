@@ -232,6 +232,7 @@ router.post("/module", auth, async (req: ModulePostReq, res: ModulePostRes) => {
       creation_date: new Date(),
       draft: false,
       cards: ref_id_arr,
+      categories: [],
     });
 
     const new_module_cards = await cardModel.find({
@@ -315,6 +316,7 @@ router.post("/card", auth, async (req: CardPostReq, res: CardPostRes) => {
       lastRep: new Date(),
       author_id: _id,
       author: user.username,
+      categories: [],
     });
 
     let push: AnyKeys<Module> = {};
@@ -405,6 +407,7 @@ router.get(
           cards: [],
           creation_date: new Date(),
           draft: true,
+          categories: [],
         });
         filterObj.moduleID = foundModule._id;
 
@@ -424,6 +427,7 @@ router.get(
             lastRep: new Date(),
             author_id: _id,
             author: user.username,
+            categories: [],
           });
         }
 
@@ -533,6 +537,7 @@ router.put("/cards", auth, async (req: CardsEditReq, res: CardsEditRes) => {
         lastRep: new Date(),
         author_id: _id,
         author: username,
+        categories: [],
       })),
     );
 

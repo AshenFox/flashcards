@@ -7,14 +7,13 @@ const Schema = mongoose.Schema;
 
 export type CardSortObj = {
   [key in keyof Card]?: SortOrder | { $meta: "textScore" };
+} & {
+  "categories.name"?: SortOrder;
+  "categories._id"?: SortOrder;
 };
 
 const CardSchema = new Schema<Card>({
-  moduleID: {
-    type: Schema.Types.ObjectId,
-    ref: "Modules",
-    required: true,
-  },
+  moduleID: { type: Schema.Types.ObjectId, ref: "Modules", required: true },
   term: String,
   definition: String,
   imgurl: String,
@@ -24,12 +23,39 @@ const CardSchema = new Schema<Card>({
   nextRep: Date,
   prevStage: Date,
   lastRep: Date,
-  author_id: {
-    type: Schema.Types.ObjectId,
-    ref: "Users",
-    required: true,
-  },
+  author_id: { type: Schema.Types.ObjectId, ref: "Users", required: true },
   author: String,
+  categories: [
+    {
+      _id: { type: Schema.Types.ObjectId, ref: "Categories", required: true },
+      name: { type: String, required: true },
+    },
+  ],
+});
+
+// Add validation to ensure categories belong to the card author
+CardSchema.pre("save", async function () {
+  if (this.isModified("categories") && this.categories.length > 0) {
+    const categoryModel = (await import("./category_model")).default;
+
+    for (const category of this.categories) {
+      const existingCategory = await categoryModel.findOne({
+        _id: category._id,
+        user_id: this.author_id,
+      });
+
+      if (!existingCategory) {
+        throw new Error(
+          `Category ${category._id} does not belong to this user or does not exist`,
+        );
+      }
+
+      // Ensure the name matches what's in the database
+      if (existingCategory.name !== category.name) {
+        throw new Error(`Category name mismatch for ${category._id}`);
+      }
+    }
+  }
 });
 
 const cardModel = mongoose.model<Card>("Cards", CardSchema);
