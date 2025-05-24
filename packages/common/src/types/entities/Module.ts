@@ -1,15 +1,6 @@
 import { DateJSON, DefaultOptions, ObjectIdJSON } from "@common/types";
 
-import {
-  CategoryReference,
-  CategoryReferenceCreator,
-  CategoryReferenceDto,
-} from "./Category";
-
-export type ModuleCreator<
-  CategoryReference extends CategoryReferenceCreator<any>,
-  Options extends DefaultOptions,
-> = {
+export type ModuleCreator<Options extends DefaultOptions> = {
   _id: ObjectIdJSON<Options["isJson"]>;
   title: string;
   author: string;
@@ -18,11 +9,10 @@ export type ModuleCreator<
   cards: ObjectIdJSON<Options["isJson"]>[];
   creation_date: DateJSON<Options["isJson"]>;
   draft: boolean;
-  categories: CategoryReference[];
 };
 
 // server types
-export type Module = ModuleCreator<CategoryReference, { isJson: false }>;
+export type Module = ModuleCreator<{ isJson: false }>;
 
 // api types
-export type ModuleDto = ModuleCreator<CategoryReferenceDto, { isJson: true }>;
+export type ModuleDto = ModuleCreator<{ isJson: true }>;

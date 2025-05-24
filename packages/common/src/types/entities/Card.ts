@@ -1,13 +1,9 @@
 import { DateJSON, DefaultOptions, ObjectIdJSON } from "@common/types";
 
-import {
-  CategoryReference,
-  CategoryReferenceCreator,
-  CategoryReferenceDto,
-} from "./Category";
+import { TagReference, TagReferenceCreator, TagReferenceDto } from "./Tag";
 
 export type CardCreator<
-  CategoryReference extends CategoryReferenceCreator<any>,
+  TagReference extends TagReferenceCreator<any>,
   Options extends DefaultOptions,
 > = {
   _id: ObjectIdJSON<Options["isJson"]>;
@@ -23,13 +19,13 @@ export type CardCreator<
   lastRep: DateJSON<Options["isJson"]>;
   author_id: ObjectIdJSON<Options["isJson"]>;
   author: string;
-  categories: CategoryReference[];
+  tags: TagReference[];
 };
 
 // server types
-export type Card = CardCreator<CategoryReference, { isJson: false }>;
+export type Card = CardCreator<TagReference, { isJson: false }>;
 export type CardBase = Omit<Card, "_id">;
 
 // api types
-export type CardDto = CardCreator<CategoryReferenceDto, { isJson: true }>;
+export type CardDto = CardCreator<TagReferenceDto, { isJson: true }>;
 export type CardBaseDto = Omit<CardDto, "_id">;

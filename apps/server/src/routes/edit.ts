@@ -427,7 +427,7 @@ router.get(
             lastRep: new Date(),
             author_id: _id,
             author: user.username,
-            categories: [],
+            tags: [],
           });
         }
 

@@ -8,8 +8,8 @@ const Schema = mongoose.Schema;
 export type CardSortObj = {
   [key in keyof Card]?: SortOrder | { $meta: "textScore" };
 } & {
-  "categories.name"?: SortOrder;
-  "categories._id"?: SortOrder;
+  "tags.name"?: SortOrder;
+  "tags._id"?: SortOrder;
 };
 
 const CardSchema = new Schema<Card>({
@@ -25,34 +25,34 @@ const CardSchema = new Schema<Card>({
   lastRep: Date,
   author_id: { type: Schema.Types.ObjectId, ref: "Users", required: true },
   author: String,
-  categories: [
+  tags: [
     {
-      _id: { type: Schema.Types.ObjectId, ref: "Categories", required: true },
+      _id: { type: Schema.Types.ObjectId, ref: "Tags", required: true },
       name: { type: String, required: true },
     },
   ],
 });
 
-// Add validation to ensure categories belong to the card author
+// Add validation to ensure tags belong to the card author
 CardSchema.pre("save", async function () {
-  if (this.isModified("categories") && this.categories.length > 0) {
-    const categoryModel = (await import("./category_model")).default;
+  if (this.isModified("tags") && this.tags.length > 0) {
+    const tagModel = (await import("./tag_model")).default;
 
-    for (const category of this.categories) {
-      const existingCategory = await categoryModel.findOne({
-        _id: category._id,
+    for (const tag of this.tags) {
+      const existingTag = await tagModel.findOne({
+        _id: tag._id,
         user_id: this.author_id,
       });
 
-      if (!existingCategory) {
+      if (!existingTag) {
         throw new Error(
-          `Category ${category._id} does not belong to this user or does not exist`,
+          `Tag ${tag._id} does not belong to this user or does not exist`,
         );
       }
 
       // Ensure the name matches what's in the database
-      if (existingCategory.name !== category.name) {
-        throw new Error(`Category name mismatch for ${category._id}`);
+      if (existingTag.name !== tag.name) {
+        throw new Error(`Tag name mismatch for ${tag._id}`);
       }
     }
   }
