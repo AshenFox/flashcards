@@ -16,37 +16,6 @@ const ModuleSchema = new Schema<Module>({
   cards: [{ type: Schema.Types.ObjectId, ref: "Cards" }],
   creation_date: Date,
   draft: Boolean,
-  categories: [
-    {
-      _id: { type: Schema.Types.ObjectId, ref: "Tags", required: true },
-      name: { type: String, required: true },
-    },
-  ],
-});
-
-// Add validation to ensure categories belong to the module author
-ModuleSchema.pre("save", async function () {
-  if (this.isModified("categories") && this.categories.length > 0) {
-    const tagModel = (await import("./tag_model")).default;
-
-    for (const category of this.categories) {
-      const existingTag = await tagModel.findOne({
-        _id: category._id,
-        user_id: this.author_id,
-      });
-
-      if (!existingTag) {
-        throw new Error(
-          `Tag ${category._id} does not belong to this user or does not exist`,
-        );
-      }
-
-      // Ensure the name matches what's in the database
-      if (existingTag.name !== category.name) {
-        throw new Error(`Tag name mismatch for ${category._id}`);
-      }
-    }
-  }
 });
 
 ModuleSchema.set("toObject", { virtuals: true });
