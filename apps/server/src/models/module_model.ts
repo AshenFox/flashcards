@@ -1,12 +1,7 @@
 import { Module } from "@flashcards/common";
-import mongoose, { SortOrder } from "mongoose";
+import mongoose from "mongoose";
 
 const Schema = mongoose.Schema;
-
-export type ModuleSortObj = { [key in keyof Module]?: SortOrder } & {
-  "categories.name"?: SortOrder;
-  "categories._id"?: SortOrder;
-};
 
 const ModuleSchema = new Schema<Module>({
   title: String,
@@ -16,6 +11,7 @@ const ModuleSchema = new Schema<Module>({
   cards: [{ type: Schema.Types.ObjectId, ref: "Cards" }],
   creation_date: Date,
   draft: Boolean,
+  tags: [String],
 });
 
 ModuleSchema.set("toObject", { virtuals: true });
