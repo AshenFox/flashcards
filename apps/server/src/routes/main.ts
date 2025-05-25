@@ -12,14 +12,18 @@ import {
   GetMainModulesResponse,
 } from "@flashcards/common";
 import cardModel, { CardSortObj } from "@models/card_model";
-import moduleModel from "@models/module_model";
-import { ModuleSortObj } from "@models/module_model";
+import moduleModel, { ModuleSortObj } from "@models/module_model";
+import userModel from "@models/user_model";
 import { auth, query } from "@supplemental/middleware";
 import { ResponseLocals } from "@supplemental/types";
 import express, { Request } from "express";
 import { FilterQuery } from "mongoose";
 
 const router = express.Router();
+
+type ResError = {
+  errorBody: string;
+};
 
 // @route ------ GET api/main/modules
 // @desc ------- Get user modules
@@ -333,5 +337,29 @@ router.get(
     }
   },
 );
+
+// @route ------ GET api/edit/user/tags
+// @desc ------- Get user's unique tags
+// @access ----- Private
+
+type GetUserTagsRes = ResponseLocals<{ tags: string[] } | ResError>;
+
+router.get("/user/tags", auth, async (req: Request, res: GetUserTagsRes) => {
+  try {
+    const _id = res.locals.user._id;
+
+    // Find user and explicitly select tags field
+    const user = await userModel.findById(_id).select("+tags");
+
+    if (!user) {
+      throw new Error("User not found");
+    }
+
+    res.status(200).json({ tags: user.tags || [] });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ errorBody: "Server Error" });
+  }
+});
 
 export default router;

@@ -1,7 +1,9 @@
 import { Module } from "@flashcards/common";
-import mongoose from "mongoose";
+import mongoose, { SortOrder } from "mongoose";
 
 const Schema = mongoose.Schema;
+
+export type ModuleSortObj = { [key in keyof Module]?: SortOrder };
 
 const ModuleSchema = new Schema<Module>({
   title: String,

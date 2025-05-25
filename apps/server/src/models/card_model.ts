@@ -1,9 +1,13 @@
 import { Card } from "@flashcards/common";
-import mongoose from "mongoose";
+import mongoose, { SortOrder } from "mongoose";
 
 import moduleModel from "./module_model";
 
 const Schema = mongoose.Schema;
+
+export type CardSortObj = {
+  [key in keyof Card]?: SortOrder;
+};
 
 const CardSchema = new Schema<Card>({
   moduleID: { type: Schema.Types.ObjectId, ref: "Modules", required: true },
