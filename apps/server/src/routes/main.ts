@@ -18,6 +18,7 @@ import { auth, query } from "@supplemental/middleware";
 import { ResponseLocals } from "@supplemental/types";
 import express, { Request } from "express";
 import { FilterQuery } from "mongoose";
+import * as qs from "qs";
 
 const router = express.Router();
 
@@ -338,28 +339,88 @@ router.get(
   },
 );
 
-// @route ------ GET api/edit/user/tags
-// @desc ------- Get user's unique tags
+// @route ------ GET api/main/user/tags
+// @desc ------- Get user's unique tags with hierarchical expansion and search
 // @access ----- Private
+
+type GetUserTagsQuery = qs.ParsedQs & {
+  search?: string;
+};
+
+type GetUserTagsReq = Request<any, any, any, GetUserTagsQuery>;
 
 type GetUserTagsRes = ResponseLocals<{ tags: string[] } | ResError>;
 
-router.get("/user/tags", auth, async (req: Request, res: GetUserTagsRes) => {
-  try {
-    const _id = res.locals.user._id;
+router.get(
+  "/user/tags",
+  auth,
+  async (req: GetUserTagsReq, res: GetUserTagsRes) => {
+    try {
+      const _id = res.locals.user._id;
+      const { search } = req.query;
 
-    // Find user and explicitly select tags field
-    const user = await userModel.findById(_id).select("+tags");
+      // Find user and explicitly select tags field
+      const user = await userModel.findById(_id).select("+tags");
 
-    if (!user) {
-      throw new Error("User not found");
+      if (!user) {
+        throw new Error("User not found");
+      }
+
+      const userTags = user.tags || [];
+
+      // Expand hierarchical tags
+      const expandedTags = new Set<string>();
+
+      userTags.forEach(tag => {
+        if (tag.includes("::")) {
+          const parts = tag.split("::");
+          let currentPath = "";
+
+          parts.forEach((part, index) => {
+            if (index === 0) currentPath = part;
+            else currentPath += "::" + part;
+            expandedTags.add(currentPath);
+          });
+        } else {
+          expandedTags.add(tag);
+        }
+      });
+
+      let filteredTags = Array.from(expandedTags);
+
+      // Apply search filter if provided
+      if (search && typeof search === "string") {
+        const searchLower = search.toLowerCase();
+        filteredTags = filteredTags.filter(tag =>
+          tag.toLowerCase().startsWith(searchLower),
+        );
+      }
+
+      // Sort hierarchically and limit to 15
+      filteredTags.sort((a, b) => {
+        // Split by :: to compare hierarchically
+        const aParts = a.split("::");
+        const bParts = b.split("::");
+
+        // Compare each level
+        for (let i = 0; i < Math.min(aParts.length, bParts.length); i++) {
+          const comparison = aParts[i].localeCompare(bParts[i]);
+          if (comparison !== 0) return comparison;
+        }
+
+        // If all compared parts are equal, shorter path comes first
+        return aParts.length - bParts.length;
+      });
+
+      // Limit to 15 tags
+      const limitedTags = filteredTags.slice(0, 15);
+
+      res.status(200).json({ tags: limitedTags });
+    } catch (err) {
+      console.error(err);
+      res.status(500).json({ errorBody: "Server Error" });
     }
-
-    res.status(200).json({ tags: user.tags || [] });
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ errorBody: "Server Error" });
-  }
-});
+  },
+);
 
 export default router;
