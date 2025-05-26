@@ -53,11 +53,18 @@ router.get("/cards", auth, async (req: CardsGetReq, res: CardsGetRes) => {
 
     // If tags are provided, filter by module tags
     if (tags && Array.isArray(tags)) {
-      // Find modules that have any of the specified tags
+      // Create regex patterns for hierarchical prefix matching
+      const tagRegexPatterns = tags.map(tag => {
+        // Escape special regex characters and create pattern for exact match or hierarchical children
+        const escapedTag = tag.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+        return new RegExp(`^${escapedTag}(::.*)?$`);
+      });
+
+      // Find modules that have tags matching any of the patterns
       const modules = await moduleModel
         .find({
           author_id: _id,
-          tags: { $in: tags },
+          tags: { $in: tagRegexPatterns },
         })
         .select("_id");
 
@@ -108,11 +115,18 @@ router.get("/count", auth, async (req: CountGetReq, res: CountGetRes) => {
 
     // If tags are provided, filter by module tags
     if (tags && Array.isArray(tags)) {
-      // Find modules that have any of the specified tags
+      // Create regex patterns for hierarchical prefix matching
+      const tagRegexPatterns = tags.map(tag => {
+        // Escape special regex characters and create pattern for exact match or hierarchical children
+        const escapedTag = tag.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+        return new RegExp(`^${escapedTag}(::.*)?$`);
+      });
+
+      // Find modules that have tags matching any of the patterns
       const modules = await moduleModel
         .find({
           author_id: _id,
-          tags: { $in: tags },
+          tags: { $in: tagRegexPatterns },
         })
         .select("_id");
 
