@@ -1,13 +1,8 @@
 import React, { useEffect, useRef, useState } from "react";
-import {
-  ActionMeta,
-  components,
-  MultiValue,
-  MultiValueGenericProps,
-  MultiValueProps,
-} from "react-select";
+import { ActionMeta, MultiValue, MultiValueProps } from "react-select";
 import CreatableSelect from "react-select/creatable";
 
+import { customStyles } from "./customStyles";
 import EditableMultiValue from "./EditableMultiValue";
 import { TagOption, TagSelectorProps } from "./types";
 
@@ -18,9 +13,16 @@ const TagSelector: React.FC<TagSelectorProps> = ({
   placeholder = "Select or create tags...",
   isDisabled = false,
 }) => {
-  const [selectedTags, setSelectedTags] = useState<TagOption[]>(initialTags);
+  const [selectedTags, setSelectedTags] = useState<TagOption[]>([
+    { value: "somerandomtag1", label: "Some Random Tag 1" },
+    { value: "somerandomtag2", label: "Some Random Tag 2" },
+    { value: "somerandomtag3", label: "Some Random Tag 3" },
+  ]);
   const [editingTagValue, setEditingTagValue] = useState<string>("");
   const [editingTagIndex, setEditingTagIndex] = useState<number | null>(null);
+  const [forceMenuOpen, setForceMenuOpen] = useState<boolean | undefined>(
+    undefined,
+  );
 
   const handleEditStart = (index: number, label: string) => {
     setEditingTagIndex(index);
@@ -79,47 +81,8 @@ const TagSelector: React.FC<TagSelectorProps> = ({
     ...availableTags.filter(
       tag => !selectedTags.some(selected => selected.value === tag.value),
     ),
-    ...selectedTags,
+    // ...selectedTags,
   ];
-
-  const customStyles = {
-    control: (provided: any, state: any) => ({
-      ...provided,
-      minHeight: "40px",
-      border: state.isFocused ? "2px solid #007bff" : "1px solid #ccc",
-      borderRadius: "6px",
-      boxShadow: state.isFocused ? "0 0 0 1px #007bff" : "none",
-    }),
-    multiValue: (provided: any) => ({
-      ...provided,
-      backgroundColor: "#e3f2fd",
-      border: "1px solid #bbdefb",
-      borderRadius: "4px",
-      cursor: "pointer",
-      transition: "all 0.2s ease",
-      "&:hover": {
-        backgroundColor: "#bbdefb",
-      },
-    }),
-    multiValueLabel: (provided: any) => ({
-      ...provided,
-      color: "#1976d2",
-      fontWeight: "500",
-    }),
-    multiValueRemove: (provided: any) => ({
-      ...provided,
-      color: "#1976d2",
-      "&:hover": {
-        backgroundColor: "#f44336",
-        color: "white",
-      },
-    }),
-    placeholder: (provided: any) => ({
-      ...provided,
-      color: "#999",
-      fontStyle: "italic",
-    }),
-  };
 
   return (
     <div className="tag-selector">
@@ -152,6 +115,7 @@ const TagSelector: React.FC<TagSelectorProps> = ({
         hideSelectedOptions={false}
         className="tag-selector__select"
         classNamePrefix="tag-selector"
+        menuIsOpen={forceMenuOpen}
       />
     </div>
   );

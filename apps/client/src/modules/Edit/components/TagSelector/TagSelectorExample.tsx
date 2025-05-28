@@ -21,6 +21,7 @@ const TagSelectorExample: React.FC = () => {
     { value: "css", label: "CSS" },
     { value: "html", label: "HTML" },
     { value: "sass", label: "Sass" },
+    { value: "somerandomtag1", label: "Some Random Tag 1" },
   ];
 
   const handleTagsChange = (tags: TagOption[]) => {
