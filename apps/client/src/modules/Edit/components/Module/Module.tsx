@@ -10,6 +10,7 @@ import { memo, useCallback, useRef } from "react";
 import { ContentEditableEvent } from "react-contenteditable";
 
 import Save from "../Save/Save";
+import TagSelectorExample from "../TagSelector/TagSelectorExample";
 import { ExportCards, ImportCards, SaveAllCards } from "./components";
 import s from "./styles.module.scss";
 
@@ -52,6 +53,7 @@ const Module = () => {
     <div className={s.module}>
       <ContentWrapper tagType="section">
         <Container>
+          <TagSelectorExample />
           <div className={s.content}>
             <div className={s.title}>
               <Input

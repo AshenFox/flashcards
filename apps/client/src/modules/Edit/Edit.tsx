@@ -5,6 +5,7 @@ import { useActions, useAppSelector } from "../../store/hooks";
 import Cards from "./components/Cards";
 import Intro from "./components/Intro";
 import Module from "./components/Module";
+import TagSelector from "./components/TagSelector/TagSelector";
 import { EditContextProvider } from "./context";
 
 const Edit = () => {
