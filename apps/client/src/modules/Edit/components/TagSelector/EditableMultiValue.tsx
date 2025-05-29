@@ -1,11 +1,4 @@
-import React, {
-  memo,
-  use,
-  useCallback,
-  useEffect,
-  useLayoutEffect,
-  useRef,
-} from "react";
+import React, { memo, useCallback, useLayoutEffect, useRef } from "react";
 import { components, MultiValueProps } from "react-select";
 
 import { useTagSelectorContext } from "./TagSelectorContext";
@@ -33,18 +26,10 @@ const EditableMultiValue: React.FC<EditableMultiValueProps> = ({
   const isEditing = editingTagIndex === index;
 
   useLayoutEffect(() => {
-    console.log("useLayoutEffect");
     if (isEditing && editInputRef.current) {
       // editInputRef.current?.focus();
     }
   }, [isEditing]);
-
-  useEffect(() => {
-    return () => {
-      // Cleanup function
-      console.log("unmount");
-    };
-  }, []);
 
   const handleEditStartCallback = useCallback(
     (e: React.MouseEvent | React.TouchEvent) => {
@@ -80,10 +65,13 @@ const EditableMultiValue: React.FC<EditableMultiValueProps> = ({
   }, [handleEditSave]);
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
-    // e.stopPropagation();
+    e.stopPropagation();
+
     if (e.key === "Enter") {
+      e.preventDefault();
       handleEditSave();
     } else if (e.key === "Escape") {
+      e.preventDefault();
       handleEditCancel();
     }
   };
