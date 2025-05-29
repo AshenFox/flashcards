@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useRef, useState } from "react";
 import { ActionMeta, MultiValue, MultiValueProps } from "react-select";
 import CreatableSelect from "react-select/creatable";
 
@@ -20,13 +20,19 @@ const TagSelector: React.FC<TagSelectorProps> = ({
   ]);
   const [editingTagValue, setEditingTagValue] = useState<string>("");
   const [editingTagIndex, setEditingTagIndex] = useState<number | null>(null);
-  const [forceMenuOpen, setForceMenuOpen] = useState<boolean | undefined>(
-    undefined,
-  );
+  const [menuIsOpen, setMenuIsOpen] = useState<boolean | undefined>(false);
+
+  console.log({ editingTagValue, editingTagIndex, menuIsOpen });
+  const selectRef = useRef<any>(null);
 
   const handleEditStart = (index: number, label: string) => {
     setEditingTagIndex(index);
+    // console.log("handleEditStart", index, label);
     setEditingTagValue(label);
+    // Blur the select input to prevent focus conflicts
+    setTimeout(() => {
+      if (selectRef.current) selectRef.current.blur();
+    }, 0);
   };
 
   const handleEditSave = () => {
@@ -54,6 +60,7 @@ const TagSelector: React.FC<TagSelectorProps> = ({
   };
 
   const handleEditValueChange = (value: string) => {
+    // console.log("handleEditValueChange", value);
     setEditingTagValue(value);
   };
 
@@ -110,12 +117,14 @@ const TagSelector: React.FC<TagSelectorProps> = ({
         isDisabled={isDisabled}
         onCreateOption={handleCreateOption}
         formatCreateLabel={inputValue => `Create tag: "${inputValue}"`}
-        noOptionsMessage={() => "Type to create a new tag"}
+        // noOptionsMessage={() => "Type to create a new tag"}
         closeMenuOnSelect={false}
         hideSelectedOptions={false}
         className="tag-selector__select"
         classNamePrefix="tag-selector"
-        menuIsOpen={forceMenuOpen}
+        // menuIsOpen={menuIsOpen}
+        openMenuOnClick={false}
+        ref={selectRef}
       />
     </div>
   );

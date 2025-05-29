@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { useLayoutEffect, useRef } from "react";
 import { components, MultiValueProps } from "react-select";
 
 import { TagOption } from "./types";
@@ -28,15 +28,20 @@ const EditableMultiValue: React.FC<EditableMultiValueProps> = ({
   const editInputRef = useRef<HTMLInputElement>(null);
   const isEditing = editingTagIndex === index;
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (isEditing && editInputRef.current) {
       editInputRef.current.focus();
     }
   }, [isEditing]);
 
   const handleEditStart = (e: React.MouseEvent) => {
+    e.preventDefault();
     e.stopPropagation();
     onEditStart(index, data.label);
+  };
+
+  const handleMouseDown = (e: React.MouseEvent) => {
+    e.preventDefault();
   };
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
@@ -68,7 +73,9 @@ const EditableMultiValue: React.FC<EditableMultiValueProps> = ({
     <components.MultiValue {...props} data={data} index={index}>
       <div
         className="tag-selector__multi-value-wrapper"
+        onMouseDown={handleMouseDown}
         onClick={handleEditStart}
+        onTouchStart={handleEditStart}
       >
         <components.MultiValueLabel {...props} data={data} />
       </div>
