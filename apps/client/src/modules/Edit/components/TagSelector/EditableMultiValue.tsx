@@ -27,7 +27,17 @@ const EditableMultiValue: React.FC<EditableMultiValueProps> = ({
 
   useLayoutEffect(() => {
     if (isEditing && editInputRef.current) {
-      // editInputRef.current?.focus();
+      // On touch devices, let the native touch behavior handle focus
+      // to avoid conflicts with touch events
+      const isTouchDevice =
+        "ontouchstart" in window || navigator.maxTouchPoints > 0;
+
+      if (!isTouchDevice) {
+        // Only programmatically focus on non-touch devices (mouse/keyboard)
+        console.log("focusing");
+        editInputRef.current.focus();
+      }
+      // On touch devices, the focus will happen naturally when the user taps the input
     }
   }, [isEditing]);
 
@@ -60,9 +70,15 @@ const EditableMultiValue: React.FC<EditableMultiValueProps> = ({
     }
   };
 
-  const handleBlur = useCallback(() => {
-    handleEditSave();
-  }, [handleEditSave]);
+  const handleBlur = useCallback(
+    (e: React.FocusEvent) => {
+      console.log("handleBlur", e);
+      e.stopPropagation();
+      e.preventDefault();
+      // handleEditSave();
+    },
+    [handleEditSave],
+  );
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
     e.stopPropagation();
