@@ -56,10 +56,6 @@ export const TagSelectorProvider: React.FC<TagSelectorProviderProps> = ({
   const handleEditStart = useCallback((index: number, label: string) => {
     setEditingTagIndex(index);
     setEditingTagValue(label);
-    // Blur the select input to prevent focus conflicts
-    setTimeout(() => {
-      if (selectRef.current) selectRef.current.blur();
-    }, 0);
   }, []);
 
   const handleEditSave = useCallback(() => {

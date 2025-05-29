@@ -35,12 +35,7 @@ const TagSelectorExample: React.FC = () => {
 
       <div className={styles.section}>
         <h3 className={styles.sectionTitle}>Interactive Tag Selector</h3>
-        <p
-          className={styles.description}
-          onClick={() => {
-            console.log("clicked");
-          }}
-        >
+        <p className={styles.description}>
           • Select from existing tags or create new ones
           <br />
           • Click on any selected tag to edit it inline

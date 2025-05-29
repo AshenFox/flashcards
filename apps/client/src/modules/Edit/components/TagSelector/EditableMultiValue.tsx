@@ -57,8 +57,10 @@ const EditableMultiValue: React.FC<EditableMultiValueProps> = ({
   };
 
   const handleTouchStart = (e: React.TouchEvent) => {
-    e.preventDefault();
     e.stopPropagation();
+    e.preventDefault();
+
+    // Start editing using the callback
     handleEditStartCallback(e);
   };
 
@@ -75,7 +77,7 @@ const EditableMultiValue: React.FC<EditableMultiValueProps> = ({
       console.log("handleBlur", e);
       e.stopPropagation();
       e.preventDefault();
-      // handleEditSave();
+      handleEditSave();
     },
     [handleEditSave],
   );
