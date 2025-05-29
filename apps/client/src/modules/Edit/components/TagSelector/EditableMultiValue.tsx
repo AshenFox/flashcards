@@ -1,71 +1,108 @@
-import React, { useLayoutEffect, useRef } from "react";
+import React, {
+  memo,
+  use,
+  useCallback,
+  useEffect,
+  useLayoutEffect,
+  useRef,
+} from "react";
 import { components, MultiValueProps } from "react-select";
 
+import { useTagSelectorContext } from "./TagSelectorContext";
 import { TagOption } from "./types";
 
 interface EditableMultiValueProps extends MultiValueProps<TagOption> {
-  editingTagIndex: number | null;
-  editingTagValue: string;
-  selectedTags: TagOption[];
-  onEditStart: (index: number, label: string) => void;
-  onEditSave: () => void;
-  onEditCancel: () => void;
-  onEditValueChange: (value: string) => void;
+  // Remove the editing-related props since they'll come from context
 }
 
 const EditableMultiValue: React.FC<EditableMultiValueProps> = ({
   data,
   index,
-  editingTagIndex,
-  editingTagValue,
-  selectedTags,
-  onEditStart,
-  onEditSave,
-  onEditCancel,
-  onEditValueChange,
   ...props
 }) => {
+  const {
+    editingTagIndex,
+    editingTagValue,
+    handleEditStart,
+    handleEditSave,
+    handleEditCancel,
+    handleEditValueChange,
+  } = useTagSelectorContext();
+
   const editInputRef = useRef<HTMLInputElement>(null);
   const isEditing = editingTagIndex === index;
 
   useLayoutEffect(() => {
+    console.log("useLayoutEffect");
     if (isEditing && editInputRef.current) {
-      editInputRef.current.focus();
+      // editInputRef.current?.focus();
     }
   }, [isEditing]);
 
-  const handleEditStart = (e: React.MouseEvent) => {
-    e.preventDefault();
-    e.stopPropagation();
-    onEditStart(index, data.label);
-  };
+  useEffect(() => {
+    return () => {
+      // Cleanup function
+      console.log("unmount");
+    };
+  }, []);
+
+  const handleEditStartCallback = useCallback(
+    (e: React.MouseEvent | React.TouchEvent) => {
+      e.preventDefault();
+      e.stopPropagation();
+
+      handleEditStart(index, data.label);
+    },
+    [index, data.label, handleEditStart],
+  );
 
   const handleMouseDown = (e: React.MouseEvent) => {
     e.preventDefault();
+    e.stopPropagation();
   };
 
-  const handleKeyDown = (e: React.KeyboardEvent) => {
+  const handleTouchStart = (e: React.TouchEvent) => {
+    e.preventDefault();
     e.stopPropagation();
+    handleEditStartCallback(e);
+  };
+
+  const handleClick = (e: React.MouseEvent) => {
+    // Only handle click if it's not a touch device
+    // Touch devices will handle via touchstart
+    if (!("ontouchstart" in window)) {
+      handleEditStartCallback(e);
+    }
+  };
+
+  const handleBlur = useCallback(() => {
+    handleEditSave();
+  }, [handleEditSave]);
+
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    // e.stopPropagation();
     if (e.key === "Enter") {
-      onEditSave();
+      handleEditSave();
     } else if (e.key === "Escape") {
-      onEditCancel();
+      handleEditCancel();
     }
   };
 
   if (isEditing) {
     return (
-      <div className="tag-selector__multi-value tag-selector__multi-value--editing">
-        <input
-          ref={editInputRef}
-          type="text"
-          value={editingTagValue}
-          onChange={e => onEditValueChange(e.target.value)}
-          onBlur={onEditSave}
-          onKeyDown={handleKeyDown}
-          className="tag-selector__edit-input"
-        />
-      </div>
+      <components.MultiValue {...props} data={data} index={index}>
+        <div className="tag-selector__multi-value tag-selector__multi-value--editing">
+          <input
+            ref={editInputRef}
+            type="text"
+            value={editingTagValue}
+            onChange={e => handleEditValueChange(e.target.value)}
+            onBlur={handleBlur}
+            onKeyDown={handleKeyDown}
+            className="tag-selector__edit-input"
+          />
+        </div>
+      </components.MultiValue>
     );
   }
 
@@ -74,8 +111,8 @@ const EditableMultiValue: React.FC<EditableMultiValueProps> = ({
       <div
         className="tag-selector__multi-value-wrapper"
         onMouseDown={handleMouseDown}
-        onClick={handleEditStart}
-        onTouchStart={handleEditStart}
+        onClick={handleClick}
+        onTouchStart={handleTouchStart}
       >
         <components.MultiValueLabel {...props} data={data} />
       </div>
@@ -83,4 +120,4 @@ const EditableMultiValue: React.FC<EditableMultiValueProps> = ({
   );
 };
 
-export default EditableMultiValue;
+export default memo(EditableMultiValue);
