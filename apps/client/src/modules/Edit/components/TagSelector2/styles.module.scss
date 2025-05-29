@@ -1,0 +1,178 @@
+@import "@styles/vars";
+
+.container {
+  width: 100%;
+  max-width: 600px;
+}
+
+.header {
+  margin-bottom: 1.5rem;
+}
+
+.title {
+  margin: 0;
+  color: var(--active-color);
+  font-size: 2.4rem;
+  font-weight: 600;
+  text-transform: capitalize;
+}
+
+.tagsContainer {
+  display: flex;
+  min-height: 3rem;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  margin-bottom: 1.5rem;
+  gap: 0.8rem;
+}
+
+.tag {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.8rem 1.2rem;
+  border: none;
+  border-radius: 0.5rem;
+  background-color: var(--tag-background-color);
+  color: var(--tag-text-color);
+  cursor: pointer;
+  font-size: 1.4rem;
+  font-weight: 500;
+  gap: 0.8rem;
+  transition: all 0.2s ease;
+  user-select: none;
+
+  &:hover {
+    background-color: var(--tag-hover-background-color);
+    transform: translateY(-1px);
+  }
+
+  &.editing {
+    background-color: var(--active-color);
+    box-shadow: 0 0 0 2px var(--active-color);
+    color: var(--active-secondary-color);
+  }
+}
+
+.tagLabel {
+  font-size: inherit;
+  line-height: 1;
+}
+
+.deleteButton {
+  display: flex;
+  width: 1.8rem;
+  height: 1.8rem;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border: none;
+  border-radius: 50%;
+  background-color: var(--delete-button-background);
+  color: var(--delete-button-color);
+  cursor: pointer;
+  font-size: 1.4rem;
+  font-weight: bold;
+  line-height: 1;
+  transition: all 0.2s ease;
+
+  &:hover {
+    background-color: var(--delete-button-hover-background);
+    color: var(--delete-button-hover-color);
+    transform: scale(1.1);
+  }
+
+  &:disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+    pointer-events: none;
+  }
+}
+
+.selectContainer {
+  position: relative;
+
+  .select {
+    font-size: 1.4rem;
+    // Override react-select styles that might interfere
+    :global(.tag-selector__control) {
+      border-color: var(--element-border-color) !important;
+    }
+
+    :global(.tag-selector__control:hover) {
+      border-color: var(--active-color) !important;
+    }
+
+    :global(.tag-selector__control--is-focused) {
+      border-color: var(--active-color) !important;
+      box-shadow: 0 0 0 1px var(--active-color) !important;
+    }
+
+    :global(.tag-selector__input) {
+      color: var(--text-color) !important;
+    }
+
+    :global(.tag-selector__placeholder) {
+      color: var(--subtle-text-color) !important;
+    }
+
+    :global(.tag-selector__menu) {
+      border: 1px solid var(--element-border-color) !important;
+      background-color: var(--element-background-color) !important;
+    }
+
+    :global(.tag-selector__option--is-focused) {
+      background-color: var(--element-border-color) !important;
+      color: var(--text-color) !important;
+    }
+
+    :global(.tag-selector__option--is-selected) {
+      background-color: var(--active-color) !important;
+      color: var(--active-secondary-color) !important;
+    }
+  }
+}
+// Theme-specific variables
+html:global(.light) {
+  .tag {
+    --tag-background-color: #{$philippine-silver};
+    --tag-text-color: #{$ivory};
+    --tag-hover-background-color: #{$silver-foil};
+    --delete-button-background: rgb(255 255 255 / 20%);
+    --delete-button-color: #{$ivory};
+    --delete-button-hover-background: #{$lust};
+    --delete-button-hover-color: #{$ivory};
+  }
+}
+
+html:global(.dark) {
+  .tag {
+    --tag-background-color: #{$davys-grey};
+    --tag-text-color: #{$anti-flash-white};
+    --tag-hover-background-color: #{$silver-foil};
+    --delete-button-background: rgb(255 255 255 / 10%);
+    --delete-button-color: #{$anti-flash-white};
+    --delete-button-hover-background: #{$lust};
+    --delete-button-hover-color: #{$ivory};
+  }
+}
+
+@media (max-width: $mobile) {
+  .title {
+    font-size: 2rem;
+  }
+
+  .tag {
+    padding: 0.7rem 1rem;
+    font-size: 1.3rem;
+  }
+
+  .deleteButton {
+    width: 1.6rem;
+    height: 1.6rem;
+    font-size: 1.2rem;
+  }
+
+  .tagsContainer {
+    gap: 0.6rem;
+  }
+}
