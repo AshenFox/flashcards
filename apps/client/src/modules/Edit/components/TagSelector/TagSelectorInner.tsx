@@ -1,20 +1,22 @@
-import React from "react";
+import React, { useRef } from "react";
 import CreatableSelect from "react-select/creatable";
 
 import { customStyles } from "./customStyles";
 import styles from "./styles.module.scss";
 import TagsContainer from "./TagsContainer";
-import { useTagSelector2Context } from "./TagSelector2Context";
+import { useTagSelectorContext } from "./TagSelectorContext";
 
-interface TagSelector2InnerProps {
+interface TagSelectorInnerProps {
   placeholder?: string;
   disabled?: boolean;
 }
 
-const TagSelector2Inner: React.FC<TagSelector2InnerProps> = ({
+const TagSelectorInner: React.FC<TagSelectorInnerProps> = ({
   placeholder = "Add a tag...",
   disabled = false,
 }) => {
+  const selectRef = useRef<any>(null);
+
   const {
     inputValue,
     editingIndex,
@@ -26,8 +28,24 @@ const TagSelector2Inner: React.FC<TagSelector2InnerProps> = ({
     handleCreateOption,
     handleInputChange,
     handleKeyDown,
+    handleBlur,
     formatCreateLabel,
-  } = useTagSelector2Context();
+  } = useTagSelectorContext();
+
+  // Handle tag click and focus select
+  const handleTagClickWithFocus = (index: number) => {
+    handleTagClick(index);
+    // Focus the select after state update
+    setTimeout(() => {
+      if (selectRef.current) {
+        selectRef.current.focus();
+      }
+    }, 0);
+  };
+
+  // Dynamic placeholder based on editing state
+  const dynamicPlaceholder =
+    editingIndex !== null ? "Edit tag..." : placeholder;
 
   return (
     <div className={styles.container}>
@@ -39,19 +57,21 @@ const TagSelector2Inner: React.FC<TagSelector2InnerProps> = ({
         tags={tagOptions}
         editingIndex={editingIndex}
         disabled={disabled}
-        onTagClick={handleTagClick}
+        onTagClick={handleTagClickWithFocus}
         onDeleteTag={handleDeleteTag}
       />
 
       <div className={styles.selectContainer}>
         <CreatableSelect
+          ref={selectRef}
           value={null}
           onChange={handleSelectChange}
           onCreateOption={handleCreateOption}
           onInputChange={handleInputChange}
+          onBlur={handleBlur}
           inputValue={inputValue}
           options={selectOptions}
-          placeholder={placeholder}
+          placeholder={dynamicPlaceholder}
           isDisabled={disabled}
           isClearable={false}
           isSearchable={true}
@@ -71,4 +91,4 @@ const TagSelector2Inner: React.FC<TagSelector2InnerProps> = ({
   );
 };
 
-export default TagSelector2Inner;
+export default TagSelectorInner;

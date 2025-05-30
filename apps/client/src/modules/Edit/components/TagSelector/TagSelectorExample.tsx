@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 
-import TagSelector2 from "./TagSelector2";
+import TagSelector from "./TagSelector";
 
-const TagSelector2Example: React.FC = () => {
+const TagSelectorExample: React.FC = () => {
   const [tags, setTags] = useState<string[]>(["Math", "Science", "History"]);
   const [availableOptions] = useState<string[]>([
     "Algebra",
@@ -30,7 +30,7 @@ const TagSelector2Example: React.FC = () => {
     <div style={{ padding: "2rem", maxWidth: "800px" }}>
       <div style={{ marginBottom: "2rem" }}>
         <h2 style={{ color: "var(--text-color)", marginBottom: "1rem" }}>
-          TagSelector2 Demo
+          TagSelector Demo
         </h2>
         <p style={{ color: "var(--subtle-text-color)", marginBottom: "2rem" }}>
           • Click on existing tags to edit them
@@ -42,7 +42,7 @@ const TagSelector2Example: React.FC = () => {
         </p>
       </div>
 
-      <TagSelector2
+      <TagSelector
         tags={tags}
         availableOptions={availableOptions}
         onChange={handleTagsChange}
@@ -102,4 +102,4 @@ const TagSelector2Example: React.FC = () => {
   );
 };
 
-export default TagSelector2Example;
+export default TagSelectorExample;

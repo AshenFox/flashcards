@@ -1,4 +1,4 @@
-# TagSelector2 Component
+# TagSelector Component
 
 A modern tag selector component built with React and react-select that allows users to manage tags with a beautiful UI matching the application's dark theme.
 
@@ -16,7 +16,7 @@ A modern tag selector component built with React and react-select that allows us
 
 ## Props
 
-### TagSelector2Props
+### TagSelectorProps
 
 | Prop               | Type                       | Default          | Description                                    |
 | ------------------ | -------------------------- | ---------------- | ---------------------------------------------- |
@@ -30,14 +30,14 @@ A modern tag selector component built with React and react-select that allows us
 
 ```tsx
 import React, { useState } from "react";
-import { TagSelector2 } from "@modules/Edit/components/TagSelector2";
+import { TagSelector } from "@modules/Edit/components/TagSelector";
 
 const MyComponent = () => {
   const [tags, setTags] = useState<string[]>(["Math", "Science"]);
   const availableOptions = ["Physics", "Chemistry", "Biology", "History"];
 
   return (
-    <TagSelector2
+    <TagSelector
       tags={tags}
       availableOptions={availableOptions}
       onChange={setTags}
@@ -69,4 +69,4 @@ The component uses CSS modules and supports both light and dark themes through C
 
 ## Example Component
 
-See `TagSelector2Example.tsx` for a complete working example with state management and available options.
+See `TagSelectorExample.tsx` for a complete working example with state management and available options.

@@ -9,25 +9,23 @@ import { SingleValue } from "react-select";
 
 import {
   TagOption,
-  TagSelector2ContextValue,
-  TagSelector2ProviderProps,
+  TagSelectorContextValue,
+  TagSelectorProviderProps,
 } from "./types";
 
-const TagSelector2Context = createContext<TagSelector2ContextValue | null>(
-  null,
-);
+const TagSelectorContext = createContext<TagSelectorContextValue | null>(null);
 
-export const useTagSelector2Context = (): TagSelector2ContextValue => {
-  const context = useContext(TagSelector2Context);
+export const useTagSelectorContext = (): TagSelectorContextValue => {
+  const context = useContext(TagSelectorContext);
   if (!context) {
     throw new Error(
-      "useTagSelector2Context must be used within a TagSelector2Provider",
+      "useTagSelectorContext must be used within a TagSelectorProvider",
     );
   }
   return context;
 };
 
-export const TagSelector2Provider: React.FC<TagSelector2ProviderProps> = ({
+export const TagSelectorProvider: React.FC<TagSelectorProviderProps> = ({
   children,
   tags,
   availableOptions,
@@ -128,11 +126,18 @@ export const TagSelector2Provider: React.FC<TagSelector2ProviderProps> = ({
     }
   }, []);
 
+  const handleBlur = useCallback(() => {
+    console.log("handleBlur called");
+    // Clear editing state when select loses focus
+    setEditingIndex(null);
+    setInputValue("");
+  }, []);
+
   const formatCreateLabel = useCallback((inputValue: string) => {
     return `Create "${inputValue}"`;
   }, []);
 
-  const contextValue: TagSelector2ContextValue = {
+  const contextValue: TagSelectorContextValue = {
     // State
     inputValue,
     editingIndex,
@@ -146,12 +151,13 @@ export const TagSelector2Provider: React.FC<TagSelector2ProviderProps> = ({
     handleCreateOption,
     handleInputChange,
     handleKeyDown,
+    handleBlur,
     formatCreateLabel,
   };
 
   return (
-    <TagSelector2Context.Provider value={contextValue}>
+    <TagSelectorContext.Provider value={contextValue}>
       {children}
-    </TagSelector2Context.Provider>
+    </TagSelectorContext.Provider>
   );
 };

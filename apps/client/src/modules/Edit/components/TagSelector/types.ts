@@ -5,7 +5,7 @@ export interface TagOption {
   label: string;
 }
 
-export interface TagSelector2Props {
+export interface TagSelectorProps {
   tags?: string[];
   availableOptions?: string[];
   onChange?: (tags: string[]) => void;
@@ -21,7 +21,7 @@ export interface TagsContainerProps {
   onDeleteTag: (index: number) => void;
 }
 
-export interface TagSelector2ContextValue {
+export interface TagSelectorContextValue {
   // State
   inputValue: string;
   editingIndex: number | null;
@@ -35,10 +35,11 @@ export interface TagSelector2ContextValue {
   handleCreateOption: (inputValue: string) => void;
   handleInputChange: (value: string) => void;
   handleKeyDown: (event: React.KeyboardEvent) => void;
+  handleBlur: () => void;
   formatCreateLabel: (inputValue: string) => string;
 }
 
-export interface TagSelector2ProviderProps {
+export interface TagSelectorProviderProps {
   children: React.ReactNode;
   tags: string[];
   availableOptions: string[];
