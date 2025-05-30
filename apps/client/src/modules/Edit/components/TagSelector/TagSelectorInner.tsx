@@ -1,10 +1,13 @@
-import React, { useEffect, useRef } from "react";
+import React, { useCallback, useEffect, useMemo, useRef } from "react";
+import { components as rsComponents, GroupBase } from "react-select";
 import CreatableSelect from "react-select/creatable";
+import { SelectComponents } from "react-select/dist/declarations/src/components";
 
 import { customStyles } from "./customStyles";
 import styles from "./styles.module.scss";
 import TagsContainer from "./TagsContainer";
 import { useTagSelectorContext } from "./TagSelectorContext";
+import { TagOption } from "./types";
 
 interface TagSelectorInnerProps {
   placeholder?: string;
@@ -38,6 +41,16 @@ const TagSelectorInner: React.FC<TagSelectorInnerProps> = ({
       selectRef.current.focus();
     }
   }, [editingIndex]);
+
+  const components = useMemo<
+    Partial<SelectComponents<TagOption, false, GroupBase<TagOption>>>
+  >(() => {
+    return {
+      DropdownIndicator: () => null,
+      IndicatorSeparator: () => null,
+      Input: props => <rsComponents.Input {...props} enterKeyHint="enter" />,
+    };
+  }, []);
 
   // Dynamic placeholder based on editing state
   const dynamicPlaceholder =
@@ -78,16 +91,20 @@ const TagSelectorInner: React.FC<TagSelectorInnerProps> = ({
           isClearable={false}
           isSearchable={true}
           menuIsOpen={shouldShowMenu}
+          autoFocus={false}
+          menuShouldScrollIntoView={false}
+          blurInputOnSelect={false}
+          isOptionSelected={() => false}
+          tabSelectsValue={false}
+          closeMenuOnScroll={false}
           styles={customStyles}
           className={styles.select}
           classNamePrefix="tag-selector"
           onKeyDown={handleKeyDown}
           noOptionsMessage={() => "Type to create a new tag"}
           formatCreateLabel={formatCreateLabel}
-          components={{
-            DropdownIndicator: () => null,
-            IndicatorSeparator: () => null,
-          }}
+          createOptionPosition="first"
+          components={components}
         />
       </div>
     </div>
