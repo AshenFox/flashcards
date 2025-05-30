@@ -43,6 +43,12 @@ const TagSelectorInner: React.FC<TagSelectorInnerProps> = ({
   const dynamicPlaceholder =
     editingIndex !== null ? "Edit tag..." : placeholder;
 
+  // Only show menu when there's input text and when editing, only if the value has changed
+  const shouldShowMenu =
+    inputValue.trim().length > 0 &&
+    (editingIndex === null || // Always show for new tags
+      tagOptions[editingIndex]?.value !== inputValue.trim()); // Only show when editing if value changed
+
   return (
     <div className={styles.container}>
       <div className={styles.header}>
@@ -71,6 +77,7 @@ const TagSelectorInner: React.FC<TagSelectorInnerProps> = ({
           isDisabled={disabled}
           isClearable={false}
           isSearchable={true}
+          menuIsOpen={shouldShowMenu}
           styles={customStyles}
           className={styles.select}
           classNamePrefix="tag-selector"

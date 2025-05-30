@@ -133,9 +133,15 @@ export const TagSelectorProvider: React.FC<TagSelectorProviderProps> = ({
     setInputValue("");
   }, []);
 
-  const formatCreateLabel = useCallback((inputValue: string) => {
-    return `Create "${inputValue}"`;
-  }, []);
+  const formatCreateLabel = useCallback(
+    (inputValue: string) => {
+      if (editingIndex !== null) {
+        return `Update to "${inputValue}"`;
+      }
+      return `Create "${inputValue}"`;
+    },
+    [editingIndex],
+  );
 
   const contextValue: TagSelectorContextValue = {
     // State
