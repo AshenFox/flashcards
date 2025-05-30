@@ -109,6 +109,8 @@
 
     :global(.tag-selector__input) {
       color: var(--text-color) !important;
+      opacity: 1 !important;
+      visibility: visible !important;
     }
 
     :global(.tag-selector__placeholder) {
@@ -128,6 +130,11 @@
     :global(.tag-selector__option--is-selected) {
       background-color: var(--active-color) !important;
       color: var(--active-secondary-color) !important;
+    }
+
+    :global(.tag-selector__input-container) {
+      opacity: 1 !important;
+      visibility: visible !important;
     }
   }
 }

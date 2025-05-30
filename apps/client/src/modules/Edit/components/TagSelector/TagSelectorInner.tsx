@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useEffect, useRef } from "react";
 import CreatableSelect from "react-select/creatable";
 
 import { customStyles } from "./customStyles";
@@ -32,16 +32,12 @@ const TagSelectorInner: React.FC<TagSelectorInnerProps> = ({
     formatCreateLabel,
   } = useTagSelectorContext();
 
-  // Handle tag click and focus select
-  const handleTagClickWithFocus = (index: number) => {
-    handleTagClick(index);
-    // Focus the select after state update
-    setTimeout(() => {
-      if (selectRef.current) {
-        selectRef.current.focus();
-      }
-    }, 0);
-  };
+  // Focus the select when editing starts
+  useEffect(() => {
+    if (editingIndex !== null && selectRef.current) {
+      selectRef.current.focus();
+    }
+  }, [editingIndex]);
 
   // Dynamic placeholder based on editing state
   const dynamicPlaceholder =
@@ -57,7 +53,7 @@ const TagSelectorInner: React.FC<TagSelectorInnerProps> = ({
         tags={tagOptions}
         editingIndex={editingIndex}
         disabled={disabled}
-        onTagClick={handleTagClickWithFocus}
+        onTagClick={handleTagClick}
         onDeleteTag={handleDeleteTag}
       />
 
