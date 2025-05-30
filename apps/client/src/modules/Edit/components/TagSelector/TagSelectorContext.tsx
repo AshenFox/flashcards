@@ -115,7 +115,11 @@ export const TagSelectorProvider: React.FC<TagSelectorProviderProps> = ({
 
   const handleInputChange = useCallback((value: string) => {
     console.log("handleInputChange called:", value);
-    setInputValue(value);
+
+    // First, replace spaces with "::" automatically
+    let processedValue = value.replace(/ /g, "::");
+
+    setInputValue(processedValue);
   }, []);
 
   const handleKeyDown = useCallback((event: React.KeyboardEvent) => {
