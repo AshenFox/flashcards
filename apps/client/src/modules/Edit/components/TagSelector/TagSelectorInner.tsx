@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo, useRef } from "react";
+import React, { forwardRef, useCallback, useEffect, useMemo } from "react";
 import { components as rsComponents, GroupBase } from "react-select";
 import CreatableSelect from "react-select/creatable";
 import { SelectComponents } from "react-select/dist/declarations/src/components";
@@ -14,17 +14,43 @@ interface TagSelectorInnerProps {
   disabled?: boolean;
 }
 
+export const useMergeRefs = (
+  ...refs: (
+    | ((instance: HTMLInputElement | null) => void)
+    | React.MutableRefObject<any>
+  )[]
+): ((instance: HTMLInputElement | null) => void) => {
+  return useCallback(
+    node => {
+      refs.forEach(ref => {
+        if (typeof ref === "function") ref(node);
+        else ref.current = node;
+      });
+    },
+    [refs],
+  );
+};
+
+const CustomInput = forwardRef<HTMLInputElement, any>((props, ref) => {
+  const mergedRef = useMergeRefs(ref, props.innerRef);
+  return (
+    <rsComponents.Input {...props} enterKeyHint="enter" innerRef={mergedRef} />
+  );
+});
+
+CustomInput.displayName = "CustomInput";
+
 const TagSelectorInner: React.FC<TagSelectorInnerProps> = ({
   placeholder = "Add a tag...",
   disabled = false,
 }) => {
-  const selectRef = useRef<any>(null);
-
   const {
     inputValue,
     editingIndex,
     tagOptions,
     selectOptions,
+    selectRef,
+    inputRef,
     handleDeleteTag,
     handleTagClick,
     handleSelectChange,
@@ -48,7 +74,9 @@ const TagSelectorInner: React.FC<TagSelectorInnerProps> = ({
     return {
       DropdownIndicator: () => null,
       IndicatorSeparator: () => null,
-      Input: props => <rsComponents.Input {...props} enterKeyHint="enter" />,
+      Input: props => {
+        return <CustomInput {...props} ref={inputRef} />;
+      },
     };
   }, []);
 

@@ -1,4 +1,5 @@
-import { SingleValue } from "react-select";
+import { GroupBase, InputActionMeta, SingleValue } from "react-select";
+import Select from "react-select/dist/declarations/src/Select";
 
 export interface TagOption {
   value: string;
@@ -33,10 +34,14 @@ export interface TagSelectorContextValue {
   handleTagClick: (index: number) => void;
   handleSelectChange: (selectedOption: SingleValue<TagOption>) => void;
   handleCreateOption: (inputValue: string) => void;
-  handleInputChange: (value: string) => void;
+  handleInputChange: (value: string, actionMeta: InputActionMeta) => void;
   handleKeyDown: (event: React.KeyboardEvent) => void;
   handleBlur: () => void;
   formatCreateLabel: (inputValue: string) => string;
+
+  // Refs
+  selectRef: React.RefObject<Select<TagOption, false, GroupBase<TagOption>>>;
+  inputRef: React.RefObject<HTMLInputElement>;
 }
 
 export interface TagSelectorProviderProps {

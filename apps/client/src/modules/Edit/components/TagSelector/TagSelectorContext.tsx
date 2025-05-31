@@ -3,9 +3,11 @@ import React, {
   useCallback,
   useContext,
   useMemo,
+  useRef,
   useState,
 } from "react";
-import { SingleValue } from "react-select";
+import { GroupBase, InputActionMeta, SingleValue } from "react-select";
+import Select from "react-select/dist/declarations/src/Select";
 
 import {
   TagOption,
@@ -33,6 +35,10 @@ export const TagSelectorProvider: React.FC<TagSelectorProviderProps> = ({
 }) => {
   const [inputValue, setInputValue] = useState("");
   const [editingIndex, setEditingIndex] = useState<number | null>(null);
+
+  const selectRef =
+    useRef<Select<TagOption, false, GroupBase<TagOption>>>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
 
   // Convert string tags to options format
   const tagOptions = useMemo(
@@ -113,14 +119,22 @@ export const TagSelectorProvider: React.FC<TagSelectorProviderProps> = ({
     [tags, editingIndex, onChange],
   );
 
-  const handleInputChange = useCallback((value: string) => {
-    console.log("handleInputChange called:", value);
+  const handleInputChange = useCallback(
+    (value: string, actionMeta: InputActionMeta) => {
+      console.log(
+        "handleInputChange called:",
+        value,
+        actionMeta,
+        inputRef.current?.selectionStart,
+      );
 
-    // First, replace spaces with "::" automatically
-    let processedValue = value.replace(/ /g, "::");
+      // First, replace spaces with "::" automatically
+      let processedValue = value.replace(/ /g, "::");
 
-    setInputValue(processedValue);
-  }, []);
+      setInputValue(processedValue);
+    },
+    [],
+  );
 
   const handleKeyDown = useCallback((event: React.KeyboardEvent) => {
     console.log("handleKeyDown called:", event.key);
@@ -163,6 +177,10 @@ export const TagSelectorProvider: React.FC<TagSelectorProviderProps> = ({
     handleKeyDown,
     handleBlur,
     formatCreateLabel,
+
+    // Refs
+    selectRef,
+    inputRef,
   };
 
   return (
