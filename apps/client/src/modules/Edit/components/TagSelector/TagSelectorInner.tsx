@@ -1,5 +1,9 @@
 import React, { useCallback, useEffect, useMemo, useRef } from "react";
-import { components as rsComponents, GroupBase } from "react-select";
+import {
+  components as rsComponents,
+  GroupBase,
+  OptionProps,
+} from "react-select";
 import CreatableSelect from "react-select/creatable";
 import { SelectComponents } from "react-select/dist/declarations/src/components";
 
@@ -13,6 +17,52 @@ interface TagSelectorInnerProps {
   placeholder?: string;
   disabled?: boolean;
 }
+
+// Custom Option component for hierarchical display
+const HierarchyOption: React.FC<OptionProps<TagOption>> = props => {
+  const { data } = props;
+
+  const renderOptionContent = (label: string) => {
+    const parts = label.split("::");
+
+    if (parts.length === 1) {
+      return <span>{label}</span>;
+    }
+
+    return (
+      <span className={styles.hierarchyContainer}>
+        {parts.map((part, index) => (
+          <React.Fragment key={index}>
+            <span
+              className={`${styles.hierarchyPart} ${styles.optionPart} ${
+                index === 0
+                  ? styles.rootPart
+                  : index === parts.length - 1
+                    ? styles.leafPart
+                    : styles.middlePart
+              }`}
+            >
+              {part}
+            </span>
+            {index < parts.length - 1 && (
+              <span
+                className={`${styles.hierarchySeparator} ${styles.optionSeparator}`}
+              >
+                ›
+              </span>
+            )}
+          </React.Fragment>
+        ))}
+      </span>
+    );
+  };
+
+  return (
+    <rsComponents.Option {...props}>
+      {renderOptionContent(data.label)}
+    </rsComponents.Option>
+  );
+};
 
 const TagSelectorInner: React.FC<TagSelectorInnerProps> = ({
   placeholder = "Add a tag...",
@@ -49,6 +99,7 @@ const TagSelectorInner: React.FC<TagSelectorInnerProps> = ({
       DropdownIndicator: () => null,
       IndicatorSeparator: () => null,
       Input: props => <rsComponents.Input {...props} enterKeyHint="enter" />,
+      Option: HierarchyOption,
     };
   }, []);
 

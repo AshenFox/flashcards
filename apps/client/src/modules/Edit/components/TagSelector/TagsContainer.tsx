@@ -10,15 +10,51 @@ const TagsContainer: React.FC<TagsContainerProps> = ({
   onTagClick,
   onDeleteTag,
 }) => {
+  // Function to render hierarchical tag content
+  const renderTagContent = (tagLabel: string) => {
+    const parts = tagLabel.split("::");
+
+    if (parts.length === 1) {
+      // No hierarchy, display as normal
+      return <span className={styles.tagLabel}>{tagLabel}</span>;
+    }
+
+    // Display as hierarchy
+    return (
+      <span className={styles.hierarchyContainer}>
+        {parts.map((part, index) => (
+          <React.Fragment key={index}>
+            <span
+              className={`${styles.hierarchyPart} ${
+                index === 0
+                  ? styles.rootPart
+                  : index === parts.length - 1
+                    ? styles.leafPart
+                    : styles.middlePart
+              }`}
+            >
+              {part}
+            </span>
+            {index < parts.length - 1 && (
+              <span className={styles.hierarchySeparator}>›</span>
+            )}
+          </React.Fragment>
+        ))}
+      </span>
+    );
+  };
+
   return (
     <div className={styles.tagsContainer}>
       {tags.map((tag, index) => (
         <div
           key={index}
-          className={`${styles.tag} ${editingIndex === index ? styles.editing : ""}`}
+          className={`${styles.tag} ${editingIndex === index ? styles.editing : ""} ${
+            tag.label.includes("::") ? styles.hierarchyTag : ""
+          }`}
           onClick={() => onTagClick(index)}
         >
-          <span className={styles.tagLabel}>{tag.label}</span>
+          {renderTagContent(tag.label)}
           <button
             className={styles.deleteButton}
             onClick={e => {
