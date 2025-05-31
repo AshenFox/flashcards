@@ -79,15 +79,19 @@ export const TagSelectorProvider: React.FC<TagSelectorProviderProps> = ({
       console.log("handleSelectChange called:", selectedOption);
       if (!selectedOption) return;
 
+      // Clean the selected value by removing > from start and end
+      const cleanValue = selectedOption.value.replace(/^>+|>+$/g, "");
+      if (!cleanValue) return;
+
       if (editingIndex !== null) {
         // Edit existing tag
         const newTags = [...tags];
-        newTags[editingIndex] = selectedOption.value;
+        newTags[editingIndex] = cleanValue;
         onChange?.(newTags);
         setEditingIndex(null);
       } else {
         // Add new tag
-        const newTags = [...tags, selectedOption.value];
+        const newTags = [...tags, cleanValue];
         onChange?.(newTags);
       }
       setInputValue("");
@@ -98,7 +102,7 @@ export const TagSelectorProvider: React.FC<TagSelectorProviderProps> = ({
   const handleCreateOption = useCallback(
     (inputValue: string) => {
       console.log("handleCreateOption called:", inputValue);
-      const trimmedValue = inputValue.trim();
+      const trimmedValue = inputValue.trim().replace(/^>+|>+$/g, ""); // Remove > from start and end
       if (!trimmedValue) return;
 
       if (editingIndex !== null) {
@@ -121,23 +125,27 @@ export const TagSelectorProvider: React.FC<TagSelectorProviderProps> = ({
 
   const handleInputChange = useCallback(
     (value: string, actionMeta: InputActionMeta) => {
-      console.log(
-        "handleInputChange called:",
-        value,
-        actionMeta,
-        inputRef.current?.selectionStart,
-      );
+      // Only process user input, not programmatic changes
+      if (actionMeta.action === "input-change") {
+        let processedValue = value;
 
-      // First, replace spaces with "::" automatically
-      let processedValue = value.replace(/ /g, "::");
+        // Replace spaces with ">"
+        processedValue = processedValue.replace(/ /g, ">");
 
-      setInputValue(processedValue);
+        // Prevent multiple consecutive ">" (more than 1 in a row)
+        processedValue = processedValue.replace(/>+/g, ">");
+
+        setInputValue(processedValue);
+      } else {
+        setInputValue(value);
+      }
     },
     [],
   );
 
   const handleKeyDown = useCallback((event: React.KeyboardEvent) => {
     console.log("handleKeyDown called:", event.key);
+
     if (event.key === "Escape") {
       setEditingIndex(null);
       setInputValue("");
