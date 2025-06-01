@@ -1,13 +1,7 @@
-import React, {
-  createContext,
-  useCallback,
-  useContext,
-  useMemo,
-  useRef,
-  useState,
-} from "react";
+import React, { useCallback, useMemo, useRef, useState } from "react";
 import { GroupBase, InputActionMeta, SingleValue } from "react-select";
 import Select from "react-select/dist/declarations/src/Select";
+import { createContext, useContextSelector } from "use-context-selector";
 
 import {
   TagOption,
@@ -15,17 +9,13 @@ import {
   TagSelectorProviderProps,
 } from "./types";
 
-const TagSelectorContext = createContext<TagSelectorContextValue | null>(null);
+export const TagSelectorContext = createContext<TagSelectorContextValue | null>(
+  null,
+);
 
-export const useTagSelectorContext = (): TagSelectorContextValue => {
-  const context = useContext(TagSelectorContext);
-  if (!context) {
-    throw new Error(
-      "useTagSelectorContext must be used within a TagSelectorProvider",
-    );
-  }
-  return context;
-};
+export const useTagSelectorContext = <Selected,>(
+  selector: (context: TagSelectorContextValue) => Selected,
+): Selected => useContextSelector(TagSelectorContext, selector);
 
 export const TagSelectorProvider: React.FC<TagSelectorProviderProps> = ({
   children,

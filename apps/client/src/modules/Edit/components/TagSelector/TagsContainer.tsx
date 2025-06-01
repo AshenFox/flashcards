@@ -1,31 +1,29 @@
-import React from "react";
+import React, { memo } from "react";
 
 import styles from "./styles.module.scss";
-import { TagsContainerProps } from "./types";
+import { useTagSelectorContext } from "./TagSelectorContext";
 
-const TagsContainer: React.FC<TagsContainerProps> = ({
-  tags,
-  editingIndex,
-  disabled = false,
-  onTagClick,
-  onDeleteTag,
-}) => {
+const TagsContainer: React.FC = () => {
+  const tagOptions = useTagSelectorContext(c => c.tagOptions);
+  const editingIndex = useTagSelectorContext(c => c.editingIndex);
+  const handleTagClick = useTagSelectorContext(c => c.handleTagClick);
+  const handleDeleteTag = useTagSelectorContext(c => c.handleDeleteTag);
+
   return (
     <div className={styles.tagsContainer}>
-      {tags.map((tag, index) => (
+      {tagOptions.map((tag, index) => (
         <div
           key={index}
           className={`${styles.tag} ${editingIndex === index ? styles.editing : ""}`}
-          onClick={() => onTagClick(index)}
+          onClick={() => handleTagClick(index)}
         >
           <span className={styles.tagLabel}>{tag.label}</span>
           <button
             className={styles.deleteButton}
             onClick={e => {
               e.stopPropagation();
-              onDeleteTag(index);
+              handleDeleteTag(index);
             }}
-            disabled={disabled}
             aria-label={`Delete ${tag.label} tag`}
           >
             ×
@@ -36,4 +34,4 @@ const TagsContainer: React.FC<TagsContainerProps> = ({
   );
 };
 
-export default TagsContainer;
+export default memo(TagsContainer);
