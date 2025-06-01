@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { memo, useEffect } from "react";
 
 import SelectContainer from "./SelectContainer";
 import styles from "./styles.module.scss";
@@ -37,4 +37,4 @@ const TagSelectorInner: React.FC<TagSelectorInnerProps> = ({
   );
 };
 
-export default TagSelectorInner;
+export default memo(TagSelectorInner);

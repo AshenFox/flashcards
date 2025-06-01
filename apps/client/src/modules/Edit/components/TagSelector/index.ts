@@ -1,7 +1,7 @@
 export { default as TagsContainer } from "./TagsContainer";
 export { default as TagSelector } from "./TagSelector";
 export {
-  TagSelectorProvider,
+  default as TagSelectorContext,
   useTagSelectorContext,
 } from "./TagSelectorContext";
 export { default as TagSelectorInner } from "./TagSelectorInner";

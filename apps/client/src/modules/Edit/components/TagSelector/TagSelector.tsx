@@ -1,6 +1,6 @@
-import React from "react";
+import React, { memo } from "react";
 
-import { TagSelectorProvider } from "./TagSelectorContext";
+import TagSelectorProvider from "./TagSelectorContext";
 import TagSelectorInner from "./TagSelectorInner";
 import { TagSelectorProps } from "./types";
 
@@ -22,4 +22,4 @@ const TagSelector: React.FC<TagSelectorProps> = ({
   );
 };
 
-export default TagSelector;
+export default memo(TagSelector);

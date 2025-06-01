@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useRef, useState } from "react";
+import React, { memo, useCallback, useMemo, useRef, useState } from "react";
 import { GroupBase, InputActionMeta, SingleValue } from "react-select";
 import Select from "react-select/dist/declarations/src/Select";
 import { createContext, useContextSelector } from "use-context-selector";
@@ -17,7 +17,7 @@ export const useTagSelectorContext = <Selected,>(
   selector: (context: TagSelectorContextValue) => Selected,
 ): Selected => useContextSelector(TagSelectorContext, selector);
 
-export const TagSelectorProvider: React.FC<TagSelectorProviderProps> = ({
+const TagSelectorProvider: React.FC<TagSelectorProviderProps> = ({
   children,
   tags,
   availableOptions,
@@ -187,3 +187,5 @@ export const TagSelectorProvider: React.FC<TagSelectorProviderProps> = ({
     </TagSelectorContext.Provider>
   );
 };
+
+export default memo(TagSelectorProvider);
