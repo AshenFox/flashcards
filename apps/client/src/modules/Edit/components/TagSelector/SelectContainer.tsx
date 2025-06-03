@@ -13,25 +13,21 @@ interface SelectContainerProps {
   disabled?: boolean;
 }
 
-export const useMergeRefs = (
-  ...refs: (
-    | ((instance: HTMLInputElement | null) => void)
-    | React.MutableRefObject<any>
-  )[]
-): ((instance: HTMLInputElement | null) => void) => {
+export const useMergedRef = <T,>(
+  ...refs: (((instance: T | null) => void) | React.MutableRefObject<T>)[]
+): ((instance: T | null) => void) => {
   return useCallback(
-    node => {
+    node =>
       refs.forEach(ref => {
         if (typeof ref === "function") ref(node);
         else ref.current = node;
-      });
-    },
+      }),
     [refs],
   );
 };
 
 const CustomInput = forwardRef<HTMLInputElement, any>((props, ref) => {
-  const mergedRef = useMergeRefs(ref, props.innerRef);
+  const mergedRef = useMergedRef<HTMLInputElement>(ref, props.innerRef);
   return (
     <rsComponents.Input {...props} enterKeyHint="enter" innerRef={mergedRef} />
   );
