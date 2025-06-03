@@ -372,13 +372,13 @@ router.get(
       const expandedTags = new Set<string>();
 
       userTags.forEach(tag => {
-        if (tag.includes("::")) {
-          const parts = tag.split("::");
+        if (tag.includes(">")) {
+          const parts = tag.split(">");
           let currentPath = "";
 
           parts.forEach((part, index) => {
             if (index === 0) currentPath = part;
-            else currentPath += "::" + part;
+            else currentPath += ">" + part;
             expandedTags.add(currentPath);
           });
         } else {
@@ -398,9 +398,9 @@ router.get(
 
       // Sort hierarchically and limit to 15
       filteredTags.sort((a, b) => {
-        // Split by :: to compare hierarchically
-        const aParts = a.split("::");
-        const bParts = b.split("::");
+        // Split by > to compare hierarchically
+        const aParts = a.split(">");
+        const bParts = b.split(">");
 
         // Compare each level
         for (let i = 0; i < Math.min(aParts.length, bParts.length); i++) {

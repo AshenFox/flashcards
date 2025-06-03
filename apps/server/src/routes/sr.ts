@@ -57,7 +57,7 @@ router.get("/cards", auth, async (req: CardsGetReq, res: CardsGetRes) => {
       const tagRegexPatterns = tags.map(tag => {
         // Escape special regex characters and create pattern for exact match or hierarchical children
         const escapedTag = tag.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-        return new RegExp(`^${escapedTag}(::.*)?$`);
+        return new RegExp(`^${escapedTag}(>.*)?$`);
       });
 
       // Find modules that have tags matching any of the patterns
@@ -119,7 +119,7 @@ router.get("/count", auth, async (req: CountGetReq, res: CountGetRes) => {
       const tagRegexPatterns = tags.map(tag => {
         // Escape special regex characters and create pattern for exact match or hierarchical children
         const escapedTag = tag.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-        return new RegExp(`^${escapedTag}(::.*)?$`);
+        return new RegExp(`^${escapedTag}(>.*)?$`);
       });
 
       // Find modules that have tags matching any of the patterns
