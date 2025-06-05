@@ -26,10 +26,19 @@
   gap: 0.8rem;
 }
 
+.tagPart {
+  display: inline-flex;
+  height: 1.9rem;
+  align-items: center;
+  padding: 0 0.5rem;
+  border-radius: 0.2rem;
+  background-color: rgb(255 255 255 / 10%);
+}
+
 .tag {
   display: inline-flex;
   align-items: center;
-  padding: 0.8rem 1rem;
+  padding: 0.3rem 0.6rem;
   border: none;
   border-radius: 0.3rem;
   background-color: var(--tag-background-color);
@@ -37,19 +46,30 @@
   cursor: pointer;
   font-size: 1.4rem;
   font-weight: 500;
-  gap: 0.8rem;
+  gap: 0.6rem;
   transition: all 0.2s ease;
   user-select: none;
 
   &.editing {
     background-color: var(--active-color);
     color: var(--active-secondary-color);
+
+    .tagPart {
+      background-color: rgb(255 255 255 / 50%);
+    }
   }
 }
 
 .tagLabel {
+  display: inline-flex;
+  align-items: center;
   font-size: inherit;
-  line-height: 1;
+  gap: 0.1rem;
+}
+
+.tagSeparator {
+  opacity: 0.4;
+  transform: translateY(-0.2rem);
 }
 
 .deleteButton {

@@ -18,12 +18,26 @@ const Tag: React.FC<TagProps> = ({
   onTagClick,
   onDeleteTag,
 }) => {
+  const tagParts = tag.label
+    .split(">")
+    .map(part => part.trim())
+    .filter(part => part.length > 0);
+
   return (
     <div
       className={`${styles.tag} ${isEditing ? styles.editing : ""}`}
       onClick={() => onTagClick(index)}
     >
-      <span className={styles.tagLabel}>{tag.label}</span>
+      <div className={styles.tagLabel}>
+        {tagParts.map((part, partIndex) => (
+          <React.Fragment key={partIndex}>
+            <span className={styles.tagPart}>{part}</span>
+            {partIndex < tagParts.length - 1 && (
+              <span className={styles.tagSeparator}>{">"} </span>
+            )}
+          </React.Fragment>
+        ))}
+      </div>
       <button
         className={styles.deleteButton}
         onClick={e => {
