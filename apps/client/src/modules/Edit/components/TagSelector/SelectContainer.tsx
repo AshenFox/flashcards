@@ -64,6 +64,18 @@ const SelectContainer: React.FC<SelectContainerProps> = ({
     };
   }, [inputRef]);
 
+  // Custom filter function to match from beginning of string
+  const filterOption = useCallback((option: TagOption, inputValue: string) => {
+    if (!inputValue.trim()) return true;
+
+    // Convert both to lowercase for case-insensitive matching
+    const optionValue = option.value.toLowerCase();
+    const searchValue = inputValue.toLowerCase().trim();
+
+    // Match from the beginning of the string
+    return optionValue.startsWith(searchValue);
+  }, []);
+
   // Dynamic placeholder based on editing state
   const dynamicPlaceholder =
     editingIndex !== null ? "Edit tag..." : placeholder;
@@ -85,6 +97,7 @@ const SelectContainer: React.FC<SelectContainerProps> = ({
         onBlur={handleBlur}
         inputValue={inputValue}
         options={selectOptions}
+        filterOption={filterOption}
         placeholder={dynamicPlaceholder}
         isDisabled={disabled}
         isClearable={false}
