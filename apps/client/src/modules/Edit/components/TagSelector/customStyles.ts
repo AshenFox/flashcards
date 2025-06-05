@@ -12,7 +12,8 @@ export const customStyles: StylesConfig<TagOption, false> = {
     fontSize: "1.4rem",
     color: "var(--text-color)",
     cursor: "text",
-    boxShadow: state.isFocused ? "0 0 0 1px var(--active-color)" : "none",
+    boxShadow: "none",
+    outline: "none",
     "&:hover": {
       borderColor: "var(--active-color)",
     },

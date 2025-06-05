@@ -1,3 +1,4 @@
+import { DeleteIcon } from "@ui/Icons";
 import React, { memo } from "react";
 
 import styles from "./styles.module.scss";
@@ -26,7 +27,7 @@ const TagsContainer: React.FC = () => {
             }}
             aria-label={`Delete ${tag.label} tag`}
           >
-            ×
+            <DeleteIcon width="12" height="12" />
           </button>
         </div>
       ))}

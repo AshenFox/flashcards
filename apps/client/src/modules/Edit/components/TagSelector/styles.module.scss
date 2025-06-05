@@ -29,9 +29,9 @@
 .tag {
   display: inline-flex;
   align-items: center;
-  padding: 0.8rem 1.2rem;
+  padding: 0.8rem 1rem;
   border: none;
-  border-radius: 0.5rem;
+  border-radius: 0.3rem;
   background-color: var(--tag-background-color);
   color: var(--tag-text-color);
   cursor: pointer;
@@ -41,14 +41,8 @@
   transition: all 0.2s ease;
   user-select: none;
 
-  &:hover {
-    background-color: var(--tag-hover-background-color);
-    transform: translateY(-1px);
-  }
-
   &.editing {
     background-color: var(--active-color);
-    box-shadow: 0 0 0 2px var(--active-color);
     color: var(--active-secondary-color);
   }
 }
@@ -60,25 +54,19 @@
 
 .deleteButton {
   display: flex;
-  width: 1.8rem;
-  height: 1.8rem;
   align-items: center;
   justify-content: center;
-  padding: 0;
-  border: none;
-  border-radius: 50%;
-  background-color: var(--delete-button-background);
-  color: var(--delete-button-color);
   cursor: pointer;
-  font-size: 1.4rem;
-  font-weight: bold;
-  line-height: 1;
   transition: all 0.2s ease;
 
-  &:hover {
-    background-color: var(--delete-button-hover-background);
-    color: var(--delete-button-hover-color);
-    transform: scale(1.1);
+  svg {
+    width: 1.4rem;
+    height: 1.4rem;
+    transition: all 0.2s ease;
+  }
+
+  &:hover svg {
+    fill: var(--danger-color);
   }
 
   &:disabled {
@@ -88,54 +76,13 @@
   }
 }
 
-.selectContainer {
-  position: relative;
+.tag.editing .deleteButton {
+  svg {
+    fill: var(--dark-color);
+  }
 
-  .select {
-    font-size: 1.4rem;
-    // Override react-select styles that might interfere
-    :global(.tag-selector__control) {
-      border-color: var(--element-border-color) !important;
-    }
-
-    :global(.tag-selector__control:hover) {
-      border-color: var(--active-color) !important;
-    }
-
-    :global(.tag-selector__control--is-focused) {
-      border-color: var(--active-color) !important;
-      box-shadow: 0 0 0 1px var(--active-color) !important;
-    }
-
-    :global(.tag-selector__input) {
-      color: var(--text-color) !important;
-      opacity: 1 !important;
-      visibility: visible !important;
-    }
-
-    :global(.tag-selector__placeholder) {
-      color: var(--subtle-text-color) !important;
-    }
-
-    :global(.tag-selector__menu) {
-      border: 1px solid var(--element-border-color) !important;
-      background-color: var(--element-background-color) !important;
-    }
-
-    :global(.tag-selector__option--is-focused) {
-      background-color: var(--element-border-color) !important;
-      color: var(--text-color) !important;
-    }
-
-    :global(.tag-selector__option--is-selected) {
-      background-color: var(--active-color) !important;
-      color: var(--active-secondary-color) !important;
-    }
-
-    :global(.tag-selector__input-container) {
-      opacity: 1 !important;
-      visibility: visible !important;
-    }
+  &:hover svg {
+    fill: var(--danger-color);
   }
 }
 // Theme-specific variables
@@ -144,9 +91,6 @@ html:global(.light) {
     --tag-background-color: #{$philippine-silver};
     --tag-text-color: #{$ivory};
     --tag-hover-background-color: #{$silver-foil};
-    --delete-button-background: rgb(255 255 255 / 20%);
-    --delete-button-color: #{$ivory};
-    --delete-button-hover-background: #{$lust};
     --delete-button-hover-color: #{$ivory};
   }
 }
@@ -156,9 +100,6 @@ html:global(.dark) {
     --tag-background-color: #{$davys-grey};
     --tag-text-color: #{$anti-flash-white};
     --tag-hover-background-color: #{$silver-foil};
-    --delete-button-background: rgb(255 255 255 / 10%);
-    --delete-button-color: #{$anti-flash-white};
-    --delete-button-hover-background: #{$lust};
     --delete-button-hover-color: #{$ivory};
   }
 }
@@ -170,13 +111,6 @@ html:global(.dark) {
 
   .tag {
     padding: 0.7rem 1rem;
-    font-size: 1.3rem;
-  }
-
-  .deleteButton {
-    width: 1.6rem;
-    height: 1.6rem;
-    font-size: 1.2rem;
   }
 
   .tagsContainer {
