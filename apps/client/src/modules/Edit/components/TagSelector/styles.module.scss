@@ -62,6 +62,7 @@
   svg {
     width: 1.4rem;
     height: 1.4rem;
+    fill: var(--delete-button-fill);
     transition: all 0.2s ease;
   }
 
@@ -88,10 +89,11 @@
 // Theme-specific variables
 html:global(.light) {
   .tag {
-    --tag-background-color: #{$philippine-silver};
+    --tag-background-color: #{$regalia};
     --tag-text-color: #{$ivory};
     --tag-hover-background-color: #{$silver-foil};
     --delete-button-hover-color: #{$ivory};
+    --delete-button-fill: var(--reverse-color);
   }
 }
 
@@ -101,6 +103,7 @@ html:global(.dark) {
     --tag-text-color: #{$anti-flash-white};
     --tag-hover-background-color: #{$silver-foil};
     --delete-button-hover-color: #{$ivory};
+    --delete-button-fill: var(--icon-fill);
   }
 }
 

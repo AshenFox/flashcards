@@ -41,28 +41,25 @@ export const customStyles: StylesConfig<TagOption, false> = {
     boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
     zIndex: 9999,
   }),
-  menuList: provided => ({
-    ...provided,
-    padding: 0,
-  }),
+
   option: (provided, state) => ({
     ...provided,
     backgroundColor: state.isSelected
       ? "var(--active-color)"
       : state.isFocused
-        ? "var(--element-border-color)"
+        ? "var(--active-color)"
         : "transparent",
-    color: state.isSelected
-      ? "var(--active-secondary-color)"
-      : "var(--text-color)",
+    color:
+      state.isSelected || state.isFocused
+        ? "var(--active-secondary-color)"
+        : "var(--text-color)",
     fontSize: "1.4rem",
     padding: "0.8rem 1.2rem",
     cursor: "pointer",
     "&:hover": {
-      backgroundColor: state.isSelected
-        ? "var(--active-color)"
-        : "var(--element-border-color)",
+      backgroundColor: "var(--active-color)",
     },
+    transition: "all 0.1s",
   }),
   noOptionsMessage: provided => ({
     ...provided,
