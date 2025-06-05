@@ -3,22 +3,30 @@ import React, { useState } from "react";
 import TagSelector from "./TagSelector";
 
 const TagSelectorExample: React.FC = () => {
-  const [tags, setTags] = useState<string[]>(["Math", "Science", "History"]);
+  const [tags, setTags] = useState<string[]>([
+    "Math",
+    "Math>Algebra",
+    "Science>Physics",
+    "History>World History",
+  ]);
   const [availableOptions] = useState<string[]>([
-    "Algebra",
-    "Geometry",
-    "Physics",
-    "Chemistry",
-    "Biology",
-    "World History",
-    "American History",
-    "Literature",
-    "Geography",
-    "Calculus",
-    "Statistics",
-    "Art",
-    "Music",
-    "Philosophy",
+    "Math>Algebra",
+    "Math>Geometry",
+    "Math>Calculus",
+    "Math>Statistics",
+    "Science>Physics",
+    "Science>Chemistry",
+    "Science>Biology",
+    "History>World_History",
+    "History>American_History",
+    "Literature>Classic_Literature",
+    "Literature>Modern_Literature",
+    "Geography>Physical_Geography",
+    "Geography>Human Geography",
+    "Arts>Visual_Arts",
+    "Arts>Music",
+    "Philosophy>Ethics",
+    "Philosophy>Logic",
   ]);
 
   const handleTagsChange = (newTags: string[]) => {

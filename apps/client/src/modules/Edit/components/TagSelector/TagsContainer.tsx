@@ -1,7 +1,7 @@
-import { DeleteIcon } from "@ui/Icons";
 import React, { memo } from "react";
 
 import styles from "./styles.module.scss";
+import Tag from "./Tag";
 import { useTagSelectorContext } from "./TagSelectorContext";
 
 const TagsContainer: React.FC = () => {
@@ -13,23 +13,14 @@ const TagsContainer: React.FC = () => {
   return (
     <div className={styles.tagsContainer}>
       {tagOptions.map((tag, index) => (
-        <div
+        <Tag
           key={index}
-          className={`${styles.tag} ${editingIndex === index ? styles.editing : ""}`}
-          onClick={() => handleTagClick(index)}
-        >
-          <span className={styles.tagLabel}>{tag.label}</span>
-          <button
-            className={styles.deleteButton}
-            onClick={e => {
-              e.stopPropagation();
-              handleDeleteTag(index);
-            }}
-            aria-label={`Delete ${tag.label} tag`}
-          >
-            <DeleteIcon width="12" height="12" />
-          </button>
-        </div>
+          tag={tag}
+          index={index}
+          isEditing={editingIndex === index}
+          onTagClick={handleTagClick}
+          onDeleteTag={handleDeleteTag}
+        />
       ))}
     </div>
   );
