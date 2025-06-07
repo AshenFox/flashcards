@@ -8,7 +8,6 @@ const TagSelector: React.FC<TagSelectorProps> = ({
   tags = [],
   availableOptions = [],
   onChange,
-  placeholder = "Add a tag...",
   disabled = false,
 }) => {
   return (
@@ -17,7 +16,7 @@ const TagSelector: React.FC<TagSelectorProps> = ({
       availableOptions={availableOptions}
       onChange={onChange}
     >
-      <TagSelectorInner placeholder={placeholder} disabled={disabled} />
+      <TagSelectorInner disabled={disabled} />
     </TagSelectorProvider>
   );
 };

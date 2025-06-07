@@ -31,7 +31,7 @@ const TagSelectorProvider: React.FC<TagSelectorProviderProps> = ({
   const inputRef = useRef<HTMLInputElement>(null);
 
   // Convert string tags to options format
-  const tagOptions = useMemo(
+  const options = useMemo(
     () => tags.map(tag => ({ value: tag, label: tag })),
     [tags],
   );
@@ -66,7 +66,6 @@ const TagSelectorProvider: React.FC<TagSelectorProviderProps> = ({
 
   const handleSelectChange = useCallback(
     (selectedOption: SingleValue<TagOption>) => {
-      console.log("handleSelectChange called:", selectedOption);
       if (!selectedOption) return;
 
       // Clean the selected value by removing > from start and end
@@ -91,7 +90,6 @@ const TagSelectorProvider: React.FC<TagSelectorProviderProps> = ({
 
   const handleCreateOption = useCallback(
     (inputValue: string) => {
-      console.log("handleCreateOption called:", inputValue);
       const trimmedValue = inputValue.trim().replace(/^>+|>+$/g, ""); // Remove > from start and end
       if (!trimmedValue) return;
 
@@ -134,8 +132,6 @@ const TagSelectorProvider: React.FC<TagSelectorProviderProps> = ({
   );
 
   const handleKeyDown = useCallback((event: React.KeyboardEvent) => {
-    console.log("handleKeyDown called:", event.key);
-
     if (event.key === "Escape") {
       setEditingIndex(null);
       setInputValue("");
@@ -143,7 +139,6 @@ const TagSelectorProvider: React.FC<TagSelectorProviderProps> = ({
   }, []);
 
   const handleBlur = useCallback(() => {
-    console.log("handleBlur called");
     // Clear editing state when select loses focus
     setEditingIndex(null);
     setInputValue("");
@@ -152,7 +147,7 @@ const TagSelectorProvider: React.FC<TagSelectorProviderProps> = ({
   const formatCreateLabel = useCallback(
     (inputValue: string) => {
       if (editingIndex !== null) {
-        return `Update to "${inputValue}"`;
+        return `Update to ${inputValue}`;
       }
       return `Create "${inputValue}"`;
     },
@@ -163,7 +158,7 @@ const TagSelectorProvider: React.FC<TagSelectorProviderProps> = ({
     // State
     inputValue,
     editingIndex,
-    tagOptions,
+    options,
     selectOptions,
 
     // Handlers

@@ -4,6 +4,7 @@ import Select from "react-select/dist/declarations/src/Select";
 export interface TagOption {
   value: string;
   label: string;
+  __isNew__?: boolean;
 }
 
 export interface TagSelectorProps {
@@ -26,7 +27,7 @@ export interface TagSelectorContextValue {
   // State
   inputValue: string;
   editingIndex: number | null;
-  tagOptions: TagOption[];
+  options: TagOption[];
   selectOptions: TagOption[];
 
   // Handlers

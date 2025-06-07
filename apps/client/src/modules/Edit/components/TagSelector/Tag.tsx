@@ -2,6 +2,7 @@ import { DeleteIcon } from "@ui/Icons";
 import React, { memo } from "react";
 
 import styles from "./styles.module.scss";
+import TagPart from "./TagPart";
 
 interface TagProps {
   tag: { label: string };
@@ -30,12 +31,12 @@ const Tag: React.FC<TagProps> = ({
     >
       <div className={styles.tagLabel}>
         {tagParts.map((part, partIndex) => (
-          <React.Fragment key={partIndex}>
-            <span className={styles.tagPart}>{part}</span>
-            {partIndex < tagParts.length - 1 && (
-              <span className={styles.tagSeparator}>{">"} </span>
-            )}
-          </React.Fragment>
+          <TagPart
+            key={partIndex}
+            part={part}
+            active={isEditing}
+            showSeparator={partIndex < tagParts.length - 1}
+          />
         ))}
       </div>
       <button

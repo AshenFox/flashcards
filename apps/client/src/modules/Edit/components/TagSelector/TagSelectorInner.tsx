@@ -11,7 +11,6 @@ interface TagSelectorInnerProps {
 }
 
 const TagSelectorInner: React.FC<TagSelectorInnerProps> = ({
-  placeholder = "Add a tag...",
   disabled = false,
 }) => {
   const editingIndex = useTagSelectorContext(c => c.editingIndex);
@@ -32,7 +31,7 @@ const TagSelectorInner: React.FC<TagSelectorInnerProps> = ({
 
       <TagsContainer />
 
-      <SelectContainer placeholder={placeholder} disabled={disabled} />
+      <SelectContainer disabled={disabled} />
     </div>
   );
 };
