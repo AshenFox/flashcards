@@ -22,6 +22,7 @@
   border-radius: 0.2rem;
   background-color: var(--background-color);
   color: var(--color);
+  transition: all 0.2s ease;
 }
 
 .tag {
@@ -50,16 +51,19 @@
   align-items: center;
   font-size: inherit;
   gap: 0.1rem;
+  transition: all 0.2s ease;
 }
 
 .tagCreate {
   display: inline-flex;
   margin-right: 0.5rem;
+  transition: all 0.2s ease;
 }
 
 .tagSeparator {
   opacity: var(--opacity);
   transform: translateY(-0.2rem);
+  transition: all 0.2s ease;
 }
 
 .deleteButton {

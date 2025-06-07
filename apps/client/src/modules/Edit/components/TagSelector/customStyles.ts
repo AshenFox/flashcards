@@ -21,17 +21,24 @@ export const customStyles: StylesConfig<TagOption, false> = {
   input: provided => ({
     ...provided,
     color: "var(--text-color)",
-    fontSize: "1.4rem",
+    fontSize: "1.7rem",
+    gridTemplateColumns: "auto 0",
+
+    "& input": {
+      opacity: "1 !important",
+      width: "100%",
+      gridArea: "1 / 1 !important",
+    },
   }),
   placeholder: provided => ({
     ...provided,
     color: "var(--subtle-text-color)",
-    fontSize: "1.4rem",
+    fontSize: "1.7rem",
   }),
   singleValue: provided => ({
     ...provided,
     color: "var(--text-color)",
-    fontSize: "1.4rem",
+    fontSize: "1.7rem",
   }),
   menu: provided => ({
     ...provided,
@@ -64,7 +71,7 @@ export const customStyles: StylesConfig<TagOption, false> = {
   noOptionsMessage: provided => ({
     ...provided,
     color: "var(--subtle-text-color)",
-    fontSize: "1.4rem",
+    fontSize: "1.7rem",
     padding: "0.8rem 1.2rem",
   }),
 };

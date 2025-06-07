@@ -1,5 +1,5 @@
 import { DeleteIcon } from "@ui/Icons";
-import React, { memo } from "react";
+import React, { memo, MouseEventHandler, useCallback } from "react";
 
 import styles from "./styles.module.scss";
 import TagPart from "./TagPart";
@@ -28,10 +28,18 @@ const Tag: React.FC<TagProps> = ({
   const displayParts =
     tagParts.length > 3 ? ["...", ...tagParts.slice(-3)] : tagParts;
 
+  const handleClick = useCallback<MouseEventHandler<HTMLDivElement>>(
+    e => {
+      e.stopPropagation();
+      onTagClick(index);
+    },
+    [onTagClick, index],
+  );
+
   return (
     <div
       className={`${styles.tag} ${isEditing ? styles.editing : ""}`}
-      onClick={() => onTagClick(index)}
+      onClick={handleClick}
     >
       <div className={styles.tagLabel}>
         {displayParts.map((part, partIndex) => (
