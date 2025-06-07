@@ -25,12 +25,7 @@ const TagSelectorInner: React.FC<TagSelectorInnerProps> = ({
 
   return (
     <div className={styles.container}>
-      <div className={styles.header}>
-        <h3 className={styles.title}>Tags</h3>
-      </div>
-
       <TagsContainer />
-
       <SelectContainer disabled={disabled} />
     </div>
   );

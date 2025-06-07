@@ -38,7 +38,6 @@ export interface TagSelectorContextValue {
   handleInputChange: (value: string, actionMeta: InputActionMeta) => void;
   handleKeyDown: (event: React.KeyboardEvent) => void;
   handleBlur: () => void;
-  formatCreateLabel: (inputValue: string) => string;
 
   // Refs
   selectRef: React.RefObject<Select<TagOption, false, GroupBase<TagOption>>>;

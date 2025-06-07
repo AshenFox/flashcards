@@ -53,6 +53,9 @@ const CustomOption: React.ComponentType<
     .map((part: string) => part.trim())
     .filter((part: string) => part.length > 0);
 
+  const displayParts =
+    tagParts.length > 3 ? ["...", ...tagParts.slice(-3)] : tagParts;
+
   return (
     <rsComponents.Option {...props}>
       <div className={styles.tagLabel}>
@@ -61,7 +64,7 @@ const CustomOption: React.ComponentType<
             {editingIndex !== null ? "Update to" : "Create"}:
           </span>
         )}
-        {tagParts.map((part: string, partIndex: number) => (
+        {displayParts.map((part: string, partIndex: number) => (
           <TagPart
             key={partIndex}
             part={part}
@@ -88,7 +91,6 @@ const SelectContainer: React.FC<SelectContainerProps> = ({
   const handleInputChange = useTagSelectorContext(c => c.handleInputChange);
   const handleKeyDown = useTagSelectorContext(c => c.handleKeyDown);
   const handleBlur = useTagSelectorContext(c => c.handleBlur);
-  const formatCreateLabel = useTagSelectorContext(c => c.formatCreateLabel);
 
   const components = useMemo<
     Partial<SelectComponents<TagOption, false, GroupBase<TagOption>>>

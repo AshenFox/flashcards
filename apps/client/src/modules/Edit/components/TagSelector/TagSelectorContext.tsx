@@ -144,16 +144,6 @@ const TagSelectorProvider: React.FC<TagSelectorProviderProps> = ({
     setInputValue("");
   }, []);
 
-  const formatCreateLabel = useCallback(
-    (inputValue: string) => {
-      if (editingIndex !== null) {
-        return `Update to ${inputValue}`;
-      }
-      return `Create "${inputValue}"`;
-    },
-    [editingIndex],
-  );
-
   const contextValue: TagSelectorContextValue = {
     // State
     inputValue,
@@ -169,7 +159,6 @@ const TagSelectorProvider: React.FC<TagSelectorProviderProps> = ({
     handleInputChange,
     handleKeyDown,
     handleBlur,
-    formatCreateLabel,
 
     // Refs
     selectRef,

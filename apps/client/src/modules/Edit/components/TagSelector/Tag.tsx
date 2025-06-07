@@ -24,18 +24,22 @@ const Tag: React.FC<TagProps> = ({
     .map(part => part.trim())
     .filter(part => part.length > 0);
 
+  // If more than 3 parts, show ellipsis and last 3 parts
+  const displayParts =
+    tagParts.length > 3 ? ["...", ...tagParts.slice(-3)] : tagParts;
+
   return (
     <div
       className={`${styles.tag} ${isEditing ? styles.editing : ""}`}
       onClick={() => onTagClick(index)}
     >
       <div className={styles.tagLabel}>
-        {tagParts.map((part, partIndex) => (
+        {displayParts.map((part, partIndex) => (
           <TagPart
             key={partIndex}
             part={part}
             active={isEditing}
-            showSeparator={partIndex < tagParts.length - 1}
+            showSeparator={partIndex < displayParts.length - 1}
           />
         ))}
       </div>
