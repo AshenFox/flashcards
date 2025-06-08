@@ -29,6 +29,14 @@ const TagSelectorProvider: React.FC<TagSelectorProviderProps> = ({
   const selectRef =
     useRef<Select<TagOption, false, GroupBase<TagOption>>>(null);
   const inputRef = useRef<HTMLInputElement>(null);
+  const setInnerInputValueRef = useRef<React.Dispatch<
+    React.SetStateAction<string>
+  > | null>(null);
+
+  const setCommonInputValue = useCallback((value: string) => {
+    setInputValue(value);
+    setInnerInputValueRef.current?.(value);
+  }, []);
 
   // Convert string tags to options format
   const options = useMemo(
@@ -50,18 +58,18 @@ const TagSelectorProvider: React.FC<TagSelectorProviderProps> = ({
       // If we were editing this tag, clear the edit state
       if (editingIndex === index) {
         setEditingIndex(null);
-        setInputValue("");
+        setCommonInputValue("");
       }
     },
-    [tags, onChange, editingIndex],
+    [tags, onChange, editingIndex, setCommonInputValue],
   );
 
   const handleTagClick = useCallback(
     (index: number) => {
       setEditingIndex(index);
-      setInputValue(tags[index]);
+      setCommonInputValue(tags[index]);
     },
-    [tags],
+    [tags, setCommonInputValue],
   );
 
   const handleSelectChange = useCallback(
@@ -83,9 +91,9 @@ const TagSelectorProvider: React.FC<TagSelectorProviderProps> = ({
         const newTags = [...tags, cleanValue];
         onChange?.(newTags);
       }
-      setInputValue("");
+      setCommonInputValue("");
     },
-    [tags, editingIndex, onChange],
+    [tags, editingIndex, onChange, setCommonInputValue],
   );
 
   const handleCreateOption = useCallback(
@@ -106,9 +114,9 @@ const TagSelectorProvider: React.FC<TagSelectorProviderProps> = ({
           onChange?.(newTags);
         }
       }
-      setInputValue("");
+      setCommonInputValue("");
     },
-    [tags, editingIndex, onChange],
+    [tags, editingIndex, onChange, setCommonInputValue],
   );
 
   const handleInputChange = useCallback(
@@ -123,26 +131,29 @@ const TagSelectorProvider: React.FC<TagSelectorProviderProps> = ({
         // Prevent multiple consecutive ">" (more than 1 in a row)
         processedValue = processedValue.replace(/>+/g, ">");
 
-        setInputValue(processedValue);
+        setCommonInputValue(processedValue);
       } else {
-        setInputValue(value);
+        setCommonInputValue(value);
       }
     },
-    [],
+    [setCommonInputValue],
   );
 
-  const handleKeyDown = useCallback((event: React.KeyboardEvent) => {
-    if (event.key === "Escape") {
-      setEditingIndex(null);
-      setInputValue("");
-    }
-  }, []);
+  const handleKeyDown = useCallback(
+    (event: React.KeyboardEvent) => {
+      if (event.key === "Escape") {
+        setEditingIndex(null);
+        setCommonInputValue("");
+      }
+    },
+    [setCommonInputValue],
+  );
 
   const handleBlur = useCallback(() => {
     // Clear editing state when select loses focus
     setEditingIndex(null);
-    setInputValue("");
-  }, []);
+    setCommonInputValue("");
+  }, [setCommonInputValue]);
 
   const contextValue: TagSelectorContextValue = {
     // State
@@ -163,6 +174,7 @@ const TagSelectorProvider: React.FC<TagSelectorProviderProps> = ({
     // Refs
     selectRef,
     inputRef,
+    setInnerInputValueRef,
   };
 
   return (

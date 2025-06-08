@@ -1,7 +1,8 @@
-import React, { forwardRef, memo, useCallback, useMemo } from "react";
+import React, { forwardRef, memo, useCallback, useMemo, useState } from "react";
 import {
   components as rsComponents,
   GroupBase,
+  InputActionMeta,
   OptionProps,
 } from "react-select";
 import CreatableSelect from "react-select/creatable";
@@ -80,17 +81,32 @@ const CustomOption: React.ComponentType<
 const SelectContainer: React.FC<SelectContainerProps> = ({
   disabled = false,
 }) => {
-  const inputValue = useTagSelectorContext(c => c.inputValue);
   const editingIndex = useTagSelectorContext(c => c.editingIndex);
   const options = useTagSelectorContext(c => c.options);
   const selectOptions = useTagSelectorContext(c => c.selectOptions);
   const selectRef = useTagSelectorContext(c => c.selectRef);
   const inputRef = useTagSelectorContext(c => c.inputRef);
+  const setInnerInputValueRef = useTagSelectorContext(
+    c => c.setInnerInputValueRef,
+  );
   const handleSelectChange = useTagSelectorContext(c => c.handleSelectChange);
   const handleCreateOption = useTagSelectorContext(c => c.handleCreateOption);
   const handleInputChange = useTagSelectorContext(c => c.handleInputChange);
   const handleKeyDown = useTagSelectorContext(c => c.handleKeyDown);
   const handleBlur = useTagSelectorContext(c => c.handleBlur);
+
+  const [innerInputValue, setInnerInputValue] = useState("");
+
+  // Connect the local setInnerInputValue to the context ref
+  React.useEffect(() => {
+    setInnerInputValueRef.current = setInnerInputValue;
+  }, [setInnerInputValueRef]);
+  const innerHandleInputChange = useCallback(
+    (value: string, actionMeta: InputActionMeta) => {
+      handleInputChange(value, actionMeta);
+    },
+    [handleInputChange],
+  );
 
   const components = useMemo<
     Partial<SelectComponents<TagOption, false, GroupBase<TagOption>>>
@@ -123,9 +139,9 @@ const SelectContainer: React.FC<SelectContainerProps> = ({
 
   // Only show menu when there's input text and when editing, only if the value has changed
   const shouldShowMenu =
-    inputValue.trim().length > 0 &&
+    innerInputValue.trim().length > 0 &&
     (editingIndex === null || // Always show for new tags
-      options[editingIndex]?.value !== inputValue.trim()); // Only show when editing if value changed
+      options[editingIndex]?.value !== innerInputValue.trim()); // Only show when editing if value changed
 
   return (
     <CreatableSelect
@@ -133,9 +149,9 @@ const SelectContainer: React.FC<SelectContainerProps> = ({
       value={null}
       onChange={handleSelectChange}
       onCreateOption={handleCreateOption}
-      onInputChange={handleInputChange}
+      onInputChange={innerHandleInputChange}
       onBlur={handleBlur}
-      inputValue={inputValue}
+      inputValue={innerInputValue}
       options={selectOptions}
       filterOption={filterOption}
       placeholder={dynamicPlaceholder}

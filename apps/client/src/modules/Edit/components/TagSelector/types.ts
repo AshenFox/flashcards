@@ -42,6 +42,9 @@ export interface TagSelectorContextValue {
   // Refs
   selectRef: React.RefObject<Select<TagOption, false, GroupBase<TagOption>>>;
   inputRef: React.RefObject<HTMLInputElement>;
+  setInnerInputValueRef: React.MutableRefObject<React.Dispatch<
+    React.SetStateAction<string>
+  > | null>;
 }
 
 export interface TagSelectorProviderProps {
