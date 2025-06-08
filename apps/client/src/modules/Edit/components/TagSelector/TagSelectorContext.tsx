@@ -1,4 +1,11 @@
-import React, { memo, useCallback, useMemo, useRef, useState } from "react";
+import React, {
+  memo,
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import { GroupBase, InputActionMeta, SingleValue } from "react-select";
 import Select from "react-select/dist/declarations/src/Select";
 import { createContext, useContextSelector } from "use-context-selector";
@@ -25,6 +32,7 @@ const TagSelectorProvider: React.FC<TagSelectorProviderProps> = ({
 }) => {
   const [inputValue, setInputValue] = useState("");
   const [editingIndex, setEditingIndex] = useState<number | null>(null);
+  const [pendingCursorPos, setPendingCursorPos] = useState<number | null>(null);
 
   const selectRef =
     useRef<Select<TagOption, false, GroupBase<TagOption>>>(null);
@@ -33,10 +41,22 @@ const TagSelectorProvider: React.FC<TagSelectorProviderProps> = ({
     React.SetStateAction<string>
   > | null>(null);
 
-  const setCommonInputValue = useCallback((value: string) => {
-    setInputValue(value);
-    setInnerInputValueRef.current?.(value);
-  }, []);
+  const setCommonInputValue = useCallback(
+    (value: string, cursorPos?: number) => {
+      setInputValue(value);
+      setInnerInputValueRef.current?.(value);
+      if (cursorPos !== undefined) setPendingCursorPos(cursorPos);
+    },
+    [],
+  );
+
+  // Effect to handle cursor positioning after input value changes
+  useEffect(() => {
+    if (pendingCursorPos !== null && inputRef.current) {
+      inputRef.current.setSelectionRange(pendingCursorPos, pendingCursorPos);
+      setPendingCursorPos(null);
+    }
+  }, [inputValue, pendingCursorPos]);
 
   // Convert string tags to options format
   const options = useMemo(
@@ -150,15 +170,10 @@ const TagSelectorProvider: React.FC<TagSelectorProviderProps> = ({
         // Calculate final cursor position
         newCursorPos = Math.max(0, newCursorPos - cursorOffset);
 
-        setCommonInputValue(processedValue);
-
-        // Set cursor position after state update if transformations occurred
-        if (processedValue !== value)
-          setTimeout(() => {
-            if (inputRef.current) {
-              inputRef.current.setSelectionRange(newCursorPos, newCursorPos);
-            }
-          }, 0);
+        setCommonInputValue(
+          processedValue,
+          processedValue !== value ? newCursorPos : undefined,
+        );
       } else {
         setCommonInputValue(value);
       }
