@@ -125,13 +125,40 @@ const TagSelectorProvider: React.FC<TagSelectorProviderProps> = ({
       if (actionMeta.action === "input-change") {
         let processedValue = value;
 
-        // Replace spaces with ">"
+        // Get current cursor position before transformations
+        const currentCursorPos = inputRef.current?.selectionStart || 0;
+        let cursorOffset = 0;
+
+        // Replace spaces with ">" - this doesn't change cursor position
         processedValue = processedValue.replace(/ /g, ">");
 
-        // Prevent multiple consecutive ">" (more than 1 in a row)
-        processedValue = processedValue.replace(/>+/g, ">");
+        // Prevent multiple consecutive ">" and calculate cursor offset
+        let newCursorPos = currentCursorPos;
+        processedValue = processedValue.replace(/>+/g, (match, offset) => {
+          // If consecutive ">" are before cursor, adjust cursor position
+          if (offset < currentCursorPos) {
+            const removedCount = match.length - 1; // How many extra ">" are removed
+            cursorOffset += removedCount;
+
+            // If cursor was within the consecutive ">" sequence, place it after the single ">"
+            if (offset + match.length > currentCursorPos)
+              newCursorPos = offset + 1;
+          }
+          return ">";
+        });
+
+        // Calculate final cursor position
+        newCursorPos = Math.max(0, newCursorPos - cursorOffset);
 
         setCommonInputValue(processedValue);
+
+        // Set cursor position after state update if transformations occurred
+        if (processedValue !== value)
+          setTimeout(() => {
+            if (inputRef.current) {
+              inputRef.current.setSelectionRange(newCursorPos, newCursorPos);
+            }
+          }, 0);
       } else {
         setCommonInputValue(value);
       }
