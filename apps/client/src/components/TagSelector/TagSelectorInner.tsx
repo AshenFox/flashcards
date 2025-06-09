@@ -1,8 +1,7 @@
 import React, { memo, useEffect } from "react";
 
-import SelectContainer from "./SelectContainer";
-import styles from "./styles.module.scss";
-import TagsContainer from "./TagsContainer";
+import Selector from "./components/Selector/Selector";
+import { Tags } from "./components/Tags";
 import { useTagSelectorContext } from "./TagSelectorContext";
 
 interface TagSelectorInnerProps {
@@ -24,9 +23,9 @@ const TagSelectorInner: React.FC<TagSelectorInnerProps> = ({
   }, [editingIndex, selectRef]);
 
   return (
-    <div className={styles.container}>
-      <TagsContainer />
-      <SelectContainer disabled={disabled} />
+    <div>
+      <Tags />
+      <Selector disabled={disabled} />
     </div>
   );
 };

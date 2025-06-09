@@ -1,17 +1,17 @@
 import React, { memo } from "react";
 
+import { useTagSelectorContext } from "../../TagSelectorContext";
 import styles from "./styles.module.scss";
 import Tag from "./Tag";
-import { useTagSelectorContext } from "./TagSelectorContext";
 
-const TagsContainer: React.FC = () => {
+const Tags: React.FC = () => {
   const options = useTagSelectorContext(c => c.options);
   const editingIndex = useTagSelectorContext(c => c.editingIndex);
   const handleTagClick = useTagSelectorContext(c => c.handleTagClick);
   const handleDeleteTag = useTagSelectorContext(c => c.handleDeleteTag);
 
   return (
-    <div className={styles.tagsContainer}>
+    <div className={styles.container}>
       {options.map((tag, index) => (
         <Tag
           key={index}
@@ -26,4 +26,4 @@ const TagsContainer: React.FC = () => {
   );
 };
 
-export default memo(TagsContainer);
+export default memo(Tags);

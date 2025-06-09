@@ -1,11 +1,6 @@
 @import "@styles/vars";
 
 .container {
-  width: 100%;
-  max-width: 600px;
-}
-
-.tagsContainer {
   display: flex;
   min-height: 3rem;
   flex-wrap: wrap;
@@ -54,19 +49,13 @@
   transition: all 0.2s ease;
 }
 
-.tagCreate {
-  display: inline-flex;
-  margin-right: 0.5rem;
-  transition: all 0.2s ease;
-}
-
-.tagSeparator {
+.separator {
   opacity: var(--opacity);
   transform: translateY(-0.2rem);
   transition: all 0.2s ease;
 }
 
-.deleteButton {
+.delete {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -91,7 +80,7 @@
   }
 }
 
-.tag.editing .deleteButton {
+.tag.editing .delete {
   svg {
     fill: var(--dark-color);
   }
@@ -150,10 +139,6 @@ html:global(.dark) {
 }
 
 @media (max-width: $mobile) {
-  .title {
-    font-size: 2rem;
-  }
-
   .tag {
     padding: 0.7rem 1rem;
   }

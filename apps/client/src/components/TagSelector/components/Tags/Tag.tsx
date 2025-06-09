@@ -2,7 +2,7 @@ import { DeleteIcon } from "@ui/Icons";
 import React, { memo, MouseEventHandler, useCallback } from "react";
 
 import styles from "./styles.module.scss";
-import TagPart from "./TagPart";
+import TagLabel from "./TagLabel";
 
 interface TagProps {
   tag: { label: string };
@@ -19,15 +19,6 @@ const Tag: React.FC<TagProps> = ({
   onTagClick,
   onDeleteTag,
 }) => {
-  const tagParts = tag.label
-    .split(">")
-    .map(part => part.trim())
-    .filter(part => part.length > 0);
-
-  // If more than 3 parts, show ellipsis and last 3 parts
-  const displayParts =
-    tagParts.length > 3 ? ["...", ...tagParts.slice(-3)] : tagParts;
-
   const handleClick = useCallback<MouseEventHandler<HTMLDivElement>>(
     e => {
       e.stopPropagation();
@@ -41,18 +32,9 @@ const Tag: React.FC<TagProps> = ({
       className={`${styles.tag} ${isEditing ? styles.editing : ""}`}
       onClick={handleClick}
     >
-      <div className={styles.tagLabel}>
-        {displayParts.map((part, partIndex) => (
-          <TagPart
-            key={partIndex}
-            part={part}
-            active={isEditing}
-            showSeparator={partIndex < displayParts.length - 1}
-          />
-        ))}
-      </div>
+      <TagLabel label={tag.label} active={isEditing} />
       <button
-        className={styles.deleteButton}
+        className={styles.delete}
         onClick={e => {
           e.stopPropagation();
           onDeleteTag(index);

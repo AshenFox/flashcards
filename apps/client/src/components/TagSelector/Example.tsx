@@ -2,7 +2,7 @@ import React, { useState } from "react";
 
 import TagSelector from "./TagSelector";
 
-const TagSelectorExample: React.FC = () => {
+const Example: React.FC = () => {
   const [tags, setTags] = useState<string[]>([
     "Math",
     "Math>Algebra",
@@ -110,4 +110,4 @@ const TagSelectorExample: React.FC = () => {
   );
 };
 
-export default TagSelectorExample;
+export default Example;

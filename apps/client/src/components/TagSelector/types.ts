@@ -15,14 +15,6 @@ export interface TagSelectorProps {
   disabled?: boolean;
 }
 
-export interface TagsContainerProps {
-  tags: TagOption[];
-  editingIndex: number | null;
-  disabled?: boolean;
-  onTagClick: (index: number) => void;
-  onDeleteTag: (index: number) => void;
-}
-
 export interface TagSelectorContextValue {
   // State
   inputValue: string;

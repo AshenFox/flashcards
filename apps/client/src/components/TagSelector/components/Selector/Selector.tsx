@@ -1,82 +1,18 @@
-import React, { forwardRef, memo, useCallback, useMemo, useState } from "react";
-import {
-  components as rsComponents,
-  GroupBase,
-  InputActionMeta,
-  OptionProps,
-} from "react-select";
+import React, { memo, useCallback, useMemo, useState } from "react";
+import { GroupBase, InputActionMeta } from "react-select";
 import CreatableSelect from "react-select/creatable";
 import { SelectComponents } from "react-select/dist/declarations/src/components";
 
+import { useTagSelectorContext } from "../../TagSelectorContext";
+import { TagOption } from "../../types";
+import CustomInput from "./CustomInput";
+import CustomOption from "./CustomOption";
 import { customStyles } from "./customStyles";
-import styles from "./styles.module.scss";
-import TagPart from "./TagPart";
-import { useTagSelectorContext } from "./TagSelectorContext";
-import { TagOption } from "./types";
 
 interface SelectContainerProps {
   placeholder?: string;
   disabled?: boolean;
 }
-
-export const useMergedRef = <T,>(
-  ...refs: (((instance: T | null) => void) | React.MutableRefObject<T>)[]
-): ((instance: T | null) => void) => {
-  return useCallback(
-    node =>
-      refs.forEach(ref => {
-        if (typeof ref === "function") ref(node);
-        else ref.current = node;
-      }),
-    [refs],
-  );
-};
-
-const CustomInput = forwardRef<HTMLInputElement, any>((props, ref) => {
-  const mergedRef = useMergedRef<HTMLInputElement>(ref, props.innerRef);
-  return (
-    <rsComponents.Input {...props} enterKeyHint="enter" innerRef={mergedRef} />
-  );
-});
-
-CustomInput.displayName = "CustomInput";
-
-const CustomOption: React.ComponentType<
-  OptionProps<TagOption, false, GroupBase<TagOption>>
-> = props => {
-  const { data } = props;
-
-  const editingIndex = useTagSelectorContext(c => c.editingIndex);
-
-  // Split the option label by ">" and filter out empty parts
-  const tagParts = data.label
-    .split(">")
-    .map((part: string) => part.trim())
-    .filter((part: string) => part.length > 0);
-
-  const displayParts =
-    tagParts.length > 3 ? ["...", ...tagParts.slice(-3)] : tagParts;
-
-  return (
-    <rsComponents.Option {...props}>
-      <div className={styles.tagLabel}>
-        {data?.__isNew__ && (
-          <span className={styles.tagCreate}>
-            {editingIndex !== null ? "Update to" : "Create"}:
-          </span>
-        )}
-        {displayParts.map((part: string, partIndex: number) => (
-          <TagPart
-            key={partIndex}
-            part={part}
-            showSeparator={partIndex < tagParts.length - 1}
-            active={props.isFocused}
-          />
-        ))}
-      </div>
-    </rsComponents.Option>
-  );
-};
 
 const SelectContainer: React.FC<SelectContainerProps> = ({
   disabled = false,
@@ -115,9 +51,7 @@ const SelectContainer: React.FC<SelectContainerProps> = ({
       DropdownIndicator: () => null,
       IndicatorSeparator: () => null,
       Option: CustomOption,
-      Input: props => {
-        return <CustomInput {...props} ref={inputRef} />;
-      },
+      Input: props => <CustomInput {...props} ref={inputRef} />,
     };
   }, [inputRef]);
 

@@ -1,5 +1,6 @@
 import Container from "@components/Container";
 import ContentWrapper from "@components/ContentWrapper";
+import TagSelectorExample from "@components/TagSelector/Example";
 import { useSaveState } from "@modules/Edit/components/Save/useSaveActive";
 import { useEditContext } from "@modules/Edit/context";
 import { useActions, useAppSelector } from "@store/hooks";
@@ -10,7 +11,6 @@ import { memo, useCallback, useRef } from "react";
 import { ContentEditableEvent } from "react-contenteditable";
 
 import Save from "../Save/Save";
-import TagSelectorExample from "../TagSelector/TagSelectorExample";
 import { ExportCards, ImportCards, SaveAllCards } from "./components";
 import s from "./styles.module.scss";
 

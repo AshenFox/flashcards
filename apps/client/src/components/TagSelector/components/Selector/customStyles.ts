@@ -1,6 +1,6 @@
 import { StylesConfig } from "react-select";
 
-import { TagOption } from "./types";
+import { TagOption } from "../../types";
 
 export const customStyles: StylesConfig<TagOption, false> = {
   control: (provided, state) => ({
