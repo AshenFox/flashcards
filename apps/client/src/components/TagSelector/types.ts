@@ -9,7 +9,6 @@ export interface TagOption {
 
 export interface TagSelectorProps {
   tags?: string[];
-  availableOptions?: string[];
   onChange?: (tags: string[]) => void;
   placeholder?: string;
   disabled?: boolean;
@@ -20,7 +19,6 @@ export interface TagSelectorContextValue {
   inputValue: string;
   editingIndex: number | null;
   options: TagOption[];
-  selectOptions: TagOption[];
 
   // Handlers
   handleDeleteTag: (index: number) => void;
@@ -30,6 +28,7 @@ export interface TagSelectorContextValue {
   handleInputChange: (value: string, actionMeta: InputActionMeta) => void;
   handleKeyDown: (event: React.KeyboardEvent) => void;
   handleBlur: () => void;
+  loadOptions: (inputValue: string) => Promise<TagOption[]>;
 
   // Refs
   selectRef: React.RefObject<Select<TagOption, false, GroupBase<TagOption>>>;
@@ -42,6 +41,5 @@ export interface TagSelectorContextValue {
 export interface TagSelectorProviderProps {
   children: React.ReactNode;
   tags: string[];
-  availableOptions: string[];
   onChange?: (tags: string[]) => void;
 }

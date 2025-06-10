@@ -1,6 +1,6 @@
 import React, { memo, useCallback, useMemo, useState } from "react";
 import { GroupBase, InputActionMeta } from "react-select";
-import CreatableSelect from "react-select/creatable";
+import AsyncCreatableSelect from "react-select/async-creatable";
 import { SelectComponents } from "react-select/dist/declarations/src/components";
 
 import { useTagSelectorContext } from "../../TagSelectorContext";
@@ -19,7 +19,6 @@ const SelectContainer: React.FC<SelectContainerProps> = ({
 }) => {
   const editingIndex = useTagSelectorContext(c => c.editingIndex);
   const options = useTagSelectorContext(c => c.options);
-  const selectOptions = useTagSelectorContext(c => c.selectOptions);
   const selectRef = useTagSelectorContext(c => c.selectRef);
   const inputRef = useTagSelectorContext(c => c.inputRef);
   const setInnerInputValueRef = useTagSelectorContext(
@@ -30,6 +29,7 @@ const SelectContainer: React.FC<SelectContainerProps> = ({
   const handleInputChange = useTagSelectorContext(c => c.handleInputChange);
   const handleKeyDown = useTagSelectorContext(c => c.handleKeyDown);
   const handleBlur = useTagSelectorContext(c => c.handleBlur);
+  const loadOptions = useTagSelectorContext(c => c.loadOptions);
 
   const [innerInputValue, setInnerInputValue] = useState("");
 
@@ -37,6 +37,7 @@ const SelectContainer: React.FC<SelectContainerProps> = ({
   React.useEffect(() => {
     setInnerInputValueRef.current = setInnerInputValue;
   }, [setInnerInputValueRef]);
+
   const innerHandleInputChange = useCallback(
     (value: string, actionMeta: InputActionMeta) => {
       handleInputChange(value, actionMeta);
@@ -55,18 +56,6 @@ const SelectContainer: React.FC<SelectContainerProps> = ({
     };
   }, [inputRef]);
 
-  // Custom filter function to match from beginning of string
-  const filterOption = useCallback((option: TagOption, inputValue: string) => {
-    if (!inputValue.trim()) return true;
-
-    // Convert both to lowercase for case-insensitive matching
-    const optionValue = option.value.toLowerCase();
-    const searchValue = inputValue.toLowerCase().trim();
-
-    // Match from the beginning of the string
-    return optionValue.startsWith(searchValue);
-  }, []);
-
   // Dynamic placeholder based on editing state
   const dynamicPlaceholder =
     editingIndex !== null ? "Edit tag..." : "Add a tag...";
@@ -78,7 +67,7 @@ const SelectContainer: React.FC<SelectContainerProps> = ({
       options[editingIndex]?.value !== innerInputValue.trim()); // Only show when editing if value changed
 
   return (
-    <CreatableSelect
+    <AsyncCreatableSelect
       ref={selectRef}
       value={null}
       onChange={handleSelectChange}
@@ -86,8 +75,7 @@ const SelectContainer: React.FC<SelectContainerProps> = ({
       onInputChange={innerHandleInputChange}
       onBlur={handleBlur}
       inputValue={innerInputValue}
-      options={selectOptions}
-      filterOption={filterOption}
+      loadOptions={loadOptions}
       placeholder={dynamicPlaceholder}
       isDisabled={disabled}
       isClearable={false}
@@ -106,6 +94,8 @@ const SelectContainer: React.FC<SelectContainerProps> = ({
       formatCreateLabel={value => value}
       createOptionPosition="first"
       components={components}
+      cacheOptions
+      defaultOptions={false}
     />
   );
 };

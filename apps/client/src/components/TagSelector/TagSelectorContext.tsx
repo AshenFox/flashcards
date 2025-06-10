@@ -1,3 +1,4 @@
+import { axiosInstance } from "@flashcards/common";
 import React, {
   memo,
   useCallback,
@@ -27,7 +28,6 @@ export const useTagSelectorContext = <Selected,>(
 const TagSelectorProvider: React.FC<TagSelectorProviderProps> = ({
   children,
   tags,
-  availableOptions,
   onChange,
 }) => {
   const [inputValue, setInputValue] = useState("");
@@ -64,12 +64,34 @@ const TagSelectorProvider: React.FC<TagSelectorProviderProps> = ({
     [tags],
   );
 
-  // Convert available options to select format and filter out already selected tags
-  const selectOptions = useMemo(() => {
-    return availableOptions
-      .filter(option => !tags.includes(option)) // Remove already selected tags
-      .map(option => ({ value: option, label: option }));
-  }, [availableOptions, tags]);
+  // Load options function for AsyncCreatableSelect
+  const loadOptions = useCallback(
+    async (inputValue: string): Promise<TagOption[]> => {
+      try {
+        if (!inputValue.trim()) {
+          return [];
+        }
+
+        const { data } = await axiosInstance.get<{ tags: string[] }>(
+          "/api/main/user/tags",
+          {
+            params: {
+              search: inputValue.trim(),
+            },
+          },
+        );
+
+        // Convert tags to options format and filter out already selected tags
+        return data.tags
+          .filter(tag => !tags.includes(tag))
+          .map(tag => ({ value: tag, label: tag }));
+      } catch (err) {
+        console.error("Error loading tags:", err);
+        return [];
+      }
+    },
+    [tags],
+  );
 
   const handleDeleteTag = useCallback(
     (index: number) => {
@@ -202,7 +224,6 @@ const TagSelectorProvider: React.FC<TagSelectorProviderProps> = ({
     inputValue,
     editingIndex,
     options,
-    selectOptions,
 
     // Handlers
     handleDeleteTag,
@@ -212,6 +233,7 @@ const TagSelectorProvider: React.FC<TagSelectorProviderProps> = ({
     handleInputChange,
     handleKeyDown,
     handleBlur,
+    loadOptions,
 
     // Refs
     selectRef,

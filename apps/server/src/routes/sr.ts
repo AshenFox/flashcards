@@ -39,8 +39,6 @@ router.get("/cards", auth, async (req: CardsGetReq, res: CardsGetRes) => {
   try {
     let { number, tags } = req.query;
 
-    console.log({ tags, number });
-
     let numCards = parseInt(number) || 0;
 
     const _id = res.locals.user._id;

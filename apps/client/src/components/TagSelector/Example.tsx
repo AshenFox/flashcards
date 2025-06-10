@@ -9,25 +9,6 @@ const Example: React.FC = () => {
     "Science>Physics",
     "History>World History",
   ]);
-  const [availableOptions] = useState<string[]>([
-    "Math>Algebra",
-    "Math>Geometry",
-    "Math>Calculus",
-    "Math>Statistics",
-    "Science>Physics",
-    "Science>Chemistry",
-    "Science>Biology",
-    "History>World_History",
-    "History>American_History",
-    "Literature>Classic_Literature",
-    "Literature>Modern_Literature",
-    "Geography>Physical_Geography",
-    "Geography>Human Geography",
-    "Arts>Visual_Arts",
-    "Arts>Music",
-    "Philosophy>Ethics",
-    "Philosophy>Logic",
-  ]);
 
   const handleTagsChange = (newTags: string[]) => {
     setTags(newTags);
@@ -45,14 +26,14 @@ const Example: React.FC = () => {
           <br />
           • Click the × button to delete tags
           <br />
-          • Type in the input to see available options or create new tags
+          • Type in the input to see available options loaded from server or
+          create new tags
           <br />• Press Enter or select from dropdown to add/edit tags
         </p>
       </div>
 
       <TagSelector
         tags={tags}
-        availableOptions={availableOptions}
         onChange={handleTagsChange}
         placeholder="Add a tag..."
       />
@@ -84,26 +65,11 @@ const Example: React.FC = () => {
         }}
       >
         <h4 style={{ color: "var(--text-color)", marginBottom: "1rem" }}>
-          Available Options (filtered):
+          Available Options:
         </h4>
         <div style={{ color: "var(--subtle-text-color)", fontSize: "1.2rem" }}>
-          {availableOptions
-            .filter(option => !tags.includes(option))
-            .map(option => (
-              <span
-                key={option}
-                style={{
-                  display: "inline-block",
-                  padding: "0.2rem 0.5rem",
-                  margin: "0.2rem",
-                  backgroundColor: "var(--tag-background-color)",
-                  borderRadius: "0.3rem",
-                  fontSize: "1rem",
-                }}
-              >
-                {option}
-              </span>
-            ))}
+          Options are now loaded dynamically from the server when typing. Start
+          typing in the input above to see available tags.
         </div>
       </div>
     </div>

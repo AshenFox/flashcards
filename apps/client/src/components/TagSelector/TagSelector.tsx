@@ -6,16 +6,11 @@ import { TagSelectorProps } from "./types";
 
 const TagSelector: React.FC<TagSelectorProps> = ({
   tags = [],
-  availableOptions = [],
   onChange,
   disabled = false,
 }) => {
   return (
-    <TagSelectorProvider
-      tags={tags}
-      availableOptions={availableOptions}
-      onChange={onChange}
-    >
+    <TagSelectorProvider tags={tags} onChange={onChange}>
       <TagSelectorInner disabled={disabled} />
     </TagSelectorProvider>
   );

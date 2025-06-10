@@ -19,7 +19,7 @@ const TagPart: React.FC<TagPartProps> = ({
       <span className={clsx(styles.tagPart, active && styles.editing)}>
         {part}
       </span>
-      {showSeparator && <span className={styles.tagSeparator}>{">"} </span>}
+      {showSeparator && <span className={styles.separator}>{">"} </span>}
     </>
   );
 };
