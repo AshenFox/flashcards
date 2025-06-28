@@ -22,6 +22,7 @@ export type UserCreator<
   password: string;
   registration_date: DateJSON<Options["isJson"]>;
   subscriptions: Subscriptions;
+  tags: string[];
 };
 
 // server types

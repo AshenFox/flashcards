@@ -1,9 +1,10 @@
-import { Card } from "@flashcards/common";
+import { Card, Module } from "@flashcards/common";
 import notificationModel from "@models//notification_model";
 import cardModel, {
   CardSortObj,
   updateModuleNumberSR,
 } from "@models/card_model";
+import moduleModel from "@models/module_model";
 import { auth } from "@supplemental/middleware";
 import { notification_timeout } from "@supplemental/notifications_control";
 import sr_stages from "@supplemental/sr_stages";
@@ -23,6 +24,7 @@ type ResError = {
 
 type CardsGetQuery = qs.ParsedQs & {
   number: string;
+  tags?: string[];
 };
 
 type CardsGetReq = Request<any, any, any, CardsGetQuery>;
@@ -35,7 +37,7 @@ type CardsGetRes = ResponseLocals<CardsGetResBody | ResError>;
 
 router.get("/cards", auth, async (req: CardsGetReq, res: CardsGetRes) => {
   try {
-    let { number } = req.query;
+    let { number, tags } = req.query;
 
     let numCards = parseInt(number) || 0;
 
@@ -46,6 +48,28 @@ router.get("/cards", auth, async (req: CardsGetReq, res: CardsGetRes) => {
       studyRegime: true,
       nextRep: { $lte: new Date() },
     };
+
+    // If tags are provided, filter by module tags
+    if (tags && Array.isArray(tags)) {
+      // Create regex patterns for hierarchical prefix matching
+      const tagRegexPatterns = tags.map(tag => {
+        // Escape special regex characters and create pattern for exact match or hierarchical children
+        const escapedTag = tag.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+        return new RegExp(`^${escapedTag}(>.*)?$`);
+      });
+
+      // Find modules that have tags matching any of the patterns
+      const modules = await moduleModel
+        .find({
+          author_id: _id,
+          tags: { $in: tagRegexPatterns },
+        })
+        .select("_id");
+
+      const moduleIds = modules.map(module => module._id);
+      filterObj.moduleID = { $in: moduleIds };
+    }
+
     const sortObj: CardSortObj = { creation_date: -1 };
 
     const cards = await cardModel.find(filterObj).sort(sortObj).limit(numCards);
@@ -61,8 +85,15 @@ router.get("/cards", auth, async (req: CardsGetReq, res: CardsGetRes) => {
 // @desc ------- Get Study Regime cards numbers
 // @access ----- Private
 
+type CountGetQuery = qs.ParsedQs & {
+  tags?: string | string[];
+};
+
+type CountGetReq = Request<any, any, any, CountGetQuery>;
+
 type CountGetResBody = {
   all_num: number;
+  found_num: number;
   repeat_num: number;
   next_num: number;
   next_date: false | Date;
@@ -70,19 +101,44 @@ type CountGetResBody = {
 
 type CountGetRes = ResponseLocals<CountGetResBody | ResError>;
 
-router.get("/count", auth, async (req: Request, res: CountGetRes) => {
+router.get("/count", auth, async (req: CountGetReq, res: CountGetRes) => {
   try {
     const _id = res.locals.user._id;
+    const { tags } = req.query;
 
-    const all_num = await cardModel.countDocuments({
+    let moduleFilter: FilterQuery<Module> = {
       author_id: _id,
       studyRegime: true,
+    };
+
+    // If tags are provided, filter by module tags
+    if (tags && Array.isArray(tags)) {
+      // Create regex patterns for hierarchical prefix matching
+      const tagRegexPatterns = tags.map(tag => {
+        // Escape special regex characters and create pattern for exact match or hierarchical children
+        const escapedTag = tag.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+        return new RegExp(`^${escapedTag}(>.*)?$`);
+      });
+
+      // Find modules that have tags matching any of the patterns
+      const modules = await moduleModel
+        .find({
+          author_id: _id,
+          tags: { $in: tagRegexPatterns },
+        })
+        .select("_id");
+
+      const moduleIds = modules.map(module => module._id);
+      moduleFilter = { moduleID: { $in: moduleIds } };
+    }
+
+    const all_num = await cardModel.countDocuments({
+      ...moduleFilter,
     });
 
     const repeat_num = await cardModel.countDocuments({
-      author_id: _id,
       nextRep: { $lte: new Date() },
-      studyRegime: true,
+      ...moduleFilter,
     });
 
     const notification = await notificationModel
@@ -92,7 +148,14 @@ router.get("/count", auth, async (req: Request, res: CountGetRes) => {
     const next_num = notification ? notification.number : 0;
     const next_date = notification ? notification.time : false;
 
-    res.status(200).json({ all_num, repeat_num, next_num, next_date });
+    // Count cards matching tags (if tags provided, otherwise count all cards)
+    const found_num = await cardModel.countDocuments({
+      ...moduleFilter,
+    });
+
+    res
+      .status(200)
+      .json({ all_num, repeat_num, next_num, next_date, found_num });
   } catch (err) {
     console.error(err);
     res.status(500).json({ errorBody: "Server Error" });

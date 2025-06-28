@@ -6,15 +6,11 @@ import moduleModel from "./module_model";
 const Schema = mongoose.Schema;
 
 export type CardSortObj = {
-  [key in keyof Card]?: SortOrder | { $meta: "textScore" };
+  [key in keyof Card]?: SortOrder;
 };
 
 const CardSchema = new Schema<Card>({
-  moduleID: {
-    type: Schema.Types.ObjectId,
-    ref: "Modules",
-    required: true,
-  },
+  moduleID: { type: Schema.Types.ObjectId, ref: "Modules", required: true },
   term: String,
   definition: String,
   imgurl: String,
@@ -24,11 +20,7 @@ const CardSchema = new Schema<Card>({
   nextRep: Date,
   prevStage: Date,
   lastRep: Date,
-  author_id: {
-    type: Schema.Types.ObjectId,
-    ref: "Users",
-    required: true,
-  },
+  author_id: { type: Schema.Types.ObjectId, ref: "Users", required: true },
   author: String,
 });
 

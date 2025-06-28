@@ -1,5 +1,6 @@
 import Container from "@components/Container";
 import ContentWrapper from "@components/ContentWrapper";
+import TagSelectorExample from "@components/TagSelector/Example";
 import { useSaveState } from "@modules/Edit/components/Save/useSaveActive";
 import { useEditContext } from "@modules/Edit/context";
 import { useActions, useAppSelector } from "@store/hooks";
@@ -52,6 +53,7 @@ const Module = () => {
     <div className={s.module}>
       <ContentWrapper tagType="section">
         <Container>
+          <TagSelectorExample />
           <div className={s.content}>
             <div className={s.title}>
               <Input
