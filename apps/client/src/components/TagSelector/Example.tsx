@@ -32,11 +32,7 @@ const Example: React.FC = () => {
         </p>
       </div>
 
-      <TagSelector
-        tags={tags}
-        onChange={handleTagsChange}
-        placeholder="Add a tag..."
-      />
+      <TagSelector tags={tags} onChange={handleTagsChange} />
 
       <div
         style={{

@@ -10,8 +10,8 @@ const TagSelector: React.FC<TagSelectorProps> = ({
   disabled = false,
 }) => {
   return (
-    <TagSelectorProvider tags={tags} onChange={onChange}>
-      <TagSelectorInner disabled={disabled} />
+    <TagSelectorProvider tags={tags} onChange={onChange} disabled={disabled}>
+      <TagSelectorInner />
     </TagSelectorProvider>
   );
 };

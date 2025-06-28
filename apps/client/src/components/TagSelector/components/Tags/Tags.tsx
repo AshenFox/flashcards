@@ -5,6 +5,7 @@ import styles from "./styles.module.scss";
 import Tag from "./Tag";
 
 const Tags: React.FC = () => {
+  const disabled = useTagSelectorContext(c => c.disabled);
   const options = useTagSelectorContext(c => c.options);
   const editingIndex = useTagSelectorContext(c => c.editingIndex);
   const handleTagClick = useTagSelectorContext(c => c.handleTagClick);
@@ -14,6 +15,7 @@ const Tags: React.FC = () => {
     <div className={styles.container}>
       {options.map((tag, index) => (
         <Tag
+          disabled={disabled}
           key={index}
           tag={tag}
           index={index}

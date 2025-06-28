@@ -9,14 +9,8 @@ import CustomInput from "./CustomInput";
 import CustomOption from "./CustomOption";
 import { customStyles } from "./customStyles";
 
-interface SelectContainerProps {
-  placeholder?: string;
-  disabled?: boolean;
-}
-
-const SelectContainer: React.FC<SelectContainerProps> = ({
-  disabled = false,
-}) => {
+const SelectContainer: React.FC = () => {
+  const disabled = useTagSelectorContext(c => c.disabled);
   const editingIndex = useTagSelectorContext(c => c.editingIndex);
   const options = useTagSelectorContext(c => c.options);
   const selectRef = useTagSelectorContext(c => c.selectRef);
@@ -57,8 +51,11 @@ const SelectContainer: React.FC<SelectContainerProps> = ({
   }, [inputRef]);
 
   // Dynamic placeholder based on editing state
-  const dynamicPlaceholder =
-    editingIndex !== null ? "Edit tag..." : "Add a tag...";
+  const dynamicPlaceholder = disabled
+    ? ""
+    : editingIndex !== null
+      ? "Edit tag..."
+      : "Add a tag...";
 
   // Only show menu when there's input text and when editing, only if the value has changed
   const shouldShowMenu =

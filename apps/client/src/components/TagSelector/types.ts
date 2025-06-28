@@ -10,7 +10,6 @@ export interface TagOption {
 export interface TagSelectorProps {
   tags?: string[];
   onChange?: (tags: string[]) => void;
-  placeholder?: string;
   disabled?: boolean;
 }
 
@@ -19,6 +18,7 @@ export interface TagSelectorContextValue {
   inputValue: string;
   editingIndex: number | null;
   options: TagOption[];
+  disabled: boolean;
 
   // Handlers
   handleDeleteTag: (index: number) => void;
@@ -41,5 +41,6 @@ export interface TagSelectorContextValue {
 export interface TagSelectorProviderProps {
   children: React.ReactNode;
   tags: string[];
+  disabled?: boolean;
   onChange?: (tags: string[]) => void;
 }

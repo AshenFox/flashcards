@@ -27,7 +27,8 @@ export const useTagSelectorContext = <Selected,>(
 
 const TagSelectorProvider: React.FC<TagSelectorProviderProps> = ({
   children,
-  tags,
+  tags = [],
+  disabled = false,
   onChange,
 }) => {
   const [inputValue, setInputValue] = useState("");
@@ -224,6 +225,7 @@ const TagSelectorProvider: React.FC<TagSelectorProviderProps> = ({
     inputValue,
     editingIndex,
     options,
+    disabled,
 
     // Handlers
     handleDeleteTag,

@@ -4,14 +4,7 @@ import Selector from "./components/Selector/Selector";
 import { Tags } from "./components/Tags";
 import { useTagSelectorContext } from "./TagSelectorContext";
 
-interface TagSelectorInnerProps {
-  placeholder?: string;
-  disabled?: boolean;
-}
-
-const TagSelectorInner: React.FC<TagSelectorInnerProps> = ({
-  disabled = false,
-}) => {
+const TagSelectorInner: React.FC = () => {
   const editingIndex = useTagSelectorContext(c => c.editingIndex);
   const selectRef = useTagSelectorContext(c => c.selectRef);
 
@@ -25,7 +18,7 @@ const TagSelectorInner: React.FC<TagSelectorInnerProps> = ({
   return (
     <div>
       <Tags />
-      <Selector disabled={disabled} />
+      <Selector />
     </div>
   );
 };
