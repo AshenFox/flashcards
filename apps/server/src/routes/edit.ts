@@ -8,6 +8,7 @@ import {
 } from "@flashcards/common";
 import cardModel, { updateModuleNumberSR } from "@models/card_model";
 import moduleModel from "@models/module_model";
+import { updateUserTags } from "@models/user_model";
 import { auth } from "@supplemental/middleware";
 import { notification_timeout } from "@supplemental/notifications_control";
 import { ResponseLocals } from "@supplemental/types";
@@ -51,7 +52,8 @@ router.delete(
 
       res.status(200).json({ msg: "The module has been deleted." });
 
-      await notification_timeout(user);
+      // Update user tags and notifications asynchronously
+      await Promise.all([notification_timeout(user), updateUserTags(_id)]);
     } catch (err) {
       console.error(err);
       res.status(500).json({ errorBody: "Server Error" });
@@ -146,10 +148,14 @@ router.put("/module", auth, async (req: ModulePutReq, res: ModulePutRes) => {
       throw new Error(`Module ${module_id} has not been found.`);
 
     foundModule.title = module_data.title;
+    foundModule.tags = module_data.tags ?? [];
 
     await foundModule.save();
 
     res.status(200).json({ msg: "The module has been edited." });
+
+    // Update user tags asynchronously after response is sent
+    await updateUserTags(_id);
   } catch (err) {
     console.error(err);
     res.status(500).json({ errorBody: "Server Error" });
@@ -232,6 +238,7 @@ router.post("/module", auth, async (req: ModulePostReq, res: ModulePostRes) => {
       creation_date: new Date(),
       draft: false,
       cards: ref_id_arr,
+      tags: [],
     });
 
     const new_module_cards = await cardModel.find({
@@ -270,6 +277,9 @@ router.post("/module", auth, async (req: ModulePostReq, res: ModulePostRes) => {
     }
 
     res.status(200).json({ msg: "A new module has been created." });
+
+    // Update user tags asynchronously after response is sent
+    await updateUserTags(_id);
   } catch (err) {
     console.error(err);
     res.status(500).json({ errorBody: "Server Error" });
@@ -405,6 +415,7 @@ router.get(
           cards: [],
           creation_date: new Date(),
           draft: true,
+          tags: [],
         });
         filterObj.moduleID = foundModule._id;
 

@@ -1,0 +1,153 @@
+@import "@styles/vars";
+
+.container {
+  display: flex;
+  min-height: 3rem;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  margin-bottom: 0.75rem;
+  gap: 0.8rem;
+}
+
+.tagPart {
+  display: inline-flex;
+  height: 1.9rem;
+  align-items: center;
+  padding: 0 0.5rem;
+  border-radius: 0.2rem;
+  background-color: var(--background-color);
+  color: var(--color);
+  transition: all 0.2s ease;
+}
+
+.tag {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.3rem 0.6rem;
+  border: none;
+  border-radius: 0.3rem;
+  background-color: var(--tag-background-color);
+  color: var(--tag-text-color);
+  cursor: pointer;
+  font-size: 1.4rem;
+  font-weight: 500;
+  gap: 0.6rem;
+  transition: all 0.2s ease;
+  user-select: none;
+
+  &.editing {
+    background-color: var(--active-color);
+    color: var(--active-secondary-color);
+  }
+
+  &.disabled {
+    cursor: default;
+  }
+}
+
+.tagLabel {
+  display: inline-flex;
+  align-items: center;
+  font-size: inherit;
+  gap: 0.1rem;
+  transition: all 0.2s ease;
+}
+
+.separator {
+  opacity: var(--opacity);
+  transform: translateY(-0.2rem);
+  transition: all 0.2s ease;
+}
+
+.delete {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+
+  svg {
+    width: 1.4rem;
+    height: 1.4rem;
+    fill: var(--delete-button-fill);
+    transition: all 0.2s ease;
+  }
+
+  &:hover svg {
+    fill: var(--danger-color);
+  }
+
+  &:disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+    pointer-events: none;
+  }
+}
+
+.tag.editing .delete {
+  svg {
+    fill: var(--dark-color);
+  }
+
+  &:hover svg {
+    fill: var(--danger-color);
+  }
+}
+// Theme-specific variables
+html:global(.light) {
+  .tag {
+    --tag-background-color: #{$teal};
+    --tag-text-color: #{$ivory};
+    --tag-hover-background-color: #{$silver-foil};
+    --delete-button-hover-color: #{$ivory};
+    --delete-button-fill: var(--reverse-color);
+  }
+
+  .tagPart {
+    --color: #{$ivory};
+    --background-color: #{$test-teal};
+
+    &.editing {
+      --background-color: #{$dandelion};
+      --color: #{--text-color};
+    }
+  }
+
+  .separator {
+    --opacity: 0.8;
+  }
+}
+
+html:global(.dark) {
+  .tag {
+    --tag-background-color: #{$davys-grey};
+    --tag-text-color: #{$anti-flash-white};
+    --tag-hover-background-color: #{$silver-foil};
+    --delete-button-hover-color: #{$ivory};
+    --delete-button-fill: var(--icon-fill);
+  }
+
+  .tagPart {
+    --color: var(--text-color);
+    --background-color: #{$dim-gray-alt};
+
+    &.editing {
+      --color: var(--reverse-color);
+      --background-color: #{$dandelion};
+    }
+  }
+
+  .separator {
+    --opacity: 0.4;
+  }
+}
+
+@media (max-width: $mobile) {
+  .tag {
+    padding: 0.7rem 1rem;
+  }
+
+  .tagsContainer {
+    gap: 0.6rem;
+  }
+}
