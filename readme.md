@@ -1,4 +1,4 @@
-Посмотреть проект можно по ссылке - [Flashcards](https://flashcards-ashenfox.duckdns.org/)
+Посмотреть проект можно по ссылке - [Flashcards](https://flashcards.ashenfox.top/)
 
 Для входа можно использовать:  
 Логин: Testuser1  

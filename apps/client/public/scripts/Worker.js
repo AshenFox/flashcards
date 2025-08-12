@@ -27,7 +27,7 @@ self.addEventListener("notificationclick", event => {
   const url =
     location.hostname === "localhost"
       ? "https://localhost:4000/home/sr"
-      : "https://flashcards-ashenfox.duckdns.org/home/sr";
+      : "https://flashcards.ashenfox.top/home/sr";
 
   event.notification.close();
 
