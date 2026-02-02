@@ -1,5 +1,6 @@
+import { useCanHover } from "@helpers/hooks/useCanHover";
 import clsx from "clsx";
-import { memo, ReactNode } from "react";
+import { memo, ReactNode, useEffect, useState } from "react";
 import { ITooltip, Tooltip as ReactTooltip } from "react-tooltip";
 
 import s from "./styles.module.scss";
@@ -11,6 +12,10 @@ export type TooltipProps = ITooltip & {
 };
 
 const Tooltip = ({ id, children, className, ...rest }: TooltipProps) => {
+  const canHover = useCanHover();
+
+  if (!canHover) return null;
+
   return (
     <ReactTooltip
       {...rest}
