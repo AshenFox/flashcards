@@ -9,18 +9,14 @@ export const urlBase64ToUint8Array = (base64String: string) => {
   const base64WithPadding = base64 + padding;
   const urlSafeBase64 = base64WithPadding.replace(/-/g, "+").replace(/_/g, "/");
 
-  try {
-    const rawData = window.atob(urlSafeBase64);
-    const outputArray = new Uint8Array(rawData.length);
+  const rawData = window.atob(urlSafeBase64);
+  const outputArray = new Uint8Array(rawData.length);
 
-    for (let i = 0; i < rawData.length; ++i) {
-      outputArray[i] = rawData.charCodeAt(i);
-    }
-
-    return outputArray;
-  } catch (err) {
-    console.error(err);
+  for (let i = 0; i < rawData.length; ++i) {
+    outputArray[i] = rawData.charCodeAt(i);
   }
+
+  return outputArray;
 };
 
 export const getBrowserInfo = () => {
@@ -60,11 +56,13 @@ export const subscribeToPush = async (
     throw new Error("Service Worker not supported");
 
   try {
+    const applicationServerKey = urlBase64ToUint8Array(
+      flashcardsConfig.publicVapidKey,
+    );
+
     const subscription = await registration.pushManager.subscribe({
       userVisibleOnly: true,
-      applicationServerKey: urlBase64ToUint8Array(
-        flashcardsConfig.publicVapidKey,
-      ),
+      applicationServerKey,
     });
 
     const { browser, os, platform } = getBrowserInfo();

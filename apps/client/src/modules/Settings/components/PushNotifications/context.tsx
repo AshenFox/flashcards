@@ -6,6 +6,7 @@ import {
   useContext,
   useEffect,
   useMemo,
+  useRef,
   useState,
 } from "react";
 
@@ -59,6 +60,9 @@ export const PushNotificationsProvider: React.FC<{
   const [permission, setPermission] = useState<Permission | null>(null);
   const [pushPrepared, setPushPrepared] = useState(false);
 
+  const currentSubscriptionRef = useRef(currentSubscription);
+  currentSubscriptionRef.current = currentSubscription;
+
   const {
     data: subscriptions,
     isLoading: isSubscriptionsLoading,
@@ -94,22 +98,33 @@ export const PushNotificationsProvider: React.FC<{
 
   useEffect(() => {
     if (!subscriptions) return;
-    getCurrentSubscription(subscriptions, registration).then(res => {
-      setCurrentSubscription(res);
-    });
+    getCurrentSubscription(subscriptions, registration)
+      .then(res => {
+        setCurrentSubscription(res);
+      })
+      .catch(err => {
+        console.error(err);
+      });
   }, [subscriptions, registration]);
 
   const preparePush = useCallback(async () => {
-    const registration = await registerServiceWorker();
-    setRegistration(registration);
+    try {
+      const registration = await registerServiceWorker();
+      setRegistration(registration);
 
-    const permission = await navigator.permissions.query({
-      name: "notifications",
-    });
-    updatePermission(permission);
+      if (!registration) return;
 
-    await refetchSubscriptions();
-    setPushPrepared(true);
+      const permission = await navigator.permissions.query({
+        name: "notifications",
+      });
+      updatePermission(permission);
+
+      await refetchSubscriptions();
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setPushPrepared(true);
+    }
   }, [refetchSubscriptions, updatePermission]);
 
   useEffect(() => {
@@ -119,9 +134,14 @@ export const PushNotificationsProvider: React.FC<{
   const handleSubscribe = useCallback(async () => {
     if (!registration) return;
     setIsSubscribing(true);
-    await subscribeToPush(registration);
-    await refetchSubscriptions();
-    setIsSubscribing(false);
+    try {
+      await subscribeToPush(registration);
+      await refetchSubscriptions();
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setIsSubscribing(false);
+    }
   }, [registration, refetchSubscriptions]);
 
   const handleDelete = useCallback(
@@ -131,8 +151,9 @@ export const PushNotificationsProvider: React.FC<{
         await axiosInstance.delete(`/api/notifications/subscription/${id}`);
         await refetchSubscriptions();
 
-        if (currentSubscription?.data._id === id) {
-          await currentSubscription?.subscription.unsubscribe();
+        const subscription = currentSubscriptionRef.current;
+        if (subscription?.data._id === id) {
+          await subscription.subscription.unsubscribe();
           setCurrentSubscription(null);
         }
       } catch (err) {
@@ -141,38 +162,43 @@ export const PushNotificationsProvider: React.FC<{
         setIsDeleting(false);
       }
     },
-    [currentSubscription, refetchSubscriptions],
+    [refetchSubscriptions],
   );
 
-  const handleRename = useCallback(async (id: string, newName: string) => {
-    try {
-      await axiosInstance.put(`/api/notifications/subscription/${id}`, {
-        name: newName,
-      });
-    } catch (err) {
-      console.error(err);
-    }
-  }, []);
+  const handleRename = useCallback(
+    async (id: string, newName: string) => {
+      try {
+        await axiosInstance.put(`/api/notifications/subscription/${id}`, {
+          name: newName,
+        });
+      } catch (err) {
+        console.error(err);
+        await refetchSubscriptions();
+      }
+    },
+    [refetchSubscriptions],
+  );
 
   useEffect(() => {
     if (!permission) return;
 
     const onChange = (e: Event) => {
-      const permission = e.target as PermissionStatus;
-      const state = permission.state;
+      const permissionStatus = e.target as PermissionStatus;
+      const state = permissionStatus.state;
 
-      updatePermission(permission);
+      updatePermission(permissionStatus);
 
-      if (state === "denied" || state === "prompt")
-        handleDelete(currentSubscription?.data._id);
+      const subscriptionId = currentSubscriptionRef.current?.data?._id;
+      if ((state === "denied" || state === "prompt") && subscriptionId)
+        handleDelete(subscriptionId);
     };
 
-    permission?.status.addEventListener("change", onChange);
+    permission.status?.addEventListener("change", onChange);
 
     return () => {
-      permission?.status.removeEventListener("change", onChange);
+      permission.status?.removeEventListener("change", onChange);
     };
-  }, [permission, currentSubscription, handleDelete, updatePermission]);
+  }, [permission, updatePermission, handleDelete]);
 
   const value = useMemo(
     () => ({

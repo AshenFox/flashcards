@@ -3,7 +3,7 @@ import { SubscriptionDto } from "@flashcards/common";
 export type Subscription = SubscriptionDto;
 
 export type Permission = {
-  status: PermissionStatus;
+  status: PermissionStatus | null;
   state: PermissionState;
 };
 
