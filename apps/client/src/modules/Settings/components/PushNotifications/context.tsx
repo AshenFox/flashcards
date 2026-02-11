@@ -1,5 +1,5 @@
 import { axiosInstance } from "@flashcards/common";
-import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import {
   createContext,
   useCallback,
@@ -27,7 +27,6 @@ type PushNotificationsContextType = {
   handleDelete: (id: string) => Promise<void>;
   handleRename: (id: string, newName: string) => Promise<void>;
   handleSubscribe: () => Promise<void>;
-  setSubscriptionName: (value: string, subscriptionId: string) => void;
 };
 
 const PushNotificationsContext =
@@ -48,8 +47,6 @@ const queryKey = ["notifications", "subscriptions"];
 export const PushNotificationsProvider: React.FC<{
   children: React.ReactNode;
 }> = ({ children }) => {
-  const qc = useQueryClient();
-
   const [isDeleting, setIsDeleting] = useState(false);
   const [isSubscribing, setIsSubscribing] = useState(false);
 
@@ -78,17 +75,6 @@ export const PushNotificationsProvider: React.FC<{
     enabled: false,
     initialData: [],
   });
-
-  const setSubscriptionName = useCallback(
-    (value: string, subscriptionId: string) => {
-      qc.setQueryData(queryKey, (prev: Subscription[]) =>
-        prev.map(sub =>
-          sub._id === subscriptionId ? { ...sub, name: value } : sub,
-        ),
-      );
-    },
-    [qc],
-  );
 
   const isLoading = isSubscriptionsLoading || isDeleting || isSubscribing;
 
@@ -211,7 +197,6 @@ export const PushNotificationsProvider: React.FC<{
       handleDelete,
       handleRename,
       handleSubscribe,
-      setSubscriptionName,
     }),
     [
       subscriptions,
@@ -223,7 +208,6 @@ export const PushNotificationsProvider: React.FC<{
       handleDelete,
       handleRename,
       handleSubscribe,
-      setSubscriptionName,
     ],
   );
 

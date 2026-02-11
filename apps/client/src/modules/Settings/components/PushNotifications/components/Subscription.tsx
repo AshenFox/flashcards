@@ -2,41 +2,51 @@ import { DeleteIcon } from "@ui/Icons";
 import Input from "@ui/Input";
 import { Button } from "@ui/InteractiveElement";
 import Tooltip from "@ui/Tooltip";
-import { ChangeEvent, memo, useCallback, useRef } from "react";
+import {
+  ChangeEvent,
+  memo,
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 
 import { usePushNotifications } from "../context";
 import s from "../styles.module.scss";
 import { Subscription as SubscriptionType } from "../types";
 
-type Props = {
-  subscription: SubscriptionType;
-};
+type SubscriptionProps = SubscriptionType;
 
-const Subscription = ({ subscription }: Props) => {
-  const { handleRename, handleDelete, setSubscriptionName, isLoading } =
-    usePushNotifications();
+const Subscription = ({ _id, name }: SubscriptionProps) => {
+  const { handleRename, handleDelete, isLoading } = usePushNotifications();
 
+  const [localName, setLocalName] = useState(name);
   const timer = useRef<NodeJS.Timeout | null>(null);
+
+  // Sync from external data (e.g. after refetch on error)
+  useEffect(() => {
+    setLocalName(name);
+  }, [name]);
 
   const onRename = useCallback(
     (e: ChangeEvent<HTMLInputElement>) => {
       const value = e.target.value;
-      setSubscriptionName(value, subscription._id);
+      setLocalName(value);
       clearTimeout(timer.current);
 
       timer.current = setTimeout(() => {
-        handleRename(subscription._id, value);
+        handleRename(_id, value);
       }, 300);
     },
-    [subscription._id, handleRename, setSubscriptionName],
+    [_id, handleRename],
   );
 
-  const deleteBtnId = `subscription_delete_${subscription._id}`;
+  const deleteBtnId = `subscription_delete_${_id}`;
 
   return (
     <div className={s.subscription}>
       <Input
-        value={subscription.name}
+        value={localName}
         onChange={onRename}
         className={s.input}
         disabled={isLoading}
@@ -44,7 +54,7 @@ const Subscription = ({ subscription }: Props) => {
       <Button
         id={deleteBtnId}
         className={s.delete}
-        onClick={() => handleDelete(subscription._id)}
+        onClick={() => handleDelete(_id)}
         design="plain"
         icon={<DeleteIcon />}
         active={!isLoading}
