@@ -30,7 +30,7 @@ const Subscriptions = () => {
         <>
           <h3>Current Device</h3>
           {currentSubscription && (
-            <Subscription subscription={currentSubscription.data} />
+            <Subscription {...currentSubscription.data} />
           )}
           {!currentSubscription &&
             registration?.active?.state === "activated" &&
@@ -56,7 +56,7 @@ const Subscriptions = () => {
             <>
               <h3>Other Devices</h3>
               {otherSubscriptions.map(sub => (
-                <Subscription key={sub._id} subscription={sub} />
+                <Subscription key={sub._id} {...sub} />
               ))}
             </>
           )}
