@@ -19,12 +19,13 @@ const Subscription = ({ subscription }: Props) => {
   const timer = useRef<NodeJS.Timeout | null>(null);
 
   const onRename = useCallback(
-    async (e: ChangeEvent<HTMLInputElement>) => {
-      setSubscriptionName(e.target.value, subscription._id);
+    (e: ChangeEvent<HTMLInputElement>) => {
+      const value = e.target.value;
+      setSubscriptionName(value, subscription._id);
       clearTimeout(timer.current);
 
-      timer.current = setTimeout(async () => {
-        await handleRename(subscription._id, e.target.value);
+      timer.current = setTimeout(() => {
+        handleRename(subscription._id, value);
       }, 300);
     },
     [subscription._id, handleRename, setSubscriptionName],
