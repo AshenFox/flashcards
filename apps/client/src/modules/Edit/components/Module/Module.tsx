@@ -1,12 +1,13 @@
 import Container from "@components/Container";
 import ContentWrapper from "@components/ContentWrapper";
+import { TagSelector } from "@components/TagSelector";
 import { useSaveState } from "@modules/Edit/components/Save/useSaveActive";
 import { useEditContext } from "@modules/Edit/context";
 import { useActions, useAppSelector } from "@store/hooks";
 import Input from "@ui/Input";
 import { Button } from "@ui/InteractiveElement";
 import TextLabel from "@ui/TextLabel";
-import { memo, useCallback, useRef } from "react";
+import { memo, useCallback, useRef, useState } from "react";
 import { ContentEditableEvent } from "react-contenteditable";
 
 import Save from "../Save/Save";
@@ -48,6 +49,18 @@ const Module = () => {
 
   const inputId = `module_${moduleId}`;
 
+  const [tags, setTags] = useState<string[]>([
+    "Math",
+    "Math>Algebra",
+    "Science>Physics",
+    "History>World History",
+  ]);
+
+  const handleTagsChange = (newTags: string[]) => {
+    setTags(newTags);
+    console.log("Tags updated:", newTags);
+  };
+
   return (
     <div className={s.module}>
       <ContentWrapper tagType="section">
@@ -71,7 +84,14 @@ const Module = () => {
               </TextLabel>
             </div>
           </div>
-
+          {/*  */}
+          <br />
+          <div>
+            <h2>Tags</h2>
+          </div>
+          <br />
+          <TagSelector tags={tags} onChange={handleTagsChange} />
+          {/*  */}
           <div className={s.control}>
             <div className={s.left}>
               {draft && <Save />}

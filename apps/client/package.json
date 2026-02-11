@@ -35,7 +35,9 @@
     "redux": "^4.0.5",
     "redux-devtools-extension": "^2.13.8",
     "redux-thunk": "^2.3.0",
-    "sanitize-html": "^2.13.0"
+    "sanitize-html": "^2.13.0",
+    "scheduler": "^0.26.0",
+    "use-context-selector": "^2.0.0"
   },
   "devDependencies": {
     "@types/config": "^0.0.41",

@@ -3,6 +3,7 @@ import { DateJSON, DefaultOptions, ObjectIdJSON } from "@common/types";
 export type ModuleCreator<Options extends DefaultOptions> = {
   _id: ObjectIdJSON<Options["isJson"]>;
   title: string;
+  tags: string[];
   author: string;
   author_id: ObjectIdJSON<Options["isJson"]>;
   numberSR: number;
