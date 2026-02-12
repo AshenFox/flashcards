@@ -32,9 +32,6 @@
     "react-redux": "^7.2.2",
     "react-select": "^5.8.0",
     "react-tooltip": "^5.28.1",
-    "redux": "^4.0.5",
-    "redux-devtools-extension": "^2.13.8",
-    "redux-thunk": "^2.3.0",
     "sanitize-html": "^2.13.0"
   },
   "devDependencies": {

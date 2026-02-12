@@ -1,6 +1,5 @@
-import { configureStore } from "@reduxjs/toolkit";
+import { configureStore, ThunkAction, ThunkDispatch } from "@reduxjs/toolkit";
 import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
-import { ThunkAction, ThunkDispatch } from "redux-thunk";
 
 import rootReducer from "./reducers/index";
 import { AppActions } from "./types";

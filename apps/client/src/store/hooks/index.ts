@@ -1,7 +1,7 @@
+import { bindActionCreators } from "@reduxjs/toolkit";
 import { voiceActions, voiceThunks } from "@store/reducers/voice/slice";
 import { useMemo } from "react";
 import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
-import { bindActionCreators } from "redux";
 
 import { authActions, authThunks } from "../reducers/auth/slice";
 import { dimenActions } from "../reducers/dimen/slice";
