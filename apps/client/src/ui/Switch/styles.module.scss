@@ -1,4 +1,4 @@
-@import "@styles/vars";
+@use "@styles/vars" as *;
 
 .container {
   display: flex;
@@ -11,46 +11,42 @@
     transition: all 0.2s;
   }
 
-  :global {
-    .switch__switch {
-      position: relative;
-      display: inline-flex;
-      width: 46px;
-      align-items: center;
-      padding: 2px;
-      border: 1px solid var(--icon-fill);
-      border-radius: 14px;
-      cursor: pointer;
+  :global(.switch__switch) {
+    position: relative;
+    display: inline-flex;
+    width: 46px;
+    align-items: center;
+    padding: 2px;
+    border: 1px solid var(--icon-fill);
+    border-radius: 14px;
+    cursor: pointer;
+    transition: all 0.2s;
+
+    &::before {
+      display: inline-block;
+      flex-grow: 0;
+      content: "";
       transition: all 0.2s;
-
-      &::before {
-        display: inline-block;
-        flex-grow: 0;
-        content: "";
-        transition: all 0.2s;
-      }
-
-      &::after {
-        display: inline-block;
-        width: 18px;
-        height: 18px;
-        border-radius: 50%;
-        background-color: var(--icon-fill);
-        content: "";
-        transition: all 0.2s;
-      }
     }
 
-    .switch__checkbox {
-      display: none;
+    &::after {
+      display: inline-block;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      background-color: var(--icon-fill);
+      content: "";
+      transition: all 0.2s;
+    }
+  }
 
-      &:checked {
-        & ~ .switch__switch {
-          &::before {
-            flex-grow: 1;
-          }
-        }
-      }
+  :global(.switch__checkbox) {
+    display: none;
+  }
+
+  :global(.switch__checkbox:checked ~ .switch__switch) {
+    &::before {
+      flex-grow: 1;
     }
   }
 

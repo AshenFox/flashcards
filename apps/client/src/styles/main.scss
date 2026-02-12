@@ -1,17 +1,16 @@
-@import "vars";
-@import "animations";
+@use "vars" as *;
+@use "animations";
 
 @font-face {
   font-family: Alata;
   font-style: normal;
-  src: url("~/public/fonts/Alata-Regular.ttf") format("truetype");
+  src: url("/fonts/Alata-Regular.ttf") format("truetype");
 }
 
 @font-face {
   font-family: WixMadeforDisplay;
   font-style: normal;
-  src: url("~/public/fonts/WixMadeforDisplay-VariableFont.ttf")
-    format("truetype");
+  src: url("/fonts/WixMadeforDisplay-VariableFont.ttf") format("truetype");
 }
 
 *,

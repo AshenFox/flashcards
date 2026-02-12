@@ -1,10 +1,15 @@
-@import "@styles/vars";
+@use "@styles/vars" as *;
 
 .item {
   font-size: 1.75rem;
 }
 
-.plain {
+.item.plain,
+.item.padded {
+  font-size: 1.75rem;
+}
+
+.item.plain {
   color: var(--light-color);
 
   :global(.interactive_element__icon) {
@@ -22,7 +27,7 @@
   }
 }
 
-.padded {
+.item.padded {
   padding: 1rem 2.7rem;
 
   @media (max-width: $tablet) {
