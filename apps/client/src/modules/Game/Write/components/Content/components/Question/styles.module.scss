@@ -1,4 +1,4 @@
-@import "@styles/vars";
+@use "@styles/vars" as *;
 
 .sr_indicator {
   position: absolute;

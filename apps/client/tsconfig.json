@@ -1,7 +1,11 @@
 {
   "compilerOptions": {
-    "target": "es5",
-    "lib": ["dom", "dom.iterable", "esnext"],
+    "target": "ES2017",
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
     "allowJs": true,
     "skipLibCheck": true,
     "strict": false,
@@ -12,22 +16,51 @@
     "moduleResolution": "node",
     "resolveJsonModule": true,
     "isolatedModules": true,
-    "jsx": "preserve",
+    "jsx": "react-jsx",
     "incremental": true,
-    "plugins": [{ "name": "typescript-plugin-css-modules" }],
+    "plugins": [
+      {
+        "name": "typescript-plugin-css-modules"
+      }
+    ],
     "baseUrl": "./",
     "paths": {
-      "@ui/*": ["src/ui/*"],
-      "@components/*": ["src/components/*"],
-      "@modules/*": ["src/modules/*"],
-      "@configuration/*": ["src/configuration/*"],
-      "@pages/*": ["pages/*"],
-      "@styles/*": ["src/styles/*"],
-      "@helpers/*": ["src/helpers/*"],
-      "@store/*": ["src/store/*"],
-      "@public/*": ["public/*"]
+      "@ui/*": [
+        "src/ui/*"
+      ],
+      "@components/*": [
+        "src/components/*"
+      ],
+      "@modules/*": [
+        "src/modules/*"
+      ],
+      "@configuration/*": [
+        "src/configuration/*"
+      ],
+      "@pages/*": [
+        "pages/*"
+      ],
+      "@styles/*": [
+        "src/styles/*"
+      ],
+      "@helpers/*": [
+        "src/helpers/*"
+      ],
+      "@store/*": [
+        "src/store/*"
+      ],
+      "@public/*": [
+        "public/*"
+      ]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
-  "exclude": ["node_modules", "server"]
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx"
+  ],
+  "exclude": [
+    "node_modules",
+    "server"
+  ]
 }

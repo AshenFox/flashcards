@@ -4,6 +4,7 @@ import {
   memo,
   MouseEventHandler,
   ReactElement,
+  SVGProps,
   TouchEventHandler,
 } from "react";
 
@@ -14,7 +15,7 @@ type CheckboxProps = {
   active?: boolean;
   className?: string;
   small?: boolean;
-  icon?: ReactElement;
+  icon?: ReactElement<SVGProps<SVGSVGElement>>;
   iconSize?: number;
   isGroupSelection?: boolean;
   onClick?: MouseEventHandler<HTMLLabelElement>;

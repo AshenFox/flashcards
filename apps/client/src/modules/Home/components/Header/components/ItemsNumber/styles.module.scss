@@ -1,4 +1,4 @@
-@import "@styles/vars";
+@use "@styles/vars" as *;
 
 .number {
   min-height: 2.1rem;

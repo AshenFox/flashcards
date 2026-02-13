@@ -1,27 +1,23 @@
-@import "@styles/vars";
+@use "@styles/vars" as *;
 
 .save {
   padding-right: 1.5rem;
   border-right: 1px solid var(--element-border-color);
 
-  :global {
-    .switch__checkbox:checked {
-      & ~ .tooltip__tooltip {
-        border-color: var(--success-color);
-        color: var(--success-color);
-      }
+  :global(.switch__checkbox:checked ~ .tooltip__tooltip) {
+    border-color: var(--success-color);
+    color: var(--success-color);
+  }
 
-      & ~ .switch__switch {
-        border-color: var(--success-color);
+  :global(.switch__checkbox:checked ~ .switch__switch) {
+    border-color: var(--success-color);
 
-        &::after {
-          background-color: var(--success-color);
-        }
-      }
-
-      & ~ svg {
-        fill: var(--success-color);
-      }
+    &::after {
+      background-color: var(--success-color);
     }
+  }
+
+  :global(.switch__checkbox:checked) ~ svg {
+    fill: var(--success-color);
   }
 }
