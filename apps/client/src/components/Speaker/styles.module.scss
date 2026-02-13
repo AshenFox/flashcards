@@ -1,5 +1,5 @@
-@import "@styles/vars";
-@import "@styles/animations";
+@use "@styles/vars" as *;
+@use "@styles/animations";
 
 .speaker {
   display: flex;

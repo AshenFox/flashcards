@@ -1,7 +1,7 @@
 import { auth } from "@supplemental/middleware";
 import { ScrapingHeaders } from "@supplemental/scrape";
 import axios from "axios";
-import cheerio from "cheerio";
+import * as cheerio from "cheerio";
 import express, { Request, Response } from "express";
 
 const router = express.Router();
