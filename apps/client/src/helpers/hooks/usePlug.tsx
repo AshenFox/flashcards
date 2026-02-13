@@ -1,8 +1,9 @@
-import { MutableRefObject, useEffect, useMemo, useRef, useState } from "react";
+import type { JSX } from "react";
+import { RefObject, useEffect, useMemo, useRef, useState } from "react";
 
 export const usePlug = (
   classStr: string,
-): [boolean, MutableRefObject<HTMLDivElement>, JSX.Element] => {
+): [boolean, RefObject<HTMLDivElement>, JSX.Element] => {
   const ref = useRef<HTMLDivElement>(null);
 
   const [visible, setVisible] = useState(true);

@@ -1,19 +1,6 @@
 import config from "config";
 import ImageSearch from "image-search-google";
 
-declare global {
-  namespace ImageSearchGoogle {
-    export class ImageSearch {
-      constructor(cseId: string, apiKey: string);
-
-      search(query: string, options?: any): Promise<any>;
-
-      cseId: string;
-      apiKey: string;
-    }
-  }
-}
-
 const cse_id: string = config.get("cse_id");
 const keyArr: string[] = config.get("keyArr");
 
