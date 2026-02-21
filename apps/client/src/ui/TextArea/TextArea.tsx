@@ -14,12 +14,14 @@ type TextAreaProps = Override<
     ref?: LegacyRef<ContentEditable> & LegacyRef<HTMLDivElement>;
     error?: boolean;
     isStyled?: boolean;
+    html?: string;
     onChange?: (event: ContentEditableEvent) => void | null;
   }
 >;
 
 const TextArea = ({
   ref,
+  html = "",
   disabled = true,
   error,
   className,
@@ -29,6 +31,7 @@ const TextArea = ({
 }: TextAreaProps) => {
   return (
     <ContentEditable
+      html={html}
       spellCheck={true}
       {...rest}
       disabled={disabled}

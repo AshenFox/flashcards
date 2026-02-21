@@ -1,4 +1,4 @@
-@import "@styles/vars";
+@use "@styles/vars" as *;
 
 .tooltip:global(.react-tooltip) {
   --rt-opacity: 1;

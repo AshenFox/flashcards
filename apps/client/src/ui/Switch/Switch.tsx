@@ -5,6 +5,7 @@ import {
   memo,
   MouseEventHandler,
   ReactElement,
+  SVGProps,
   TouchEventHandler,
 } from "react";
 
@@ -15,7 +16,7 @@ type SwitchProps = {
   active?: boolean;
   className?: string;
   small?: boolean;
-  icon?: ReactElement;
+  icon?: ReactElement<SVGProps<SVGSVGElement>>;
   iconSize?: number;
   tooltip?: string;
   onClick?: MouseEventHandler<HTMLLabelElement>;

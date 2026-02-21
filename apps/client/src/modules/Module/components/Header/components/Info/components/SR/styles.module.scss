@@ -1,4 +1,4 @@
-@import "@styles/vars";
+@use "@styles/vars" as *;
 
 .sr_control {
   padding-right: 1.5rem;
@@ -10,28 +10,24 @@
     height: 25px;
   }
 
-  :global {
-    .tooltip__tooltip {
-      left: 1.5rem;
+  :global(.tooltip__tooltip) {
+    left: 1.5rem;
+  }
+
+  :global(.switch__checkbox:checked ~ .tooltip__tooltip) {
+    border-color: var(--success-color);
+    color: var(--success-color);
+  }
+
+  :global(.switch__checkbox:checked ~ .switch__switch) {
+    border-color: var(--success-color);
+
+    &::after {
+      background-color: var(--success-color);
     }
+  }
 
-    .switch__checkbox:checked {
-      & ~ .tooltip__tooltip {
-        border-color: var(--success-color);
-        color: var(--success-color);
-      }
-
-      & ~ .switch__switch {
-        border-color: var(--success-color);
-
-        &::after {
-          background-color: var(--success-color);
-        }
-      }
-
-      & ~ svg {
-        fill: var(--success-color);
-      }
-    }
+  :global(.switch__checkbox:checked) ~ svg {
+    fill: var(--success-color);
   }
 }

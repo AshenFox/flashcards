@@ -1,4 +1,4 @@
-@import "@styles/vars";
+@use "@styles/vars" as *;
 
 .container {
   display: flex;
@@ -38,18 +38,16 @@
     border-bottom: 2px solid var(--accentuated-color);
   }
 
-  :global {
-    .input__input {
-      height: 100%;
-      appearance: textfield;
-      font-size: 1.75rem;
-      text-align: center;
-    }
+  :global(.input__input) {
+    height: 100%;
+    appearance: textfield;
+    font-size: 1.75rem;
+    text-align: center;
+  }
 
-    .input__input::-webkit-inner-spin-button,
-    .input__input::-webkit-outer-spin-button {
-      appearance: none;
-    }
+  :global(.input__input)::-webkit-inner-spin-button,
+  :global(.input__input)::-webkit-outer-spin-button {
+    appearance: none;
   }
 }
 

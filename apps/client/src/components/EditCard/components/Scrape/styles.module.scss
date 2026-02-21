@@ -1,5 +1,5 @@
-@import "@styles/vars";
-@import "@styles/animations";
+@use "@styles/vars" as *;
+@use "@styles/animations";
 
 .background {
   width: 100%;
@@ -19,14 +19,14 @@
 
   &.cod {
     .background {
-      background-image: url("~/public/img/cod-logo.png");
+      background-image: url("/img/cod-logo.png");
     }
   }
 
   &.urban {
     .background {
       border-radius: 50%;
-      background-image: url("~/public/img/urban-logo.jpg");
+      background-image: url("/img/urban-logo.jpg");
     }
   }
 

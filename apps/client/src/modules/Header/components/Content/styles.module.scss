@@ -1,4 +1,4 @@
-@import "@styles/vars";
+@use "@styles/vars" as *;
 
 .left,
 .right {
@@ -7,13 +7,15 @@
   gap: 2rem;
 }
 
-.back {
+.back:global(.interactive_element__element) {
   display: none;
 
   @media (max-width: $tablet) or (max-height: $h-mobile) {
     display: flex;
   }
+}
 
+.back {
   svg {
     margin: 1rem 0;
 
@@ -27,7 +29,7 @@
   }
 }
 
-.item {
+.item:global(.interactive_element__element) {
   @media (max-width: $mobile) {
     display: none;
   }

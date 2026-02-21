@@ -1,4 +1,4 @@
-@import "@styles/vars";
+@use "@styles/vars" as *;
 
 .card {
   border: 1px solid var(--element-border-color);

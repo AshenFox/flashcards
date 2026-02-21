@@ -1,4 +1,4 @@
-@import "@styles/vars";
+@use "@styles/vars" as *;
 
 .progress_bar {
   @media (max-width: $tablet) or (max-height: $h-mobile) {
