@@ -18,7 +18,7 @@
     fill: var(--icon-fill);
   }
 
-  :global(.indicator__dots) {
+  :global(.sr_indicator__dots) {
     position: absolute;
     top: -0.6rem;
     left: -0.6rem;
@@ -40,7 +40,7 @@
   }
 
   &.small {
-    :global(.indicator__dots) {
+    :global(.sr_indicator__dots) {
       top: -0.5rem;
       left: -0.5rem;
       width: 2.7rem;
@@ -64,7 +64,7 @@
       fill: var(--success-color);
     }
 
-    :global(.indicator__dots) {
+    :global(.sr_indicator__dots) {
       opacity: 1;
     }
 

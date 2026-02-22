@@ -58,6 +58,7 @@ const SRIndicator = ({
   return (
     <div
       className={clsx(
+        "sr_indicator",
         s.indicator,
         active && s.active,
         small && s.small,
@@ -66,7 +67,7 @@ const SRIndicator = ({
       data-tooltip-id={id}
     >
       <StudyRegimeIcon />
-      <div className={"indicator__dots"}>{dots}</div>
+      <div className={"sr_indicator__dots"}>{dots}</div>
     </div>
   );
 };

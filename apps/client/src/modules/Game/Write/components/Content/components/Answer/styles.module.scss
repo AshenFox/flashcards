@@ -1,13 +1,15 @@
 @use "@styles/vars" as *;
 
 .sr_indicator {
-  position: absolute;
-  top: 2.5rem;
-  right: 4rem;
+  &:global(.sr_indicator) {
+    position: absolute;
+    top: 2.5rem;
+    right: 4rem;
 
-  @media (max-width: $mobile) {
-    top: 2rem;
-    right: 3rem;
+    @media (max-width: $mobile) {
+      top: 2rem;
+      right: 3rem;
+    }
   }
 
   :global(.tooltip__tooltip) {

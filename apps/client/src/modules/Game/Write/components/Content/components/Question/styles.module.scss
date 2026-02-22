@@ -1,6 +1,6 @@
 @use "@styles/vars" as *;
 
-.sr_indicator {
+.sr_indicator:global(.sr_indicator) {
   position: absolute;
   top: 1rem;
   left: 1rem;

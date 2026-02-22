@@ -1,9 +1,11 @@
 @use "@styles/vars" as *;
 
 .sr_indicator {
-  position: absolute;
-  top: 2rem;
-  left: 2rem;
+  &:global(.sr_indicator) {
+    position: absolute;
+    top: 2rem;
+    left: 2rem;
+  }
 
   :global(.tooltip__tooltip) {
     top: -1rem;
