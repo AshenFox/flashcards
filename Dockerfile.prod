@@ -6,7 +6,7 @@ COPY package*.json ./
 
 COPY . .
 
-RUN npm install
+RUN npm install --verbose
 
 # Webpack build; increase Node heap for Next.js production build in constrained environments
 ENV NODE_OPTIONS="--max-old-space-size=4096"
