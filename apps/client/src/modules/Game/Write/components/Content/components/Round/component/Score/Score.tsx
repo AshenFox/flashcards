@@ -19,7 +19,7 @@ const Score = ({ progress, all, title, result, displayAll }: ScoreProps) => {
         {progress}
         {displayAll && `/${all}`}
       </span>
-      <span className={s.percent}>{Math.round((progress / all) * 100)}%</span>
+      <span className={s.percent}>{all === 0 ? 0 : Math.round((progress / all) * 100)}%</span>
     </div>
   );
 };

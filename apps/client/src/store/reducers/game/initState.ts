@@ -7,15 +7,19 @@ const gameInitState: GameState = {
     shuffled: false,
     answers: [],
     is_turned: false,
+    ended_early: false,
   },
   write: {
     is_init: false,
+    is_game_finished: false,
+    is_round_finished: false,
     all_cards_num: 0,
+    ended_early: false,
     remaining: [],
-    answer: "",
-    copy_answer: "",
     answered: [],
     rounds: [],
+    answer: "",
+    copy_answer: "",
   },
 };
 

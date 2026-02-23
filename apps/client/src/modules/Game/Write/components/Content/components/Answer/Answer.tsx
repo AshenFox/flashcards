@@ -27,13 +27,8 @@ type AnswerProps = {
 };
 
 const Answer = ({ data }: AnswerProps) => {
-  const {
-    setCardEdit,
-    setWriteCopyAnswerField,
-    nextWriteCard,
-    overrideWriteAnswer,
-    putSRAnswer,
-  } = useActions();
+  const { setCardEdit, setWriteCopyAnswerField, nextWriteCard, putSRAnswer } =
+    useActions();
 
   const router = useRouter();
   const { _id: _id_param } = router.query;
@@ -95,8 +90,8 @@ const Answer = ({ data }: AnswerProps) => {
 
   const overrideAnswer = useCallback(() => {
     if (isFirstRound && isSR) putSRAnswer(_id, 1);
-    overrideWriteAnswer();
-  }, [_id, isFirstRound, isSR, overrideWriteAnswer, putSRAnswer]);
+    nextWriteCard({ override: true });
+  }, [_id, isFirstRound, isSR, nextWriteCard, putSRAnswer]);
 
   const clickContinue = (e: MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();

@@ -5,7 +5,7 @@ import { memo, useEffect } from "react";
 
 import Controls, { ControlButtons } from "../components/Controls";
 import Content from "./components/Content";
-import ShuffleBtn from "./components/ControlButtons/ShuffleBtn";
+import { EndGameBtn, ShuffleBtn } from "./components/ControlButtons";
 import Progress from "./components/Progress";
 
 const Flashcards = () => {
@@ -40,7 +40,10 @@ const Flashcards = () => {
         titleIcon={<CardsIcon height="40" width="40" />}
       >
         <Progress />
-        <ControlButtons>{!isSR && <ShuffleBtn />}</ControlButtons>
+        <ControlButtons>
+          {!isSR && <ShuffleBtn />}
+          <EndGameBtn />
+        </ControlButtons>
       </Controls>
       <Content />
     </>

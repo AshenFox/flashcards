@@ -5,17 +5,16 @@ import { memo, useEffect } from "react";
 const Finish = () => {
   const { nextWriteRound } = useActions();
 
-  const all_cards_num = useAppSelector(s => s.game.write.all_cards_num);
   const rounds = useAppSelector(s => s.game.write.rounds);
 
   useEffect(() => {
-    if (all_cards_num) nextWriteRound();
+    nextWriteRound();
   }, []);
 
   return (
     <>
       {rounds.map((round, i) => {
-        const correctNum = round.filter(
+        const correctNum = round.answered.filter(
           item => item.answer === "correct",
         ).length;
 
@@ -24,10 +23,10 @@ const Finish = () => {
             key={i}
             title={`Round ${i + 1}`}
             progress={correctNum}
-            all={round.length}
+            all={round.cards_num}
             showLink={i === 0}
           >
-            {round.map((data, z) => (
+            {round.answered.map((data, z) => (
               <ResultItem
                 data={data}
                 number={z + 1}
