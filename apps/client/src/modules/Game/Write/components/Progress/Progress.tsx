@@ -17,7 +17,9 @@ const Progress = () => {
 
   let correctRounds = 0;
   for (const round of rounds) {
-    let correctRound = round.filter(item => item.answer === "correct").length;
+    let correctRound = round.answered.filter(
+      item => item.answer === "correct",
+    ).length;
     correctRounds += correctRound;
   }
 

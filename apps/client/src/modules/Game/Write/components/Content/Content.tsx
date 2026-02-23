@@ -17,16 +17,15 @@ const Content = () => {
   const is_init = useAppSelector(s => s.game.write.is_init);
   const remaining = useAppSelector(s => s.game.write.remaining);
   const answered = useAppSelector(s => s.game.write.answered);
+  const is_game_finished = useAppSelector(s => s.game.write.is_game_finished);
+  const is_round_finished = useAppSelector(s => s.game.write.is_round_finished);
 
   const activeCard = remaining[remaining.length - 1];
   const isAnswered = activeCard ? !!activeCard.answer : false;
   const activeCardData = activeCard ? cards[activeCard.id] : null;
 
-  const isRoundFinished = !remaining.length && is_init;
-  const isGameFinished =
-    !remaining.length &&
-    !answered.filter(item => item.answer === "incorrect").length &&
-    is_init;
+  const isRoundFinished = is_round_finished && is_init;
+  const isGameFinished = is_game_finished && is_init;
 
   let components: ReactNode = null;
 

@@ -5,7 +5,7 @@ import { memo, useEffect } from "react";
 
 import Controls, { ControlButtons } from "../components/Controls";
 import Content from "./components/Content";
-import { StartOver } from "./components/ControlButtons";
+import { EndGameBtn, StartOver } from "./components/ControlButtons";
 import Progress from "./components/Progress";
 
 const Write = () => {
@@ -51,7 +51,10 @@ const Write = () => {
     <>
       <Controls title="Write" titleIcon={<WriteIcon height="40" width="40" />}>
         <Progress />
-        <ControlButtons>{!isSR && <StartOver />}</ControlButtons>
+        <ControlButtons>
+          {!isSR && <StartOver />}
+          <EndGameBtn />
+        </ControlButtons>
       </Controls>
       <Content />
     </>

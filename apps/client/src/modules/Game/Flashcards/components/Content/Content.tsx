@@ -18,6 +18,7 @@ const Content = () => {
 
   const progress = useAppSelector(s => s.game.flashcards.progress);
   const side = useAppSelector(s => s.game.flashcards.side);
+  const ended_early = useAppSelector(s => s.game.flashcards.ended_early);
   const cards = useAppSelector(s => s.main.cards);
   const loading = useAppSelector(
     s => s.main.sections.srCards.loading || s.main.sections.moduleCards.loading,
@@ -28,7 +29,7 @@ const Content = () => {
 
   const activeCardData = formatted_cards[progress];
 
-  const isEnd = length === progress;
+  const isEnd = length === progress || ended_early;
   const isEdit = length && length !== progress ? activeCardData.edit : false;
 
   let content: ReactNode = null;
@@ -57,8 +58,13 @@ const Content = () => {
               return false;
             }
           })}
-        {length && isSR && isEnd && <Finish />}
-        {length && !isSR && <EndGame active={isEnd} />}
+        {length && isSR && isEnd && !ended_early && <Finish />}
+        {length && ((!isSR && isEnd) || ended_early) && (
+          <EndGame
+            active={isEnd}
+            cardsStudied={ended_early ? progress : length}
+          />
+        )}
       </>
     );
   }

@@ -1,4 +1,3 @@
-import { useAppSelector } from "@store/hooks";
 import clsx from "clsx";
 import Link from "next/link";
 import { useRouter } from "next/router";
@@ -8,27 +7,22 @@ import s from "./styles.module.scss";
 
 type EndGameProps = {
   active: boolean;
+  cardsStudied: number;
 };
 
-const EndGame = ({ active }: EndGameProps) => {
-  const cards = useAppSelector(s => s.main.cards);
-  const progress = useAppSelector(s => s.game.flashcards.progress);
-
+const EndGame = ({ active, cardsStudied }: EndGameProps) => {
   const router = useRouter();
-
   const { _id } = router.query;
 
-  const cardsArr = Object.values(cards);
-  const { length } = cardsArr;
+  const isSR = _id === "sr";
+  const finishHref = isSR ? "/home/sr" : `/module/${_id}`;
 
-  const isEnd = length === progress;
-
-  const isEndRef = useRef(isEnd);
-  isEndRef.current = isEnd;
+  const isEndRef = useRef(active);
+  isEndRef.current = active;
 
   const keyDown = (e: KeyboardEvent) => {
     if (e.key === "Enter" && isEndRef.current) {
-      router.replace(`/module/${_id}`);
+      router.replace(finishHref);
     }
   };
 
@@ -38,10 +32,10 @@ const EndGame = ({ active }: EndGameProps) => {
     return () => {
       window.removeEventListener("keydown", keyDown);
     };
-  }, []);
+  }, [finishHref]);
 
   return (
-    <div className={clsx(s.card, !isEnd && s.transparent)}>
+    <div className={clsx(s.card, !active && s.transparent)}>
       <div
         className={clsx(
           s.front,
@@ -50,11 +44,13 @@ const EndGame = ({ active }: EndGameProps) => {
         )}
       >
         <h1 className={s.message}>Nice work!</h1>
-        <p className={s.message_info}>{`You've just studied ${length} term${
-          length > 1 ? "s" : ""
+        <p
+          className={s.message_info}
+        >{`You've just studied ${cardsStudied} term${
+          cardsStudied !== 1 ? "s" : ""
         }!`}</p>
-        <Link href={`/module/${_id}`}>
-          <button className={s.finish_up}>Finish up</button>
+        <Link href={finishHref}>
+          <button className={s.finish_up}>Return</button>
         </Link>
       </div>
       <div

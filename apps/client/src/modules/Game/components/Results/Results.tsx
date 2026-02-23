@@ -44,14 +44,15 @@ const Results = ({
         <div className={s.header_item}>
           <h1 className={s.title}>{title}</h1>
           <h3 className={s.stats}>
-            {progress}/{all} - {Math.round((progress / all) * 100)}%
+            {progress}/{all} -{" "}
+            {all === 0 ? 0 : Math.round((progress / all) * 100)}%
           </h3>
         </div>
 
         {showLink && (
           <div className={s.header_item}>
             <Link href={isSR ? "/home/sr" : `/module/${_id}`}>
-              <button>Finish game</button>
+              <button>Return</button>
             </Link>
           </div>
         )}

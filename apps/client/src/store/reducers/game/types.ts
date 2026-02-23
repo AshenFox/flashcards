@@ -15,7 +15,12 @@ export type WriteCard = CardFields & {
   stage: number;
 };
 
-export type Round = WriteCard[];
+export type WriteCards = WriteCard[];
+
+export type WriteRound = {
+  answered: WriteCards;
+  cards_num: number;
+};
 
 export type GameState = {
   flashcards: {
@@ -24,15 +29,19 @@ export type GameState = {
     shuffled: boolean;
     answers: FlashcardsAnswer[];
     is_turned: boolean;
+    ended_early: boolean;
   };
   write: {
     is_init: boolean;
+    is_game_finished: boolean;
+    is_round_finished: boolean;
+    ended_early: boolean;
     all_cards_num: number;
-    remaining: Round;
+    remaining: WriteCards;
     answer: string;
     copy_answer: string;
-    answered: Round;
-    rounds: Round[];
+    answered: WriteCards;
+    rounds: WriteRound[];
   };
 };
 
