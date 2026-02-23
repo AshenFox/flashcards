@@ -1,8 +1,15 @@
+# syntax=docker/dockerfile:1
 FROM node:20.18.1
 
 WORKDIR /app
 
 COPY package*.json ./
+
+# Longer timeouts and retries to avoid EIDLETIMEOUT with registry.npmjs.org in slow/unreliable networks
+ENV npm_config_fetch_timeout=300000
+ENV npm_config_fetch_retries=5
+ENV npm_config_fetch_retry_mintimeout=20000
+ENV npm_config_fetch_retry_maxtimeout=120000
 
 COPY . .
 
