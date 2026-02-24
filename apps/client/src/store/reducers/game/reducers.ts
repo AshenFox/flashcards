@@ -6,7 +6,7 @@ export const resetAllGameFields: GameCaseReducer = (state, _action) => {
   Object.assign(state, gameInitState);
 };
 
-export const prepareFlashcards: GameCaseReducer<{ number: number }> = (
+export const prepareFlashcardsReducer: GameCaseReducer<{ number: number }> = (
   state,
   action,
 ) => {
@@ -142,6 +142,7 @@ export const saveFlashcardsAnswer: GameCaseReducer<{
 
 export const endFlashcardsEarly: GameCaseReducer = (state, _action) => {
   state.flashcards.ended_early = true;
+  state.flashcards.all_cards_num = state.flashcards.progress;
 };
 
 export const endWriteEarly: GameCaseReducer = (state, _action) => {

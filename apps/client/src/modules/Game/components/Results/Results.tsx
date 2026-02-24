@@ -1,8 +1,8 @@
-import Link from "next/link";
 import { useRouter } from "next/router";
 import { memo, ReactNode, useEffect } from "react";
 
 import s from "./styles.module.scss";
+import { Link } from "@ui/InteractiveElement";
 
 type ResultsProps = {
   title: string;
@@ -51,9 +51,7 @@ const Results = ({
 
         {showLink && (
           <div className={s.header_item}>
-            <Link href={isSR ? "/home/sr" : `/module/${_id}`}>
-              <button>Return</button>
-            </Link>
+            <Link href={isSR ? "/home/sr" : `/module/${_id}`}>Return</Link>
           </div>
         )}
       </div>

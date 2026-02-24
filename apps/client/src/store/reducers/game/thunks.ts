@@ -3,6 +3,21 @@ import { ThunkActionApp } from "@store/store";
 import { card_fields } from "./initState";
 import { gameActions } from "./slice";
 
+export const prepareFlashcards = () => <ThunkActionApp>(async (
+  dispatch,
+  getState,
+) => {
+  const {
+    main: { cards },
+  } = getState();
+  const cards_num = Object.values(cards).length;
+
+  dispatch(gameActions.resetAllGameFields());
+
+  dispatch(gameActions.prepareFlashcardsReducer({ number: cards_num }));
+});
+
+
 export const prepareWrite = () => <ThunkActionApp>(async (
   dispatch,
   getState,
