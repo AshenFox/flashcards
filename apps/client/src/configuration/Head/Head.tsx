@@ -1,16 +1,18 @@
 import { useUserThemePreference } from "@helpers/hooks/useUserThemePreference";
+import type { ResolvedTheme } from "@helpers/themeCookie";
 import NextHead from "next/head";
 import { useTheme } from "next-themes";
 import { memo } from "react";
 
-const Head = () => {
-  const { theme } = useTheme();
+type HeadProps = {
+  initialTheme: ResolvedTheme | null;
+};
+
+const Head = ({ initialTheme }: HeadProps) => {
+  const { resolvedTheme } = useTheme();
   const preference = useUserThemePreference();
 
-  const themePath =
-    theme === "dark" || (theme === "system" && preference === "dark")
-      ? "dark"
-      : "light";
+  const themePath = resolvedTheme ?? initialTheme ?? preference;
 
   return (
     <NextHead>

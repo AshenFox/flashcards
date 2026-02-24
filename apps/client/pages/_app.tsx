@@ -12,15 +12,20 @@ import Dropdown from "@modules/Dropdown";
 import Header from "@modules/Header";
 import store from "@store/store";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import type { AppProps } from "next/app";
+import type { AppContext, AppProps } from "next/app";
 import { Provider } from "react-redux";
+import { parseThemeFromCookie } from "@configuration/Theme";
 
 const queryClient = new QueryClient();
 
-const MyApp = ({ Component, pageProps }: AppProps) => (
+type MyAppProps = AppProps & {
+  initialTheme: "light" | "dark" | null;
+};
+
+const MyApp = ({ Component, pageProps, initialTheme }: MyAppProps) => (
   <QueryClientProvider client={queryClient}>
-    <Theme>
-      <Head />
+    <Theme initialTheme={initialTheme}>
+      <Head initialTheme={initialTheme} />
       <Provider store={store}>
         <AuthWrapper>
           <Header />
@@ -35,5 +40,11 @@ const MyApp = ({ Component, pageProps }: AppProps) => (
     </Theme>
   </QueryClientProvider>
 );
+
+MyApp.getInitialProps = async ({ ctx }: AppContext) => {
+  const cookieHeader = ctx.req?.headers?.cookie;
+  const initialTheme = parseThemeFromCookie(cookieHeader);
+  return { initialTheme };
+};
 
 export default MyApp;

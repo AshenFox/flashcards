@@ -1,12 +1,33 @@
-import React, { memo, useEffect } from "react";
+import React, { memo, useCallback, useEffect, useRef } from "react";
 
 const TabUpdateController = () => {
+  const shouldReloadRef = useRef(false);
+
+  const reload = useCallback(() => {
+    window.location.reload();
+  }, []);
+
   useEffect(() => {
-    const reload = (e: StorageEvent) => window.location.reload();
+    const handleStorage = (e: StorageEvent) => {
+      const isFocused = document.hasFocus();
+      if (isFocused) reload();
+      else shouldReloadRef.current = true;
+    };
 
-    window.addEventListener("storage", reload);
+    const handleFocus = () => {
+      if (shouldReloadRef.current) {
+        shouldReloadRef.current = false;
+        reload();
+      }
+    };
 
-    return () => window.removeEventListener("storage", reload);
+    window.addEventListener("storage", handleStorage);
+    window.addEventListener("focus", handleFocus);
+
+    return () => {
+      window.removeEventListener("storage", handleStorage);
+      window.removeEventListener("focus", handleFocus);
+    };
   }, []);
 
   return <></>;
