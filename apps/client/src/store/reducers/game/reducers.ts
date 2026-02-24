@@ -6,6 +6,13 @@ export const resetAllGameFields: GameCaseReducer = (state, _action) => {
   Object.assign(state, gameInitState);
 };
 
+export const prepareFlashcards: GameCaseReducer<{ number: number }> = (
+  state,
+  action,
+) => {
+  state.flashcards.all_cards_num = action.payload.number;
+};
+
 export const prepareWriteReducer: GameCaseReducer<{ remaining: WriteCards }> = (
   state,
   action,

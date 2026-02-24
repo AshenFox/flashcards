@@ -84,7 +84,7 @@ export const setFlashcardsProgress = (value: "next" | "prev") =>
   });
 
 export const resetFlashcardsProgress = () =>
-  <ThunkActionApp>(async dispatch => {
+  <ThunkActionApp>(async (dispatch) => {
     dispatch(gameActions.setFlashcardsSide({ value: "definition" }));
 
     dispatch(gameActions.resetFlashcardsProgressReducer());
