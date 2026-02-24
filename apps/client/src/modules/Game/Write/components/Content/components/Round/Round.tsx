@@ -3,8 +3,15 @@ import { memo, MouseEvent, useEffect } from "react";
 
 import Score from "./component/Score";
 import s from "./styles.module.scss";
+import { Link } from "@ui/InteractiveElement";
+import { useRouter } from "next/router";
 
 const Round = () => {
+  const router = useRouter();
+  const { _id } = router.query;
+
+  const isSR = _id === "sr";
+
   const { nextWriteRound } = useActions();
 
   const answered = useAppSelector(s => s.game.write.answered);
@@ -52,10 +59,13 @@ const Round = () => {
 
   return (
     <div className={s.round}>
-      <h1 className={s.title}>
-        <span>Round </span>
-        <span>{roundNum}</span>
-      </h1>
+      <div className={s.header}>
+        <h1>
+          <span>Round </span>
+          <span>{roundNum}</span>
+        </h1>
+        <Link href={isSR ? "/home/sr" : `/module/${_id}`}>Return</Link>
+      </div>
       <div className={s.body}>
         <Score
           title="Correct"

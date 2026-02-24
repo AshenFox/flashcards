@@ -8,6 +8,7 @@ const gameInitState: GameState = {
     answers: [],
     is_turned: false,
     ended_early: false,
+    all_cards_num: 0,
   },
   write: {
     is_init: false,

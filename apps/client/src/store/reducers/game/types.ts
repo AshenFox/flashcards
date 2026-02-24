@@ -30,6 +30,7 @@ export type GameState = {
     answers: FlashcardsAnswer[];
     is_turned: boolean;
     ended_early: boolean;
+    all_cards_num: number;
   };
   write: {
     is_init: boolean;

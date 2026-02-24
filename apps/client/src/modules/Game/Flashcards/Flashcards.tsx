@@ -9,15 +9,23 @@ import { EndGameBtn, ShuffleBtn } from "./components/ControlButtons";
 import Progress from "./components/Progress";
 
 const Flashcards = () => {
-  const { getModuleCards, resetModuleData, resetAllGameFields, getSRCards } =
-    useActions();
+  const {
+    getModuleCards,
+    resetModuleData,
+    resetAllGameFields,
+    getSRCards,
+    prepareFlashcards,
+  } = useActions();
 
   const router = useRouter();
   const { _id, number } = router.query;
 
   const isSR = _id === "sr";
 
+  const cards = useAppSelector(s => s.main.cards);
   const user = useAppSelector(s => s.auth.user);
+
+  const { length } = Object.values(cards);
 
   useEffect(() => {
     if (user) {
@@ -32,6 +40,10 @@ const Flashcards = () => {
       resetModuleData();
     };
   }, []);
+
+  useEffect(() => {
+    if (length) prepareFlashcards();
+  }, [length]);
 
   return (
     <>

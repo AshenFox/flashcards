@@ -1,5 +1,5 @@
 import clsx from "clsx";
-import { CSSProperties, memo } from "react";
+import { CSSProperties, memo, useMemo } from "react";
 
 import s from "./styles.module.scss";
 
@@ -20,9 +20,15 @@ const ProgressBar = ({
   color = "default",
   className,
 }: ProgressBarProps) => {
-  const barFillStyle: CSSProperties = {
-    width: `${(progress / complete) * 100}%`,
-  };
+  const barFillStyle = useMemo(() => {
+    const style: CSSProperties = {
+      width: `${(progress / complete) * 100}%`,
+    };
+
+    if (complete === 0) style.width = "0%";
+
+    return style;
+  }, [progress, complete]);
 
   return (
     <div className={clsx(s.container, "progress-bar__container", className)}>
