@@ -3,7 +3,7 @@ import { useIsMounted } from "./useIsMounted";
 export const useUserThemePreference = () => {
   const isMounted = useIsMounted();
 
-  let preference: "light" | "dark" | null = null;
+  let preference: "light" | "dark" = "dark";
 
   if (isMounted) {
     const { matchMedia } = window;
