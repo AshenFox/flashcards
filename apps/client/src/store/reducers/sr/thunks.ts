@@ -1,4 +1,4 @@
-import { axiosInstance } from "@flashcards/common";
+import { getSRCount } from "@api/methods";
 import { ThunkActionApp } from "@store/store";
 
 import { srActions } from "./slice";
@@ -31,21 +31,16 @@ export const setSRCounter = (additionNumber: number, value?: string) =>
     dispatch(srActions.setSRCounterReducer({ value: result }));
   });
 
-export const getSRCount = () => <ThunkActionApp>(async dispatch => {
-    try {
-      dispatch(srActions.setSRLoading({ value: true }));
+export const loadSRCount = () => <ThunkActionApp>(async dispatch => {
+  try {
+    dispatch(srActions.setSRLoading({ value: true }));
 
-      const { data } = await axiosInstance.get<{
-        all_num: number;
-        repeat_num: number;
-        next_num: number;
-        next_date: string;
-      }>("/api/sr/count");
+    const data = await getSRCount();
 
-      dispatch(srActions.getSRCountReducer(data));
-    } catch (err) {
-      console.error(err);
-    }
+    dispatch(srActions.getSRCountReducer(data));
+  } catch (err) {
+    console.error(err);
+  }
 
-    dispatch(srActions.setSRLoading({ value: false }));
-  });
+  dispatch(srActions.setSRLoading({ value: false }));
+});

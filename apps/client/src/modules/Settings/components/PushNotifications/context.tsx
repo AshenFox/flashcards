@@ -1,4 +1,8 @@
-import { axiosInstance } from "@flashcards/common";
+import {
+  deleteNotificationsSubscription,
+  getNotificationsSubscriptions,
+  updateNotificationsSubscription,
+} from "@api/methods";
 import { useQuery } from "@tanstack/react-query";
 import {
   createContext,
@@ -85,12 +89,7 @@ export const PushNotificationsProvider: React.FC<{
     refetch: refetchSubscriptions,
   } = useQuery({
     queryKey,
-    queryFn: async () =>
-      (
-        await axiosInstance.get<Subscription[]>(
-          "/api/notifications/subscriptions",
-        )
-      ).data,
+    queryFn: getNotificationsSubscriptions,
     enabled: false,
     initialData: [],
   });
@@ -157,7 +156,7 @@ export const PushNotificationsProvider: React.FC<{
     async (id: string) => {
       setIsDeleting(true);
       try {
-        await axiosInstance.delete(`/api/notifications/subscription/${id}`);
+        await deleteNotificationsSubscription(id);
         await refetchSubscriptions();
 
         const subscription = currentSubscriptionRef.current;
@@ -177,9 +176,7 @@ export const PushNotificationsProvider: React.FC<{
   const renameSubscription = useCallback(
     async (id: string, newName: string) => {
       try {
-        await axiosInstance.put(`/api/notifications/subscription/${id}`, {
-          name: newName,
-        });
+        await updateNotificationsSubscription(id, { name: newName });
       } catch (err) {
         console.error(err);
         await refetchSubscriptions();

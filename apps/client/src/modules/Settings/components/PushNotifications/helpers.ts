@@ -1,7 +1,7 @@
-import { axiosInstance } from "@flashcards/common";
+import { subscribeNotificationsPush } from "@api/methods";
 import flashcardsConfig from "@flashcards/config";
 
-import { CurrentSubscription, Subscription } from "./types";
+import { CurrentSubscription } from "./types";
 
 export const urlBase64ToUint8Array = (base64String: string) => {
   const base64 = base64String.trim();
@@ -67,7 +67,7 @@ export const subscribeToPush = async (
   const { browser, os, platform } = getBrowserInfo();
   const subscriptionName = `${browser} on ${os} (${platform})`;
 
-  await axiosInstance.post("/api/notifications/subscribe", {
+  await subscribeNotificationsPush({
     name: subscriptionName,
     subscriptionData: subscription.toJSON(),
   });

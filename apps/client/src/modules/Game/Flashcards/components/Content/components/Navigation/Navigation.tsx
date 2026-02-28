@@ -11,7 +11,7 @@ const Navigation = () => {
     saveFlashcardsAnswer,
     setFlashcardsSide,
     setFlashcardsProgress,
-    putSRAnswer,
+    saveSRAnswer,
   } = useActions();
 
   const router = useRouter();
@@ -29,8 +29,8 @@ const Navigation = () => {
     (e: MouseEvent<HTMLDivElement | HTMLButtonElement>) => {
       if (value === "next" && isSR) {
         const { _id } = activeCardData;
-        if (cardAnswer === "correct") putSRAnswer(_id, 1);
-        if (cardAnswer === "incorrect") putSRAnswer(_id, -1);
+        if (cardAnswer === "correct") saveSRAnswer(_id, 1);
+        if (cardAnswer === "incorrect") saveSRAnswer(_id, -1);
 
         saveFlashcardsAnswer({
           _id,
@@ -68,7 +68,7 @@ const Navigation = () => {
       if (isSR && isTurnedRef.current) {
         const _id = _idRef.current;
         if (e.key === "ArrowRight") {
-          putSRAnswer(_id, 1);
+          saveSRAnswer(_id, 1);
           saveFlashcardsAnswer({
             _id,
             answer: "correct",
@@ -77,7 +77,7 @@ const Navigation = () => {
         }
 
         if (e.key === "ArrowLeft") {
-          putSRAnswer(_id, -1);
+          saveSRAnswer(_id, -1);
           saveFlashcardsAnswer({
             _id,
             answer: "incorrect",

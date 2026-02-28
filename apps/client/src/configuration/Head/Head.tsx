@@ -1,5 +1,5 @@
 import { useUserThemePreference } from "@helpers/hooks/useUserThemePreference";
-import type { ResolvedTheme } from "@helpers/themeCookie";
+import type { ResolvedTheme } from "@configuration/Theme";
 import NextHead from "next/head";
 import { useTheme } from "next-themes";
 import { memo } from "react";

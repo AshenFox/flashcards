@@ -31,7 +31,7 @@ const Home = () => {
   const router = useRouter();
   const { section } = router.query;
 
-  const { getModules, getCards, getSRCount } = useActions();
+  const { getModules, getCards, loadSRCount } = useActions();
 
   const modules = useAppSelector(s => s.main.modules);
   const cards = useAppSelector(s => s.main.cards);
@@ -40,8 +40,15 @@ const Home = () => {
   const loadContent = useCallback(() => {
     if (!modules.length && section === "modules") getModules();
     if (!cards.length && section === "cards") getCards();
-    if (section === "sr") getSRCount();
-  }, [section, cards.length, modules.length, getCards, getModules, getSRCount]);
+    if (section === "sr") loadSRCount();
+  }, [
+    section,
+    cards.length,
+    modules.length,
+    getCards,
+    getModules,
+    loadSRCount,
+  ]);
 
   useEffect(() => {
     if (!user) return;

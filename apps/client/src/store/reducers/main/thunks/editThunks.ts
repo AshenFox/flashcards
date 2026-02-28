@@ -1,5 +1,13 @@
-import { CardDto } from "@flashcards/common";
-import { axiosInstance } from "@flashcards/common";
+import {
+  createEditCard,
+  createEditModule,
+  deleteEditCard,
+  deleteEditModule,
+  getScrapeDictionary,
+  searchScrapeImages,
+  updateEditCard,
+  updateEditModule,
+} from "@api/methods";
 import { saveLastUpdate } from "@store/helper-functions";
 import { ThunkActionApp } from "@store/store";
 import sanitize from "sanitize-html";
@@ -7,43 +15,40 @@ import sanitize from "sanitize-html";
 import { url_fields } from "../initState";
 import { mainActions } from "../slice";
 import {
-  CodDictResult,
-  CodReply,
   ImgurlBase,
   ImgurlObjs,
-  UrbanDictResult,
-  UrbanReply,
 } from "../types";
+import { CodDictResult, UrbanDictResult } from "@api/methods/scrape/scrapeDictionary";
 
 export const setCardsSavePositive = (_id: string) => <ThunkActionApp>(async (
-    dispatch,
-    getState,
-  ) => {
-    const {
-      main: { cards },
-    } = getState();
+  dispatch,
+  getState,
+) => {
+  const {
+    main: { cards },
+  } = getState();
 
-    const cards_arr = Object.values(cards);
-    let _id_arr: string[] = [];
+  const cards_arr = Object.values(cards);
+  let _id_arr: string[] = [];
 
-    for (const card of cards_arr) {
-      if (card._id === _id) {
-        _id_arr.push(card._id);
-        break;
-      }
-      if (card.save) {
-        _id_arr = [];
-      } else {
-        _id_arr.push(card._id);
-      }
+  for (const card of cards_arr) {
+    if (card._id === _id) {
+      _id_arr.push(card._id);
+      break;
     }
+    if (card.save) {
+      _id_arr = [];
+    } else {
+      _id_arr.push(card._id);
+    }
+  }
 
-    dispatch(
-      mainActions.setCardsSavePositiveReducer({
-        _id_arr,
-      }),
-    );
-  });
+  dispatch(
+    mainActions.setCardsSavePositiveReducer({
+      _id_arr,
+    }),
+  );
+});
 
 export const scrapeDictionary = (_id: string, value: "cod" | "urban") =>
   <ThunkActionApp>(async (dispatch, getState) => {
@@ -65,22 +70,15 @@ export const scrapeDictionary = (_id: string, value: "cod" | "urban") =>
       if (value === "cod") query = term_without_tags.replace(/\s+/g, "-");
       if (value === "urban") query = term_without_tags.replace(/\s+/g, "+");
 
-      const url = `/api/scrape/${value}`;
-      const params = {
-        params: {
-          query,
-        },
-      };
-
       let result: string;
 
       if (value === "cod") {
-        const { data } = await axiosInstance.get<CodReply>(url, params);
+        const data = await getScrapeDictionary(value, query);
         result = sanitize(format_dictionary_result({ type: "cod", data }));
       }
 
       if (value === "urban") {
-        const { data } = await axiosInstance.get<UrbanReply>(url, params);
+        const data = await getScrapeDictionary(value, query);
         result = sanitize(format_dictionary_result({ type: "urban", data }));
       }
 
@@ -119,150 +117,132 @@ export const setUrlOk = (_id: string, index: string, value: boolean) =>
   });
 
 export const searchImages = (_id: string) => <ThunkActionApp>(async (
-    dispatch,
-    getState,
-  ) => {
-    try {
-      const {
-        main: { cards },
-      } = getState();
+  dispatch,
+  getState,
+) => {
+  try {
+    const {
+      main: { cards },
+    } = getState();
 
-      const query = cards[_id].gallery.query;
+    const query = cards[_id].gallery.query;
 
-      if (!query) return console.error("Query can not be empty.");
+    if (!query) return console.error("Query can not be empty.");
 
-      const regexpURL = /^@url - /;
+    const regexpURL = /^@url - /;
 
-      const isURL = regexpURL.test(query);
+    const isURL = regexpURL.test(query);
 
-      dispatch(mainActions.setGalleryLoading({ _id, value: true }));
+    dispatch(mainActions.setGalleryLoading({ _id, value: true }));
 
-      if (isURL) {
-        const url = query.replace(regexpURL, "").trim();
+    if (isURL) {
+      const url = query.replace(regexpURL, "").trim();
 
-        if (!url) return console.error("Query can not be empty.");
+      if (!url) return console.error("Query can not be empty.");
 
-        dispatch(
-          mainActions.searchImagesReducer({
-            _id,
-            imgurl_obj: imgUrlArrToObj([{ url }]),
-            all: 1,
-          }),
-        );
-      } else {
-        let { data }: { data: ImgurlBase[] } = await axiosInstance.get(
-          "/api/imgsearch",
-          {
-            params: {
-              query,
-            },
-          },
-        );
+      dispatch(
+        mainActions.searchImagesReducer({
+          _id,
+          imgurl_obj: imgUrlArrToObj([{ url }]),
+          all: 1,
+        }),
+      );
+    } else {
+      const data = await searchScrapeImages(query);
 
-        const all = data.length;
-        const imgurl_obj = imgUrlArrToObj(data);
+      const all = data.length;
+      const imgurl_obj = imgUrlArrToObj(data);
 
-        dispatch(mainActions.searchImagesReducer({ _id, imgurl_obj, all }));
-      }
-    } catch (err) {
-      console.error(err);
-      dispatch(mainActions.setGalleryError({ _id, value: true }));
+      dispatch(mainActions.searchImagesReducer({ _id, imgurl_obj, all }));
     }
+  } catch (err) {
+    console.error(err);
+    dispatch(mainActions.setGalleryError({ _id, value: true }));
+  }
 
-    dispatch(mainActions.setGalleryLoading({ _id, value: false }));
-  });
+  dispatch(mainActions.setGalleryLoading({ _id, value: false }));
+});
 
 export const deleteModule = _id => <ThunkActionApp>(async (
-    dispatch,
-    getState,
-  ) => {
-    try {
-      const {
-        auth: { user },
-        main: { module },
-      } = getState();
-      const module_loading = module && module.module_loading;
+  dispatch,
+  getState,
+) => {
+  try {
+    const {
+      auth: { user },
+      main: { module },
+    } = getState();
+    const module_loading = module && module.module_loading;
 
-      if (!user || module_loading) return;
-      dispatch(mainActions.setModuleLoading({ value: true }));
+    if (!user || module_loading) return;
+    dispatch(mainActions.setModuleLoading({ value: true }));
 
-      await axiosInstance.delete<{ msg: string }>("/api/edit/module", {
-        params: {
-          _id,
-        },
-      });
+    await deleteEditModule(_id);
 
-      saveLastUpdate();
-      window.location.replace(`/home/modules`);
-    } catch (err) {
-      console.error(err);
-    }
+    saveLastUpdate();
+    window.location.replace(`/home/modules`);
+  } catch (err) {
+    console.error(err);
+  }
 
-    dispatch(mainActions.setModuleLoading({ value: false }));
-  });
+  dispatch(mainActions.setModuleLoading({ value: false }));
+});
 
 export const deleteCard = (_id: string) => <ThunkActionApp>(async (
-    dispatch,
-    getState,
-  ) => {
-    try {
-      const {
-        auth: { user },
-      } = getState();
-      if (!user) return;
+  dispatch,
+  getState,
+) => {
+  try {
+    const {
+      auth: { user },
+    } = getState();
+    if (!user) return;
 
-      const res = await axiosInstance.delete<{ msg: string; cards: CardDto[] }>(
-        "/api/edit/card",
-        {
-          params: {
-            _id,
-          },
-        },
-      );
+    const res = await deleteEditCard(_id);
 
-      dispatch(mainActions.deleteCardReducer({ cards: res.data.cards }));
+    dispatch(mainActions.deleteCardReducer({ cards: res.cards }));
 
-      saveLastUpdate();
-    } catch (err) {
-      console.error(err);
-    }
-  });
+    saveLastUpdate();
+  } catch (err) {
+    console.error(err);
+  }
+});
 
 export const editModule = () => <ThunkActionApp>(async (_, getState) => {
-    try {
-      const {
-        auth: { user },
-        main: { module },
-      } = getState();
+  try {
+    const {
+      auth: { user },
+      main: { module },
+    } = getState();
 
-      if (!user) return;
+    if (!user) return;
 
-      await axiosInstance.put<{ msg: string }>("/api/edit/module", module);
+    await updateEditModule(module);
 
-      saveLastUpdate();
-    } catch (err) {
-      console.error(err);
-    }
-  });
+    saveLastUpdate();
+  } catch (err) {
+    console.error(err);
+  }
+});
 
 export const editCard = (_id: string) => <ThunkActionApp>(async (
-    _,
-    getState,
-  ) => {
-    try {
-      const {
-        auth: { user },
-        main: { cards },
-      } = getState();
-      if (!user) return;
+  _,
+  getState,
+) => {
+  try {
+    const {
+      auth: { user },
+      main: { cards },
+    } = getState();
+    if (!user) return;
 
-      await axiosInstance.put<{ msg: string }>("/api/edit/card", cards[_id]);
+    await updateEditCard(cards[_id]);
 
-      saveLastUpdate();
-    } catch (err) {
-      console.error(err);
-    }
-  });
+    saveLastUpdate();
+  } catch (err) {
+    console.error(err);
+  }
+});
 
 export const createModule = (saveAllCards: boolean = false) =>
   <ThunkActionApp>(async (dispatch, getState) => {
@@ -286,9 +266,7 @@ export const createModule = (saveAllCards: boolean = false) =>
         if (card.save || saveAllCards) _id_arr.push(card._id);
       }
 
-      await axiosInstance.post<{ msg: string }>("/api/edit/module", {
-        _id_arr,
-      });
+      await createEditModule(_id_arr);
 
       window.location.replace("/home/modules");
       saveLastUpdate();
@@ -308,15 +286,9 @@ export const createCard = (position: "start" | "end") =>
       } = getState();
       if (!user) return;
 
-      const res = await axiosInstance.post<{ cards: CardDto[] }>(
-        "/api/edit/card",
-        {
-          module,
-          position,
-        },
-      );
+      const res = await createEditCard(module, position);
 
-      dispatch(mainActions.createCardReducer({ cards: res.data.cards }));
+      dispatch(mainActions.createCardReducer({ cards: res.cards }));
 
       saveLastUpdate();
 
@@ -341,48 +313,48 @@ export const createCard = (position: "start" | "end") =>
   });
 
 export const exportSelectedCards = () => <ThunkActionApp>(async (
-    _,
-    getState,
-  ) => {
-    try {
-      const {
-        main: { cards },
-      } = getState();
+  _,
+  getState,
+) => {
+  try {
+    const {
+      main: { cards },
+    } = getState();
 
-      const selectedCards = Object.values(cards)
-        .filter(card => card.save)
-        .map(card => {
-          const exportCard = {
-            _id: card._id,
-            moduleID: card.moduleID,
-            term: card.term,
-            definition: card.definition,
-            imgurl: card.imgurl,
-            author_id: card.author_id,
-            author: card.author,
-          };
+    const selectedCards = Object.values(cards)
+      .filter(card => card.save)
+      .map(card => {
+        const exportCard = {
+          _id: card._id,
+          moduleID: card.moduleID,
+          term: card.term,
+          definition: card.definition,
+          imgurl: card.imgurl,
+          author_id: card.author_id,
+          author: card.author,
+        };
 
-          return exportCard;
-        });
+        return exportCard;
+      });
 
-      if (selectedCards.length === 0) {
-        console.error("No cards selected for export");
-        return;
-      }
-
-      const dataStr = JSON.stringify(selectedCards, null, 2);
-      const dataUri = `data:application/json;charset=utf-8,${encodeURIComponent(dataStr)}`;
-
-      const exportFileDefaultName = `flashcards_export_${new Date().toISOString().slice(0, 10)}_${new Date().toLocaleTimeString().replace(/:/g, "-")}.json`;
-
-      const linkElement = document.createElement("a");
-      linkElement.setAttribute("href", dataUri);
-      linkElement.setAttribute("download", exportFileDefaultName);
-      linkElement.click();
-    } catch (err) {
-      console.error("Error exporting cards:", err);
+    if (selectedCards.length === 0) {
+      console.error("No cards selected for export");
+      return;
     }
-  });
+
+    const dataStr = JSON.stringify(selectedCards, null, 2);
+    const dataUri = `data:application/json;charset=utf-8,${encodeURIComponent(dataStr)}`;
+
+    const exportFileDefaultName = `flashcards_export_${new Date().toISOString().slice(0, 10)}_${new Date().toLocaleTimeString().replace(/:/g, "-")}.json`;
+
+    const linkElement = document.createElement("a");
+    linkElement.setAttribute("href", dataUri);
+    linkElement.setAttribute("download", exportFileDefaultName);
+    linkElement.click();
+  } catch (err) {
+    console.error("Error exporting cards:", err);
+  }
+});
 
 // ==============================
 // ==============================

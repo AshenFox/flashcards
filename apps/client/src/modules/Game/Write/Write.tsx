@@ -14,7 +14,7 @@ const Write = () => {
     resetAllGameFields,
     getModuleCards,
     prepareWrite,
-    getSRCards,
+    loadSRCards,
   } = useActions();
 
   const cards = useAppSelector(s => s.main.cards);
@@ -36,7 +36,7 @@ const Write = () => {
 
   useEffect(() => {
     if (user) {
-      if (isSR && typeof number === "string") getSRCards(+number);
+      if (isSR && typeof number === "string") loadSRCards(+number);
       else if (typeof _id === "string") getModuleCards(_id);
     }
   }, [user]);

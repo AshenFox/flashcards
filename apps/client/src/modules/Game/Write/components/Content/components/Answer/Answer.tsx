@@ -27,7 +27,7 @@ type AnswerProps = {
 };
 
 const Answer = ({ data }: AnswerProps) => {
-  const { setCardEdit, setWriteCopyAnswerField, nextWriteCard, putSRAnswer } =
+  const { setCardEdit, setWriteCopyAnswerField, nextWriteCard, saveSRAnswer } =
     useActions();
 
   const router = useRouter();
@@ -75,7 +75,7 @@ const Answer = ({ data }: AnswerProps) => {
 
   const continueGame = useCallback(() => {
     if (canContinue) {
-      if (isFirstRound && isSR) putSRAnswer(_id, isCorrect ? 1 : -1);
+      if (isFirstRound && isSR) saveSRAnswer(_id, isCorrect ? 1 : -1);
       nextWriteCard();
     }
   }, [
@@ -85,13 +85,13 @@ const Answer = ({ data }: AnswerProps) => {
     _id,
     isSR,
     nextWriteCard,
-    putSRAnswer,
+    saveSRAnswer,
   ]);
 
   const overrideAnswer = useCallback(() => {
-    if (isFirstRound && isSR) putSRAnswer(_id, 1);
+    if (isFirstRound && isSR) saveSRAnswer(_id, 1);
     nextWriteCard({ override: true });
-  }, [_id, isFirstRound, isSR, nextWriteCard, putSRAnswer]);
+  }, [_id, isFirstRound, isSR, nextWriteCard, saveSRAnswer]);
 
   const clickContinue = (e: MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();

@@ -1,4 +1,4 @@
-import { axiosInstance } from "@flashcards/common";
+import { importEditCards } from "@api/methods";
 import { saveLastUpdate } from "@store/helper-functions";
 import { useActions, useAppSelector } from "@store/hooks";
 import { Button } from "@ui/InteractiveElement";
@@ -27,15 +27,9 @@ const ImportCards = () => {
         const text = await file.text();
         const cards = JSON.parse(text);
 
-        const res = await axiosInstance.put<{ cards: any[] }>(
-          "/api/edit/cards",
-          {
-            moduleId: currentModule._id,
-            cards,
-          },
-        );
+        const res = await importEditCards(currentModule._id, cards);
 
-        importCards({ cards: res.data.cards });
+        importCards({ cards: res.cards });
         saveLastUpdate();
       } catch (err) {
         console.error("Error importing cards:", err);

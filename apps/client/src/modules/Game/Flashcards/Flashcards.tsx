@@ -13,7 +13,7 @@ const Flashcards = () => {
     getModuleCards,
     resetModuleData,
     resetAllGameFields,
-    getSRCards,
+    loadSRCards,
     prepareFlashcards,
   } = useActions();
 
@@ -29,7 +29,7 @@ const Flashcards = () => {
 
   useEffect(() => {
     if (user) {
-      if (isSR && typeof number === "string") getSRCards(+number);
+      if (isSR && typeof number === "string") loadSRCards(+number);
       else if (typeof _id === "string") getModuleCards(_id);
     }
   }, [user]);
