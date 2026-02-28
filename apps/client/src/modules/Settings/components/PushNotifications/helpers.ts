@@ -1,4 +1,4 @@
-import { subscribeNotificationsPush } from "@api/methods";
+import { notificationsSubscribePush } from "@api/methods";
 import flashcardsConfig from "@flashcards/config";
 
 import { CurrentSubscription } from "./types";
@@ -67,7 +67,7 @@ export const subscribeToPush = async (
   const { browser, os, platform } = getBrowserInfo();
   const subscriptionName = `${browser} on ${os} (${platform})`;
 
-  await subscribeNotificationsPush({
+  await notificationsSubscribePush({
     name: subscriptionName,
     subscriptionData: subscription.toJSON(),
   });

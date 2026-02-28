@@ -1,6 +1,6 @@
 import axiosInstance from "../../axiosInstance";
 
-export const updateNotificationsSubscription = async (
+export const notificationsUpdateSubscription = async (
   id: string,
   body: { name: string },
 ): Promise<void> => {

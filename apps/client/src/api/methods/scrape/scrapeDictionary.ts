@@ -33,15 +33,15 @@ export type UrbanDictResult = {
 };
 
 
-export async function getScrapeDictionary(
+export async function scrapeGetDictionary(
   value: "cod",
   query: string,
 ): Promise<CodReply>;
-export async function getScrapeDictionary(
+export async function scrapeGetDictionary(
   value: "urban",
   query: string,
 ): Promise<UrbanReply>;
-export async function getScrapeDictionary(
+export async function scrapeGetDictionary(
   value: "cod" | "urban",
   query: string,
 ): Promise<CodReply | UrbanReply> {

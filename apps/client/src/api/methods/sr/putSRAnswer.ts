@@ -8,7 +8,7 @@ export type PutSRAnswerResponse = {
   studyRegime: boolean;
 };
 
-export const putSRAnswer = async (
+export const srPutAnswer = async (
   _id: string,
   answer: 1 | -1,
 ): Promise<PutSRAnswerResponse> => {

@@ -1,5 +1,5 @@
-export { dropSRCards } from "./dropCardsSR";
-export { setSRControl } from "./setSRControl";
-export { putSRAnswer } from "./putSRAnswer";
-export { getSRCards } from "./getSRCards";
-export { getSRCount } from "./getSRCount";
+export { srDropCards } from "./dropCardsSR";
+export { srSetControl } from "./setSRControl";
+export { srPutAnswer } from "./putSRAnswer";
+export { srGetCards } from "./getSRCards";
+export { srGetCount } from "./getSRCount";

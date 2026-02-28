@@ -1,12 +1,12 @@
 import {
-  createEditCard,
-  createEditModule,
-  deleteEditCard,
-  deleteEditModule,
-  getScrapeDictionary,
-  searchScrapeImages,
-  updateEditCard,
-  updateEditModule,
+  editCreateCard,
+  editCreateModule,
+  editDeleteCard,
+  editDeleteModule,
+  scrapeGetDictionary,
+  scrapeSearchImages,
+  editUpdateCard,
+  editUpdateModule,
 } from "@api/methods";
 import { saveLastUpdate } from "@store/helper-functions";
 import { ThunkActionApp } from "@store/store";
@@ -73,12 +73,12 @@ export const scrapeDictionary = (_id: string, value: "cod" | "urban") =>
       let result: string;
 
       if (value === "cod") {
-        const data = await getScrapeDictionary(value, query);
+        const data = await scrapeGetDictionary(value, query);
         result = sanitize(format_dictionary_result({ type: "cod", data }));
       }
 
       if (value === "urban") {
-        const data = await getScrapeDictionary(value, query);
+        const data = await scrapeGetDictionary(value, query);
         result = sanitize(format_dictionary_result({ type: "urban", data }));
       }
 
@@ -148,7 +148,7 @@ export const searchImages = (_id: string) => <ThunkActionApp>(async (
         }),
       );
     } else {
-      const data = await searchScrapeImages(query);
+      const data = await scrapeSearchImages(query);
 
       const all = data.length;
       const imgurl_obj = imgUrlArrToObj(data);
@@ -177,7 +177,7 @@ export const deleteModule = _id => <ThunkActionApp>(async (
     if (!user || module_loading) return;
     dispatch(mainActions.setModuleLoading({ value: true }));
 
-    await deleteEditModule(_id);
+    await editDeleteModule(_id);
 
     saveLastUpdate();
     window.location.replace(`/home/modules`);
@@ -198,7 +198,7 @@ export const deleteCard = (_id: string) => <ThunkActionApp>(async (
     } = getState();
     if (!user) return;
 
-    const res = await deleteEditCard(_id);
+    const res = await editDeleteCard(_id);
 
     dispatch(mainActions.deleteCardReducer({ cards: res.cards }));
 
@@ -217,7 +217,7 @@ export const editModule = () => <ThunkActionApp>(async (_, getState) => {
 
     if (!user) return;
 
-    await updateEditModule(module);
+    await editUpdateModule(module);
 
     saveLastUpdate();
   } catch (err) {
@@ -236,7 +236,7 @@ export const editCard = (_id: string) => <ThunkActionApp>(async (
     } = getState();
     if (!user) return;
 
-    await updateEditCard(cards[_id]);
+    await editUpdateCard(cards[_id]);
 
     saveLastUpdate();
   } catch (err) {
@@ -266,7 +266,7 @@ export const createModule = (saveAllCards: boolean = false) =>
         if (card.save || saveAllCards) _id_arr.push(card._id);
       }
 
-      await createEditModule(_id_arr);
+      await editCreateModule(_id_arr);
 
       window.location.replace("/home/modules");
       saveLastUpdate();
@@ -286,7 +286,7 @@ export const createCard = (position: "start" | "end") =>
       } = getState();
       if (!user) return;
 
-      const res = await createEditCard(module, position);
+      const res = await editCreateCard(module, position);
 
       dispatch(mainActions.createCardReducer({ cards: res.cards }));
 

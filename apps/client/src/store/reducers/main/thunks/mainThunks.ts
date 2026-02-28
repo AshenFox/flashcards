@@ -4,11 +4,11 @@ import {
   GetMainModulesQueryDto,
 } from "@flashcards/common";
 import {
-  getEditDraft,
-  getMainCards,
-  getMainModule,
-  getMainModuleCards,
-  getMainModules,
+  editGetDraft,
+  mainGetCards,
+  mainGetModule,
+  mainGetModuleCards,
+  mainGetModules,
 } from "@api/methods";
 import { ThunkActionApp } from "@store/store";
 
@@ -40,7 +40,7 @@ export const getModules = () => <ThunkActionApp>(async (dispatch, getState) => {
       ...filters,
     };
 
-    const data = await getMainModules(params);
+    const data = await mainGetModules(params);
 
     dispatch(mainActions.setHomeModules(data));
   } catch (err) {
@@ -77,7 +77,7 @@ export const getCards = () => <ThunkActionApp>(async (dispatch, getState) => {
       ...filters,
     };
 
-    const data = await getMainCards(params);
+    const data = await mainGetCards(params);
 
     dispatch(mainActions.setCards(data));
   } catch (err) {
@@ -107,7 +107,7 @@ export const getModuleCards = (_id: string) => <ThunkActionApp>(async (
 
     mainActions.setSectionLoading({ value: true, section: "moduleCards" });
 
-    const data = await getMainModuleCards(_id);
+    const data = await mainGetModuleCards(_id);
 
     dispatch(mainActions.setModuleCards(data));
   } catch (err) {
@@ -142,7 +142,7 @@ export const getModule = (_id: string) => <ThunkActionApp>(async (
       ...filters,
     };
 
-    const data = await getMainModule(params);
+    const data = await mainGetModule(params);
 
     dispatch(mainActions.setModule(data));
   } catch (err) {
@@ -172,7 +172,7 @@ export const getDraft = () => <ThunkActionApp>(async (dispatch, getState) => {
       mainActions.setSectionLoading({ value: true, section: "editDraft" }),
     );
 
-    const data = await getEditDraft();
+    const data = await editGetDraft();
 
     dispatch(mainActions.setModule(data));
   } catch (err) {

@@ -1,2 +1,2 @@
-export { getScrapeDictionary } from "./scrapeDictionary";
-export { searchScrapeImages } from "./searchImages";
+export { scrapeGetDictionary } from "./scrapeDictionary";
+export { scrapeSearchImages } from "./searchImages";

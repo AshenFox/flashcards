@@ -2,7 +2,7 @@ import { CardDto } from "@flashcards/common";
 
 import axiosInstance from "../../axiosInstance";
 
-export const importEditCards = async (
+export const editImportCards = async (
   moduleId: string,
   cards: unknown[],
 ): Promise<{ cards: CardDto[] }> => {

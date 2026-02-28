@@ -1,6 +1,6 @@
 import axiosInstance from "../../axiosInstance";
 
-export const checkAuthSignUp = async <T>(
+export const authCheckSignUp = async <T>(
   body: Record<string, unknown>,
 ): Promise<T> => {
   const { data } = await axiosInstance.post<T>("auth/check/sign_up", body);

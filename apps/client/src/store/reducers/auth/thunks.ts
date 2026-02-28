@@ -1,5 +1,5 @@
 import {
-  getAuthUser,
+  authGetUser,
 } from "@api/methods";
 import { ThunkActionApp } from "@store/store";
 
@@ -22,7 +22,7 @@ export const authenticate = () => <ThunkActionApp>(async (
 
     if (token) {
       setAuthToken(token);
-      const data = await getAuthUser();
+      const data = await authGetUser();
 
       if (pathname === "/") {
         window.location.replace("/home/modules");

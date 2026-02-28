@@ -1,7 +1,7 @@
 import {
-  deleteNotificationsSubscription,
-  getNotificationsSubscriptions,
-  updateNotificationsSubscription,
+  notificationsDeleteSubscription,
+  notificationsGetSubscriptions,
+  notificationsUpdateSubscription,
 } from "@api/methods";
 import { useQuery } from "@tanstack/react-query";
 import {
@@ -89,7 +89,7 @@ export const PushNotificationsProvider: React.FC<{
     refetch: refetchSubscriptions,
   } = useQuery({
     queryKey,
-    queryFn: getNotificationsSubscriptions,
+    queryFn: notificationsGetSubscriptions,
     enabled: false,
     initialData: [],
   });
@@ -156,7 +156,7 @@ export const PushNotificationsProvider: React.FC<{
     async (id: string) => {
       setIsDeleting(true);
       try {
-        await deleteNotificationsSubscription(id);
+        await notificationsDeleteSubscription(id);
         await refetchSubscriptions();
 
         const subscription = currentSubscriptionRef.current;
@@ -176,7 +176,7 @@ export const PushNotificationsProvider: React.FC<{
   const renameSubscription = useCallback(
     async (id: string, newName: string) => {
       try {
-        await updateNotificationsSubscription(id, { name: newName });
+        await notificationsUpdateSubscription(id, { name: newName });
       } catch (err) {
         console.error(err);
         await refetchSubscriptions();

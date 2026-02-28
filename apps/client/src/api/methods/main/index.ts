@@ -1,5 +1,5 @@
-export { getMainModules } from "./getModules";
-export { getMainCards } from "./getCards";
-export { getMainModuleCards } from "./getModuleCards";
-export { getMainModule } from "./getModule";
-export { getEditDraft } from "./getDraft";
+export { mainGetModules } from "./getModules";
+export { mainGetCards } from "./getCards";
+export { mainGetModuleCards } from "./getModuleCards";
+export { mainGetModule } from "./getModule";
+export { editGetDraft } from "./getDraft";

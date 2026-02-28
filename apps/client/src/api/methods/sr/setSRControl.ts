@@ -1,6 +1,6 @@
 import axiosInstance from "../../axiosInstance";
 
-export const setSRControl = async (
+export const srSetControl = async (
   _id_arr: string[],
   study_regime: boolean,
 ): Promise<void> => {

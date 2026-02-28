@@ -7,7 +7,7 @@ export type ImgurlBase = {
   context?: string;
 };
 
-export const searchScrapeImages = async (
+export const scrapeSearchImages = async (
   query: string,
 ): Promise<ImgurlBase[]> => {
   const { data } = await axiosInstance.get<ImgurlBase[]>("imgsearch", {

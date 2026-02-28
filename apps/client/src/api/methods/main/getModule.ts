@@ -5,7 +5,7 @@ import {
 
 import axiosInstance from "../../axiosInstance";
 
-export const getMainModule = async (
+export const mainGetModule = async (
   params: GetMainModuleQueryDto,
 ): Promise<GetMainModuleResponseDto> => {
   const { data } = await axiosInstance.get<GetMainModuleResponseDto>(

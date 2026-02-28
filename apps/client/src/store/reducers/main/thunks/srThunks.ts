@@ -1,8 +1,8 @@
 import {
-  dropSRCards,
-  getSRCards,
-  putSRAnswer,
-  setSRControl,
+  srDropCards,
+  srGetCards,
+  srPutAnswer,
+  srSetControl,
 } from "@api/methods";
 import { saveLastUpdate } from "@store/helper-functions";
 import { ThunkActionApp } from "@store/store";
@@ -20,7 +20,7 @@ export const dropCardsSR = () => <ThunkActionApp>(async (
 
     const _id_arr = Object.keys(cards);
 
-    const data = await dropSRCards(_id_arr);
+    const data = await srDropCards(_id_arr);
 
     dispatch(mainActions.dropCardsSRReducer(data));
 
@@ -32,7 +32,7 @@ export const dropCardsSR = () => <ThunkActionApp>(async (
 
 export const dropCardSR = (_id: string) => <ThunkActionApp>(async dispatch => {
   try {
-    const data = await dropSRCards([_id]);
+    const data = await srDropCards([_id]);
 
     dispatch(mainActions.dropCardSRReducer({ _id, ...data }));
 
@@ -45,7 +45,7 @@ export const dropCardSR = (_id: string) => <ThunkActionApp>(async dispatch => {
 export const setCardSR = (_id: string, value: boolean) =>
   <ThunkActionApp>(async dispatch => {
     try {
-      await setSRControl([_id], value);
+      await srSetControl([_id], value);
 
       dispatch(mainActions.setCardSRReducer({ _id, value }));
 
@@ -79,7 +79,7 @@ export const setCardsSRPositive = (_id: string) => <ThunkActionApp>(async (
       }
     }
 
-    await setSRControl(_id_arr, true);
+    await srSetControl(_id_arr, true);
 
     dispatch(mainActions.setCardsSRPositiveReducer({ _id_arr }));
 
@@ -100,7 +100,7 @@ export const setCardsSR = (value: boolean) => <ThunkActionApp>(async (
 
     const _id_arr = Object.keys(cards);
 
-    await setSRControl(_id_arr, value);
+    await srSetControl(_id_arr, value);
 
     dispatch(mainActions.setCardsSRReducer({ value }));
 
@@ -119,7 +119,7 @@ export const saveSRAnswer = (_id: string, answer: 1 | -1) =>
 
       dispatch(mainActions.setCardSRLoading({ _id, value: true }));
 
-      const data = await putSRAnswer(_id, answer);
+      const data = await srPutAnswer(_id, answer);
 
       dispatch(mainActions.putSRAnswerReducer({ _id, ...data }));
 
@@ -146,7 +146,7 @@ export const loadSRCards = (number: number) => <ThunkActionApp>(async (
       mainActions.setSectionLoading({ value: true, section: "srCards" }),
     );
 
-    const { cards } = await getSRCards(number);
+    const { cards } = await srGetCards(number);
 
     const { length } = cards;
 

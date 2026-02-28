@@ -7,7 +7,7 @@ export type DropCardsSRResponse = {
   lastRep: string;
 };
 
-export const dropSRCards = async (
+export const srDropCards = async (
   _id_arr: string[],
 ): Promise<DropCardsSRResponse> => {
   const { data } = await axiosInstance.put<DropCardsSRResponse>("sr/drop", {

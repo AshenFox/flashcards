@@ -1,6 +1,6 @@
 import {
   authEntry,
-  checkAuthSignUp,
+  authCheckSignUp,
 } from "@api/methods";
 import { ThunkActionApp } from "@store/store";
 
@@ -60,7 +60,7 @@ export const checkField = (type: string) => <ThunkActionApp>(async (
 
     dispatch(modalActions.changeModalLoading({ value: true }));
 
-    const data = await checkAuthSignUp<SignUpErrors>(sign_up);
+    const data = await authCheckSignUp<SignUpErrors>(sign_up);
 
     if (type === "username" || type === "password" || type === "email")
       dispatch(modalActions.checkFieldReducer({ ...data, type }));

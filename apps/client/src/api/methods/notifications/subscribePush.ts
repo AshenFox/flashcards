@@ -5,7 +5,7 @@ export type SubscribePushBody = {
   subscriptionData: PushSubscriptionJSON;
 };
 
-export const subscribeNotificationsPush = async (
+export const notificationsSubscribePush = async (
   body: SubscribePushBody,
 ): Promise<void> => {
   await axiosInstance.post("notifications/subscribe", body);

@@ -2,7 +2,7 @@ import { GetMainModuleCardsResponseDto } from "@flashcards/common";
 
 import axiosInstance from "../../axiosInstance";
 
-export const getMainModuleCards = async (
+export const mainGetModuleCards = async (
   _id: string,
 ): Promise<GetMainModuleCardsResponseDto> => {
   const { data } = await axiosInstance.get<GetMainModuleCardsResponseDto>(

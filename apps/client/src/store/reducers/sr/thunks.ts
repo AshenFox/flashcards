@@ -1,4 +1,4 @@
-import { getSRCount } from "@api/methods";
+import { srGetCount } from "@api/methods";
 import { ThunkActionApp } from "@store/store";
 
 import { srActions } from "./slice";
@@ -35,7 +35,7 @@ export const loadSRCount = () => <ThunkActionApp>(async dispatch => {
   try {
     dispatch(srActions.setSRLoading({ value: true }));
 
-    const data = await getSRCount();
+    const data = await srGetCount();
 
     dispatch(srActions.getSRCountReducer(data));
   } catch (err) {

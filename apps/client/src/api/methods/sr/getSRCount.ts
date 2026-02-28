@@ -7,7 +7,7 @@ export type GetSRCountResponse = {
   next_date: string;
 };
 
-export const getSRCount = async (): Promise<GetSRCountResponse> => {
+export const srGetCount = async (): Promise<GetSRCountResponse> => {
   const { data } = await axiosInstance.get<GetSRCountResponse>("sr/count");
   return data;
 };

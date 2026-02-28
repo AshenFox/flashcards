@@ -5,7 +5,7 @@ import {
 
 import axiosInstance from "../../axiosInstance";
 
-export const getMainCards = async (
+export const mainGetCards = async (
   params: GetMainCardsQueryDto,
 ): Promise<GetMainCardsResponseDto> => {
   const { data } = await axiosInstance.get<GetMainCardsResponseDto>(
