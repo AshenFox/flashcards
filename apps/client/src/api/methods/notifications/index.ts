@@ -1,4 +1,4 @@
-export { notificationsGetSubscriptions } from "./getSubscriptions";
-export { notificationsSubscribePush } from "./subscribePush";
-export { notificationsDeleteSubscription } from "./deleteSubscription";
-export { notificationsUpdateSubscription } from "./updateSubscription";
+export { notificationsGetSubscriptions } from "./notificationsGetSubscriptions";
+export { notificationsSubscribePush } from "./notificationsSubscribePush";
+export { notificationsDeleteSubscription } from "./notificationsDeleteSubscription";
+export { notificationsUpdateSubscription } from "./notificationsUpdateSubscription";

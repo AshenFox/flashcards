@@ -1,7 +1,7 @@
-export { editDeleteModule } from "./deleteModule";
-export { editUpdateModule } from "./updateModule";
-export { editCreateModule } from "./createEditModule";
-export { editDeleteCard } from "./deleteEditCard";
-export { editUpdateCard } from "./updateCard";
-export { editCreateCard } from "./createEditCard";
-export { editImportCards } from "./importCards";
+export { editDeleteModule } from "./editDeleteModule";
+export { editUpdateModule } from "./editUpdateModule";
+export { editCreateModule } from "./editCreateModule";
+export { editDeleteCard } from "./editDeleteCard";
+export { editUpdateCard } from "./editUpdateCard";
+export { editCreateCard } from "./editCreateCard";
+export { editImportCards } from "./editImportCards";

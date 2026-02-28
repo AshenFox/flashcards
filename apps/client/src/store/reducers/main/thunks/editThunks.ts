@@ -18,7 +18,7 @@ import {
   ImgurlBase,
   ImgurlObjs,
 } from "../types";
-import { CodDictResult, UrbanDictResult } from "@api/methods/scrape/scrapeDictionary";
+import { CodDictResult, UrbanDictResult } from "@api/methods/scrape/scrapeGetDictionary";
 
 export const setCardsSavePositive = (_id: string) => <ThunkActionApp>(async (
   dispatch,
