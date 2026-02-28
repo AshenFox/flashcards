@@ -55,52 +55,38 @@ export const subscribeToPush = async (
   if (!("serviceWorker" in navigator))
     throw new Error("Service Worker not supported");
 
-  try {
-    const applicationServerKey = urlBase64ToUint8Array(
-      flashcardsConfig.publicVapidKey,
-    );
+  const applicationServerKey = urlBase64ToUint8Array(
+    flashcardsConfig.publicVapidKey,
+  );
 
-    const subscription = await registration.pushManager.subscribe({
-      userVisibleOnly: true,
-      applicationServerKey,
-    });
+  const subscription = await registration.pushManager.subscribe({
+    userVisibleOnly: true,
+    applicationServerKey,
+  });
 
-    const { browser, os, platform } = getBrowserInfo();
-    const subscriptionName = `${browser} on ${os} (${platform})`;
+  const { browser, os, platform } = getBrowserInfo();
+  const subscriptionName = `${browser} on ${os} (${platform})`;
 
-    await axiosInstance.post("/api/notifications/subscribe", {
-      name: subscriptionName,
-      subscriptionData: subscription.toJSON(),
-    });
+  await axiosInstance.post("/api/notifications/subscribe", {
+    name: subscriptionName,
+    subscriptionData: subscription.toJSON(),
+  });
 
-    return subscription;
-  } catch (err) {
-    console.error(err);
-  }
+  return subscription;
 };
 
 export const getCurrentSubscription = async (
-  subscriptions?: Subscription[],
   registration?: ServiceWorkerRegistration | null,
 ) => {
-  let currentSubscription: CurrentSubscription = null;
+  let currentSubscription: PushSubscription | null = null;
 
-  if (!registration || !subscriptions || subscriptions.length === 0)
+  if (!registration)
     return currentSubscription;
 
   try {
     const subscription = await registration.pushManager.getSubscription();
 
-    const data = subscriptions.find(
-      sub => sub.subscriptionData.endpoint === subscription?.endpoint,
-    );
-
-    if (data && subscription) {
-      currentSubscription = {
-        data: data,
-        subscription,
-      };
-    }
+    if (subscription) currentSubscription = subscription;
   } catch (err) {
     console.error(err);
   }
