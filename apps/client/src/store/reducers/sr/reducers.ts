@@ -1,6 +1,6 @@
 import { SrCaseReducer } from "./types";
 
-export const getSRCountReducer: SrCaseReducer<{
+export const setSRCount: SrCaseReducer<{
   all_num: number;
   repeat_num: number;
   next_num: number;

@@ -37,7 +37,7 @@ export const loadSRCount = () => <ThunkActionApp>(async dispatch => {
 
     const data = await srGetCount();
 
-    dispatch(srActions.getSRCountReducer(data));
+    dispatch(srActions.setSRCount(data));
   } catch (err) {
     console.error(err);
   }

@@ -54,7 +54,7 @@ export const setCardSRLoading: MainCaseReducer<{
   state.cards[payload._id].sr.loading = payload.value;
 };
 
-export const putSRAnswerReducer: MainCaseReducer<{
+export const setCardSRAnswer: MainCaseReducer<{
   _id: string;
   stage: number;
   nextRep: string;
@@ -86,7 +86,7 @@ export const dropCardsSRReducer: MainCaseReducer<{
   });
 };
 
-export const getSRCardsReducer: MainCaseReducer<{
+export const setSRCards: MainCaseReducer<{
   cards: CardDto[];
 }> = (state, { payload }) => {
   const cards = transformCards(payload.cards);

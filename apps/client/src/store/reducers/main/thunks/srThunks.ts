@@ -121,7 +121,7 @@ export const saveSRAnswer = (_id: string, answer: 1 | -1) =>
 
       const data = await srPutAnswer(_id, answer);
 
-      dispatch(mainActions.putSRAnswerReducer({ _id, ...data }));
+      dispatch(mainActions.setCardSRAnswer({ _id, ...data }));
 
       saveLastUpdate();
     } catch (err) {
@@ -155,7 +155,7 @@ export const loadSRCards = (number: number) => <ThunkActionApp>(async (
       throw new Error("No cards to repeat.");
     }
 
-    dispatch(mainActions.getSRCardsReducer({ cards }));
+    dispatch(mainActions.setSRCards({ cards }));
   } catch (err) {
     console.error(err);
   }
