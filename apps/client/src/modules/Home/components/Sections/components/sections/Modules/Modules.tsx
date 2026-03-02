@@ -1,20 +1,20 @@
 import Filters, { FilterData, SetFilterValue } from "@components/Filters";
 import NotFound from "@components/NotFound";
-import { useActions } from "@store/hooks";
-import { defaultHomeModulesFilters } from "@store/reducers/main/initState";
-import { useAppSelector } from "@store/store";
+import { useHomeModulesFiltersStore, useHomeModulesQuery } from "./hooks";
 import ScrollLoader from "@ui/ScrollLoader";
 import React, { Fragment, memo, useCallback, useEffect } from "react";
 
 import Divider from "../components/Divider";
 import s from "../styles.module.scss";
 import Module from "./components/Module";
+import { checkBottom } from "@helpers/functions/checkBottom";
+import { defaultModulesFilters } from "@zustand/filters";
 
 const filtersData: FilterData[] = [
   {
     id: "created",
     label: "Date Order",
-    defaultValue: defaultHomeModulesFilters.created,
+    defaultValue: defaultModulesFilters.created,
     options: [
       { value: "newest", label: "Newest" },
       { value: "oldest", label: "Oldest" },
@@ -23,7 +23,7 @@ const filtersData: FilterData[] = [
   {
     id: "sr",
     label: "SR",
-    defaultValue: defaultHomeModulesFilters.sr,
+    defaultValue: defaultModulesFilters.sr,
     options: [
       { value: undefined, label: "All" },
       { value: true, label: "In" },
@@ -33,7 +33,7 @@ const filtersData: FilterData[] = [
   {
     id: "draft",
     label: "Draft",
-    defaultValue: defaultHomeModulesFilters.draft,
+    defaultValue: defaultModulesFilters.draft,
     options: [
       { value: true, label: "Show" },
       { value: false, label: "Hide" },
@@ -42,39 +42,45 @@ const filtersData: FilterData[] = [
 ];
 
 const Modules = () => {
-  const modules = useAppSelector(s => s.main.modules);
-  const draft = useAppSelector(s => s.main.module);
-  const loading = useAppSelector(s => s.main.sections.homeModules.loading);
-  const filters = useAppSelector(s => s.main.sections.homeModules.filters);
-  const { search } = filters;
+  const filters = useHomeModulesFiltersStore(state => state.filters);
+  const setFilter = useHomeModulesFiltersStore(state => state.setFilter);
+  const resetFilters = useHomeModulesFiltersStore(state => state.resetFilters);
 
   const {
-    getModules,
-    resetHomeModulesData,
-    resetSectionFilters,
-    setSectionFilter,
-  } = useActions();
+    data,
+    fetchNextPage,
+    refetch,
+    hasNextPage,
+    isFetchingNextPage,
+    isFetching,
+  } = useHomeModulesQuery();
+
+  const modules = data?.pages.flatMap(p => p.modules.entries) ?? [];
+  const draft = data?.pages[0]?.draft ?? null;
+
+  const { search } = filters;
 
   const setFilterValue = useCallback<SetFilterValue>(
     (filter, value) => {
-      setSectionFilter({
-        section: "homeModules",
-        filter,
-        value,
-      });
+      setFilter(filter as keyof typeof filters, value);
     },
-    [setSectionFilter],
+    [setFilter],
   );
 
-  const resetFilters = useCallback(() => {
-    resetSectionFilters("homeModules");
-  }, [resetSectionFilters]);
+  const resetData = useCallback(() => {
+    // No-op: query key includes filters, so changing filters refetches; no list to clear.
+  }, []);
 
   useEffect(() => {
-    return () => {
-      resetHomeModulesData();
+    const onScroll = () => {
+      if (!checkBottom() || !hasNextPage || isFetchingNextPage) return;
+      fetchNextPage();
     };
-  }, [resetHomeModulesData]);
+    window.addEventListener("scroll", onScroll);
+    return () => window.removeEventListener("scroll", onScroll);
+  }, [fetchNextPage, hasNextPage, isFetchingNextPage]);
+
+  const loading = isFetching || isFetchingNextPage;
 
   return (
     <>
@@ -86,8 +92,8 @@ const Modules = () => {
         className={s.filter}
         alwaysReload
         setFilterValue={setFilterValue}
-        getData={getModules}
-        resetData={resetHomeModulesData}
+        getData={refetch}
+        resetData={resetData}
         resetFilters={resetFilters}
       />
       {draft && (

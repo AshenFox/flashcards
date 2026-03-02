@@ -1,56 +1,16 @@
 import {
   GetMainCardsQueryDto,
   GetMainModuleQueryDto,
-  GetMainModulesQueryDto,
 } from "@flashcards/common";
 import {
   editGetDraft,
   mainGetCards,
   mainGetModule,
   mainGetModuleCards,
-  mainGetModules,
 } from "@api/methods";
 import { ThunkActionApp } from "@store/store";
 
 import { mainActions } from "../slice";
-
-export const getModules = () => <ThunkActionApp>(async (dispatch, getState) => {
-  try {
-    const {
-      auth: { user },
-      main: {
-        sections: {
-          homeModules: {
-            loading,
-            filters,
-            pagination: { end, page },
-          },
-        },
-      },
-    } = getState();
-
-    if (!user || end || loading) return;
-
-    dispatch(
-      mainActions.setSectionLoading({ value: true, section: "homeModules" }),
-    );
-
-    const params: GetMainModulesQueryDto = {
-      page,
-      ...filters,
-    };
-
-    const data = await mainGetModules(params);
-
-    dispatch(mainActions.setHomeModules(data));
-  } catch (err) {
-    console.error(err);
-  }
-
-  dispatch(
-    mainActions.setSectionLoading({ value: false, section: "homeModules" }),
-  );
-});
 
 export const getCards = () => <ThunkActionApp>(async (dispatch, getState) => {
   try {

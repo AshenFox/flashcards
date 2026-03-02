@@ -3,13 +3,11 @@ import {
   GetMainCardsResponseDto,
   GetMainModuleCardsResponseDto,
   GetMainModuleResponseDto,
-  GetMainModulesResponseDto,
 } from "@flashcards/common";
 
 import {
   card_fields,
   defaultHomeCardsFilters,
-  defaultHomeModulesFilters,
   defaultModuleFilters,
   defaultPagination,
   module_fields,
@@ -57,19 +55,12 @@ export const setSectionFilter: MainCaseReducer<{
     action.payload.value;
 };
 
-export const resetHomeModulesData: MainCaseReducer = state => {
-  state.module = null;
-  state.modules = [];
-  state.sections.homeModules.pagination = defaultPagination;
-};
-
 export const resetHomeCardsData: MainCaseReducer = state => {
   state.cards = {};
   state.sections.homeCards.pagination = defaultPagination;
 };
 
 const defaultFilters = {
-  homeModules: defaultHomeModulesFilters,
   homeCards: defaultHomeCardsFilters,
   module: defaultModuleFilters,
 };
@@ -95,23 +86,6 @@ export const setSectionLoading: MainCaseReducer<{
   const { value, section } = action.payload;
 
   state.sections[section].loading = value;
-};
-
-export const setHomeModules: MainCaseReducer<GetMainModulesResponseDto> = (
-  state,
-  action,
-) => {
-  const { draft, modules } = action.payload;
-
-  if (draft) state.module = { ...draft, ...module_fields };
-  else state.module = null;
-
-  state.modules = [...(state.modules || []), ...modules.entries];
-
-  state.sections.homeModules.pagination = {
-    ...modules.pagination,
-    page: modules.pagination.page + 1,
-  };
 };
 
 export const setCards: MainCaseReducer<GetMainCardsResponseDto> = (

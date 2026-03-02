@@ -27,6 +27,7 @@
       "@store/*": ["src/store/*"],
       "@api/*": ["src/api/*"],
       "@api": ["src/api"],
+      "@zustand/*": ["src/zustand/*"],
       "@public/*": ["public/*"]
     }
   },

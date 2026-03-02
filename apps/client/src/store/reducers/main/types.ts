@@ -21,13 +21,6 @@ export type Section<
   pagination?: Pagination;
 };
 
-export type HomeModulesFilters = DefaultFilters & {
-  created?: "newest" | "oldest";
-  draft?: boolean;
-  sr?: boolean;
-};
-export type HomeModulesSection = Section<HomeModulesFilters>;
-
 export type HomeCardsFilters = DefaultFilters & {
   created?: "newest" | "oldest";
   by?: "term" | "definition";
@@ -49,7 +42,6 @@ export type ModuleCardsSection = Section<undefined>;
 export type EditDraftSection = Section<undefined>;
 
 export type SectionName =
-  | "homeModules"
   | "homeCards"
   | "srCards"
   | "module"
@@ -61,11 +53,9 @@ export type MainState = {
 
   module: Module | null;
 
-  modules: ModuleDto[];
   cards: Cards;
 
   sections: {
-    homeModules: HomeModulesSection;
     homeCards: HomeCardsSection;
     srCards: SRCardsSection;
     module: ModuleSection;

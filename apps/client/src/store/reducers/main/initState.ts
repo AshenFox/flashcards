@@ -4,8 +4,6 @@ import {
   EditDraftSection,
   HomeCardsFilters,
   HomeCardsSection,
-  HomeModulesFilters,
-  HomeModulesSection,
   ImgurlFields,
   MainState,
   ModuleCardsSection,
@@ -55,18 +53,6 @@ export const defaultPagination: DefaultPagination = {
   end: false,
 };
 
-export const defaultHomeModulesFilters: HomeModulesFilters = {
-  search: "",
-  created: "newest",
-  draft: true,
-};
-
-export const defaultHomeModulesSection: HomeModulesSection = {
-  loading: false,
-  filters: defaultHomeModulesFilters,
-  pagination: defaultPagination,
-};
-
 export const defaultHomeCardsFilters: HomeCardsFilters = {
   search: "",
   created: "newest",
@@ -112,11 +98,9 @@ const initState: MainState = {
 
   module: null,
 
-  modules: [],
   cards: {},
 
   sections: {
-    homeModules: defaultHomeModulesSection,
     homeCards: defaultHomeCardsSection,
     srCards: defaultCardsSRSection,
     module: defaultModuleSection,

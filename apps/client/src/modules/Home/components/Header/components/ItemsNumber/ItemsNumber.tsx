@@ -1,17 +1,29 @@
-import { PaginationDto } from "@flashcards/common";
-import { useAppSelector } from "@store/store";
-import { useRouter } from "next/router";
-import React, { memo, useCallback, useEffect, useState } from "react";
+import type { PaginationDto } from "@flashcards/common";
+import React, { memo, useEffect, useState } from "react";
 
 import s from "./styles.module.scss";
+import { useRouter } from "next/router";
+import { useAppSelector } from "@store/store";
+import { useHomeModulesFiltersStore } from "@modules/Home/components/Sections/components/sections/Modules/hooks";
+
+const renderCount = (pagination: PaginationDto | null | undefined) => {
+  if (!pagination) return null;
+  const { all, number } = pagination;
+  if (typeof all !== "number" || typeof number !== "number") return null;
+
+  if (number !== all) {
+    return `All: ${all} | Found: ${number}`;
+  }
+
+  return `All: ${all}`;
+};
 
 const ItemsNumber = () => {
   const router = useRouter();
   const { section } = router.query;
 
-  const homeModulesPagination = useAppSelector(
-    s => s.main.sections.homeModules.pagination,
-  );
+  const homeModulesPagination = useHomeModulesFiltersStore(s => s.pagination);
+
   const homeCardsPagination = useAppSelector(
     s => s.main.sections.homeCards.pagination,
   );
@@ -23,30 +35,16 @@ const ItemsNumber = () => {
     useState<PaginationDto>(homeCardsPagination);
 
   useEffect(() => {
-    if (typeof homeModulesPagination.all === "number") {
+    if (typeof homeModulesPagination?.all === "number") {
       setModulesPagination(homeModulesPagination);
     }
   }, [homeModulesPagination]);
 
   useEffect(() => {
-    if (typeof homeCardsPagination.all === "number") {
+    if (typeof homeCardsPagination?.all === "number") {
       setCardsPagination(homeCardsPagination);
     }
   }, [homeCardsPagination]);
-
-  const renderCount = useCallback((pagination: PaginationDto) => {
-    if (typeof pagination.all !== "number") return null;
-
-    if (pagination.number !== pagination.all) {
-      return `All: ${pagination.all} | Found: ${pagination.number}`;
-    }
-
-    return `All: ${pagination.all}`;
-  }, []);
-
-  if (section === "sr") {
-    return null;
-  }
 
   return (
     <div className={s.number}>
