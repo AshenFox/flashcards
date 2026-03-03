@@ -9,7 +9,6 @@ import { gameActions, gameThunks } from "../reducers/game/slice";
 import { headerActions } from "../reducers/header/slice";
 import { mainActions, mainThunks } from "../reducers/main/slice";
 import { modalActions, modalThunks } from "../reducers/modal/slice";
-import { srActions, srThunks } from "../reducers/sr/slice";
 import { AppDispatch, RootState } from "../store";
 
 export const useAppDispatch = () => useDispatch<AppDispatch>();
@@ -31,8 +30,6 @@ export const useActions = () => {
       ...authThunks,
       ...gameActions,
       ...gameThunks,
-      ...srActions,
-      ...srThunks,
       ...mainActions,
       ...mainThunks,
     };

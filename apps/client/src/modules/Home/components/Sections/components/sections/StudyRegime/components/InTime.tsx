@@ -1,25 +1,26 @@
-import { useAppSelector } from "@store/hooks";
 import Skeleton from "@ui/Skeleton";
 import { memo } from "react";
 
-const InTime = () => {
-  const next_num = useAppSelector(s => s.sr.next_num);
-  const next_date = useAppSelector(s => s.sr.next_date);
-  const loading = useAppSelector(s => s.sr.loading);
+type InTimeProps = {
+  nextNum?: number;
+  nextDate?: string;
+  loading?: boolean;
+};
 
+const InTime = ({ nextNum, nextDate, loading }: InTimeProps) => {
   return (
     <>
-      {!!next_num && next_date && (
+      {!!nextNum && nextDate && (
         <>
           {loading ? (
             <Skeleton width={"15rem"} />
           ) : (
             <>
               <span>
-                {next_num} card
-                {next_num > 1 || next_num < 1 ? "s" : ""}
+                {nextNum} card
+                {nextNum > 1 || nextNum < 1 ? "s" : ""}
               </span>{" "}
-              to repeat {getTimeIntervalStr(next_date)}.
+              to repeat {getTimeIntervalStr(nextDate)}.
             </>
           )}
         </>

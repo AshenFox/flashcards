@@ -6,7 +6,6 @@ import gameReducer from "./game/slice";
 import headerReducer from "./header/slice";
 import mainReducer from "./main/slice";
 import modalReducer from "./modal/slice";
-import srReducer from "./sr/slice";
 import voiceReducer from "./voice/slice";
 
 export default combineReducers({
@@ -17,5 +16,4 @@ export default combineReducers({
   dimen: dimenReducer,
   voice: voiceReducer,
   game: gameReducer,
-  sr: srReducer,
 });

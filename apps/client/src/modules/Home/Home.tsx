@@ -13,15 +13,14 @@ const Home = () => {
   const router = useRouter();
   const { section } = router.query;
 
-  const { getCards, loadSRCount } = useActions();
+  const { getCards } = useActions();
 
   const cards = useAppSelector(s => s.main.cards);
   const user = useAppSelector(s => s.auth.user);
 
   const loadContent = useCallback(() => {
     if (!cards.length && section === "cards") getCards();
-    if (section === "sr") loadSRCount();
-  }, [section, cards.length, getCards, loadSRCount]);
+  }, [section, cards.length, getCards]);
 
   useEffect(() => {
     if (!user) return;

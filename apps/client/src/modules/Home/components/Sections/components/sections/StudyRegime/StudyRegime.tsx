@@ -1,18 +1,24 @@
-import { useAppSelector } from "@store/hooks";
+import { useSRStore } from "@zustand/sr";
 import { CardsIcon, WriteIcon } from "@ui/Icons";
 import Skeleton from "@ui/Skeleton";
 import Link from "next/link";
-import { memo } from "react";
+import { memo, useEffect } from "react";
 
 import Counter from "./components/Counter/Counter";
 import InTime from "./components/InTime";
+import { useSRCountQuery } from "./hooks";
 import s from "./styles.module.scss";
 
 const StudyRegime = () => {
-  const all_num = useAppSelector(s => s.sr.all_num);
-  const repeat_num = useAppSelector(s => s.sr.repeat_num);
-  const counter = useAppSelector(s => s.sr.counter);
-  const loading = useAppSelector(s => s.sr.loading);
+  const { data, isLoading } = useSRCountQuery();
+  const setInitialCounter = useSRStore(s => s.setInitialCounter);
+  const initialized = useSRStore(s => s.initialized);
+  const counter = useSRStore(s => s.counter);
+
+  useEffect(() => {
+    if (typeof data?.repeat_num === "number" && !initialized)
+      setInitialCounter(data.repeat_num);
+  }, [data?.repeat_num, initialized, setInitialCounter]);
 
   return (
     <div className={s.study_regime}>
@@ -20,44 +26,52 @@ const StudyRegime = () => {
         <div className={s.title}>Study Regime</div>
         <ul className={s.info}>
           <li>
-            {typeof all_num === "undefined" || loading ? (
+            {typeof data?.all_num === "undefined" || isLoading ? (
               <Skeleton width={"15rem"} />
             ) : (
               <>
                 <span>
-                  {all_num} card
-                  {all_num > 1 || all_num < 1 ? "s" : ""}
+                  {data?.all_num} card
+                  {(data?.all_num ?? 0) > 1 || (data?.all_num ?? 0) < 1
+                    ? "s"
+                    : ""}
                 </span>{" "}
                 in the regime.
               </>
             )}
           </li>
           <li>
-            <InTime />
+            <InTime
+              nextNum={data?.next_num}
+              nextDate={data?.next_date}
+              loading={isLoading}
+            />
           </li>
         </ul>
       </div>
 
       <div className={s.repeat}>
         <p>
-          {typeof repeat_num === "undefined" || loading ? (
+          {typeof data?.repeat_num === "undefined" || isLoading ? (
             <Skeleton width={"20rem"} />
           ) : (
             <>
               Currently you have{" "}
               <span>
-                {repeat_num} card
-                {repeat_num > 1 || repeat_num < 1 ? "s" : ""}
+                {data?.repeat_num} card
+                {(data?.repeat_num ?? 0) > 1 || (data?.repeat_num ?? 0) < 1
+                  ? "s"
+                  : ""}
               </span>{" "}
               to repeat.
             </>
           )}
         </p>
-        {!!repeat_num && !loading && (
+        {!!data?.repeat_num && !isLoading && (
           <>
             <p>Repeat with:</p>
             <div className={s.methods}>
-              <Counter />
+              <Counter repeatNum={data.repeat_num} />
               <Link
                 href={"/flashcards/sr" + (counter ? `?number=${counter}` : "")}
               >
