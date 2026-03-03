@@ -1,3 +1,4 @@
+import { withActionName } from "@zustand/helpers";
 import { calcCounter } from "@zustand/sr/helpers";
 import type { Slice } from "../types";
 
@@ -13,28 +14,30 @@ export type SRStore = {
   }) => void;
 };
 
-export const srSlice: Slice<SRStore> = (set) => ({
-  counter: undefined,
-  initialized: false,
-  setInitialCounter: (repeatNum) =>
-    set(
-      () => ({
-        counter: Math.min(repeatNum, 999),
-        initialized: true,
-      }),
-      false,
-      "setInitialCounter",
-    ),
-  updateCounter: (params) =>
-    set(
-      (state) => {
-        const next = calcCounter({
-          ...params,
-          current: state.counter ?? 1,
-        });
-        state.counter = next;
-      },
-      false,
-      "updateCounter",
-    ),
-});
+export const srSlice: Slice<SRStore> = (setAction) => {
+  const set = withActionName<SRStore>(setAction);
+
+  return {
+    counter: undefined,
+    initialized: false,
+    setInitialCounter: (repeatNum) =>
+      set(
+        () => ({
+          counter: Math.min(repeatNum, 999),
+          initialized: true,
+        }),
+        "setInitialCounter",
+      ),
+    updateCounter: (params) =>
+      set(
+        (state) => {
+          const next = calcCounter({
+            ...params,
+            current: state.counter ?? 1,
+          });
+          state.counter = next;
+        },
+        "updateCounter",
+      ),
+  };
+};
