@@ -1,13 +1,12 @@
+import { initEasySpeech, useVoiceStore } from "@zustand/voice";
 import { memo, useEffect } from "react";
 
-import { useActions } from "../../store/hooks";
-
 const Voice = () => {
-  const { initEasySpeech } = useActions();
+  const setVoicesAndWorking = useVoiceStore((s) => s.setVoicesAndWorking);
 
   useEffect(() => {
-    initEasySpeech();
-  }, [initEasySpeech]);
+    initEasySpeech(setVoicesAndWorking);
+  }, [setVoicesAndWorking]);
 
   return <></>;
 };

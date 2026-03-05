@@ -1,5 +1,4 @@
 import { bindActionCreators } from "@reduxjs/toolkit";
-import { voiceActions, voiceThunks } from "@store/reducers/voice/slice";
 import { useMemo } from "react";
 import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
 
@@ -22,8 +21,6 @@ export const useActions = () => {
     const allActions = {
       ...headerActions,
       ...dimenActions,
-      ...voiceActions,
-      ...voiceThunks,
       ...modalActions,
       ...modalThunks,
       ...authActions,
