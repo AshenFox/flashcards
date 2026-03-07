@@ -15,7 +15,10 @@ export const setUrlOkReducer: MainCaseReducer<{
   failed: number;
 }> = (state, { payload }) => {
   const gallery = state.cards[payload._id].gallery;
-  gallery.imgurl_obj[payload.index].ok = payload.value;
+  if (!gallery.imgurl_obj) gallery.imgurl_obj = {};
+  if (gallery.imgurl_obj[payload.index]) {
+    gallery.imgurl_obj[payload.index].ok = payload.value;
+  }
   gallery.loaded = payload.loaded;
   gallery.failed = payload.failed;
 };
@@ -35,6 +38,9 @@ export const searchImagesReducer: MainCaseReducer<{
   const gallery = state.cards[payload._id].gallery;
   gallery.imgurl_obj = payload.imgurl_obj;
   gallery.all = payload.all;
+  gallery.loaded = 0;
+  gallery.failed = 0;
+  gallery.width = 0;
 };
 
 export const resetGalleryFields: MainCaseReducer<{ _id: string }> = (
@@ -64,7 +70,6 @@ export const setGalleryWidth: MainCaseReducer<{
   value: number;
 }> = (state, { payload }) => {
   const width = 2 + 15 * payload.value + 2 * (payload.value - 1);
-
   state.cards[payload._id].gallery.width = width;
 };
 

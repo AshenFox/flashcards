@@ -3,8 +3,8 @@ import React, { memo, useEffect, useState } from "react";
 
 import s from "./styles.module.scss";
 import { useRouter } from "next/router";
-import { useAppSelector } from "@store/store";
 import { useHomeModulesFiltersStore } from "@modules/Home/components/Sections/components/sections/Modules/hooks";
+import { useHomeCardsFiltersStore } from "@modules/Home/components/Sections/components/sections/Cards/hooks";
 
 const renderCount = (pagination: PaginationDto | null | undefined) => {
   if (!pagination) return null;
@@ -23,10 +23,7 @@ const ItemsNumber = () => {
   const { section } = router.query;
 
   const homeModulesPagination = useHomeModulesFiltersStore(s => s.pagination);
-
-  const homeCardsPagination = useAppSelector(
-    s => s.main.sections.homeCards.pagination,
-  );
+  const homeCardsPagination = useHomeCardsFiltersStore(s => s.pagination);
 
   const [modulesPagination, setModulesPagination] = useState<PaginationDto>(
     homeModulesPagination,

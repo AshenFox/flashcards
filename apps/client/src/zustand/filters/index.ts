@@ -1,4 +1,4 @@
-export { homeModulesFilterSlice, cardsFilterSlice, createFiltersSlice } from "./filterStore";
+export { createFiltersSlice, createCardsFilterSlice, createModulesFilterSlice } from "./filterStore";
 export {
   defaultModulesFilters,
   defaultCardsFilters,

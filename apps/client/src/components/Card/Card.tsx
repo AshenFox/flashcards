@@ -1,8 +1,8 @@
 import Speaker from "@components/Speaker";
 import { filterRegex } from "@flashcards/common";
 import { usePlug } from "@helpers/hooks/usePlug";
-import { useActions } from "@store/hooks";
-import { Card as CardType } from "@store/reducers/main/types";
+import { useCardActions } from "@zustand/cards";
+import type { Card as CardType } from "@zustand/cards";
 import ConfirmPopup from "@ui/ConfirmPopup";
 import DateStr from "@ui/DateStr";
 import Img from "@ui/Img";
@@ -26,7 +26,7 @@ const Card = ({
   filter = null,
   filterType = null,
 }: CardProps) => {
-  const { setCardQuestion, dropCardSR } = useActions();
+  const { setCardQuestion, dropCardSR } = useCardActions();
 
   const {
     term = "",

@@ -88,14 +88,15 @@ export type CardFields = {
   gallery: {
     search: boolean;
     query: string;
-    imgurl_obj: ImgurlObjs; // ?????
     loading: boolean;
-    loaded: number;
-    failed: number;
-    all: number;
     position: number;
-    width: number;
-    error: boolean; // ???
+    error: boolean;
+    /** Gallery images from API – stored in React Query for Home Cards; optional for Redux/merged shape */
+    imgurl_obj?: ImgurlObjs;
+    all?: number;
+    loaded?: number;
+    failed?: number;
+    width?: number;
   };
   scrape: {
     loading: boolean;

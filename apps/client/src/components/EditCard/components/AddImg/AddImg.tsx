@@ -1,5 +1,5 @@
-import { useActions } from "@store/hooks";
-import { Card } from "@store/reducers/main/types";
+import { useCardActions } from "@zustand/cards";
+import type { Card } from "@zustand/cards";
 import { DeleteIcon, ImgIcon } from "@ui/Icons";
 import Img from "@ui/Img";
 import clsx from "clsx";
@@ -12,7 +12,7 @@ type AddImgProps = {
 };
 
 const AddImg = ({ data }: AddImgProps) => {
-  const { setGallerySearch, setCardImgurl, editCard } = useActions();
+  const { setGallerySearch, setCardImgurl, editCard } = useCardActions();
 
   const { _id, imgurl, gallery } = data || {};
 

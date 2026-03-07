@@ -1,5 +1,5 @@
-import { useActions } from "@store/hooks";
-import { ImgurlObj } from "@store/reducers/main/types";
+import { useCardActions } from "@zustand/cards";
+import type { ImgurlObj } from "@zustand/cards";
 import clsx from "clsx";
 import { memo, SyntheticEvent, useCallback } from "react";
 
@@ -12,7 +12,7 @@ type ItemProps = {
 };
 
 const Item = ({ _id, index, data }: ItemProps) => {
-  const { setCardImgurl, setUrlOk, editCard } = useActions();
+  const { setCardImgurl, setUrlOk, editCard } = useCardActions();
 
   const { url, ok } = data;
 

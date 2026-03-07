@@ -1,5 +1,5 @@
-import { useActions } from "@store/hooks";
-import { Card } from "@store/reducers/main/types";
+import { useCardActions } from "@zustand/cards";
+import type { Card } from "@zustand/cards";
 import { EditIcon } from "@ui/Icons";
 import Tooltip from "@ui/Tooltip";
 import clsx from "clsx";
@@ -12,7 +12,7 @@ type EditProps = {
 };
 
 const Edit = ({ data }: EditProps) => {
-  const { setCardEdit } = useActions();
+  const { setCardEdit } = useCardActions();
 
   const { _id } = data;
 

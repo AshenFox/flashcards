@@ -41,10 +41,13 @@ export const defaultPagination: PaginationDto = {
   end: false,
 };
 
+export type QueryKey<Filters extends DefaultFilters> = (filters: Filters) => readonly unknown[];
+
 export type FilterStore<Filters extends DefaultFilters> = {
   filters: Filters;
   pagination: PaginationDto | null;
   setFilter: (filter: keyof Filters, value: FilterValue) => void;
   setPagination: (pagination: PaginationDto | null) => void;
   resetFilters: () => void;
+  queryKey: QueryKey<Filters>;
 };

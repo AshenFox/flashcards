@@ -1,4 +1,4 @@
-import { useActions, useAppSelector } from "@store/hooks";
+import { useCardActions } from "@zustand/cards";
 import { TriangleLeftIcon, TriangleRightIcon } from "@ui/Icons";
 import { clsx } from "clsx";
 import { memo, MouseEvent, useCallback } from "react";
@@ -8,15 +8,15 @@ import s from "../styles.module.scss";
 type ControlProps = {
   direction: "left" | "right";
   _id: string;
+  galleryPosition?: number;
+  galleryWidth?: number;
 };
 
-const Control = ({ direction, _id }: ControlProps) => {
-  const { moveGallery } = useActions();
+const Control = ({ direction, _id, galleryPosition = 0, galleryWidth = 0 }: ControlProps) => {
+  const { moveGallery } = useCardActions();
 
-  const cards = useAppSelector(s => s.main.cards);
-
-  const card = cards[_id];
-  const { position = 0, width = 0 } = card?.gallery ?? {};
+  const position = galleryPosition;
+  const width = galleryWidth;
 
   let active = true;
 

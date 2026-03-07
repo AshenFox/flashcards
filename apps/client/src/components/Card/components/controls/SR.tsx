@@ -1,7 +1,7 @@
 import { SRIndicator } from "@components/SRIndicator";
 import SRInfoTooltip from "@components/SRIndicator/SRInfoTooltip";
-import { useActions } from "@store/hooks";
-import { Card } from "@store/reducers/main/types";
+import { useCardActions } from "@zustand/cards";
+import type { Card } from "@zustand/cards";
 import Switch from "@ui/Switch";
 import clsx from "clsx";
 import { memo, MouseEvent, TouchEvent, useCallback, useRef } from "react";
@@ -13,7 +13,7 @@ type SRProps = {
 };
 
 const SR = ({ data }: SRProps) => {
-  const { setCardSR, setCardsSRPositive } = useActions();
+  const { setCardSR, setCardsSRPositive } = useCardActions();
 
   const { _id, studyRegime } = data;
 

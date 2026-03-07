@@ -2,20 +2,27 @@ import Card from "@components/Card";
 import EditCard from "@components/EditCard";
 import Filters, { FilterData, SetFilterValue } from "@components/Filters";
 import NotFound from "@components/NotFound";
-import { useActions } from "@store/hooks";
-import { defaultHomeCardsFilters } from "@store/reducers/main/initState";
-import { useAppSelector } from "@store/store";
+import { checkBottom } from "@helpers/functions/checkBottom";
+import { defaultCardsFilters } from "@zustand/filters";
 import ScrollLoader from "@ui/ScrollLoader";
 import React, { Fragment, memo, useCallback, useEffect, useMemo } from "react";
 
 import Divider from "../components/Divider";
 import s from "../styles.module.scss";
 
+import {
+  CardActionsProvider,
+  useCardActions,
+  useCardUIStore,
+} from "@zustand/cards";
+import type { Card as CardType } from "@zustand/cards";
+import { useHomeCardsFiltersStore, useHomeCardsQuery } from "./hooks";
+
 const filtersData: FilterData[] = [
   {
     id: "created",
     label: "Date Order",
-    defaultValue: defaultHomeCardsFilters.created,
+    defaultValue: defaultCardsFilters.created,
     options: [
       { value: "newest", label: "Newest" },
       { value: "oldest", label: "Oldest" },
@@ -24,7 +31,7 @@ const filtersData: FilterData[] = [
   {
     id: "sr",
     label: "SR",
-    defaultValue: defaultHomeCardsFilters.sr,
+    defaultValue: defaultCardsFilters.sr,
     options: [
       { value: "all", label: "All" },
       { value: "in-lowest", label: "In Lowest" },
@@ -35,7 +42,7 @@ const filtersData: FilterData[] = [
   {
     id: "by",
     label: "By",
-    defaultValue: defaultHomeCardsFilters.by,
+    defaultValue: defaultCardsFilters.by,
     options: [
       { value: "term", label: "Term" },
       { value: "definition", label: "Definition" },
@@ -44,43 +51,70 @@ const filtersData: FilterData[] = [
 ];
 
 const Cards = () => {
-  const cards = useAppSelector(s => s.main.cards);
-  const loading = useAppSelector(s => s.main.sections.homeCards.loading);
-  const filters = useAppSelector(s => s.main.sections.homeCards.filters);
-  const { search, by } = filters;
-
-  const formatted_cards = useMemo(() => Object.values(cards), [cards]);
+  const filters = useHomeCardsFiltersStore(state => state.filters);
+  const setFilter = useHomeCardsFiltersStore(state => state.setFilter);
+  const resetFilters = useHomeCardsFiltersStore(state => state.resetFilters);
 
   const {
-    getCards,
-    resetHomeCardsData,
-    setSectionFilter,
-    resetSectionFilters,
-  } = useActions();
+    data,
+    fetchNextPage,
+    refetch,
+    hasNextPage,
+    isFetchingNextPage,
+    isFetching,
+  } = useHomeCardsQuery();
+
+  const cardActions = useCardActions();
+  const uiCards = useCardUIStore(s => s.cards);
+  const resetUIStore = useCardUIStore(s => s.reset);
+  const getUI = useCardUIStore(s => s.get);
+
+  const rawCards = useMemo(
+    () => data?.pages.flatMap(p => p.entries) ?? [],
+    [data],
+  );
+
+  const cards: CardType[] = useMemo(
+    () =>
+      rawCards.map(dto => {
+        const ui = uiCards[dto._id] ?? getUI(dto._id);
+        return { ...dto, ...ui };
+      }),
+    [rawCards, uiCards, getUI],
+  );
+
+  const { search, by } = filters;
 
   const setFilterValue = useCallback<SetFilterValue>(
     (filter, value) => {
-      setSectionFilter({
-        section: "homeCards",
-        filter,
-        value,
-      });
+      setFilter(filter as keyof typeof filters, value);
     },
-    [setSectionFilter],
+    [setFilter],
   );
 
-  const resetFilters = useCallback(() => {
-    resetSectionFilters("homeCards");
-  }, [resetSectionFilters]);
+  const resetData = useCallback(() => {
+    resetUIStore();
+  }, [resetUIStore]);
+
+  useEffect(() => {
+    const onScroll = () => {
+      if (!checkBottom() || !hasNextPage || isFetchingNextPage) return;
+      fetchNextPage();
+    };
+    window.addEventListener("scroll", onScroll);
+    return () => window.removeEventListener("scroll", onScroll);
+  }, [fetchNextPage, hasNextPage, isFetchingNextPage]);
 
   useEffect(() => {
     return () => {
-      resetHomeCardsData();
+      resetUIStore();
     };
-  }, []);
+  }, [resetUIStore]);
+
+  const loading = isFetching || isFetchingNextPage;
 
   return (
-    <>
+    <CardActionsProvider value={cardActions}>
       <Filters
         id="home-cards-filters"
         filtersValues={filters}
@@ -89,12 +123,12 @@ const Cards = () => {
         className={s.filter}
         alwaysReload
         setFilterValue={setFilterValue}
-        getData={getCards}
-        resetData={resetHomeCardsData}
+        getData={refetch}
+        resetData={resetData}
         resetFilters={resetFilters}
       />
-      {formatted_cards.map((card, i) => {
-        const prevDateString = formatted_cards[i - 1]?.creation_date;
+      {cards.map((card, i) => {
+        const prevDateString = cards[i - 1]?.creation_date;
         const curDateString = card.creation_date;
 
         return (
@@ -114,7 +148,7 @@ const Cards = () => {
       <ScrollLoader active={loading} />
       {!loading && (
         <NotFound
-          resultsFound={formatted_cards.length}
+          resultsFound={cards.length}
           filterValue={search}
           notFoundMsg={value =>
             value ? (
@@ -128,7 +162,7 @@ const Cards = () => {
           nothingMsg={<>You don&apos;t have any cards yet.</>}
         />
       )}
-    </>
+    </CardActionsProvider>
   );
 };
 

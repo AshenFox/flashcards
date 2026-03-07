@@ -3,19 +3,11 @@ import type { GetMainModulesResponseDto } from "@flashcards/common";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { useEffect } from "react";
 
-import { homeModulesFilterSlice } from "@zustand/filters";
+import { createModulesFilterSlice } from "@zustand/filters";
 import type { ModulesFilters } from "@zustand/filters";
 import { createStoreHook } from "@zustand/helpers";
 
-export const useHomeModulesFiltersStore = createStoreHook({
-    storeName: "HomeModulesFilters",
-    instanceKey: "home-modules",
-    slice: homeModulesFilterSlice,
-});
-
-const queryKey = (filters: ModulesFilters) => ["home", "modules", filters] as const;
-
-export type HomeModulesQueryResult = ReturnType<typeof useHomeModulesQuery>;
+export const queryKey = (filters: ModulesFilters) => ["home", "modules", filters] as const;
 
 export const useHomeModulesQuery = () => {
     const filters = useHomeModulesFiltersStore((state) => state.filters);
@@ -44,6 +36,12 @@ export const useHomeModulesQuery = () => {
 
     return query;
 };
+
+export const useHomeModulesFiltersStore = createStoreHook({
+    storeName: "HomeModulesFilters",
+    instanceKey: "home-modules",
+    slice: createModulesFilterSlice({ queryKey }),
+});
 
 
 

@@ -1,5 +1,6 @@
-import { useActions } from "@store/hooks";
-import { Card } from "@store/reducers/main/types";
+import { useCardActions } from "@zustand/cards";
+import { useGalleryImagesQuery } from "@zustand/cards";
+import type { Card, ImgurlObjs } from "@zustand/cards";
 import { ArrowRightIcon } from "@ui/Icons";
 import Input from "@ui/Input";
 import clsx from "clsx";
@@ -10,6 +11,7 @@ import {
   MouseEvent,
   useCallback,
   useEffect,
+  useMemo,
   useState,
 } from "react";
 
@@ -25,10 +27,19 @@ type GalleryProps = {
 
 const Gallery = ({ data, active, game = false }: GalleryProps) => {
   const { controlGalleryQuery, resetGalleryFields, searchImages } =
-    useActions();
+    useCardActions();
 
   const { _id, gallery } = data || {};
-  const { loading, query, error } = gallery;
+  const { loading, query, error, position } = gallery ?? {};
+
+  const { data: galleryImages } = useGalleryImagesQuery(_id ?? "", query ?? "");
+  const imgurl_obj: ImgurlObjs = galleryImages?.imgurl_obj ?? {};
+  const totalCount = useMemo(
+    () => Object.keys(imgurl_obj).length,
+    [imgurl_obj],
+  );
+  const width =
+    totalCount === 0 ? 0 : 2 + 15 * totalCount + 2 * (totalCount - 1);
 
   const [uPressed, setUPressed] = useState(false);
   const [altPressed, setAltPressed] = useState(false);
@@ -107,7 +118,15 @@ const Gallery = ({ data, active, game = false }: GalleryProps) => {
           </form>
         </div>
         <div className={s.results}>
-          <Carousel data={data} game={game} />
+          <Carousel
+            _id={_id ?? ""}
+            imgurl_obj={imgurl_obj}
+            position={position ?? 0}
+            width={width}
+            loading={loading}
+            error={error}
+            game={game}
+          />
           <LoadingSpinner active={loading} />
           <Error active={error} />
         </div>

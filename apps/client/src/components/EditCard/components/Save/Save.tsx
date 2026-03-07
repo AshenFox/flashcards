@@ -1,5 +1,5 @@
-import { useActions } from "@store/hooks";
-import { Card } from "@store/reducers/main/types";
+import { useCardActions } from "@zustand/cards";
+import type { Card } from "@zustand/cards";
 import Checkbox from "@ui/Checkbox";
 import Tooltip from "@ui/Tooltip";
 import { memo, MouseEvent, TouchEvent, useCallback, useRef } from "react";
@@ -11,7 +11,7 @@ type SaveProps = {
 };
 
 const Save = ({ data }: SaveProps) => {
-  const { setCardSave, setCardsSavePositive } = useActions();
+  const { setCardSave, setCardsSavePositive } = useCardActions();
 
   const { _id, save } = data;
 

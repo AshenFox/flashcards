@@ -1,5 +1,5 @@
-import { useActions } from "@store/hooks";
-import { Card } from "@store/reducers/main/types";
+import { useCardActions } from "@zustand/cards";
+import type { Card } from "@zustand/cards";
 import Tooltip from "@ui/Tooltip";
 import clsx from "clsx";
 import { memo, MouseEvent, useCallback } from "react";
@@ -11,7 +11,7 @@ type ScrapeProps = {
 };
 
 const Scrape = ({ data }: ScrapeProps) => {
-  const { scrapeDictionary } = useActions();
+  const { scrapeDictionary } = useCardActions();
   const { _id, scrape } = data || {};
 
   const { loading } = scrape || {};

@@ -18,13 +18,8 @@ export const card_fields: CardFields = {
   gallery: {
     search: false,
     query: "",
-    imgurl_obj: {},
     loading: false,
-    loaded: 0,
-    failed: 0,
-    all: 0,
     position: 0,
-    width: 0,
     error: false,
   },
   scrape: {

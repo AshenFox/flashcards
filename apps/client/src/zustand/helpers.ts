@@ -17,6 +17,7 @@ type CreateStoreHookArgs<Store> = {
   storeName: string;
   instanceKey: string;
   slice: Slice<Store>;
+  getQueryKey?: () => unknown[];
 };
 
 export const createStoreHook = <Store>({ storeName, instanceKey, slice }: CreateStoreHookArgs<Store>) => {

@@ -1,5 +1,5 @@
-import { useActions } from "@store/hooks";
-import { Card } from "@store/reducers/main/types";
+import { useCardActions } from "@zustand/cards";
+import type { Card } from "@zustand/cards";
 import { CloseIcon } from "@ui/Icons";
 import Tooltip from "@ui/Tooltip";
 import { memo, MouseEvent, useCallback } from "react";
@@ -11,7 +11,7 @@ type CloseProps = {
 };
 
 const Close = ({ data }: CloseProps) => {
-  const { setCardEdit, resetGalleryFields } = useActions();
+  const { setCardEdit, resetGalleryFields } = useCardActions();
 
   const { _id } = data || {};
 
