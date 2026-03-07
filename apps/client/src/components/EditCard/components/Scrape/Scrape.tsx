@@ -1,5 +1,5 @@
-import { useScrapeDictionary } from "@zustand/cards";
-import type { Card } from "@zustand/cards";
+import type { CardDto } from "@flashcards/common";
+import { useCardsUIStore, useScrapeDictionary } from "@zustand/cards";
 import Tooltip from "@ui/Tooltip";
 import clsx from "clsx";
 import { memo, MouseEvent, useCallback } from "react";
@@ -7,14 +7,15 @@ import { memo, MouseEvent, useCallback } from "react";
 import s from "./styles.module.scss";
 
 type ScrapeProps = {
-  data: Card;
+  data: CardDto;
 };
 
 const Scrape = ({ data }: ScrapeProps) => {
   const scrapeDictionary = useScrapeDictionary();
-  const { _id, scrape } = data || {};
 
-  const { loading } = scrape || {};
+  const { _id } = data || {};
+
+  const loading = useCardsUIStore(s => s.cards[data._id]?.scrape.loading);
 
   const clickScrapeButton = useCallback(
     (value: "cod" | "urban") => (e: MouseEvent<HTMLDivElement>) => {

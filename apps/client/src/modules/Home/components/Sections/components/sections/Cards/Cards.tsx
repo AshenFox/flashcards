@@ -10,9 +10,55 @@ import React, { Fragment, memo, useCallback, useEffect, useMemo } from "react";
 import Divider from "../components/Divider";
 import s from "../styles.module.scss";
 
-import { CardsUIProvider, useDefaultCardUIStore } from "@zustand/cards";
-import type { Card as CardType } from "@zustand/cards";
+import type { CardDto } from "@flashcards/common";
+import {
+  CardsUIProvider,
+  useCardsUIStore,
+  useDefaultCardUIStore,
+} from "@zustand/cards";
 import { useHomeCardsFiltersStore, useHomeCardsQuery } from "./hooks";
+
+type CardRowProps = {
+  rawCard: CardDto;
+  prevDateString: string | undefined;
+  search: string;
+  by: string;
+  isModuleLink: boolean;
+  loading: boolean;
+};
+
+const CardRow = memo(
+  ({
+    rawCard,
+    prevDateString,
+    search,
+    by,
+    isModuleLink,
+    loading,
+  }: CardRowProps) => {
+    const edit = useCardsUIStore(s => s.cards[rawCard._id]?.edit);
+
+    return (
+      <Fragment>
+        <Divider
+          prevDateString={prevDateString}
+          curDateString={rawCard.creation_date}
+        />
+        {edit ? (
+          <EditCard data={rawCard} toggle={true} loading={loading} />
+        ) : (
+          <Card
+            data={rawCard}
+            filter={search}
+            filterType={by}
+            isModuleLink={isModuleLink}
+          />
+        )}
+      </Fragment>
+    );
+  },
+);
+CardRow.displayName = "CardRow";
 
 const filtersData: FilterData[] = [
   {
@@ -60,22 +106,11 @@ const Cards = () => {
     isFetching,
   } = useHomeCardsQuery();
 
-  const uiCards = useDefaultCardUIStore(s => s.cards);
   const resetUIStore = useDefaultCardUIStore(s => s.reset);
-  const getUI = useDefaultCardUIStore(s => s.get);
 
   const rawCards = useMemo(
     () => data?.pages.flatMap(p => p.entries) ?? [],
     [data],
-  );
-
-  const cards: CardType[] = useMemo(
-    () =>
-      rawCards.map(dto => {
-        const ui = uiCards[dto._id] ?? getUI(dto._id);
-        return { ...dto, ...ui };
-      }),
-    [rawCards, uiCards, getUI],
   );
 
   const { search, by } = filters;
@@ -125,28 +160,21 @@ const Cards = () => {
         resetData={resetData}
         resetFilters={resetFilters}
       />
-      {cards.map((card, i) => {
-        const prevDateString = cards[i - 1]?.creation_date;
-        const curDateString = card.creation_date;
-
-        return (
-          <Fragment key={card._id}>
-            <Divider
-              prevDateString={prevDateString}
-              curDateString={curDateString}
-            />
-            {card.edit ? (
-              <EditCard data={card} toggle={true} loading={loading} />
-            ) : (
-              <Card data={card} filter={search} filterType={by} isModuleLink />
-            )}
-          </Fragment>
-        );
-      })}
+      {rawCards.map((rawCard, i) => (
+        <CardRow
+          key={rawCard._id}
+          rawCard={rawCard}
+          prevDateString={rawCards[i - 1]?.creation_date}
+          search={search}
+          by={by}
+          isModuleLink
+          loading={loading}
+        />
+      ))}
       <ScrollLoader active={loading} />
       {!loading && (
         <NotFound
-          resultsFound={cards.length}
+          resultsFound={rawCards.length}
           filterValue={search}
           notFoundMsg={value =>
             value ? (

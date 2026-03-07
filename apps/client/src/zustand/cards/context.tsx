@@ -27,11 +27,16 @@ export const CardsUIProvider = ({
   useCardsFiltersStore,
   useCardsUIStore,
   children,
-}: CardsUIProviderProps) => (
-  <CardsUIContext.Provider value={{ useCardsFiltersStore, useCardsUIStore }}>
-    {children}
-  </CardsUIContext.Provider>
-);
+}: CardsUIProviderProps) => {
+  const value = useMemo(
+    () => ({ useCardsFiltersStore, useCardsUIStore }),
+    [useCardsFiltersStore, useCardsUIStore],
+  );
+
+  return (
+    <CardsUIContext.Provider value={value}>{children}</CardsUIContext.Provider>
+  );
+};
 
 export function useCardsFiltersStore(): FilterStore<CardsFilters>;
 export function useCardsFiltersStore<T>(
@@ -64,18 +69,4 @@ export function useCardsQueryKey(): QueryKey {
   const filters = useCardsFiltersStore(s => s.filters);
   const queryKey = useCardsFiltersStore(s => s.queryKey);
   return useMemo(() => queryKey(filters), [filters, queryKey]);
-}
-
-/** Returns the raw store hook (with getState) for use in action hooks. */
-export function useCardsUIStoreApi(): StoreHook<CardUIStore> & {
-  getState: () => CardUIStore;
-} {
-  const context = useContext(CardsUIContext);
-  if (!context)
-    throw new Error(
-      "useCardsUIStoreApi must be used within a CardsUIContext provider",
-    );
-  return context.useCardsUIStore as StoreHook<CardUIStore> & {
-    getState: () => CardUIStore;
-  };
 }

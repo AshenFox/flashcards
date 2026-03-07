@@ -1,5 +1,5 @@
+import type { CardDto } from "@flashcards/common";
 import { useSetCardEdit } from "@zustand/cards";
-import type { Card } from "@zustand/cards";
 import { EditIcon } from "@ui/Icons";
 import Tooltip from "@ui/Tooltip";
 import clsx from "clsx";
@@ -8,7 +8,7 @@ import { memo, MouseEvent } from "react";
 import s from "./styles.module.scss";
 
 type EditProps = {
-  data: Card;
+  data: CardDto;
 };
 
 const Edit = ({ data }: EditProps) => {

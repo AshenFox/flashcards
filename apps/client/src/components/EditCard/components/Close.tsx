@@ -1,5 +1,5 @@
+import type { CardDto } from "@flashcards/common";
 import { useResetGalleryFields, useSetCardEdit } from "@zustand/cards";
-import type { Card } from "@zustand/cards";
 import { CloseIcon } from "@ui/Icons";
 import Tooltip from "@ui/Tooltip";
 import { memo, MouseEvent, useCallback } from "react";
@@ -7,7 +7,7 @@ import { memo, MouseEvent, useCallback } from "react";
 import s from "../styles.module.scss";
 
 type CloseProps = {
-  data: Card;
+  data: CardDto;
 };
 
 const Close = ({ data }: CloseProps) => {

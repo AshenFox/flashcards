@@ -1,5 +1,10 @@
-import { useEditCard, useSetCardImgurl, useSetGallerySearch } from "@zustand/cards";
-import type { Card } from "@zustand/cards";
+import type { CardDto } from "@flashcards/common";
+import {
+  useCardsUIStore,
+  useEditCard,
+  useSetCardImgurl,
+  useSetGallerySearch,
+} from "@zustand/cards";
 import { DeleteIcon, ImgIcon } from "@ui/Icons";
 import Img from "@ui/Img";
 import clsx from "clsx";
@@ -8,7 +13,7 @@ import { memo, MouseEvent, useCallback, useRef } from "react";
 import s from "./styles.module.scss";
 
 type AddImgProps = {
-  data: Card;
+  data: CardDto;
 };
 
 const AddImg = ({ data }: AddImgProps) => {
@@ -16,14 +21,16 @@ const AddImg = ({ data }: AddImgProps) => {
   const setCardImgurl = useSetCardImgurl();
   const editCard = useEditCard();
 
-  const { _id, imgurl, gallery } = data || {};
+  const search = useCardsUIStore(s => s.cards[data._id]?.gallery.search);
+
+  const { _id, imgurl } = data || {};
 
   const clickImgSearch = useCallback(
     (e: MouseEvent<HTMLDivElement>) => {
       if (imgurl && deleteEl.current?.contains(e.target as Node)) return;
-      setGallerySearch({ _id, value: !gallery.search });
+      setGallerySearch({ _id, value: !search });
     },
-    [_id, gallery.search, imgurl, setGallerySearch],
+    [_id, search, imgurl, setGallerySearch],
   );
 
   const clickImgDelete = useCallback(

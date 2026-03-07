@@ -1,7 +1,7 @@
 import Gallery from "@components/Gallery";
+import type { CardDto } from "@flashcards/common";
 import { usePlug } from "@helpers/hooks/usePlug";
-import { useControlCard, useEditCard } from "@zustand/cards";
-import type { Card } from "@zustand/cards";
+import { useCardsUIStore, useControlCard, useEditCard } from "@zustand/cards";
 import TextArea from "@ui/TextArea";
 import TextLabel from "@ui/TextLabel";
 import clsx from "clsx";
@@ -16,7 +16,7 @@ import Scrape from "./components/Scrape";
 import s from "./styles.module.scss";
 
 type EditCardProps = {
-  data: Card;
+  data: CardDto;
   loading?: boolean;
   selectionActive?: boolean;
   index?: number;
@@ -37,9 +37,8 @@ const EditCard = ({
   const controlCard = useControlCard();
   const editCard = useEditCard();
 
-  const { _id, term, definition, gallery } = data || {};
-
-  const { search } = gallery || {};
+  const { _id, term, definition } = data || {};
+  const search = useCardsUIStore(s => s.cards[data._id]?.gallery.search);
 
   const handleCardChange = useCallback(
     (type: "term" | "definition") => (e: ContentEditableEvent) => {

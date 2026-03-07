@@ -7,12 +7,12 @@ export type {
   ImgurlObjs,
   ImgurlFields,
 } from "./types";
+export { defaultCardUI } from "./types";
 export {
   CardsUIProvider,
   useCardsFiltersStore,
   useCardsUIStore,
   useCardsQueryKey,
-  useCardsUIStoreApi,
 } from "./context";
 export { useCardUIStore as useDefaultCardUIStore } from "./cardUIStore";
 export {

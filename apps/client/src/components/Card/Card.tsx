@@ -1,8 +1,12 @@
 import Speaker from "@components/Speaker";
+import type { CardDto } from "@flashcards/common";
 import { filterRegex } from "@flashcards/common";
 import { usePlug } from "@helpers/hooks/usePlug";
-import { useDropCardSR, useSetCardQuestion } from "@zustand/cards";
-import type { Card as CardType } from "@zustand/cards";
+import {
+  useCardsUIStore,
+  useDropCardSR,
+  useSetCardQuestion,
+} from "@zustand/cards";
 import ConfirmPopup from "@ui/ConfirmPopup";
 import DateStr from "@ui/DateStr";
 import Img from "@ui/Img";
@@ -14,7 +18,7 @@ import ModuleLink from "./components/ModuleLink";
 import s from "./styles.module.scss";
 
 type CardProps = {
-  data: CardType;
+  data: CardDto;
   isModuleLink?: boolean;
   filter?: string;
   filterType?: string;
@@ -28,6 +32,7 @@ const Card = ({
 }: CardProps) => {
   const setCardQuestion = useSetCardQuestion();
   const dropCardSR = useDropCardSR();
+  const question = useCardsUIStore(s => s.cards[data._id]?.question);
 
   const {
     term = "",
@@ -36,7 +41,6 @@ const Card = ({
     _id,
     moduleID,
     creation_date,
-    question,
   } = data;
 
   const filterRegExp = new RegExp(filterRegex(filter), "g");
@@ -130,5 +134,7 @@ const Card = ({
     </>
   );
 };
+
+Card.whyDidYouRender = true;
 
 export default memo(Card);

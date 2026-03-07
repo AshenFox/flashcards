@@ -1,5 +1,5 @@
+import type { CardDto } from "@flashcards/common";
 import { useDeleteCard } from "@zustand/cards";
-import type { Card } from "@zustand/cards";
 import { DeleteIcon } from "@ui/Icons";
 import Tooltip from "@ui/Tooltip";
 import clsx from "clsx";
@@ -8,7 +8,7 @@ import { memo, MouseEvent, useCallback } from "react";
 import s from "../styles.module.scss";
 
 type DeleteProps = {
-  data: Card;
+  data: CardDto;
   active: boolean;
 };
 

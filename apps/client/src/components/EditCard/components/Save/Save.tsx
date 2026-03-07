@@ -1,5 +1,9 @@
-import { useSetCardSave, useSetCardsSavePositive } from "@zustand/cards";
-import type { Card } from "@zustand/cards";
+import type { CardDto } from "@flashcards/common";
+import {
+  useCardsUIStore,
+  useSetCardSave,
+  useSetCardsSavePositive,
+} from "@zustand/cards";
 import Checkbox from "@ui/Checkbox";
 import Tooltip from "@ui/Tooltip";
 import { memo, MouseEvent, TouchEvent, useCallback, useRef } from "react";
@@ -7,14 +11,14 @@ import { memo, MouseEvent, TouchEvent, useCallback, useRef } from "react";
 import s from "./styles.module.scss";
 
 type SaveProps = {
-  data: Card;
+  data: CardDto;
 };
 
 const Save = ({ data }: SaveProps) => {
   const setCardSave = useSetCardSave();
   const setCardsSavePositive = useSetCardsSavePositive();
-
-  const { _id, save } = data;
+  const save = useCardsUIStore(s => s.cards[data._id]?.save);
+  const { _id } = data;
 
   const up = useCallback(
     (e: MouseEvent<HTMLLabelElement> | TouchEvent<HTMLLabelElement>) => {

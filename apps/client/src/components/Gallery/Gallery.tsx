@@ -3,8 +3,10 @@ import {
   useGalleryImagesQuery,
   useResetGalleryFields,
   useSearchImages,
+  useCardsUIStore,
 } from "@zustand/cards";
-import type { Card, ImgurlObjs } from "@zustand/cards";
+import type { ImgurlObjs } from "@zustand/cards";
+import type { CardDto } from "@flashcards/common";
 import { ArrowRightIcon } from "@ui/Icons";
 import Input from "@ui/Input";
 import clsx from "clsx";
@@ -24,7 +26,7 @@ import { Error, LoadingSpinner } from "./components/States";
 import s from "./styles.module.scss";
 
 type GalleryProps = {
-  data: Card;
+  data: CardDto;
   active: boolean;
   game?: boolean;
 };
@@ -33,8 +35,9 @@ const Gallery = ({ data, active, game = false }: GalleryProps) => {
   const controlGalleryQuery = useControlGalleryQuery();
   const resetGalleryFields = useResetGalleryFields();
   const searchImages = useSearchImages();
+  const gallery = useCardsUIStore(s => s.cards[data._id]?.gallery);
 
-  const { _id, gallery } = data || {};
+  const { _id } = data || {};
   const { loading, query, error, position } = gallery ?? {};
 
   const { data: galleryImages } = useGalleryImagesQuery(_id ?? "", query ?? "");

@@ -10,7 +10,7 @@ import sanitize from "sanitize-html";
 
 import { saveLastUpdate } from "@store/helper-functions";
 
-import { useCardsQueryKey, useCardsUIStoreApi } from "./context";
+import { useCardsQueryKey, useCardsUIStore } from "./context";
 import { galleryQueryKey } from "./galleryQuery";
 import type { GalleryImagesCache } from "./galleryQuery";
 import { imgUrlArrToObj, formatDictionaryResult } from "./helpers";
@@ -128,7 +128,7 @@ export const useSearchImagesMutation = () => {
 function useCardDataHelpers() {
   const queryKey = useCardsQueryKey();
   const queryClient = useQueryClient();
-  const uiStore = useCardsUIStoreApi();
+  const getCardUI = useCardsUIStore(s => s.get);
 
   const getCardData = useCallback((_id: string): CardDto | undefined => {
     const data = queryClient.getQueryData<{ pages: GetMainCardsResponseDto[] }>(queryKey);
@@ -142,10 +142,10 @@ function useCardDataHelpers() {
 
   const getCardWithUI = useCallback((_id: string) => {
     const dto = getCardData(_id);
-    const ui = uiStore.getState().get(_id);
+    const ui = getCardUI(_id);
     if (!dto) return undefined;
     return { ...dto, ...ui };
-  }, [getCardData, uiStore]);
+  }, [getCardData, getCardUI]);
 
   return { getCardData, getCardWithUI };
 }
@@ -219,17 +219,17 @@ export const useScrapeDictionary = () => {
   const queryKey = useCardsQueryKey();
   const queryClient = useQueryClient();
   const { getCardData, getCardWithUI } = useCardDataHelpers();
-  const uiStore = useCardsUIStoreApi();
+  const setCardUI = useCardsUIStore(s => s.set);
 
   return useCallback((_id: string, value: "cod" | "urban") => {
     const merged = getCardWithUI(_id);
     if (!merged) return;
-    uiStore.getState().set(_id, (d) => { d.scrape.loading = true; });
+    setCardUI(_id, (d) => { d.scrape.loading = true; });
     scrapeDictMut.mutate(
       { term: merged.term, value },
       {
         onSuccess: (result) => {
-          uiStore.getState().set(_id, (d) => { d.scrape.loading = false; });
+          setCardUI(_id, (d) => { d.scrape.loading = false; });
           const dto = getCardData(_id);
           if (!dto) return;
           const newDef = dto.definition + result;
@@ -254,7 +254,7 @@ export const useScrapeDictionary = () => {
           });
         },
         onError: () => {
-          uiStore.getState().set(_id, (d) => { d.scrape.loading = false; });
+          setCardUI(_id, (d) => { d.scrape.loading = false; });
         },
       },
     );
@@ -264,12 +264,13 @@ export const useScrapeDictionary = () => {
 export const useSearchImages = () => {
   const searchImgMut = useSearchImagesMutation();
   const queryClient = useQueryClient();
-  const uiStore = useCardsUIStoreApi();
+  const getCardUI = useCardsUIStore(s => s.get);
+  const setCardUI = useCardsUIStore(s => s.set);
 
   return useCallback((_id: string) => {
-    const ui = uiStore.getState().get(_id);
+    const ui = getCardUI(_id);
     const queryStr = ui.gallery.query;
-    uiStore.getState().set(_id, (d) => {
+    setCardUI(_id, (d) => {
       d.gallery.position = 0;
       d.gallery.loading = true;
       d.gallery.error = false;
@@ -280,10 +281,10 @@ export const useSearchImages = () => {
           galleryQueryKey(_id, queryStr),
           { imgurl_obj, all },
         );
-        uiStore.getState().set(_id, (d) => { d.gallery.loading = false; });
+        setCardUI(_id, (d) => { d.gallery.loading = false; });
       },
       onError: () => {
-        uiStore.getState().set(_id, (d) => {
+        setCardUI(_id, (d) => {
           d.gallery.error = true;
           d.gallery.loading = false;
         });
@@ -294,9 +295,10 @@ export const useSearchImages = () => {
 
 export const useSetUrlOk = () => {
   const queryClient = useQueryClient();
-  const uiStore = useCardsUIStoreApi();
+  const getCardUI = useCardsUIStore(s => s.get);
+
   return useCallback((_id: string, index: string, value: boolean) => {
-    const queryStr = uiStore.getState().get(_id).gallery.query;
+    const queryStr = getCardUI(_id).gallery.query;
     const key = galleryQueryKey(_id, queryStr);
     queryClient.setQueryData<GalleryImagesCache>(key, (old) => {
       if (!old?.imgurl_obj?.[index]) return old;
@@ -312,15 +314,17 @@ export const useSetUrlOk = () => {
 };
 
 export const useSetCardEdit = () => {
-  const uiStore = useCardsUIStoreApi();
+  const setCardUI = useCardsUIStore(s => s.set);
+
   return useCallback((payload: { _id: string; value: boolean }) => {
-    uiStore.getState().set(payload._id, (d) => { d.edit = payload.value; });
+    setCardUI(payload._id, (d) => { d.edit = payload.value; });
   }, []);
 };
 
 export const useControlCard = () => {
   const queryKey = useCardsQueryKey();
   const queryClient = useQueryClient();
+
   return useCallback((payload: { _id: string; type: "term" | "definition"; value: string }) => {
     queryClient.setQueryData(queryKey, (old: any) => {
       if (!old) return old;
@@ -340,6 +344,7 @@ export const useControlCard = () => {
 export const useSetCardImgurl = () => {
   const queryKey = useCardsQueryKey();
   const queryClient = useQueryClient();
+
   return useCallback((payload: { _id: string; value: string }) => {
     queryClient.setQueryData(queryKey, (old: any) => {
       if (!old) return old;
@@ -357,61 +362,67 @@ export const useSetCardImgurl = () => {
 };
 
 export const useSetCardQuestion = () => {
-  const uiStore = useCardsUIStoreApi();
+  const setCardUI = useCardsUIStore(s => s.set);
+
   return useCallback((payload: { _id: string; value: boolean }) => {
-    uiStore.getState().set(payload._id, (d) => { d.question = payload.value; });
+    setCardUI(payload._id, (d) => { d.question = payload.value; });
   }, []);
 };
 
 export const useSetCardSave = () => {
-  const uiStore = useCardsUIStoreApi();
+  const setCardUI = useCardsUIStore(s => s.set);
+
   return useCallback((payload: { _id: string; value: boolean }) => {
-    uiStore.getState().set(payload._id, (d) => { d.save = payload.value; });
+    setCardUI(payload._id, (d) => { d.save = payload.value; });
   }, []);
 };
 
 export const useSetCardsSavePositive = () => {
   const queryKey = useCardsQueryKey();
   const queryClient = useQueryClient();
-  const uiStore = useCardsUIStoreApi();
+  const getCardUI = useCardsUIStore(s => s.get);
+  const setCardUI = useCardsUIStore(s => s.set);
 
   return useCallback((_id: string) => {
     const data = queryClient.getQueryData<{ pages: GetMainCardsResponseDto[] }>(queryKey);
     if (!data) return;
     const allCards = data.pages.flatMap((p) => p.entries);
-    const storeState = uiStore.getState();
     const _id_arr: string[] = [];
+
     for (const card of allCards) {
       if (card._id === _id) {
         _id_arr.push(card._id);
         break;
       }
-      const ui = storeState.cards[card._id];
+      const ui = getCardUI(card._id);
       if (ui?.save) _id_arr.length = 0;
       else _id_arr.push(card._id);
     }
-    _id_arr.forEach((id) => storeState.set(id, (d) => { d.save = true; }));
+    _id_arr.forEach((id) => setCardUI(id, (d) => { d.save = true; }));
   }, [queryClient, queryKey]);
 };
 
 export const useSetGallerySearch = () => {
-  const uiStore = useCardsUIStoreApi();
+  const setCardUI = useCardsUIStore(s => s.set);
+
   return useCallback((payload: { _id: string; value: boolean }) => {
-    uiStore.getState().set(payload._id, (d) => { d.gallery.search = payload.value; });
+    setCardUI(payload._id, (d) => { d.gallery.search = payload.value; });
   }, []);
 };
 
 export const useControlGalleryQuery = () => {
-  const uiStore = useCardsUIStoreApi();
+  const setCardUI = useCardsUIStore(s => s.set);
+
   return useCallback((payload: { _id: string; value: string }) => {
-    uiStore.getState().set(payload._id, (d) => { d.gallery.query = payload.value; });
+    setCardUI(payload._id, (d) => { d.gallery.query = payload.value; });
   }, []);
 };
 
 export const useResetGalleryFields = () => {
-  const uiStore = useCardsUIStoreApi();
+  const setCardUI = useCardsUIStore(s => s.set);
+
   return useCallback((payload: { _id: string }) => {
-    uiStore.getState().set(payload._id, (d) => {
+    setCardUI(payload._id, (d) => {
       d.gallery.position = 0;
       d.gallery.loading = false;
       d.gallery.error = false;
@@ -420,9 +431,10 @@ export const useResetGalleryFields = () => {
 };
 
 export const useMoveGallery = () => {
-  const uiStore = useCardsUIStoreApi();
+  const setCardUI = useCardsUIStore(s => s.set);
+
   return useCallback((payload: { _id: string; value: "left" | "right" }) => {
-    uiStore.getState().set(payload._id, (d) => {
+    setCardUI(payload._id, (d) => {
       let offset = payload.value === "left" ? 17 : -17;
       d.gallery.position += offset;
     });

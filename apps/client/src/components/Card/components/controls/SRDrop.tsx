@@ -1,5 +1,5 @@
-import { useSetCardQuestion } from "@zustand/cards";
-import type { Card } from "@zustand/cards";
+import type { CardDto } from "@flashcards/common";
+import { useCardsUIStore, useSetCardQuestion } from "@zustand/cards";
 import { DropStudyRegimeIcon } from "@ui/Icons";
 import Tooltip from "@ui/Tooltip";
 import clsx from "clsx";
@@ -10,13 +10,13 @@ import s from "./styles.module.scss";
 // const test: ClassValue;
 
 type SRDropProps = {
-  data: Card;
+  data: CardDto;
 };
 
 const SRDrop = ({ data }: SRDropProps) => {
   const setCardQuestion = useSetCardQuestion();
-
-  const { question, _id } = data;
+  const question = useCardsUIStore(s => s.cards[data._id]?.question);
+  const { _id } = data;
 
   const clickDropSR = (e: MouseEvent<HTMLDivElement>) =>
     setCardQuestion({ _id, value: true });
