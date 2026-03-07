@@ -1,4 +1,4 @@
-import { useCardActions } from "@zustand/cards";
+import { useScrapeDictionary } from "@zustand/cards";
 import type { Card } from "@zustand/cards";
 import Tooltip from "@ui/Tooltip";
 import clsx from "clsx";
@@ -11,7 +11,7 @@ type ScrapeProps = {
 };
 
 const Scrape = ({ data }: ScrapeProps) => {
-  const { scrapeDictionary } = useCardActions();
+  const scrapeDictionary = useScrapeDictionary();
   const { _id, scrape } = data || {};
 
   const { loading } = scrape || {};

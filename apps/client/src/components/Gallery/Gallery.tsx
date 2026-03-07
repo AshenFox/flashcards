@@ -1,5 +1,9 @@
-import { useCardActions } from "@zustand/cards";
-import { useGalleryImagesQuery } from "@zustand/cards";
+import {
+  useControlGalleryQuery,
+  useGalleryImagesQuery,
+  useResetGalleryFields,
+  useSearchImages,
+} from "@zustand/cards";
 import type { Card, ImgurlObjs } from "@zustand/cards";
 import { ArrowRightIcon } from "@ui/Icons";
 import Input from "@ui/Input";
@@ -26,8 +30,9 @@ type GalleryProps = {
 };
 
 const Gallery = ({ data, active, game = false }: GalleryProps) => {
-  const { controlGalleryQuery, resetGalleryFields, searchImages } =
-    useCardActions();
+  const controlGalleryQuery = useControlGalleryQuery();
+  const resetGalleryFields = useResetGalleryFields();
+  const searchImages = useSearchImages();
 
   const { _id, gallery } = data || {};
   const { loading, query, error, position } = gallery ?? {};

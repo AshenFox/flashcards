@@ -1,6 +1,6 @@
 import { SRIndicator } from "@components/SRIndicator";
 import SRInfoTooltip from "@components/SRIndicator/SRInfoTooltip";
-import { useCardActions } from "@zustand/cards";
+import { useSetCardSR, useSetCardsSRPositive } from "@zustand/cards";
 import type { Card } from "@zustand/cards";
 import Switch from "@ui/Switch";
 import clsx from "clsx";
@@ -13,7 +13,8 @@ type SRProps = {
 };
 
 const SR = ({ data }: SRProps) => {
-  const { setCardSR, setCardsSRPositive } = useCardActions();
+  const setCardSR = useSetCardSR();
+  const setCardsSRPositive = useSetCardsSRPositive();
 
   const { _id, studyRegime } = data;
 

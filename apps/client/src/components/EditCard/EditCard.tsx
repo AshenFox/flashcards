@@ -1,6 +1,6 @@
 import Gallery from "@components/Gallery";
 import { usePlug } from "@helpers/hooks/usePlug";
-import { useCardActions } from "@zustand/cards";
+import { useControlCard, useEditCard } from "@zustand/cards";
 import type { Card } from "@zustand/cards";
 import TextArea from "@ui/TextArea";
 import TextLabel from "@ui/TextLabel";
@@ -34,7 +34,8 @@ const EditCard = ({
   game,
   number,
 }: EditCardProps) => {
-  const { controlCard, editCard } = useCardActions();
+  const controlCard = useControlCard();
+  const editCard = useEditCard();
 
   const { _id, term, definition, gallery } = data || {};
 

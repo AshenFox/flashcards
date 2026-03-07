@@ -1,4 +1,4 @@
-import { useCardActions } from "@zustand/cards";
+import { useSetCardSave, useSetCardsSavePositive } from "@zustand/cards";
 import type { Card } from "@zustand/cards";
 import Checkbox from "@ui/Checkbox";
 import Tooltip from "@ui/Tooltip";
@@ -11,7 +11,8 @@ type SaveProps = {
 };
 
 const Save = ({ data }: SaveProps) => {
-  const { setCardSave, setCardsSavePositive } = useCardActions();
+  const setCardSave = useSetCardSave();
+  const setCardsSavePositive = useSetCardsSavePositive();
 
   const { _id, save } = data;
 

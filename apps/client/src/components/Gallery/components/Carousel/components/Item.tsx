@@ -1,4 +1,4 @@
-import { useCardActions } from "@zustand/cards";
+import { useEditCard, useSetCardImgurl, useSetUrlOk } from "@zustand/cards";
 import type { ImgurlObj } from "@zustand/cards";
 import clsx from "clsx";
 import { memo, SyntheticEvent, useCallback } from "react";
@@ -12,7 +12,9 @@ type ItemProps = {
 };
 
 const Item = ({ _id, index, data }: ItemProps) => {
-  const { setCardImgurl, setUrlOk, editCard } = useCardActions();
+  const setCardImgurl = useSetCardImgurl();
+  const setUrlOk = useSetUrlOk();
+  const editCard = useEditCard();
 
   const { url, ok } = data;
 

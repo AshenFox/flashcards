@@ -1,4 +1,4 @@
-import { useCardActions } from "@zustand/cards";
+import { useMoveGallery } from "@zustand/cards";
 import { TriangleLeftIcon, TriangleRightIcon } from "@ui/Icons";
 import { clsx } from "clsx";
 import { memo, MouseEvent, useCallback } from "react";
@@ -13,7 +13,7 @@ type ControlProps = {
 };
 
 const Control = ({ direction, _id, galleryPosition = 0, galleryWidth = 0 }: ControlProps) => {
-  const { moveGallery } = useCardActions();
+  const moveGallery = useMoveGallery();
 
   const position = galleryPosition;
   const width = galleryWidth;

@@ -1,4 +1,4 @@
-import { useCardActions } from "@zustand/cards";
+import { useSetCardEdit } from "@zustand/cards";
 import type { Card } from "@zustand/cards";
 import { EditIcon } from "@ui/Icons";
 import Tooltip from "@ui/Tooltip";
@@ -12,7 +12,7 @@ type EditProps = {
 };
 
 const Edit = ({ data }: EditProps) => {
-  const { setCardEdit } = useCardActions();
+  const setCardEdit = useSetCardEdit();
 
   const { _id } = data;
 

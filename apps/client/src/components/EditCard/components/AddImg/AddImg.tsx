@@ -1,4 +1,4 @@
-import { useCardActions } from "@zustand/cards";
+import { useEditCard, useSetCardImgurl, useSetGallerySearch } from "@zustand/cards";
 import type { Card } from "@zustand/cards";
 import { DeleteIcon, ImgIcon } from "@ui/Icons";
 import Img from "@ui/Img";
@@ -12,7 +12,9 @@ type AddImgProps = {
 };
 
 const AddImg = ({ data }: AddImgProps) => {
-  const { setGallerySearch, setCardImgurl, editCard } = useCardActions();
+  const setGallerySearch = useSetGallerySearch();
+  const setCardImgurl = useSetCardImgurl();
+  const editCard = useEditCard();
 
   const { _id, imgurl, gallery } = data || {};
 

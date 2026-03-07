@@ -1,4 +1,4 @@
-import { useCardActions } from "@zustand/cards";
+import { useDeleteCard } from "@zustand/cards";
 import type { Card } from "@zustand/cards";
 import { DeleteIcon } from "@ui/Icons";
 import Tooltip from "@ui/Tooltip";
@@ -13,7 +13,7 @@ type DeleteProps = {
 };
 
 const Delete = ({ data, active = false }: DeleteProps) => {
-  const { deleteCard } = useCardActions();
+  const deleteCard = useDeleteCard();
 
   const { _id } = data || {};
 

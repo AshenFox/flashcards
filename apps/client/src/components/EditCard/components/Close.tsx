@@ -1,4 +1,4 @@
-import { useCardActions } from "@zustand/cards";
+import { useResetGalleryFields, useSetCardEdit } from "@zustand/cards";
 import type { Card } from "@zustand/cards";
 import { CloseIcon } from "@ui/Icons";
 import Tooltip from "@ui/Tooltip";
@@ -11,7 +11,8 @@ type CloseProps = {
 };
 
 const Close = ({ data }: CloseProps) => {
-  const { setCardEdit, resetGalleryFields } = useCardActions();
+  const setCardEdit = useSetCardEdit();
+  const resetGalleryFields = useResetGalleryFields();
 
   const { _id } = data || {};
 

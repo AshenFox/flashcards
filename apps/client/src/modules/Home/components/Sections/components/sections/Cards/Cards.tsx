@@ -10,11 +10,7 @@ import React, { Fragment, memo, useCallback, useEffect, useMemo } from "react";
 import Divider from "../components/Divider";
 import s from "../styles.module.scss";
 
-import {
-  CardActionsProvider,
-  useCardActions,
-  useCardUIStore,
-} from "@zustand/cards";
+import { CardsUIProvider, useDefaultCardUIStore } from "@zustand/cards";
 import type { Card as CardType } from "@zustand/cards";
 import { useHomeCardsFiltersStore, useHomeCardsQuery } from "./hooks";
 
@@ -64,10 +60,9 @@ const Cards = () => {
     isFetching,
   } = useHomeCardsQuery();
 
-  const cardActions = useCardActions();
-  const uiCards = useCardUIStore(s => s.cards);
-  const resetUIStore = useCardUIStore(s => s.reset);
-  const getUI = useCardUIStore(s => s.get);
+  const uiCards = useDefaultCardUIStore(s => s.cards);
+  const resetUIStore = useDefaultCardUIStore(s => s.reset);
+  const getUI = useDefaultCardUIStore(s => s.get);
 
   const rawCards = useMemo(
     () => data?.pages.flatMap(p => p.entries) ?? [],
@@ -114,7 +109,10 @@ const Cards = () => {
   const loading = isFetching || isFetchingNextPage;
 
   return (
-    <CardActionsProvider value={cardActions}>
+    <CardsUIProvider
+      useCardsFiltersStore={useHomeCardsFiltersStore}
+      useCardsUIStore={useDefaultCardUIStore}
+    >
       <Filters
         id="home-cards-filters"
         filtersValues={filters}
@@ -162,7 +160,7 @@ const Cards = () => {
           nothingMsg={<>You don&apos;t have any cards yet.</>}
         />
       )}
-    </CardActionsProvider>
+    </CardsUIProvider>
   );
 };
 

@@ -1,4 +1,4 @@
-import { useCardActions } from "@zustand/cards";
+import { useSetCardQuestion } from "@zustand/cards";
 import type { Card } from "@zustand/cards";
 import { DropStudyRegimeIcon } from "@ui/Icons";
 import Tooltip from "@ui/Tooltip";
@@ -14,7 +14,7 @@ type SRDropProps = {
 };
 
 const SRDrop = ({ data }: SRDropProps) => {
-  const { setCardQuestion } = useCardActions();
+  const setCardQuestion = useSetCardQuestion();
 
   const { question, _id } = data;
 
