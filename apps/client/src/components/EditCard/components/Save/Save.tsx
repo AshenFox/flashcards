@@ -17,8 +17,10 @@ type SaveProps = {
 const Save = ({ data }: SaveProps) => {
   const setCardSave = useSetCardSave();
   const setCardsSavePositive = useSetCardsSavePositive();
-  const save = useCardsUIStore(s => s.cards[data._id]?.save);
+
   const { _id } = data;
+
+  const save = useCardsUIStore(s => s.get(_id).save);
 
   const up = useCallback(
     (e: MouseEvent<HTMLLabelElement> | TouchEvent<HTMLLabelElement>) => {

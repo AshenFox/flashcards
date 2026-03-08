@@ -21,7 +21,7 @@ const AddImg = ({ data }: AddImgProps) => {
   const setCardImgurl = useSetCardImgurl();
   const editCard = useEditCard();
 
-  const search = useCardsUIStore(s => s.cards[data._id]?.gallery.search);
+  const search = useCardsUIStore(s => s.get(data._id).gallery.search);
 
   const { _id, imgurl } = data || {};
 

@@ -26,9 +26,7 @@ export const usePlug = (
   }, [visible, classStr]);
 
   const Plug = useMemo(
-    () => (
-      <div className={classStr} style={{ height: `${heightDimen}px` }}></div>
-    ),
+    () => <div className={classStr} style={{ height: `${heightDimen}px` }} />,
     [classStr, heightDimen],
   );
 

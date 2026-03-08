@@ -41,6 +41,7 @@
     "@types/react": "^19.1.0",
     "@types/react-dom": "^19.1.0",
     "@types/sanitize-html": "^2.6.2",
+    "@welldone-software/why-did-you-render": "^10.0.1",
     "sass": "^1.29.0",
     "stylelint": "^16.5.0",
     "stylelint-config-idiomatic-order": "^10.0.0",

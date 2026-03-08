@@ -1,6 +1,4 @@
 export type {
-  Card,
-  CardActions,
   CardFields,
   ImgurlBase,
   ImgurlObj,
@@ -14,7 +12,7 @@ export {
   useCardsUIStore,
   useCardsQueryKey,
 } from "./context";
-export { useCardUIStore as useDefaultCardUIStore } from "./cardUIStore";
+export { cardsUISlice } from "./cardsUIStore";
 export {
   galleryQueryKey,
   useGalleryImagesQuery,

@@ -7,6 +7,7 @@ import { createCardsFilterSlice } from "@zustand/filters";
 import type { CardsFilters } from "@zustand/filters";
 import { createStoreHook } from "@zustand/helpers";
 import { useEffect } from "react";
+import { cardsUISlice } from "@zustand/cards";
 
 // ---------------------------------------------------------------------------
 // Infinite query
@@ -53,4 +54,10 @@ export const useHomeCardsFiltersStore = createStoreHook({
     storeName: "HomeCardsFilters",
     instanceKey: "home-cards",
     slice: createCardsFilterSlice({ queryKey }),
+});
+
+export const useHomeCardsUIStore = createStoreHook({
+    storeName: "HomeCardsUI",
+    instanceKey: "home-cards",
+    slice: cardsUISlice,
 });

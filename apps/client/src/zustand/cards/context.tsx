@@ -1,6 +1,6 @@
 import { createContext, ReactNode, useContext, useMemo } from "react";
 
-import type { CardUIStore } from "./types";
+import type { CardsUIStore } from "./types";
 import { CardsFilters, FilterStore } from "@zustand/filters";
 import { QueryKey } from "@tanstack/react-query";
 
@@ -12,14 +12,14 @@ type StoreHook<S> = {
 
 export type CardsUIContextValue = {
   useCardsFiltersStore: StoreHook<FilterStore<CardsFilters>>;
-  useCardsUIStore: StoreHook<CardUIStore>;
+  useCardsUIStore: StoreHook<CardsUIStore>;
 };
 
 export const CardsUIContext = createContext<CardsUIContextValue | null>(null);
 
 export type CardsUIProviderProps = {
   useCardsFiltersStore: StoreHook<FilterStore<CardsFilters>>;
-  useCardsUIStore: StoreHook<CardUIStore>;
+  useCardsUIStore: StoreHook<CardsUIStore>;
   children: ReactNode;
 };
 
@@ -53,9 +53,9 @@ export function useCardsFiltersStore<T>(
   return context.useCardsFiltersStore(selector);
 }
 
-export function useCardsUIStore(): CardUIStore;
-export function useCardsUIStore<T>(selector: (state: CardUIStore) => T): T;
-export function useCardsUIStore<T>(selector?: (state: CardUIStore) => T) {
+export function useCardsUIStore(): CardsUIStore;
+export function useCardsUIStore<T>(selector: (state: CardsUIStore) => T): T;
+export function useCardsUIStore<T>(selector?: (state: CardsUIStore) => T) {
   const context = useContext(CardsUIContext);
   if (!context)
     throw new Error(

@@ -15,7 +15,7 @@ const Scrape = ({ data }: ScrapeProps) => {
 
   const { _id } = data || {};
 
-  const loading = useCardsUIStore(s => s.cards[data._id]?.scrape.loading);
+  const loading = useCardsUIStore(s => s.get(_id).scrape.loading);
 
   const clickScrapeButton = useCallback(
     (value: "cod" | "urban") => (e: MouseEvent<HTMLDivElement>) => {

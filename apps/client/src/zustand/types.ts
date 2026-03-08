@@ -5,3 +5,9 @@ export type Middleware = [['zustand/immer', never], ['zustand/devtools', never]]
 export type Slice<Store> = StateCreator<Store, Middleware>;
 
 export type SliceSet<Store> = Mutate<StoreApi<Store | Partial<Store>>, Middleware>['setState'];
+
+export type CreateStoreHookArgs<Store> = {
+    storeName: string;
+    instanceKey: string;
+    slice: Slice<Store>;
+};

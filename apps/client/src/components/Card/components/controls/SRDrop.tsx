@@ -15,8 +15,10 @@ type SRDropProps = {
 
 const SRDrop = ({ data }: SRDropProps) => {
   const setCardQuestion = useSetCardQuestion();
-  const question = useCardsUIStore(s => s.cards[data._id]?.question);
+
   const { _id } = data;
+
+  const question = useCardsUIStore(s => s.get(_id).question);
 
   const clickDropSR = (e: MouseEvent<HTMLDivElement>) =>
     setCardQuestion({ _id, value: true });

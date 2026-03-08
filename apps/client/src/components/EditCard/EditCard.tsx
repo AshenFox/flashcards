@@ -38,7 +38,8 @@ const EditCard = ({
   const editCard = useEditCard();
 
   const { _id, term, definition } = data || {};
-  const search = useCardsUIStore(s => s.cards[data._id]?.gallery.search);
+
+  const search = useCardsUIStore(s => s.get(_id).gallery.search);
 
   const handleCardChange = useCallback(
     (type: "term" | "definition") => (e: ContentEditableEvent) => {

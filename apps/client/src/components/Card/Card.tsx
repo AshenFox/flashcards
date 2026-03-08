@@ -32,7 +32,6 @@ const Card = ({
 }: CardProps) => {
   const setCardQuestion = useSetCardQuestion();
   const dropCardSR = useDropCardSR();
-  const question = useCardsUIStore(s => s.cards[data._id]?.question);
 
   const {
     term = "",
@@ -42,6 +41,8 @@ const Card = ({
     moduleID,
     creation_date,
   } = data;
+
+  const question = useCardsUIStore(s => s.get(_id).question);
 
   const filterRegExp = new RegExp(filterRegex(filter), "g");
 

@@ -11,15 +11,15 @@ import Divider from "../components/Divider";
 import s from "../styles.module.scss";
 
 import type { CardDto } from "@flashcards/common";
+import { CardsUIProvider, useCardsUIStore } from "@zustand/cards";
 import {
-  CardsUIProvider,
-  useCardsUIStore,
-  useDefaultCardUIStore,
-} from "@zustand/cards";
-import { useHomeCardsFiltersStore, useHomeCardsQuery } from "./hooks";
+  useHomeCardsFiltersStore,
+  useHomeCardsQuery,
+  useHomeCardsUIStore,
+} from "./hooks";
 
 type CardRowProps = {
-  rawCard: CardDto;
+  data: CardDto;
   prevDateString: string | undefined;
   search: string;
   by: string;
@@ -29,26 +29,28 @@ type CardRowProps = {
 
 const CardRow = memo(
   ({
-    rawCard,
+    data,
     prevDateString,
     search,
     by,
     isModuleLink,
     loading,
   }: CardRowProps) => {
-    const edit = useCardsUIStore(s => s.cards[rawCard._id]?.edit);
+    const { _id, creation_date } = data || {};
+
+    const edit = useCardsUIStore(s => s.get(data._id).edit);
 
     return (
       <Fragment>
         <Divider
           prevDateString={prevDateString}
-          curDateString={rawCard.creation_date}
+          curDateString={data.creation_date}
         />
         {edit ? (
-          <EditCard data={rawCard} toggle={true} loading={loading} />
+          <EditCard data={data} toggle={true} loading={loading} />
         ) : (
           <Card
-            data={rawCard}
+            data={data}
             filter={search}
             filterType={by}
             isModuleLink={isModuleLink}
@@ -106,7 +108,7 @@ const Cards = () => {
     isFetching,
   } = useHomeCardsQuery();
 
-  const resetUIStore = useDefaultCardUIStore(s => s.reset);
+  const resetUIStore = useHomeCardsUIStore(s => s.reset);
 
   const rawCards = useMemo(
     () => data?.pages.flatMap(p => p.entries) ?? [],
@@ -146,7 +148,7 @@ const Cards = () => {
   return (
     <CardsUIProvider
       useCardsFiltersStore={useHomeCardsFiltersStore}
-      useCardsUIStore={useDefaultCardUIStore}
+      useCardsUIStore={useHomeCardsUIStore}
     >
       <Filters
         id="home-cards-filters"
@@ -160,10 +162,10 @@ const Cards = () => {
         resetData={resetData}
         resetFilters={resetFilters}
       />
-      {rawCards.map((rawCard, i) => (
+      {rawCards.map((data, i) => (
         <CardRow
-          key={rawCard._id}
-          rawCard={rawCard}
+          key={data._id}
+          data={data}
           prevDateString={rawCards[i - 1]?.creation_date}
           search={search}
           by={by}

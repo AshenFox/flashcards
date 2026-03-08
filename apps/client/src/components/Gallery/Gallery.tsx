@@ -35,9 +35,11 @@ const Gallery = ({ data, active, game = false }: GalleryProps) => {
   const controlGalleryQuery = useControlGalleryQuery();
   const resetGalleryFields = useResetGalleryFields();
   const searchImages = useSearchImages();
-  const gallery = useCardsUIStore(s => s.cards[data._id]?.gallery);
 
   const { _id } = data || {};
+
+  const gallery = useCardsUIStore(s => s.get(_id).gallery);
+
   const { loading, query, error, position } = gallery ?? {};
 
   const { data: galleryImages } = useGalleryImagesQuery(_id ?? "", query ?? "");
