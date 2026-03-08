@@ -38,13 +38,13 @@ const CardRow = memo(
   }: CardRowProps) => {
     const { _id, creation_date } = data || {};
 
-    const edit = useCardsUIStore(s => s.get(data._id).edit);
+    const edit = useCardsUIStore(s => s.get(_id).edit);
 
     return (
       <Fragment>
         <Divider
           prevDateString={prevDateString}
-          curDateString={data.creation_date}
+          curDateString={creation_date}
         />
         {edit ? (
           <EditCard data={data} toggle={true} loading={loading} />
@@ -107,6 +107,8 @@ const Cards = () => {
     isFetchingNextPage,
     isFetching,
   } = useHomeCardsQuery();
+
+  console.log({ data });
 
   const resetUIStore = useHomeCardsUIStore(s => s.reset);
 

@@ -125,10 +125,9 @@ export const useSearchImagesMutation = () => {
 // Helpers for hooks that need card data from query cache
 // ---------------------------------------------------------------------------
 
-function useCardDataHelpers() {
+function useGetCardData() {
   const queryKey = useCardsQueryKey();
   const queryClient = useQueryClient();
-  const getCardUI = useCardsUIStore(s => s.get);
 
   const getCardData = useCallback((_id: string): CardDto | undefined => {
     const data = queryClient.getQueryData<{ pages: GetMainCardsResponseDto[] }>(queryKey);
@@ -140,14 +139,7 @@ function useCardDataHelpers() {
     return undefined;
   }, [queryClient, queryKey]);
 
-  const getCardWithUI = useCallback((_id: string) => {
-    const dto = getCardData(_id);
-    const ui = getCardUI(_id);
-    if (!dto) return undefined;
-    return { ...dto, ...ui };
-  }, [getCardData, getCardUI]);
-
-  return { getCardData, getCardWithUI };
+  return getCardData;
 }
 
 // ---------------------------------------------------------------------------
@@ -156,19 +148,21 @@ function useCardDataHelpers() {
 
 export const useEditCard = () => {
   const editCardMut = useEditCardMutation();
-  const { getCardWithUI } = useCardDataHelpers();
+  const getCardData = useGetCardData();
 
   return useCallback((_id: string) => {
-    const merged = getCardWithUI(_id);
-    if (!merged) return;
+    const data = getCardData(_id);
+
+    if (!data) return;
+
     editCardMut.mutate({
-      _id: merged._id,
-      moduleID: merged.moduleID,
-      term: merged.term,
-      definition: merged.definition,
-      imgurl: merged.imgurl,
+      _id: data._id,
+      moduleID: data.moduleID,
+      term: data.term,
+      definition: data.definition,
+      imgurl: data.imgurl,
     });
-  }, [editCardMut, getCardWithUI]);
+  }, [editCardMut, getCardData]);
 };
 
 export const useDeleteCard = () => {
@@ -216,17 +210,24 @@ export const useSetCardsSRPositive = () => {
 export const useScrapeDictionary = () => {
   const scrapeDictMut = useScrapeDictionaryMutation();
   const editCardMut = useEditCardMutation();
+
   const queryKey = useCardsQueryKey();
   const queryClient = useQueryClient();
-  const { getCardData, getCardWithUI } = useCardDataHelpers();
+
+  const getCardData = useGetCardData();
   const setCardUI = useCardsUIStore(s => s.set);
+  const getCardUI = useCardsUIStore(s => s.get);
 
   return useCallback((_id: string, value: "cod" | "urban") => {
-    const merged = getCardWithUI(_id);
-    if (!merged) return;
+    const data = getCardData(_id);
+    const cardUI = getCardUI(_id);
+
+    if (!data || !cardUI) return;
+
     setCardUI(_id, (d) => { d.scrape.loading = true; });
+
     scrapeDictMut.mutate(
-      { term: merged.term, value },
+      { term: data.term, value },
       {
         onSuccess: (result) => {
           setCardUI(_id, (d) => { d.scrape.loading = false; });
@@ -258,7 +259,7 @@ export const useScrapeDictionary = () => {
         },
       },
     );
-  }, [scrapeDictMut, editCardMut, getCardWithUI, getCardData, queryClient, queryKey]);
+  }, [scrapeDictMut, editCardMut, getCardUI, getCardData, queryClient, queryKey]);
 };
 
 export const useSearchImages = () => {
@@ -350,9 +351,9 @@ export const useSetCardImgurl = () => {
       if (!old) return old;
       return {
         ...old,
-        pages: old.pages.map((page: GetMainCardsResponseDto) => ({
+        pages: old.pages.map((page) => ({
           ...page,
-          entries: page.entries.map((c: CardDto) =>
+          entries: page.entries.map((c) =>
             c._id === payload._id ? { ...c, imgurl: payload.value } : c,
           ),
         })),
@@ -380,6 +381,7 @@ export const useSetCardSave = () => {
 export const useSetCardsSavePositive = () => {
   const queryKey = useCardsQueryKey();
   const queryClient = useQueryClient();
+
   const getCardUI = useCardsUIStore(s => s.get);
   const setCardUI = useCardsUIStore(s => s.set);
 

@@ -8,12 +8,20 @@ export const cardsUISlice: Slice<CardsUIStore> = (setAction, get) => {
 
   return {
     cards: {},
-    get: (_id: string) => ((
-      get().cards[_id] ?? {
-        ...defaultCardUI,
-        gallery: { ...defaultCardUI.gallery },
-      }
-    )),
+    get: (_id: string) => {
+      const existing = get().cards[_id];
+
+      if (existing) return existing;
+
+      set((state) => {
+        state.cards[_id] = {
+          ...defaultCardUI,
+          gallery: { ...defaultCardUI.gallery },
+        };
+      }, 'createCardUI');
+
+      return get().cards[_id];
+    },
     set: (_id: string, updater: (draft: CardFields) => void) => {
       set((state) => {
         if (!state.cards[_id]) {
