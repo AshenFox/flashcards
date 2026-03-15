@@ -2,6 +2,7 @@ import { create } from 'zustand';
 import { devtools } from 'zustand/middleware';
 import { immer } from 'zustand/middleware/immer';
 import { Slice, SliceSet } from "./types";
+import { produce } from 'immer';
 
 /** Wraps `setState` so you can call `set(updater, "actionName")` instead of `set(updater, false, "actionName")`. */
 export function withActionName<Store>(
@@ -27,3 +28,16 @@ export const createStoreHook = <Store>({ storeName, instanceKey, slice }: Create
 
   return create<Store>()(storeWithImmer);
 };
+
+/**
+ * Returns an updater for setQueryData that mutates the previous cache with Immer.
+ * Use: queryClient.setQueryData(key, withProduce((draft) => { ... }))
+ */
+export function withProduce<T>(
+  recipe: (draft: T) => void,
+): (old: T | undefined) => T | undefined {
+  return (old) => {
+    if (old === undefined) return old;
+    return produce(old, recipe) as T;
+  };
+}

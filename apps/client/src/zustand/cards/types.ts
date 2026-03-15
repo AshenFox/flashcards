@@ -1,3 +1,5 @@
+import { GetMainCardsResponseDto } from "@flashcards/common";
+
 export type ImgurlFields = {
   ok: boolean;
 };
@@ -64,3 +66,5 @@ export const defaultCardUI: CardFields = {
   save: false,
   question: false,
 };
+
+export type MainCardsCache = { pages: GetMainCardsResponseDto[] };

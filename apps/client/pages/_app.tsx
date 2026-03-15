@@ -11,12 +11,11 @@ import AuthWrapper from "@modules/AuthWrapper";
 import Dropdown from "@modules/Dropdown";
 import Header from "@modules/Header";
 import store from "@store/store";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { QueryClientProvider } from "@tanstack/react-query";
 import type { AppContext, AppProps } from "next/app";
 import { Provider } from "react-redux";
 import { parseThemeFromCookie } from "@configuration/Theme";
-
-const queryClient = new QueryClient();
+import { queryClient } from "@api/queryClient";
 
 type MyAppProps = AppProps & {
   initialTheme: "light" | "dark" | null;

@@ -4,7 +4,7 @@ import { srDropCards } from "@api/methods";
 import { srSetControl } from "@api/methods";
 import { scrapeGetDictionary, scrapeSearchImages } from "@api/methods";
 import type { GetMainCardsResponseDto, CardDto } from "@flashcards/common";
-import { QueryKey, useMutation, useQueryClient } from "@tanstack/react-query";
+import { QueryKey, useMutation } from "@tanstack/react-query";
 import { useCallback } from "react";
 import sanitize from "sanitize-html";
 
@@ -14,6 +14,10 @@ import { useCardsQueryKey, useCardsUIStore } from "./context";
 import { galleryQueryKey } from "./galleryQuery";
 import type { GalleryImagesCache } from "./galleryQuery";
 import { imgUrlArrToObj, formatDictionaryResult } from "./helpers";
+
+import { queryClient } from "@api/queryClient";
+import { MainCardsCache } from "./types";
+import { withProduce } from "@zustand/helpers";
 
 // ---------------------------------------------------------------------------
 // Mutation hooks
@@ -27,8 +31,6 @@ export const useEditCardMutation = () => {
 };
 
 export const useDeleteCardMutation = ({ queryKey }: { queryKey: QueryKey }) => {
-  const queryClient = useQueryClient();
-
   return useMutation({
     mutationFn: (_id: string) => editDeleteCard(_id),
     onSuccess: () => {
@@ -39,51 +41,46 @@ export const useDeleteCardMutation = ({ queryKey }: { queryKey: QueryKey }) => {
 };
 
 export const useDropCardSRMutation = ({ queryKey }: { queryKey: QueryKey }) => {
-  const queryClient = useQueryClient();
-
   return useMutation({
     mutationFn: (_id: string) => srDropCards([_id]),
     onSuccess: (data, _id) => {
       saveLastUpdate();
-      queryClient.setQueryData(queryKey, (old: any) => {
-        if (!old) return old;
-        return {
-          ...old,
-          pages: old.pages.map((page: GetMainCardsResponseDto) => ({
-            ...page,
-            entries: page.entries.map((c: CardDto) =>
-              c._id === _id
-                ? { ...c, stage: data.stage, nextRep: data.nextRep, prevStage: data.prevStage, lastRep: data.lastRep }
-                : c,
-            ),
-          })),
-        };
-      });
+      queryClient.setQueryData(
+        queryKey,
+        withProduce<MainCardsCache>((draft) => {
+          for (const page of draft.pages) {
+            const entry = page.entries.find((c) => c._id === _id);
+            if (entry) {
+              entry.stage = data.stage;
+              entry.nextRep = data.nextRep;
+              entry.prevStage = data.prevStage;
+              entry.lastRep = data.lastRep;
+              break;
+            }
+          }
+        }),
+      );
     },
   });
 };
 
 export const useSetCardSRMutation = ({ queryKey }: { queryKey: QueryKey }) => {
-  const queryClient = useQueryClient();
-
   return useMutation({
     mutationFn: ({ _id_arr, value }: { _id_arr: string[]; value: boolean }) =>
       srSetControl(_id_arr, value),
     onSuccess: (_, { _id_arr, value }) => {
       saveLastUpdate();
-      queryClient.setQueryData(queryKey, (old: any) => {
-        if (!old) return old;
-        const idSet = new Set(_id_arr);
-        return {
-          ...old,
-          pages: old.pages.map((page: GetMainCardsResponseDto) => ({
-            ...page,
-            entries: page.entries.map((c: CardDto) =>
-              idSet.has(c._id) ? { ...c, studyRegime: value } : c,
-            ),
-          })),
-        };
-      });
+      const idSet = new Set(_id_arr);
+      queryClient.setQueryData(
+        queryKey,
+        withProduce<MainCardsCache>((draft) => {
+          for (const page of draft.pages) {
+            for (const entry of page.entries) {
+              if (idSet.has(entry._id)) entry.studyRegime = value;
+            }
+          }
+        }),
+      );
     },
   });
 };
@@ -127,7 +124,6 @@ export const useSearchImagesMutation = () => {
 
 function useGetCardData() {
   const queryKey = useCardsQueryKey();
-  const queryClient = useQueryClient();
 
   const getCardData = useCallback((_id: string): CardDto | undefined => {
     const data = queryClient.getQueryData<{ pages: GetMainCardsResponseDto[] }>(queryKey);
@@ -187,7 +183,6 @@ export const useSetCardSR = () => {
 
 export const useSetCardsSRPositive = () => {
   const queryKey = useCardsQueryKey();
-  const queryClient = useQueryClient();
   const setCardSRMut = useSetCardSRMutation({ queryKey });
 
   return useCallback((_id: string) => {
@@ -212,7 +207,6 @@ export const useScrapeDictionary = () => {
   const editCardMut = useEditCardMutation();
 
   const queryKey = useCardsQueryKey();
-  const queryClient = useQueryClient();
 
   const getCardData = useGetCardData();
   const setCardUI = useCardsUIStore(s => s.set);
@@ -234,18 +228,18 @@ export const useScrapeDictionary = () => {
           const dto = getCardData(_id);
           if (!dto) return;
           const newDef = dto.definition + result;
-          queryClient.setQueryData(queryKey, (old: any) => {
-            if (!old) return old;
-            return {
-              ...old,
-              pages: old.pages.map((page: GetMainCardsResponseDto) => ({
-                ...page,
-                entries: page.entries.map((c: CardDto) =>
-                  c._id === _id ? { ...c, definition: newDef } : c,
-                ),
-              })),
-            };
-          });
+          queryClient.setQueryData(
+            queryKey,
+            withProduce<MainCardsCache>((draft) => {
+              for (const page of draft.pages) {
+                const entry = page.entries.find((c) => c._id === _id);
+                if (entry) {
+                  entry.definition = newDef;
+                  break;
+                }
+              }
+            }),
+          );
           editCardMut.mutate({
             _id: dto._id,
             moduleID: dto.moduleID,
@@ -264,7 +258,6 @@ export const useScrapeDictionary = () => {
 
 export const useSearchImages = () => {
   const searchImgMut = useSearchImagesMutation();
-  const queryClient = useQueryClient();
   const getCardUI = useCardsUIStore(s => s.get);
   const setCardUI = useCardsUIStore(s => s.set);
 
@@ -295,7 +288,6 @@ export const useSearchImages = () => {
 };
 
 export const useSetUrlOk = () => {
-  const queryClient = useQueryClient();
   const getCardUI = useCardsUIStore(s => s.get);
 
   return useCallback((_id: string, index: string, value: boolean) => {
@@ -303,13 +295,9 @@ export const useSetUrlOk = () => {
     const key = galleryQueryKey(_id, queryStr);
     queryClient.setQueryData<GalleryImagesCache>(key, (old) => {
       if (!old?.imgurl_obj?.[index]) return old;
-      return {
-        ...old,
-        imgurl_obj: {
-          ...old.imgurl_obj,
-          [index]: { ...old.imgurl_obj[index], ok: value },
-        },
-      };
+      return withProduce<GalleryImagesCache>((draft) => {
+        draft.imgurl_obj![index]!.ok = value;
+      })(old);
     });
   }, [queryClient]);
 };
@@ -324,41 +312,39 @@ export const useSetCardEdit = () => {
 
 export const useControlCard = () => {
   const queryKey = useCardsQueryKey();
-  const queryClient = useQueryClient();
 
   return useCallback((payload: { _id: string; type: "term" | "definition"; value: string }) => {
-    queryClient.setQueryData(queryKey, (old: any) => {
-      if (!old) return old;
-      return {
-        ...old,
-        pages: old.pages.map((page: GetMainCardsResponseDto) => ({
-          ...page,
-          entries: page.entries.map((c: CardDto) =>
-            c._id === payload._id ? { ...c, [payload.type]: payload.value } : c,
-          ),
-        })),
-      };
-    });
+    queryClient.setQueryData(
+      queryKey,
+      withProduce<MainCardsCache>((draft) => {
+        for (const page of draft.pages) {
+          const entry = page.entries.find((c) => c._id === payload._id);
+          if (entry) {
+            entry[payload.type] = payload.value;
+            break;
+          }
+        }
+      }),
+    );
   }, [queryClient, queryKey]);
 };
 
 export const useSetCardImgurl = () => {
   const queryKey = useCardsQueryKey();
-  const queryClient = useQueryClient();
 
   return useCallback((payload: { _id: string; value: string }) => {
-    queryClient.setQueryData(queryKey, (old: any) => {
-      if (!old) return old;
-      return {
-        ...old,
-        pages: old.pages.map((page) => ({
-          ...page,
-          entries: page.entries.map((c) =>
-            c._id === payload._id ? { ...c, imgurl: payload.value } : c,
-          ),
-        })),
-      };
-    });
+    queryClient.setQueryData(
+      queryKey,
+      withProduce<MainCardsCache>((draft) => {
+        for (const page of draft.pages) {
+          const entry = page.entries.find((c) => c._id === payload._id);
+          if (entry) {
+            entry.imgurl = payload.value;
+            break;
+          }
+        }
+      }),
+    );
   }, [queryClient, queryKey]);
 };
 
@@ -380,14 +366,15 @@ export const useSetCardSave = () => {
 
 export const useSetCardsSavePositive = () => {
   const queryKey = useCardsQueryKey();
-  const queryClient = useQueryClient();
 
   const getCardUI = useCardsUIStore(s => s.get);
   const setCardUI = useCardsUIStore(s => s.set);
 
   return useCallback((_id: string) => {
     const data = queryClient.getQueryData<{ pages: GetMainCardsResponseDto[] }>(queryKey);
+
     if (!data) return;
+
     const allCards = data.pages.flatMap((p) => p.entries);
     const _id_arr: string[] = [];
 
