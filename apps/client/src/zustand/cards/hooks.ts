@@ -4,7 +4,7 @@ import { srDropCards } from "@api/methods";
 import { srSetControl } from "@api/methods";
 import { scrapeGetDictionary, scrapeSearchImages } from "@api/methods";
 import type { GetMainCardsResponseDto, CardDto } from "@flashcards/common";
-import { QueryKey, useMutation } from "@tanstack/react-query";
+import { useMutation } from "@tanstack/react-query";
 import { useCallback } from "react";
 import sanitize from "sanitize-html";
 
@@ -30,7 +30,9 @@ export const useEditCardMutation = () => {
   });
 };
 
-export const useDeleteCardMutation = ({ queryKey }: { queryKey: QueryKey }) => {
+export const useDeleteCardMutation = () => {
+  const queryKey = useCardsQueryKey();
+
   return useMutation({
     mutationFn: (_id: string) => editDeleteCard(_id),
     onSuccess: () => {
@@ -40,7 +42,9 @@ export const useDeleteCardMutation = ({ queryKey }: { queryKey: QueryKey }) => {
   });
 };
 
-export const useDropCardSRMutation = ({ queryKey }: { queryKey: QueryKey }) => {
+export const useDropCardSRMutation = () => {
+  const queryKey = useCardsQueryKey();
+
   return useMutation({
     mutationFn: (_id: string) => srDropCards([_id]),
     onSuccess: (data, _id) => {
@@ -64,7 +68,9 @@ export const useDropCardSRMutation = ({ queryKey }: { queryKey: QueryKey }) => {
   });
 };
 
-export const useSetCardSRMutation = ({ queryKey }: { queryKey: QueryKey }) => {
+export const useSetCardSRMutation = () => {
+  const queryKey = useCardsQueryKey();
+
   return useMutation({
     mutationFn: ({ _id_arr, value }: { _id_arr: string[]; value: boolean }) =>
       srSetControl(_id_arr, value),
@@ -122,7 +128,7 @@ export const useSearchImagesMutation = () => {
 // Helpers for hooks that need card data from query cache
 // ---------------------------------------------------------------------------
 
-function useGetCardData() {
+const useGetCardData = () => {
   const queryKey = useCardsQueryKey();
 
   const getCardData = useCallback((_id: string): CardDto | undefined => {
@@ -136,7 +142,19 @@ function useGetCardData() {
   }, [queryClient, queryKey]);
 
   return getCardData;
-}
+};
+
+const useGetCardsData = () => {
+  const queryKey = useCardsQueryKey();
+
+  const getCardsCacheData = useCallback((): CardDto[] | undefined => {
+    const data = queryClient.getQueryData<{ pages: GetMainCardsResponseDto[] }>(queryKey);
+    if (!data) return undefined;
+    return data.pages.flatMap((p) => p.entries);
+  }, [queryClient, queryKey]);
+
+  return getCardsCacheData;
+};
 
 // ---------------------------------------------------------------------------
 // Standalone action hooks (use within CardsUIProvider)
@@ -162,35 +180,36 @@ export const useEditCard = () => {
 };
 
 export const useDeleteCard = () => {
-  const queryKey = useCardsQueryKey();
-  const deleteCardMut = useDeleteCardMutation({ queryKey });
+  const deleteCardMut = useDeleteCardMutation();
+
   return useCallback((_id: string) => deleteCardMut.mutate(_id), [deleteCardMut]);
 };
 
 export const useDropCardSR = () => {
-  const queryKey = useCardsQueryKey();
-  const dropCardSRMut = useDropCardSRMutation({ queryKey });
+  const dropCardSRMut = useDropCardSRMutation();
+
   return useCallback((_id: string) => dropCardSRMut.mutate(_id), [dropCardSRMut]);
 };
 
 export const useSetCardSR = () => {
-  const queryKey = useCardsQueryKey();
-  const setCardSRMut = useSetCardSRMutation({ queryKey });
+  const setCardSRMut = useSetCardSRMutation();
+
   return useCallback((_id: string, value: boolean) => {
     setCardSRMut.mutate({ _id_arr: [_id], value });
   }, [setCardSRMut]);
 };
 
 export const useSetCardsSRPositive = () => {
-  const queryKey = useCardsQueryKey();
-  const setCardSRMut = useSetCardSRMutation({ queryKey });
+  const getCardsData = useGetCardsData();
+  const setCardSRMut = useSetCardSRMutation();
 
   return useCallback((_id: string) => {
-    const data = queryClient.getQueryData<{ pages: GetMainCardsResponseDto[] }>(queryKey);
-    if (!data) return;
-    const allCards = data.pages.flatMap((p) => p.entries);
+    const cardsData = getCardsData();
+    if (!cardsData) return;
+
     const _id_arr: string[] = [];
-    for (const card of allCards) {
+
+    for (const card of cardsData) {
       if (card._id === _id) {
         _id_arr.push(card._id);
         break;
@@ -198,8 +217,9 @@ export const useSetCardsSRPositive = () => {
       if (card.studyRegime) _id_arr.length = 0;
       else _id_arr.push(card._id);
     }
+
     setCardSRMut.mutate({ _id_arr, value: true });
-  }, [setCardSRMut, queryClient, queryKey]);
+  }, [setCardSRMut, getCardsData]);
 };
 
 export const useScrapeDictionary = () => {
@@ -228,6 +248,7 @@ export const useScrapeDictionary = () => {
           const dto = getCardData(_id);
           if (!dto) return;
           const newDef = dto.definition + result;
+
           queryClient.setQueryData(
             queryKey,
             withProduce<MainCardsCache>((draft) => {
@@ -240,6 +261,7 @@ export const useScrapeDictionary = () => {
               }
             }),
           );
+
           editCardMut.mutate({
             _id: dto._id,
             moduleID: dto.moduleID,
@@ -258,6 +280,7 @@ export const useScrapeDictionary = () => {
 
 export const useSearchImages = () => {
   const searchImgMut = useSearchImagesMutation();
+
   const getCardUI = useCardsUIStore(s => s.get);
   const setCardUI = useCardsUIStore(s => s.set);
 
@@ -365,30 +388,31 @@ export const useSetCardSave = () => {
 };
 
 export const useSetCardsSavePositive = () => {
-  const queryKey = useCardsQueryKey();
+  const getCardsData = useGetCardsData();
 
   const getCardUI = useCardsUIStore(s => s.get);
   const setCardUI = useCardsUIStore(s => s.set);
 
   return useCallback((_id: string) => {
-    const data = queryClient.getQueryData<{ pages: GetMainCardsResponseDto[] }>(queryKey);
+    const cardsData = getCardsData();
 
-    if (!data) return;
+    if (!cardsData) return;
 
-    const allCards = data.pages.flatMap((p) => p.entries);
     const _id_arr: string[] = [];
 
-    for (const card of allCards) {
+    for (const card of cardsData) {
       if (card._id === _id) {
         _id_arr.push(card._id);
         break;
       }
+
       const ui = getCardUI(card._id);
+
       if (ui?.save) _id_arr.length = 0;
       else _id_arr.push(card._id);
     }
     _id_arr.forEach((id) => setCardUI(id, (d) => { d.save = true; }));
-  }, [queryClient, queryKey]);
+  }, [getCardsData]);
 };
 
 export const useSetGallerySearch = () => {
