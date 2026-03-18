@@ -6,14 +6,7 @@ import { GetMainCardsResponseDto } from "@flashcards/common";
 
 export type CardFields = {
   edit: boolean;
-  scrape: {
-    loading: boolean;
-  };
-  sr: {
-    loading: boolean;
-  };
   save: boolean;
-  question: boolean;
 };
 
 export type CardsUIStore = {
@@ -25,10 +18,7 @@ export type CardsUIStore = {
 
 export const defaultCardUI: CardFields = {
   edit: false,
-  scrape: { loading: false },
-  sr: { loading: false },
   save: false,
-  question: false,
 };
 
 export type MainCardsCache = { pages: GetMainCardsResponseDto[] };

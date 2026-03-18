@@ -1,5 +1,5 @@
 import type { CardDto } from "@flashcards/common";
-import { useCardsUIStore, useScrapeDictionary } from "@zustand/cards";
+import { useScrapeDictionary } from "@zustand/cards";
 import Tooltip from "@ui/Tooltip";
 import clsx from "clsx";
 import { memo, MouseEvent, useCallback } from "react";
@@ -11,17 +11,16 @@ type ScrapeProps = {
 };
 
 const Scrape = ({ data }: ScrapeProps) => {
-  const scrapeDictionary = useScrapeDictionary();
+  const { _id } = data;
 
-  const { _id } = data || {};
-
-  const loading = useCardsUIStore(s => s.get(_id).scrape.loading);
+  const { scrape, isPending } = useScrapeDictionary(_id);
+  const loading = isPending;
 
   const clickScrapeButton = useCallback(
     (value: "cod" | "urban") => (e: MouseEvent<HTMLDivElement>) => {
-      scrapeDictionary(_id, value);
+      scrape(value);
     },
-    [_id, scrapeDictionary],
+    [scrape],
   );
 
   const cambridgeId = `scrape-cambridge-${_id}`;

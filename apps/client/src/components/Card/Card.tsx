@@ -3,15 +3,13 @@ import type { CardDto } from "@flashcards/common";
 import { filterRegex } from "@flashcards/common";
 import { usePlug } from "@helpers/hooks/usePlug";
 import {
-  useCardsUIStore,
   useDropCardSR,
-  useSetCardQuestion,
 } from "@zustand/cards";
 import ConfirmPopup from "@ui/ConfirmPopup";
 import DateStr from "@ui/DateStr";
 import Img from "@ui/Img";
 import TextArea from "@ui/TextArea";
-import { memo, useCallback } from "react";
+import { memo, useCallback, useState } from "react";
 
 import { Edit, SR, SRDrop } from "./components/controls";
 import ModuleLink from "./components/ModuleLink";
@@ -30,7 +28,6 @@ const Card = ({
   filter = null,
   filterType = null,
 }: CardProps) => {
-  const setCardQuestion = useSetCardQuestion();
   const dropCardSR = useDropCardSR();
 
   const {
@@ -42,7 +39,7 @@ const Card = ({
     creation_date,
   } = data;
 
-  const question = useCardsUIStore(s => s.get(_id).question);
+  const [questionOpen, setQuestionOpen] = useState(false);
 
   const filterRegExp = new RegExp(filterRegex(filter), "g");
 
@@ -61,12 +58,9 @@ const Card = ({
     dropCardSR(_id);
   }, [_id, dropCardSR]);
 
-  const setActive = useCallback(
-    (value: boolean) => {
-      setCardQuestion({ _id, value });
-    },
-    [_id, setCardQuestion],
-  );
+  const setActive = useCallback((value: boolean) => {
+    setQuestionOpen(value);
+  }, []);
 
   return (
     <>
@@ -88,11 +82,15 @@ const Card = ({
               <div className={s.controls}>
                 <Edit data={data} />
                 <SR data={data} />
-                <SRDrop data={data} />
+                <SRDrop
+                  data={data}
+                  questionOpen={questionOpen}
+                  onRequestConfirm={() => setQuestionOpen(true)}
+                />
               </div>
               <ConfirmPopup
                 className={s.confirm}
-                active={question}
+                active={questionOpen}
                 setActive={setActive}
                 onConfirm={onConfirm}
                 question="Drop card study progress?"

@@ -31,7 +31,6 @@ export {
   useSetCardEdit,
   useControlCard,
   useSetCardImgurl,
-  useSetCardQuestion,
   useSetCardSave,
   useSetCardsSavePositive,
 } from "./hooks";

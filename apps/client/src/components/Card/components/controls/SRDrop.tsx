@@ -1,5 +1,4 @@
 import type { CardDto } from "@flashcards/common";
-import { useCardsUIStore, useSetCardQuestion } from "@zustand/cards";
 import { DropStudyRegimeIcon } from "@ui/Icons";
 import Tooltip from "@ui/Tooltip";
 import clsx from "clsx";
@@ -7,28 +6,23 @@ import { memo, MouseEvent } from "react";
 
 import s from "./styles.module.scss";
 
-// const test: ClassValue;
-
 type SRDropProps = {
   data: CardDto;
+  questionOpen: boolean;
+  onRequestConfirm: () => void;
 };
 
-const SRDrop = ({ data }: SRDropProps) => {
-  const setCardQuestion = useSetCardQuestion();
-
+const SRDrop = ({ data, questionOpen, onRequestConfirm }: SRDropProps) => {
   const { _id } = data;
 
-  const question = useCardsUIStore(s => s.get(_id).question);
-
-  const clickDropSR = (e: MouseEvent<HTMLDivElement>) =>
-    setCardQuestion({ _id, value: true });
+  const clickDropSR = (e: MouseEvent<HTMLDivElement>) => onRequestConfirm();
 
   const id = `sr-drop-card-${_id}`;
 
   return (
     <div
       className={clsx(s.controls_item, s.sr_drop, {
-        [s.question]: question,
+        [s.question]: questionOpen,
       })}
       onClick={clickDropSR}
     >

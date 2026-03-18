@@ -89,8 +89,9 @@ export const useSetCardSRMutation = () => {
   });
 };
 
-export const useScrapeDictionaryMutation = () => {
+export const useScrapeDictionaryMutation = (_id: string) => {
   return useMutation({
+    mutationKey: ["scrape", _id],
     mutationFn: async ({ term, value }: { term: string; value: "cod" | "urban" }) => {
       if (!term) throw new Error("Term field can not be empty.");
       const termClean = term.replace(/<[^>]*>/g, "");
@@ -201,29 +202,22 @@ export const useSetCardsSRPositive = () => {
   }, [setCardSRMut, getCardsData]);
 };
 
-export const useScrapeDictionary = () => {
-  const scrapeDictMut = useScrapeDictionaryMutation();
+export const useScrapeDictionary = (_id: string) => {
+  const scrapeDictMut = useScrapeDictionaryMutation(_id);
   const editCardMut = useEditCardMutation();
 
   const queryKey = useCardsQueryKey();
 
   const getCardData = useGetCardData();
-  const setCardUI = useCardsUIStore(s => s.set);
-  const getCardUI = useCardsUIStore(s => s.get);
 
-  return useCallback((_id: string, value: "cod" | "urban") => {
+  const scrape = useCallback((value: "cod" | "urban") => {
     const data = getCardData(_id);
-    const cardUI = getCardUI(_id);
-
-    if (!data || !cardUI) return;
-
-    setCardUI(_id, (d) => { d.scrape.loading = true; });
+    if (!data) return;
 
     scrapeDictMut.mutate(
       { term: data.term, value },
       {
         onSuccess: (result) => {
-          setCardUI(_id, (d) => { d.scrape.loading = false; });
           const dto = getCardData(_id);
           if (!dto) return;
           const newDef = dto.definition + result;
@@ -249,12 +243,14 @@ export const useScrapeDictionary = () => {
             imgurl: dto.imgurl,
           });
         },
-        onError: () => {
-          setCardUI(_id, (d) => { d.scrape.loading = false; });
-        },
       },
     );
-  }, [scrapeDictMut, editCardMut, getCardUI, getCardData, queryClient, queryKey]);
+  }, [_id, scrapeDictMut, editCardMut, getCardData, queryClient, queryKey]);
+
+  return {
+    scrape,
+    isPending: scrapeDictMut.isPending,
+  };
 };
 
 
@@ -302,14 +298,6 @@ export const useSetCardImgurl = () => {
       }),
     );
   }, [queryClient, queryKey]);
-};
-
-export const useSetCardQuestion = () => {
-  const setCardUI = useCardsUIStore(s => s.set);
-
-  return useCallback((payload: { _id: string; value: boolean }) => {
-    setCardUI(payload._id, (d) => { d.question = payload.value; });
-  }, []);
 };
 
 export const useSetCardSave = () => {
