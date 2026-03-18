@@ -1,35 +1,39 @@
-import { useEditCard, useSetCardImgurl, useSetUrlOk } from "@zustand/cards";
-import type { ImgurlObj } from "@zustand/cards";
 import clsx from "clsx";
 import { memo, SyntheticEvent, useCallback } from "react";
 
 import s from "../styles.module.scss";
+import { ImgurlObj } from "@components/Gallery/types";
 
 type ItemProps = {
-  _id: string;
   index: string;
   data: ImgurlObj;
+  onImageStatusChange?: (index: string, ok: boolean) => void;
+  onSelectImage?: (url: string) => void;
 };
 
-const Item = ({ _id, index, data }: ItemProps) => {
-  const setCardImgurl = useSetCardImgurl();
-  const setUrlOk = useSetUrlOk();
-  const editCard = useEditCard();
-
+const Item = ({
+  index,
+  data,
+  onImageStatusChange,
+  onSelectImage,
+}: ItemProps) => {
   const { url, ok } = data;
 
   const error = useCallback(
-    (e: SyntheticEvent<HTMLImageElement>) => setUrlOk(_id, index, false),
-    [_id, index, setUrlOk],
+    (e: SyntheticEvent<HTMLImageElement>) => {
+      onImageStatusChange?.(index, false);
+    },
+    [index, onImageStatusChange],
   );
   const load = useCallback(
-    (e: SyntheticEvent<HTMLImageElement>) => setUrlOk(_id, index, true),
-    [_id, index, setUrlOk],
+    (e: SyntheticEvent<HTMLImageElement>) => {
+      onImageStatusChange?.(index, true);
+    },
+    [index, onImageStatusChange],
   );
 
   const clickGalleryItem = () => {
-    setCardImgurl({ _id, value: url });
-    editCard(_id);
+    onSelectImage?.(url);
   };
 
   return (

@@ -2,7 +2,7 @@
 import { editUpdateCard, editDeleteCard } from "@api/methods";
 import { srDropCards } from "@api/methods";
 import { srSetControl } from "@api/methods";
-import { scrapeGetDictionary, scrapeSearchImages } from "@api/methods";
+import { scrapeGetDictionary } from "@api/methods";
 import type { GetMainCardsResponseDto, CardDto } from "@flashcards/common";
 import { useMutation } from "@tanstack/react-query";
 import { useCallback } from "react";
@@ -11,13 +11,11 @@ import sanitize from "sanitize-html";
 import { saveLastUpdate } from "@store/helper-functions";
 
 import { useCardsQueryKey, useCardsUIStore } from "./context";
-import { galleryQueryKey } from "./galleryQuery";
-import type { GalleryImagesCache } from "./galleryQuery";
-import { imgUrlArrToObj, formatDictionaryResult } from "./helpers";
 
 import { queryClient } from "@api/queryClient";
 import { MainCardsCache } from "./types";
 import { withProduce } from "@zustand/helpers";
+import { formatDictionaryResult } from "./helpers";
 
 // ---------------------------------------------------------------------------
 // Mutation hooks
@@ -102,25 +100,6 @@ export const useScrapeDictionaryMutation = () => {
       return result;
     },
     onSuccess: () => saveLastUpdate(),
-  });
-};
-
-export const useSearchImagesMutation = () => {
-  return useMutation({
-    mutationFn: async (queryStr: string) => {
-      if (!queryStr) throw new Error("Query can not be empty.");
-      const regexpURL = /^@url - /;
-      const isURL = regexpURL.test(queryStr);
-
-      if (isURL) {
-        const url = queryStr.replace(regexpURL, "").trim();
-        if (!url) throw new Error("Query can not be empty.");
-        return { imgurl_obj: imgUrlArrToObj([{ url }]), all: 1 };
-      }
-
-      const data = await scrapeSearchImages(queryStr);
-      return { imgurl_obj: imgUrlArrToObj(data), all: data.length };
-    },
   });
 };
 
@@ -278,52 +257,6 @@ export const useScrapeDictionary = () => {
   }, [scrapeDictMut, editCardMut, getCardUI, getCardData, queryClient, queryKey]);
 };
 
-export const useSearchImages = () => {
-  const searchImgMut = useSearchImagesMutation();
-
-  const getCardUI = useCardsUIStore(s => s.get);
-  const setCardUI = useCardsUIStore(s => s.set);
-
-  return useCallback((_id: string) => {
-    const ui = getCardUI(_id);
-    const queryStr = ui.gallery.query;
-    setCardUI(_id, (d) => {
-      d.gallery.position = 0;
-      d.gallery.loading = true;
-      d.gallery.error = false;
-    });
-    searchImgMut.mutate(queryStr, {
-      onSuccess: ({ imgurl_obj, all }) => {
-        queryClient.setQueryData<GalleryImagesCache>(
-          galleryQueryKey(_id, queryStr),
-          { imgurl_obj, all },
-        );
-        setCardUI(_id, (d) => { d.gallery.loading = false; });
-      },
-      onError: () => {
-        setCardUI(_id, (d) => {
-          d.gallery.error = true;
-          d.gallery.loading = false;
-        });
-      },
-    });
-  }, [searchImgMut, queryClient]);
-};
-
-export const useSetUrlOk = () => {
-  const getCardUI = useCardsUIStore(s => s.get);
-
-  return useCallback((_id: string, index: string, value: boolean) => {
-    const queryStr = getCardUI(_id).gallery.query;
-    const key = galleryQueryKey(_id, queryStr);
-    queryClient.setQueryData<GalleryImagesCache>(key, (old) => {
-      if (!old?.imgurl_obj?.[index]) return old;
-      return withProduce<GalleryImagesCache>((draft) => {
-        draft.imgurl_obj![index]!.ok = value;
-      })(old);
-    });
-  }, [queryClient]);
-};
 
 export const useSetCardEdit = () => {
   const setCardUI = useCardsUIStore(s => s.set);
@@ -415,41 +348,3 @@ export const useSetCardsSavePositive = () => {
   }, [getCardsData]);
 };
 
-export const useSetGallerySearch = () => {
-  const setCardUI = useCardsUIStore(s => s.set);
-
-  return useCallback((payload: { _id: string; value: boolean }) => {
-    setCardUI(payload._id, (d) => { d.gallery.search = payload.value; });
-  }, []);
-};
-
-export const useControlGalleryQuery = () => {
-  const setCardUI = useCardsUIStore(s => s.set);
-
-  return useCallback((payload: { _id: string; value: string }) => {
-    setCardUI(payload._id, (d) => { d.gallery.query = payload.value; });
-  }, []);
-};
-
-export const useResetGalleryFields = () => {
-  const setCardUI = useCardsUIStore(s => s.set);
-
-  return useCallback((payload: { _id: string }) => {
-    setCardUI(payload._id, (d) => {
-      d.gallery.position = 0;
-      d.gallery.loading = false;
-      d.gallery.error = false;
-    });
-  }, []);
-};
-
-export const useMoveGallery = () => {
-  const setCardUI = useCardsUIStore(s => s.set);
-
-  return useCallback((payload: { _id: string; value: "left" | "right" }) => {
-    setCardUI(payload._id, (d) => {
-      let offset = payload.value === "left" ? 17 : -17;
-      d.gallery.position += offset;
-    });
-  }, []);
-};

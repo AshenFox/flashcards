@@ -1,12 +1,3 @@
-import {
-  useControlGalleryQuery,
-  useGalleryImagesQuery,
-  useResetGalleryFields,
-  useSearchImages,
-  useCardsUIStore,
-} from "@zustand/cards";
-import type { ImgurlObjs } from "@zustand/cards";
-import type { CardDto } from "@flashcards/common";
 import { ArrowRightIcon } from "@ui/Icons";
 import Input from "@ui/Input";
 import clsx from "clsx";
@@ -17,46 +8,42 @@ import {
   MouseEvent,
   useCallback,
   useEffect,
-  useMemo,
   useState,
 } from "react";
 
 import Carousel from "./components/Carousel";
-import { Error, LoadingSpinner } from "./components/States";
+import { Error as GalleryError, LoadingSpinner } from "./components/States";
 import s from "./styles.module.scss";
+import { useCardGallery } from "./hooks";
 
 type GalleryProps = {
-  data: CardDto;
+  _id: string;
   active: boolean;
   game?: boolean;
+  onSelectImage?: (url: string) => void;
 };
 
-const Gallery = ({ data, active, game = false }: GalleryProps) => {
-  const controlGalleryQuery = useControlGalleryQuery();
-  const resetGalleryFields = useResetGalleryFields();
-  const searchImages = useSearchImages();
-
-  const { _id } = data || {};
-
-  const gallery = useCardsUIStore(s => s.get(_id).gallery);
-
-  const { loading, query, error, position } = gallery ?? {};
-
-  const { data: galleryImages } = useGalleryImagesQuery(_id ?? "", query ?? "");
-  const imgurl_obj: ImgurlObjs = galleryImages?.imgurl_obj ?? {};
-  const totalCount = useMemo(
-    () => Object.keys(imgurl_obj).length,
-    [imgurl_obj],
-  );
-  const width =
-    totalCount === 0 ? 0 : 2 + 15 * totalCount + 2 * (totalCount - 1);
+const Gallery = ({ _id, active, game = false, onSelectImage }: GalleryProps) => {
+  const {
+    query,
+    setQuery,
+    isLoading,
+    isError,
+    error,
+    position,
+    width,
+    imgurl_obj,
+    searchImages,
+    setImageOk,
+    moveGallery,
+  } = useCardGallery(_id);
 
   const [uPressed, setUPressed] = useState(false);
   const [altPressed, setAltPressed] = useState(false);
 
   const addUrlFlag = useCallback(
-    () => controlGalleryQuery({ _id, value: "@url - " + query }),
-    [_id, controlGalleryQuery, query],
+    () => setQuery(prev => "@url - " + prev),
+    [setQuery],
   );
 
   useEffect(() => {
@@ -68,9 +55,8 @@ const Gallery = ({ data, active, game = false }: GalleryProps) => {
   }, [uPressed, altPressed, addUrlFlag]);
 
   const changeImgSearchbar = useCallback(
-    (e: ChangeEvent<HTMLInputElement>) =>
-      controlGalleryQuery({ _id, value: e.target.value }),
-    [_id, controlGalleryQuery],
+    (e: ChangeEvent<HTMLInputElement>) => setQuery(e.target.value),
+    [setQuery],
   );
 
   const keyDownImgSearchbar = useCallback(
@@ -89,19 +75,17 @@ const Gallery = ({ data, active, game = false }: GalleryProps) => {
 
       if (key === "Enter") {
         e.preventDefault();
-        resetGalleryFields({ _id });
-        searchImages(_id);
+        searchImages();
       }
     },
-    [_id, resetGalleryFields, searchImages],
+    [searchImages],
   );
 
   const clickImgSearchbar = useCallback(
     (e: MouseEvent<SVGSVGElement>) => {
-      resetGalleryFields({ _id });
-      searchImages(_id);
+      searchImages();
     },
-    [_id, resetGalleryFields, searchImages],
+    [searchImages],
   );
 
   return (
@@ -129,16 +113,19 @@ const Gallery = ({ data, active, game = false }: GalleryProps) => {
         </div>
         <div className={s.results}>
           <Carousel
-            _id={_id ?? ""}
+            _id={_id}
             imgurl_obj={imgurl_obj}
             position={position ?? 0}
             width={width}
-            loading={loading}
-            error={error}
+            onMove={moveGallery}
+            onImageStatusChange={setImageOk}
+            onSelectImage={onSelectImage}
+            isLoading={isLoading}
+            isError={isError}
             game={game}
           />
-          <LoadingSpinner active={loading} />
-          <Error active={error} />
+          <LoadingSpinner active={isLoading} />
+          <GalleryError isError={isError} error={error} />
         </div>
       </div>
     </div>

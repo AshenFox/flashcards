@@ -1,5 +1,5 @@
 import type { CardDto } from "@flashcards/common";
-import { useResetGalleryFields, useSetCardEdit } from "@zustand/cards";
+import { useSetCardEdit } from "@zustand/cards";
 import { CloseIcon } from "@ui/Icons";
 import Tooltip from "@ui/Tooltip";
 import { memo, MouseEvent, useCallback } from "react";
@@ -12,16 +12,14 @@ type CloseProps = {
 
 const Close = ({ data }: CloseProps) => {
   const setCardEdit = useSetCardEdit();
-  const resetGalleryFields = useResetGalleryFields();
 
   const { _id } = data || {};
 
   const clickClose = useCallback(
     (e: MouseEvent<HTMLDivElement>) => {
       setCardEdit({ _id, value: false });
-      resetGalleryFields({ _id });
     },
-    [_id, resetGalleryFields, setCardEdit],
+    [_id, setCardEdit],
   );
 
   const id = `close-edit-card-${_id}`;

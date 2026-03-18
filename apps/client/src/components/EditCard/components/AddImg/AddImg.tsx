@@ -1,10 +1,5 @@
 import type { CardDto } from "@flashcards/common";
-import {
-  useCardsUIStore,
-  useEditCard,
-  useSetCardImgurl,
-  useSetGallerySearch,
-} from "@zustand/cards";
+import { useEditCard, useSetCardImgurl } from "@zustand/cards";
 import { DeleteIcon, ImgIcon } from "@ui/Icons";
 import Img from "@ui/Img";
 import clsx from "clsx";
@@ -14,23 +9,21 @@ import s from "./styles.module.scss";
 
 type AddImgProps = {
   data: CardDto;
+  onToggle: () => void;
 };
 
-const AddImg = ({ data }: AddImgProps) => {
-  const setGallerySearch = useSetGallerySearch();
+const AddImg = ({ data, onToggle }: AddImgProps) => {
   const setCardImgurl = useSetCardImgurl();
   const editCard = useEditCard();
-
-  const search = useCardsUIStore(s => s.get(data._id).gallery.search);
 
   const { _id, imgurl } = data || {};
 
   const clickImgSearch = useCallback(
     (e: MouseEvent<HTMLDivElement>) => {
       if (imgurl && deleteEl.current?.contains(e.target as Node)) return;
-      setGallerySearch({ _id, value: !search });
+      onToggle();
     },
-    [_id, search, imgurl, setGallerySearch],
+    [_id, imgurl, onToggle],
   );
 
   const clickImgDelete = useCallback(

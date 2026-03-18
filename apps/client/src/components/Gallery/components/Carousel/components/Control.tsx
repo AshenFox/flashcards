@@ -1,4 +1,3 @@
-import { useMoveGallery } from "@zustand/cards";
 import { TriangleLeftIcon, TriangleRightIcon } from "@ui/Icons";
 import { clsx } from "clsx";
 import { memo, MouseEvent, useCallback } from "react";
@@ -10,11 +9,10 @@ type ControlProps = {
   _id: string;
   galleryPosition?: number;
   galleryWidth?: number;
+  onMove: (direction: "left" | "right") => void;
 };
 
-const Control = ({ direction, _id, galleryPosition = 0, galleryWidth = 0 }: ControlProps) => {
-  const moveGallery = useMoveGallery();
-
+const Control = ({ direction, _id, galleryPosition = 0, galleryWidth = 0, onMove }: ControlProps) => {
   const position = galleryPosition;
   const width = galleryWidth;
 
@@ -40,9 +38,9 @@ const Control = ({ direction, _id, galleryPosition = 0, galleryWidth = 0 }: Cont
 
   const clickControl = useCallback(
     (e: MouseEvent<HTMLDivElement>) => {
-      if (active) moveGallery({ _id, value: direction });
+      if (active) onMove(direction);
     },
-    [_id, active, direction, moveGallery],
+    [_id, active, direction, onMove],
   );
 
   return (

@@ -1,11 +1,4 @@
 import type { CodDictResult, UrbanDictResult } from "@api/methods/scrape/scrapeGetDictionary";
-import type { ImgurlBase, ImgurlObjs } from "./types";
-
-/** true = show (loading or loaded), false = hide (load failed) */
-export const url_fields = { ok: true };
-
-export const imgUrlArrToObj = (arr: ImgurlBase[]): ImgurlObjs =>
-  Object.fromEntries(arr.map((url, i) => [i, { ...url, ...url_fields }]));
 
 export function formatDictionaryResult(
   result: CodDictResult | UrbanDictResult,

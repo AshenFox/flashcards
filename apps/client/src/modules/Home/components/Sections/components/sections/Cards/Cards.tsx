@@ -108,8 +108,6 @@ const Cards = () => {
     isFetching,
   } = useHomeCardsQuery();
 
-  console.log({ data });
-
   const resetUIStore = useHomeCardsUIStore(s => s.reset);
 
   const rawCards = useMemo(

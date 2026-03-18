@@ -16,7 +16,6 @@ export const cardsUISlice: Slice<CardsUIStore> = (setAction, get) => {
       set((state) => {
         state.cards[_id] = {
           ...defaultCardUI,
-          gallery: { ...defaultCardUI.gallery },
         };
       }, 'createCardUI');
 
@@ -27,7 +26,6 @@ export const cardsUISlice: Slice<CardsUIStore> = (setAction, get) => {
         if (!state.cards[_id]) {
           state.cards[_id] = {
             ...defaultCardUI,
-            gallery: { ...defaultCardUI.gallery },
           };
         }
         updater(state.cards[_id]);

@@ -1,11 +1,11 @@
 import Gallery from "@components/Gallery";
 import type { CardDto } from "@flashcards/common";
 import { usePlug } from "@helpers/hooks/usePlug";
-import { useCardsUIStore, useControlCard, useEditCard } from "@zustand/cards";
+import { useControlCard, useEditCard, useSetCardImgurl } from "@zustand/cards";
 import TextArea from "@ui/TextArea";
 import TextLabel from "@ui/TextLabel";
 import clsx from "clsx";
-import { memo, useCallback, useRef } from "react";
+import { memo, useCallback, useRef, useState } from "react";
 import { ContentEditableEvent } from "react-contenteditable";
 
 import AddImg from "./components/AddImg";
@@ -36,10 +36,23 @@ const EditCard = ({
 }: EditCardProps) => {
   const controlCard = useControlCard();
   const editCard = useEditCard();
+  const setCardImgurl = useSetCardImgurl();
 
   const { _id, term, definition } = data || {};
 
-  const search = useCardsUIStore(s => s.get(_id).gallery.search);
+  const [search, setSearch] = useState(false);
+
+  const onAddImgToggle = useCallback(() => {
+    setSearch(prev => !prev);
+  }, []);
+
+  const onSelectGalleryImage = useCallback(
+    (url: string) => {
+      setCardImgurl({ _id, value: url });
+      editCard(_id);
+    },
+    [_id, editCard, setCardImgurl],
+  );
 
   const handleCardChange = useCallback(
     (type: "term" | "definition") => (e: ContentEditableEvent) => {
@@ -96,11 +109,16 @@ const EditCard = ({
             />
             <TextLabel htmlFor={`definition${data._id}`}>DEFINITION</TextLabel>
           </div>
-          <AddImg data={data} />
+          <AddImg data={data} onToggle={onAddImgToggle} />
         </div>
       </div>
       <Scrape data={data} />
-      <Gallery data={data} active={search} game={game} />
+      <Gallery
+        _id={_id}
+        active={search}
+        game={game}
+        onSelectImage={onSelectGalleryImage}
+      />
     </div>
   );
 };
