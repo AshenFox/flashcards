@@ -1,5 +1,4 @@
-import Card from "@components/Card";
-import EditCard from "@components/EditCard";
+import { Card, EditCard } from "@components/Cards";
 import NotFound from "@components/NotFound";
 import { useAppSelector } from "@store/hooks";
 import ScrollLoader from "@ui/ScrollLoader";

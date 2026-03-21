@@ -1,5 +1,5 @@
 import type { CardDto } from "@flashcards/common";
-import { useDeleteCard } from "@zustand/cards";
+import { useDeleteCard } from "../../state/actions";
 import { DeleteIcon } from "@ui/Icons";
 import Tooltip from "@ui/Tooltip";
 import clsx from "clsx";

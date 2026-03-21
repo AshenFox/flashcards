@@ -1,5 +1,5 @@
 import type { CardDto } from "@flashcards/common";
-import { useSetCardEdit } from "@zustand/cards";
+import { useSetCardEdit } from "../../state/ui";
 import { CloseIcon } from "@ui/Icons";
 import Tooltip from "@ui/Tooltip";
 import { memo, MouseEvent, useCallback } from "react";

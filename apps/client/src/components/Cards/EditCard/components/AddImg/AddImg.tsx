@@ -1,5 +1,5 @@
 import type { CardDto } from "@flashcards/common";
-import { useEditCard, useSetCardImgurl } from "@zustand/cards";
+import { useEditCard, useSetCardImgurl } from "../../../state/actions";
 import { DeleteIcon, ImgIcon } from "@ui/Icons";
 import Img from "@ui/Img";
 import clsx from "clsx";

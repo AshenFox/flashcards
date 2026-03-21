@@ -1,5 +1,5 @@
 import type { CardDto } from "@flashcards/common";
-import { useSetCardEdit } from "@zustand/cards";
+import { useSetCardEdit } from "../../../state/ui";
 import { EditIcon } from "@ui/Icons";
 import Tooltip from "@ui/Tooltip";
 import clsx from "clsx";

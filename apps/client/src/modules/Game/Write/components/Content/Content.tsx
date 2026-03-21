@@ -1,4 +1,4 @@
-import EditCard from "@components/EditCard";
+import { EditCard } from "@components/Cards";
 import ContentContainer from "@modules/Game/components/ContentContainer";
 import { useAppSelector } from "@store/store";
 import React, { memo, ReactNode } from "react";

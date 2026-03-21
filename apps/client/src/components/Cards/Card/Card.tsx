@@ -2,9 +2,7 @@ import Speaker from "@components/Speaker";
 import type { CardDto } from "@flashcards/common";
 import { filterRegex } from "@flashcards/common";
 import { usePlug } from "@helpers/hooks/usePlug";
-import {
-  useDropCardSR,
-} from "@zustand/cards";
+import { useDropCardSR } from "../state/actions";
 import ConfirmPopup from "@ui/ConfirmPopup";
 import DateStr from "@ui/DateStr";
 import Img from "@ui/Img";

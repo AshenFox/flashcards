@@ -7,7 +7,7 @@ import { createCardsFilterSlice } from "@zustand/filters";
 import type { CardsFilters } from "@zustand/filters";
 import { createStoreHook } from "@zustand/helpers";
 import { useEffect } from "react";
-import { cardsUISlice } from "@zustand/cards";
+import { cardsUISlice } from "@components/Cards";
 
 // ---------------------------------------------------------------------------
 // Infinite query

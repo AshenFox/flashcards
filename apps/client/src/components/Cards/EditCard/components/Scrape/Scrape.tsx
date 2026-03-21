@@ -1,5 +1,5 @@
 import type { CardDto } from "@flashcards/common";
-import { useScrapeDictionary } from "@zustand/cards";
+import { useScrapeDictionary } from "../../../state/actions";
 import Tooltip from "@ui/Tooltip";
 import clsx from "clsx";
 import { memo, MouseEvent, useCallback } from "react";

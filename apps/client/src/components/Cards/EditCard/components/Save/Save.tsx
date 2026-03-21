@@ -1,9 +1,6 @@
 import type { CardDto } from "@flashcards/common";
-import {
-  useCardsUIStore,
-  useSetCardSave,
-  useSetCardsSavePositive,
-} from "@zustand/cards";
+import { useCardsUIStore } from "../../../state/context";
+import { useSetCardSave, useSetCardsSavePositive } from "../../../state/ui";
 import Checkbox from "@ui/Checkbox";
 import Tooltip from "@ui/Tooltip";
 import { memo, MouseEvent, TouchEvent, useCallback, useRef } from "react";

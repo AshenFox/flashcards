@@ -1,66 +1,19 @@
-import Card from "@components/Card";
-import EditCard from "@components/EditCard";
+import { CardsUIProvider } from "@components/Cards";
 import Filters, { FilterData, SetFilterValue } from "@components/Filters";
 import NotFound from "@components/NotFound";
 import { checkBottom } from "@helpers/functions/checkBottom";
 import { defaultCardsFilters } from "@zustand/filters";
 import ScrollLoader from "@ui/ScrollLoader";
-import React, { Fragment, memo, useCallback, useEffect, useMemo } from "react";
+import React, { memo, useCallback, useEffect, useMemo } from "react";
 
-import Divider from "../components/Divider";
 import s from "../styles.module.scss";
 
-import type { CardDto } from "@flashcards/common";
-import { CardsUIProvider, useCardsUIStore } from "@zustand/cards";
 import {
   useHomeCardsFiltersStore,
   useHomeCardsQuery,
   useHomeCardsUIStore,
 } from "./hooks";
-
-type CardRowProps = {
-  data: CardDto;
-  prevDateString: string | undefined;
-  search: string;
-  by: string;
-  isModuleLink: boolean;
-  loading: boolean;
-};
-
-const CardRow = memo(
-  ({
-    data,
-    prevDateString,
-    search,
-    by,
-    isModuleLink,
-    loading,
-  }: CardRowProps) => {
-    const { _id, creation_date } = data || {};
-
-    const edit = useCardsUIStore(s => s.get(_id).edit);
-
-    return (
-      <Fragment>
-        <Divider
-          prevDateString={prevDateString}
-          curDateString={creation_date}
-        />
-        {edit ? (
-          <EditCard data={data} toggle={true} loading={loading} />
-        ) : (
-          <Card
-            data={data}
-            filter={search}
-            filterType={by}
-            isModuleLink={isModuleLink}
-          />
-        )}
-      </Fragment>
-    );
-  },
-);
-CardRow.displayName = "CardRow";
+import { CardRow } from "./CardRow";
 
 const filtersData: FilterData[] = [
   {

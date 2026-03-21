@@ -1,7 +1,7 @@
 import Gallery from "@components/Gallery";
 import type { CardDto } from "@flashcards/common";
 import { usePlug } from "@helpers/hooks/usePlug";
-import { useControlCard, useEditCard, useSetCardImgurl } from "@zustand/cards";
+import { useControlCard, useEditCard, useSetCardImgurl } from "../state/actions";
 import TextArea from "@ui/TextArea";
 import TextLabel from "@ui/TextLabel";
 import clsx from "clsx";
