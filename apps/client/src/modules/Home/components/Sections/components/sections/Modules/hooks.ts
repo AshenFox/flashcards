@@ -1,6 +1,7 @@
 import { mainGetModules } from "@api/methods/main/mainGetModules";
 import type { GetMainModulesResponseDto } from "@flashcards/common";
 import { useInfiniteQuery } from "@tanstack/react-query";
+import { useAppSelector } from "@store/store";
 import { useEffect } from "react";
 
 import { createModulesFilterSlice } from "@zustand/filters";
@@ -10,6 +11,7 @@ import { createStoreHook } from "@zustand/helpers";
 export const queryKey = (filters: ModulesFilters) => ["home", "modules", filters] as const;
 
 export const useHomeModulesQuery = () => {
+    const user = useAppSelector((s) => s.auth.user);
     const filters = useHomeModulesFiltersStore((state) => state.filters);
     const setPagination = useHomeModulesFiltersStore((state) => state.setPagination);
 
@@ -22,6 +24,9 @@ export const useHomeModulesQuery = () => {
                 ? undefined
                 : lastPage.modules.pagination.page + 1,
         initialPageParam: 0,
+        enabled: !!user,
+        staleTime: 1000 * 60,
+        refetchOnWindowFocus: false,
     });
 
     const { data } = query;

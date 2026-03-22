@@ -29,7 +29,7 @@ export type FiltersProps = {
   alwaysReload?: boolean;
   setFilterValue?: SetFilterValue;
   getData: () => void;
-  resetData: () => void;
+  resetData?: () => void;
   resetFilters: () => void;
 };
 
@@ -69,7 +69,7 @@ const Filters = ({
 
       // should I have a debounce if I am using tanstack query?
       timer.current = setTimeout(() => {
-        resetData();
+        resetData?.();
         getData();
       }, 300);
     },
@@ -79,7 +79,7 @@ const Filters = ({
   const onResetClick = useCallback(() => {
     if (isFilterEmpty) return;
     resetFilters();
-    resetData();
+    resetData?.();
     getData();
   }, [isFilterEmpty, getData, resetFilters, resetData]);
 

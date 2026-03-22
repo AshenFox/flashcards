@@ -12,7 +12,7 @@ const Sections = () => {
 
   return (
     <div className={s.content}>
-      <div>
+      <div className={s.section}>
         {section === "cards" && <Cards />}
         {section === "modules" && <Modules />}
         {section === "sr" && <StudyRegime />}

@@ -1,7 +1,10 @@
 import Gallery from "@components/Gallery";
 import type { CardDto } from "@flashcards/common";
-import { usePlug } from "@helpers/hooks/usePlug";
-import { useControlCard, useEditCard, useSetCardImgurl } from "../state/actions";
+import {
+  useControlCard,
+  useEditCard,
+  useSetCardImgurl,
+} from "../state/actions";
 import TextArea from "@ui/TextArea";
 import TextLabel from "@ui/TextLabel";
 import clsx from "clsx";
@@ -70,12 +73,8 @@ const EditCard = ({
 
   const deleteActive = number > 2;
 
-  const [visible, ref, Plug] = usePlug(s.card);
-
-  if (!visible) return Plug;
-
   return (
-    <div ref={ref} className={clsx(s.card, game && s.game)}>
+    <div className={clsx(s.card, game && s.game)}>
       <div className={s.header}>
         <div className={s.number}>{!!index && index}</div>
         {selectionActive && <Save data={data} />}

@@ -1,6 +1,5 @@
 import { ModuleDto } from "@flashcards/common";
 import { filterRegex } from "@flashcards/common";
-import { usePlug } from "@helpers/hooks/usePlug";
 import DateStr from "@ui/DateStr";
 import { StudyRegimeIcon } from "@ui/Icons";
 import TextArea from "@ui/TextArea";
@@ -34,39 +33,33 @@ const Module = ({ data, filter = null }: ModuleProps) => {
   if (!title) html = "(Untitled)";
   if (draft) html = "(Draft)";
 
-  const [visible, ref, Plug] = usePlug(s.module);
-
   return (
     <Link href={draft ? `/edit/draft` : `/module/${_id}`}>
-      {visible ? (
-        <div className={s.module} ref={ref}>
-          <div className={s.header}>
-            <div className={s.created}>
-              <span>
-                Created <DateStr date={creation_date} />
-              </span>
-            </div>
-          </div>
-          <div className={s.main}>
-            <div className={s.info}>
-              <div className={s.term_number}>{cards.length} Terms</div>
-              {!!numberSR && (
-                <div className={s.sr}>
-                  <StudyRegimeIcon />
-                  {numberSR}
-                </div>
-              )}
-              {!draft && <div className={s.author}>{author}</div>}
-            </div>
-            <TextArea
-              html={html}
-              className={clsx(s.title, (draft || !title) && s.highlighted)}
-            />
+      <div className={s.module}>
+        <div className={s.header}>
+          <div className={s.created}>
+            <span>
+              Created <DateStr date={creation_date} />
+            </span>
           </div>
         </div>
-      ) : (
-        Plug
-      )}
+        <div className={s.main}>
+          <div className={s.info}>
+            <div className={s.term_number}>{cards.length} Terms</div>
+            {!!numberSR && (
+              <div className={s.sr}>
+                <StudyRegimeIcon />
+                {numberSR}
+              </div>
+            )}
+            {!draft && <div className={s.author}>{author}</div>}
+          </div>
+          <TextArea
+            html={html}
+            className={clsx(s.title, (draft || !title) && s.highlighted)}
+          />
+        </div>
+      </div>
     </Link>
   );
 };

@@ -1,14 +1,21 @@
 import Filters, { FilterData, SetFilterValue } from "@components/Filters";
 import NotFound from "@components/NotFound";
-import { useHomeModulesFiltersStore, useHomeModulesQuery } from "./hooks";
+import { VirtualizedItem, VirtualizedList } from "@components/Virtualized";
+import { useQueryClient } from "@tanstack/react-query";
+import { useWindowVirtualizer } from "@tanstack/react-virtual";
+import { defaultModulesFilters } from "@zustand/filters";
 import ScrollLoader from "@ui/ScrollLoader";
-import React, { Fragment, memo, useCallback, useEffect } from "react";
+import React, { memo, useCallback, useEffect, useMemo } from "react";
 
 import Divider from "../components/Divider";
 import s from "../styles.module.scss";
 import Module from "./components/Module";
-import { checkBottom } from "@helpers/functions/checkBottom";
-import { defaultModulesFilters } from "@zustand/filters";
+import {
+  queryKey,
+  useHomeModulesFiltersStore,
+  useHomeModulesQuery,
+} from "./hooks";
+import ScrollTop from "@modules/ScrollTop";
 
 const filtersData: FilterData[] = [
   {
@@ -42,21 +49,31 @@ const filtersData: FilterData[] = [
 ];
 
 const Modules = () => {
+  const queryClient = useQueryClient();
   const filters = useHomeModulesFiltersStore(state => state.filters);
   const setFilter = useHomeModulesFiltersStore(state => state.setFilter);
   const resetFilters = useHomeModulesFiltersStore(state => state.resetFilters);
 
-  const {
-    data,
-    fetchNextPage,
-    refetch,
-    hasNextPage,
-    isFetchingNextPage,
-    isFetching,
-  } = useHomeModulesQuery();
+  const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isFetching } =
+    useHomeModulesQuery();
 
-  const modules = data?.pages.flatMap(p => p.modules.entries) ?? [];
+  const refreshModulesQuery = useCallback(() => {
+    const filters = useHomeModulesFiltersStore.getState().filters;
+    queryClient.invalidateQueries({ queryKey: queryKey(filters) });
+  }, [queryClient]);
+
+  const modules = useMemo(
+    () => data?.pages.flatMap(p => p.modules.entries) ?? [],
+    [data],
+  );
   const draft = data?.pages[0]?.draft ?? null;
+
+  const virtualizer = useWindowVirtualizer({
+    count: modules.length,
+    estimateSize: () => 160,
+    overscan: 5,
+    gap: 15,
+  });
 
   const { search } = filters;
 
@@ -67,18 +84,27 @@ const Modules = () => {
     [setFilter],
   );
 
-  const resetData = useCallback(() => {
-    // No-op: query key includes filters, so changing filters refetches; no list to clear.
-  }, []);
-
   useEffect(() => {
-    const onScroll = () => {
-      if (!checkBottom() || !hasNextPage || isFetchingNextPage) return;
-      fetchNextPage();
+    const maybeFetchNext = () => {
+      if (!hasNextPage || isFetchingNextPage) return;
+      const items = virtualizer.getVirtualItems();
+      const lastItem = items[items.length - 1];
+      if (!lastItem) return;
+      if (lastItem.index >= modules.length - 1) {
+        fetchNextPage();
+      }
     };
-    window.addEventListener("scroll", onScroll);
-    return () => window.removeEventListener("scroll", onScroll);
-  }, [fetchNextPage, hasNextPage, isFetchingNextPage]);
+
+    maybeFetchNext();
+    window.addEventListener("scroll", maybeFetchNext, { passive: true });
+    return () => window.removeEventListener("scroll", maybeFetchNext);
+  }, [
+    virtualizer,
+    modules.length,
+    hasNextPage,
+    isFetchingNextPage,
+    fetchNextPage,
+  ]);
 
   const loading = isFetching || isFetchingNextPage;
 
@@ -92,40 +118,50 @@ const Modules = () => {
         className={s.filter}
         alwaysReload
         setFilterValue={setFilterValue}
-        getData={refetch}
-        resetData={resetData}
+        getData={refreshModulesQuery}
         resetFilters={resetFilters}
       />
       {draft && (
-        <Fragment>
+        <div>
           <Divider draft={!!draft} />
           <Module data={draft} />
-        </Fragment>
+        </div>
       )}
-      {modules.map((module, i) => {
-        const prevDateString = modules[i - 1]?.creation_date;
-        const curDateString = module.creation_date;
+      <VirtualizedList virtualizer={virtualizer}>
+        {virtualizer.getVirtualItems().map(virtualRow => {
+          const module = modules[virtualRow.index];
+          const prevDateString = modules[virtualRow.index - 1]?.creation_date;
 
-        return (
-          <Fragment key={module._id}>
-            <Divider
-              prevDateString={prevDateString}
-              curDateString={curDateString}
-            />
-            <Module data={module} filter={search} />
-          </Fragment>
-        );
-      })}
+          return (
+            <VirtualizedItem
+              key={module._id}
+              virtualizer={virtualizer}
+              virtualItem={virtualRow}
+            >
+              <Divider
+                prevDateString={prevDateString}
+                curDateString={module.creation_date}
+              />
+              <Module data={module} filter={search} />
+            </VirtualizedItem>
+          );
+        })}
+      </VirtualizedList>
       <ScrollLoader active={loading} />
+      <ScrollTop virtualizer={virtualizer} />
       {!loading && (
         <NotFound
           resultsFound={modules.length}
           filterValue={search}
-          notFoundMsg={value => (
-            <>
-              No modules matching <b>{`"${value}"`}</b> found.
-            </>
-          )}
+          notFoundMsg={value =>
+            value ? (
+              <>
+                No modules matching <b>{`"${value}"`}</b> found.
+              </>
+            ) : (
+              <>No modules found.</>
+            )
+          }
           nothingMsg={<>You don&apos;t have any modules yet.</>}
         />
       )}

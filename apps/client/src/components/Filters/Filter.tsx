@@ -12,7 +12,7 @@ export type FilterProps = {
   alwaysReload?: boolean;
   setFilterValue: SetFilterValue;
   getData: () => void;
-  resetData: () => void;
+  resetData?: () => void;
 };
 
 const Filter = ({
@@ -35,7 +35,7 @@ const Filter = ({
       setFilterValue(id, value.value);
 
       if (value || alwaysReload) {
-        resetData();
+        resetData?.();
         getData();
       }
     },

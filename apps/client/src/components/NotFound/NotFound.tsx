@@ -22,6 +22,8 @@ const NotFound = ({
   if (nothingMsg && !resultsFound && filterValue === "")
     content = <p>{nothingMsg}</p>;
 
+  if (content === null) return null;
+
   return <div className={s.not_found}>{content}</div>;
 };
 

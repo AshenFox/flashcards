@@ -1,7 +1,9 @@
 import { CardsUIProvider } from "@components/Cards";
 import Filters, { FilterData, SetFilterValue } from "@components/Filters";
 import NotFound from "@components/NotFound";
-import { checkBottom } from "@helpers/functions/checkBottom";
+import { VirtualizedItem, VirtualizedList } from "@components/Virtualized";
+import { useQueryClient } from "@tanstack/react-query";
+import { useWindowVirtualizer } from "@tanstack/react-virtual";
 import { defaultCardsFilters } from "@zustand/filters";
 import ScrollLoader from "@ui/ScrollLoader";
 import React, { memo, useCallback, useEffect, useMemo } from "react";
@@ -9,11 +11,13 @@ import React, { memo, useCallback, useEffect, useMemo } from "react";
 import s from "../styles.module.scss";
 
 import {
+  queryKey,
   useHomeCardsFiltersStore,
   useHomeCardsQuery,
   useHomeCardsUIStore,
 } from "./hooks";
 import { CardRow } from "./CardRow";
+import ScrollTop from "@modules/ScrollTop";
 
 const filtersData: FilterData[] = [
   {
@@ -48,18 +52,18 @@ const filtersData: FilterData[] = [
 ];
 
 const Cards = () => {
+  const queryClient = useQueryClient();
   const filters = useHomeCardsFiltersStore(state => state.filters);
   const setFilter = useHomeCardsFiltersStore(state => state.setFilter);
   const resetFilters = useHomeCardsFiltersStore(state => state.resetFilters);
 
-  const {
-    data,
-    fetchNextPage,
-    refetch,
-    hasNextPage,
-    isFetchingNextPage,
-    isFetching,
-  } = useHomeCardsQuery();
+  const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isFetching } =
+    useHomeCardsQuery();
+
+  const refreshCardsQuery = useCallback(() => {
+    const filters = useHomeCardsFiltersStore.getState().filters;
+    queryClient.invalidateQueries({ queryKey: queryKey(filters) });
+  }, [queryClient]);
 
   const resetUIStore = useHomeCardsUIStore(s => s.reset);
 
@@ -67,6 +71,13 @@ const Cards = () => {
     () => data?.pages.flatMap(p => p.entries) ?? [],
     [data],
   );
+
+  const virtualizer = useWindowVirtualizer({
+    count: rawCards.length,
+    overscan: 5,
+    gap: 15,
+    estimateSize: () => 180,
+  });
 
   const { search, by } = filters;
 
@@ -82,13 +93,26 @@ const Cards = () => {
   }, [resetUIStore]);
 
   useEffect(() => {
-    const onScroll = () => {
-      if (!checkBottom() || !hasNextPage || isFetchingNextPage) return;
-      fetchNextPage();
+    const maybeFetchNext = () => {
+      if (!hasNextPage || isFetchingNextPage) return;
+      const items = virtualizer.getVirtualItems();
+      const lastItem = items[items.length - 1];
+      if (!lastItem) return;
+      if (lastItem.index >= rawCards.length - 1) {
+        fetchNextPage();
+      }
     };
-    window.addEventListener("scroll", onScroll);
-    return () => window.removeEventListener("scroll", onScroll);
-  }, [fetchNextPage, hasNextPage, isFetchingNextPage]);
+
+    maybeFetchNext();
+    window.addEventListener("scroll", maybeFetchNext, { passive: true });
+    return () => window.removeEventListener("scroll", maybeFetchNext);
+  }, [
+    virtualizer,
+    rawCards.length,
+    hasNextPage,
+    isFetchingNextPage,
+    fetchNextPage,
+  ]);
 
   useEffect(() => {
     return () => {
@@ -111,22 +135,33 @@ const Cards = () => {
         className={s.filter}
         alwaysReload
         setFilterValue={setFilterValue}
-        getData={refetch}
+        getData={refreshCardsQuery}
         resetData={resetData}
         resetFilters={resetFilters}
       />
-      {rawCards.map((data, i) => (
-        <CardRow
-          key={data._id}
-          data={data}
-          prevDateString={rawCards[i - 1]?.creation_date}
-          search={search}
-          by={by}
-          isModuleLink
-          loading={loading}
-        />
-      ))}
+      <VirtualizedList virtualizer={virtualizer}>
+        {virtualizer.getVirtualItems().map(virtualItem => {
+          const data = rawCards[virtualItem.index];
+          return (
+            <VirtualizedItem
+              key={data._id}
+              virtualizer={virtualizer}
+              virtualItem={virtualItem}
+            >
+              <CardRow
+                data={data}
+                prevDateString={rawCards[virtualItem.index - 1]?.creation_date}
+                search={search}
+                by={by}
+                isModuleLink
+                loading={loading}
+              />
+            </VirtualizedItem>
+          );
+        })}
+      </VirtualizedList>
       <ScrollLoader active={loading} />
+      <ScrollTop virtualizer={virtualizer} />
       {!loading && (
         <NotFound
           resultsFound={rawCards.length}

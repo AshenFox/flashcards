@@ -1,7 +1,6 @@
 import Speaker from "@components/Speaker";
 import type { CardDto } from "@flashcards/common";
 import { filterRegex } from "@flashcards/common";
-import { usePlug } from "@helpers/hooks/usePlug";
 import { useDropCardSR } from "../state/actions";
 import ConfirmPopup from "@ui/ConfirmPopup";
 import DateStr from "@ui/DateStr";
@@ -50,8 +49,6 @@ const Card = ({
   if (filterType === "definition")
     formatted_definition = definition.replace(filterRegExp, replacement);
 
-  const [visible, ref, Plug] = usePlug(s.card);
-
   const onConfirm = useCallback(() => {
     dropCardSR(_id);
   }, [_id, dropCardSR]);
@@ -61,74 +58,63 @@ const Card = ({
   }, []);
 
   return (
-    <>
-      {visible ? (
-        <div className={s.card} ref={ref}>
-          <div className={s.header}>
-            <div className={s.created}>
-              <span>
-                Created <DateStr date={creation_date} />
-              </span>
-            </div>
-            {isModuleLink && <ModuleLink moduleId={moduleID} />}
-          </div>
-          <div className={s.main}>
-            <div className={s.term}>
-              <TextArea
-                html={filterType === "term" && filter ? formatted_term : term}
-              />
-              <div className={s.controls}>
-                <Edit data={data} />
-                <SR data={data} />
-                <SRDrop
-                  data={data}
-                  questionOpen={questionOpen}
-                  onRequestConfirm={() => setQuestionOpen(true)}
-                />
-              </div>
-              <ConfirmPopup
-                className={s.confirm}
-                active={questionOpen}
-                setActive={setActive}
-                onConfirm={onConfirm}
-                question="Drop card study progress?"
-              />
-              <Speaker
-                _id={_id}
-                text={term}
-                type={"term"}
-                className={s.speaker}
-              />
-            </div>
-            <div className={s.definition_container}>
-              <div className={s.definition}>
-                <TextArea
-                  html={
-                    filterType === "definition" && filter
-                      ? formatted_definition
-                      : definition
-                  }
-                />
-                <Speaker
-                  _id={_id}
-                  text={definition}
-                  type={"definition"}
-                  className={s.speaker}
-                />
-              </div>
-              <Img
-                containerClass={s.img_container}
-                imgClass={s.img}
-                url={imgurl}
-                isHideOnLoading={false}
-              />
-            </div>
-          </div>
+    <div className={s.card}>
+      <div className={s.header}>
+        <div className={s.created}>
+          <span>
+            Created <DateStr date={creation_date} />
+          </span>
         </div>
-      ) : (
-        Plug
-      )}
-    </>
+        {isModuleLink && <ModuleLink moduleId={moduleID} />}
+      </div>
+      <div className={s.main}>
+        <div className={s.term}>
+          <TextArea
+            html={filterType === "term" && filter ? formatted_term : term}
+          />
+          <div className={s.controls}>
+            <Edit data={data} />
+            <SR data={data} />
+            <SRDrop
+              data={data}
+              questionOpen={questionOpen}
+              onRequestConfirm={() => setQuestionOpen(true)}
+            />
+          </div>
+          <ConfirmPopup
+            className={s.confirm}
+            active={questionOpen}
+            setActive={setActive}
+            onConfirm={onConfirm}
+            question="Drop card study progress?"
+          />
+          <Speaker _id={_id} text={term} type={"term"} className={s.speaker} />
+        </div>
+        <div className={s.definition_container}>
+          <div className={s.definition}>
+            <TextArea
+              html={
+                filterType === "definition" && filter
+                  ? formatted_definition
+                  : definition
+              }
+            />
+            <Speaker
+              _id={_id}
+              text={definition}
+              type={"definition"}
+              className={s.speaker}
+            />
+          </div>
+          <Img
+            containerClass={s.img_container}
+            imgClass={s.img}
+            url={imgurl}
+            isHideOnLoading={false}
+          />
+        </div>
+      </div>
+    </div>
   );
 };
 
