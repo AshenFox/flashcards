@@ -1,7 +1,7 @@
 import { useActions, useAppSelector } from "@store/hooks";
 import { Link } from "@ui/InteractiveElement";
 import { useRouter } from "next/router";
-import { memo, MouseEvent, useEffect } from "react";
+import { memo, useEffect } from "react";
 
 import Score from "./component/Score";
 import s from "./styles.module.scss";
@@ -39,7 +39,7 @@ const Round = () => {
 
   const roundNum = rounds.length + 1;
 
-  const clickContinue = (e: MouseEvent<HTMLButtonElement>) => {
+  const clickContinue = () => {
     nextWriteRound();
   };
 

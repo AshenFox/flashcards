@@ -20,13 +20,13 @@ const Item = ({
   const { url, ok } = data;
 
   const error = useCallback(
-    (e: SyntheticEvent<HTMLImageElement>) => {
+    (_e: SyntheticEvent<HTMLImageElement>) => {
       onImageStatusChange?.(index, false);
     },
     [index, onImageStatusChange],
   );
   const load = useCallback(
-    (e: SyntheticEvent<HTMLImageElement>) => {
+    (_e: SyntheticEvent<HTMLImageElement>) => {
       onImageStatusChange?.(index, true);
     },
     [index, onImageStatusChange],

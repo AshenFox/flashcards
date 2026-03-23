@@ -1,5 +1,5 @@
 import clsx from "clsx";
-import { memo, MouseEvent as ReactMouseEvent, useEffect, useRef } from "react";
+import { memo, MouseEvent as ReactMouseEvent, useEffect } from "react";
 
 import s from "./styles.module.scss";
 
@@ -41,7 +41,7 @@ const ConfirmPopup = ({
     return () => window.removeEventListener("click", deactivateConfirm);
   }, [active, setActive]);
 
-  const clickYes = (e: ReactMouseEvent<HTMLDivElement>) => onConfirm?.();
+  const clickYes = (_e: ReactMouseEvent<HTMLDivElement>) => onConfirm?.();
 
   return (
     <div

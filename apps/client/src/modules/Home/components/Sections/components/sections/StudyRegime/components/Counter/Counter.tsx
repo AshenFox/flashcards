@@ -48,7 +48,7 @@ const Counter = ({ repeatNum }: CounterProps) => {
   const blockSingle = useRef<boolean>(false);
 
   const single =
-    (value: "stepUp" | "stepDown") => (e: MouseEvent<HTMLDivElement>) => {
+    (value: "stepUp" | "stepDown") => (_e: MouseEvent<HTMLDivElement>) => {
       if (blockSingle.current) return;
       if (value === "stepUp") updateCounter({ additionNumber: 1, repeatNum });
       else if (value === "stepDown")
@@ -57,7 +57,7 @@ const Counter = ({ repeatNum }: CounterProps) => {
 
   const multiple =
     (value: "stepUp" | "stepDown") =>
-    (e: MouseEvent<HTMLDivElement> | TouchEvent<HTMLDivElement>) => {
+    (_e: MouseEvent<HTMLDivElement> | TouchEvent<HTMLDivElement>) => {
       timeoutRef.current = setTimeout(() => {
         timeoutRef.current = null;
         blockSingle.current = true;
@@ -72,7 +72,7 @@ const Counter = ({ repeatNum }: CounterProps) => {
     };
 
   useEffect(() => {
-    const cleanup = (e: Event) => {
+    const cleanup = (_e: Event) => {
       clearTimeout(timeoutRef.current);
       clearInterval(intervalRef.current);
       timeoutRef.current = null;

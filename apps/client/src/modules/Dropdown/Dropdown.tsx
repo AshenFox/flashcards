@@ -89,7 +89,7 @@ const Dropdown = () => {
     return () => window.removeEventListener("click", callback);
   }, [dropdown_active]);
 
-  const clickShuffle = (e: ReactMouseEvent<HTMLButtonElement>) => {
+  const clickShuffle = (_e: ReactMouseEvent<HTMLButtonElement>) => {
     if (shuffled) {
       sortFlashcards();
       setFlashcardsShuffled({ value: false });
@@ -101,7 +101,7 @@ const Dropdown = () => {
     resetFlashcardsProgress();
   };
 
-  const clickStartOver = (e: ReactMouseEvent<HTMLButtonElement>) =>
+  const clickStartOver = (_e: ReactMouseEvent<HTMLButtonElement>) =>
     prepareWrite();
 
   const flashcards_at_end =
@@ -113,7 +113,7 @@ const Dropdown = () => {
     write_is_init;
   const write_at_end = write_is_game_finished || write_ended_early;
 
-  const clickEndGame = (e: ReactMouseEvent<HTMLButtonElement>) => {
+  const clickEndGame = (_e: ReactMouseEvent<HTMLButtonElement>) => {
     if (isFlashcards) endFlashcardsEarly();
     else endWriteEarly();
   };
@@ -123,7 +123,7 @@ const Dropdown = () => {
     !(isFlashcards && flashcards_at_end) &&
     !(isWrite && write_at_end);
 
-  const onLogOutClick = (e: ReactMouseEvent<HTMLButtonElement>) => logOut();
+  const onLogOutClick = (_e: ReactMouseEvent<HTMLButtonElement>) => logOut();
 
   const stylesHeader: CSSProperties = {
     paddingTop: `${header_height - 1}px`,

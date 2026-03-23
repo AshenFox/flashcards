@@ -9,7 +9,7 @@ export const authenticateReducer: AuthCaseReducer<UserDto> = (
   state.user = action.payload;
 };
 
-export const logOutReducer: AuthCaseReducer = (state, _action) => {
+export const logOutReducer: AuthCaseReducer = (_state, _action) => {
   // No state change by default for log out.
   // Adjust logic as needed.
 };

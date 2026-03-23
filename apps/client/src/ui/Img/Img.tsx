@@ -1,6 +1,6 @@
 import { BrokenImageIcon } from "@ui/Icons";
 import clsx from "clsx";
-import { memo, SyntheticEvent, useCallback , useRef, useState } from "react";
+import { memo, SyntheticEvent, useCallback, useRef, useState } from "react";
 
 import s from "./styles.module.scss";
 
@@ -29,11 +29,11 @@ const Img = ({
   }
 
   const onError = useCallback(
-    (e: SyntheticEvent<HTMLImageElement>) => setError(true),
+    (_e: SyntheticEvent<HTMLImageElement>) => setError(true),
     [],
   );
   const onLoad = useCallback(
-    (e: SyntheticEvent<HTMLImageElement>) => setLoaded(true),
+    (_e: SyntheticEvent<HTMLImageElement>) => setLoaded(true),
     [],
   );
 

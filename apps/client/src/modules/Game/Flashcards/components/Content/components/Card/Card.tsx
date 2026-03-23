@@ -60,7 +60,7 @@ const Card = ({ data, side = "definition", position = null }: CardProps) => {
       setFlashcardsSide({ value });
     };
 
-  const clickEdit = (e: MouseEvent<HTMLDivElement>) =>
+  const clickEdit = (_e: MouseEvent<HTMLDivElement>) =>
     setCardEdit({ _id, value: true });
 
   const tooltipTermSRId = `term_${_id}`;

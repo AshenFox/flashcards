@@ -24,7 +24,7 @@ const SR = () => {
     );
   }, [cardsArr, active]);
 
-  const clickSwitch = (e: MouseEvent<HTMLLabelElement>) => setCardsSR(!active);
+  const clickSwitch = (_e: MouseEvent<HTMLLabelElement>) => setCardsSR(!active);
 
   return (
     <Switch

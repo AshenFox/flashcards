@@ -36,7 +36,7 @@ const ScrollTop = ({ virtualizer }: ScrollTopProps) => {
 
     if (virtualizer) scrollToTopSmooth();
     else window.scrollTo({ top: 0, behavior: "smooth" });
-  }, [virtualizer, isVisible]);
+  }, [virtualizer, isVisible, scrollToTopSmooth]);
 
   return (
     <div

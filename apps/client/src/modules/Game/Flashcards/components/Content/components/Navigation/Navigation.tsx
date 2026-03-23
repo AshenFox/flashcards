@@ -26,7 +26,7 @@ const Navigation = () => {
 
   const clickNavItem =
     (value: "next" | "prev", cardAnswer?: "correct" | "incorrect") =>
-    (e: MouseEvent<HTMLDivElement | HTMLButtonElement>) => {
+    (_e: MouseEvent<HTMLDivElement | HTMLButtonElement>) => {
       if (value === "next" && isSR) {
         const { _id } = activeCardData;
         if (cardAnswer === "correct") saveSRAnswer(_id, 1);

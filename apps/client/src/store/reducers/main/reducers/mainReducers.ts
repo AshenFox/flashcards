@@ -17,7 +17,7 @@ export const setIsServer: MainCaseReducer = state => {
   state.is_server = typeof document === "undefined";
 };
 
-export const resetModuleData: MainCaseReducer = (state, action) => {
+export const resetModuleData: MainCaseReducer = (state, _action) => {
   state.module = null;
   state.cards = {};
 };

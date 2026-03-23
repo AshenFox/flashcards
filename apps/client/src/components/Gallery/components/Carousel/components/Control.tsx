@@ -12,7 +12,13 @@ type ControlProps = {
   onMove: (direction: "left" | "right") => void;
 };
 
-const Control = ({ direction, _id, galleryPosition = 0, galleryWidth = 0, onMove }: ControlProps) => {
+const Control = ({
+  direction,
+  _id,
+  galleryPosition = 0,
+  galleryWidth = 0,
+  onMove,
+}: ControlProps) => {
   const position = galleryPosition;
   const width = galleryWidth;
 
@@ -37,10 +43,10 @@ const Control = ({ direction, _id, galleryPosition = 0, galleryWidth = 0, onMove
   }
 
   const clickControl = useCallback(
-    (e: MouseEvent<HTMLDivElement>) => {
+    (_e: MouseEvent<HTMLDivElement>) => {
       if (active) onMove(direction);
     },
-    [_id, active, direction, onMove],
+    [active, direction, onMove],
   );
 
   return (

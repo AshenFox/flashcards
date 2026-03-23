@@ -16,7 +16,7 @@ const EndGameBtn = () => {
     is_init;
   const isAtEnd = isGameFinished || ended_early;
 
-  const clickEndGame = (e: MouseEvent<HTMLButtonElement>) => {
+  const clickEndGame = (_e: MouseEvent<HTMLButtonElement>) => {
     endWriteEarly();
   };
 

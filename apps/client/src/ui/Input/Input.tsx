@@ -19,7 +19,6 @@ type InputProps = InputHTMLAttributes<HTMLInputElement> & {
 };
 
 const Input = ({
-  children,
   className,
   id,
   before,

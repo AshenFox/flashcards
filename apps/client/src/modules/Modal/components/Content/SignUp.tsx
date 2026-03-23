@@ -29,15 +29,13 @@ const SignUp = () => {
     setIsPasswordVisible(v => !v);
   };
 
-  const onClickChangeModal =
-    (value: "log_in") => (e: MouseEvent<HTMLButtonElement>) => {
-      changeModal({ active_modal: value });
-    };
+  const onClickChangeModal = (value: "log_in") => () => {
+    changeModal({ active_modal: value });
+  };
 
-  const onCLickLoadingButton =
-    (value: "sign_up") => (e: MouseEvent<HTMLButtonElement>) => {
-      enter(value);
-    };
+  const onCLickLoadingButton = (value: "sign_up") => () => {
+    enter(value);
+  };
 
   const onChange = (e: ChangeEvent<HTMLInputElement>) => {
     const target = e.target;

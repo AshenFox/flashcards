@@ -27,14 +27,14 @@ const Right = () => {
   const isSettings = getIsSettings(router.pathname);
 
   const activateDropdown = useCallback(
-    (e: MouseEvent<HTMLButtonElement>) => {
+    (_e: MouseEvent<HTMLButtonElement>) => {
       setDropdown({ value: true });
     },
     [setDropdown],
   );
 
   const openModal = useCallback(
-    (value: "log_in" | "sign_up") => (e: MouseEvent<HTMLButtonElement>) => {
+    (value: "log_in" | "sign_up") => (_e: MouseEvent<HTMLButtonElement>) => {
       changeModal({ active_modal: value });
       toggleModal();
     },

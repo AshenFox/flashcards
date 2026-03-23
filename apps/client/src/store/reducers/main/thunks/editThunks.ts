@@ -398,7 +398,7 @@ const format_dictionary_result = (
   // cod
   if (type === "cod") {
     data.map(sect => {
-      let { part_of_speech, transcr_uk, transcr_us, sub_sections } = sect;
+      let { part_of_speech, transcr_us, sub_sections } = sect;
 
       sub_sections.map(sub_sect => {
         let { guideword, blocks } = sub_sect;

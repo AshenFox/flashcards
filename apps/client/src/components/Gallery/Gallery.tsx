@@ -82,7 +82,7 @@ const Gallery = ({ _id, active, game = false, onSelectImage }: GalleryProps) => 
   );
 
   const clickImgSearchbar = useCallback(
-    (e: MouseEvent<SVGSVGElement>) => {
+    (_e: MouseEvent<SVGSVGElement>) => {
       searchImages();
     },
     [searchImages],

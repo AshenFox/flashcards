@@ -32,7 +32,7 @@ const Save = ({ data }: SaveProps) => {
   );
 
   const down = useCallback(
-    (e: MouseEvent<HTMLLabelElement> | TouchEvent<HTMLLabelElement>) => {
+    (_e: MouseEvent<HTMLLabelElement> | TouchEvent<HTMLLabelElement>) => {
       timer.current = setTimeout(() => {
         timer.current = null;
         if (!save) setCardsSavePositive(_id);

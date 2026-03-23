@@ -1,5 +1,5 @@
 import clsx from "clsx";
-import React, {
+import {
   LabelHTMLAttributes,
   memo,
   MouseEventHandler,
@@ -8,7 +8,7 @@ import React, {
 
 import s from "./styles.module.scss";
 
-const getLastNode = (nodes: NodeListOf<ChildNode>) => {
+const getLastNode = (nodes: NodeList) => {
   const lastNode = nodes[nodes.length - 1];
   const childNodes = lastNode.childNodes;
 

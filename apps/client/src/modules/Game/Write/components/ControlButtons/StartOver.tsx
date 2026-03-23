@@ -6,7 +6,7 @@ const StartOver = () => {
   const { prepareWrite } = useActions();
 
   const clickStartOver = useCallback(
-    (e: MouseEvent<HTMLButtonElement>) => prepareWrite(),
+    (_e: MouseEvent<HTMLButtonElement>) => prepareWrite(),
     [prepareWrite],
   );
 

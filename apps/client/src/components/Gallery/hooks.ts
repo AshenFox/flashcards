@@ -40,7 +40,7 @@ export const useCardGallery = (_id: string) => {
 
             try {
                 data = await scrapeSearchImages(queryStr);
-            } catch (err) {
+            } catch {
                 throw new Error(serviceUnavailableErrorMessage);
             }
 

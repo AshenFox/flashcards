@@ -7,7 +7,7 @@ import s from "./styles.module.scss";
 const Start = () => {
   const { changeModal, toggleModal } = useActions();
 
-  const click = (value: "log_in") => (e: MouseEvent<HTMLButtonElement>) => {
+  const click = (value: "log_in") => (_e: MouseEvent<HTMLButtonElement>) => {
     changeModal({ active_modal: value });
     toggleModal();
   };

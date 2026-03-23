@@ -1,8 +1,6 @@
 import { notificationsSubscribePush } from "@api/methods";
 import flashcardsConfig from "@flashcards/config";
 
-import { CurrentSubscription } from "./types";
-
 export const urlBase64ToUint8Array = (base64String: string) => {
   const base64 = base64String.trim();
   const padding = "=".repeat((4 - (base64.length % 4)) % 4);

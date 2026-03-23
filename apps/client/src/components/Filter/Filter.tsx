@@ -2,7 +2,6 @@ import Input from "@ui/Input";
 import clsx from "clsx";
 import { ChangeEventHandler, memo, useRef } from "react";
 import Select, {
-  createFilter,
   CSSObjectWithLabel,
   GroupBase,
   Options,

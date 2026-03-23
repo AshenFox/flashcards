@@ -1,7 +1,7 @@
 import type { CardDto } from "@flashcards/common";
 import { CloseIcon } from "@ui/Icons";
 import Tooltip from "@ui/Tooltip";
-import { memo, MouseEvent, useCallback } from "react";
+import { memo, useCallback } from "react";
 
 import { useSetCardEdit } from "../../state/ui";
 import s from "../styles.module.scss";
@@ -15,12 +15,9 @@ const Close = ({ data }: CloseProps) => {
 
   const { _id } = data || {};
 
-  const clickClose = useCallback(
-    (e: MouseEvent<HTMLDivElement>) => {
-      setCardEdit({ _id, value: false });
-    },
-    [_id, setCardEdit],
-  );
+  const clickClose = useCallback(() => {
+    setCardEdit({ _id, value: false });
+  }, [_id, setCardEdit]);
 
   const id = `close-edit-card-${_id}`;
 

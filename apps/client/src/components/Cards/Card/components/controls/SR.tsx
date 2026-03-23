@@ -18,6 +18,8 @@ const SR = ({ data }: SRProps) => {
 
   const { _id, studyRegime } = data;
 
+  const timer = useRef<ReturnType<typeof setTimeout>>(null);
+
   const up = useCallback(
     (e: MouseEvent<HTMLLabelElement> | TouchEvent<HTMLLabelElement>) => {
       e.preventDefault();
@@ -31,7 +33,7 @@ const SR = ({ data }: SRProps) => {
   );
 
   const down = useCallback(
-    (e: MouseEvent<HTMLLabelElement> | TouchEvent<HTMLLabelElement>) => {
+    (_e: MouseEvent<HTMLLabelElement> | TouchEvent<HTMLLabelElement>) => {
       timer.current = setTimeout(() => {
         timer.current = null;
         if (!studyRegime) setCardsSRPositive(_id);
@@ -40,7 +42,6 @@ const SR = ({ data }: SRProps) => {
     [_id, setCardsSRPositive, studyRegime],
   );
 
-  const timer = useRef<ReturnType<typeof setTimeout>>(null);
   const id = `card_sr_${_id}`;
 
   return (

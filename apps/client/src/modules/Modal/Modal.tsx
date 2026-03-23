@@ -50,7 +50,7 @@ const Modal = () => {
     if (e.target === modalEl.current) toggleModal();
   };
 
-  const closeClick = (e: MouseEvent<HTMLDivElement>) => toggleModal();
+  const closeClick = (_e: MouseEvent<HTMLDivElement>) => toggleModal();
 
   return (
     <div

@@ -12,7 +12,7 @@ const SRDrop = () => {
   const question = useAppSelector(s => s.main.module?.question);
   const _id = useAppSelector(s => s.main.module?._id);
 
-  const clickDropSR = (e: MouseEvent<HTMLDivElement>) =>
+  const clickDropSR = (_e: MouseEvent<HTMLDivElement>) =>
     setModuleQuestion({ value: true });
 
   return (

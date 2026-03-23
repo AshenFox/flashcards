@@ -2,7 +2,7 @@ import type { CardDto } from "@flashcards/common";
 import { EditIcon } from "@ui/Icons";
 import Tooltip from "@ui/Tooltip";
 import clsx from "clsx";
-import { memo, MouseEvent } from "react";
+import { memo } from "react";
 
 import { useSetCardEdit } from "../../../state/ui";
 import s from "./styles.module.scss";
@@ -16,8 +16,7 @@ const Edit = ({ data }: EditProps) => {
 
   const { _id } = data;
 
-  const clickEdit = (e: MouseEvent<HTMLDivElement>) =>
-    setCardEdit({ _id, value: true });
+  const clickEdit = () => setCardEdit({ _id, value: true });
 
   const editCardBtnId = `edit-card-${_id}`;
 

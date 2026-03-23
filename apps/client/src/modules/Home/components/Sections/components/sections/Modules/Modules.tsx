@@ -129,20 +129,20 @@ const Modules = () => {
       )}
       <VirtualizedList virtualizer={virtualizer}>
         {virtualizer.getVirtualItems().map(virtualRow => {
-          const module = modules[virtualRow.index];
+          const moduleItem = modules[virtualRow.index];
           const prevDateString = modules[virtualRow.index - 1]?.creation_date;
 
           return (
             <VirtualizedItem
-              key={module._id}
+              key={moduleItem._id}
               virtualizer={virtualizer}
               virtualItem={virtualRow}
             >
               <Divider
                 prevDateString={prevDateString}
-                curDateString={module.creation_date}
+                curDateString={moduleItem.creation_date}
               />
-              <Module data={module} filter={search} />
+              <Module data={moduleItem} filter={search} />
             </VirtualizedItem>
           );
         })}

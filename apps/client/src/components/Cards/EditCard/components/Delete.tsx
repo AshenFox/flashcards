@@ -2,7 +2,7 @@ import type { CardDto } from "@flashcards/common";
 import { DeleteIcon } from "@ui/Icons";
 import Tooltip from "@ui/Tooltip";
 import clsx from "clsx";
-import { memo, MouseEvent, useCallback } from "react";
+import { memo, useCallback } from "react";
 
 import { useDeleteCard } from "../../state/actions";
 import s from "../styles.module.scss";
@@ -18,7 +18,7 @@ const Delete = ({ data, active = false }: DeleteProps) => {
   const { _id } = data || {};
 
   const clickCardDelete = useCallback(
-    (e: MouseEvent<HTMLDivElement>) => active && deleteCard(_id),
+    () => active && deleteCard(_id),
     [_id, active, deleteCard],
   );
 

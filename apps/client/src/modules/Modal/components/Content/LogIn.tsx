@@ -25,12 +25,12 @@ const LogIn = () => {
   };
 
   const onClickChangeModal =
-    (value: "sign_up") => (e: MouseEvent<HTMLButtonElement>) => {
+    (value: "sign_up") => (_e: MouseEvent<HTMLButtonElement>) => {
       changeModal({ active_modal: value });
     };
 
   const onCLickLoadingButton =
-    (value: "log_in") => (e: MouseEvent<HTMLButtonElement>) => {
+    (value: "log_in") => (_e: MouseEvent<HTMLButtonElement>) => {
       enter(value);
     };
 

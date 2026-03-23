@@ -23,16 +23,13 @@ const AddImg = ({ data, onToggle }: AddImgProps) => {
       if (imgurl && deleteEl.current?.contains(e.target as Node)) return;
       onToggle();
     },
-    [_id, imgurl, onToggle],
+    [imgurl, onToggle],
   );
 
-  const clickImgDelete = useCallback(
-    (e: MouseEvent<HTMLDivElement>) => {
-      setCardImgurl({ _id, value: "" });
-      editCard(_id);
-    },
-    [_id, editCard, setCardImgurl],
-  );
+  const clickImgDelete = useCallback(() => {
+    setCardImgurl({ _id, value: "" });
+    editCard(_id);
+  }, [_id, editCard, setCardImgurl]);
 
   const deleteEl = useRef<HTMLDivElement>(null);
 

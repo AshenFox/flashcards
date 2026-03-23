@@ -8,7 +8,7 @@ import { authActions } from "./slice";
 
 export const authenticate = () => <ThunkActionApp>(async (
   dispatch,
-  getState,
+  _getState,
 ) => {
   const pathname = window.location.pathname;
   try {
@@ -40,7 +40,7 @@ export const authenticate = () => <ThunkActionApp>(async (
   dispatch(authActions.changeAuthLoading({ value: false }));
 });
 
-export const logOut = () => <ThunkActionApp>((dispatch, getState) => {
+export const logOut = () => <ThunkActionApp>((dispatch, _getState) => {
   const pathname = window.location.pathname;
 
   localStorage.removeItem("value");

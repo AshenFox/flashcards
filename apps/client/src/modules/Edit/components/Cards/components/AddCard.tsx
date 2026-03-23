@@ -11,7 +11,7 @@ const AddCard = ({ position }: AddCardProps) => {
   const { createCard } = useActions();
 
   const clickAddcard = useCallback(
-    (e: MouseEvent<HTMLDivElement>) => createCard(position),
+    (_e: MouseEvent<HTMLDivElement>) => createCard(position),
     [position, createCard],
   );
 

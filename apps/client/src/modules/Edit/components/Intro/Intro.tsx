@@ -1,9 +1,7 @@
 import Container from "@components/Container";
 import ContentWrapper from "@components/ContentWrapper";
 import { useAppSelector } from "@store/hooks";
-import { Button, Link } from "@ui/InteractiveElement";
-// import Link from "next/link";
-import { useRouter } from "next/router";
+import { Link } from "@ui/InteractiveElement";
 import { memo } from "react";
 
 import s from "./styles.module.scss";

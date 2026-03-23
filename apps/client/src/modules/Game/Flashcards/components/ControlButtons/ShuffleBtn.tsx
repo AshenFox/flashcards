@@ -13,7 +13,7 @@ const ShuffleBtn = () => {
 
   const shuffled = useAppSelector(s => s.game.flashcards.shuffled);
 
-  const clickShuffle = (e: MouseEvent<HTMLButtonElement>) => {
+  const clickShuffle = (_e: MouseEvent<HTMLButtonElement>) => {
     if (shuffled) {
       sortFlashcards();
       setFlashcardsShuffled({ value: false });

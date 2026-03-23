@@ -2,7 +2,7 @@ import type { CardDto } from "@flashcards/common";
 import { DropStudyRegimeIcon } from "@ui/Icons";
 import Tooltip from "@ui/Tooltip";
 import clsx from "clsx";
-import { memo, MouseEvent } from "react";
+import { memo } from "react";
 
 import s from "./styles.module.scss";
 
@@ -15,7 +15,7 @@ type SRDropProps = {
 const SRDrop = ({ data, questionOpen, onRequestConfirm }: SRDropProps) => {
   const { _id } = data;
 
-  const clickDropSR = (e: MouseEvent<HTMLDivElement>) => onRequestConfirm();
+  const clickDropSR = () => onRequestConfirm();
 
   const id = `sr-drop-card-${_id}`;
 

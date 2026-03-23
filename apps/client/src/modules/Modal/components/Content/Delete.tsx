@@ -12,9 +12,9 @@ const Delete = () => {
 
   const { _id, module_loading, title } = currentModule || {};
 
-  const clickDelete = (e: MouseEvent<HTMLButtonElement>) => deleteModule(_id);
+  const clickDelete = (_e: MouseEvent<HTMLButtonElement>) => deleteModule(_id);
 
-  const close = (e: MouseEvent<HTMLButtonElement>) => toggleModal();
+  const close = (_e: MouseEvent<HTMLButtonElement>) => toggleModal();
 
   return (
     <>

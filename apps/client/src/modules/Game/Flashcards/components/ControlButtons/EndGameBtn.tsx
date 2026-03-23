@@ -11,7 +11,7 @@ const EndGameBtn = () => {
   const length = Object.values(cards).length;
   const isAtEnd = length === progress || ended_early;
 
-  const clickEndGame = (e: MouseEvent<HTMLButtonElement>) => {
+  const clickEndGame = (_e: MouseEvent<HTMLButtonElement>) => {
     endFlashcardsEarly();
   };
 

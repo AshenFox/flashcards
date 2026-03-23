@@ -20,6 +20,32 @@ const config = [
   ...nextCoreWebVitals,
   ...baseConfig,
   {
+    files: ["**/*.{ts,tsx}"],
+    rules: {
+      "no-undef": "off",
+      "no-redeclare": "off",
+      "@typescript-eslint/no-redeclare": "error",
+    },
+  },
+  {
+    files: ["public/scripts/Worker.js"],
+    languageOptions: {
+      globals: {
+        self: "readonly",
+        clients: "readonly",
+        registration: "readonly",
+        location: "readonly",
+      },
+    },
+  },
+  {
+    rules: {
+      "react-hooks/refs": "off",
+      "react-hooks/set-state-in-effect": "off",
+      "react-hooks/immutability": "off",
+    },
+  },
+  {
     settings: {
       next: {
         rootDir: "apps/client/",

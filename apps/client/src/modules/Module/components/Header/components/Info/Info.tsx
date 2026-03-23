@@ -21,7 +21,7 @@ const Info = () => {
   const question = useAppSelector(s => s.main.module?.question);
   const loading = useAppSelector(s => s.main.sections?.module.loading);
 
-  const openModal = (value: "delete") => (e: MouseEvent<HTMLDivElement>) => {
+  const openModal = (value: "delete") => (_e: MouseEvent<HTMLDivElement>) => {
     changeModal({ active_modal: value });
     toggleModal();
   };

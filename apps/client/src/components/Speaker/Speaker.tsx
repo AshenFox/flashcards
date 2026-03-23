@@ -66,7 +66,7 @@ const Speaker = ({ _id, text, type, className, ref }: SpeakerProps) => {
           console.info("Start speaking...");
           setVoiceSpeaking({ _id, type });
         },
-        pause: e => {
+        pause: _e => {
           console.info("Pause");
         },
         end: () => {

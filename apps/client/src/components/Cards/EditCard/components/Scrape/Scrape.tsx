@@ -17,7 +17,7 @@ const Scrape = ({ data }: ScrapeProps) => {
   const loading = isPending;
 
   const clickScrapeButton = useCallback(
-    (value: "cod" | "urban") => (e: MouseEvent<HTMLDivElement>) => {
+    (value: "cod" | "urban") => (_e: MouseEvent<HTMLDivElement>) => {
       scrape(value);
     },
     [scrape],

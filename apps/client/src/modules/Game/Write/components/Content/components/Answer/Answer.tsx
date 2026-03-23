@@ -70,7 +70,7 @@ const Answer = ({ data }: AnswerProps) => {
   const changeCopyAnswer = (e: ChangeEvent<HTMLInputElement>) =>
     setWriteCopyAnswerField({ value: e.target.value });
 
-  const clickEdit = (e: MouseEvent<HTMLDivElement>) =>
+  const clickEdit = (_e: MouseEvent<HTMLDivElement>) =>
     setCardEdit({ _id, value: true });
 
   const continueGame = useCallback(() => {
@@ -99,7 +99,7 @@ const Answer = ({ data }: AnswerProps) => {
     continueGame();
   };
 
-  const clickOverride = (e: MouseEvent<HTMLButtonElement>) => {
+  const clickOverride = (_e: MouseEvent<HTMLButtonElement>) => {
     overrideAnswer();
   };
 

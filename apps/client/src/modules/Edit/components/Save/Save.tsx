@@ -14,7 +14,7 @@ const Save = () => {
   const { active, loading } = useSaveState();
 
   const clickSave = useCallback(
-    (e: MouseEvent<HTMLButtonElement>) => {
+    (_e: MouseEvent<HTMLButtonElement>) => {
       if (active) createModule(!selectionActive);
     },
     [active, createModule, selectionActive],
