@@ -117,6 +117,12 @@ const start = async () => {
 
 const shutDown = async () => {
   console.log("\nGracefully shutting down from SIGINT (Ctrl-C)");
+
+  if (pushInterval) {
+    clearInterval(pushInterval);
+    pushInterval = null;
+  }
+
   await nextApp.close();
   process.exit(0);
 };

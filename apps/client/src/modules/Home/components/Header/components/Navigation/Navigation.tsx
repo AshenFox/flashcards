@@ -13,7 +13,7 @@ const Navigation = () => {
 
   useEffect(() => {
     if (_default && section !== undefined) router.replace("/home/modules");
-  }, [section]);
+  }, [router, section, _default]);
 
   return (
     <div className={s.container}>

@@ -15,7 +15,7 @@ const Module = () => {
 
   useEffect(() => {
     if (user && typeof _id === "string") getModule(_id);
-  }, [user]);
+  }, [_id, user, getModule]);
 
   useEffect(() => {
     return () => {

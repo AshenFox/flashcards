@@ -9,7 +9,7 @@ const Finish = () => {
 
   useEffect(() => {
     nextWriteRound();
-  }, []);
+  }, [nextWriteRound]);
 
   return (
     <>
