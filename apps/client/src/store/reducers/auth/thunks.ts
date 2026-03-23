@@ -1,10 +1,10 @@
+import { setAuthToken } from "@api/axiosInstance";
 import {
   authGetUser,
 } from "@api/methods";
 import { ThunkActionApp } from "@store/store";
 
 import { authActions } from "./slice";
-import { setAuthToken } from "@api/axiosInstance";
 
 export const authenticate = () => <ThunkActionApp>(async (
   dispatch,

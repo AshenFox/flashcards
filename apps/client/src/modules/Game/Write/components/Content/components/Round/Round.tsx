@@ -1,10 +1,10 @@
 import { useActions, useAppSelector } from "@store/hooks";
+import { Link } from "@ui/InteractiveElement";
+import { useRouter } from "next/router";
 import { memo, MouseEvent, useEffect } from "react";
 
 import Score from "./component/Score";
 import s from "./styles.module.scss";
-import { Link } from "@ui/InteractiveElement";
-import { useRouter } from "next/router";
 
 const Round = () => {
   const router = useRouter();

@@ -1,7 +1,7 @@
 import { withActionName } from "@zustand/helpers";
-import { type Slice } from "../types";
 
-import { CardsFilters, defaultCardsFilters, DefaultFilters, defaultModulesFilters, defaultPagination, FilterStore, FilterValue, QueryKey, ModulesFilters } from "./types";
+import { type Slice } from "../types";
+import { CardsFilters, defaultCardsFilters, DefaultFilters, defaultModulesFilters, defaultPagination, FilterStore, FilterValue, ModulesFilters, QueryKey } from "./types";
 
 type CreateFiltersSliceOptions<Filters extends DefaultFilters> = {
   queryKey: QueryKey<Filters>;

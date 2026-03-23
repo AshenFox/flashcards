@@ -2,22 +2,21 @@ import { CardsUIProvider } from "@components/Cards";
 import Filters, { FilterData, SetFilterValue } from "@components/Filters";
 import NotFound from "@components/NotFound";
 import { VirtualizedItem, VirtualizedList } from "@components/Virtualized";
+import ScrollTop from "@modules/ScrollTop";
 import { useQueryClient } from "@tanstack/react-query";
 import { useWindowVirtualizer } from "@tanstack/react-virtual";
-import { defaultCardsFilters } from "@zustand/filters";
 import ScrollLoader from "@ui/ScrollLoader";
+import { defaultCardsFilters } from "@zustand/filters";
 import React, { memo, useCallback, useEffect, useMemo } from "react";
 
 import s from "../styles.module.scss";
-
+import { CardRow } from "./CardRow";
 import {
   queryKey,
   useHomeCardsFiltersStore,
   useHomeCardsQuery,
   useHomeCardsUIStore,
 } from "./hooks";
-import { CardRow } from "./CardRow";
-import ScrollTop from "@modules/ScrollTop";
 
 const filtersData: FilterData[] = [
   {

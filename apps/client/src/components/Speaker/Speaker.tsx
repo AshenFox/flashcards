@@ -1,7 +1,7 @@
-import { useVoiceStore } from "@zustand/voice";
-import type { VoiceData } from "@zustand/voice";
 import { SpeakerIcon } from "@ui/Icons";
 import Tooltip from "@ui/Tooltip";
+import type { VoiceData } from "@zustand/voice";
+import { useVoiceStore } from "@zustand/voice";
 import clsx from "clsx";
 import EasySpeech from "easy-speech";
 import { ForwardedRef, memo, useCallback, useMemo } from "react";

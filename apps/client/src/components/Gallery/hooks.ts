@@ -1,7 +1,8 @@
-import type { ImgurlBase, ImgurlObjs } from "./types";
 import { scrapeSearchImages } from "@api/methods";
 import { useQuery } from "@tanstack/react-query";
-import { useState, useMemo } from "react";
+import { useMemo,useState } from "react";
+
+import type { ImgurlBase, ImgurlObjs } from "./types";
 
 const regexpURL = /^@url - /;
 const emptyQueryErrorMessage = "Query can not be empty.";

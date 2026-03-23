@@ -1,13 +1,13 @@
 import {
-  GetMainCardsQueryDto,
-  GetMainModuleQueryDto,
-} from "@flashcards/common";
-import {
   editGetDraft,
   mainGetCards,
   mainGetModule,
   mainGetModuleCards,
 } from "@api/methods";
+import {
+  GetMainCardsQueryDto,
+  GetMainModuleQueryDto,
+} from "@flashcards/common";
 import { ThunkActionApp } from "@store/store";
 
 import { mainActions } from "../slice";

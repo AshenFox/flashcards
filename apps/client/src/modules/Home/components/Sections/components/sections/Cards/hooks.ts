@@ -1,13 +1,12 @@
 import { mainGetCards } from "@api/methods/main/mainGetCards";
+import { cardsUISlice } from "@components/Cards";
 import type { GetMainCardsResponseDto } from "@flashcards/common";
-import { useInfiniteQuery } from "@tanstack/react-query";
 import { useAppSelector } from "@store/store";
-
-import { createCardsFilterSlice } from "@zustand/filters";
+import { useInfiniteQuery } from "@tanstack/react-query";
 import type { CardsFilters } from "@zustand/filters";
+import { createCardsFilterSlice } from "@zustand/filters";
 import { createStoreHook } from "@zustand/helpers";
 import { useEffect } from "react";
-import { cardsUISlice } from "@components/Cards";
 
 // ---------------------------------------------------------------------------
 // Infinite query

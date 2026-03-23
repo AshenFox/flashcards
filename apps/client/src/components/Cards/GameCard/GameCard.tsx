@@ -10,7 +10,6 @@ import { useRouter } from "next/router";
 import { memo, MouseEvent, useCallback } from "react";
 
 import { useSetCardEdit } from "../state/ui";
-
 import s from "./styles.module.scss";
 
 type GameCardProps = {

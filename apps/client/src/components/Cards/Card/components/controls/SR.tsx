@@ -1,11 +1,11 @@
 import { SRIndicator } from "@components/SRIndicator";
 import SRInfoTooltip from "@components/SRIndicator/SRInfoTooltip";
 import type { CardDto } from "@flashcards/common";
-import { useSetCardSR, useSetCardsSRPositive } from "../../../state/actions";
 import Switch from "@ui/Switch";
 import clsx from "clsx";
 import { memo, MouseEvent, TouchEvent, useCallback, useRef } from "react";
 
+import { useSetCardSR, useSetCardsSRPositive } from "../../../state/actions";
 import s from "./styles.module.scss";
 
 type SRProps = {

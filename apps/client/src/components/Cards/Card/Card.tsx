@@ -1,13 +1,13 @@
 import Speaker from "@components/Speaker";
 import type { CardDto } from "@flashcards/common";
 import { filterRegex } from "@flashcards/common";
-import { useDropCardSR } from "../state/actions";
 import ConfirmPopup from "@ui/ConfirmPopup";
 import DateStr from "@ui/DateStr";
 import Img from "@ui/Img";
 import TextArea from "@ui/TextArea";
 import { memo, useCallback, useState } from "react";
 
+import { useDropCardSR } from "../state/actions";
 import { Edit, SR, SRDrop } from "./components/controls";
 import ModuleLink from "./components/ModuleLink";
 import s from "./styles.module.scss";

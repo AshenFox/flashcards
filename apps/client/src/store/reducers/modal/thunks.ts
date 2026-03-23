@@ -1,12 +1,12 @@
+import { setAuthToken } from "@api/axiosInstance";
 import {
-  authEntry,
   authCheckSignUp,
+  authEntry,
 } from "@api/methods";
 import { ThunkActionApp } from "@store/store";
 
 import { modalActions } from "./slice";
 import { LogInErrors, SignUpErrors } from "./types";
-import { setAuthToken } from "@api/axiosInstance";
 
 export const enter = (type: "log_in" | "sign_up") => <ThunkActionApp>(async (
   dispatch,

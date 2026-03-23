@@ -1,7 +1,7 @@
-import { filterRegex, Module } from "@flashcards/common";
 import {
   Card,
   ErrorResponse,
+  filterRegex,
   GetMainCardsQuery,
   GetMainCardsResponse,
   GetMainModuleCardsQuery,
@@ -10,10 +10,10 @@ import {
   GetMainModuleResponse,
   GetMainModulesQuery,
   GetMainModulesResponse,
+  Module,
 } from "@flashcards/common";
 import cardModel, { CardSortObj } from "@models/card_model";
-import moduleModel from "@models/module_model";
-import { ModuleSortObj } from "@models/module_model";
+import moduleModel, { ModuleSortObj } from "@models/module_model";
 import { auth, query } from "@supplemental/middleware";
 import { ResponseLocals } from "@supplemental/types";
 import express, { Request } from "express";
@@ -50,9 +50,9 @@ router.get(
 
       const draftModule = draft
         ? await moduleModel.findOne({
-            author_id: _id,
-            draft: true,
-          })
+          author_id: _id,
+          draft: true,
+        })
         : null;
 
       let all = await moduleModel.countDocuments({

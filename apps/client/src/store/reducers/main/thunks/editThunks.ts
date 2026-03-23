@@ -3,11 +3,12 @@ import {
   editCreateModule,
   editDeleteCard,
   editDeleteModule,
-  scrapeGetDictionary,
-  scrapeSearchImages,
   editUpdateCard,
   editUpdateModule,
+  scrapeGetDictionary,
+  scrapeSearchImages,
 } from "@api/methods";
+import { CodDictResult, UrbanDictResult } from "@api/methods/scrape/scrapeGetDictionary";
 import { saveLastUpdate } from "@store/helper-functions";
 import { ThunkActionApp } from "@store/store";
 import sanitize from "sanitize-html";
@@ -18,7 +19,6 @@ import {
   ImgurlBase,
   ImgurlObjs,
 } from "../types";
-import { CodDictResult, UrbanDictResult } from "@api/methods/scrape/scrapeGetDictionary";
 
 export const setCardsSavePositive = (_id: string) => <ThunkActionApp>(async (
   dispatch,

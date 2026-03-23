@@ -1,9 +1,9 @@
+import { Virtualizer } from "@tanstack/react-virtual";
 import { ArrowUpIcon } from "@ui/Icons";
 import clsx from "clsx";
 import { memo, useCallback, useEffect, useRef, useState } from "react";
 
 import s from "./styles.module.scss";
-import { Virtualizer } from "@tanstack/react-virtual";
 
 type ScrollTopProps = {
   virtualizer?: Virtualizer<Window | Element, Element>;

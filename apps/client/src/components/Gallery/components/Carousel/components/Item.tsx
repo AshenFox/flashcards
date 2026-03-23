@@ -1,8 +1,8 @@
+import { ImgurlObj } from "@components/Gallery/types";
 import clsx from "clsx";
 import { memo, SyntheticEvent, useCallback } from "react";
 
 import s from "../styles.module.scss";
-import { ImgurlObj } from "@components/Gallery/types";
 
 type ItemProps = {
   index: string;

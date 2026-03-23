@@ -1,11 +1,11 @@
-export { createFiltersSlice, createCardsFilterSlice, createModulesFilterSlice } from "./filterStore";
+export { createCardsFilterSlice, createFiltersSlice, createModulesFilterSlice } from "./filterStore";
 export {
-  defaultModulesFilters,
-  defaultCardsFilters,
-  defaultPagination,
-  type ModulesFilters,
   type CardsFilters,
+  defaultCardsFilters,
+  type DefaultFilters,
+  defaultModulesFilters,
+  defaultPagination,
   type FilterStore,
   type FilterValue,
-  type DefaultFilters,
+  type ModulesFilters,
 } from "./types";

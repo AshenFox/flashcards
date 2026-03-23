@@ -1,6 +1,6 @@
-import { useSRStore } from "@zustand/sr";
 import { MinusIcon, PlusIcon } from "@ui/Icons";
 import Input from "@ui/Input";
+import { useSRStore } from "@zustand/sr";
 import {
   ChangeEvent,
   memo,

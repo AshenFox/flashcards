@@ -1,10 +1,10 @@
 import type { CardDto } from "@flashcards/common";
-import { useEditCard, useSetCardImgurl } from "../../../state/actions";
 import { DeleteIcon, ImgIcon } from "@ui/Icons";
 import Img from "@ui/Img";
 import clsx from "clsx";
 import { memo, MouseEvent, useCallback, useRef } from "react";
 
+import { useEditCard, useSetCardImgurl } from "../../../state/actions";
 import s from "./styles.module.scss";
 
 type AddImgProps = {

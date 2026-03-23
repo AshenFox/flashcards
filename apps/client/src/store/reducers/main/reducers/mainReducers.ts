@@ -1,5 +1,4 @@
-import { CardDto } from "@flashcards/common";
-import {
+import { CardDto ,
   GetMainCardsResponseDto,
   GetMainModuleCardsResponseDto,
   GetMainModuleResponseDto,

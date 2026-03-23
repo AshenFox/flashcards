@@ -1,8 +1,8 @@
+import { QueryKey } from "@tanstack/react-query";
+import { CardsFilters, FilterStore } from "@zustand/filters";
 import { createContext, ReactNode, useContext, useMemo } from "react";
 
 import type { CardsUIStore } from "./types";
-import { CardsFilters, FilterStore } from "@zustand/filters";
-import { QueryKey } from "@tanstack/react-query";
 
 // Hook type: no args => full state; with selector => selected state
 type StoreHook<S> = {

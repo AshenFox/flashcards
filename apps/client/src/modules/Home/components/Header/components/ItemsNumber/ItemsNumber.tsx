@@ -1,10 +1,10 @@
 import type { PaginationDto } from "@flashcards/common";
+import { useHomeCardsFiltersStore } from "@modules/Home/components/Sections/components/sections/Cards/hooks";
+import { useHomeModulesFiltersStore } from "@modules/Home/components/Sections/components/sections/Modules/hooks";
+import { useRouter } from "next/router";
 import React, { memo, useEffect, useState } from "react";
 
 import s from "./styles.module.scss";
-import { useRouter } from "next/router";
-import { useHomeModulesFiltersStore } from "@modules/Home/components/Sections/components/sections/Modules/hooks";
-import { useHomeCardsFiltersStore } from "@modules/Home/components/Sections/components/sections/Cards/hooks";
 
 const renderCount = (pagination: PaginationDto | null | undefined) => {
   if (!pagination) return null;

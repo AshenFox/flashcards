@@ -1,16 +1,16 @@
 import Gallery from "@components/Gallery";
 import type { CardDto } from "@flashcards/common";
-import {
-  useControlCard,
-  useEditCard,
-  useSetCardImgurl,
-} from "../state/actions";
 import TextArea from "@ui/TextArea";
 import TextLabel from "@ui/TextLabel";
 import clsx from "clsx";
 import { memo, useCallback, useRef, useState } from "react";
 import { ContentEditableEvent } from "react-contenteditable";
 
+import {
+  useControlCard,
+  useEditCard,
+  useSetCardImgurl,
+} from "../state/actions";
 import AddImg from "./components/AddImg";
 import Close from "./components/Close";
 import Delete from "./components/Delete";

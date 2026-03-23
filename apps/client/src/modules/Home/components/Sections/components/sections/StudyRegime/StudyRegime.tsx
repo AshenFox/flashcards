@@ -1,6 +1,6 @@
-import { useSRStore } from "@zustand/sr";
 import { CardsIcon, WriteIcon } from "@ui/Icons";
 import Skeleton from "@ui/Skeleton";
+import { useSRStore } from "@zustand/sr";
 import Link from "next/link";
 import { memo, useEffect } from "react";
 

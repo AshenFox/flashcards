@@ -1,3 +1,4 @@
-const baseConfig = require("./eslint-base.js");
+import baseConfig from "./eslint-base.js";
+import serverConfig from "./eslint-server-base.js";
 
-module.exports = baseConfig;
+export { baseConfig, serverConfig };

@@ -1,10 +1,10 @@
 import type { CardDto } from "@flashcards/common";
-import { useCardsUIStore } from "../../../state/context";
-import { useSetCardSave, useSetCardsSavePositive } from "../../../state/ui";
 import Checkbox from "@ui/Checkbox";
 import Tooltip from "@ui/Tooltip";
 import { memo, MouseEvent, TouchEvent, useCallback, useRef } from "react";
 
+import { useCardsUIStore } from "../../../state/context";
+import { useSetCardSave, useSetCardsSavePositive } from "../../../state/ui";
 import s from "./styles.module.scss";
 
 type SaveProps = {

@@ -1,4 +1,5 @@
 import EasySpeech from "easy-speech";
+
 import type { Voices } from "./types";
 
 type EasySpeechStatus = {

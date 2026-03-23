@@ -1,4 +1,4 @@
-import { memo, type ReactNode, type JSX } from "react";
+import { type JSX,memo, type ReactNode } from "react";
 
 import s from "./styles.module.scss";
 

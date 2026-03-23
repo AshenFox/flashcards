@@ -1,8 +1,8 @@
+import { Link } from "@ui/InteractiveElement";
 import { useRouter } from "next/router";
 import { memo, ReactNode, useEffect } from "react";
 
 import s from "./styles.module.scss";
-import { Link } from "@ui/InteractiveElement";
 
 type ResultsProps = {
   title: string;

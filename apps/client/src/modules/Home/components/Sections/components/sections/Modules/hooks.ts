@@ -1,12 +1,11 @@
 import { mainGetModules } from "@api/methods/main/mainGetModules";
 import type { GetMainModulesResponseDto } from "@flashcards/common";
-import { useInfiniteQuery } from "@tanstack/react-query";
 import { useAppSelector } from "@store/store";
-import { useEffect } from "react";
-
-import { createModulesFilterSlice } from "@zustand/filters";
+import { useInfiniteQuery } from "@tanstack/react-query";
 import type { ModulesFilters } from "@zustand/filters";
+import { createModulesFilterSlice } from "@zustand/filters";
 import { createStoreHook } from "@zustand/helpers";
+import { useEffect } from "react";
 
 export const queryKey = (filters: ModulesFilters) => ["home", "modules", filters] as const;
 

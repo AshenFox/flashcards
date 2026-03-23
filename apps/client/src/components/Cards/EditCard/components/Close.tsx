@@ -1,9 +1,9 @@
 import type { CardDto } from "@flashcards/common";
-import { useSetCardEdit } from "../../state/ui";
 import { CloseIcon } from "@ui/Icons";
 import Tooltip from "@ui/Tooltip";
 import { memo, MouseEvent, useCallback } from "react";
 
+import { useSetCardEdit } from "../../state/ui";
 import s from "../styles.module.scss";
 
 type CloseProps = {

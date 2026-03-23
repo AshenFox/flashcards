@@ -1,7 +1,7 @@
 import { useCallback } from "react";
 
-import { useCardsUIStore } from "./context";
 import { useGetCardsData } from "./actions";
+import { useCardsUIStore } from "./context";
 
 // ---------------------------------------------------------------------------
 // Ui state hooks

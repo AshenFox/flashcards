@@ -43,5 +43,10 @@
     "source.fixAll.eslint": "always",
     "source.fixAll.stylelint": "always"
   },
+  "eslint.workingDirectories": [
+    "apps/client",
+    "apps/server",
+    "packages/common"
+  ],
   "stylelint.validate": ["css", "scss"]
 }

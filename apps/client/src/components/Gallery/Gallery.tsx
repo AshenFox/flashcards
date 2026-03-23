@@ -13,8 +13,8 @@ import {
 
 import Carousel from "./components/Carousel";
 import { Error as GalleryError, LoadingSpinner } from "./components/States";
-import s from "./styles.module.scss";
 import { useCardGallery } from "./hooks";
+import s from "./styles.module.scss";
 
 type GalleryProps = {
   _id: string;

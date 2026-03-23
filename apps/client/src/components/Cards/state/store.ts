@@ -1,7 +1,8 @@
 
-import { Slice } from "@zustand/types";
-import { defaultCardUI, type CardFields, type CardsUIStore } from "./types";
 import { withActionName } from "@zustand/helpers";
+import { Slice } from "@zustand/types";
+
+import { type CardFields, type CardsUIStore,defaultCardUI } from "./types";
 
 export const cardsUISlice: Slice<CardsUIStore> = (setAction, get) => {
   const set = withActionName<CardsUIStore>(setAction);

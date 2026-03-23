@@ -1,7 +1,6 @@
 import { BrokenImageIcon } from "@ui/Icons";
 import clsx from "clsx";
-import { memo, SyntheticEvent, useCallback } from "react";
-import { useRef, useState } from "react";
+import { memo, SyntheticEvent, useCallback , useRef, useState } from "react";
 
 import s from "./styles.module.scss";
 
