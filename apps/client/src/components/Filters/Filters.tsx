@@ -27,10 +27,10 @@ export type FiltersProps = {
   placeholder?: string;
   className?: string;
   alwaysReload?: boolean;
-  setFilterValue?: SetFilterValue;
-  getData: () => void;
+  setFilterValue: SetFilterValue;
+  getData?: () => void;
   resetData?: () => void;
-  resetFilters: () => void;
+  resetFilters?: () => void;
 };
 
 const Filters = ({
@@ -70,7 +70,7 @@ const Filters = ({
       // should I have a debounce if I am using tanstack query?
       timer.current = setTimeout(() => {
         resetData?.();
-        getData();
+        getData?.();
       }, 300);
     },
     [getData, resetData, setFilterValue],
@@ -78,9 +78,9 @@ const Filters = ({
 
   const onResetClick = useCallback(() => {
     if (isFilterEmpty) return;
-    resetFilters();
+    resetFilters?.();
     resetData?.();
-    getData();
+    getData?.();
   }, [isFilterEmpty, getData, resetFilters, resetData]);
 
   useLayoutEffect(() => {
