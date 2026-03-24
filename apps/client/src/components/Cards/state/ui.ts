@@ -1,7 +1,6 @@
 import { useCallback } from "react";
 
-import { useGetCardsData } from "./actions";
-import { useCardsUIStore } from "./context";
+import { useCardsCash, useCardsUIStore } from "./context";
 
 // ---------------------------------------------------------------------------
 // Ui state hooks
@@ -24,13 +23,13 @@ export const useSetCardSave = () => {
 };
 
 export const useSetCardsSavePositive = () => {
-  const getCardsData = useGetCardsData();
+  const cardsCache = useCardsCash();
 
   const getCardUI = useCardsUIStore(s => s.get);
   const setCardUI = useCardsUIStore(s => s.set);
 
   return useCallback((_id: string) => {
-    const cardsData = getCardsData();
+    const cardsData = cardsCache.getAllCards();
 
     if (!cardsData) return;
 
@@ -48,5 +47,5 @@ export const useSetCardsSavePositive = () => {
       else _id_arr.push(card._id);
     }
     _id_arr.forEach((id) => setCardUI(id, (d) => { d.save = true; }));
-  }, [getCardsData, getCardUI, setCardUI]);
+  }, [cardsCache, getCardUI, setCardUI]);
 };

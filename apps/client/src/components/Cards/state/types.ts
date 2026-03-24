@@ -1,4 +1,4 @@
-import { GetMainCardsResponseDto } from "@flashcards/common";
+import { CardDto } from "@flashcards/common";
 
 // ---------------------------------------------------------------------------
 // Card UI state (client-only fields per card)
@@ -21,4 +21,21 @@ export const defaultCardUI: CardFields = {
   save: false,
 };
 
-export type MainCardsCache = { pages: GetMainCardsResponseDto[] };
+export type CardsCache = {
+  getCard: (_id: string) => CardDto | undefined;
+  getAllCards: () => CardDto[];
+  set: (
+    recipe: (entries: CardDto[]) => void
+  ) => void;
+  invalidate: () => void;
+};
+
+// Hook type: no args => full state; with selector => selected state
+export type StoreHook<S> = {
+  (): S;
+  <T>(selector: (state: S) => T): T;
+};
+
+export type CardsUIStoreHook = StoreHook<CardsUIStore>;
+
+export type CardsCacheHook = () => CardsCache;

@@ -1,10 +1,6 @@
-
-import { queryClient } from "@api/queryClient";
-import type { CardDto,GetMainCardsResponseDto } from "@flashcards/common";
-import { withProduce } from "@zustand/helpers";
 import { useCallback } from "react";
 
-import { useCardsQueryKey } from "./context";
+import { useCardsCash } from "./context";
 import {
   useDeleteCardMutation,
   useDropCardSRMutation,
@@ -12,39 +8,6 @@ import {
   useScrapeDictionaryMutation,
   useSetCardSRMutation,
 } from "./mutations";
-import { MainCardsCache } from "./types";
-
-// ---------------------------------------------------------------------------
-// Helpers for hooks that need card data from query cache
-// ---------------------------------------------------------------------------
-
-export const useGetCardData = () => {
-  const queryKey = useCardsQueryKey();
-
-  const getCardData = useCallback((_id: string): CardDto | undefined => {
-    const data = queryClient.getQueryData<{ pages: GetMainCardsResponseDto[] }>(queryKey);
-    if (!data) return undefined;
-    for (const page of data.pages) {
-      const found = page.entries.find((c) => c._id === _id);
-      if (found) return found;
-    }
-    return undefined;
-  }, [queryClient, queryKey]);
-
-  return getCardData;
-};
-
-export const useGetCardsData = () => {
-  const queryKey = useCardsQueryKey();
-
-  const getCardsCacheData = useCallback((): CardDto[] | undefined => {
-    const data = queryClient.getQueryData<{ pages: GetMainCardsResponseDto[] }>(queryKey);
-    if (!data) return undefined;
-    return data.pages.flatMap((p) => p.entries);
-  }, [queryClient, queryKey]);
-
-  return getCardsCacheData;
-};
 
 // ---------------------------------------------------------------------------
 // Standalone action hooks (use within CardsUIProvider)
@@ -52,10 +15,10 @@ export const useGetCardsData = () => {
 
 export const useEditCard = () => {
   const editCardMut = useEditCardMutation();
-  const getCardData = useGetCardData();
+  const cardsCache = useCardsCash();
 
   return useCallback((_id: string) => {
-    const data = getCardData(_id);
+    const data = cardsCache.getCard(_id);
 
     if (!data) return;
 
@@ -66,7 +29,7 @@ export const useEditCard = () => {
       definition: data.definition,
       imgurl: data.imgurl,
     });
-  }, [editCardMut, getCardData]);
+  }, [editCardMut, cardsCache]);
 };
 
 export const useDeleteCard = () => {
@@ -90,12 +53,12 @@ export const useSetCardSR = () => {
 };
 
 export const useSetCardsSRPositive = () => {
-  const getCardsData = useGetCardsData();
+  const cardsCache = useCardsCash();
   const setCardSRMut = useSetCardSRMutation();
 
   return useCallback((_id: string) => {
-    const cardsData = getCardsData();
-    if (!cardsData) return;
+    const cardsData = cardsCache.getAllCards();
+    if (!cardsData.length) return;
 
     const _id_arr: string[] = [];
 
@@ -109,41 +72,30 @@ export const useSetCardsSRPositive = () => {
     }
 
     setCardSRMut.mutate({ _id_arr, value: true });
-  }, [setCardSRMut, getCardsData]);
+  }, [setCardSRMut, cardsCache]);
 };
 
 export const useScrapeDictionary = (_id: string) => {
   const scrapeDictMut = useScrapeDictionaryMutation(_id);
   const editCardMut = useEditCardMutation();
-
-  const queryKey = useCardsQueryKey();
-
-  const getCardData = useGetCardData();
+  const cardsCache = useCardsCash();
 
   const scrape = useCallback((value: "cod" | "urban") => {
-    const data = getCardData(_id);
+    const data = cardsCache.getCard(_id);
     if (!data) return;
 
     scrapeDictMut.mutate(
       { term: data.term, value },
       {
         onSuccess: (result) => {
-          const dto = getCardData(_id);
+          const dto = cardsCache.getCard(_id);
           if (!dto) return;
           const newDef = dto.definition + result;
 
-          queryClient.setQueryData(
-            queryKey,
-            withProduce<MainCardsCache>((draft) => {
-              for (const page of draft.pages) {
-                const entry = page.entries.find((c) => c._id === _id);
-                if (entry) {
-                  entry.definition = newDef;
-                  break;
-                }
-              }
-            }),
-          );
+          cardsCache.set(entries => {
+            const entry = entries.find(c => c._id === _id);
+            if (entry) entry.definition = newDef;
+          });
 
           editCardMut.mutate({
             _id: dto._id,
@@ -155,7 +107,7 @@ export const useScrapeDictionary = (_id: string) => {
         },
       },
     );
-  }, [_id, scrapeDictMut, editCardMut, getCardData, queryClient, queryKey]);
+  }, [_id, scrapeDictMut, editCardMut, cardsCache]);
 
   return {
     scrape,
@@ -164,39 +116,23 @@ export const useScrapeDictionary = (_id: string) => {
 };
 
 export const useControlCard = () => {
-  const queryKey = useCardsQueryKey();
+  const cardsCache = useCardsCash();
 
   return useCallback((payload: { _id: string; type: "term" | "definition"; value: string }) => {
-    queryClient.setQueryData(
-      queryKey,
-      withProduce<MainCardsCache>((draft) => {
-        for (const page of draft.pages) {
-          const entry = page.entries.find((c) => c._id === payload._id);
-          if (entry) {
-            entry[payload.type] = payload.value;
-            break;
-          }
-        }
-      }),
-    );
-  }, [queryClient, queryKey]);
+    cardsCache.set(entries => {
+      const entry = entries.find(c => c._id === payload._id);
+      if (entry) entry[payload.type] = payload.value;
+    });
+  }, [cardsCache]);
 };
 
 export const useSetCardImgurl = () => {
-  const queryKey = useCardsQueryKey();
+  const cardsCache = useCardsCash();
 
   return useCallback((payload: { _id: string; value: string }) => {
-    queryClient.setQueryData(
-      queryKey,
-      withProduce<MainCardsCache>((draft) => {
-        for (const page of draft.pages) {
-          const entry = page.entries.find((c) => c._id === payload._id);
-          if (entry) {
-            entry.imgurl = payload.value;
-            break;
-          }
-        }
-      }),
-    );
-  }, [queryClient, queryKey]);
+    cardsCache.set(entries => {
+      const entry = entries.find(c => c._id === payload._id);
+      if (entry) entry.imgurl = payload.value;
+    });
+  }, [cardsCache]);
 };

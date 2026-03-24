@@ -1,6 +1,6 @@
 export { default as Card } from "./Card";
 export { default as EditCard } from "./EditCard";
-export { EndGame,GameCard } from "./GameCard";
+export { EndGame, GameCard } from "./GameCard";
 export {
   useControlCard,
   useDeleteCard,
@@ -13,8 +13,7 @@ export {
 } from "./state/actions";
 export {
   CardsUIProvider,
-  useCardsFiltersStore,
-  useCardsQueryKey,
+  useCardsCash,
   useCardsUIStore,
 } from "./state/context";
 export { formatDictionaryResult } from "./state/helpers";
@@ -26,6 +25,6 @@ export {
   useSetCardSRMutation,
 } from "./state/mutations";
 export { cardsUISlice } from "./state/store";
-export type { CardFields } from "./state/types";
+export type { CardFields, CardsCache, CardsCacheHook, CardsUIStoreHook } from "./state/types";
 export { defaultCardUI } from "./state/types";
 export { useSetCardEdit, useSetCardSave, useSetCardsSavePositive } from "./state/ui";

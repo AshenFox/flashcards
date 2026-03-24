@@ -12,7 +12,8 @@ import React, { memo, useCallback, useEffect, useMemo } from "react";
 import s from "../styles.module.scss";
 import { CardRow } from "./CardRow";
 import {
-  queryKey,
+  getQueryKey,
+  useHomeCardsCache,
   useHomeCardsFiltersStore,
   useHomeCardsQuery,
   useHomeCardsUIStore,
@@ -61,7 +62,7 @@ const Cards = () => {
 
   const refreshCardsQuery = useCallback(() => {
     const filters = useHomeCardsFiltersStore.getState().filters;
-    queryClient.invalidateQueries({ queryKey: queryKey(filters) });
+    queryClient.invalidateQueries({ queryKey: getQueryKey(filters) });
   }, [queryClient]);
 
   const resetUIStore = useHomeCardsUIStore(s => s.reset);
@@ -123,8 +124,8 @@ const Cards = () => {
 
   return (
     <CardsUIProvider
-      useCardsFiltersStore={useHomeCardsFiltersStore}
       useCardsUIStore={useHomeCardsUIStore}
+      useCardsCash={useHomeCardsCache}
     >
       <Filters
         id="home-cards-filters"

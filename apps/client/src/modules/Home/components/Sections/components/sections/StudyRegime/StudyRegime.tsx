@@ -11,6 +11,7 @@ import s from "./styles.module.scss";
 
 const StudyRegime = () => {
   const { data, isLoading } = useSRCountQuery();
+
   const setInitialCounter = useSRStore(s => s.setInitialCounter);
   const initialized = useSRStore(s => s.initialized);
   const counter = useSRStore(s => s.counter);

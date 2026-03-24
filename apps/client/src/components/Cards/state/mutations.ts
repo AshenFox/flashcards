@@ -1,13 +1,10 @@
-import { editDeleteCard,editUpdateCard , scrapeGetDictionary,srDropCards , srSetControl  } from "@api/methods";
-import { queryClient } from "@api/queryClient";
+import { editDeleteCard, editUpdateCard, scrapeGetDictionary, srDropCards, srSetControl } from "@api/methods";
 import { saveLastUpdate } from "@store/helper-functions";
 import { useMutation } from "@tanstack/react-query";
-import { withProduce } from "@zustand/helpers";
 import sanitize from "sanitize-html";
 
-import { useCardsQueryKey } from "./context";
+import { useCardsCash } from "./context";
 import { formatDictionaryResult } from "./helpers";
-import { MainCardsCache } from "./types";
 
 // ---------------------------------------------------------------------------
 // Mutation hooks
@@ -21,45 +18,38 @@ export const useEditCardMutation = () => {
 };
 
 export const useDeleteCardMutation = () => {
-  const queryKey = useCardsQueryKey();
+  const cardsCache = useCardsCash();
 
   return useMutation({
     mutationFn: (_id: string) => editDeleteCard(_id),
     onSuccess: () => {
       saveLastUpdate();
-      queryClient.invalidateQueries({ queryKey });
+      cardsCache.invalidate();
     },
   });
 };
 
 export const useDropCardSRMutation = () => {
-  const queryKey = useCardsQueryKey();
+  const cardsCache = useCardsCash();
 
   return useMutation({
     mutationFn: (_id: string) => srDropCards([_id]),
     onSuccess: (data, _id) => {
       saveLastUpdate();
-      queryClient.setQueryData(
-        queryKey,
-        withProduce<MainCardsCache>((draft) => {
-          for (const page of draft.pages) {
-            const entry = page.entries.find((c) => c._id === _id);
-            if (entry) {
-              entry.stage = data.stage;
-              entry.nextRep = data.nextRep;
-              entry.prevStage = data.prevStage;
-              entry.lastRep = data.lastRep;
-              break;
-            }
-          }
-        }),
-      );
+      cardsCache.set(entries => {
+        const entry = entries.find(c => c._id === _id);
+        if (!entry) return;
+        entry.stage = data.stage;
+        entry.nextRep = data.nextRep;
+        entry.prevStage = data.prevStage;
+        entry.lastRep = data.lastRep;
+      });
     },
   });
 };
 
 export const useSetCardSRMutation = () => {
-  const queryKey = useCardsQueryKey();
+  const cardsCache = useCardsCash();
 
   return useMutation({
     mutationFn: ({ _id_arr, value }: { _id_arr: string[]; value: boolean }) =>
@@ -67,16 +57,11 @@ export const useSetCardSRMutation = () => {
     onSuccess: (_, { _id_arr, value }) => {
       saveLastUpdate();
       const idSet = new Set(_id_arr);
-      queryClient.setQueryData(
-        queryKey,
-        withProduce<MainCardsCache>((draft) => {
-          for (const page of draft.pages) {
-            for (const entry of page.entries) {
-              if (idSet.has(entry._id)) entry.studyRegime = value;
-            }
-          }
-        }),
-      );
+      cardsCache.set(entries => {
+        for (const entry of entries) {
+          if (idSet.has(entry._id)) entry.studyRegime = value;
+        }
+      });
     },
   });
 };

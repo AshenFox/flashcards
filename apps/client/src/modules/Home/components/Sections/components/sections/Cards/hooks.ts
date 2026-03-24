@@ -1,18 +1,19 @@
 import { mainGetCards } from "@api/methods/main/mainGetCards";
-import { cardsUISlice } from "@components/Cards";
-import type { GetMainCardsResponseDto } from "@flashcards/common";
+import { queryClient } from "@api/queryClient";
+import { CardsCache, CardsCacheHook, cardsUISlice } from "@components/Cards";
+import type { CardDto, GetMainCardsResponseDto } from "@flashcards/common";
 import { useAppSelector } from "@store/store";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import type { CardsFilters } from "@zustand/filters";
 import { createCardsFilterSlice } from "@zustand/filters";
-import { createStoreHook } from "@zustand/helpers";
-import { useEffect } from "react";
+import { createStoreHook, withProduce } from "@zustand/helpers";
+import { useEffect, useMemo } from "react";
 
 // ---------------------------------------------------------------------------
 // Infinite query
 // ---------------------------------------------------------------------------
 
-export const queryKey = (filters: CardsFilters) => ["home", "cards", filters] as const;
+export const getQueryKey = (filters: CardsFilters) => ["home", "cards", filters] as const;
 
 export type HomeCardsQueryResult = ReturnType<typeof useHomeCardsQuery>;
 
@@ -22,7 +23,7 @@ export const useHomeCardsQuery = () => {
     const setPagination = useHomeCardsFiltersStore((state) => state.setPagination);
 
     const query = useInfiniteQuery({
-        queryKey: queryKey(filters),
+        queryKey: getQueryKey(filters),
         queryFn: ({ pageParam }: { pageParam: number }) =>
             mainGetCards({ ...filters, page: pageParam }),
         getNextPageParam: (lastPage: GetMainCardsResponseDto) =>
@@ -54,7 +55,7 @@ export const useHomeCardsQuery = () => {
 export const useHomeCardsFiltersStore = createStoreHook({
     storeName: "HomeCardsFilters",
     instanceKey: "home-cards",
-    slice: createCardsFilterSlice({ queryKey }),
+    slice: createCardsFilterSlice({ queryKey: getQueryKey }),
 });
 
 export const useHomeCardsUIStore = createStoreHook({
@@ -62,3 +63,46 @@ export const useHomeCardsUIStore = createStoreHook({
     instanceKey: "home-cards",
     slice: cardsUISlice,
 });
+
+// ---------------------------------------------------------------------------
+// Cache
+// ---------------------------------------------------------------------------
+
+export type MainCardsCache = { pages: GetMainCardsResponseDto[] };
+
+const getEntries = (data: MainCardsCache | undefined): CardDto[] => {
+    if (!data) return [];
+    return data.pages.flatMap(page => page.entries);
+};
+
+
+export const useHomeCardsCache: CardsCacheHook = () => {
+    const filters = useHomeCardsFiltersStore(state => state.filters);
+    const queryKey = useMemo(() => getQueryKey(filters), [filters]);
+
+    const cardsCache: CardsCache = useMemo(() => ({
+        getCard: (_id: string) => {
+            const data = queryClient.getQueryData<MainCardsCache>(queryKey);
+            const entries = getEntries(data);
+            return entries.find(card => card._id === _id);
+        },
+        getAllCards: () => {
+            const data = queryClient.getQueryData<MainCardsCache>(queryKey);
+            return getEntries(data);
+        },
+        set: (recipe: (entries: CardDto[]) => void) => {
+            queryClient.setQueryData(
+                queryKey,
+                withProduce<MainCardsCache>(draft => {
+                    recipe(draft.pages.flatMap(page => page.entries));
+                }),
+            );
+        },
+        invalidate: () => {
+            queryClient.invalidateQueries({ queryKey });
+        },
+    }), [queryKey]);
+
+
+    return cardsCache;
+};
