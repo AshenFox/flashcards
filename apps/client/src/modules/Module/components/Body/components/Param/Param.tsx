@@ -1,16 +1,22 @@
 import Filters, { FilterData, SetFilterValue } from "@components/Filters";
-import { useActions, useAppSelector } from "@store/hooks";
-import { defaultModuleFilters } from "@store/reducers/main/initState";
+import { useQueryClient } from "@tanstack/react-query";
 import Skeleton from "@ui/Skeleton";
+import { defaultModuleCardsFilters } from "@zustand/filters";
 import { memo, useCallback } from "react";
 
+import {
+  getQueryKey,
+  useModuleCardsUIStore,
+  useModuleFiltersStore,
+  useModuleQuery,
+} from "../../../../hooks";
 import s from "./styles.module.scss";
 
 const filtersData: FilterData[] = [
   {
     id: "created",
     label: "Date Order",
-    defaultValue: defaultModuleFilters.created,
+    defaultValue: defaultModuleCardsFilters.created,
     options: [
       { value: "no-order", label: "No order" },
       { value: "newest", label: "Newest" },
@@ -20,7 +26,7 @@ const filtersData: FilterData[] = [
   {
     id: "sr",
     label: "SR",
-    defaultValue: defaultModuleFilters.sr,
+    defaultValue: defaultModuleCardsFilters.sr,
     options: [
       { value: "all", label: "All" },
       { value: "in-lowest", label: "In Lowest" },
@@ -31,7 +37,7 @@ const filtersData: FilterData[] = [
   {
     id: "by",
     label: "By",
-    defaultValue: defaultModuleFilters.by,
+    defaultValue: defaultModuleCardsFilters.by,
     options: [
       { value: "term", label: "Term" },
       { value: "definition", label: "Definition" },
@@ -40,46 +46,46 @@ const filtersData: FilterData[] = [
 ];
 
 const Param = () => {
-  const _id = useAppSelector(s => s.main.module?._id);
-  const number = useAppSelector(s => s.main.module?.cards.length);
-  const filters = useAppSelector(s => s.main.sections.module.filters);
-  const loading = useAppSelector(s => s.main.sections.module.loading);
+  const { data, isLoading, isPlaceholderData } = useModuleQuery();
 
-  const {
-    setSectionFilter,
-    resetSectionFilters,
-    resetModuleCardsData,
-    getModule,
-  } = useActions();
+  const currentModule = data?.module ?? null;
+  const moduleId = currentModule?._id;
+  const cardCount = currentModule?.cards.length ?? 0;
+  const initialLoading = isLoading && !isPlaceholderData;
+
+  const queryClient = useQueryClient();
+  const filters = useModuleFiltersStore(state => state.filters);
+  const setFilter = useModuleFiltersStore(state => state.setFilter);
+  const resetFilters = useModuleFiltersStore(state => state.resetFilters);
+  const resetUIStore = useModuleCardsUIStore(state => state.reset);
 
   const setFilterValue = useCallback<SetFilterValue>(
     (filter, value) => {
-      setSectionFilter({
-        section: "module",
-        filter,
-        value,
-      });
+      setFilter(filter as keyof typeof filters, value);
     },
-    [setSectionFilter],
+    [setFilter],
   );
 
-  const resetFilters = useCallback(() => {
-    resetSectionFilters("module");
-  }, [resetSectionFilters]);
-
   const getData = useCallback(() => {
-    getModule(_id);
-  }, [_id, getModule]);
+    const currentFilters = useModuleFiltersStore.getState().filters;
+    queryClient.invalidateQueries({
+      queryKey: getQueryKey(moduleId, currentFilters),
+    });
+  }, [moduleId, queryClient]);
+
+  const resetData = useCallback(() => {
+    resetUIStore();
+  }, [resetUIStore]);
 
   return (
     <div className={s.param}>
       <div className={s.count}>
-        {loading && !number ? (
+        {initialLoading && !cardCount ? (
           <Skeleton width={"20rem"} />
         ) : (
           <>
             <span>{"Terms in this set ( "}</span>
-            <span>{number ? number : 0}</span>
+            <span>{cardCount}</span>
             <span>{" )"}</span>
           </>
         )}
@@ -93,7 +99,7 @@ const Param = () => {
         alwaysReload
         setFilterValue={setFilterValue}
         getData={getData}
-        resetData={resetModuleCardsData}
+        resetData={resetData}
         resetFilters={resetFilters}
       />
     </div>

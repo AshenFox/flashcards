@@ -1,7 +1,7 @@
 import { withActionName } from "@zustand/helpers";
 
 import { type Slice } from "../types";
-import { CardsFilters, defaultCardsFilters, DefaultFilters, defaultModulesFilters, defaultPagination, FilterStore, FilterValue, ModulesFilters, QueryKey } from "./types";
+import { CardsFilters, defaultCardsFilters, DefaultFilters, defaultModuleCardsFilters, defaultModulesFilters, defaultPagination, FilterStore, FilterValue, ModuleCardsFilters, ModulesFilters, QueryKey } from "./types";
 
 type CreateFiltersSliceOptions<Filters extends DefaultFilters> = {
   queryKey: QueryKey<Filters>;
@@ -48,6 +48,11 @@ export const createModulesFilterSlice = ({ queryKey }: { queryKey: QueryKey<Modu
 
 export const createCardsFilterSlice = ({ queryKey }: { queryKey: QueryKey<CardsFilters> }) => createFiltersSlice({
   defaultFilters: defaultCardsFilters,
+  queryKey,
+});
+
+export const createModuleCardsFilterSlice = ({ queryKey }: { queryKey: QueryKey<ModuleCardsFilters> }) => createFiltersSlice({
+  defaultFilters: defaultModuleCardsFilters,
   queryKey,
 });
 

@@ -15,7 +15,7 @@ const NotFound = ({
   nothingMsg,
   notFoundMsg,
 }: NotFoundProps) => {
-  let content: ReactNode;
+  let content: ReactNode = null;
 
   if (notFoundMsg && !resultsFound) content = <p>{notFoundMsg(filterValue)}</p>;
 

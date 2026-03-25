@@ -1,54 +1,62 @@
-import { useActions, useAppSelector } from "@store/hooks";
+import { useModuleQuery } from "@modules/Module/hooks";
+import { useActions } from "@store/hooks";
 import ConfirmPopup from "@ui/ConfirmPopup";
 import DateStr from "@ui/DateStr";
 import { DeleteIcon, EditIcon } from "@ui/Icons";
 import Skeleton from "@ui/Skeleton";
 import Tooltip from "@ui/Tooltip";
 import Link from "next/link";
-import { memo, MouseEvent, useCallback } from "react";
+import { memo, MouseEvent, useCallback, useState } from "react";
 
 import SR from "./components/SR";
 import SRDrop from "./components/SRDrop";
+import { useDropAllCardsSR } from "./hooks";
 import s from "./styles.module.scss";
 
 const Info = () => {
-  const { changeModal, toggleModal, setModuleQuestion, dropCardsSR } =
-    useActions();
+  const { data, isLoading, isPlaceholderData } = useModuleQuery();
+  const currentModule = data?.module;
+  const cards = data?.cards.entries ?? [];
+  const initialLoading = isLoading && !isPlaceholderData;
 
-  const author = useAppSelector(s => s.main.module?.author);
-  const _id = useAppSelector(s => s.main.module?._id);
-  const creation_date = useAppSelector(s => s.main.module?.creation_date);
-  const question = useAppSelector(s => s.main.module?.question);
-  const loading = useAppSelector(s => s.main.sections?.module.loading);
+  const { changeModal, toggleModal } = useActions();
+  const dropAllCardsSR = useDropAllCardsSR();
+
+  const [question, setQuestion] = useState(false);
 
   const openModal = (value: "delete") => (_e: MouseEvent<HTMLDivElement>) => {
     changeModal({ active_modal: value });
     toggleModal();
   };
 
-  const setActive = useCallback(
-    (value: boolean) => {
-      setModuleQuestion({ value });
-    },
-    [setModuleQuestion],
-  );
+  const setActive = useCallback((value: boolean) => {
+    setQuestion(value);
+  }, []);
+
+  const onActivateQuestion = useCallback(() => {
+    setQuestion(true);
+  }, []);
 
   return (
     <div className={s.info}>
       <div className={s.author}>
         <span className={s.created}>
-          {loading && !creation_date ? (
+          {initialLoading && !currentModule?.creation_date ? (
             <Skeleton width={"15rem"} />
           ) : (
-            !!creation_date && (
+            !!currentModule?.creation_date && (
               <>
-                Created <DateStr date={creation_date} /> by
+                Created <DateStr date={currentModule.creation_date} /> by
               </>
             )
           )}
         </span>
         <span className={s.nickname}>
-          {loading && !author ? <Skeleton width={"15rem"} /> : author}
+          {initialLoading && !currentModule?.author ? (
+            <Skeleton width={"15rem"} />
+          ) : (
+            currentModule?.author
+          )}
         </span>
       </div>
 
@@ -57,12 +65,16 @@ const Info = () => {
           className={s.confirm}
           active={question}
           setActive={setActive}
-          onConfirm={dropCardsSR}
+          onConfirm={dropAllCardsSR}
           question="Drop all cards study progress?"
         />
-        <SRDrop />
-        <SR />
-        <Link href={`/edit/${_id}`}>
+        <SRDrop
+          moduleId={currentModule?._id}
+          question={question}
+          onActivate={onActivateQuestion}
+        />
+        <SR cards={cards} loading={initialLoading} />
+        <Link href={`/edit/${currentModule?._id}`}>
           <div className={s.nav_item} data-tooltip-id="edit-module">
             <EditIcon width="25" height="25" />
           </div>

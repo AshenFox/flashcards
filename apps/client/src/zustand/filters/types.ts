@@ -20,6 +20,11 @@ export type CardsFilters = DefaultFilters & {
   sr?: "all" | "in-lowest" | "in-highest" | "out";
 };
 
+export type ModuleCardsFilters = DefaultFilters & {
+  created?: "newest" | "oldest" | "no-order";
+  by?: "term" | "definition";
+  sr?: "all" | "in-lowest" | "in-highest" | "out";
+};
 
 export const defaultModulesFilters: ModulesFilters = {
   search: "",
@@ -30,6 +35,13 @@ export const defaultModulesFilters: ModulesFilters = {
 export const defaultCardsFilters: CardsFilters = {
   search: "",
   created: "newest",
+  by: "term",
+  sr: "all",
+};
+
+export const defaultModuleCardsFilters: ModuleCardsFilters = {
+  search: "",
+  created: "no-order",
   by: "term",
   sr: "all",
 };

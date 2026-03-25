@@ -3,7 +3,14 @@ import SRInfoTooltip from "@components/SRIndicator/SRInfoTooltip";
 import type { CardDto } from "@flashcards/common";
 import Switch from "@ui/Switch";
 import clsx from "clsx";
-import { memo, MouseEvent, TouchEvent, useCallback, useRef } from "react";
+import {
+  memo,
+  MouseEvent,
+  TouchEvent,
+  useCallback,
+  useMemo,
+  useRef,
+} from "react";
 
 import { useSetCardSR, useSetCardsSRPositive } from "../../../state/actions";
 import s from "./styles.module.scss";
@@ -44,18 +51,22 @@ const SR = ({ data }: SRProps) => {
 
   const id = `card_sr_${_id}`;
 
+  const switchIcon = useMemo(() => {
+    return (
+      <div>
+        <SRIndicator stage={data.stage} active={studyRegime} small />
+        <SRInfoTooltip id={id} data={data} />
+      </div>
+    );
+  }, [studyRegime, id, data]);
+
   return (
     <Switch
       id={id}
       className={clsx(s.controls_item, s.sr)}
       active={studyRegime}
       small
-      icon={
-        <>
-          <SRIndicator stage={data.stage} active={studyRegime} small />
-          <SRInfoTooltip id={id} data={data} />
-        </>
-      }
+      icon={switchIcon}
       onMouseDown={down}
       onMouseUp={up}
       onTouchStart={down}
