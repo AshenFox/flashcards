@@ -23,6 +23,7 @@ export const getQueryKey = (moduleId: string | undefined, filters: ModuleCardsFi
 
 export type ModuleQueryResult = ReturnType<typeof useModuleQuery>;
 
+// to-do break up this query into two queries: one for the module and one for the cards
 export const useModuleQuery = () => {
   const router = useRouter();
   const { _id } = router.query;

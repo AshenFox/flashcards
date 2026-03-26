@@ -3,18 +3,20 @@ import { memo, ReactNode } from "react";
 import s from "./styles.module.scss";
 
 type NotFoundProps = {
-  resultsFound: number;
   filterValue: string;
+  resultsFound?: number;
   nothingMsg?: ReactNode;
   notFoundMsg?: (filterValue: string) => ReactNode;
 };
 
 const NotFound = ({
-  resultsFound,
   filterValue,
+  resultsFound = null,
   nothingMsg,
   notFoundMsg,
 }: NotFoundProps) => {
+  if (resultsFound === null) return null;
+
   let content: ReactNode = null;
 
   if (notFoundMsg && !resultsFound) content = <p>{notFoundMsg(filterValue)}</p>;

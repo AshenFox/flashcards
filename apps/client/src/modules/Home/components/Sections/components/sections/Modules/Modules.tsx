@@ -50,6 +50,7 @@ const filtersData: FilterData[] = [
 
 const Modules = () => {
   const queryClient = useQueryClient();
+  const pagination = useHomeModulesFiltersStore(state => state.pagination);
   const filters = useHomeModulesFiltersStore(state => state.filters);
   const setFilter = useHomeModulesFiltersStore(state => state.setFilter);
   const resetFilters = useHomeModulesFiltersStore(state => state.resetFilters);
@@ -67,6 +68,7 @@ const Modules = () => {
     [data],
   );
   const draft = data?.pages[0]?.draft ?? null;
+  const resultsFound = pagination?.number;
 
   const virtualizer = useWindowVirtualizer({
     count: modules.length,
@@ -151,7 +153,7 @@ const Modules = () => {
       <ScrollTop virtualizer={virtualizer} />
       {!loading && (
         <NotFound
-          resultsFound={modules.length}
+          resultsFound={resultsFound}
           filterValue={search}
           notFoundMsg={value =>
             value ? (

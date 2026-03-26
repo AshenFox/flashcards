@@ -9,6 +9,7 @@ import s from "./styles.module.scss";
 const CardsContainer = () => {
   const { data, isFetching, isLoading, isPlaceholderData } = useModuleQuery();
   const cards = data?.cards.entries ?? [];
+  const resultsFound = data?.cards.entries.length;
 
   const search = useModuleFiltersStore(s => s.filters.search);
 
@@ -18,10 +19,10 @@ const CardsContainer = () => {
         cards.map(card => (
           <CardRow key={card._id} data={card} loading={isFetching} />
         ))}
-      {isPlaceholderData && <ScrollLoader active={isPlaceholderData} />}
+      <ScrollLoader active={isLoading || isPlaceholderData} />
       {!isPlaceholderData && !isLoading && (
         <NotFound
-          resultsFound={cards.length}
+          resultsFound={resultsFound}
           filterValue={search}
           notFoundMsg={value =>
             value ? (

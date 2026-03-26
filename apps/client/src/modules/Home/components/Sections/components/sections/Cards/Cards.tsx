@@ -54,6 +54,7 @@ const filtersData: FilterData[] = [
 const Cards = () => {
   const queryClient = useQueryClient();
   const filters = useHomeCardsFiltersStore(state => state.filters);
+  const pagination = useHomeCardsFiltersStore(state => state.pagination);
   const setFilter = useHomeCardsFiltersStore(state => state.setFilter);
   const resetFilters = useHomeCardsFiltersStore(state => state.resetFilters);
 
@@ -71,6 +72,7 @@ const Cards = () => {
     () => data?.pages.flatMap(p => p.entries) ?? [],
     [data],
   );
+  const resultsFound = pagination?.number;
 
   const virtualizer = useWindowVirtualizer({
     count: rawCards.length,
@@ -164,7 +166,7 @@ const Cards = () => {
       <ScrollTop virtualizer={virtualizer} />
       {!loading && (
         <NotFound
-          resultsFound={rawCards.length}
+          resultsFound={resultsFound}
           filterValue={search}
           notFoundMsg={value =>
             value ? (

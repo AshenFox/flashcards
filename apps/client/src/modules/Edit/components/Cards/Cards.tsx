@@ -35,7 +35,7 @@ const Cards = () => {
                 number={arr.length}
               />
             ))}
-            {loading && <ScrollLoader active={loading} />}
+            <ScrollLoader active={loading} />
           </div>
           {!!formatted_cards.length && <AddCard position="end" />}
         </Container>
