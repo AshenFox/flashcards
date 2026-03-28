@@ -11,7 +11,7 @@ import Study from "./components/Study/Study";
 import s from "./styles.module.scss";
 
 const Header = () => {
-  const { data, isLoading, isPlaceholderData } = useModuleQuery();
+  const { data, isLoading } = useModuleQuery();
   const title = data?.module?.title;
 
   return (
@@ -21,7 +21,7 @@ const Header = () => {
           <div className={s.top}>
             <div className={clsx(s.title, !title && s.noTitle)}>
               <h1>
-                {isLoading && !isPlaceholderData && !title ? (
+                {isLoading && !title ? (
                   <Skeleton width={"15rem"} />
                 ) : (
                   title

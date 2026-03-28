@@ -1,47 +1,18 @@
 import { DefaultOptions } from "@common/types";
-import {
-  Card,
-  CardDto,
-  Module,
-  ModuleCreator,
-  ModuleDto,
-} from "@common/types/entities";
+import { Module, ModuleCreator, ModuleDto } from "@common/types/entities";
 
-import {
-  PagedDataCreator,
-  Pagination,
-  PaginationCreator,
-  PaginationDto,
-} from "../pagedData";
-
-type QueryCreator = {
-  _id?: string;
-  search?: string;
-  created?: "newest" | "oldest" | "no-order";
-  by?: "term" | "definition";
-  sr?: "all" | "in-lowest" | "in-highest" | "out";
-};
-
-type ResponseCreator<
-  Module extends ModuleCreator<DefaultOptions>,
-  PagedData extends PagedDataCreator<unknown, PaginationCreator>,
-> = {
-  module: Module;
-  cards: PagedData;
+type ResponseCreator<ModuleType extends ModuleCreator<DefaultOptions>> = {
+  module: ModuleType;
 };
 
 // server types
-export type GetMainModuleQuery = QueryCreator;
-export type GetMainModulePageable = PagedDataCreator<Card, Pagination>;
-export type GetMainModuleResponse = ResponseCreator<
-  Module,
-  GetMainModulePageable
->;
+export type GetMainModuleQuery = {
+  _id?: string;
+};
+export type GetMainModuleResponse = ResponseCreator<Module>;
 
 // api types
-export type GetMainModuleQueryDto = QueryCreator;
-export type GetMainModulePageableDto = PagedDataCreator<CardDto, PaginationDto>;
-export type GetMainModuleResponseDto = ResponseCreator<
-  ModuleDto,
-  GetMainModulePageableDto
->;
+export type GetMainModuleQueryDto = {
+  _id?: string;
+};
+export type GetMainModuleResponseDto = ResponseCreator<ModuleDto>;

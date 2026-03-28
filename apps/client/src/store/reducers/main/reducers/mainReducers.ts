@@ -30,12 +30,9 @@ export const setModule: MainCaseReducer<GetMainModuleResponseDto> = (
   state,
   action,
 ) => {
-  const { module, cards } = action.payload;
+  const { module } = action.payload;
 
   state.module = { ...module, ...module_fields };
-  state.cards = cardArrToObj(cards.entries);
-
-  state.sections.module.pagination = cards.pagination;
 };
 
 export const setModuleCards: MainCaseReducer<GetMainModuleCardsResponseDto> = (
@@ -43,6 +40,7 @@ export const setModuleCards: MainCaseReducer<GetMainModuleCardsResponseDto> = (
   action,
 ) => {
   state.cards = { ...state.cards, ...cardArrToObj(action.payload.entries) };
+  state.sections.module.pagination = action.payload.pagination;
 };
 
 export const setSectionFilter: MainCaseReducer<{

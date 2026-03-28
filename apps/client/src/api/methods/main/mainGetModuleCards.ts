@@ -1,13 +1,16 @@
-import { GetMainModuleCardsResponseDto } from "@flashcards/common";
+import {
+  GetMainModuleCardsQueryDto,
+  GetMainModuleCardsResponseDto,
+} from "@flashcards/common";
 
 import axiosInstance from "../../axiosInstance";
 
 export const mainGetModuleCards = async (
-  _id: string,
+  params: GetMainModuleCardsQueryDto,
 ): Promise<GetMainModuleCardsResponseDto> => {
   const { data } = await axiosInstance.get<GetMainModuleCardsResponseDto>(
     "main/module/cards",
-    { params: { _id } },
+    { params },
   );
   return data;
 };

@@ -1,4 +1,7 @@
-import { useModuleQuery } from "@modules/Module/hooks";
+import {
+  useModuleCardsQuery,
+  useModuleQuery,
+} from "@modules/Module/hooks";
 import { useActions } from "@store/hooks";
 import ConfirmPopup from "@ui/ConfirmPopup";
 import DateStr from "@ui/DateStr";
@@ -14,10 +17,11 @@ import { useDropAllCardsSR } from "./hooks";
 import s from "./styles.module.scss";
 
 const Info = () => {
-  const { data, isLoading, isPlaceholderData } = useModuleQuery();
-  const currentModule = data?.module;
-  const cards = data?.cards.entries ?? [];
-  const initialLoading = isLoading && !isPlaceholderData;
+  const { data: moduleData, isLoading: moduleLoading } = useModuleQuery();
+  const { data: cardsData, isLoading: cardsLoading } = useModuleCardsQuery();
+
+  const currentModule = moduleData?.module;
+  const cards = cardsData?.entries ?? [];
 
   const { changeModal, toggleModal } = useActions();
   const dropAllCardsSR = useDropAllCardsSR();
@@ -41,7 +45,7 @@ const Info = () => {
     <div className={s.info}>
       <div className={s.author}>
         <span className={s.created}>
-          {initialLoading && !currentModule?.creation_date ? (
+          {moduleLoading && !currentModule?.creation_date ? (
             <Skeleton width={"15rem"} />
           ) : (
             !!currentModule?.creation_date && (
@@ -52,7 +56,7 @@ const Info = () => {
           )}
         </span>
         <span className={s.nickname}>
-          {initialLoading && !currentModule?.author ? (
+          {moduleLoading && !currentModule?.author ? (
             <Skeleton width={"15rem"} />
           ) : (
             currentModule?.author
@@ -73,7 +77,7 @@ const Info = () => {
           question={question}
           onActivate={onActivateQuestion}
         />
-        <SR cards={cards} loading={initialLoading} />
+        <SR cards={cards} loading={cardsLoading} />
         <Link href={`/edit/${currentModule?._id}`}>
           <div className={s.nav_item} data-tooltip-id="edit-module">
             <EditIcon width="25" height="25" />

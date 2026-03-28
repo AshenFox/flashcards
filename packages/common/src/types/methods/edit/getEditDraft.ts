@@ -1,43 +1,18 @@
 import { DefaultOptions } from "@common/types";
-import {
-  Card,
-  CardDto,
-  Module,
-  ModuleCreator,
-  ModuleDto,
-} from "@common/types/entities";
+import { Module, ModuleCreator, ModuleDto } from "@common/types/entities";
 
-import {
-  PagedDataCreator,
-  Pagination,
-  PaginationCreator,
-  PaginationDto,
-} from "../pagedData";
+type ResponseCreator<ModuleType extends ModuleCreator<DefaultOptions>> = {
+  module: ModuleType;
+};
 
 type QueryCreator = {
   _id?: string;
 };
 
-type ResponseCreator<
-  Module extends ModuleCreator<DefaultOptions>,
-  PagedData extends PagedDataCreator<any, PaginationCreator>,
-> = {
-  module: Module;
-  cards: PagedData;
-};
-
 // server types
 export type GetEditDraftQuery = QueryCreator;
-export type GetEditDraftPageable = PagedDataCreator<Card, Pagination>;
-export type GetEditDraftResponse = ResponseCreator<
-  Module,
-  GetEditDraftPageable
->;
+export type GetEditDraftResponse = ResponseCreator<Module>;
 
 // api types
 export type GetEditDraftQueryDto = QueryCreator;
-export type GetEditDraftPageableDto = PagedDataCreator<CardDto, PaginationDto>;
-export type GetEditDraftResponseDto = ResponseCreator<
-  ModuleDto,
-  GetEditDraftPageableDto
->;
+export type GetEditDraftResponseDto = ResponseCreator<ModuleDto>;

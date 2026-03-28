@@ -5,15 +5,15 @@ import Body from "./components/Body/Body";
 import Header from "./components/Header/Header";
 import {
   useModuleCardsCache,
+  useModuleCardsQuery,
   useModuleCardsUIStore,
   useModuleFiltersStore,
-  useModuleQuery,
   useSyncModulePagination,
 } from "./hooks";
 
 const Module = () => {
-  const { data } = useModuleQuery();
-  useSyncModulePagination(data);
+  const { data: cardsData } = useModuleCardsQuery();
+  useSyncModulePagination(cardsData);
 
   const resetFilters = useModuleFiltersStore(s => s.resetFilters);
   const resetUI = useModuleCardsUIStore(s => s.reset);

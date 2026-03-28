@@ -192,7 +192,7 @@ router.get(
 );
 
 // @route ------ GET api/main/module
-// @desc ------- Get module with cards
+// @desc ------- Get module (no cards)
 // @access ----- Private
 
 type GetMainModuleReq = Request<any, any, any, GetMainModuleQuery>;
@@ -208,13 +208,7 @@ router.get(
   query,
   async (req: GetMainModuleReq, res: GetMainModuleRes) => {
     try {
-      const {
-        _id: module_id,
-        search,
-        created = "newest",
-        by = "term",
-        sr,
-      } = res.locals.query;
+      const { _id: module_id } = res.locals.query;
 
       const _id = res.locals.user._id;
 
@@ -227,57 +221,8 @@ router.get(
         throw new Error(`Module ${module_id} has not been found.`);
       if (foundModule.draft) throw new Error("Can not get draft");
 
-      const filterObj: FilterQuery<Card> = {
-        moduleID: module_id,
-        author_id: _id,
-      };
-
-      const sortObj: CardSortObj = {};
-
-      if (sr === "in-highest") sortObj.stage = -1;
-      if (sr === "in-lowest") sortObj.stage = 1;
-      if (created === "newest") sortObj.creation_date = -1;
-      if (created === "oldest") sortObj.creation_date = 1;
-
-      const all = await cardModel.countDocuments(filterObj);
-
-      if (search)
-        filterObj[by] = {
-          $regex: filterRegex(search),
-        };
-
-      if (sr === "in-lowest" || sr === "in-highest") {
-        filterObj.studyRegime = true;
-      } else if (sr === "out") {
-        filterObj.studyRegime = false;
-      }
-
-      const cards =
-        (
-          await moduleModel.populate<{ cards: Card[] }>(
-            foundModule.toObject<Module>(),
-            {
-              path: "cards",
-              match: filterObj,
-              options: {
-                sort: Object.keys(sortObj).length > 0 ? sortObj : undefined,
-              },
-            },
-          )
-        )?.cards ?? [];
-      const cards_number = await cardModel.countDocuments(filterObj);
-
       res.status(200).json({
         module: foundModule,
-        cards: {
-          entries: cards,
-          pagination: {
-            page: 0,
-            number: cards_number,
-            end: true,
-            all,
-          },
-        },
       });
     } catch (err) {
       console.error(err);
@@ -287,7 +232,7 @@ router.get(
 );
 
 // @route ------ GET api/main/module/cards
-// @desc ------- Get only the module's cards
+// @desc ------- Get the module's cards (filter/sort; drafts allowed)
 // @access ----- Private
 
 type GetMainModuleCardsReq = Request<any, any, any, GetMainModuleCardsQuery>;
@@ -303,26 +248,63 @@ router.get(
   query,
   async (req: GetMainModuleCardsReq, res: GetMainModuleCardsRes) => {
     try {
-      const { _id: module_id } = res.locals.query;
+      const { _id: module_id, ...cardsQuery } = res.locals.query;
 
-      const _id = res.locals.user._id;
+      const author_id = res.locals.user._id;
+
+      const foundModule = await moduleModel.findOne({
+        _id: module_id,
+        author_id,
+      });
+
+      if (!foundModule)
+        throw new Error(`Module ${module_id} has not been found.`);
+
+      const {
+        search,
+        created = "newest",
+        by = "term",
+        sr,
+      } = cardsQuery;
+
+      const filterAll: FilterQuery<Card> = {
+        moduleID: module_id,
+        author_id,
+      };
 
       const filterObj: FilterQuery<Card> = {
         moduleID: module_id,
-        author_id: _id,
+        author_id,
       };
 
-      const sortObj: CardSortObj = { creation_date: 1 };
+      const sortObj: CardSortObj = {};
 
-      const all = await cardModel.countDocuments(filterObj);
+      if (sr === "in-highest") sortObj.stage = -1;
+      if (sr === "in-lowest") sortObj.stage = 1;
+      if (created === "newest") sortObj.creation_date = -1;
+      if (created === "oldest") sortObj.creation_date = 1;
 
-      const cards = await cardModel.find(filterObj).sort(sortObj);
+      if (search)
+        filterObj[by] = {
+          $regex: filterRegex(search),
+        };
+
+      if (sr === "in-lowest" || sr === "in-highest") filterObj.studyRegime = true;
+      else if (sr === "out") filterObj.studyRegime = false;
+
+
+      const all = await cardModel.countDocuments(filterAll);
+      const cards_number = await cardModel.countDocuments(filterObj);
+
+      let cardQuery = cardModel.find(filterObj);
+      if (Object.keys(sortObj).length > 0) cardQuery = cardQuery.sort(sortObj);
+      const cards = await cardQuery;
 
       res.status(200).json({
         entries: cards,
         pagination: {
           page: 0,
-          number: all,
+          number: cards_number,
           end: true,
           all,
         },

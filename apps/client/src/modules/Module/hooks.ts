@@ -1,9 +1,13 @@
 import { mainGetModule } from "@api/methods/main/mainGetModule";
+import { mainGetModuleCards } from "@api/methods/main/mainGetModuleCards";
 import { queryClient } from "@api/queryClient";
 import { CardsCache, CardsCacheHook, cardsUISlice } from "@components/Cards";
-import type { CardDto, GetMainModuleResponseDto } from "@flashcards/common";
+import type {
+  CardDto,
+  GetMainModuleCardsResponseDto,
+} from "@flashcards/common";
 import { useAppSelector } from "@store/store";
-import { keepPreviousData, useQuery } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import type { ModuleCardsFilters } from "@zustand/filters";
 import { createModuleCardsFilterSlice } from "@zustand/filters";
 import { createStoreHook, withProduce } from "@zustand/helpers";
@@ -11,20 +15,44 @@ import { useRouter } from "next/router";
 import { useEffect, useMemo } from "react";
 
 // ---------------------------------------------------------------------------
-// Query key
+// Query keys
 // ---------------------------------------------------------------------------
 
-export const getQueryKey = (moduleId: string | undefined, filters: ModuleCardsFilters) =>
-  ["module", moduleId, filters] as const;
+export const getModuleQueryKey = (moduleId: string | undefined) =>
+  ["module", moduleId, "meta"] as const;
+
+export const getModuleCardsQueryKey = (
+  moduleId: string | undefined,
+  filters?: ModuleCardsFilters,
+) => {
+  if (filters) return ["module", moduleId, "cards", filters] as const;
+  return ["module", moduleId, "cards"] as const;
+};
 
 // ---------------------------------------------------------------------------
-// Query
+// Queries
 // ---------------------------------------------------------------------------
 
 export type ModuleQueryResult = ReturnType<typeof useModuleQuery>;
 
-// to-do break up this query into two queries: one for the module and one for the cards
 export const useModuleQuery = () => {
+  const router = useRouter();
+  const { _id } = router.query;
+
+  const moduleId = typeof _id === "string" ? _id : undefined;
+
+  const user = useAppSelector((s) => s.auth.user);
+
+  return useQuery({
+    queryKey: getModuleQueryKey(moduleId),
+    queryFn: () => mainGetModule({ _id: moduleId! }),
+    enabled: !!user && !!moduleId,
+    staleTime: 1000 * 60,
+    refetchOnWindowFocus: false,
+  });
+};
+
+export const useModuleCardsQuery = () => {
   const router = useRouter();
   const { _id } = router.query;
 
@@ -34,21 +62,22 @@ export const useModuleQuery = () => {
   const filters = useModuleFiltersStore((state) => state.filters);
 
   return useQuery({
-    queryKey: getQueryKey(moduleId, filters),
-    queryFn: () => mainGetModule({ _id: moduleId!, ...filters }),
+    queryKey: getModuleCardsQueryKey(moduleId, filters),
+    queryFn: () => mainGetModuleCards({ _id: moduleId!, ...filters }),
     enabled: !!user && !!moduleId,
-    placeholderData: keepPreviousData,
     staleTime: 1000 * 60,
     refetchOnWindowFocus: false,
   });
 };
 
-export const useSyncModulePagination = (data: GetMainModuleResponseDto) => {
+export const useSyncModulePagination = (
+  data: GetMainModuleCardsResponseDto | undefined,
+) => {
   const setPagination = useModuleFiltersStore((state) => state.setPagination);
-  const pagination = data?.cards?.pagination;
+  const pagination = data?.pagination;
 
   useEffect(() => {
-    if (pagination) setPagination(pagination)
+    if (pagination) setPagination(pagination);
     else setPagination(null);
   }, [pagination, setPagination]);
 };
@@ -80,33 +109,38 @@ export const useModuleCardsUIStore = createStoreHook({
 // Cache adapter
 // ---------------------------------------------------------------------------
 
-type ModuleCache = GetMainModuleResponseDto;
-
-const getEntries = (data: ModuleCache | undefined): CardDto[] => {
+const getEntries = (data: GetMainModuleCardsResponseDto | undefined): CardDto[] => {
   if (!data) return [];
-  return data.cards.entries;
+  return data.entries;
 };
 
 export const useModuleCardsCache: CardsCacheHook = () => {
   const filters = useModuleFiltersStore((state) => state.filters);
   const moduleId = useModuleIdFromQuery();
-  const queryKey = useMemo(() => getQueryKey(moduleId, filters), [moduleId, filters]);
+  const queryKey = useMemo(
+    () => getModuleCardsQueryKey(moduleId, filters),
+    [moduleId, filters],
+  );
 
   const cardsCache: CardsCache = useMemo(
     () => ({
       getCard: (_id: string) => {
-        const data = queryClient.getQueryData<ModuleCache>(queryKey);
+        const data = queryClient.getQueryData<GetMainModuleCardsResponseDto>(
+          queryKey,
+        );
         return getEntries(data).find((card) => card._id === _id);
       },
       getAllCards: () => {
-        const data = queryClient.getQueryData<ModuleCache>(queryKey);
+        const data = queryClient.getQueryData<GetMainModuleCardsResponseDto>(
+          queryKey,
+        );
         return getEntries(data);
       },
       set: (recipe: (entries: CardDto[]) => void) => {
         queryClient.setQueryData(
           queryKey,
-          withProduce<ModuleCache>((draft) => {
-            recipe(draft.cards.entries);
+          withProduce<GetMainModuleCardsResponseDto>((draft) => {
+            recipe(draft.entries);
           }),
         );
       },

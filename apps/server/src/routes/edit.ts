@@ -356,12 +356,12 @@ router.post("/card", auth, async (req: CardPostReq, res: CardPostRes) => {
 // ----------------
 
 // @route ------ GET api/edit/draft
-// @desc ------- Get draft or create and get a new draft
+// @desc ------- Get draft or create and get a new draft (module only; cards via main/module/cards)
 // @access ----- Private
 
-type GetMainModuleReq = Request<any, any, any, GetEditDraftQuery>;
+type GetEditDraftReq = Request<any, any, any, GetEditDraftQuery>;
 
-type GetMainModuleRes = ResponseLocals<
+type GetEditDraftRes = ResponseLocals<
   GetEditDraftResponse | ErrorResponse,
   GetEditDraftQuery
 >;
@@ -369,35 +369,17 @@ type GetMainModuleRes = ResponseLocals<
 router.get(
   "/draft",
   auth,
-  async (req: GetMainModuleReq, res: GetMainModuleRes) => {
+  async (req: GetEditDraftReq, res: GetEditDraftRes) => {
     try {
       const user = res.locals.user;
       const { _id } = user;
 
-      let cards: Card[];
       let foundModule = await moduleModel.findOne({
         author_id: _id,
         draft: true,
       });
 
-      const filterObj: FilterQuery<Card> = {
-        author_id: _id,
-      };
-
-      if (foundModule) {
-        filterObj.moduleID = foundModule._id;
-
-        cards =
-          (
-            await moduleModel.populate<{ cards: Card[] }>(
-              foundModule.toObject<Module>(),
-              {
-                path: "cards",
-              },
-            )
-          )?.cards ?? [];
-      } else {
-        // Create a new draft
+      if (!foundModule) {
         foundModule = await moduleModel.create({
           title: "",
           author: user.username,
@@ -406,7 +388,6 @@ router.get(
           creation_date: new Date(),
           draft: true,
         });
-        filterObj.moduleID = foundModule._id;
 
         const cardsData: CardBase[] = [];
 
@@ -427,24 +408,13 @@ router.get(
           });
         }
 
-        cards = await cardModel.create(cardsData);
+        const cards = await cardModel.create(cardsData);
         foundModule.cards = cards.map(card => new Types.ObjectId(card._id));
         await foundModule.save();
       }
 
-      const all = await cardModel.countDocuments(filterObj);
-
       res.status(200).json({
         module: foundModule,
-        cards: {
-          entries: cards,
-          pagination: {
-            page: 0,
-            number: all,
-            all,
-            end: true,
-          },
-        },
       });
     } catch (err) {
       console.error(err);

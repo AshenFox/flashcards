@@ -6,11 +6,13 @@ import {
 } from "@api/methods";
 import {
   GetMainCardsQueryDto,
-  GetMainModuleQueryDto,
 } from "@flashcards/common";
 import { ThunkActionApp } from "@store/store";
 
 import { mainActions } from "../slice";
+
+const moduleCardsForEditGame = (_id: string) =>
+  mainGetModuleCards({ _id, created: "oldest" });
 
 export const getCards = () => <ThunkActionApp>(async (dispatch, getState) => {
   try {
@@ -65,16 +67,20 @@ export const getModuleCards = (_id: string) => <ThunkActionApp>(async (
 
     if (!user || loading) return;
 
-    mainActions.setSectionLoading({ value: true, section: "moduleCards" });
+    dispatch(
+      mainActions.setSectionLoading({ value: true, section: "moduleCards" }),
+    );
 
-    const data = await mainGetModuleCards(_id);
+    const data = await moduleCardsForEditGame(_id);
 
     dispatch(mainActions.setModuleCards(data));
   } catch (err) {
     console.error(err);
   }
 
-  mainActions.setSectionLoading({ value: false, section: "moduleCards" });
+  dispatch(
+    mainActions.setSectionLoading({ value: false, section: "moduleCards" }),
+  );
 });
 
 export const getModule = (_id: string) => <ThunkActionApp>(async (
@@ -86,7 +92,7 @@ export const getModule = (_id: string) => <ThunkActionApp>(async (
       auth: { user },
       main: {
         sections: {
-          module: { loading, filters },
+          module: { loading },
         },
       },
     } = getState();
@@ -97,14 +103,11 @@ export const getModule = (_id: string) => <ThunkActionApp>(async (
       mainActions.setSectionLoading({ value: true, section: "module" }),
     );
 
-    const params: GetMainModuleQueryDto = {
-      _id,
-      ...filters,
-    };
+    const moduleRes = await mainGetModule({ _id });
+    dispatch(mainActions.setModule(moduleRes));
 
-    const data = await mainGetModule(params);
-
-    dispatch(mainActions.setModule(data));
+    const cardsRes = await moduleCardsForEditGame(_id);
+    dispatch(mainActions.setModuleCards(cardsRes));
   } catch (err) {
     window.location.replace(`/home/modules`);
     console.error(err);
@@ -133,8 +136,11 @@ export const getDraft = () => <ThunkActionApp>(async (dispatch, getState) => {
     );
 
     const data = await editGetDraft();
-
     dispatch(mainActions.setModule(data));
+
+    const draftId = String(data.module._id);
+    const cardsRes = await moduleCardsForEditGame(draftId);
+    dispatch(mainActions.setModuleCards(cardsRes));
   } catch (err) {
     window.location.replace(`/home/modules`);
     console.error(err);

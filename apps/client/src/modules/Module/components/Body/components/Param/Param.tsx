@@ -2,10 +2,11 @@ import Filters, { FilterData, SetFilterValue } from "@components/Filters";
 import { useQueryClient } from "@tanstack/react-query";
 import Skeleton from "@ui/Skeleton";
 import { defaultModuleCardsFilters } from "@zustand/filters";
+import { useRouter } from "next/router";
 import { memo, useCallback } from "react";
 
 import {
-  getQueryKey,
+  getModuleCardsQueryKey,
   useModuleCardsUIStore,
   useModuleFiltersStore,
   useModuleQuery,
@@ -46,12 +47,15 @@ const filtersData: FilterData[] = [
 ];
 
 const Param = () => {
-  const { data, isLoading, isPlaceholderData } = useModuleQuery();
+  const router = useRouter();
+  const { _id } = router.query;
+
+  const moduleId = typeof _id === "string" ? _id : undefined;
+
+  const { data, isLoading: moduleLoading } = useModuleQuery();
 
   const currentModule = data?.module ?? null;
-  const moduleId = currentModule?._id;
   const cardCount = currentModule?.cards.length ?? 0;
-  const initialLoading = isLoading && !isPlaceholderData;
 
   const queryClient = useQueryClient();
   const filters = useModuleFiltersStore(state => state.filters);
@@ -67,9 +71,9 @@ const Param = () => {
   );
 
   const getData = useCallback(() => {
-    const currentFilters = useModuleFiltersStore.getState().filters;
+    if (!moduleId) return;
     queryClient.invalidateQueries({
-      queryKey: getQueryKey(moduleId, currentFilters),
+      queryKey: getModuleCardsQueryKey(moduleId),
     });
   }, [moduleId, queryClient]);
 
@@ -80,7 +84,7 @@ const Param = () => {
   return (
     <div className={s.param}>
       <div className={s.count}>
-        {initialLoading && !cardCount ? (
+        {moduleLoading && !cardCount ? (
           <Skeleton width={"20rem"} />
         ) : (
           <>
