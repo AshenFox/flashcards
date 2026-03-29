@@ -118,6 +118,4 @@ const Card = ({
   );
 };
 
-Card.whyDidYouRender = true;
-
 export default memo(Card);

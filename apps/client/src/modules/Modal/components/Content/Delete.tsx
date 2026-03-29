@@ -25,7 +25,7 @@ const Delete = () => {
       <div className={s.warning}>
         <p>
           You are about to delete this module and all of its data. You
-          won&apos;t be able to access this set ever again.
+          won&apos;t be able to access this module ever again.
         </p>
       </div>
 

@@ -1,5 +1,5 @@
 import { CardsUIProvider } from "@components/Cards";
-import { memo, useEffect, useMemo } from "react";
+import { memo, useEffect } from "react";
 
 import Body from "./components/Body/Body";
 import Header from "./components/Header/Header";

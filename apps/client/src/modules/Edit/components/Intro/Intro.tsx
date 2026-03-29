@@ -1,14 +1,15 @@
 import Container from "@components/Container";
 import ContentWrapper from "@components/ContentWrapper";
-import { useAppSelector } from "@store/hooks";
+import { useEditModule } from "@modules/Edit/hooks";
 import { Link } from "@ui/InteractiveElement";
 import { memo } from "react";
 
 import s from "./styles.module.scss";
 
 const Intro = () => {
-  const draft = useAppSelector(s => s.main.module?.draft);
-  const _id = useAppSelector(s => s.main.module?._id);
+  const editModule = useEditModule();
+  const draft = editModule?.draft;
+  const _id = editModule?._id;
 
   return (
     <div className={s.intro}>

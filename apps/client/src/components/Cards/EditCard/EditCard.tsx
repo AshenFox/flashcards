@@ -64,7 +64,7 @@ const EditCard = ({
       timer.current = setTimeout(async () => {
         editCard(_id);
         timer.current = null;
-      }, 500);
+      }, 100);
     },
     [_id, controlCard, editCard],
   );

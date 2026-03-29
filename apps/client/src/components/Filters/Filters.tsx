@@ -67,7 +67,6 @@ const Filters = ({
 
       clearTimeout(timer.current);
 
-      // should I have a debounce if I am using tanstack query?
       timer.current = setTimeout(() => {
         resetData?.();
         getData?.();

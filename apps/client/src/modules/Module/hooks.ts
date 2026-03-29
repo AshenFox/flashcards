@@ -47,8 +47,6 @@ export const useModuleQuery = () => {
     queryKey: getModuleQueryKey(moduleId),
     queryFn: () => mainGetModule({ _id: moduleId! }),
     enabled: !!user && !!moduleId,
-    staleTime: 1000 * 60,
-    refetchOnWindowFocus: false,
   });
 };
 
@@ -65,8 +63,6 @@ export const useModuleCardsQuery = () => {
     queryKey: getModuleCardsQueryKey(moduleId, filters),
     queryFn: () => mainGetModuleCards({ _id: moduleId!, ...filters }),
     enabled: !!user && !!moduleId,
-    staleTime: 1000 * 60,
-    refetchOnWindowFocus: false,
   });
 };
 

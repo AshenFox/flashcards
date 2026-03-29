@@ -1,4 +1,4 @@
-import { useActions } from "@store/hooks";
+import { useEditCreateCardMutation } from "@modules/Edit/hooks";
 import { memo, MouseEvent, useCallback } from "react";
 
 import s from "./styles.module.scss";
@@ -8,11 +8,13 @@ type AddCardProps = {
 };
 
 const AddCard = ({ position }: AddCardProps) => {
-  const { createCard } = useActions();
+  const createMutation = useEditCreateCardMutation();
 
   const clickAddcard = useCallback(
-    (_e: MouseEvent<HTMLDivElement>) => createCard(position),
-    [position, createCard],
+    (_e: MouseEvent<HTMLDivElement>) => {
+      createMutation.mutate(position);
+    },
+    [createMutation, position],
   );
 
   return (

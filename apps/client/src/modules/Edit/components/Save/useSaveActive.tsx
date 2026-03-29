@@ -1,21 +1,26 @@
 import { useEditContext } from "@modules/Edit/context";
-import { useAppSelector } from "@store/store";
+import {
+  useEditCards,
+  useEditCardsUIStore,
+  useEditIsLoading,
+  useEditModule,
+} from "@modules/Edit/hooks";
 
 export const useSaveState = () => {
   const { selectionActive } = useEditContext();
-  const currentModule = useAppSelector(s => s.main.module);
-  const cards = useAppSelector(s => s.main.cards);
+  const editModule = useEditModule();
+  const cardsArr = useEditCards();
+  const cardsUi = useEditCardsUIStore(s => s.cards);
+  const loading = useEditIsLoading();
 
-  const { title, module_loading: loading, draft } = currentModule || {};
-
-  const cardsArr = Object.values(cards);
+  const { title, draft } = editModule || {};
 
   let twoSaved = false;
   let counter = 0;
 
   if (draft && selectionActive) {
     for (const card of cardsArr) {
-      if (card.save === true) {
+      if (cardsUi[card._id]?.save === true) {
         ++counter;
         if (counter >= 2) {
           twoSaved = true;

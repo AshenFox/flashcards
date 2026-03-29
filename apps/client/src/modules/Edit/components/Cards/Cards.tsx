@@ -2,30 +2,25 @@ import { EditCard } from "@components/Cards";
 import Container from "@components/Container";
 import ContentWrapper from "@components/ContentWrapper";
 import { useEditContext } from "@modules/Edit/context";
-import { useAppSelector } from "@store/hooks";
+import { useEditCards, useEditIsLoading } from "@modules/Edit/hooks";
 import ScrollLoader from "@ui/ScrollLoader";
-import { memo, useMemo } from "react";
+import { memo } from "react";
 
 import { Action, AddCard } from "./components";
 import s from "./styles.module.scss";
 
 const Cards = () => {
-  const cards = useAppSelector(s => s.main.cards);
-  const loading = useAppSelector(
-    s => s.main.sections.editDraft.loading || s.main.sections.module.loading,
-  );
-
+  const cards = useEditCards();
+  const loading = useEditIsLoading();
   const { selectionActive } = useEditContext();
-
-  const formatted_cards = useMemo(() => Object.values(cards), [cards]);
 
   return (
     <ContentWrapper>
       <div className={s.cards}>
         <Container>
-          {!!formatted_cards.length && <AddCard position="start" />}
+          {!!cards.length && <AddCard position="start" />}
           <div className={s.container}>
-            {formatted_cards.map((card, i, arr) => (
+            {cards.map((card, i, arr) => (
               <EditCard
                 key={card._id}
                 data={card}
@@ -37,10 +32,10 @@ const Cards = () => {
             ))}
             <ScrollLoader active={loading} />
           </div>
-          {!!formatted_cards.length && <AddCard position="end" />}
+          {!!cards.length && <AddCard position="end" />}
         </Container>
       </div>
-      {!!formatted_cards.length && <Action />}
+      {!!cards.length && <Action />}
     </ContentWrapper>
   );
 };
