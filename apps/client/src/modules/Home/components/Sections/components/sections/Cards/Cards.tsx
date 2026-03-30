@@ -4,20 +4,16 @@ import NotFound from "@components/NotFound";
 import { VirtualizedItem, VirtualizedList } from "@components/Virtualized";
 import ScrollTop from "@modules/ScrollTop";
 import { useQueryClient } from "@tanstack/react-query";
-import { useWindowVirtualizer } from "@tanstack/react-virtual";
 import ScrollLoader from "@ui/ScrollLoader";
 import { defaultCardsFilters } from "@zustand/filters";
 import React, { memo, useCallback, useEffect, useMemo } from "react";
 
 import s from "../styles.module.scss";
 import { CardRow } from "./CardRow";
-import {
-  getQueryKey,
-  useHomeCardsCache,
-  useHomeCardsFiltersStore,
-  useHomeCardsQuery,
-  useHomeCardsUIStore,
-} from "./hooks";
+import { useHomeCardsCache } from "./hooks/cache";
+import { useCardsVirtualizer } from "./hooks/cardsVirtualizer";
+import { getQueryKey, useHomeCardsQuery } from "./hooks/query";
+import { useHomeCardsFiltersStore, useHomeCardsUIStore } from "./hooks/stores";
 
 const filtersData: FilterData[] = [
   {
@@ -74,11 +70,8 @@ const Cards = () => {
   );
   const resultsFound = pagination?.number;
 
-  const virtualizer = useWindowVirtualizer({
-    count: rawCards.length,
-    overscan: 5,
-    gap: 15,
-    estimateSize: () => 180,
+  const { virtualizer } = useCardsVirtualizer({
+    rawCards,
   });
 
   const { search, by } = filters;

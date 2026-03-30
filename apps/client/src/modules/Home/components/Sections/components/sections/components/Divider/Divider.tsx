@@ -61,6 +61,11 @@ const process = (prevDateString?: string, curDateString?: string) => {
   return { curName, exists };
 };
 
+export const rowShowsDateDivider = (
+  prevDateString?: string,
+  curDateString?: string,
+): boolean => !process(prevDateString, curDateString).exists;
+
 const months = [
   "january",
   "february",

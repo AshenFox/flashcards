@@ -1,5 +1,5 @@
 import type { PaginationDto } from "@flashcards/common";
-import { useHomeCardsFiltersStore } from "@modules/Home/components/Sections/components/sections/Cards/hooks";
+import { useHomeCardsFiltersStore } from "@modules/Home/components/Sections/components/sections/Cards/hooks/stores";
 import { useHomeModulesFiltersStore } from "@modules/Home/components/Sections/components/sections/Modules/hooks";
 import { useRouter } from "next/router";
 import React, { memo, useEffect, useState } from "react";
