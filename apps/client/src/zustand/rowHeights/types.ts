@@ -3,11 +3,6 @@ export type RowHeightsStoreApi = {
 };
 
 export type RowHeightsStore = {
-    namespaces: Record<string, NamespaceBlob>;
+    namespaces: Record<string, Record<string, number>>;
     mergeRowHeights: (namespaceKey: string, updates: Record<string, number>) => void;
-};
-
-export type NamespaceBlob = {
-    order: string[];
-    heights: Record<string, number>;
 };

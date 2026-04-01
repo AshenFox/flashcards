@@ -12,7 +12,6 @@ import s from "../styles.module.scss";
 import { CardRow } from "./CardRow";
 import { useHomeCardsCache } from "./hooks/cache";
 import { useCardsVirtualizer } from "./hooks/cardsVirtualizer";
-import { useHomeCardsScrollRestore } from "./hooks/homeCardsScrollRestore";
 import { getQueryKey, useHomeCardsQuery } from "./hooks/query";
 import { useHomeCardsFiltersStore, useHomeCardsUIStore } from "./hooks/stores";
 
@@ -82,16 +81,10 @@ const Cards = () => {
   );
   const resultsFound = pagination?.number;
 
-  const { virtualizer, namespaceKey } = useCardsVirtualizer({
+  const virtualizer = useCardsVirtualizer({
     rawCards,
     infiniteData: data,
   });
-
-  /* useHomeCardsScrollRestore({
-    virtualizer,
-    namespaceKey,
-    rawCardsLength: rawCards.length,
-  }); */
 
   const { search, by } = filters;
 
@@ -192,7 +185,7 @@ const Cards = () => {
           );
         })}
       </VirtualizedList>
-      <ScrollLoader active={loading} />
+      {/* <ScrollLoader active={loading} /> */}
       <ScrollTop virtualizer={virtualizer} />
       {!loading && (
         <NotFound

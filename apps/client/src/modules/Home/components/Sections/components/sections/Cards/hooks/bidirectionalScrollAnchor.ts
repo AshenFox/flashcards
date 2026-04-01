@@ -53,7 +53,6 @@ export function restoreScrollOffsetAfterFirstItemChange(
 
   const offsetItemCache =
     virtualizer.measurementsCache[Math.abs(firstItemOffset)];
-  console.log("offsetItemCache", offsetItemCache, "firstItemOffset", firstItemOffset);
   if (!offsetItemCache) return;
 
   const delta =

@@ -34,8 +34,7 @@ const EMPTY_HEIGHTS: Record<string, number> = {};
 
 type UseCardsVirtualizerArgs = {
   rawCards: CardDto[];
-  /** When set, enables scroll anchoring for bidirectional infinite pages. */
-  infiniteData?: InfiniteData<GetMainCardsResponseDto, number>;
+  infiniteData: InfiniteData<GetMainCardsResponseDto, number>;
 };
 
 export const useCardsRowHeightsNamespaceKey = () => {
@@ -46,10 +45,7 @@ export const useCardsRowHeightsNamespaceKey = () => {
 export const useCardsVirtualizer = ({
   rawCards,
   infiniteData,
-}: UseCardsVirtualizerArgs): {
-  virtualizer: Virtualizer<Window, Element>;
-  namespaceKey: string;
-} => {
+}: UseCardsVirtualizerArgs): Virtualizer<Window, Element> => {
   const namespaceKey = useCardsRowHeightsNamespaceKey();
 
   const { schedule, flush } = useMemo(
@@ -68,7 +64,7 @@ export const useCardsVirtualizer = ({
   if (prevNamespaceKeyRef.current !== namespaceKey) {
     prevNamespaceKeyRef.current = namespaceKey;
     const heights =
-      useHomeCardsRowHeightsStore.getState().namespaces[namespaceKey]?.heights;
+      useHomeCardsRowHeightsStore.getState().namespaces[namespaceKey];
     lastScheduledHeightsRef.current = heights ? { ...heights } : {};
   }
 
@@ -125,7 +121,7 @@ export const useCardsVirtualizer = ({
 
   const initialMeasurementsCache = useMemo((): VirtualItem[] => {
     const persistedHeights =
-      useHomeCardsRowHeightsStore.getState().namespaces[namespaceKey]?.heights ??
+      useHomeCardsRowHeightsStore.getState().namespaces[namespaceKey] ??
       EMPTY_HEIGHTS;
     return rawCards.map((card, index) => ({
       index,
@@ -176,5 +172,5 @@ export const useCardsVirtualizer = ({
 
   applyScrollAnchorLibraryHandoff(virtualizer, firstItemOffset);
 
-  return { virtualizer, namespaceKey };
+  return virtualizer;
 };
