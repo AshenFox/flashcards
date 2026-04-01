@@ -12,6 +12,7 @@ import s from "../styles.module.scss";
 import { CardRow } from "./CardRow";
 import { useHomeCardsCache } from "./hooks/cache";
 import { useCardsVirtualizer } from "./hooks/cardsVirtualizer";
+import { useHomeCardsScrollRestore } from "./hooks/homeCardsScrollRestore";
 import { getQueryKey, useHomeCardsQuery } from "./hooks/query";
 import { useHomeCardsFiltersStore, useHomeCardsUIStore } from "./hooks/stores";
 
@@ -47,6 +48,9 @@ const filtersData: FilterData[] = [
   },
 ];
 
+/** When the first visible virtual row is at or above this index, load the previous page. */
+const FETCH_PREV_VISIBLE_THRESHOLD = 5;
+
 const Cards = () => {
   const queryClient = useQueryClient();
   const filters = useHomeCardsFiltersStore(state => state.filters);
@@ -54,8 +58,16 @@ const Cards = () => {
   const setFilter = useHomeCardsFiltersStore(state => state.setFilter);
   const resetFilters = useHomeCardsFiltersStore(state => state.resetFilters);
 
-  const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isFetching } =
-    useHomeCardsQuery();
+  const {
+    data,
+    fetchNextPage,
+    fetchPreviousPage,
+    hasNextPage,
+    hasPreviousPage,
+    isFetchingNextPage,
+    isFetchingPreviousPage,
+    isFetching,
+  } = useHomeCardsQuery();
 
   const refreshCardsQuery = useCallback(() => {
     const filters = useHomeCardsFiltersStore.getState().filters;
@@ -70,9 +82,16 @@ const Cards = () => {
   );
   const resultsFound = pagination?.number;
 
-  const { virtualizer } = useCardsVirtualizer({
+  const { virtualizer, namespaceKey } = useCardsVirtualizer({
     rawCards,
+    infiniteData: data,
   });
+
+  /* useHomeCardsScrollRestore({
+    virtualizer,
+    namespaceKey,
+    rawCardsLength: rawCards.length,
+  }); */
 
   const { search, by } = filters;
 
@@ -98,15 +117,33 @@ const Cards = () => {
       }
     };
 
-    maybeFetchNext();
-    window.addEventListener("scroll", maybeFetchNext, { passive: true });
-    return () => window.removeEventListener("scroll", maybeFetchNext);
+    const maybeFetchPrevious = () => {
+      if (!hasPreviousPage || isFetchingPreviousPage) return;
+      const items = virtualizer.getVirtualItems();
+      const firstItem = items[0];
+      if (!firstItem) return;
+      if (firstItem.index <= FETCH_PREV_VISIBLE_THRESHOLD) {
+        fetchPreviousPage();
+      }
+    };
+
+    const onScroll = () => {
+      maybeFetchNext();
+      maybeFetchPrevious();
+    };
+
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
   }, [
     virtualizer,
     rawCards.length,
     hasNextPage,
+    hasPreviousPage,
     isFetchingNextPage,
+    isFetchingPreviousPage,
     fetchNextPage,
+    fetchPreviousPage,
   ]);
 
   useEffect(() => {
@@ -115,7 +152,7 @@ const Cards = () => {
     };
   }, [resetUIStore]);
 
-  const loading = isFetching || isFetchingNextPage;
+  const loading = isFetching || isFetchingNextPage || isFetchingPreviousPage;
 
   return (
     <CardsUIProvider

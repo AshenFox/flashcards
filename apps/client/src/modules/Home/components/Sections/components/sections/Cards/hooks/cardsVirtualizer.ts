@@ -1,12 +1,28 @@
-import type { CardDto } from "@flashcards/common";
+import type { CardDto, GetMainCardsResponseDto } from "@flashcards/common";
+import type { InfiniteData } from "@tanstack/react-query";
 import type { VirtualItem, Virtualizer } from "@tanstack/react-virtual";
 import { useWindowVirtualizer } from "@tanstack/react-virtual";
 import { createDebouncedRowHeightsMerge } from "@zustand/rowHeights";
-import { useCallback, useEffect, useMemo, useRef } from "react";
+import {
+  useCallback,
+  useEffect,
+  useLayoutEffect,
+  useMemo,
+  useRef,
+} from "react";
 
 import { rowShowsDateDivider } from "../../components/Divider/Divider";
+import {
+  applyScrollAnchorLibraryHandoff,
+  calculateCardsFirstItemOffset,
+  restoreScrollOffsetAfterFirstItemChange,
+} from "./bidirectionalScrollAnchor";
 import { getQueryKey } from "./query";
-import { useHomeCardsFiltersStore, useHomeCardsRowHeightsStore, useHomeCardsUIStore } from "./stores";
+import {
+  useHomeCardsFiltersStore,
+  useHomeCardsRowHeightsStore,
+  useHomeCardsUIStore,
+} from "./stores";
 
 const CARD_ROW_BASE_ESTIMATE = 240;
 const DIVIDER_EXTRA_ESTIMATE = 72;
@@ -18,6 +34,8 @@ const EMPTY_HEIGHTS: Record<string, number> = {};
 
 type UseCardsVirtualizerArgs = {
   rawCards: CardDto[];
+  /** When set, enables scroll anchoring for bidirectional infinite pages. */
+  infiniteData?: InfiniteData<GetMainCardsResponseDto, number>;
 };
 
 export const useCardsRowHeightsNamespaceKey = () => {
@@ -27,15 +45,25 @@ export const useCardsRowHeightsNamespaceKey = () => {
 
 export const useCardsVirtualizer = ({
   rawCards,
+  infiniteData,
 }: UseCardsVirtualizerArgs): {
   virtualizer: Virtualizer<Window, Element>;
+  namespaceKey: string;
 } => {
   const namespaceKey = useCardsRowHeightsNamespaceKey();
 
-  const { schedule, flush } = useMemo(() => createDebouncedRowHeightsMerge(useHomeCardsRowHeightsStore, DEBOUNCED_DELAY_MS), []);
+  const { schedule, flush } = useMemo(
+    () => createDebouncedRowHeightsMerge(useHomeCardsRowHeightsStore, DEBOUNCED_DELAY_MS),
+    [],
+  );
 
   const lastScheduledHeightsRef = useRef<Record<string, number>>({});
   const prevNamespaceKeyRef = useRef<string | undefined>(undefined);
+  const prevInfiniteDataRef = useRef<
+    InfiniteData<GetMainCardsResponseDto, number> | undefined
+  >(undefined);
+  const restoredScrollOffsetRef = useRef(false);
+  const virtualizerRef = useRef<Virtualizer<Window, Element> | null>(null);
 
   if (prevNamespaceKeyRef.current !== namespaceKey) {
     prevNamespaceKeyRef.current = namespaceKey;
@@ -44,9 +72,39 @@ export const useCardsVirtualizer = ({
     lastScheduledHeightsRef.current = heights ? { ...heights } : {};
   }
 
+  useLayoutEffect(() => {
+    restoredScrollOffsetRef.current = false;
+    prevInfiniteDataRef.current = infiniteData;
+  });
+
+  const firstItemOffset =
+    !infiniteData
+      ? 0
+      : calculateCardsFirstItemOffset(infiniteData, prevInfiniteDataRef.current);
+
+  useEffect(() => {
+    const html = document.documentElement;
+    const previous = html.style.overflowAnchor;
+    html.style.overflowAnchor = "none";
+
+    return () => {
+      html.style.overflowAnchor = previous;
+    };
+  }, []);
+
   useEffect(() => {
     return () => flush();
   }, [flush]);
+
+  useMemo(() => {
+    if (firstItemOffset < 0 && virtualizerRef.current) {
+      restoreScrollOffsetAfterFirstItemChange(
+        virtualizerRef.current,
+        firstItemOffset,
+        restoredScrollOffsetRef,
+      );
+    }
+  }, [firstItemOffset]);
 
   const estimateRowSize = useCallback(
     (index: number) => {
@@ -81,7 +139,7 @@ export const useCardsVirtualizer = ({
 
   const virtualizer = useWindowVirtualizer({
     count: rawCards.length,
-    overscan: 5,
+    overscan: 7,
     gap: 15,
     estimateSize: estimateRowSize,
     getItemKey: index => rawCards[index]?._id ?? index,
@@ -104,5 +162,19 @@ export const useCardsVirtualizer = ({
     },
   });
 
-  return { virtualizer };
+  virtualizerRef.current = virtualizer;
+
+  useMemo(() => {
+    if (firstItemOffset > 0) {
+      restoreScrollOffsetAfterFirstItemChange(
+        virtualizer,
+        firstItemOffset,
+        restoredScrollOffsetRef,
+      );
+    }
+  }, [firstItemOffset, virtualizer]);
+
+  applyScrollAnchorLibraryHandoff(virtualizer, firstItemOffset);
+
+  return { virtualizer, namespaceKey };
 };
