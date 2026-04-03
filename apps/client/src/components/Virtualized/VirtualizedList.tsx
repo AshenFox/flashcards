@@ -1,3 +1,4 @@
+import { useAppSelector } from "@store/store";
 import { Virtualizer } from "@tanstack/react-virtual";
 import React, { CSSProperties, memo, RefObject, useMemo } from "react";
 
@@ -13,13 +14,18 @@ const VirtualizedList = ({
   ref,
 }: VirtualizedListProps) => {
   const totalSize = virtualizer.getTotalSize();
+  const globalHeaderMarginTopPx = useAppSelector(
+    s => s.dimen.global_header_margin_top_px,
+  );
+
   const style = useMemo<CSSProperties>(
     () => ({
-      height: totalSize,
+      height: totalSize - globalHeaderMarginTopPx,
       width: "100%",
       position: "relative",
+      willChange: "height",
     }),
-    [totalSize],
+    [totalSize, globalHeaderMarginTopPx],
   );
 
   return (

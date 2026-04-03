@@ -150,7 +150,7 @@ const Modules = () => {
         })}
       </VirtualizedList>
       <ScrollLoader active={loading} />
-      <ScrollTop virtualizer={virtualizer} />
+      {/* <ScrollTop virtualizer={virtualizer} /> */}
       {!loading && (
         <NotFound
           resultsFound={resultsFound}

@@ -114,6 +114,7 @@ export const useCardsVirtualizer = ({
       if (useHomeCardsUIStore.getState().get(card._id).edit) {
         size += EDIT_MODE_EXTRA_ESTIMATE;
       }
+      console.log("estimateRowSize", index, size);
       return size;
     },
     [rawCards],
@@ -157,6 +158,8 @@ export const useCardsVirtualizer = ({
       schedule(namespaceKey, updates);
     },
   });
+
+  console.log("virtualizer", virtualizer.measurementsCache);
 
   virtualizerRef.current = virtualizer;
 

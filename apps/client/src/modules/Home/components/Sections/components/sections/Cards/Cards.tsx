@@ -194,8 +194,8 @@ const Cards = () => {
           );
         })}
       </VirtualizedList>
-      <ScrollLoader active={loading} />
-      <ScrollTop virtualizer={virtualizer} />
+      {/* <ScrollLoader active={loading} /> */}
+      {/* <ScrollTop virtualizer={virtualizer} /> */}
       {!loading && (
         <NotFound
           resultsFound={resultsFound}

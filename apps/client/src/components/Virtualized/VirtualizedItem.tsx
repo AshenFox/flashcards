@@ -12,12 +12,18 @@ const VirtualizedItem = ({
   children,
   virtualItem,
 }: VirtualizedItemProps) => {
+  if (virtualItem.index === 8) {
+    console.log("virtualItem 8", virtualItem.start, virtualItem);
+  }
+
   const style = useMemo<CSSProperties>(
     () => ({
       position: "absolute",
       top: 0,
       width: "100%",
       transform: `translateY(${virtualItem.start}px)`,
+      // transition: "transform 0.1s ease",
+      // willChange: "transform",
     }),
     [virtualItem],
   );
