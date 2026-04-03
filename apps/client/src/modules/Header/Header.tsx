@@ -16,6 +16,9 @@ const Header = () => {
 
   const user = useAppSelector(s => s.auth.user);
   const loading = useAppSelector(s => s.auth.loading);
+  const globalHeaderMarginTopPx = useAppSelector(
+    s => s.dimen.global_header_margin_top_px,
+  );
 
   const isGame = getIsGame(router.pathname);
 
@@ -67,7 +70,15 @@ const Header = () => {
   const headerEl = useRef<HTMLElement>(null);
 
   return (
-    <header className={clsx(s.header, isGame && s.sticky)} ref={headerEl}>
+    <header
+      className={clsx(s.header, isGame && s.sticky)}
+      ref={headerEl}
+      style={
+        globalHeaderMarginTopPx > 0
+          ? { marginTop: -globalHeaderMarginTopPx }
+          : undefined
+      }
+    >
       <ContentWrapper tagType="section">
         <Container>
           <div className={s.content}>

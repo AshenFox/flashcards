@@ -135,7 +135,7 @@ export const useCardsVirtualizer = ({
 
   const virtualizer = useWindowVirtualizer({
     count: rawCards.length,
-    overscan: 7,
+    overscan: 5,
     gap: 15,
     estimateSize: estimateRowSize,
     getItemKey: index => rawCards[index]?._id ?? index,

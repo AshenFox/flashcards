@@ -9,3 +9,9 @@ export const setHeaderDimen: DimenCaseReducer<{
     header_width: action.payload.width,
   });
 };
+
+export const setGlobalHeaderMarginTop: DimenCaseReducer<{
+  value: number;
+}> = (state, action) => {
+  state.global_header_margin_top_px = action.payload.value;
+};

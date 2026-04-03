@@ -6,7 +6,7 @@ import ScrollTop from "@modules/ScrollTop";
 import { useQueryClient } from "@tanstack/react-query";
 import ScrollLoader from "@ui/ScrollLoader";
 import { defaultCardsFilters } from "@zustand/filters";
-import React, { memo, useCallback, useEffect, useMemo } from "react";
+import React, { memo, useCallback, useEffect, useMemo, useRef } from "react";
 
 import s from "../styles.module.scss";
 import { CardRow } from "./CardRow";
@@ -14,6 +14,7 @@ import { useHomeCardsCache } from "./hooks/cache";
 import { useCardsVirtualizer } from "./hooks/cardsVirtualizer";
 import { getQueryKey, useHomeCardsQuery } from "./hooks/query";
 import { useHomeCardsFiltersStore, useHomeCardsUIStore } from "./hooks/stores";
+import { useGlobalHeaderPullForHomeCards } from "./hooks/useGlobalHeaderPullForHomeCards";
 
 const filtersData: FilterData[] = [
   {
@@ -51,6 +52,8 @@ const filtersData: FilterData[] = [
 const FETCH_PREV_VISIBLE_THRESHOLD = 5;
 
 const Cards = () => {
+  const listTopRef = useRef<HTMLDivElement>(null);
+
   const queryClient = useQueryClient();
   const filters = useHomeCardsFiltersStore(state => state.filters);
   const pagination = useHomeCardsFiltersStore(state => state.pagination);
@@ -84,6 +87,12 @@ const Cards = () => {
   const virtualizer = useCardsVirtualizer({
     rawCards,
     infiniteData: data,
+  });
+
+  useGlobalHeaderPullForHomeCards({
+    listTopRef,
+    hasPreviousPage: !!hasPreviousPage,
+    hasData: !!data,
   });
 
   const { search, by } = filters;
@@ -164,7 +173,7 @@ const Cards = () => {
         resetData={resetData}
         resetFilters={resetFilters}
       />
-      <VirtualizedList virtualizer={virtualizer}>
+      <VirtualizedList ref={listTopRef} virtualizer={virtualizer}>
         {virtualizer.getVirtualItems().map(virtualItem => {
           const data = rawCards[virtualItem.index];
           return (
@@ -185,7 +194,7 @@ const Cards = () => {
           );
         })}
       </VirtualizedList>
-      {/* <ScrollLoader active={loading} /> */}
+      <ScrollLoader active={loading} />
       <ScrollTop virtualizer={virtualizer} />
       {!loading && (
         <NotFound
