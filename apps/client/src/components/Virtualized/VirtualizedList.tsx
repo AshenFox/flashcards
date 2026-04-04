@@ -2,6 +2,8 @@ import { useAppSelector } from "@store/store";
 import { Virtualizer } from "@tanstack/react-virtual";
 import React, { CSSProperties, memo, RefObject, useMemo } from "react";
 
+import s from "./styles.module.scss";
+
 type VirtualizedListProps = {
   virtualizer: Virtualizer<Window | Element, Element>;
   children: React.ReactNode;
@@ -14,22 +16,17 @@ const VirtualizedList = ({
   ref,
 }: VirtualizedListProps) => {
   const totalSize = virtualizer.getTotalSize();
-  const globalHeaderMarginTopPx = useAppSelector(
-    s => s.dimen.global_header_margin_top_px,
-  );
+  const app_vertical_offset = useAppSelector(s => s.dimen.app_vertical_offset);
 
   const style = useMemo<CSSProperties>(
     () => ({
-      height: totalSize - globalHeaderMarginTopPx,
-      width: "100%",
-      position: "relative",
-      willChange: "height",
+      height: totalSize - app_vertical_offset,
     }),
-    [totalSize, globalHeaderMarginTopPx],
+    [totalSize, app_vertical_offset],
   );
 
   return (
-    <div style={style} ref={ref}>
+    <div style={style} ref={ref} className={s.virtualizedList}>
       {children}
     </div>
   );

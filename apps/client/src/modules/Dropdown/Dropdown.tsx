@@ -6,6 +6,7 @@ import {
 } from "@helpers/functions/determinePath";
 import { useActions, useAppSelector } from "@store/hooks";
 import { NewModuleIcon, ShuffleIcon } from "@ui/Icons";
+import Portal from "@ui/Portal";
 import clsx from "clsx";
 import { useRouter } from "next/router";
 import {
@@ -136,29 +137,31 @@ const Dropdown = () => {
   );
 
   return (
-    <div className={className} style={stylesHeader}>
-      {!isDraft && (
-        <Item href="/edit/draft" icon={<NewModuleIcon />}>
-          Create new module
-        </Item>
-      )}
-      {!isSettings && <Item href="/settings">Settings</Item>}
-      <Item onClick={onLogOutClick}>Log out</Item>
+    <Portal>
+      <div className={className} style={stylesHeader}>
+        {!isDraft && (
+          <Item href="/edit/draft" icon={<NewModuleIcon />}>
+            Create new module
+          </Item>
+        )}
+        {!isSettings && <Item href="/settings">Settings</Item>}
+        <Item onClick={onLogOutClick}>Log out</Item>
 
-      {(isFlashcards || isWrite) && !isSR && <Divider>Options:</Divider>}
+        {(isFlashcards || isWrite) && !isSR && <Divider>Options:</Divider>}
 
-      {isFlashcards && !isSR && (
-        <Item onClick={clickShuffle} icon={<ShuffleIcon />} active={shuffled}>
-          Shuffle
-        </Item>
-      )}
-      {isWrite && !isSR && (
-        <Item onClick={clickStartOver} caution>
-          Start over
-        </Item>
-      )}
-      {showEndGameItem && <Item onClick={clickEndGame}>End game</Item>}
-    </div>
+        {isFlashcards && !isSR && (
+          <Item onClick={clickShuffle} icon={<ShuffleIcon />} active={shuffled}>
+            Shuffle
+          </Item>
+        )}
+        {isWrite && !isSR && (
+          <Item onClick={clickStartOver} caution>
+            Start over
+          </Item>
+        )}
+        {showEndGameItem && <Item onClick={clickEndGame}>End game</Item>}
+      </div>
+    </Portal>
   );
 };
 

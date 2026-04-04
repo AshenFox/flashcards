@@ -8,7 +8,8 @@ import { useEffect } from "react";
 import { useHomeCardsFiltersStore } from "./stores";
 
 /** Sliding window of cached pages; must be greater than 2 for trim + prepend flow. */
-export const HOME_CARDS_MAX_CACHED_PAGES = 5;
+export const HOME_CARDS_MAX_CACHED_PAGES = 3;
+export const HOME_CARDS_PAGE_SIZE = 50;
 
 // ---------------------------------------------------------------------------
 // Infinite query
@@ -31,7 +32,7 @@ export const useHomeCardsQuery = () => {
         number
     >({
         queryKey: getQueryKey(filters),
-        queryFn: ({ pageParam }) => mainGetCards({ ...filters, page: pageParam }),
+        queryFn: ({ pageParam }) => mainGetCards({ ...filters, page: pageParam, size: HOME_CARDS_PAGE_SIZE }),
         initialPageParam: 0,
         maxPages: HOME_CARDS_MAX_CACHED_PAGES,
         getPreviousPageParam: (firstPage: GetMainCardsResponseDto) =>

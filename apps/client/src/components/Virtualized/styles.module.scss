@@ -1,0 +1,11 @@
+.virtualizedItem {
+  position: absolute;
+  top: 0;
+  width: 100%;
+}
+
+.virtualizedList {
+  position: relative;
+  width: 100%;
+  will-change: height;
+}

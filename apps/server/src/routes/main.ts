@@ -135,7 +135,13 @@ router.get(
         created = "newest",
         by = "term",
         sr,
+        size: sizeQuery = 10,
       } = res.locals.query;
+
+      const size =
+        Number.isFinite(sizeQuery) && sizeQuery >= 1
+          ? Math.min(Math.floor(sizeQuery), 100)
+          : 10;
 
       const _id = res.locals.user._id;
 
@@ -173,16 +179,16 @@ router.get(
       const cards = await cardModel
         .find(filterObj)
         .sort(sortObj)
-        .skip(page * 10)
-        .limit(10);
+        .skip(page * size)
+        .limit(size);
 
       const cards_number = await cardModel.countDocuments(filterObj);
 
-      const end = cards_number <= (page + 1) * 10;
+      const end = cards_number <= (page + 1) * size;
 
       res.status(200).json({
         entries: cards,
-        pagination: { page, number: cards_number, end, all },
+        pagination: { page, number: cards_number, end, all, size },
       });
     } catch (err) {
       console.error(err);

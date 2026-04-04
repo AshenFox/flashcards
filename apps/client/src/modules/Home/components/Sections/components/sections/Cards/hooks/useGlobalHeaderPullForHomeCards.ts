@@ -26,7 +26,7 @@ export const useGlobalHeaderPullForHomeCards = ({
   hasPreviousPage,
   hasData,
 }: UseGlobalHeaderPullForHomeCardsArgs) => {
-  const { setGlobalHeaderMarginTop } = useActions();
+  const { setAppVerticalOffset } = useActions();
 
   const rafRef = useRef<number | null>(null);
   const lastDispatchedRef = useRef<number>(0);
@@ -40,9 +40,9 @@ export const useGlobalHeaderPullForHomeCards = ({
       const rounded = Math.round(px * 100) / 100;
       if (rounded === lastDispatchedRef.current) return;
       lastDispatchedRef.current = rounded;
-      setGlobalHeaderMarginTop({ value: rounded });
+      setAppVerticalOffset({ value: rounded });
     },
-    [setGlobalHeaderMarginTop],
+    [setAppVerticalOffset],
   );
 
   const compute = useCallback(() => {
@@ -106,7 +106,7 @@ export const useGlobalHeaderPullForHomeCards = ({
         rafRef.current = null;
       }
       lastDispatchedRef.current = 0;
-      setGlobalHeaderMarginTop({ value: 0 });
+      setAppVerticalOffset({ value: 0 });
     };
-  }, [listTopRef, scheduleCompute, setGlobalHeaderMarginTop]);
+  }, [listTopRef, scheduleCompute, setAppVerticalOffset]);
 };

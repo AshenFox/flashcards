@@ -53,13 +53,14 @@ export const useCardsVirtualizer = ({
     [],
   );
 
-  const lastScheduledHeightsRef = useRef<Record<string, number>>({});
-  const prevNamespaceKeyRef = useRef<string | undefined>(undefined);
   const prevInfiniteDataRef = useRef<
     InfiniteData<GetMainCardsResponseDto, number> | undefined
   >(undefined);
-  const restoredScrollOffsetRef = useRef(false);
+
   const virtualizerRef = useRef<Virtualizer<Window, Element> | null>(null);
+
+  const lastScheduledHeightsRef = useRef<Record<string, number>>({});
+  const prevNamespaceKeyRef = useRef<string | undefined>(undefined);
 
   if (prevNamespaceKeyRef.current !== namespaceKey) {
     prevNamespaceKeyRef.current = namespaceKey;
@@ -67,6 +68,8 @@ export const useCardsVirtualizer = ({
       useHomeCardsRowHeightsStore.getState().namespaces[namespaceKey];
     lastScheduledHeightsRef.current = heights ? { ...heights } : {};
   }
+
+  const restoredScrollOffsetRef = useRef(false);
 
   useLayoutEffect(() => {
     restoredScrollOffsetRef.current = false;
@@ -102,10 +105,22 @@ export const useCardsVirtualizer = ({
     }
   }, [firstItemOffset]);
 
+  const getPersistedCardsHeights = useCallback(() => {
+    const persistedHeights =
+      useHomeCardsRowHeightsStore.getState().namespaces[namespaceKey] ??
+      EMPTY_HEIGHTS;
+    return persistedHeights;
+  }, [namespaceKey]);
+
   const estimateRowSize = useCallback(
     (index: number) => {
       const card = rawCards[index];
       if (!card) return CARD_ROW_BASE_ESTIMATE;
+
+      const persistedHeight = getPersistedCardsHeights();
+      const persistedHeightForCard = persistedHeight[card._id];
+      if (persistedHeightForCard) return persistedHeightForCard;
+
       const prevDate = rawCards[index - 1]?.creation_date;
       let size = CARD_ROW_BASE_ESTIMATE;
       if (rowShowsDateDivider(prevDate, card.creation_date)) {
@@ -114,16 +129,15 @@ export const useCardsVirtualizer = ({
       if (useHomeCardsUIStore.getState().get(card._id).edit) {
         size += EDIT_MODE_EXTRA_ESTIMATE;
       }
-      console.log("estimateRowSize", index, size);
+
       return size;
     },
-    [rawCards],
+    [rawCards, getPersistedCardsHeights],
   );
 
   const initialMeasurementsCache = useMemo((): VirtualItem[] => {
-    const persistedHeights =
-      useHomeCardsRowHeightsStore.getState().namespaces[namespaceKey] ??
-      EMPTY_HEIGHTS;
+    const persistedHeights = getPersistedCardsHeights();
+
     return rawCards.map((card, index) => ({
       index,
       key: card._id,
@@ -132,11 +146,11 @@ export const useCardsVirtualizer = ({
       end: 0,
       lane: 0,
     }));
-  }, [rawCards, namespaceKey, estimateRowSize]);
+  }, [rawCards, getPersistedCardsHeights, estimateRowSize]);
 
   const virtualizer = useWindowVirtualizer({
     count: rawCards.length,
-    overscan: 5,
+    overscan: 3,
     gap: 15,
     estimateSize: estimateRowSize,
     getItemKey: index => rawCards[index]?._id ?? index,
@@ -158,8 +172,6 @@ export const useCardsVirtualizer = ({
       schedule(namespaceKey, updates);
     },
   });
-
-  console.log("virtualizer", virtualizer.measurementsCache);
 
   virtualizerRef.current = virtualizer;
 

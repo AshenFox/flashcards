@@ -1,5 +1,6 @@
 import { Virtualizer } from "@tanstack/react-virtual";
 import { ArrowUpIcon } from "@ui/Icons";
+import Portal from "@ui/Portal";
 import clsx from "clsx";
 import { memo, useCallback, useEffect, useRef, useState } from "react";
 
@@ -39,12 +40,14 @@ const ScrollTop = ({ virtualizer }: ScrollTopProps) => {
   }, [virtualizer, isVisible, scrollToTopSmooth]);
 
   return (
-    <div
-      className={clsx(s.scroll, isVisible && s.active)}
-      onClick={clickScroll}
-    >
-      <ArrowUpIcon height="20" width="20" />
-    </div>
+    <Portal>
+      <div
+        className={clsx(s.scroll, isVisible && s.active)}
+        onClick={clickScroll}
+      >
+        <ArrowUpIcon height="20" width="20" />
+      </div>
+    </Portal>
   );
 };
 

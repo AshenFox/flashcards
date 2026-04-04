@@ -106,12 +106,12 @@ const Card = ({
               className={s.speaker}
             />
           </div>
-          {/* <Img
+          <Img
             containerClass={s.img_container}
             imgClass={s.img}
             url={imgurl}
             isHideOnLoading={false}
-          /> */}
+          />
         </div>
       </div>
     </div>

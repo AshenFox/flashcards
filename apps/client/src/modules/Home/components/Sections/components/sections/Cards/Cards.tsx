@@ -3,6 +3,7 @@ import Filters, { FilterData, SetFilterValue } from "@components/Filters";
 import NotFound from "@components/NotFound";
 import { VirtualizedItem, VirtualizedList } from "@components/Virtualized";
 import ScrollTop from "@modules/ScrollTop";
+import { useAppSelector } from "@store/hooks";
 import { useQueryClient } from "@tanstack/react-query";
 import ScrollLoader from "@ui/ScrollLoader";
 import { defaultCardsFilters } from "@zustand/filters";
@@ -52,6 +53,8 @@ const filtersData: FilterData[] = [
 const FETCH_PREV_VISIBLE_THRESHOLD = 5;
 
 const Cards = () => {
+  const appVerticalOffset = useAppSelector(s => s.dimen.app_vertical_offset);
+
   const listTopRef = useRef<HTMLDivElement>(null);
 
   const queryClient = useQueryClient();
@@ -110,7 +113,7 @@ const Cards = () => {
 
   useEffect(() => {
     const maybeFetchNext = () => {
-      if (!hasNextPage || isFetchingNextPage) return;
+      if (!hasNextPage || isFetchingNextPage || isFetching) return;
       const items = virtualizer.getVirtualItems();
       const lastItem = items[items.length - 1];
       if (!lastItem) return;
@@ -120,7 +123,7 @@ const Cards = () => {
     };
 
     const maybeFetchPrevious = () => {
-      if (!hasPreviousPage || isFetchingPreviousPage) return;
+      if (!hasPreviousPage || isFetchingPreviousPage || isFetching) return;
       const items = virtualizer.getVirtualItems();
       const firstItem = items[0];
       if (!firstItem) return;
@@ -144,6 +147,7 @@ const Cards = () => {
     hasPreviousPage,
     isFetchingNextPage,
     isFetchingPreviousPage,
+    isFetching,
     fetchNextPage,
     fetchPreviousPage,
   ]);
@@ -173,6 +177,7 @@ const Cards = () => {
         resetData={resetData}
         resetFilters={resetFilters}
       />
+
       <VirtualizedList ref={listTopRef} virtualizer={virtualizer}>
         {virtualizer.getVirtualItems().map(virtualItem => {
           const data = rawCards[virtualItem.index];
@@ -194,8 +199,10 @@ const Cards = () => {
           );
         })}
       </VirtualizedList>
-      {/* <ScrollLoader active={loading} /> */}
-      {/* <ScrollTop virtualizer={virtualizer} /> */}
+      <div style={{ transform: `translateY(${appVerticalOffset}px)` }}>
+        <ScrollLoader active={loading} />
+      </div>
+      <ScrollTop virtualizer={virtualizer} />
       {!loading && (
         <NotFound
           resultsFound={resultsFound}

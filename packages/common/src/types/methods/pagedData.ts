@@ -3,6 +3,7 @@ export type PaginationCreator = {
   page: number;
   all: number;
   end: boolean;
+  size?: number;
 };
 
 export type PagedDataCreator<

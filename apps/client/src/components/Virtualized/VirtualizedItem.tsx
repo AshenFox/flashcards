@@ -1,6 +1,8 @@
 import { VirtualItem, Virtualizer } from "@tanstack/react-virtual";
 import React, { CSSProperties, memo, useMemo } from "react";
 
+import s from "./styles.module.scss";
+
 type VirtualizedItemProps = {
   virtualizer: Virtualizer<Window | Element, Element>;
   children: React.ReactNode;
@@ -12,24 +14,16 @@ const VirtualizedItem = ({
   children,
   virtualItem,
 }: VirtualizedItemProps) => {
-  if (virtualItem.index === 8) {
-    console.log("virtualItem 8", virtualItem.start, virtualItem);
-  }
-
   const style = useMemo<CSSProperties>(
     () => ({
-      position: "absolute",
-      top: 0,
-      width: "100%",
       transform: `translateY(${virtualItem.start}px)`,
-      // transition: "transform 0.1s ease",
-      // willChange: "transform",
     }),
     [virtualItem],
   );
 
   return (
     <div
+      className={s.virtualizedItem}
       ref={virtualizer.measureElement}
       data-index={virtualItem.index}
       style={style}

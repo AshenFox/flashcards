@@ -10,8 +10,8 @@ export const setHeaderDimen: DimenCaseReducer<{
   });
 };
 
-export const setGlobalHeaderMarginTop: DimenCaseReducer<{
+export const setAppVerticalOffset: DimenCaseReducer<{
   value: number;
 }> = (state, action) => {
-  state.global_header_margin_top_px = action.payload.value;
+  state.app_vertical_offset = action.payload.value;
 };
