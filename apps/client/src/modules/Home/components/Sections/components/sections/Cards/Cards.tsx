@@ -1,78 +1,46 @@
 import { CardsUIProvider } from "@components/Cards";
-import Filters, { FilterData, SetFilterValue } from "@components/Filters";
+import Filters, { SetFilterValue } from "@components/Filters";
 import NotFound from "@components/NotFound";
-import { VirtualizedItem, VirtualizedList } from "@components/Virtualized";
+import {
+  useSlidingWindowVirtualPagesFetch,
+  VirtualizedItem,
+  VirtualizedList,
+} from "@components/Virtualized";
 import ScrollTop from "@modules/ScrollTop";
 import { useAppSelector } from "@store/hooks";
 import { useQueryClient } from "@tanstack/react-query";
 import ScrollLoader from "@ui/ScrollLoader";
-import { defaultCardsFilters } from "@zustand/filters";
 import React, { memo, useCallback, useEffect, useMemo, useRef } from "react";
 
 import s from "../styles.module.scss";
 import { CardRow } from "./CardRow";
+import { FETCH_PREV_VISIBLE_THRESHOLD, filtersData } from "./constants";
 import { useHomeCardsCache } from "./hooks/cache";
-import { useCardsVirtualizer } from "./hooks/cardsVirtualizer";
 import { getQueryKey, useHomeCardsQuery } from "./hooks/query";
 import { useHomeCardsFiltersStore, useHomeCardsUIStore } from "./hooks/stores";
 import { useGlobalHeaderPullForHomeCards } from "./hooks/useGlobalHeaderPullForHomeCards";
-
-const filtersData: FilterData[] = [
-  {
-    id: "created",
-    label: "Date Order",
-    defaultValue: defaultCardsFilters.created,
-    options: [
-      { value: "newest", label: "Newest" },
-      { value: "oldest", label: "Oldest" },
-    ],
-  },
-  {
-    id: "sr",
-    label: "SR",
-    defaultValue: defaultCardsFilters.sr,
-    options: [
-      { value: "all", label: "All" },
-      { value: "in-lowest", label: "In Lowest" },
-      { value: "in-highest", label: "In Highest" },
-      { value: "out", label: "Out" },
-    ],
-  },
-  {
-    id: "by",
-    label: "By",
-    defaultValue: defaultCardsFilters.by,
-    options: [
-      { value: "term", label: "Term" },
-      { value: "definition", label: "Definition" },
-    ],
-  },
-];
-
-/** When the first visible virtual row is at or above this index, load the previous page. */
-const FETCH_PREV_VISIBLE_THRESHOLD = 5;
+import { useHomeCardsSlidingWindowVirtualizer } from "./hooks/useHomeCardsSlidingWindowVirtualizer";
 
 const Cards = () => {
   const appVerticalOffset = useAppSelector(s => s.dimen.app_vertical_offset);
 
   const listTopRef = useRef<HTMLDivElement>(null);
-
   const queryClient = useQueryClient();
+
   const filters = useHomeCardsFiltersStore(state => state.filters);
   const pagination = useHomeCardsFiltersStore(state => state.pagination);
   const setFilter = useHomeCardsFiltersStore(state => state.setFilter);
   const resetFilters = useHomeCardsFiltersStore(state => state.resetFilters);
 
+  const query = useHomeCardsQuery();
+
   const {
     data,
-    fetchNextPage,
-    fetchPreviousPage,
-    hasNextPage,
     hasPreviousPage,
-    isFetchingNextPage,
     isFetchingPreviousPage,
+    isFetchingNextPage,
     isFetching,
-  } = useHomeCardsQuery();
+  } = query;
 
   const refreshCardsQuery = useCallback(() => {
     const filters = useHomeCardsFiltersStore.getState().filters;
@@ -85,9 +53,10 @@ const Cards = () => {
     () => data?.pages.flatMap(p => p.entries) ?? [],
     [data],
   );
+
   const resultsFound = pagination?.number;
 
-  const virtualizer = useCardsVirtualizer({
+  const virtualizer = useHomeCardsSlidingWindowVirtualizer({
     rawCards,
     infiniteData: data,
   });
@@ -98,59 +67,12 @@ const Cards = () => {
     hasData: !!data,
   });
 
-  const { search, by } = filters;
-
-  const setFilterValue = useCallback<SetFilterValue>(
-    (filter, value) => {
-      setFilter(filter as keyof typeof filters, value);
-    },
-    [setFilter],
-  );
-
-  const resetData = useCallback(() => {
-    resetUIStore();
-  }, [resetUIStore]);
-
-  useEffect(() => {
-    const maybeFetchNext = () => {
-      if (!hasNextPage || isFetchingNextPage || isFetching) return;
-      const items = virtualizer.getVirtualItems();
-      const lastItem = items[items.length - 1];
-      if (!lastItem) return;
-      if (lastItem.index >= rawCards.length - 1) {
-        fetchNextPage();
-      }
-    };
-
-    const maybeFetchPrevious = () => {
-      if (!hasPreviousPage || isFetchingPreviousPage || isFetching) return;
-      const items = virtualizer.getVirtualItems();
-      const firstItem = items[0];
-      if (!firstItem) return;
-      if (firstItem.index <= FETCH_PREV_VISIBLE_THRESHOLD) {
-        fetchPreviousPage();
-      }
-    };
-
-    const onScroll = () => {
-      maybeFetchNext();
-      maybeFetchPrevious();
-    };
-
-    onScroll();
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
-  }, [
+  useSlidingWindowVirtualPagesFetch({
     virtualizer,
-    rawCards.length,
-    hasNextPage,
-    hasPreviousPage,
-    isFetchingNextPage,
-    isFetchingPreviousPage,
-    isFetching,
-    fetchNextPage,
-    fetchPreviousPage,
-  ]);
+    itemCount: rawCards.length,
+    query,
+    firstVisibleThreshold: FETCH_PREV_VISIBLE_THRESHOLD,
+  });
 
   useEffect(() => {
     return () => {
@@ -158,7 +80,18 @@ const Cards = () => {
     };
   }, [resetUIStore]);
 
+  const resetData = useCallback(() => {
+    resetUIStore();
+  }, [resetUIStore]);
+
   const loading = isFetching || isFetchingNextPage || isFetchingPreviousPage;
+
+  const setFilterValue = useCallback<SetFilterValue>(
+    (filter, value) => {
+      setFilter(filter as keyof typeof filters, value);
+    },
+    [setFilter],
+  );
 
   return (
     <CardsUIProvider
@@ -180,18 +113,18 @@ const Cards = () => {
 
       <VirtualizedList ref={listTopRef} virtualizer={virtualizer}>
         {virtualizer.getVirtualItems().map(virtualItem => {
-          const data = rawCards[virtualItem.index];
+          const row = rawCards[virtualItem.index];
           return (
             <VirtualizedItem
-              key={data._id}
+              key={row._id}
               virtualizer={virtualizer}
               virtualItem={virtualItem}
             >
               <CardRow
-                data={data}
+                data={row}
                 prevDateString={rawCards[virtualItem.index - 1]?.creation_date}
-                search={search}
-                by={by}
+                search={filters.search}
+                by={filters.by}
                 isModuleLink
                 loading={loading}
               />
@@ -206,7 +139,7 @@ const Cards = () => {
       {!loading && (
         <NotFound
           resultsFound={resultsFound}
-          filterValue={search}
+          filterValue={filters.search}
           notFoundMsg={value =>
             value ? (
               <>

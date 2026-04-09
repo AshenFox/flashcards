@@ -1,11 +1,18 @@
-import type { GetMainCardsResponseDto } from "@flashcards/common";
 import type { InfiniteData } from "@tanstack/react-query";
 import type { Virtualizer } from "@tanstack/react-virtual";
 import type { MutableRefObject } from "react";
 
-export function calculateCardsFirstItemOffset(
-  data: InfiniteData<GetMainCardsResponseDto, number> | undefined,
-  prevData: InfiniteData<GetMainCardsResponseDto, number> | undefined,
+/**
+ * How many logical items were prepended or appended relative to the previous
+ * infinite-query snapshot. Used to keep window scroll stable when pages shift.
+ *
+ * @param getFirstPageItemCount — length of the first page slice (e.g. `p => p.entries.length`
+ *   for main cards, or `p => p.modules.entries.length` for modules).
+ */
+export function calculateInfiniteFirstItemOffset<TPage, TPageParam>(
+  data: InfiniteData<TPage, TPageParam> | undefined,
+  prevData: InfiniteData<TPage, TPageParam> | undefined,
+  getFirstPageItemCount: (page: TPage) => number,
 ): number {
   if (!data || !prevData) {
     return 0;
@@ -16,11 +23,11 @@ export function calculateCardsFirstItemOffset(
   }
 
   if (prevData.pageParams[0] === data.pageParams[1]) {
-    return data.pages[0].entries.length;
+    return getFirstPageItemCount(data.pages[0]);
   }
 
   if (prevData.pageParams[1] === data.pageParams[0]) {
-    return -prevData.pages[0].entries.length;
+    return -getFirstPageItemCount(prevData.pages[0]);
   }
 
   return 0;
@@ -63,7 +70,12 @@ export function restoreScrollOffsetAfterFirstItemChange(
   const scrollOffset = virtualizer.scrollOffset;
   const adjustments = firstItemOffset < 0 ? -delta : delta;
 
-  scrollVirtualizerWindowToOffset(virtualizer, scrollOffset, undefined, adjustments);
+  scrollVirtualizerWindowToOffset(
+    virtualizer,
+    scrollOffset,
+    undefined,
+    adjustments,
+  );
 
   virtualizer.scrollOffset = scrollOffset + adjustments;
   restoredScrollOffsetRef.current = true;

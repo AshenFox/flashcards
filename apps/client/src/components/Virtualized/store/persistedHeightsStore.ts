@@ -10,19 +10,16 @@ export const rowHeightsSlice: Slice<RowHeightsStore> = setAction => {
     namespaces: {},
     mergeRowHeights: (namespaceKey, updates) => {
       if (Object.keys(updates).length === 0) return;
-      set(
-        state => {
-          const prev = state.namespaces[namespaceKey] ?? {};
-          const heights = { ...prev };
-          for (const [id, v] of Object.entries(updates)) {
-            if (typeof v === "number" && v > 0 && Number.isFinite(v)) {
-              heights[id] = Math.round(v);
-            }
+      set(state => {
+        const prev = state.namespaces[namespaceKey] ?? {};
+        const heights = { ...prev };
+        for (const [id, v] of Object.entries(updates)) {
+          if (typeof v === "number" && v > 0 && Number.isFinite(v)) {
+            heights[id] = Math.round(v);
           }
-          state.namespaces[namespaceKey] = heights;
-        },
-        "mergeRowHeights",
-      );
+        }
+        state.namespaces[namespaceKey] = heights;
+      }, "mergeRowHeights");
     },
   };
 };
