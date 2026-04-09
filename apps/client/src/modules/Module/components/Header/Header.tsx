@@ -21,11 +21,7 @@ const Header = () => {
           <div className={s.top}>
             <div className={clsx(s.title, !title && s.noTitle)}>
               <h1>
-                {isLoading && !title ? (
-                  <Skeleton width={"15rem"} />
-                ) : (
-                  title
-                )}
+                {isLoading && !title ? <Skeleton width={"15rem"} /> : title}
               </h1>
             </div>
             <div className={s.return}>

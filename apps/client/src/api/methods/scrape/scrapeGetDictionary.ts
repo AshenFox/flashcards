@@ -32,7 +32,6 @@ export type UrbanDictResult = {
   data: UrbanReply;
 };
 
-
 export async function scrapeGetDictionary(
   value: "cod",
   query: string,

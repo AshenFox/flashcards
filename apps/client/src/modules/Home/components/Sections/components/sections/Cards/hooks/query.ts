@@ -15,45 +15,45 @@ export const HOME_CARDS_PAGE_SIZE = 50;
 // Infinite query
 // ---------------------------------------------------------------------------
 
-export const getQueryKey = (filters: CardsFilters) => ["home", "cards", filters] as const;
+export const getQueryKey = (filters: CardsFilters) =>
+  ["home", "cards", filters] as const;
 
 export type HomeCardsQueryResult = ReturnType<typeof useHomeCardsQuery>;
 
 export const useHomeCardsQuery = () => {
-    const user = useAppSelector((s) => s.auth.user);
-    const filters = useHomeCardsFiltersStore((state) => state.filters);
-    const setPagination = useHomeCardsFiltersStore((state) => state.setPagination);
+  const user = useAppSelector(s => s.auth.user);
+  const filters = useHomeCardsFiltersStore(state => state.filters);
+  const setPagination = useHomeCardsFiltersStore(state => state.setPagination);
 
-    const query = useInfiniteQuery<
-        GetMainCardsResponseDto,
-        Error,
-        InfiniteData<GetMainCardsResponseDto, number>,
-        ReturnType<typeof getQueryKey>,
-        number
-    >({
-        queryKey: getQueryKey(filters),
-        queryFn: ({ pageParam }) => mainGetCards({ ...filters, page: pageParam, size: HOME_CARDS_PAGE_SIZE }),
-        initialPageParam: 0,
-        maxPages: HOME_CARDS_MAX_CACHED_PAGES,
-        getPreviousPageParam: (firstPage: GetMainCardsResponseDto) =>
-            firstPage.pagination.page > 0 ? firstPage.pagination.page - 1 : undefined,
-        getNextPageParam: (lastPage: GetMainCardsResponseDto) =>
-            lastPage.pagination.end ? undefined : lastPage.pagination.page + 1,
-        enabled: !!user,
-    });
+  const query = useInfiniteQuery<
+    GetMainCardsResponseDto,
+    Error,
+    InfiniteData<GetMainCardsResponseDto, number>,
+    ReturnType<typeof getQueryKey>,
+    number
+  >({
+    queryKey: getQueryKey(filters),
+    queryFn: ({ pageParam }) =>
+      mainGetCards({ ...filters, page: pageParam, size: HOME_CARDS_PAGE_SIZE }),
+    initialPageParam: 0,
+    maxPages: HOME_CARDS_MAX_CACHED_PAGES,
+    getPreviousPageParam: (firstPage: GetMainCardsResponseDto) =>
+      firstPage.pagination.page > 0 ? firstPage.pagination.page - 1 : undefined,
+    getNextPageParam: (lastPage: GetMainCardsResponseDto) =>
+      lastPage.pagination.end ? undefined : lastPage.pagination.page + 1,
+    enabled: !!user,
+  });
 
-    const { data } = query;
+  const { data } = query;
 
-    useEffect(() => {
-        if (data?.pages?.length) {
-            const lastPage = data.pages[data.pages.length - 1];
-            setPagination(lastPage.pagination);
-        } else {
-            setPagination(null);
-        }
-    }, [data?.pages, setPagination]);
+  useEffect(() => {
+    if (data?.pages?.length) {
+      const lastPage = data.pages[data.pages.length - 1];
+      setPagination(lastPage.pagination);
+    } else {
+      setPagination(null);
+    }
+  }, [data?.pages, setPagination]);
 
-    return query;
+  return query;
 };
-
-

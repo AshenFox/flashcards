@@ -5,11 +5,7 @@ import { editGetDraft } from "@api/methods/main/editGetDraft";
 import { mainGetModule } from "@api/methods/main/mainGetModule";
 import { mainGetModuleCards } from "@api/methods/main/mainGetModuleCards";
 import { queryClient } from "@api/queryClient";
-import {
-  CardsCache,
-  CardsCacheHook,
-  cardsUISlice,
-} from "@components/Cards";
+import { CardsCache, CardsCacheHook, cardsUISlice } from "@components/Cards";
 import type {
   CardDto,
   GetEditDraftResponseDto,
@@ -49,7 +45,7 @@ export const useEditRouteKey = (): string | undefined => {
 
 export const useEditQuery = () => {
   const routeKey = useEditRouteKey();
-  const user = useAppSelector((s) => s.auth.user);
+  const user = useAppSelector(s => s.auth.user);
 
   return useQuery({
     queryKey: getEditQueryKey(routeKey),
@@ -76,7 +72,7 @@ export const useEditResolvedModuleId = (): string | undefined => {
 };
 
 export const useEditCardsQuery = () => {
-  const user = useAppSelector((s) => s.auth.user);
+  const user = useAppSelector(s => s.auth.user);
   const resolvedModuleId = useEditResolvedModuleId();
 
   return useQuery({
@@ -150,7 +146,7 @@ export const useEditCardsCache: CardsCacheHook = () => {
       getCard: (_id: string) => {
         const data =
           queryClient.getQueryData<GetMainModuleCardsResponseDto>(queryKey);
-        return data?.entries.find((card) => card._id === _id);
+        return data?.entries.find(card => card._id === _id);
       },
       getAllCards: () => {
         const data =
@@ -160,7 +156,7 @@ export const useEditCardsCache: CardsCacheHook = () => {
       set: (recipe: (entries: CardDto[]) => void) => {
         queryClient.setQueryData(
           queryKey,
-          withProduce<GetMainModuleCardsResponseDto>((draft) => {
+          withProduce<GetMainModuleCardsResponseDto>(draft => {
             recipe(draft.entries);
           }),
         );
@@ -181,10 +177,7 @@ export const useEditCardsCache: CardsCacheHook = () => {
 
 export const useEditModuleTitleControl = () => {
   const routeKey = useEditRouteKey();
-  const metaKey = useMemo(
-    () => getEditQueryKey(routeKey),
-    [routeKey],
-  );
+  const metaKey = useMemo(() => getEditQueryKey(routeKey), [routeKey]);
 
   const mutation = useMutation({
     mutationFn: async () => {
@@ -205,7 +198,7 @@ export const useEditModuleTitleControl = () => {
     (value: string) => {
       queryClient.setQueryData(
         metaKey,
-        withProduce<EditMetaDto>((draft) => {
+        withProduce<EditMetaDto>(draft => {
           if (draft?.module) draft.module.title = value;
         }),
       );
@@ -218,10 +211,13 @@ export const useEditModuleTitleControl = () => {
     [metaKey, flush],
   );
 
-  const result = useMemo(() => ({
-    onTitleChange,
-    isTitleSaving: mutation.isPending,
-  }), [onTitleChange, mutation.isPending]);
+  const result = useMemo(
+    () => ({
+      onTitleChange,
+      isTitleSaving: mutation.isPending,
+    }),
+    [onTitleChange, mutation.isPending],
+  );
 
   return result;
 };
@@ -232,10 +228,7 @@ export const useEditModuleTitleControl = () => {
 
 export const useEditCreateCardMutation = () => {
   const routeKey = useEditRouteKey();
-  const metaKey = useMemo(
-    () => getEditQueryKey(routeKey),
-    [routeKey],
-  );
+  const metaKey = useMemo(() => getEditQueryKey(routeKey), [routeKey]);
   const resolvedModuleId = useEditResolvedModuleId();
   const cardsKey = useMemo(
     () => getEditCardsQueryKey(resolvedModuleId),
@@ -255,7 +248,7 @@ export const useEditCreateCardMutation = () => {
       if (prev) {
         queryClient.setQueryData(
           cardsKey,
-          produce(prev, (draft) => {
+          produce(prev, draft => {
             draft.entries = res.cards;
           }),
         );

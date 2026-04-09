@@ -8,47 +8,47 @@ import {
   scrapeGetDictionary,
   scrapeSearchImages,
 } from "@api/methods";
-import { CodDictResult, UrbanDictResult } from "@api/methods/scrape/scrapeGetDictionary";
+import {
+  CodDictResult,
+  UrbanDictResult,
+} from "@api/methods/scrape/scrapeGetDictionary";
 import { saveLastUpdate } from "@store/helper-functions";
 import { ThunkActionApp } from "@store/store";
 import sanitize from "sanitize-html";
 
 import { url_fields } from "../initState";
 import { mainActions } from "../slice";
-import {
-  ImgurlBase,
-  ImgurlObjs,
-} from "../types";
+import { ImgurlBase, ImgurlObjs } from "../types";
 
 export const setCardsSavePositive = (_id: string) => <ThunkActionApp>(async (
-  dispatch,
-  getState,
-) => {
-  const {
-    main: { cards },
-  } = getState();
+    dispatch,
+    getState,
+  ) => {
+    const {
+      main: { cards },
+    } = getState();
 
-  const cards_arr = Object.values(cards);
-  let _id_arr: string[] = [];
+    const cards_arr = Object.values(cards);
+    let _id_arr: string[] = [];
 
-  for (const card of cards_arr) {
-    if (card._id === _id) {
-      _id_arr.push(card._id);
-      break;
+    for (const card of cards_arr) {
+      if (card._id === _id) {
+        _id_arr.push(card._id);
+        break;
+      }
+      if (card.save) {
+        _id_arr = [];
+      } else {
+        _id_arr.push(card._id);
+      }
     }
-    if (card.save) {
-      _id_arr = [];
-    } else {
-      _id_arr.push(card._id);
-    }
-  }
 
-  dispatch(
-    mainActions.setCardsSavePositiveReducer({
-      _id_arr,
-    }),
-  );
-});
+    dispatch(
+      mainActions.setCardsSavePositiveReducer({
+        _id_arr,
+      }),
+    );
+  });
 
 export const scrapeDictionary = (_id: string, value: "cod" | "urban") =>
   <ThunkActionApp>(async (dispatch, getState) => {
@@ -117,132 +117,132 @@ export const setUrlOk = (_id: string, index: string, value: boolean) =>
   });
 
 export const searchImages = (_id: string) => <ThunkActionApp>(async (
-  dispatch,
-  getState,
-) => {
-  try {
-    const {
-      main: { cards },
-    } = getState();
+    dispatch,
+    getState,
+  ) => {
+    try {
+      const {
+        main: { cards },
+      } = getState();
 
-    const query = cards[_id].gallery.query;
+      const query = cards[_id].gallery.query;
 
-    if (!query) return console.error("Query can not be empty.");
+      if (!query) return console.error("Query can not be empty.");
 
-    const regexpURL = /^@url - /;
+      const regexpURL = /^@url - /;
 
-    const isURL = regexpURL.test(query);
+      const isURL = regexpURL.test(query);
 
-    dispatch(mainActions.setGalleryLoading({ _id, value: true }));
+      dispatch(mainActions.setGalleryLoading({ _id, value: true }));
 
-    if (isURL) {
-      const url = query.replace(regexpURL, "").trim();
+      if (isURL) {
+        const url = query.replace(regexpURL, "").trim();
 
-      if (!url) return console.error("Query can not be empty.");
+        if (!url) return console.error("Query can not be empty.");
 
-      dispatch(
-        mainActions.searchImagesReducer({
-          _id,
-          imgurl_obj: imgUrlArrToObj([{ url }]),
-          all: 1,
-        }),
-      );
-    } else {
-      const data = await scrapeSearchImages(query);
+        dispatch(
+          mainActions.searchImagesReducer({
+            _id,
+            imgurl_obj: imgUrlArrToObj([{ url }]),
+            all: 1,
+          }),
+        );
+      } else {
+        const data = await scrapeSearchImages(query);
 
-      const all = data.length;
-      const imgurl_obj = imgUrlArrToObj(data);
+        const all = data.length;
+        const imgurl_obj = imgUrlArrToObj(data);
 
-      dispatch(mainActions.searchImagesReducer({ _id, imgurl_obj, all }));
+        dispatch(mainActions.searchImagesReducer({ _id, imgurl_obj, all }));
+      }
+    } catch (err) {
+      console.error(err);
+      dispatch(mainActions.setGalleryError({ _id, value: true }));
     }
-  } catch (err) {
-    console.error(err);
-    dispatch(mainActions.setGalleryError({ _id, value: true }));
-  }
 
-  dispatch(mainActions.setGalleryLoading({ _id, value: false }));
-});
+    dispatch(mainActions.setGalleryLoading({ _id, value: false }));
+  });
 
 export const deleteModule = _id => <ThunkActionApp>(async (
-  dispatch,
-  getState,
-) => {
-  try {
-    const {
-      auth: { user },
-      main: { module },
-    } = getState();
-    const module_loading = module && module.module_loading;
+    dispatch,
+    getState,
+  ) => {
+    try {
+      const {
+        auth: { user },
+        main: { module },
+      } = getState();
+      const module_loading = module && module.module_loading;
 
-    if (!user || module_loading) return;
-    dispatch(mainActions.setModuleLoading({ value: true }));
+      if (!user || module_loading) return;
+      dispatch(mainActions.setModuleLoading({ value: true }));
 
-    await editDeleteModule(_id);
+      await editDeleteModule(_id);
 
-    saveLastUpdate();
-    window.location.replace(`/home/modules`);
-  } catch (err) {
-    console.error(err);
-  }
+      saveLastUpdate();
+      window.location.replace(`/home/modules`);
+    } catch (err) {
+      console.error(err);
+    }
 
-  dispatch(mainActions.setModuleLoading({ value: false }));
-});
+    dispatch(mainActions.setModuleLoading({ value: false }));
+  });
 
 export const deleteCard = (_id: string) => <ThunkActionApp>(async (
-  dispatch,
-  getState,
-) => {
-  try {
-    const {
-      auth: { user },
-    } = getState();
-    if (!user) return;
+    dispatch,
+    getState,
+  ) => {
+    try {
+      const {
+        auth: { user },
+      } = getState();
+      if (!user) return;
 
-    const res = await editDeleteCard(_id);
+      const res = await editDeleteCard(_id);
 
-    dispatch(mainActions.deleteCardReducer({ cards: res.cards }));
+      dispatch(mainActions.deleteCardReducer({ cards: res.cards }));
 
-    saveLastUpdate();
-  } catch (err) {
-    console.error(err);
-  }
-});
+      saveLastUpdate();
+    } catch (err) {
+      console.error(err);
+    }
+  });
 
 export const editModule = () => <ThunkActionApp>(async (_, getState) => {
-  try {
-    const {
-      auth: { user },
-      main: { module },
-    } = getState();
+    try {
+      const {
+        auth: { user },
+        main: { module },
+      } = getState();
 
-    if (!user) return;
+      if (!user) return;
 
-    await editUpdateModule(module);
+      await editUpdateModule(module);
 
-    saveLastUpdate();
-  } catch (err) {
-    console.error(err);
-  }
-});
+      saveLastUpdate();
+    } catch (err) {
+      console.error(err);
+    }
+  });
 
 export const editCard = (_id: string) => <ThunkActionApp>(async (
-  _,
-  getState,
-) => {
-  try {
-    const {
-      auth: { user },
-      main: { cards },
-    } = getState();
-    if (!user) return;
+    _,
+    getState,
+  ) => {
+    try {
+      const {
+        auth: { user },
+        main: { cards },
+      } = getState();
+      if (!user) return;
 
-    await editUpdateCard(cards[_id]);
+      await editUpdateCard(cards[_id]);
 
-    saveLastUpdate();
-  } catch (err) {
-    console.error(err);
-  }
-});
+      saveLastUpdate();
+    } catch (err) {
+      console.error(err);
+    }
+  });
 
 export const createModule = (saveAllCards: boolean = false) =>
   <ThunkActionApp>(async (dispatch, getState) => {
@@ -313,48 +313,48 @@ export const createCard = (position: "start" | "end") =>
   });
 
 export const exportSelectedCards = () => <ThunkActionApp>(async (
-  _,
-  getState,
-) => {
-  try {
-    const {
-      main: { cards },
-    } = getState();
+    _,
+    getState,
+  ) => {
+    try {
+      const {
+        main: { cards },
+      } = getState();
 
-    const selectedCards = Object.values(cards)
-      .filter(card => card.save)
-      .map(card => {
-        const exportCard = {
-          _id: card._id,
-          moduleID: card.moduleID,
-          term: card.term,
-          definition: card.definition,
-          imgurl: card.imgurl,
-          author_id: card.author_id,
-          author: card.author,
-        };
+      const selectedCards = Object.values(cards)
+        .filter(card => card.save)
+        .map(card => {
+          const exportCard = {
+            _id: card._id,
+            moduleID: card.moduleID,
+            term: card.term,
+            definition: card.definition,
+            imgurl: card.imgurl,
+            author_id: card.author_id,
+            author: card.author,
+          };
 
-        return exportCard;
-      });
+          return exportCard;
+        });
 
-    if (selectedCards.length === 0) {
-      console.error("No cards selected for export");
-      return;
+      if (selectedCards.length === 0) {
+        console.error("No cards selected for export");
+        return;
+      }
+
+      const dataStr = JSON.stringify(selectedCards, null, 2);
+      const dataUri = `data:application/json;charset=utf-8,${encodeURIComponent(dataStr)}`;
+
+      const exportFileDefaultName = `flashcards_export_${new Date().toISOString().slice(0, 10)}_${new Date().toLocaleTimeString().replace(/:/g, "-")}.json`;
+
+      const linkElement = document.createElement("a");
+      linkElement.setAttribute("href", dataUri);
+      linkElement.setAttribute("download", exportFileDefaultName);
+      linkElement.click();
+    } catch (err) {
+      console.error("Error exporting cards:", err);
     }
-
-    const dataStr = JSON.stringify(selectedCards, null, 2);
-    const dataUri = `data:application/json;charset=utf-8,${encodeURIComponent(dataStr)}`;
-
-    const exportFileDefaultName = `flashcards_export_${new Date().toISOString().slice(0, 10)}_${new Date().toLocaleTimeString().replace(/:/g, "-")}.json`;
-
-    const linkElement = document.createElement("a");
-    linkElement.setAttribute("href", dataUri);
-    linkElement.setAttribute("download", exportFileDefaultName);
-    linkElement.click();
-  } catch (err) {
-    console.error("Error exporting cards:", err);
-  }
-});
+  });
 
 // ==============================
 // ==============================

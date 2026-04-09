@@ -1,8 +1,7 @@
-
 import { withActionName } from "@zustand/helpers";
 import { Slice } from "@zustand/types";
 
-import { type CardFields, type CardsUIStore,defaultCardUI } from "./types";
+import { type CardFields, type CardsUIStore, defaultCardUI } from "./types";
 
 export const cardsUISlice: Slice<CardsUIStore> = (setAction, get) => {
   const set = withActionName<CardsUIStore>(setAction);
@@ -14,26 +13,27 @@ export const cardsUISlice: Slice<CardsUIStore> = (setAction, get) => {
 
       if (existing) return existing;
 
-      set((state) => {
+      set(state => {
         state.cards[_id] = {
           ...defaultCardUI,
         };
-      }, 'createCardUI');
+      }, "createCardUI");
 
       return get().cards[_id];
     },
     set: (_id: string, updater: (draft: CardFields) => void) => {
-      set((state) => {
+      set(state => {
         if (!state.cards[_id]) {
           state.cards[_id] = {
             ...defaultCardUI,
           };
         }
         updater(state.cards[_id]);
-      }, 'setCardUI');
+      }, "setCardUI");
     },
-    reset: () => set((state) => {
-      state.cards = {};
-    }, 'resetCardsUI'),
+    reset: () =>
+      set(state => {
+        state.cards = {};
+      }, "resetCardsUI"),
   };
 };

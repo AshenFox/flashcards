@@ -8,18 +8,18 @@ import s from "./styles.module.scss";
 const ExportCards = () => {
   const cardsCache = useCardsCash();
   const cardsList = useEditCards();
-  const cardsUi = useEditCardsUIStore((s) => s.cards);
+  const cardsUi = useEditCardsUIStore(s => s.cards);
 
   const active = useMemo(
-    () => cardsList.some((card) => cardsUi[card._id]?.save),
+    () => cardsList.some(card => cardsUi[card._id]?.save),
     [cardsList, cardsUi],
   );
 
   const exportSelectedCards = useCallback(() => {
     const selectedCards = cardsCache
       .getAllCards()
-      .filter((card) => cardsUi[card._id]?.save)
-      .map((card) => ({
+      .filter(card => cardsUi[card._id]?.save)
+      .map(card => ({
         _id: card._id,
         moduleID: card.moduleID,
         term: card.term,

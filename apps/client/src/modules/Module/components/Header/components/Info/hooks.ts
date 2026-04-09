@@ -9,9 +9,9 @@ export const useDropAllCardsSR = () => {
 
   const mutation = useMutation({
     mutationFn: (_id_arr: string[]) => srDropCards(_id_arr),
-    onSuccess: (data) => {
+    onSuccess: data => {
       saveLastUpdate();
-      cardsCache.set((entries) => {
+      cardsCache.set(entries => {
         for (const entry of entries) {
           entry.stage = data.stage;
           entry.nextRep = data.nextRep;
@@ -24,7 +24,7 @@ export const useDropAllCardsSR = () => {
 
   const dropAllCardsSR = useCallback(() => {
     const allCards = cardsCache.getAllCards();
-    const _id_arr = allCards.map((c) => c._id);
+    const _id_arr = allCards.map(c => c._id);
     if (!_id_arr.length) return;
     mutation.mutate(_id_arr);
   }, [mutation, cardsCache]);

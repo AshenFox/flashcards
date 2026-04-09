@@ -2,10 +2,7 @@ import NotFound from "@components/NotFound";
 import ScrollLoader from "@ui/ScrollLoader";
 import { memo } from "react";
 
-import {
-  useModuleCardsQuery,
-  useModuleFiltersStore,
-} from "../../../../hooks";
+import { useModuleCardsQuery, useModuleFiltersStore } from "../../../../hooks";
 import CardRow from "./CardRow";
 import s from "./styles.module.scss";
 

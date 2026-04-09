@@ -50,9 +50,9 @@ router.get(
 
       const draftModule = draft
         ? await moduleModel.findOne({
-          author_id: _id,
-          draft: true,
-        })
+            author_id: _id,
+            draft: true,
+          })
         : null;
 
       let all = await moduleModel.countDocuments({
@@ -266,12 +266,7 @@ router.get(
       if (!foundModule)
         throw new Error(`Module ${module_id} has not been found.`);
 
-      const {
-        search,
-        created = "newest",
-        by = "term",
-        sr,
-      } = cardsQuery;
+      const { search, created = "newest", by = "term", sr } = cardsQuery;
 
       const filterAll: FilterQuery<Card> = {
         moduleID: module_id,
@@ -295,9 +290,9 @@ router.get(
           $regex: filterRegex(search),
         };
 
-      if (sr === "in-lowest" || sr === "in-highest") filterObj.studyRegime = true;
+      if (sr === "in-lowest" || sr === "in-highest")
+        filterObj.studyRegime = true;
       else if (sr === "out") filterObj.studyRegime = false;
-
 
       const all = await cardModel.countDocuments(filterAll);
       const cards_number = await cardModel.countDocuments(filterObj);

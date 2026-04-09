@@ -1,4 +1,5 @@
-import { CardDto ,
+import {
+  CardDto,
   GetMainCardsResponseDto,
   GetMainModuleCardsResponseDto,
   GetMainModuleResponseDto,

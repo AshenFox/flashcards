@@ -53,7 +53,7 @@ export async function initEasySpeech(
       : null;
     const isChromeDesktop135 = isNotMobile && chromeMajorVersion === 135;
 
-    voicesArr.forEach((voice) => {
+    voicesArr.forEach(voice => {
       const voiceData = {
         voiceURI: voice.voiceURI,
         name: voice.name,

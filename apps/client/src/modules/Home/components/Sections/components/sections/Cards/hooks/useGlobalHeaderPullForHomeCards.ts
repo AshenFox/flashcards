@@ -1,10 +1,5 @@
 import { useActions } from "@store/hooks";
-import {
-  type RefObject,
-  useCallback,
-  useEffect,
-  useRef,
-} from "react";
+import { type RefObject, useCallback, useEffect, useRef } from "react";
 
 const docY = (el: Element) => {
   const r = el.getBoundingClientRect();

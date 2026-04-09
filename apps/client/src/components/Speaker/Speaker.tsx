@@ -21,10 +21,10 @@ type EasySpeechStatus = {
 };
 
 const Speaker = ({ _id, text, type, className, ref }: SpeakerProps) => {
-  const setVoiceSpeaking = useVoiceStore((s) => s.setVoiceSpeaking);
-  const voices = useVoiceStore((s) => s.voices);
-  const working = useVoiceStore((s) => s.working);
-  const speaking = useVoiceStore((s) => s.speaking);
+  const setVoiceSpeaking = useVoiceStore(s => s.setVoiceSpeaking);
+  const voices = useVoiceStore(s => s.voices);
+  const working = useVoiceStore(s => s.working);
+  const speaking = useVoiceStore(s => s.speaking);
 
   const filteredText = useMemo(() => filterText(text), [text]);
   const language = useMemo(() => detectLanguage(filteredText), [filteredText]);

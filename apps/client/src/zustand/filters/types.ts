@@ -2,7 +2,6 @@ import { PaginationDto } from "@flashcards/common";
 
 export type FilterValue = string | number | boolean | undefined;
 
-
 export type DefaultFilters = {
   [key: string]: FilterValue;
   search?: string;
@@ -53,7 +52,9 @@ export const defaultPagination: PaginationDto = {
   end: false,
 };
 
-export type QueryKey<Filters extends DefaultFilters> = (filters: Filters) => readonly unknown[];
+export type QueryKey<Filters extends DefaultFilters> = (
+  filters: Filters,
+) => readonly unknown[];
 
 export type FilterStore<Filters extends DefaultFilters> = {
   filters: Filters;

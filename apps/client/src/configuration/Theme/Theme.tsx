@@ -1,7 +1,7 @@
 import { ThemeProvider, useTheme } from "next-themes";
 import { memo, ReactNode, useEffect } from "react";
 
-import { type ResolvedTheme,setThemeCookie } from "./themeCookie";
+import { type ResolvedTheme, setThemeCookie } from "./themeCookie";
 
 type ThemeProps = {
   children: ReactNode;

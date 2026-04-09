@@ -78,8 +78,7 @@ export const getCurrentSubscription = async (
 ) => {
   let currentSubscription: PushSubscription | null = null;
 
-  if (!registration)
-    return currentSubscription;
+  if (!registration) return currentSubscription;
 
   try {
     const subscription = await registration.pushManager.getSubscription();

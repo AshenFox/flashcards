@@ -25,5 +25,8 @@ export type VoiceStore = {
   speaking: Speaking;
   working: boolean;
   setVoicesAndWorking: (payload: { voices: Voices; working: boolean }) => void;
-  setVoiceSpeaking: (payload?: { _id: string; type: "term" | "definition" }) => void;
+  setVoiceSpeaking: (payload?: {
+    _id: string;
+    type: "term" | "definition";
+  }) => void;
 };

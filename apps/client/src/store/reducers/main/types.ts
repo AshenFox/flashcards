@@ -1,4 +1,4 @@
-import { CardDto, ModuleDto , PaginationDto } from "@flashcards/common";
+import { CardDto, ModuleDto, PaginationDto } from "@flashcards/common";
 import { CaseReducer } from "@reduxjs/toolkit";
 import { Action } from "@store/types";
 

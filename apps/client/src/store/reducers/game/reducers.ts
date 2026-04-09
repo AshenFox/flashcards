@@ -56,7 +56,10 @@ export const checkWriteAnswerReducer: GameCaseReducer<{
   state.write.answer = payload.answer;
 };
 
-export const nextWriteCard: GameCaseReducer<{ override: boolean }> = (state, action) => {
+export const nextWriteCard: GameCaseReducer<{ override: boolean }> = (
+  state,
+  action,
+) => {
   const { override = false } = action?.payload ?? {};
   const card = state.write.remaining.at(-1);
 
@@ -67,16 +70,15 @@ export const nextWriteCard: GameCaseReducer<{ override: boolean }> = (state, act
   if (override) card.answer = "correct";
   state.write.answered.push(card);
 
-
-
   if (state.write.remaining.length === 0) {
-    const is_game_finished = state.write.answered.filter(item => item.answer === "incorrect").length === 0;
+    const is_game_finished =
+      state.write.answered.filter(item => item.answer === "incorrect")
+        .length === 0;
     const is_round_finished = !is_game_finished;
 
     state.write.is_game_finished = is_game_finished;
     state.write.is_round_finished = is_round_finished;
   }
-
 };
 
 export const nextWriteRound: GameCaseReducer = (state, _action) => {
@@ -91,7 +93,6 @@ export const nextWriteRound: GameCaseReducer = (state, _action) => {
     answered: [...state.write.answered],
     cards_num: state.write.remaining.length + state.write.answered.length,
   });
-
 
   state.write.remaining = shuffle(incorrectCards).sort(
     (a, b) => b.stage - a.stage,
@@ -150,10 +151,17 @@ export const endWriteEarly: GameCaseReducer = (state, _action) => {
   state.write.remaining = [];
   state.write.is_round_finished = true;
 
-  const all_cards_num = state.write.answered.length + state.write.rounds.reduce((acc, round) =>
-    acc + round.answered.filter(item => item.answer === "correct").length, 0);
+  const all_cards_num =
+    state.write.answered.length +
+    state.write.rounds.reduce(
+      (acc, round) =>
+        acc + round.answered.filter(item => item.answer === "correct").length,
+      0,
+    );
   state.write.all_cards_num = all_cards_num;
 
-  const areAllCardsCorrect = !state.write.answered.filter(item => item.answer === "incorrect").length;
+  const areAllCardsCorrect = !state.write.answered.filter(
+    item => item.answer === "incorrect",
+  ).length;
   if (areAllCardsCorrect) state.write.is_game_finished = true;
 };

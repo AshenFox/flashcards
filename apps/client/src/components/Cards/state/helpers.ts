@@ -1,4 +1,7 @@
-import type { CodDictResult, UrbanDictResult } from "@api/methods/scrape/scrapeGetDictionary";
+import type {
+  CodDictResult,
+  UrbanDictResult,
+} from "@api/methods/scrape/scrapeGetDictionary";
 
 export function formatDictionaryResult(
   result: CodDictResult | UrbanDictResult,
@@ -14,13 +17,13 @@ export function formatDictionaryResult(
   };
 
   if (type === "cod") {
-    data.forEach((sect) => {
+    data.forEach(sect => {
       const { part_of_speech, transcr_us, sub_sections } = sect;
-      sub_sections.forEach((sub_sect) => {
+      sub_sections.forEach(sub_sect => {
         const { guideword, blocks } = sub_sect;
-        blocks.forEach((block) => {
+        blocks.forEach(block => {
           let examplesHtml = "";
-          block.examples.forEach((example) => {
+          block.examples.forEach(example => {
             examplesHtml += wrap_in(example, "div");
           });
           const definitionHtml = wrap_in(
@@ -28,10 +31,7 @@ export function formatDictionaryResult(
             "div",
           );
           const additionalInfoHtml = wrap_in(
-            wrap_in(transcr_us).concat(
-              wrap_in(part_of_speech),
-              wrap_in(),
-            ),
+            wrap_in(transcr_us).concat(wrap_in(part_of_speech), wrap_in()),
             "div",
           );
           formattedResult = formattedResult.concat(
@@ -45,7 +45,7 @@ export function formatDictionaryResult(
       });
     });
   } else if (type === "urban") {
-    data.forEach((panel) => {
+    data.forEach(panel => {
       formattedResult = formattedResult.concat(
         wrap_in(panel.example, "div"),
         br,

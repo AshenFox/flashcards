@@ -4,70 +4,69 @@ import { card_fields } from "./initState";
 import { gameActions } from "./slice";
 
 export const prepareFlashcards = () => <ThunkActionApp>(async (
-  dispatch,
-  getState,
-) => {
-  const {
-    main: { cards },
-  } = getState();
-  const cards_num = Object.values(cards).length;
+    dispatch,
+    getState,
+  ) => {
+    const {
+      main: { cards },
+    } = getState();
+    const cards_num = Object.values(cards).length;
 
-  dispatch(gameActions.resetAllGameFields());
+    dispatch(gameActions.resetAllGameFields());
 
-  dispatch(gameActions.prepareFlashcardsReducer({ number: cards_num }));
-});
-
+    dispatch(gameActions.prepareFlashcardsReducer({ number: cards_num }));
+  });
 
 export const prepareWrite = () => <ThunkActionApp>(async (
-  dispatch,
-  getState,
-) => {
-  const {
-    main: { cards },
-  } = getState();
+    dispatch,
+    getState,
+  ) => {
+    const {
+      main: { cards },
+    } = getState();
 
-  dispatch(gameActions.setWriteIsInit({ value: false }));
+    dispatch(gameActions.setWriteIsInit({ value: false }));
 
-  const remaining = Object.values(cards).map(({ _id, stage }) => ({
-    id: _id,
-    stage,
-    ...card_fields,
-  }));
+    const remaining = Object.values(cards).map(({ _id, stage }) => ({
+      id: _id,
+      stage,
+      ...card_fields,
+    }));
 
-  dispatch(gameActions.resetAllGameFields());
+    dispatch(gameActions.resetAllGameFields());
 
-  dispatch(gameActions.prepareWriteReducer({ remaining }));
+    dispatch(gameActions.prepareWriteReducer({ remaining }));
 
-  dispatch(gameActions.setWriteIsInit({ value: true }));
-});
+    dispatch(gameActions.setWriteIsInit({ value: true }));
+  });
 
 export const checkWriteAnswer = (not_know?: boolean) => <ThunkActionApp>(async (
-  dispatch,
-  getState,
-) => {
-  const {
-    game: {
-      write: { remaining, answer },
-    },
-    main: { cards },
-  } = getState();
+    dispatch,
+    getState,
+  ) => {
+    const {
+      game: {
+        write: { remaining, answer },
+      },
+      main: { cards },
+    } = getState();
 
-  const id = remaining[remaining.length - 1].id;
-  const card = cards[id];
+    const id = remaining[remaining.length - 1].id;
+    const card = cards[id];
 
-  const formattedTerm = card.term.replace(/&nbsp;/g, " ").trim();
+    const formattedTerm = card.term.replace(/&nbsp;/g, " ").trim();
 
-  const payload: {
-    card_answer: "correct" | "incorrect";
-    answer: string;
-  } = {
-    card_answer:
-      answer === formattedTerm && !not_know ? "correct" : "incorrect",
-    answer: not_know ? "" : answer,
-  };
+    const payload: {
+      card_answer: "correct" | "incorrect";
+      answer: string;
+    } = {
+      card_answer:
+        answer === formattedTerm && !not_know ? "correct" : "incorrect",
+      answer: not_know ? "" : answer,
+    };
 
-  dispatch(gameActions.checkWriteAnswerReducer(payload));
-});
+    dispatch(gameActions.checkWriteAnswerReducer(payload));
+  });
 
 export const setFlashcardsProgress = (value: "next" | "prev") =>
   <ThunkActionApp>(async (dispatch, getState) => {
@@ -99,7 +98,7 @@ export const setFlashcardsProgress = (value: "next" | "prev") =>
   });
 
 export const resetFlashcardsProgress = () =>
-  <ThunkActionApp>(async (dispatch) => {
+  <ThunkActionApp>(async dispatch => {
     dispatch(gameActions.setFlashcardsSide({ value: "definition" }));
 
     dispatch(gameActions.resetFlashcardsProgressReducer());

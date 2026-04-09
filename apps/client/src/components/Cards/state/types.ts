@@ -24,9 +24,7 @@ export const defaultCardUI: CardFields = {
 export type CardsCache = {
   getCard: (_id: string) => CardDto | undefined;
   getAllCards: () => CardDto[];
-  set: (
-    recipe: (entries: CardDto[]) => void
-  ) => void;
+  set: (recipe: (entries: CardDto[]) => void) => void;
   invalidate: () => void;
 };
 

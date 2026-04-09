@@ -41,7 +41,7 @@ export const useModuleQuery = () => {
 
   const moduleId = typeof _id === "string" ? _id : undefined;
 
-  const user = useAppSelector((s) => s.auth.user);
+  const user = useAppSelector(s => s.auth.user);
 
   return useQuery({
     queryKey: getModuleQueryKey(moduleId),
@@ -56,8 +56,8 @@ export const useModuleCardsQuery = () => {
 
   const moduleId = typeof _id === "string" ? _id : undefined;
 
-  const user = useAppSelector((s) => s.auth.user);
-  const filters = useModuleFiltersStore((state) => state.filters);
+  const user = useAppSelector(s => s.auth.user);
+  const filters = useModuleFiltersStore(state => state.filters);
 
   return useQuery({
     queryKey: getModuleCardsQueryKey(moduleId, filters),
@@ -69,7 +69,7 @@ export const useModuleCardsQuery = () => {
 export const useSyncModulePagination = (
   data: GetMainModuleCardsResponseDto | undefined,
 ) => {
-  const setPagination = useModuleFiltersStore((state) => state.setPagination);
+  const setPagination = useModuleFiltersStore(state => state.setPagination);
   const pagination = data?.pagination;
 
   useEffect(() => {
@@ -105,13 +105,15 @@ export const useModuleCardsUIStore = createStoreHook({
 // Cache adapter
 // ---------------------------------------------------------------------------
 
-const getEntries = (data: GetMainModuleCardsResponseDto | undefined): CardDto[] => {
+const getEntries = (
+  data: GetMainModuleCardsResponseDto | undefined,
+): CardDto[] => {
   if (!data) return [];
   return data.entries;
 };
 
 export const useModuleCardsCache: CardsCacheHook = () => {
-  const filters = useModuleFiltersStore((state) => state.filters);
+  const filters = useModuleFiltersStore(state => state.filters);
   const moduleId = useModuleIdFromQuery();
   const queryKey = useMemo(
     () => getModuleCardsQueryKey(moduleId, filters),
@@ -121,21 +123,19 @@ export const useModuleCardsCache: CardsCacheHook = () => {
   const cardsCache: CardsCache = useMemo(
     () => ({
       getCard: (_id: string) => {
-        const data = queryClient.getQueryData<GetMainModuleCardsResponseDto>(
-          queryKey,
-        );
-        return getEntries(data).find((card) => card._id === _id);
+        const data =
+          queryClient.getQueryData<GetMainModuleCardsResponseDto>(queryKey);
+        return getEntries(data).find(card => card._id === _id);
       },
       getAllCards: () => {
-        const data = queryClient.getQueryData<GetMainModuleCardsResponseDto>(
-          queryKey,
-        );
+        const data =
+          queryClient.getQueryData<GetMainModuleCardsResponseDto>(queryKey);
         return getEntries(data);
       },
       set: (recipe: (entries: CardDto[]) => void) => {
         queryClient.setQueryData(
           queryKey,
-          withProduce<GetMainModuleCardsResponseDto>((draft) => {
+          withProduce<GetMainModuleCardsResponseDto>(draft => {
             recipe(draft.entries);
           }),
         );

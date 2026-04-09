@@ -1,7 +1,4 @@
-import {
-  useModuleCardsQuery,
-  useModuleQuery,
-} from "@modules/Module/hooks";
+import { useModuleCardsQuery, useModuleQuery } from "@modules/Module/hooks";
 import { useActions } from "@store/hooks";
 import ConfirmPopup from "@ui/ConfirmPopup";
 import DateStr from "@ui/DateStr";

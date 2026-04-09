@@ -15,13 +15,13 @@ export type SRStore = {
   }) => void;
 };
 
-export const srSlice: Slice<SRStore> = (setAction) => {
+export const srSlice: Slice<SRStore> = setAction => {
   const set = withActionName<SRStore>(setAction);
 
   return {
     counter: undefined,
     initialized: false,
-    setInitialCounter: (repeatNum) =>
+    setInitialCounter: repeatNum =>
       set(
         () => ({
           counter: Math.min(repeatNum, 999),
@@ -29,16 +29,13 @@ export const srSlice: Slice<SRStore> = (setAction) => {
         }),
         "setInitialCounter",
       ),
-    updateCounter: (params) =>
-      set(
-        (state) => {
-          const next = calcCounter({
-            ...params,
-            current: state.counter ?? 1,
-          });
-          state.counter = next;
-        },
-        "updateCounter",
-      ),
+    updateCounter: params =>
+      set(state => {
+        const next = calcCounter({
+          ...params,
+          current: state.counter ?? 1,
+        });
+        state.counter = next;
+      }, "updateCounter"),
   };
 };

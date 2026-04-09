@@ -21,7 +21,11 @@ type GameCardProps = {
 /** TODO: connect to game zustand store (replacing Redux setFlashcardsSide). */
 const setFlashcardsSide = (_value: { value: "term" | "definition" }) => {};
 
-const GameCard = ({ data, side = "definition", position = null }: GameCardProps) => {
+const GameCard = ({
+  data,
+  side = "definition",
+  position = null,
+}: GameCardProps) => {
   const setCardEdit = useSetCardEdit();
 
   const router = useRouter();

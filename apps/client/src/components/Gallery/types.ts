@@ -1,16 +1,16 @@
 export type ImgurlFields = {
-    ok: boolean;
+  ok: boolean;
 };
 
 export type ImgurlBase = {
-    url: string;
-    thumbnail?: string;
-    snippet?: string;
-    context?: string;
+  url: string;
+  thumbnail?: string;
+  snippet?: string;
+  context?: string;
 };
 
 export type ImgurlObj = ImgurlFields & ImgurlBase;
 
 export type ImgurlObjs = {
-    [key: string]: ImgurlObj;
+  [key: string]: ImgurlObj;
 };

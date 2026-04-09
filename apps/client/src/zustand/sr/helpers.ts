@@ -15,8 +15,7 @@ export function calcCounter(params: {
     const abs = Math.abs(additionNumber);
 
     if (remainder) {
-      result =
-        current + (additionNumber > 0 ? abs - remainder : -remainder);
+      result = current + (additionNumber > 0 ? abs - remainder : -remainder);
     } else {
       result = current + additionNumber;
     }

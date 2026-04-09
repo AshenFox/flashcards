@@ -11,25 +11,19 @@ const initialState = {
   working: false,
 };
 
-export const voiceSlice: Slice<VoiceStore> = (setAction) => {
+export const voiceSlice: Slice<VoiceStore> = setAction => {
   const set = withActionName<VoiceStore>(setAction);
 
   return {
     ...initialState,
-    setVoicesAndWorking: (payload) =>
-      set(
-        (state) => {
-          state.voices = payload.voices;
-          state.working = payload.working;
-        },
-        "setVoicesAndWorking",
-      ),
-    setVoiceSpeaking: (payload) =>
-      set(
-        (state) => {
-          state.speaking = payload ?? false;
-        },
-        "setVoiceSpeaking",
-      ),
+    setVoicesAndWorking: payload =>
+      set(state => {
+        state.voices = payload.voices;
+        state.working = payload.working;
+      }, "setVoicesAndWorking"),
+    setVoiceSpeaking: payload =>
+      set(state => {
+        state.speaking = payload ?? false;
+      }, "setVoiceSpeaking"),
   };
 };

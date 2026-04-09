@@ -23,7 +23,12 @@ type GalleryProps = {
   onSelectImage?: (url: string) => void;
 };
 
-const Gallery = ({ _id, active, game = false, onSelectImage }: GalleryProps) => {
+const Gallery = ({
+  _id,
+  active,
+  game = false,
+  onSelectImage,
+}: GalleryProps) => {
   const {
     query,
     setQuery,

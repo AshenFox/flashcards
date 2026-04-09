@@ -10,37 +10,37 @@ import { ThunkActionApp } from "@store/store";
 import { mainActions } from "../slice";
 
 export const dropCardsSR = () => <ThunkActionApp>(async (
-  dispatch,
-  getState,
-) => {
-  try {
-    const {
-      main: { cards },
-    } = getState();
+    dispatch,
+    getState,
+  ) => {
+    try {
+      const {
+        main: { cards },
+      } = getState();
 
-    const _id_arr = Object.keys(cards);
+      const _id_arr = Object.keys(cards);
 
-    const data = await srDropCards(_id_arr);
+      const data = await srDropCards(_id_arr);
 
-    dispatch(mainActions.dropCardsSRReducer(data));
+      dispatch(mainActions.dropCardsSRReducer(data));
 
-    saveLastUpdate();
-  } catch (err) {
-    console.error(err);
-  }
-});
+      saveLastUpdate();
+    } catch (err) {
+      console.error(err);
+    }
+  });
 
 export const dropCardSR = (_id: string) => <ThunkActionApp>(async dispatch => {
-  try {
-    const data = await srDropCards([_id]);
+    try {
+      const data = await srDropCards([_id]);
 
-    dispatch(mainActions.dropCardSRReducer({ _id, ...data }));
+      dispatch(mainActions.dropCardSRReducer({ _id, ...data }));
 
-    saveLastUpdate();
-  } catch (err) {
-    console.error(err);
-  }
-});
+      saveLastUpdate();
+    } catch (err) {
+      console.error(err);
+    }
+  });
 
 export const setCardSR = (_id: string, value: boolean) =>
   <ThunkActionApp>(async dispatch => {
@@ -56,59 +56,59 @@ export const setCardSR = (_id: string, value: boolean) =>
   });
 
 export const setCardsSRPositive = (_id: string) => <ThunkActionApp>(async (
-  dispatch,
-  getState,
-) => {
-  try {
-    const {
-      main: { cards },
-    } = getState();
+    dispatch,
+    getState,
+  ) => {
+    try {
+      const {
+        main: { cards },
+      } = getState();
 
-    const cards_arr = Object.values(cards);
-    let _id_arr: string[] = [];
+      const cards_arr = Object.values(cards);
+      let _id_arr: string[] = [];
 
-    for (const card of cards_arr) {
-      if (card._id === _id) {
-        _id_arr.push(card._id);
-        break;
+      for (const card of cards_arr) {
+        if (card._id === _id) {
+          _id_arr.push(card._id);
+          break;
+        }
+        if (card.studyRegime) {
+          _id_arr = [];
+        } else {
+          _id_arr.push(card._id);
+        }
       }
-      if (card.studyRegime) {
-        _id_arr = [];
-      } else {
-        _id_arr.push(card._id);
-      }
+
+      await srSetControl(_id_arr, true);
+
+      dispatch(mainActions.setCardsSRPositiveReducer({ _id_arr }));
+
+      saveLastUpdate();
+    } catch (err) {
+      console.error(err);
     }
-
-    await srSetControl(_id_arr, true);
-
-    dispatch(mainActions.setCardsSRPositiveReducer({ _id_arr }));
-
-    saveLastUpdate();
-  } catch (err) {
-    console.error(err);
-  }
-});
+  });
 
 export const setCardsSR = (value: boolean) => <ThunkActionApp>(async (
-  dispatch,
-  getState,
-) => {
-  try {
-    const {
-      main: { cards },
-    } = getState();
+    dispatch,
+    getState,
+  ) => {
+    try {
+      const {
+        main: { cards },
+      } = getState();
 
-    const _id_arr = Object.keys(cards);
+      const _id_arr = Object.keys(cards);
 
-    await srSetControl(_id_arr, value);
+      await srSetControl(_id_arr, value);
 
-    dispatch(mainActions.setCardsSRReducer({ value }));
+      dispatch(mainActions.setCardsSRReducer({ value }));
 
-    saveLastUpdate();
-  } catch (err) {
-    console.error(err);
-  }
-});
+      saveLastUpdate();
+    } catch (err) {
+      console.error(err);
+    }
+  });
 
 export const saveSRAnswer = (_id: string, answer: 1 | -1) =>
   <ThunkActionApp>(async (dispatch, getState) => {
@@ -132,35 +132,35 @@ export const saveSRAnswer = (_id: string, answer: 1 | -1) =>
   });
 
 export const loadSRCards = (number: number) => <ThunkActionApp>(async (
-  dispatch,
-  getState,
-) => {
-  try {
-    const {
-      auth: { user },
-    } = getState();
+    dispatch,
+    getState,
+  ) => {
+    try {
+      const {
+        auth: { user },
+      } = getState();
 
-    if (!user) return;
+      if (!user) return;
 
-    dispatch(
-      mainActions.setSectionLoading({ value: true, section: "srCards" }),
-    );
+      dispatch(
+        mainActions.setSectionLoading({ value: true, section: "srCards" }),
+      );
 
-    const { cards } = await srGetCards(number);
+      const { cards } = await srGetCards(number);
 
-    const { length } = cards;
+      const { length } = cards;
 
-    if (!length) {
-      window.location.replace("/home/sr");
-      throw new Error("No cards to repeat.");
+      if (!length) {
+        window.location.replace("/home/sr");
+        throw new Error("No cards to repeat.");
+      }
+
+      dispatch(mainActions.setSRCards({ cards }));
+    } catch (err) {
+      console.error(err);
     }
 
-    dispatch(mainActions.setSRCards({ cards }));
-  } catch (err) {
-    console.error(err);
-  }
-
-  dispatch(
-    mainActions.setSectionLoading({ value: false, section: "srCards" }),
-  );
-});
+    dispatch(
+      mainActions.setSectionLoading({ value: false, section: "srCards" }),
+    );
+  });

@@ -1,4 +1,4 @@
-import { filterRegex,ModuleDto  } from "@flashcards/common";
+import { filterRegex, ModuleDto } from "@flashcards/common";
 import DateStr from "@ui/DateStr";
 import { StudyRegimeIcon } from "@ui/Icons";
 import TextArea from "@ui/TextArea";

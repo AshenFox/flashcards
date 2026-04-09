@@ -1,4 +1,10 @@
-import { editDeleteCard, editUpdateCard, scrapeGetDictionary, srDropCards, srSetControl } from "@api/methods";
+import {
+  editDeleteCard,
+  editUpdateCard,
+  scrapeGetDictionary,
+  srDropCards,
+  srSetControl,
+} from "@api/methods";
 import { saveLastUpdate } from "@store/helper-functions";
 import { useMutation } from "@tanstack/react-query";
 import sanitize from "sanitize-html";
@@ -69,10 +75,19 @@ export const useSetCardSRMutation = () => {
 export const useScrapeDictionaryMutation = (_id: string) => {
   return useMutation({
     mutationKey: ["scrape", _id],
-    mutationFn: async ({ term, value }: { term: string; value: "cod" | "urban" }) => {
+    mutationFn: async ({
+      term,
+      value,
+    }: {
+      term: string;
+      value: "cod" | "urban";
+    }) => {
       if (!term) throw new Error("Term field can not be empty.");
       const termClean = term.replace(/<[^>]*>/g, "");
-      const query = value === "cod" ? termClean.replace(/\s+/g, "-") : termClean.replace(/\s+/g, "+");
+      const query =
+        value === "cod"
+          ? termClean.replace(/\s+/g, "-")
+          : termClean.replace(/\s+/g, "+");
 
       if (value === "cod") {
         const data = await scrapeGetDictionary("cod", query);
@@ -82,7 +97,7 @@ export const useScrapeDictionaryMutation = (_id: string) => {
         return sanitize(formatDictionaryResult({ type: "urban", data }));
       }
 
-      return '';
+      return "";
     },
     onSuccess: () => saveLastUpdate(),
   });

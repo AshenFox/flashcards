@@ -7,44 +7,43 @@ import { createModulesFilterSlice } from "@zustand/filters";
 import { createStoreHook } from "@zustand/helpers";
 import { useEffect } from "react";
 
-export const queryKey = (filters: ModulesFilters) => ["home", "modules", filters] as const;
+export const queryKey = (filters: ModulesFilters) =>
+  ["home", "modules", filters] as const;
 
 export const useHomeModulesQuery = () => {
-    const user = useAppSelector((s) => s.auth.user);
-    const filters = useHomeModulesFiltersStore((state) => state.filters);
-    const setPagination = useHomeModulesFiltersStore((state) => state.setPagination);
+  const user = useAppSelector(s => s.auth.user);
+  const filters = useHomeModulesFiltersStore(state => state.filters);
+  const setPagination = useHomeModulesFiltersStore(
+    state => state.setPagination,
+  );
 
-    const query = useInfiniteQuery({
-        queryKey: queryKey(filters),
-        queryFn: ({ pageParam }: { pageParam: number }) =>
-            mainGetModules({ ...filters, page: pageParam }),
-        getNextPageParam: (lastPage: GetMainModulesResponseDto) =>
-            lastPage.modules.pagination.end
-                ? undefined
-                : lastPage.modules.pagination.page + 1,
-        initialPageParam: 0,
-        enabled: !!user,
-    });
+  const query = useInfiniteQuery({
+    queryKey: queryKey(filters),
+    queryFn: ({ pageParam }: { pageParam: number }) =>
+      mainGetModules({ ...filters, page: pageParam }),
+    getNextPageParam: (lastPage: GetMainModulesResponseDto) =>
+      lastPage.modules.pagination.end
+        ? undefined
+        : lastPage.modules.pagination.page + 1,
+    initialPageParam: 0,
+    enabled: !!user,
+  });
 
-    const { data } = query;
+  const { data } = query;
 
-    useEffect(() => {
-        if (data?.pages?.length) {
-            setPagination(data.pages[data.pages.length - 1].modules.pagination);
-        } else {
-            setPagination(null);
-        }
-    }, [data?.pages, setPagination]);
+  useEffect(() => {
+    if (data?.pages?.length) {
+      setPagination(data.pages[data.pages.length - 1].modules.pagination);
+    } else {
+      setPagination(null);
+    }
+  }, [data?.pages, setPagination]);
 
-    return query;
+  return query;
 };
 
 export const useHomeModulesFiltersStore = createStoreHook({
-    storeName: "HomeModulesFilters",
-    instanceKey: "home-modules",
-    slice: createModulesFilterSlice({ queryKey }),
+  storeName: "HomeModulesFilters",
+  instanceKey: "home-modules",
+  slice: createModulesFilterSlice({ queryKey }),
 });
-
-
-
-
