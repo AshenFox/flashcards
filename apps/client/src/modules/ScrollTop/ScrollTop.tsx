@@ -8,9 +8,15 @@ import s from "./styles.module.scss";
 
 type ScrollTopProps = {
   virtualizer?: Virtualizer<Window | Element, Element>;
+  onScrollTop?: () => void;
+  enabled?: boolean;
 };
 
-const ScrollTop = ({ virtualizer }: ScrollTopProps) => {
+const ScrollTop = ({
+  virtualizer,
+  onScrollTop,
+  enabled = true,
+}: ScrollTopProps) => {
   const [isVisible, setIsVisible] = useState(false);
 
   const isVisibleRef = useRef(isVisible);
@@ -33,11 +39,12 @@ const ScrollTop = ({ virtualizer }: ScrollTopProps) => {
   }, [setIsVisible]);
 
   const clickScroll = useCallback(() => {
-    if (!isVisible) return;
+    if (!isVisible || !enabled) return;
 
-    if (virtualizer) scrollToTopSmooth();
+    if (onScrollTop) onScrollTop();
+    else if (virtualizer) scrollToTopSmooth();
     else window.scrollTo({ top: 0, behavior: "smooth" });
-  }, [virtualizer, isVisible, scrollToTopSmooth]);
+  }, [onScrollTop, virtualizer, isVisible, scrollToTopSmooth, enabled]);
 
   return (
     <Portal>

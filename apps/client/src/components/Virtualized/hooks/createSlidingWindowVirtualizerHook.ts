@@ -174,7 +174,7 @@ export const createSlidingWindowVirtualizerHook = <
 
     const virtualizer = useWindowVirtualizer({
       count: rawItems.length,
-      overscan: 3,
+      overscan: 7,
       gap: 15,
       estimateSize: estimateSize,
       getItemKey: index => rawItems[index]?._id ?? index,

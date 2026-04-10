@@ -2,10 +2,12 @@ import { CardsUIProvider } from "@components/Cards";
 import Filters, { SetFilterValue } from "@components/Filters";
 import NotFound from "@components/NotFound";
 import {
+  useResetSlidingWindowVirtualizerToTrueTop,
   useSlidingWindowVirtualPagesFetch,
   VirtualizedItem,
   VirtualizedList,
 } from "@components/Virtualized";
+import type { GetMainCardsResponseDto } from "@flashcards/common";
 import ScrollTop from "@modules/ScrollTop";
 import { useAppSelector } from "@store/hooks";
 import { useQueryClient } from "@tanstack/react-query";
@@ -61,6 +63,18 @@ const Cards = () => {
     infiniteData: data,
   });
 
+  const getQueryKeyForReset = useCallback(
+    () => getQueryKey(useHomeCardsFiltersStore.getState().filters),
+    [],
+  );
+
+  const { resetToTrueTop, isResettingToTop } =
+    useResetSlidingWindowVirtualizerToTrueTop<GetMainCardsResponseDto>({
+      queryClient,
+      getQueryKey: getQueryKeyForReset,
+      virtualizer,
+    });
+
   useGlobalHeaderPullForHomeCards({
     listTopRef,
     hasPreviousPage: !!hasPreviousPage,
@@ -72,6 +86,7 @@ const Cards = () => {
     itemCount: rawCards.length,
     query,
     firstVisibleThreshold: FETCH_PREV_VISIBLE_THRESHOLD,
+    enabled: !isResettingToTop,
   });
 
   useEffect(() => {
@@ -84,7 +99,11 @@ const Cards = () => {
     resetUIStore();
   }, [resetUIStore]);
 
-  const loading = isFetching || isFetchingNextPage || isFetchingPreviousPage;
+  const loading =
+    isResettingToTop ||
+    isFetching ||
+    isFetchingNextPage ||
+    isFetchingPreviousPage;
 
   const setFilterValue = useCallback<SetFilterValue>(
     (filter, value) => {
@@ -135,7 +154,11 @@ const Cards = () => {
       <div style={{ transform: `translateY(${appVerticalOffset}px)` }}>
         <ScrollLoader active={loading} />
       </div>
-      <ScrollTop virtualizer={virtualizer} />
+      <ScrollTop
+        virtualizer={virtualizer}
+        onScrollTop={resetToTrueTop}
+        enabled={!loading}
+      />
       {!loading && (
         <NotFound
           resultsFound={resultsFound}

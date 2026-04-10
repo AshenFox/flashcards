@@ -14,11 +14,13 @@ export function useSlidingWindowVirtualPagesFetch({
   itemCount,
   query,
   firstVisibleThreshold,
+  enabled = true,
 }: {
   virtualizer: Virtualizer<Window, Element>;
   itemCount: number;
   query: UseInfiniteQueryResult;
   firstVisibleThreshold: number;
+  enabled?: boolean;
 }): void {
   const {
     fetchNextPage,
@@ -60,6 +62,7 @@ export function useSlidingWindowVirtualPagesFetch({
     };
 
     const onScroll = () => {
+      if (!enabled) return;
       maybeFetchNext();
       maybeFetchPrevious();
     };
@@ -68,6 +71,7 @@ export function useSlidingWindowVirtualPagesFetch({
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, [
+    enabled,
     virtualizer,
     itemCount,
     fetchNextPage,

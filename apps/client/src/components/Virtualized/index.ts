@@ -1,3 +1,4 @@
+export { useResetSlidingWindowVirtualizerToTrueTop } from "./hooks/useResetInfiniteVirtualizerToTrueTop";
 export { useSlidingWindowVirtualPagesFetch } from "./hooks/useSlidingWindowVirtualPagesFetch";
 export {
   applyScrollAnchorLibraryHandoff,
