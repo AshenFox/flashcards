@@ -1,14 +1,21 @@
-import { useActions } from "@store/hooks";
 import { type RefObject, useCallback, useEffect, useRef } from "react";
+
+import { HOME_CARDS_PAGE_SIZE } from "./query";
+
+const CSS_VAR = "--app-vertical-offset";
 
 const docY = (el: Element) => {
   const r = el.getBoundingClientRect();
   return r.top + window.scrollY;
 };
 
-/** Scroll distance (px) over which margin eases from 0 to max; scales with chrome height. */
-const MIN_SCROLL_BLEND_PX = 96;
-const SCROLL_BLEND_RATIO = 1.25;
+const CARD_HEIGHT_ESTIMATE = 240;
+const BLEND_PAGES = 2.5;
+const BLEND_DISTANCE_PX =
+  HOME_CARDS_PAGE_SIZE * CARD_HEIGHT_ESTIMATE * BLEND_PAGES;
+
+/** Skip DOM writes when the change is smaller than this. */
+const MIN_DELTA_PX = 2;
 
 type UseGlobalHeaderPullForHomeCardsArgs = {
   listTopRef: RefObject<HTMLElement | null>;
@@ -21,24 +28,19 @@ export const useGlobalHeaderPullForHomeCards = ({
   hasPreviousPage,
   hasData,
 }: UseGlobalHeaderPullForHomeCardsArgs) => {
-  const { setAppVerticalOffset } = useActions();
-
   const rafRef = useRef<number | null>(null);
-  const lastDispatchedRef = useRef<number>(0);
+  const lastCommittedRef = useRef<number>(0);
 
   const flags = { hasPreviousPage, hasData };
   const flagsRef = useRef(flags);
   flagsRef.current = flags;
 
-  const commit = useCallback(
-    (px: number) => {
-      const rounded = Math.round(px * 100) / 100;
-      if (rounded === lastDispatchedRef.current) return;
-      lastDispatchedRef.current = rounded;
-      setAppVerticalOffset({ value: rounded });
-    },
-    [setAppVerticalOffset],
-  );
+  const commit = useCallback((px: number) => {
+    const rounded = Math.round(px);
+    if (Math.abs(rounded - lastCommittedRef.current) < MIN_DELTA_PX) return;
+    lastCommittedRef.current = rounded;
+    document.documentElement.style.setProperty(CSS_VAR, `${rounded}px`);
+  }, []);
 
   const compute = useCallback(() => {
     const flags = flagsRef.current;
@@ -60,9 +62,7 @@ export const useGlobalHeaderPullForHomeCards = ({
     if (flags.hasPreviousPage) {
       marginMagnitude = maxPull;
     } else {
-      const blendRange =
-        Math.max(MIN_SCROLL_BLEND_PX, maxPull * SCROLL_BLEND_RATIO) || 1;
-      const progress = Math.min(1, window.scrollY / blendRange);
+      const progress = Math.min(1, window.scrollY / BLEND_DISTANCE_PX);
       marginMagnitude = maxPull * progress;
     }
 
@@ -100,8 +100,8 @@ export const useGlobalHeaderPullForHomeCards = ({
         cancelAnimationFrame(rafRef.current);
         rafRef.current = null;
       }
-      lastDispatchedRef.current = 0;
-      setAppVerticalOffset({ value: 0 });
+      lastCommittedRef.current = 0;
+      document.documentElement.style.removeProperty(CSS_VAR);
     };
-  }, [listTopRef, scheduleCompute, setAppVerticalOffset]);
+  }, [listTopRef, scheduleCompute]);
 };

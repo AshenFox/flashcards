@@ -1,4 +1,3 @@
-import { useAppSelector } from "@store/store";
 import { Virtualizer } from "@tanstack/react-virtual";
 import React, { CSSProperties, memo, RefObject, useMemo } from "react";
 
@@ -16,13 +15,12 @@ const VirtualizedList = ({
   ref,
 }: VirtualizedListProps) => {
   const totalSize = virtualizer.getTotalSize();
-  const app_vertical_offset = useAppSelector(s => s.dimen.app_vertical_offset);
 
   const style = useMemo<CSSProperties>(
     () => ({
-      height: totalSize - app_vertical_offset,
+      height: `calc(${totalSize}px - var(--app-vertical-offset, 0))`,
     }),
-    [totalSize, app_vertical_offset],
+    [totalSize],
   );
 
   return (

@@ -7,3 +7,7 @@
     margin-bottom: 2.5rem;
   }
 }
+
+.scrollLoaderOffset {
+  transform: translateY(var(--app-vertical-offset, 0));
+}

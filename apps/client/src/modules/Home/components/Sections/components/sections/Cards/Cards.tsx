@@ -9,7 +9,6 @@ import {
 } from "@components/Virtualized";
 import type { GetMainCardsResponseDto } from "@flashcards/common";
 import ScrollTop from "@modules/ScrollTop";
-import { useAppSelector } from "@store/hooks";
 import { useQueryClient } from "@tanstack/react-query";
 import ScrollLoader from "@ui/ScrollLoader";
 import React, { memo, useCallback, useEffect, useMemo, useRef } from "react";
@@ -24,8 +23,6 @@ import { useGlobalHeaderPullForHomeCards } from "./hooks/useGlobalHeaderPullForH
 import { useHomeCardsSlidingWindowVirtualizer } from "./hooks/useHomeCardsSlidingWindowVirtualizer";
 
 const Cards = () => {
-  const appVerticalOffset = useAppSelector(s => s.dimen.app_vertical_offset);
-
   const listTopRef = useRef<HTMLDivElement>(null);
   const queryClient = useQueryClient();
 
@@ -151,7 +148,7 @@ const Cards = () => {
           );
         })}
       </VirtualizedList>
-      <div style={{ transform: `translateY(${appVerticalOffset}px)` }}>
+      <div className={s.scrollLoaderOffset}>
         <ScrollLoader active={loading} />
       </div>
       <ScrollTop
