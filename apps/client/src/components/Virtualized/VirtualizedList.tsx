@@ -1,26 +1,25 @@
-import { Virtualizer } from "@tanstack/react-virtual";
 import React, { CSSProperties, memo, RefObject, useMemo } from "react";
 
 import s from "./styles.module.scss";
 
 type VirtualizedListProps = {
-  virtualizer: Virtualizer<Window | Element, Element>;
+  totalSize: number;
+  verticalOffset?: number;
   children: React.ReactNode;
   ref?: RefObject<HTMLDivElement>;
 };
 
 const VirtualizedList = ({
-  virtualizer,
+  totalSize = 0,
+  verticalOffset = 0,
   children,
   ref,
 }: VirtualizedListProps) => {
-  const totalSize = virtualizer.getTotalSize();
-
   const style = useMemo<CSSProperties>(
     () => ({
-      height: `calc(${totalSize}px - var(--app-vertical-offset, 0))`,
+      height: `${Math.max(0, totalSize - verticalOffset)}px`,
     }),
-    [totalSize],
+    [totalSize, verticalOffset],
   );
 
   return (

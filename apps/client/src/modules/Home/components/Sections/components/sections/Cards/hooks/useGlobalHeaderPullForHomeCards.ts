@@ -1,8 +1,12 @@
-import { type RefObject, useCallback, useEffect, useRef } from "react";
+import { useActions } from "@store/hooks";
+import {
+  type RefObject,
+  useCallback,
+  useLayoutEffect,
+  useRef,
+} from "react";
 
 import { HOME_CARDS_PAGE_SIZE } from "./query";
-
-const CSS_VAR = "--app-vertical-offset";
 
 const docY = (el: Element) => {
   const r = el.getBoundingClientRect();
@@ -28,6 +32,7 @@ export const useGlobalHeaderPullForHomeCards = ({
   hasPreviousPage,
   hasData,
 }: UseGlobalHeaderPullForHomeCardsArgs) => {
+  const { setAppVerticalOffset } = useActions();
   const rafRef = useRef<number | null>(null);
   const lastCommittedRef = useRef<number>(0);
 
@@ -35,12 +40,15 @@ export const useGlobalHeaderPullForHomeCards = ({
   const flagsRef = useRef(flags);
   flagsRef.current = flags;
 
-  const commit = useCallback((px: number) => {
-    const rounded = Math.round(px);
-    if (Math.abs(rounded - lastCommittedRef.current) < MIN_DELTA_PX) return;
-    lastCommittedRef.current = rounded;
-    document.documentElement.style.setProperty(CSS_VAR, `${rounded}px`);
-  }, []);
+  const commit = useCallback(
+    (px: number) => {
+      const rounded = Math.round(px);
+      if (Math.abs(rounded - lastCommittedRef.current) < MIN_DELTA_PX) return;
+      lastCommittedRef.current = rounded;
+      setAppVerticalOffset(rounded);
+    },
+    [setAppVerticalOffset],
+  );
 
   const compute = useCallback(() => {
     const flags = flagsRef.current;
@@ -77,11 +85,11 @@ export const useGlobalHeaderPullForHomeCards = ({
     });
   }, [compute]);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     scheduleCompute();
   }, [hasData, hasPreviousPage, scheduleCompute]);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     const onScrollOrResize = () => scheduleCompute();
 
     scheduleCompute();
@@ -101,7 +109,7 @@ export const useGlobalHeaderPullForHomeCards = ({
         rafRef.current = null;
       }
       lastCommittedRef.current = 0;
-      document.documentElement.style.removeProperty(CSS_VAR);
+      setAppVerticalOffset(0);
     };
-  }, [listTopRef, scheduleCompute]);
+  }, [listTopRef, scheduleCompute, setAppVerticalOffset]);
 };

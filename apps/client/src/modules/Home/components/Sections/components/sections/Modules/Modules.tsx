@@ -129,7 +129,7 @@ const Modules = () => {
           <Module data={draft} />
         </div>
       )}
-      <VirtualizedList virtualizer={virtualizer}>
+      <VirtualizedList totalSize={virtualizer.getTotalSize()}>
         {virtualizer.getVirtualItems().map(virtualRow => {
           const moduleItem = modules[virtualRow.index];
           const prevDateString = modules[virtualRow.index - 1]?.creation_date;

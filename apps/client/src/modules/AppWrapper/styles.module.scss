@@ -3,6 +3,5 @@
   min-height: 100dvh;
   flex: 1;
   flex-direction: column;
-  transform: translateY(calc(-1 * var(--app-vertical-offset, 0)));
   will-change: transform;
 }

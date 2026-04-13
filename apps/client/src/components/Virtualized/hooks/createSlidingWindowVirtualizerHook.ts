@@ -128,15 +128,13 @@ export const createSlidingWindowVirtualizerHook = <
       return () => flush();
     }, [flush]);
 
-    useLayoutEffect(() => {
-      if (firstItemOffset < 0 && virtualizerSnapshotForPrependRef.current) {
-        restoreScrollOffsetAfterFirstItemChange(
-          virtualizerSnapshotForPrependRef.current,
-          firstItemOffset,
-          restoredScrollOffsetRef,
-        );
-      }
-    }, [firstItemOffset]);
+    if (firstItemOffset < 0 && virtualizerSnapshotForPrependRef.current) {
+      restoreScrollOffsetAfterFirstItemChange(
+        virtualizerSnapshotForPrependRef.current,
+        firstItemOffset,
+        restoredScrollOffsetRef,
+      );
+    }
 
     const getPersistedHeights = useCallback(() => {
       const persistedHeights =
@@ -197,16 +195,15 @@ export const createSlidingWindowVirtualizerHook = <
       },
     });
 
-    useLayoutEffect(() => {
-      if (firstItemOffset > 0) {
-        restoreScrollOffsetAfterFirstItemChange(
-          virtualizer,
-          firstItemOffset,
-          restoredScrollOffsetRef,
-        );
-      }
-      virtualizerSnapshotForPrependRef.current = virtualizer;
-    }, [firstItemOffset, virtualizer]);
+    virtualizerSnapshotForPrependRef.current = virtualizer;
+
+    if (firstItemOffset > 0) {
+      restoreScrollOffsetAfterFirstItemChange(
+        virtualizer,
+        firstItemOffset,
+        restoredScrollOffsetRef,
+      );
+    }
 
     useLayoutEffect(() => {
       applyScrollAnchorLibraryHandoff(virtualizer, firstItemOffset);
