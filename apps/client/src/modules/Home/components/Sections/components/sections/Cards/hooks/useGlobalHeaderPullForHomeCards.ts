@@ -1,10 +1,5 @@
 import { useActions } from "@store/hooks";
-import {
-  type RefObject,
-  useCallback,
-  useLayoutEffect,
-  useRef,
-} from "react";
+import { type RefObject, useCallback, useLayoutEffect, useRef } from "react";
 
 import { HOME_CARDS_PAGE_SIZE } from "./query";
 
@@ -13,13 +8,13 @@ const docY = (el: Element) => {
   return r.top + window.scrollY;
 };
 
-const CARD_HEIGHT_ESTIMATE = 240;
-const BLEND_PAGES = 2.5;
+const CARD_HEIGHT_ESTIMATE = 200;
+const BLEND_PAGES = 1;
 const BLEND_DISTANCE_PX =
   HOME_CARDS_PAGE_SIZE * CARD_HEIGHT_ESTIMATE * BLEND_PAGES;
 
 /** Skip DOM writes when the change is smaller than this. */
-const MIN_DELTA_PX = 2;
+const MIN_DELTA_PX = 1.5;
 
 type UseGlobalHeaderPullForHomeCardsArgs = {
   listTopRef: RefObject<HTMLElement | null>;

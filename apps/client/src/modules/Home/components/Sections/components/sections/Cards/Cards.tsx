@@ -9,17 +9,9 @@ import {
 } from "@components/Virtualized";
 import type { GetMainCardsResponseDto } from "@flashcards/common";
 import ScrollTop from "@modules/ScrollTop";
-import { useAppSelector } from "@store/store";
 import { useQueryClient } from "@tanstack/react-query";
 import ScrollLoader from "@ui/ScrollLoader";
-import React, {
-  CSSProperties,
-  memo,
-  useCallback,
-  useEffect,
-  useMemo,
-  useRef,
-} from "react";
+import React, { memo, useCallback, useEffect, useMemo, useRef } from "react";
 
 import s from "../styles.module.scss";
 import { CardRow } from "./CardRow";
@@ -33,12 +25,6 @@ import { useHomeCardsSlidingWindowVirtualizer } from "./hooks/useHomeCardsSlidin
 const Cards = () => {
   const listTopRef = useRef<HTMLDivElement>(null);
   const queryClient = useQueryClient();
-  const appVerticalOffset = useAppSelector(s => s.dimen.app_vertical_offset);
-
-  const scrollLoaderStyle = useMemo<CSSProperties>(
-    () => ({ transform: `translateY(${appVerticalOffset}px)` }),
-    [appVerticalOffset],
-  );
 
   const filters = useHomeCardsFiltersStore(state => state.filters);
   const pagination = useHomeCardsFiltersStore(state => state.pagination);
@@ -140,11 +126,7 @@ const Cards = () => {
         resetData={resetData}
         resetFilters={resetFilters}
       />
-      <VirtualizedList
-        ref={listTopRef}
-        totalSize={virtualizer.getTotalSize()}
-        verticalOffset={appVerticalOffset}
-      >
+      <VirtualizedList ref={listTopRef} totalSize={virtualizer.getTotalSize()}>
         {virtualizer.getVirtualItems().map(virtualItem => {
           const row = rawCards[virtualItem.index];
           return (
@@ -165,9 +147,8 @@ const Cards = () => {
           );
         })}
       </VirtualizedList>
-      <div style={scrollLoaderStyle}>
-        <ScrollLoader active={loading} />
-      </div>
+
+      <ScrollLoader active={loading} />
       <ScrollTop
         virtualizer={virtualizer}
         onScrollTop={resetToTrueTop}

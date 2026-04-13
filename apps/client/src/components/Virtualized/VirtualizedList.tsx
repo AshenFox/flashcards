@@ -4,22 +4,20 @@ import s from "./styles.module.scss";
 
 type VirtualizedListProps = {
   totalSize: number;
-  verticalOffset?: number;
   children: React.ReactNode;
   ref?: RefObject<HTMLDivElement>;
 };
 
 const VirtualizedList = ({
   totalSize = 0,
-  verticalOffset = 0,
   children,
   ref,
 }: VirtualizedListProps) => {
   const style = useMemo<CSSProperties>(
     () => ({
-      height: `${Math.max(0, totalSize - verticalOffset)}px`,
+      height: `${totalSize}px`,
     }),
-    [totalSize, verticalOffset],
+    [totalSize],
   );
 
   return (

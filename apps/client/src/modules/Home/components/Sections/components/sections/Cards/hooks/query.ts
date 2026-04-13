@@ -37,10 +37,10 @@ export const useHomeCardsQuery = () => {
       mainGetCards({ ...filters, page: pageParam, size: HOME_CARDS_PAGE_SIZE }),
     initialPageParam: 0,
     maxPages: HOME_CARDS_MAX_CACHED_PAGES,
-    getPreviousPageParam: (firstPage: GetMainCardsResponseDto) =>
-      firstPage.pagination.page > 0 ? firstPage.pagination.page - 1 : undefined,
-    getNextPageParam: (lastPage: GetMainCardsResponseDto) =>
-      lastPage.pagination.end ? undefined : lastPage.pagination.page + 1,
+    getPreviousPageParam: (firstPage, _, firstPageParam) =>
+      firstPageParam > 0 ? firstPageParam - 1 : undefined,
+    getNextPageParam: (lastPage, _, lastPageParam) =>
+      lastPage.pagination.end ? undefined : lastPageParam + 1,
     enabled: !!user,
   });
 

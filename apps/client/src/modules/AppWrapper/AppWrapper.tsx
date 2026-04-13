@@ -13,6 +13,7 @@ const AppWrapper = ({ children }: AppWrapperProps) => {
   const style = useMemo<CSSProperties>(
     () => ({
       transform: `translateY(${-appVerticalOffset}px)`,
+      marginBottom: `-${appVerticalOffset}px`,
     }),
     [appVerticalOffset],
   );
