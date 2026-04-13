@@ -1,37 +1,32 @@
 import { useActions } from "@store/hooks";
 import { type RefObject, useCallback, useLayoutEffect, useRef } from "react";
 
-import { HOME_CARDS_PAGE_SIZE } from "./query";
-
 const docY = (el: Element) => {
   const r = el.getBoundingClientRect();
   return r.top + window.scrollY;
 };
 
-const CARD_HEIGHT_ESTIMATE = 200;
-const BLEND_PAGES = 1;
-const BLEND_DISTANCE_PX =
-  HOME_CARDS_PAGE_SIZE * CARD_HEIGHT_ESTIMATE * BLEND_PAGES;
-
 /** Skip DOM writes when the change is smaller than this. */
 const MIN_DELTA_PX = 1.5;
 
-type UseGlobalHeaderPullForHomeCardsArgs = {
-  listTopRef: RefObject<HTMLElement | null>;
-  hasPreviousPage: boolean;
-  hasData: boolean;
+type UseGlobalHeaderPullArgs = {
+  topRef: RefObject<HTMLElement | null>;
+  tippingPoint: boolean;
+  enabled: boolean;
+  blendDistancePx: number;
 };
 
-export const useGlobalHeaderPullForHomeCards = ({
-  listTopRef,
-  hasPreviousPage,
-  hasData,
-}: UseGlobalHeaderPullForHomeCardsArgs) => {
+export const useGlobalHeaderPull = ({
+  topRef,
+  tippingPoint,
+  enabled,
+  blendDistancePx,
+}: UseGlobalHeaderPullArgs) => {
   const { setAppVerticalOffset } = useActions();
   const rafRef = useRef<number | null>(null);
   const lastCommittedRef = useRef<number>(0);
 
-  const flags = { hasPreviousPage, hasData };
+  const flags = { tippingPoint, enabled };
   const flagsRef = useRef(flags);
   flagsRef.current = flags;
 
@@ -48,29 +43,30 @@ export const useGlobalHeaderPullForHomeCards = ({
   const compute = useCallback(() => {
     const flags = flagsRef.current;
     const appHeader = document.querySelector("header");
-    const listEl = listTopRef.current;
+    const topEl = topRef.current;
 
-    if (!flags.hasData || !appHeader || !listEl) {
+    if (!flags.enabled || !appHeader || !topEl) {
       commit(0);
       return;
     }
 
-    const maxPull = Math.max(0, docY(listEl) - docY(appHeader));
+    const maxPull = Math.max(0, docY(topEl) - docY(appHeader));
     if (maxPull === 0) {
       commit(0);
       return;
     }
 
     let marginMagnitude: number;
-    if (flags.hasPreviousPage) {
+    if (flags.tippingPoint) {
       marginMagnitude = maxPull;
     } else {
-      const progress = Math.min(1, window.scrollY / BLEND_DISTANCE_PX);
+      const denom = Math.max(1, blendDistancePx);
+      const progress = Math.min(1, window.scrollY / denom);
       marginMagnitude = maxPull * progress;
     }
 
     commit(marginMagnitude);
-  }, [commit, listTopRef]);
+  }, [blendDistancePx, commit, topRef]);
 
   const scheduleCompute = useCallback(() => {
     if (rafRef.current != null) return;
@@ -82,7 +78,7 @@ export const useGlobalHeaderPullForHomeCards = ({
 
   useLayoutEffect(() => {
     scheduleCompute();
-  }, [hasData, hasPreviousPage, scheduleCompute]);
+  }, [enabled, tippingPoint, scheduleCompute]);
 
   useLayoutEffect(() => {
     const onScrollOrResize = () => scheduleCompute();
@@ -92,8 +88,8 @@ export const useGlobalHeaderPullForHomeCards = ({
     window.addEventListener("resize", onScrollOrResize);
 
     const ro = new ResizeObserver(onScrollOrResize);
-    const listEl = listTopRef.current;
-    if (listEl) ro.observe(listEl);
+    const topEl = topRef.current;
+    if (topEl) ro.observe(topEl);
 
     return () => {
       window.removeEventListener("scroll", onScrollOrResize);
@@ -106,5 +102,5 @@ export const useGlobalHeaderPullForHomeCards = ({
       lastCommittedRef.current = 0;
       setAppVerticalOffset(0);
     };
-  }, [listTopRef, scheduleCompute, setAppVerticalOffset]);
+  }, [topRef, scheduleCompute, setAppVerticalOffset]);
 };

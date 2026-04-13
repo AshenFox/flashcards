@@ -8,6 +8,7 @@ import {
   VirtualizedList,
 } from "@components/Virtualized";
 import type { GetMainCardsResponseDto } from "@flashcards/common";
+import { useGlobalHeaderPull } from "@modules/Home/components/Sections/hooks/useGlobalHeaderPull";
 import ScrollTop from "@modules/ScrollTop";
 import { useQueryClient } from "@tanstack/react-query";
 import ScrollLoader from "@ui/ScrollLoader";
@@ -17,10 +18,13 @@ import s from "../styles.module.scss";
 import { CardRow } from "./CardRow";
 import { FETCH_PREV_VISIBLE_THRESHOLD, filtersData } from "./constants";
 import { useHomeCardsCache } from "./hooks/cache";
-import { getQueryKey, useHomeCardsQuery } from "./hooks/query";
+import {
+  getQueryKey,
+  HOME_CARDS_PAGE_SIZE,
+  useHomeCardsQuery,
+} from "./hooks/query";
 import { useHomeCardsFiltersStore, useHomeCardsUIStore } from "./hooks/stores";
-import { useGlobalHeaderPullForHomeCards } from "./hooks/useGlobalHeaderPullForHomeCards";
-import { useHomeCardsSlidingWindowVirtualizer } from "./hooks/useHomeCardsSlidingWindowVirtualizer";
+import { useHomeCardsSlidingWindowVirtualizer } from "./hooks/virtualizer";
 
 const Cards = () => {
   const listTopRef = useRef<HTMLDivElement>(null);
@@ -72,10 +76,13 @@ const Cards = () => {
       virtualizer,
     });
 
-  useGlobalHeaderPullForHomeCards({
-    listTopRef,
-    hasPreviousPage: !!hasPreviousPage,
-    hasData: !!data,
+  const blendDistancePx = HOME_CARDS_PAGE_SIZE * 200;
+
+  useGlobalHeaderPull({
+    topRef: listTopRef,
+    tippingPoint: !!hasPreviousPage,
+    enabled: !!data,
+    blendDistancePx,
   });
 
   useSlidingWindowVirtualPagesFetch({
