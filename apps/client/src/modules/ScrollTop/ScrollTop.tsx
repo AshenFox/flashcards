@@ -5,6 +5,10 @@ import clsx from "clsx";
 import { memo, useCallback, useEffect, useRef, useState } from "react";
 
 import s from "./styles.module.scss";
+import {
+  applyHtmlOverscrollBehaviorYNone,
+  restoreHtmlOverscrollBehaviorY,
+} from "./utils";
 
 type ScrollTopProps = {
   virtualizer?: Virtualizer<Window | Element, Element>;
@@ -22,6 +26,8 @@ const ScrollTop = ({
   const isVisibleRef = useRef(isVisible);
   isVisibleRef.current = isVisible;
 
+  const previousOverscrollBehaviorYRef = useRef<string | null>(null);
+
   const scrollToTopSmooth = useCallback(() => {
     virtualizer?.scrollToOffset(0, { behavior: "smooth" });
   }, [virtualizer]);
@@ -37,6 +43,18 @@ const ScrollTop = ({
 
     return () => window.removeEventListener("scroll", onScroll);
   }, [setIsVisible]);
+
+  useEffect(() => {
+    if (isVisible)
+      applyHtmlOverscrollBehaviorYNone(previousOverscrollBehaviorYRef);
+    else restoreHtmlOverscrollBehaviorY(previousOverscrollBehaviorYRef);
+  }, [isVisible]);
+
+  useEffect(() => {
+    return () => {
+      restoreHtmlOverscrollBehaviorY(previousOverscrollBehaviorYRef);
+    };
+  }, []);
 
   const clickScroll = useCallback(() => {
     if (!isVisible || !enabled) return;
