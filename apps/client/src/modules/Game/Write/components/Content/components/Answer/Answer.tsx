@@ -163,7 +163,11 @@ const Answer = ({ data }: AnswerProps) => {
       <div>
         <div className={s.section}>
           <span className={s.section_title}>Definition</span>
-          <Img containerClass={s.img_container} imgClass={s.img} url={imgurl} />
+          <Img
+            containerClass={s.img_container}
+            contentClass={s.img_content}
+            url={imgurl}
+          />
           <div className={s.section_body}>
             <TextArea html={definition} />
             <Speaker

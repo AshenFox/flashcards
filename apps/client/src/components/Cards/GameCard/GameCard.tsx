@@ -81,7 +81,7 @@ const GameCard = ({
       <div className={frontClassName} onClick={clickSide("term")}>
         <Img
           containerClass={clsx(s.img_container, !definition && s.full)}
-          imgClass={s.img}
+          contentClass={s.img_content}
           url={imgurl}
         />
         {isSR && (

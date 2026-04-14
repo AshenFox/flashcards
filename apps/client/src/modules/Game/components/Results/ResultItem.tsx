@@ -61,7 +61,7 @@ const ResultItem = ({ data, number, showHeader = true }: ResultItemProps) => {
         <div className={s.body_right}>
           <div>
             <TextArea html={definition} />
-            <Img imgClass={s.img} url={imgurl} />
+            <Img contentClass={s.img_content} url={imgurl} />
           </div>
         </div>
       </div>

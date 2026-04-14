@@ -40,7 +40,7 @@ const AddImg = ({ data, onToggle }: AddImgProps) => {
       })}
       onClick={clickImgSearch}
     >
-      <Img containerClass={s.container} imgClass={s.img} url={imgurl} />
+      {imgurl && <Img containerClass={s.container} url={imgurl} />}
       <div className={s.logo}>
         <ImgIcon />
       </div>

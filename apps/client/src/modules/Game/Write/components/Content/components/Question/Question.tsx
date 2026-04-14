@@ -104,7 +104,11 @@ const Question = ({ data }: QuestionProps) => {
             <span onClick={clickNotKnow}>Don&apos;t know</span>
           </div>
         )}
-        <Img containerClass={s.img_container} imgClass={s.img} url={imgurl} />
+        <Img
+          containerClass={s.img_container}
+          contentClass={s.img_content}
+          url={imgurl}
+        />
         <TextArea html={formattedDefinition} className={s.definition} />
         <Speaker
           _id={_id}
