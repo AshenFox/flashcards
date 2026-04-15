@@ -28,10 +28,10 @@ export const CardRow = memo(
 
     return (
       <Fragment>
-        {/* <Divider
+        <Divider
           prevDateString={prevDateString}
           curDateString={creation_date}
-        /> */}
+        />
         {edit ? (
           <EditCard data={data} toggle={true} loading={loading} />
         ) : (
