@@ -2,7 +2,7 @@ import { createSlidingWindowVirtualizerHook } from "@components/Virtualized/hook
 import type { ModuleDto } from "@flashcards/common";
 import { useMemo } from "react";
 
-import { rowShowsDateDivider } from "../../components/Divider/Divider";
+import { getBelowDividerLabel } from "../../components/Divider/Divider";
 import { getQueryKey, HomeModulesPage } from "./query";
 import { useHomeModulesFiltersStore } from "./stores";
 
@@ -19,9 +19,12 @@ const useBaseVirtualizer = createSlidingWindowVirtualizerHook<
   },
   baseEstimate: MODULE_ROW_BASE_ESTIMATE,
   estimateItemSize: (moduleItem, index, modules) => {
-    const prevDate = modules[index - 1]?.creation_date;
+    const nextDate = modules[index + 1]?.creation_date;
     let size = MODULE_ROW_BASE_ESTIMATE;
-    if (rowShowsDateDivider(prevDate, moduleItem.creation_date)) {
+    if (getBelowDividerLabel(moduleItem.creation_date, nextDate)) {
+      size += DIVIDER_EXTRA_ESTIMATE;
+    }
+    if (index === 0) {
       size += DIVIDER_EXTRA_ESTIMATE;
     }
     return size;

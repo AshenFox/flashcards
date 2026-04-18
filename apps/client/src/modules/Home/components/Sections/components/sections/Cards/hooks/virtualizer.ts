@@ -2,7 +2,7 @@ import { createSlidingWindowVirtualizerHook } from "@components/Virtualized/hook
 import type { CardDto, GetMainCardsResponseDto } from "@flashcards/common";
 import { useMemo } from "react";
 
-import { rowShowsDateDivider } from "../../components/Divider/Divider";
+import { getBelowDividerLabel } from "../../components/Divider/Divider";
 import { getQueryKey } from "./query";
 import { useHomeCardsFiltersStore, useHomeCardsUIStore } from "./stores";
 
@@ -20,9 +20,12 @@ const useBaseVirtualizer = createSlidingWindowVirtualizerHook<
   },
   baseEstimate: CARD_ROW_BASE_ESTIMATE,
   estimateItemSize: (card, index, cards) => {
-    const prevDate = cards[index - 1]?.creation_date;
+    const nextDate = cards[index + 1]?.creation_date;
     let size = CARD_ROW_BASE_ESTIMATE;
-    if (rowShowsDateDivider(prevDate, card.creation_date)) {
+    if (getBelowDividerLabel(card.creation_date, nextDate)) {
+      size += DIVIDER_EXTRA_ESTIMATE;
+    }
+    if (index === 0) {
       size += DIVIDER_EXTRA_ESTIMATE;
     }
     if (useHomeCardsUIStore.getState().get(card._id).edit) {

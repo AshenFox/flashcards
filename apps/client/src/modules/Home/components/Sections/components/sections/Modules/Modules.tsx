@@ -13,7 +13,10 @@ import { useQueryClient } from "@tanstack/react-query";
 import ScrollLoader from "@ui/ScrollLoader";
 import React, { memo, useCallback, useMemo, useRef } from "react";
 
-import Divider from "../components/Divider";
+import Divider, {
+  getBelowDividerLabel,
+  getTopDividerLabel,
+} from "../components/Divider";
 import s from "../styles.module.scss";
 import Module from "./components/Module";
 import ModuleRow from "./components/ModuleRow";
@@ -52,6 +55,13 @@ const Modules = () => {
     () => data?.pages.flatMap(p => p.entries) ?? [],
     [data],
   );
+  const belowDividerLabels = useMemo(
+    () =>
+      modules.map((m, i) =>
+        getBelowDividerLabel(m.creation_date, modules[i + 1]?.creation_date),
+      ),
+    [modules],
+  );
   const draft = data?.pages[0]?.draft ?? null;
   const resultsFound = pagination?.number;
 
@@ -76,7 +86,7 @@ const Modules = () => {
     topRef: listTopRef,
     tippingPoint: !!hasPreviousPage,
     enabled: !!data,
-    blendDistancePx: HOME_MODULES_PAGE_SIZE * 200,
+    blendDistancePx: HOME_MODULES_PAGE_SIZE * 140,
   });
 
   useSlidingWindowVirtualPagesFetch({
@@ -117,13 +127,17 @@ const Modules = () => {
       />
       {draft && (
         <div>
-          <Divider draft />
+          <Divider draft top />
           <Module data={draft} />
         </div>
       )}
       <VirtualizedList ref={listTopRef} totalSize={virtualizer.getTotalSize()}>
         {virtualizer.getVirtualItems().map(virtualItem => {
           const row = modules[virtualItem.index];
+          const topDividerLabel = getTopDividerLabel(row.creation_date);
+          const belowDividerLabel = belowDividerLabels[virtualItem.index];
+          const showTopDivider = virtualItem.index === 0 && !hasPreviousPage;
+
           return (
             <VirtualizedItem
               key={row._id}
@@ -132,7 +146,8 @@ const Modules = () => {
             >
               <ModuleRow
                 data={row}
-                prevDateString={modules[virtualItem.index - 1]?.creation_date}
+                topDividerLabel={showTopDivider ? topDividerLabel : undefined}
+                belowDividerLabel={belowDividerLabel}
                 search={search}
               />
             </VirtualizedItem>

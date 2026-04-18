@@ -6,7 +6,8 @@ import Divider from "../../components/Divider";
 
 export type CardRowProps = {
   data: CardDto;
-  prevDateString: string | undefined;
+  topDividerLabel?: string;
+  belowDividerLabel?: string;
   search: string;
   by: string;
   isModuleLink: boolean;
@@ -15,19 +16,20 @@ export type CardRowProps = {
 
 const CardRow = ({
   data,
-  prevDateString,
+  topDividerLabel,
+  belowDividerLabel,
   search,
   by,
   isModuleLink,
   loading,
 }: CardRowProps) => {
-  const { _id, creation_date } = data || {};
+  const { _id } = data || {};
 
   const edit = useCardsUIStore(s => s.get(_id).edit);
 
   return (
     <Fragment>
-      {/* <Divider prevDateString={prevDateString} curDateString={creation_date} /> */}
+      <Divider label={topDividerLabel} top />
       {edit ? (
         <EditCard data={data} toggle={true} loading={loading} />
       ) : (
@@ -38,6 +40,7 @@ const CardRow = ({
           isModuleLink={isModuleLink}
         />
       )}
+      <Divider label={belowDividerLabel} />
     </Fragment>
   );
 };

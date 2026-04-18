@@ -6,17 +6,22 @@ import Module from "./Module";
 
 export type ModuleRowProps = {
   data: ModuleDto;
-  prevDateString: string | undefined;
+  topDividerLabel?: string;
+  belowDividerLabel?: string;
   search: string;
 };
 
-const ModuleRow = ({ data, prevDateString, search }: ModuleRowProps) => {
-  const { creation_date } = data || {};
-
+const ModuleRow = ({
+  data,
+  topDividerLabel,
+  belowDividerLabel,
+  search,
+}: ModuleRowProps) => {
   return (
     <Fragment>
-      {/* <Divider prevDateString={prevDateString} curDateString={creation_date} /> */}
+      <Divider label={topDividerLabel} top />
       <Module data={data} filter={search} />
+      <Divider label={belowDividerLabel} />
     </Fragment>
   );
 };

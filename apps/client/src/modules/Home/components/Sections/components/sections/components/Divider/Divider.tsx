@@ -1,25 +1,21 @@
+import clsx from "clsx";
 import { memo } from "react";
 
 import s from "./style.module.scss";
 
 type DividerProps = {
-  prevDateString?: string;
-  curDateString?: string;
+  label?: string;
   draft?: boolean;
+  top?: boolean;
 };
 
-const Divider = ({ prevDateString, curDateString, draft }: DividerProps) => {
-  if (!curDateString) return null;
+const Divider = ({ label, draft, top }: DividerProps) => {
+  if (!draft && !label) return null;
 
-  const curBucket = getDateBucket(curDateString);
-  const prevBucket = prevDateString ? getDateBucket(prevDateString) : undefined;
-
-  if (prevBucket === curBucket) return null;
-
-  const msg = draft ? "in progress" : curBucket;
+  const msg = draft ? "in progress" : (label as string);
 
   return (
-    <div className={s.divider}>
+    <div className={clsx(s.divider, top && s.top)}>
       <div className={s.text}>{msg.toUpperCase()}</div>
       <div className={s.line}></div>
     </div>
@@ -43,7 +39,7 @@ const months = [
   "december",
 ];
 
-const getDateBucket = (dateString: string): string => {
+export const getDateBucket = (dateString: string): string => {
   const date = new Date(dateString);
   const now = new Date();
 
@@ -70,11 +66,20 @@ const getDateBucket = (dateString: string): string => {
   return `${months[date.getMonth()]} ${date.getFullYear()}`;
 };
 
-export const rowShowsDateDivider = (
-  prevDateString?: string,
-  curDateString?: string,
-): boolean => {
-  if (!curDateString) return false;
-  if (!prevDateString) return true;
-  return getDateBucket(prevDateString) !== getDateBucket(curDateString);
+export const getBelowDividerLabel = (
+  curDateString: string | undefined,
+  nextDateString: string | undefined,
+): string | undefined => {
+  if (!curDateString || !nextDateString) return undefined;
+  const curBucket = getDateBucket(curDateString);
+  const nextBucket = getDateBucket(nextDateString);
+  if (curBucket === nextBucket) return undefined;
+  return nextBucket;
+};
+
+export const getTopDividerLabel = (
+  curDateString: string | undefined,
+): string | undefined => {
+  if (!curDateString) return undefined;
+  return getDateBucket(curDateString);
 };
