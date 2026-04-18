@@ -1,13 +1,9 @@
 import { Card, EditCard, useCardsUIStore } from "@components/Cards";
 import type { CardDto } from "@flashcards/common";
-import { Fragment, memo } from "react";
-
-import Divider from "../../components/Divider";
+import { memo } from "react";
 
 export type CardRowProps = {
   data: CardDto;
-  topDividerLabel?: string;
-  belowDividerLabel?: string;
   search: string;
   by: string;
   isModuleLink: boolean;
@@ -16,8 +12,6 @@ export type CardRowProps = {
 
 const CardRow = ({
   data,
-  topDividerLabel,
-  belowDividerLabel,
   search,
   by,
   isModuleLink,
@@ -27,21 +21,15 @@ const CardRow = ({
 
   const edit = useCardsUIStore(s => s.get(_id).edit);
 
-  return (
-    <Fragment>
-      <Divider label={topDividerLabel} top />
-      {edit ? (
-        <EditCard data={data} toggle={true} loading={loading} />
-      ) : (
-        <Card
-          data={data}
-          filter={search}
-          filterType={by}
-          isModuleLink={isModuleLink}
-        />
-      )}
-      <Divider label={belowDividerLabel} />
-    </Fragment>
+  return edit ? (
+    <EditCard data={data} toggle={true} loading={loading} />
+  ) : (
+    <Card
+      data={data}
+      filter={search}
+      filterType={by}
+      isModuleLink={isModuleLink}
+    />
   );
 };
 export default memo(CardRow);

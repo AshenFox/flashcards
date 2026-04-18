@@ -14,14 +14,12 @@ import { useQueryClient } from "@tanstack/react-query";
 import ScrollLoader from "@ui/ScrollLoader";
 import React, { memo, useCallback, useEffect, useMemo, useRef } from "react";
 
-import {
-  getBelowDividerLabel,
-  getTopDividerLabel,
-} from "../components/Divider";
+import Divider from "../components/Divider";
 import s from "../styles.module.scss";
 import CardRow from "./components/CardRow";
 import { FETCH_PREV_VISIBLE_THRESHOLD, filtersData } from "./constants";
 import { useHomeCardsCache } from "./hooks/cache";
+import { buildHomeCardsItems } from "./hooks/items";
 import {
   getQueryKey,
   HOME_CARDS_PAGE_SIZE,
@@ -61,18 +59,15 @@ const Cards = () => {
     [data],
   );
 
-  const belowDividerLabels = useMemo(
-    () =>
-      rawCards.map((c, i) =>
-        getBelowDividerLabel(c.creation_date, rawCards[i + 1]?.creation_date),
-      ),
-    [rawCards],
+  const items = useMemo(
+    () => buildHomeCardsItems(rawCards, !!hasPreviousPage),
+    [rawCards, hasPreviousPage],
   );
 
   const resultsFound = pagination?.number;
 
   const virtualizer = useHomeCardsSlidingWindowVirtualizer({
-    rawCards,
+    items,
   });
 
   const getQueryKeyForReset = useCallback(
@@ -98,7 +93,7 @@ const Cards = () => {
 
   useSlidingWindowVirtualPagesFetch({
     virtualizer,
-    itemCount: rawCards.length,
+    itemCount: items.length,
     query,
     firstVisibleThreshold: FETCH_PREV_VISIBLE_THRESHOLD,
     enabled: !isResettingToTop,
@@ -146,26 +141,26 @@ const Cards = () => {
       />
       <VirtualizedList ref={listTopRef} totalSize={virtualizer.getTotalSize()}>
         {virtualizer.getVirtualItems().map(virtualItem => {
-          const row = rawCards[virtualItem.index];
-          const topDividerLabel = getTopDividerLabel(row.creation_date);
-          const belowDividerLabel = belowDividerLabels[virtualItem.index];
-          const showTopDivider = virtualItem.index === 0 && !hasPreviousPage;
+          const item = items[virtualItem.index];
+          if (!item) return null;
 
           return (
             <VirtualizedItem
-              key={row._id}
+              key={item._id}
               virtualizer={virtualizer}
               virtualItem={virtualItem}
             >
-              <CardRow
-                data={row}
-                topDividerLabel={showTopDivider ? topDividerLabel : undefined}
-                belowDividerLabel={belowDividerLabel}
-                search={filters.search}
-                by={filters.by}
-                isModuleLink
-                loading={loading}
-              />
+              {item.type === "card" ? (
+                <CardRow
+                  data={item.card}
+                  search={filters.search}
+                  by={filters.by}
+                  isModuleLink
+                  loading={loading}
+                />
+              ) : (
+                <Divider label={item.label} />
+              )}
             </VirtualizedItem>
           );
         })}

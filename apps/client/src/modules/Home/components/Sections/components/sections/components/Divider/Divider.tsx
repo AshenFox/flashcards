@@ -6,16 +6,15 @@ import s from "./style.module.scss";
 type DividerProps = {
   label?: string;
   draft?: boolean;
-  top?: boolean;
 };
 
-const Divider = ({ label, draft, top }: DividerProps) => {
+const Divider = ({ label, draft }: DividerProps) => {
   if (!draft && !label) return null;
 
   const msg = draft ? "in progress" : (label as string);
 
   return (
-    <div className={clsx(s.divider, top && s.top)}>
+    <div className={clsx(s.divider)}>
       <div className={s.text}>{msg.toUpperCase()}</div>
       <div className={s.line}></div>
     </div>

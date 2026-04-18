@@ -13,14 +13,12 @@ import { useQueryClient } from "@tanstack/react-query";
 import ScrollLoader from "@ui/ScrollLoader";
 import React, { memo, useCallback, useMemo, useRef } from "react";
 
-import Divider, {
-  getBelowDividerLabel,
-  getTopDividerLabel,
-} from "../components/Divider";
+import Divider from "../components/Divider";
 import s from "../styles.module.scss";
 import Module from "./components/Module";
 import ModuleRow from "./components/ModuleRow";
 import { FETCH_PREV_VISIBLE_THRESHOLD, filtersData } from "./constants";
+import { buildHomeModulesItems } from "./hooks/items";
 import {
   getQueryKey,
   HOME_MODULES_PAGE_SIZE,
@@ -55,18 +53,17 @@ const Modules = () => {
     () => data?.pages.flatMap(p => p.entries) ?? [],
     [data],
   );
-  const belowDividerLabels = useMemo(
-    () =>
-      modules.map((m, i) =>
-        getBelowDividerLabel(m.creation_date, modules[i + 1]?.creation_date),
-      ),
-    [modules],
+
+  const items = useMemo(
+    () => buildHomeModulesItems(modules, !!hasPreviousPage),
+    [modules, hasPreviousPage],
   );
+
   const draft = data?.pages[0]?.draft ?? null;
   const resultsFound = pagination?.number;
 
   const virtualizer = useHomeModulesSlidingWindowVirtualizer({
-    rawModules: modules,
+    items,
   });
 
   const getQueryKeyForReset = useCallback(
@@ -90,7 +87,7 @@ const Modules = () => {
 
   useSlidingWindowVirtualPagesFetch({
     virtualizer,
-    itemCount: modules.length,
+    itemCount: items.length,
     query,
     firstVisibleThreshold: FETCH_PREV_VISIBLE_THRESHOLD,
     enabled: !isResettingToTop,
@@ -125,30 +122,27 @@ const Modules = () => {
         resetFilters={resetFilters}
       />
       {draft && (
-        <div>
-          <Divider draft top />
+        <div className={s.draft}>
+          <Divider draft />
           <Module data={draft} />
         </div>
       )}
       <VirtualizedList ref={listTopRef} totalSize={virtualizer.getTotalSize()}>
         {virtualizer.getVirtualItems().map(virtualItem => {
-          const row = modules[virtualItem.index];
-          const topDividerLabel = getTopDividerLabel(row.creation_date);
-          const belowDividerLabel = belowDividerLabels[virtualItem.index];
-          const showTopDivider = virtualItem.index === 0 && !hasPreviousPage;
+          const item = items[virtualItem.index];
+          if (!item) return null;
 
           return (
             <VirtualizedItem
-              key={row._id}
+              key={item._id}
               virtualizer={virtualizer}
               virtualItem={virtualItem}
             >
-              <ModuleRow
-                data={row}
-                topDividerLabel={showTopDivider ? topDividerLabel : undefined}
-                belowDividerLabel={belowDividerLabel}
-                search={search}
-              />
+              {item.type === "module" ? (
+                <ModuleRow data={item.module} search={search} />
+              ) : (
+                <Divider label={item.label} />
+              )}
             </VirtualizedItem>
           );
         })}

@@ -2,7 +2,7 @@ import { FilterData } from "@components/Filters";
 import { defaultCardsFilters } from "@zustand/filters";
 
 /** When the first visible virtual row is at or above this index, load the previous page. */
-export const FETCH_PREV_VISIBLE_THRESHOLD = 5;
+export const FETCH_PREV_VISIBLE_THRESHOLD = 6;
 
 export const filtersData: FilterData[] = [
   {

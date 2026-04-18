@@ -1,42 +1,38 @@
 import { createSlidingWindowVirtualizerHook } from "@components/Virtualized/hooks/createSlidingWindowVirtualizerHook";
-import type { CardDto } from "@flashcards/common";
 import { useMemo } from "react";
 
-import { getBelowDividerLabel } from "../../components/Divider/Divider";
+import { HomeCardsVirtualItem } from "./items";
 import { getQueryKey } from "./query";
 import { useHomeCardsFiltersStore, useHomeCardsUIStore } from "./stores";
 
 const CARD_ROW_BASE_ESTIMATE = 240;
-const DIVIDER_EXTRA_ESTIMATE = 72;
+const DIVIDER_ESTIMATE = 72;
 const EDIT_MODE_EXTRA_ESTIMATE = 100;
 
-const useBaseVirtualizer = createSlidingWindowVirtualizerHook<CardDto>({
-  store: {
-    storeName: "HomeCardsRowHeights",
-    instanceKey: "home-cards",
-  },
-  baseEstimate: CARD_ROW_BASE_ESTIMATE,
-  estimateItemSize: (card, index, cards) => {
-    const nextDate = cards[index + 1]?.creation_date;
-    let size = CARD_ROW_BASE_ESTIMATE;
-    if (getBelowDividerLabel(card.creation_date, nextDate)) {
-      size += DIVIDER_EXTRA_ESTIMATE;
-    }
-    if (index === 0) {
-      size += DIVIDER_EXTRA_ESTIMATE;
-    }
-    if (useHomeCardsUIStore.getState().get(card._id).edit) {
-      size += EDIT_MODE_EXTRA_ESTIMATE;
-    }
+const useBaseVirtualizer =
+  createSlidingWindowVirtualizerHook<HomeCardsVirtualItem>({
+    store: {
+      storeName: "HomeCardsRowHeights",
+      instanceKey: "home-cards",
+    },
+    baseEstimate: CARD_ROW_BASE_ESTIMATE,
+    estimateItemSize: item => {
+      if (item.type === "top-divider" || item.type === "below-divider") {
+        return DIVIDER_ESTIMATE;
+      }
 
-    return size;
-  },
-});
+      let size = CARD_ROW_BASE_ESTIMATE;
+      if (useHomeCardsUIStore.getState().get(item.card._id).edit) {
+        size += EDIT_MODE_EXTRA_ESTIMATE;
+      }
+      return size;
+    },
+  });
 
 export function useHomeCardsSlidingWindowVirtualizer({
-  rawCards,
+  items,
 }: {
-  rawCards: CardDto[];
+  items: HomeCardsVirtualItem[];
 }) {
   const filters = useHomeCardsFiltersStore(state => state.filters);
   const namespaceKey = useMemo(
@@ -44,5 +40,5 @@ export function useHomeCardsSlidingWindowVirtualizer({
     [filters],
   );
 
-  return useBaseVirtualizer({ rawItems: rawCards, namespaceKey });
+  return useBaseVirtualizer({ rawItems: items, namespaceKey });
 }
