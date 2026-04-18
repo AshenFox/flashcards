@@ -10,6 +10,7 @@ import {
 
 type QueryCreator = {
   page?: number;
+  size?: number;
   search?: string;
   created?: "newest" | "oldest";
   draft?: boolean;

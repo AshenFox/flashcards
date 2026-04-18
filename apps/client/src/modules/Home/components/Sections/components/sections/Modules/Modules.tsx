@@ -1,80 +1,90 @@
-import Filters, { FilterData, SetFilterValue } from "@components/Filters";
+import Filters, { SetFilterValue } from "@components/Filters";
 import NotFound from "@components/NotFound";
-import { VirtualizedItem, VirtualizedList } from "@components/Virtualized";
+import {
+  useResetSlidingWindowVirtualizerToTrueTop,
+  useSlidingWindowVirtualPagesFetch,
+  VirtualizedItem,
+  VirtualizedList,
+} from "@components/Virtualized";
+import type { GetMainModulesResponseDto } from "@flashcards/common";
+import { useGlobalHeaderPull } from "@modules/Home/components/Sections/hooks/useGlobalHeaderPull";
 import ScrollTop from "@modules/ScrollTop";
 import { useQueryClient } from "@tanstack/react-query";
-import { useWindowVirtualizer } from "@tanstack/react-virtual";
 import ScrollLoader from "@ui/ScrollLoader";
-import { defaultModulesFilters } from "@zustand/filters";
-import React, { memo, useCallback, useEffect, useMemo } from "react";
+import React, { memo, useCallback, useMemo, useRef } from "react";
 
 import Divider from "../components/Divider";
 import s from "../styles.module.scss";
 import Module from "./components/Module";
+import ModuleRow from "./components/ModuleRow";
+import { FETCH_PREV_VISIBLE_THRESHOLD, filtersData } from "./constants";
 import {
-  queryKey,
-  useHomeModulesFiltersStore,
+  getQueryKey,
+  HOME_MODULES_PAGE_SIZE,
   useHomeModulesQuery,
-} from "./hooks";
-
-const filtersData: FilterData[] = [
-  {
-    id: "created",
-    label: "Date Order",
-    defaultValue: defaultModulesFilters.created,
-    options: [
-      { value: "newest", label: "Newest" },
-      { value: "oldest", label: "Oldest" },
-    ],
-  },
-  {
-    id: "sr",
-    label: "SR",
-    defaultValue: defaultModulesFilters.sr,
-    options: [
-      { value: undefined, label: "All" },
-      { value: true, label: "In" },
-      { value: false, label: "Out" },
-    ],
-  },
-  {
-    id: "draft",
-    label: "Draft",
-    defaultValue: defaultModulesFilters.draft,
-    options: [
-      { value: true, label: "Show" },
-      { value: false, label: "Hide" },
-    ],
-  },
-];
+} from "./hooks/query";
+import { useHomeModulesFiltersStore } from "./hooks/stores";
+import { useHomeModulesSlidingWindowVirtualizer } from "./hooks/virtualizer";
 
 const Modules = () => {
+  const listTopRef = useRef<HTMLDivElement>(null);
   const queryClient = useQueryClient();
   const pagination = useHomeModulesFiltersStore(state => state.pagination);
   const filters = useHomeModulesFiltersStore(state => state.filters);
   const setFilter = useHomeModulesFiltersStore(state => state.setFilter);
   const resetFilters = useHomeModulesFiltersStore(state => state.resetFilters);
 
-  const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isFetching } =
-    useHomeModulesQuery();
+  const query = useHomeModulesQuery();
+  const {
+    data,
+    hasPreviousPage,
+    isFetchingPreviousPage,
+    isFetchingNextPage,
+    isFetching,
+  } = query;
 
   const refreshModulesQuery = useCallback(() => {
     const filters = useHomeModulesFiltersStore.getState().filters;
-    queryClient.invalidateQueries({ queryKey: queryKey(filters) });
+    queryClient.invalidateQueries({ queryKey: getQueryKey(filters) });
   }, [queryClient]);
 
   const modules = useMemo(
-    () => data?.pages.flatMap(p => p.modules.entries) ?? [],
+    () => data?.pages.flatMap(p => p.entries) ?? [],
     [data],
   );
   const draft = data?.pages[0]?.draft ?? null;
   const resultsFound = pagination?.number;
 
-  const virtualizer = useWindowVirtualizer({
-    count: modules.length,
-    estimateSize: () => 160,
-    overscan: 5,
-    gap: 15,
+  const virtualizer = useHomeModulesSlidingWindowVirtualizer({
+    rawModules: modules,
+    infiniteData: data,
+  });
+
+  const getQueryKeyForReset = useCallback(
+    () => getQueryKey(useHomeModulesFiltersStore.getState().filters),
+    [],
+  );
+
+  const { resetToTrueTop, isResettingToTop } =
+    useResetSlidingWindowVirtualizerToTrueTop<GetMainModulesResponseDto>({
+      queryClient,
+      getQueryKey: getQueryKeyForReset,
+      virtualizer,
+    });
+
+  useGlobalHeaderPull({
+    topRef: listTopRef,
+    tippingPoint: !!hasPreviousPage,
+    enabled: !!data,
+    blendDistancePx: HOME_MODULES_PAGE_SIZE * 200,
+  });
+
+  useSlidingWindowVirtualPagesFetch({
+    virtualizer,
+    itemCount: modules.length,
+    query,
+    firstVisibleThreshold: FETCH_PREV_VISIBLE_THRESHOLD,
+    enabled: !isResettingToTop,
   });
 
   const { search } = filters;
@@ -86,29 +96,11 @@ const Modules = () => {
     [setFilter],
   );
 
-  useEffect(() => {
-    const maybeFetchNext = () => {
-      if (!hasNextPage || isFetchingNextPage) return;
-      const items = virtualizer.getVirtualItems();
-      const lastItem = items[items.length - 1];
-      if (!lastItem) return;
-      if (lastItem.index >= modules.length - 1) {
-        fetchNextPage();
-      }
-    };
-
-    maybeFetchNext();
-    window.addEventListener("scroll", maybeFetchNext, { passive: true });
-    return () => window.removeEventListener("scroll", maybeFetchNext);
-  }, [
-    virtualizer,
-    modules.length,
-    hasNextPage,
-    isFetchingNextPage,
-    fetchNextPage,
-  ]);
-
-  const loading = isFetching || isFetchingNextPage;
+  const loading =
+    isResettingToTop ||
+    isFetching ||
+    isFetchingNextPage ||
+    isFetchingPreviousPage;
 
   return (
     <>
@@ -125,32 +117,34 @@ const Modules = () => {
       />
       {draft && (
         <div>
-          <Divider draft={!!draft} />
+          <Divider draft />
           <Module data={draft} />
         </div>
       )}
-      <VirtualizedList totalSize={virtualizer.getTotalSize()}>
-        {virtualizer.getVirtualItems().map(virtualRow => {
-          const moduleItem = modules[virtualRow.index];
-          const prevDateString = modules[virtualRow.index - 1]?.creation_date;
-
+      <VirtualizedList ref={listTopRef} totalSize={virtualizer.getTotalSize()}>
+        {virtualizer.getVirtualItems().map(virtualItem => {
+          const row = modules[virtualItem.index];
           return (
             <VirtualizedItem
-              key={moduleItem._id}
+              key={row._id}
               virtualizer={virtualizer}
-              virtualItem={virtualRow}
+              virtualItem={virtualItem}
             >
-              <Divider
-                prevDateString={prevDateString}
-                curDateString={moduleItem.creation_date}
+              <ModuleRow
+                data={row}
+                prevDateString={modules[virtualItem.index - 1]?.creation_date}
+                search={search}
               />
-              <Module data={moduleItem} filter={search} />
             </VirtualizedItem>
           );
         })}
       </VirtualizedList>
       <ScrollLoader active={loading} />
-      <ScrollTop virtualizer={virtualizer} />
+      <ScrollTop
+        virtualizer={virtualizer}
+        onScrollTop={resetToTrueTop}
+        enabled={!loading}
+      />
       {!loading && (
         <NotFound
           resultsFound={resultsFound}

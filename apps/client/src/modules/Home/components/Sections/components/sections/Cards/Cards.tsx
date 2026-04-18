@@ -15,7 +15,7 @@ import ScrollLoader from "@ui/ScrollLoader";
 import React, { memo, useCallback, useEffect, useMemo, useRef } from "react";
 
 import s from "../styles.module.scss";
-import { CardRow } from "./CardRow";
+import CardRow from "./components/CardRow";
 import { FETCH_PREV_VISIBLE_THRESHOLD, filtersData } from "./constants";
 import { useHomeCardsCache } from "./hooks/cache";
 import {

@@ -40,11 +40,17 @@ router.get(
     try {
       const {
         page = 0,
+        size: sizeQuery = 10,
         search,
         created = "newest",
         draft = true,
         sr,
       } = res.locals.query;
+
+      const size =
+        Number.isFinite(sizeQuery) && sizeQuery >= 1
+          ? Math.min(Math.floor(sizeQuery), 100)
+          : 10;
 
       const _id = res.locals.user._id;
 
@@ -82,12 +88,12 @@ router.get(
         .find(filterObj)
         .populate("numberSR")
         .sort(sortObj)
-        .skip(page * 10)
-        .limit(10);
+        .skip(page * size)
+        .limit(size);
 
       const modules_number = await moduleModel.countDocuments(filterObj);
 
-      const end = modules_number <= (page + 1) * 10;
+      const end = modules_number <= (page + 1) * size;
 
       const result: GetMainModulesResponse = {
         draft: null,
@@ -98,6 +104,7 @@ router.get(
             number: modules_number,
             end,
             all,
+            size,
           },
         },
       };
