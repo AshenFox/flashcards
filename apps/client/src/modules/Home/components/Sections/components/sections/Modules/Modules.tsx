@@ -67,7 +67,6 @@ const Modules = () => {
 
   const virtualizer = useHomeModulesSlidingWindowVirtualizer({
     rawModules: modules,
-    infiniteData: data,
   });
 
   const getQueryKeyForReset = useCallback(

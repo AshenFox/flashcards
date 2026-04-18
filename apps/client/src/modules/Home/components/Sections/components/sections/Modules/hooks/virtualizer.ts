@@ -3,16 +3,13 @@ import type { ModuleDto } from "@flashcards/common";
 import { useMemo } from "react";
 
 import { getBelowDividerLabel } from "../../components/Divider/Divider";
-import { getQueryKey, HomeModulesPage } from "./query";
+import { getQueryKey } from "./query";
 import { useHomeModulesFiltersStore } from "./stores";
 
 const MODULE_ROW_BASE_ESTIMATE = 160;
 const DIVIDER_EXTRA_ESTIMATE = 72;
 
-const useBaseVirtualizer = createSlidingWindowVirtualizerHook<
-  ModuleDto,
-  HomeModulesPage
->({
+const useBaseVirtualizer = createSlidingWindowVirtualizerHook<ModuleDto>({
   store: {
     storeName: "HomeModulesRowHeights",
     instanceKey: "home-modules",
@@ -33,12 +30,8 @@ const useBaseVirtualizer = createSlidingWindowVirtualizerHook<
 
 export function useHomeModulesSlidingWindowVirtualizer({
   rawModules,
-  infiniteData,
 }: {
   rawModules: ModuleDto[];
-  infiniteData:
-    | import("@tanstack/react-query").InfiniteData<HomeModulesPage, number>
-    | undefined;
 }) {
   const filters = useHomeModulesFiltersStore(state => state.filters);
   const namespaceKey = useMemo(
@@ -48,7 +41,6 @@ export function useHomeModulesSlidingWindowVirtualizer({
 
   return useBaseVirtualizer({
     rawItems: rawModules,
-    infiniteData,
     namespaceKey,
   });
 }

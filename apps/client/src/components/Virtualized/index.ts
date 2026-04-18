@@ -2,7 +2,7 @@ export { useResetSlidingWindowVirtualizerToTrueTop } from "./hooks/useResetInfin
 export { useSlidingWindowVirtualPagesFetch } from "./hooks/useSlidingWindowVirtualPagesFetch";
 export {
   applyScrollAnchorLibraryHandoff,
-  calculateInfiniteFirstItemOffset,
+  computeFirstItemOffsetByKeys,
   restoreScrollOffsetAfterFirstItemChange,
 } from "./hooks/utils";
 export { default as VirtualizedItem } from "./VirtualizedItem";

@@ -73,7 +73,6 @@ const Cards = () => {
 
   const virtualizer = useHomeCardsSlidingWindowVirtualizer({
     rawCards,
-    infiniteData: data,
   });
 
   const getQueryKeyForReset = useCallback(

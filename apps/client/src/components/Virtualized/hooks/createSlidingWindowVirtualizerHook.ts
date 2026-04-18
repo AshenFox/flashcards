@@ -1,4 +1,3 @@
-import type { InfiniteData } from "@tanstack/react-query";
 import type { VirtualItem, Virtualizer } from "@tanstack/react-virtual";
 import { useWindowVirtualizer } from "@tanstack/react-virtual";
 import { createStoreHook } from "@zustand/helpers";
@@ -13,7 +12,7 @@ import {
 import { createDebouncedRowHeightsMerge, rowHeightsSlice } from "../store";
 import {
   applyScrollAnchorLibraryHandoff,
-  calculateInfiniteFirstItemOffset,
+  computeFirstItemOffsetByKeys,
   restoreScrollOffsetAfterFirstItemChange,
 } from "./utils";
 
@@ -21,10 +20,6 @@ const DEBOUNCED_DELAY_MS = 120;
 
 type BaseItemDto = {
   _id: string;
-};
-
-type BaseResponseDto = {
-  entries: BaseItemDto[];
 };
 
 type CreateHookArgs<ItemDto extends BaseItemDto> = {
@@ -36,18 +31,13 @@ type CreateHookArgs<ItemDto extends BaseItemDto> = {
   baseEstimate: number;
 };
 
-type UseSlidingWindowVirtualizerArgs<
-  ItemDto extends BaseItemDto,
-  ResponseDto extends BaseResponseDto,
-> = {
+type UseSlidingWindowVirtualizerArgs<ItemDto extends BaseItemDto> = {
   rawItems: ItemDto[];
-  infiniteData: InfiniteData<ResponseDto, number> | undefined;
   namespaceKey: string;
 };
 
 export const createSlidingWindowVirtualizerHook = <
   ItemDto extends BaseItemDto,
-  ResponseDto extends BaseResponseDto,
 >({
   store,
   estimateItemSize,
@@ -61,13 +51,10 @@ export const createSlidingWindowVirtualizerHook = <
     slice: rowHeightsSlice,
   });
 
-  const getPageLength = (page: ResponseDto) => page.entries.length;
-
   const useSlidingWindowVirtualizer = ({
     rawItems,
-    infiniteData,
     namespaceKey,
-  }: UseSlidingWindowVirtualizerArgs<ItemDto, ResponseDto>): Virtualizer<
+  }: UseSlidingWindowVirtualizerArgs<ItemDto>): Virtualizer<
     Window,
     Element
   > => {
@@ -80,9 +67,7 @@ export const createSlidingWindowVirtualizerHook = <
       [],
     );
 
-    const prevInfiniteDataRef = useRef<
-      InfiniteData<ResponseDto, number> | undefined
-    >(undefined);
+    const prevItemsRef = useRef<ItemDto[] | undefined>(undefined);
 
     const virtualizerSnapshotForPrependRef = useRef<Virtualizer<
       Window,
@@ -92,7 +77,8 @@ export const createSlidingWindowVirtualizerHook = <
     const lastScheduledHeightsRef = useRef<Record<string, number>>({});
     const prevNamespaceKeyRef = useRef<string | undefined>(undefined);
 
-    if (prevNamespaceKeyRef.current !== namespaceKey) {
+    const isNamespaceChange = prevNamespaceKeyRef.current !== namespaceKey;
+    if (isNamespaceChange) {
       prevNamespaceKeyRef.current = namespaceKey;
       const heights =
         usePersistedHeightsStore.getState().namespaces[namespaceKey];
@@ -103,15 +89,15 @@ export const createSlidingWindowVirtualizerHook = <
 
     useLayoutEffect(() => {
       restoredScrollOffsetRef.current = false;
-      prevInfiniteDataRef.current = infiniteData;
+      prevItemsRef.current = rawItems;
     });
 
-    const firstItemOffset = !infiniteData
+    const firstItemOffset = isNamespaceChange
       ? 0
-      : calculateInfiniteFirstItemOffset(
-          infiniteData,
-          prevInfiniteDataRef.current,
-          getPageLength,
+      : computeFirstItemOffsetByKeys(
+          prevItemsRef.current,
+          rawItems,
+          Math.max(prevItemsRef.current?.length ?? 0, rawItems.length),
         );
 
     useEffect(() => {

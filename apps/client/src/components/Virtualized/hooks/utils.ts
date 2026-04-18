@@ -1,33 +1,35 @@
-import type { InfiniteData } from "@tanstack/react-query";
 import type { Virtualizer } from "@tanstack/react-virtual";
 import type { MutableRefObject } from "react";
 
 /**
- * How many logical items were prepended or appended relative to the previous
- * infinite-query snapshot. Used to keep window scroll stable when pages shift.
+ * How many virtual items were prepended or removed at the front of the list
+ * relative to the previous snapshot. Derived by matching stable `_id` keys
+ * at the head of the two arrays. Used to keep window scroll stable when
+ * pages (or any other front-edge items) shift.
  *
- * @param getFirstPageItemCount — length of the first page slice (e.g. `p => p.entries.length`
- *   for main cards, or `p => p.modules.entries.length` for modules).
+ * Semantics:
+ *   > 0  — `n` items were prepended at the front.
+ *   < 0  — `n` items were removed from the front (e.g. sliding window drop).
+ *   = 0  — no detectable front shift (or unknown / unrelated diff).
  */
-export function calculateInfiniteFirstItemOffset<TPage, TPageParam>(
-  data: InfiniteData<TPage, TPageParam> | undefined,
-  prevData: InfiniteData<TPage, TPageParam> | undefined,
-  getFirstPageItemCount: (page: TPage) => number,
+export function computeFirstItemOffsetByKeys(
+  prev: ReadonlyArray<{ _id: string }> | undefined,
+  cur: ReadonlyArray<{ _id: string }>,
+  maxLookahead: number,
 ): number {
-  if (!data || !prevData) {
-    return 0;
+  if (!prev || prev.length === 0 || cur.length === 0) return 0;
+  if (prev[0]._id === cur[0]._id) return 0;
+
+  const prevFirstKey = prev[0]._id;
+  const curScanLimit = Math.min(maxLookahead, cur.length);
+  for (let i = 1; i < curScanLimit; i++) {
+    if (cur[i]._id === prevFirstKey) return i;
   }
 
-  if (prevData.pageParams[0] === data.pageParams[0]) {
-    return 0;
-  }
-
-  if (prevData.pageParams[0] === data.pageParams[1]) {
-    return getFirstPageItemCount(data.pages[0]);
-  }
-
-  if (prevData.pageParams[1] === data.pageParams[0]) {
-    return -getFirstPageItemCount(prevData.pages[0]);
+  const curFirstKey = cur[0]._id;
+  const prevScanLimit = Math.min(maxLookahead, prev.length);
+  for (let i = 1; i < prevScanLimit; i++) {
+    if (prev[i]._id === curFirstKey) return -i;
   }
 
   return 0;

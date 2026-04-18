@@ -1,5 +1,5 @@
 import { createSlidingWindowVirtualizerHook } from "@components/Virtualized/hooks/createSlidingWindowVirtualizerHook";
-import type { CardDto, GetMainCardsResponseDto } from "@flashcards/common";
+import type { CardDto } from "@flashcards/common";
 import { useMemo } from "react";
 
 import { getBelowDividerLabel } from "../../components/Divider/Divider";
@@ -10,10 +10,7 @@ const CARD_ROW_BASE_ESTIMATE = 240;
 const DIVIDER_EXTRA_ESTIMATE = 72;
 const EDIT_MODE_EXTRA_ESTIMATE = 100;
 
-const useBaseVirtualizer = createSlidingWindowVirtualizerHook<
-  CardDto,
-  GetMainCardsResponseDto
->({
+const useBaseVirtualizer = createSlidingWindowVirtualizerHook<CardDto>({
   store: {
     storeName: "HomeCardsRowHeights",
     instanceKey: "home-cards",
@@ -38,15 +35,8 @@ const useBaseVirtualizer = createSlidingWindowVirtualizerHook<
 
 export function useHomeCardsSlidingWindowVirtualizer({
   rawCards,
-  infiniteData,
 }: {
   rawCards: CardDto[];
-  infiniteData:
-    | import("@tanstack/react-query").InfiniteData<
-        GetMainCardsResponseDto,
-        number
-      >
-    | undefined;
 }) {
   const filters = useHomeCardsFiltersStore(state => state.filters);
   const namespaceKey = useMemo(
@@ -54,5 +44,5 @@ export function useHomeCardsSlidingWindowVirtualizer({
     [filters],
   );
 
-  return useBaseVirtualizer({ rawItems: rawCards, infiniteData, namespaceKey });
+  return useBaseVirtualizer({ rawItems: rawCards, namespaceKey });
 }
