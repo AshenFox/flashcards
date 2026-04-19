@@ -16,3 +16,10 @@ export const setAppVerticalOffset: DimenCaseReducer<number> = (
 ) => {
   state.app_vertical_offset = action.payload;
 };
+
+export const setAppVerticalOffsetActive: DimenCaseReducer<boolean> = (
+  state,
+  action,
+) => {
+  state.app_vertical_offset_active = action.payload;
+};

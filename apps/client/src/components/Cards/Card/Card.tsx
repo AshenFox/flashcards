@@ -16,14 +16,14 @@ type CardProps = {
   data: CardDto;
   isModuleLink?: boolean;
   filter?: string;
-  filterType?: string;
+  filterType?: "term" | "definition";
 };
 
 const Card = ({
   data,
   isModuleLink = false,
-  filter = null,
-  filterType = null,
+  filter,
+  filterType,
 }: CardProps) => {
   const dropCardSR = useDropCardSR();
 
@@ -38,16 +38,19 @@ const Card = ({
 
   const [questionOpen, setQuestionOpen] = useState(false);
 
-  const filterRegExp = new RegExp(filterRegex(filter), "g");
+  let formatted_term: string | undefined;
+  let formatted_definition: string | undefined;
 
-  const replacement = `<span class=${s.highlighted_text}>${filter}</span>`;
-
-  let formatted_term: string, formatted_definition: string;
-
-  if (filterType === "term")
+  if (filterType === "term" && filter) {
+    const filterRegExp = new RegExp(filterRegex(filter), "g");
+    const replacement = `<span class=${s.highlighted_text}>${filter}</span>`;
     formatted_term = term.replace(filterRegExp, replacement);
-  if (filterType === "definition")
+  }
+  if (filterType === "definition" && filter) {
+    const filterRegExp = new RegExp(filterRegex(filter), "g");
+    const replacement = `<span class=${s.highlighted_text}>${filter}</span>`;
     formatted_definition = definition.replace(filterRegExp, replacement);
+  }
 
   const onConfirm = useCallback(() => {
     dropCardSR(_id);

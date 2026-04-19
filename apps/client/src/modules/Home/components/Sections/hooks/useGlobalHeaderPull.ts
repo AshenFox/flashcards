@@ -22,7 +22,7 @@ export const useGlobalHeaderPull = ({
   enabled,
   blendDistancePx,
 }: UseGlobalHeaderPullArgs) => {
-  const { setAppVerticalOffset } = useActions();
+  const { setAppVerticalOffset, setAppVerticalOffsetActive } = useActions();
   const rafRef = useRef<number | null>(null);
   const lastCommittedRef = useRef<number>(0);
 
@@ -81,6 +81,8 @@ export const useGlobalHeaderPull = ({
   }, [enabled, tippingPoint, scheduleCompute]);
 
   useLayoutEffect(() => {
+    setAppVerticalOffsetActive(true);
+
     const onScrollOrResize = () => scheduleCompute();
 
     scheduleCompute();
@@ -101,6 +103,12 @@ export const useGlobalHeaderPull = ({
       }
       lastCommittedRef.current = 0;
       setAppVerticalOffset(0);
+      setAppVerticalOffsetActive(false);
     };
-  }, [topRef, scheduleCompute, setAppVerticalOffset]);
+  }, [
+    topRef,
+    scheduleCompute,
+    setAppVerticalOffset,
+    setAppVerticalOffsetActive,
+  ]);
 };

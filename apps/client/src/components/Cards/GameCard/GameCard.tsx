@@ -24,7 +24,7 @@ const setFlashcardsSide = (_value: { value: "term" | "definition" }) => {};
 const GameCard = ({
   data,
   side = "definition",
-  position = null,
+  position,
 }: GameCardProps) => {
   const setCardEdit = useSetCardEdit();
 

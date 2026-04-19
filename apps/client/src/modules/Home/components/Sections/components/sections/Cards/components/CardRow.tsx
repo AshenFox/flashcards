@@ -5,7 +5,7 @@ import { memo } from "react";
 export type CardRowProps = {
   data: CardDto;
   search: string;
-  by: string;
+  by: "term" | "definition";
   isModuleLink: boolean;
   loading: boolean;
 };

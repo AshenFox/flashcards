@@ -9,14 +9,20 @@ type AppWrapperProps = {
 
 const AppWrapper = ({ children }: AppWrapperProps) => {
   const appVerticalOffset = useAppSelector(s => s.dimen.app_vertical_offset);
-
-  const style = useMemo<CSSProperties>(
-    () => ({
-      transform: `translateY(${-appVerticalOffset}px)`,
-      marginBottom: `-${appVerticalOffset}px`,
-    }),
-    [appVerticalOffset],
+  const appVerticalOffsetActive = useAppSelector(
+    s => s.dimen.app_vertical_offset_active,
   );
+
+  const style = useMemo<CSSProperties>(() => {
+    if (appVerticalOffsetActive)
+      return {
+        transform: `translateY(${-appVerticalOffset}px)`,
+        marginBottom: `-${appVerticalOffset}px`,
+        willChange: "margin-bottom, transform",
+      };
+
+    return null;
+  }, [appVerticalOffset, appVerticalOffsetActive]);
 
   return (
     <div className={s.appWrapper} style={style}>
