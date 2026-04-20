@@ -17,12 +17,27 @@ type ImgProps = {
   containerClass?: string;
   contentClass?: string;
   url: string;
+  alt?: string;
+  onLoad?: (e: SyntheticEvent<HTMLImageElement>) => void;
+  onError?: (e: SyntheticEvent<HTMLImageElement>) => void;
 };
+
+function syntheticImageEvent(
+  el: HTMLImageElement,
+): SyntheticEvent<HTMLImageElement> {
+  return {
+    currentTarget: el,
+    target: el,
+  } as unknown as SyntheticEvent<HTMLImageElement>;
+}
 
 const Img = ({
   containerClass = "",
   contentClass = "",
   url = "",
+  alt = "",
+  onLoad: onLoadProp,
+  onError: onErrorProp,
 }: ImgProps) => {
   const trimmedUrl = useMemo(() => url.trim(), [url]);
   const hasUrl = trimmedUrl.length > 0;
@@ -32,6 +47,10 @@ const Img = ({
   );
 
   const imgRef = useRef<HTMLImageElement | null>(null);
+  const onLoadPropRef = useRef(onLoadProp);
+  const onErrorPropRef = useRef(onErrorProp);
+  onLoadPropRef.current = onLoadProp;
+  onErrorPropRef.current = onErrorProp;
 
   useEffect(() => {
     setStatus(hasUrl ? "loading" : "error");
@@ -44,17 +63,25 @@ const Img = ({
     // If the image is already in cache, `onLoad` may have effectively happened already.
     if (!imgRef.current.complete) return;
 
-    setStatus(imgRef.current.naturalWidth > 0 ? "loaded" : "error");
+    const el = imgRef.current;
+    if (el.naturalWidth > 0) {
+      setStatus("loaded");
+      onLoadPropRef.current?.(syntheticImageEvent(el));
+    } else {
+      setStatus("error");
+      onErrorPropRef.current?.(syntheticImageEvent(el));
+    }
   }, [hasUrl, trimmedUrl]);
 
-  const onError = useCallback(
-    (_e: SyntheticEvent<HTMLImageElement>) => setStatus("error"),
-    [],
-  );
-  const onLoad = useCallback(
-    (_e: SyntheticEvent<HTMLImageElement>) => setStatus("loaded"),
-    [],
-  );
+  const onError = useCallback((e: SyntheticEvent<HTMLImageElement>) => {
+    setStatus("error");
+    onErrorPropRef.current?.(e);
+  }, []);
+
+  const onLoad = useCallback((e: SyntheticEvent<HTMLImageElement>) => {
+    setStatus("loaded");
+    onLoadPropRef.current?.(e);
+  }, []);
 
   return (
     <div className={clsx(s.container, "img__container", containerClass)}>
@@ -68,7 +95,7 @@ const Img = ({
             onError={onError}
             decoding="async"
             loading="lazy"
-            alt=""
+            alt={alt}
           />
         )}
 

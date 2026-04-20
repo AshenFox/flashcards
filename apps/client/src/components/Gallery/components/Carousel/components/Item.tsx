@@ -1,4 +1,5 @@
 import { ImgurlObj } from "@components/Gallery/types";
+import Img from "@ui/Img";
 import clsx from "clsx";
 import { memo, SyntheticEvent, useCallback } from "react";
 
@@ -41,7 +42,12 @@ const Item = ({
       className={clsx(s.item, !ok && s.hidden)}
       onClick={clickGalleryItem}
     >
-      <img src={url} alt="Gallery img" onLoad={load} onError={error} />
+      <Img
+        url={url}
+        alt="Gallery img"
+        onLoad={load}
+        onError={error}
+      />
     </figcaption>
   );
 };
