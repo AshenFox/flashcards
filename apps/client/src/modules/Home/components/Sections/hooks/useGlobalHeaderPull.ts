@@ -7,7 +7,7 @@ const docY = (el: Element) => {
 };
 
 /** Skip DOM writes when the change is smaller than this. */
-const MIN_DELTA_PX = 1.5;
+const MIN_DELTA_PX = 2;
 
 type UseGlobalHeaderPullArgs = {
   topRef: RefObject<HTMLElement | null>;

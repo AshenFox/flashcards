@@ -40,15 +40,16 @@ const ScrollTop = ({
     };
 
     window.addEventListener("scroll", onScroll);
+    onScroll();
 
     return () => window.removeEventListener("scroll", onScroll);
   }, [setIsVisible]);
 
   useEffect(() => {
-    if (isVisible)
+    if (enabled && isVisible)
       applyHtmlOverscrollBehaviorYNone(previousOverscrollBehaviorYRef);
     else restoreHtmlOverscrollBehaviorY(previousOverscrollBehaviorYRef);
-  }, [isVisible]);
+  }, [isVisible, enabled]);
 
   useEffect(() => {
     return () => {
