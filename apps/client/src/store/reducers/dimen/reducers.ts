@@ -9,17 +9,3 @@ export const setHeaderDimen: DimenCaseReducer<{
     header_width: action.payload.width,
   });
 };
-
-export const setAppVerticalOffset: DimenCaseReducer<number> = (
-  state,
-  action,
-) => {
-  state.app_vertical_offset = action.payload;
-};
-
-export const setAppVerticalOffsetActive: DimenCaseReducer<boolean> = (
-  state,
-  action,
-) => {
-  state.app_vertical_offset_active = action.payload;
-};

@@ -7,7 +7,7 @@ import {
   VirtualizedList,
 } from "@components/Virtualized";
 import type { GetMainModulesResponseDto } from "@flashcards/common";
-import { useGlobalHeaderPull } from "@modules/Home/components/Sections/hooks/useGlobalHeaderPull";
+import { useAppVerticalPull } from "@modules/AppWrapper";
 import ScrollTop from "@modules/ScrollTop";
 import { useQueryClient } from "@tanstack/react-query";
 import ScrollLoader from "@ui/ScrollLoader";
@@ -78,8 +78,8 @@ const Modules = () => {
       virtualizer,
     });
 
-  useGlobalHeaderPull({
-    topRef: listTopRef,
+  useAppVerticalPull({
+    elementRef: listTopRef,
     tippingPoint: !!hasPreviousPage,
     enabled: !!data,
     blendDistancePx: HOME_MODULES_PAGE_SIZE * 140,

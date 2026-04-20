@@ -26,6 +26,7 @@ const Header = () => {
       width: rect?.width ?? 0,
     });
   }, [setHeaderDimen]);
+
   const onSizeChangeDelayed = useCallback(
     () =>
       setTimeout(() => {
@@ -67,7 +68,11 @@ const Header = () => {
   const headerEl = useRef<HTMLElement>(null);
 
   return (
-    <header className={clsx(s.header, isGame && s.sticky)} ref={headerEl}>
+    <header
+      id="app-header"
+      className={clsx(s.header, isGame && s.sticky)}
+      ref={headerEl}
+    >
       <ContentWrapper tagType="section">
         <Container>
           <div className={s.content}>

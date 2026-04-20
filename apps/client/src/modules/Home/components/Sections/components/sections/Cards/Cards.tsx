@@ -8,7 +8,7 @@ import {
   VirtualizedList,
 } from "@components/Virtualized";
 import type { GetMainCardsResponseDto } from "@flashcards/common";
-import { useGlobalHeaderPull } from "@modules/Home/components/Sections/hooks/useGlobalHeaderPull";
+import { useAppVerticalPull } from "@modules/AppWrapper";
 import ScrollTop from "@modules/ScrollTop";
 import { useQueryClient } from "@tanstack/react-query";
 import ScrollLoader from "@ui/ScrollLoader";
@@ -84,8 +84,8 @@ const Cards = () => {
 
   const blendDistancePx = HOME_CARDS_PAGE_SIZE * 200;
 
-  useGlobalHeaderPull({
-    topRef: listTopRef,
+  useAppVerticalPull({
+    elementRef: listTopRef,
     tippingPoint: !!hasPreviousPage,
     enabled: !!data,
     blendDistancePx,

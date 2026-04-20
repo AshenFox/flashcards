@@ -1,6 +1,7 @@
-import { useAppSelector } from "@store/store";
-import { CSSProperties, memo, useEffect, useState } from "react";
+import { CSSProperties, memo, useEffect, useMemo, useState } from "react";
 
+import { useHasActiveOwner } from "./hooks/registry";
+import { useGlobalHeaderPull } from "./hooks/useGlobalHeaderPull";
 import s from "./styles.module.scss";
 
 type AppWrapperProps = {
@@ -8,38 +9,37 @@ type AppWrapperProps = {
 };
 
 const AppWrapper = ({ children }: AppWrapperProps) => {
-  const appVerticalOffset = useAppSelector(s => s.dimen.app_vertical_offset);
-  const appVerticalOffsetActive = useAppSelector(
-    s => s.dimen.app_vertical_offset_active,
-  );
+  const [offset, setOffset] = useState(0);
+  const [transitionArmed, setTransitionArmed] = useState(false);
 
-  const [style, setStyle] = useState<CSSProperties>({});
+  useGlobalHeaderPull(setOffset);
+
+  const hasActiveOwner = useHasActiveOwner();
 
   useEffect(() => {
-    if (appVerticalOffsetActive) {
-      setStyle(prev => ({
-        ...prev,
-        transform: `translateY(${-appVerticalOffset}px)`,
-        marginBottom: `-${appVerticalOffset}px`,
-        willChange: "margin-bottom, transform",
-      }));
-
-      setTimeout(() => {
-        setStyle(prev => ({
-          ...prev,
-          transition: "transform 0.1s linear",
-        }));
-      }, 400);
+    if (hasActiveOwner) {
+      setTimeout(() => setTransitionArmed(true), 400);
     } else {
-      setStyle({});
+      setTransitionArmed(false);
     }
-  }, [appVerticalOffset, appVerticalOffsetActive]);
+  }, [hasActiveOwner]);
 
   useEffect(() => {
     return () => {
-      setStyle({});
+      setTransitionArmed(false);
     };
   }, []);
+
+  const style = useMemo<CSSProperties | undefined>(() => {
+    if (!hasActiveOwner) return undefined;
+
+    return {
+      transform: `translateY(${-offset}px)`,
+      marginBottom: `-${offset}px`,
+      willChange: "margin-bottom, transform",
+      transition: transitionArmed ? "transform 0.1s linear" : undefined,
+    };
+  }, [hasActiveOwner, offset, transitionArmed]);
 
   return (
     <div className={s.appWrapper} style={style}>
