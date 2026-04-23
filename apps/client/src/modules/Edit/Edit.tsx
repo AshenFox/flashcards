@@ -1,6 +1,5 @@
-import { queryClient } from "@api/queryClient";
 import { CardsUIProvider } from "@components/Cards";
-import { memo, useEffect } from "react";
+import { memo } from "react";
 
 import Cards from "./components/Cards";
 import Intro from "./components/Intro";

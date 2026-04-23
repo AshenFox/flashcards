@@ -1,6 +1,5 @@
 import Modal from "@modules/Modal";
 import Module from "@modules/Module";
-import ScrollTop from "@modules/ScrollTop";
 import { memo } from "react";
 
 const ModulePage = () => {
@@ -8,7 +7,6 @@ const ModulePage = () => {
     <>
       <Module />
       <Modal />
-      <ScrollTop />
     </>
   );
 };
