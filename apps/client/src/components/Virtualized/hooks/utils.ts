@@ -1,5 +1,5 @@
 import type { Virtualizer } from "@tanstack/react-virtual";
-import type { MutableRefObject } from "react";
+import type { RefObject } from "react";
 
 /**
  * How many virtual items were prepended or removed at the front of the list
@@ -51,7 +51,7 @@ function scrollVirtualizerWindowToOffset(
 export function restoreScrollOffsetAfterFirstItemChange(
   virtualizer: Virtualizer<Window, Element>,
   firstItemOffset: number,
-  restoredScrollOffsetRef: MutableRefObject<boolean>,
+  restoredScrollOffsetRef: RefObject<boolean>,
 ) {
   if (firstItemOffset === 0) return;
   if (restoredScrollOffsetRef.current) return;
@@ -88,12 +88,10 @@ export function applyScrollAnchorLibraryHandoff(
   firstItemOffset: number,
 ) {
   if (firstItemOffset === 0) {
-    virtualizer.shouldAdjustScrollPositionOnItemSizeChange = undefined;
+    virtualizer.shouldAdjustScrollPositionOnItemSizeChange = () => false;
   } else {
     virtualizer.shouldAdjustScrollPositionOnItemSizeChange = item => {
-      if (firstItemOffset < 0) {
-        return false;
-      }
+      if (firstItemOffset < 0) return false;
       return item.index < Math.abs(firstItemOffset);
     };
   }
