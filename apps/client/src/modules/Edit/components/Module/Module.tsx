@@ -10,8 +10,13 @@ import {
 import Input from "@ui/Input";
 import { Button } from "@ui/InteractiveElement";
 import TextLabel from "@ui/TextLabel";
-import { memo, useCallback } from "react";
-import { ContentEditableEvent } from "react-contenteditable";
+import {
+  type ChangeEvent,
+  memo,
+  useCallback,
+  useEffect,
+  useState,
+} from "react";
 
 import Save from "../Save/Save";
 import { ExportCards, ImportCards, SaveAllCards } from "./components";
@@ -24,11 +29,19 @@ const Module = () => {
   const editModule = useEditModule();
   const loading = useEditIsLoading();
 
-  const { title, draft, _id: moduleId } = editModule || {};
+  const { title = "", draft, _id: moduleId } = editModule || {};
+
+  const [localTitle, setLocalTitle] = useState(title);
+
+  useEffect(() => {
+    setLocalTitle(title);
+  }, [title, moduleId]);
 
   const handleModuleChange = useCallback(
-    (e: ContentEditableEvent) => {
-      onTitleChange(e.target.value);
+    (e: ChangeEvent<HTMLInputElement>) => {
+      const value = e.target.value;
+      setLocalTitle(value);
+      onTitleChange(value);
     },
     [onTitleChange],
   );
@@ -49,7 +62,7 @@ const Module = () => {
           <div className={s.content}>
             <div className={s.title}>
               <Input
-                value={title ?? ""}
+                value={localTitle}
                 onChange={handleModuleChange}
                 className={s.input}
                 // error={!active}
