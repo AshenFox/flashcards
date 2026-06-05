@@ -1,4 +1,5 @@
-import { shuffle } from "../../helper-functions";
+import { shuffle } from "@utils/shuffle";
+
 import gameInitState from "./initState";
 import { GameCaseReducer, WriteCards } from "./types";
 
@@ -87,7 +88,7 @@ export const nextWriteRound: GameCaseReducer = (state, _action) => {
   state.write.is_round_finished = false;
   const incorrectCards = state.write.answered
     .filter(item => item.answer === "incorrect")
-    .map(item => ({ ...item, answer: false }));
+    .map(item => ({ ...item, answer: false as const }));
 
   state.write.rounds.push({
     answered: [...state.write.answered],

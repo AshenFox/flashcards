@@ -5,8 +5,8 @@ import {
   srDropCards,
   srSetControl,
 } from "@api/methods";
-import { saveLastUpdate } from "@store/helper-functions";
 import { useMutation } from "@tanstack/react-query";
+import { saveLastUpdate } from "@utils/saveLastUpdate";
 import sanitize from "sanitize-html";
 
 import { useCardsCash } from "./context";

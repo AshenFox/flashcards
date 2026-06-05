@@ -1,3 +1,4 @@
+import { editDeleteModule } from "@api/methods/edit/editDeleteModule";
 import { mainGetModule } from "@api/methods/main/mainGetModule";
 import { mainGetModuleCards } from "@api/methods/main/mainGetModuleCards";
 import { queryClient } from "@api/queryClient";
@@ -7,7 +8,8 @@ import type {
   GetMainModuleCardsResponseDto,
 } from "@flashcards/common";
 import { useAppSelector } from "@store/store";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import { saveLastUpdate } from "@utils/saveLastUpdate";
 import type { ModuleCardsFilters } from "@zustand/filters";
 import { createModuleCardsFilterSlice } from "@zustand/filters";
 import { createStoreHook, withProduce } from "@zustand/helpers";
@@ -158,4 +160,23 @@ const useModuleIdFromQuery = (): string | undefined => {
   const router = useRouter();
   const { _id } = router.query;
   return typeof _id === "string" ? _id : undefined;
+};
+
+// ---------------------------------------------------------------------------
+// Delete module
+// ---------------------------------------------------------------------------
+
+export const useDeleteModuleMutation = () => {
+  const moduleId = useModuleIdFromQuery();
+
+  return useMutation({
+    mutationFn: async () => {
+      if (!moduleId) throw new Error("No module id");
+      await editDeleteModule(moduleId);
+    },
+    onSuccess: () => {
+      saveLastUpdate();
+      window.location.replace("/home/modules");
+    },
+  });
 };

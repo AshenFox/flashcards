@@ -1,25 +1,16 @@
 import {
   CardDto,
-  GetMainCardsResponseDto,
   GetMainModuleCardsResponseDto,
-  GetMainModuleResponseDto,
 } from "@flashcards/common";
 
-import {
-  card_fields,
-  defaultHomeCardsFilters,
-  defaultModuleFilters,
-  defaultPagination,
-  module_fields,
-} from "../initState";
-import { Cards, FilterValue, MainCaseReducer, SectionName } from "../types";
+import { card_fields } from "../initState";
+import { Cards, MainCaseReducer } from "../types";
 
 export const setIsServer: MainCaseReducer = state => {
   state.is_server = typeof document === "undefined";
 };
 
 export const resetModuleData: MainCaseReducer = (state, _action) => {
-  state.module = null;
   state.cards = {};
 };
 
@@ -27,77 +18,20 @@ export const resetModuleCardsData: MainCaseReducer = state => {
   state.cards = {};
 };
 
-export const setModule: MainCaseReducer<GetMainModuleResponseDto> = (
-  state,
-  action,
-) => {
-  const { module } = action.payload;
-
-  state.module = { ...module, ...module_fields };
-};
-
 export const setModuleCards: MainCaseReducer<GetMainModuleCardsResponseDto> = (
   state,
   action,
 ) => {
   state.cards = { ...state.cards, ...cardArrToObj(action.payload.entries) };
-  state.sections.module.pagination = action.payload.pagination;
-};
-
-export const setSectionFilter: MainCaseReducer<{
-  section: SectionName;
-  filter: string;
-  value: FilterValue;
-}> = (state, action) => {
-  state.sections[action.payload.section].filters[action.payload.filter] =
-    action.payload.value;
-};
-
-export const resetHomeCardsData: MainCaseReducer = state => {
-  state.cards = {};
-  state.sections.homeCards.pagination = defaultPagination;
-};
-
-const defaultFilters = {
-  homeCards: defaultHomeCardsFilters,
-  module: defaultModuleFilters,
-};
-
-export const resetSectionFilters: MainCaseReducer<SectionName> = (
-  state,
-  action,
-) => {
-  state.sections[action.payload].filters = defaultFilters[action.payload];
-};
-
-export const setScrollTop: MainCaseReducer<{ value: boolean }> = (
-  state,
-  action,
-) => {
-  state.scroll_top = action.payload.value;
 };
 
 export const setSectionLoading: MainCaseReducer<{
   value: boolean;
-  section: SectionName;
+  section: "srCards" | "moduleCards";
 }> = (state, action) => {
   const { value, section } = action.payload;
 
   state.sections[section].loading = value;
-};
-
-export const setCards: MainCaseReducer<GetMainCardsResponseDto> = (
-  state,
-  action,
-) => {
-  const { entries, pagination } = action.payload;
-
-  state.cards = { ...state.cards, ...cardArrToObj(entries) };
-
-  state.sections.homeCards.pagination = {
-    ...pagination,
-    page: pagination.page + 1,
-  };
 };
 
 const cardArrToObj = (arr: CardDto[]): Cards => {

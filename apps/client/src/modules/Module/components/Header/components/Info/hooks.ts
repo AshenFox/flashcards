@@ -1,7 +1,7 @@
 import { srDropCards } from "@api/methods";
 import { useCardsCash } from "@components/Cards";
-import { saveLastUpdate } from "@store/helper-functions";
 import { useMutation } from "@tanstack/react-query";
+import { saveLastUpdate } from "@utils/saveLastUpdate";
 import { useCallback } from "react";
 
 export const useDropAllCardsSR = () => {

@@ -1,4 +1,4 @@
-import { shuffle } from "@store/helper-functions";
+import { shuffle } from "@utils/shuffle";
 
 import { MainCaseReducer } from "../types";
 

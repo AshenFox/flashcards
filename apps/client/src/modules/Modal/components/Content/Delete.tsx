@@ -1,4 +1,5 @@
-import { useActions, useAppSelector } from "@store/hooks";
+import { useDeleteModuleMutation, useModuleQuery } from "@modules/Module/hooks";
+import { useActions } from "@store/hooks";
 import { Button } from "@ui/InteractiveElement";
 import { clsx } from "clsx";
 import { memo, MouseEvent } from "react";
@@ -6,13 +7,14 @@ import { memo, MouseEvent } from "react";
 import s from "./styles.module.scss";
 
 const Delete = () => {
-  const { deleteModule, toggleModal } = useActions();
+  const { toggleModal } = useActions();
+  const { data } = useModuleQuery();
+  const deleteMutation = useDeleteModuleMutation();
 
-  const currentModule = useAppSelector(s => s.main.module);
+  const title = data?.module?.title;
 
-  const { _id, module_loading, title } = currentModule || {};
-
-  const clickDelete = (_e: MouseEvent<HTMLButtonElement>) => deleteModule(_id);
+  const clickDelete = (_e: MouseEvent<HTMLButtonElement>) =>
+    deleteMutation.mutate();
 
   const close = (_e: MouseEvent<HTMLButtonElement>) => toggleModal();
 
@@ -39,7 +41,7 @@ const Delete = () => {
         </div>
 
         <div className={s.choice_item}>
-          <Button loading={module_loading} onClick={clickDelete}>
+          <Button loading={deleteMutation.isPending} onClick={clickDelete}>
             Yes, delete set
           </Button>
         </div>

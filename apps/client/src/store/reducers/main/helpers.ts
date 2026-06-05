@@ -1,7 +1,7 @@
 import { CardDto } from "@flashcards/common";
 
-import { card_fields, url_fields } from "./initState";
-import { Cards, ImgurlBase, ImgurlObjs } from "./types";
+import { card_fields } from "./initState";
+import { Cards } from "./types";
 
 export const transformCards = (cards: CardDto[]): Cards =>
   Object.fromEntries(
@@ -10,17 +10,6 @@ export const transformCards = (cards: CardDto[]): Cards =>
       {
         ...card,
         ...card_fields,
-      },
-    ]),
-  );
-
-export const transformImgurl = (arr: ImgurlBase[]): ImgurlObjs =>
-  Object.fromEntries(
-    arr.map((url, i) => [
-      i,
-      {
-        ...url,
-        ...url_fields,
       },
     ]),
   );

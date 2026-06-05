@@ -1,7 +1,7 @@
 import Speaker from "@components/Speaker";
 import { SRIndicator, SRInfoTooltip } from "@components/SRIndicator";
+import { GameCard as CardType } from "@modules/Game/types";
 import { useActions } from "@store/hooks";
-import { Card as CardType } from "@store/reducers/main/types";
 import { EditIcon } from "@ui/Icons";
 import Img from "@ui/Img";
 import TextArea from "@ui/TextArea";

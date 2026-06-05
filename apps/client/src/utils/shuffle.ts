@@ -1,4 +1,4 @@
-export const shuffle = (array: any[]) => {
+export const shuffle = <T>(array: T[]): T[] => {
   array.forEach((_, i) => {
     const j = Math.floor(Math.random() * (i + 1));
 
@@ -7,6 +7,3 @@ export const shuffle = (array: any[]) => {
 
   return array;
 };
-
-export const saveLastUpdate = () =>
-  localStorage.setItem("lastUpdated", Date.now() + "");

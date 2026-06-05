@@ -5,8 +5,8 @@ import {
   useEditModule,
   useEditResolvedModuleId,
 } from "@modules/Edit/hooks";
-import { saveLastUpdate } from "@store/helper-functions";
 import { Button } from "@ui/InteractiveElement";
+import { saveLastUpdate } from "@utils/saveLastUpdate";
 import { useCallback, useRef, useState } from "react";
 
 import s from "./styles.module.scss";

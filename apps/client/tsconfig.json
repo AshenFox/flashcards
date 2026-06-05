@@ -28,6 +28,7 @@
       "@api/*": ["src/api/*"],
       "@api": ["src/api"],
       "@zustand/*": ["src/zustand/*"],
+      "@utils/*": ["src/utils/*"],
       "@public/*": ["public/*"]
     }
   },

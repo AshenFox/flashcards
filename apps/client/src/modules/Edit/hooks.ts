@@ -13,9 +13,9 @@ import type {
   GetMainModuleResponseDto,
   ModuleDto,
 } from "@flashcards/common";
-import { saveLastUpdate } from "@store/helper-functions";
 import { useAppSelector } from "@store/store";
 import { useMutation, useQuery } from "@tanstack/react-query";
+import { saveLastUpdate } from "@utils/saveLastUpdate";
 import { createStoreHook, withProduce } from "@zustand/helpers";
 import { produce } from "immer";
 import { useRouter } from "next/router";
