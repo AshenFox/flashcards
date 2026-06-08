@@ -1,6 +1,7 @@
 import { setAuthToken } from "@api/axiosInstance";
 import { authGetUser } from "@api/methods";
 import { ThunkActionApp } from "@store/store";
+import { useLayoutStore } from "@zustand/layout";
 
 import { authActions } from "./slice";
 
@@ -43,6 +44,7 @@ export const logOut = () => <ThunkActionApp>((dispatch, _getState) => {
 
     localStorage.removeItem("value");
     setAuthToken(undefined);
+    useLayoutStore.getState().setDropdownActive(false);
 
     if (pathname !== "/") window.location.replace("/");
 

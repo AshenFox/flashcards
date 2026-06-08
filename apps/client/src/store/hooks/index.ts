@@ -3,8 +3,6 @@ import { useMemo } from "react";
 import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
 
 import { authActions, authThunks } from "../reducers/auth/slice";
-import { dimenActions } from "../reducers/dimen/slice";
-import { headerActions } from "../reducers/header/slice";
 import { modalActions, modalThunks } from "../reducers/modal/slice";
 import { AppDispatch, RootState } from "../store";
 
@@ -17,8 +15,6 @@ export const useActions = () => {
 
   const boundActions = useMemo(() => {
     const allActions = {
-      ...headerActions,
-      ...dimenActions,
       ...modalActions,
       ...modalThunks,
       ...authActions,

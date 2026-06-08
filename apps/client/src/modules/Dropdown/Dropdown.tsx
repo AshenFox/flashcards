@@ -4,9 +4,10 @@ import {
   getIsSettings,
   getIsWrite,
 } from "@helpers/functions/determinePath";
-import { useActions, useAppSelector } from "@store/hooks";
+import { useActions } from "@store/hooks";
 import { NewModuleIcon } from "@ui/Icons";
 import Portal from "@ui/Portal";
+import { useLayoutStore } from "@zustand/layout";
 import clsx from "clsx";
 import { useRouter } from "next/router";
 import {
@@ -23,10 +24,11 @@ import Item from "./components/Item";
 import s from "./styles.module.scss";
 
 const Dropdown = () => {
-  const { logOut, setDropdown } = useActions();
+  const { logOut } = useActions();
 
-  const dropdown_active = useAppSelector(s => s.header.dropdown_active);
-  const header_height = useAppSelector(s => s.dimen.header_height);
+  const dropdown_active = useLayoutStore(s => s.dropdown_active);
+  const header_height = useLayoutStore(s => s.header_height);
+  const setDropdownActive = useLayoutStore(s => s.setDropdownActive);
 
   const router = useRouter();
   const { _id } = router.query;
@@ -46,12 +48,12 @@ const Dropdown = () => {
       );
 
       if (menuEl) {
-        if (menuItemEl) setDropdown({ value: false });
+        if (menuItemEl) setDropdownActive(false);
       } else {
-        setDropdown({ value: false });
+        setDropdownActive(false);
       }
     },
-    [setDropdown],
+    [setDropdownActive],
   );
 
   const deactivateDropdownRef = useRef(deactivateDropdown);

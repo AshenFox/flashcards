@@ -6,6 +6,7 @@ import {
 import { useActions } from "@store/hooks";
 import { useAppSelector } from "@store/store";
 import { NewModuleIcon } from "@ui/Icons";
+import { useLayoutStore } from "@zustand/layout";
 import clsx from "clsx";
 import { useRouter } from "next/router";
 import { memo, MouseEvent, useCallback } from "react";
@@ -15,12 +16,13 @@ import Item from "./components/Item";
 import s from "./styles.module.scss";
 
 const Right = () => {
-  const { changeModal, toggleModal, setDropdown, logOut } = useActions();
+  const { changeModal, toggleModal, logOut } = useActions();
 
   const router = useRouter();
 
   const user = useAppSelector(s => s.auth.user);
-  const dropdown_active = useAppSelector(s => s.header.dropdown_active);
+  const dropdown_active = useLayoutStore(s => s.dropdown_active);
+  const setDropdownActive = useLayoutStore(s => s.setDropdownActive);
 
   const isDraft = getIsDraft(router.asPath);
   const isGame = getIsGame(router.pathname);
@@ -28,9 +30,9 @@ const Right = () => {
 
   const activateDropdown = useCallback(
     (_e: MouseEvent<HTMLButtonElement>) => {
-      setDropdown({ value: true });
+      setDropdownActive(true);
     },
-    [setDropdown],
+    [setDropdownActive],
   );
 
   const openModal = useCallback(
