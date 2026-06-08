@@ -2,6 +2,7 @@ import type { CardDto } from "@flashcards/common";
 import { shuffle } from "@utils/shuffle";
 import { createStoreHook, withActionName } from "@zustand/helpers";
 import { Slice } from "@zustand/types";
+import type { WritableDraft } from "immer";
 
 import type { GameState } from "./types";
 
@@ -15,6 +16,48 @@ export type {
 
 const cardFields = {
   answer: false as const,
+};
+
+type GamePrepareSlice = Pick<GameStore, "flashcards" | "write" | "orderIds">;
+
+const buildOrderIds = (cards: CardDto[], mode: "module" | "sr"): string[] => {
+  if (mode === "module") {
+    return cards.map(c => c._id);
+  }
+
+  const entries = shuffle(cards.map(c => [c._id, c] as const)).sort(
+    (a, b) => a[1].stage - b[1].stage,
+  );
+  return entries.map(([id]) => id);
+};
+
+const applyPrepareFlashcards = (
+  state: WritableDraft<GameStore | Partial<GameStore>>,
+) => {
+  const cards_num = state.orderIds.length;
+  state.flashcards = { ...gameInitState.flashcards };
+  state.flashcards.all_cards_num = cards_num;
+};
+
+const applyPrepareWrite = (
+  state: WritableDraft<GameStore | Partial<GameStore>>,
+  cardsById: Record<string, CardDto>,
+) => {
+  const remaining = state.orderIds.map(id => ({
+    id,
+    stage: cardsById[id]?.stage ?? 0,
+    ...cardFields,
+  }));
+
+  state.write = {
+    ...gameInitState.write,
+    remaining: [],
+    answered: [],
+    rounds: [],
+  };
+  state.write.all_cards_num = remaining.length;
+  state.write.remaining = shuffle(remaining).sort((a, b) => b.stage - a.stage);
+  state.write.is_init = true;
 };
 
 const gameInitState: GameState = {
@@ -66,6 +109,8 @@ export type GameStore = GameState & {
   endFlashcardsEarly: () => void;
   endWriteEarly: () => void;
   initFromCards: (cards: CardDto[], mode: "module" | "sr") => void;
+  initAndPrepareFlashcards: (cards: CardDto[], mode: "module" | "sr") => void;
+  initAndPrepareWrite: (cards: CardDto[], mode: "module" | "sr") => void;
   shuffleOrder: (cardsById: Record<string, CardDto>) => void;
   sortOrder: (cardsById: Record<string, CardDto>) => void;
   resetOrder: () => void;
@@ -92,36 +137,13 @@ const createGameSlice: Slice<GameStore> = setAction => {
 
     prepareFlashcards: () => {
       set(state => {
-        const orderIds = state.orderIds;
-        const cards_num = orderIds.length;
-        state.flashcards = { ...gameInitState.flashcards };
-        state.orderIds = orderIds;
-        state.flashcards.all_cards_num = cards_num;
+        applyPrepareFlashcards(state);
       }, "prepareFlashcards");
     },
 
     prepareWrite: cardsById => {
       set(state => {
-        const orderIds = state.orderIds;
-
-        const remaining = orderIds.map(id => ({
-          id,
-          stage: cardsById[id]?.stage ?? 0,
-          ...cardFields,
-        }));
-
-        state.write = {
-          ...gameInitState.write,
-          remaining: [],
-          answered: [],
-          rounds: [],
-        };
-        state.orderIds = orderIds;
-        state.write.all_cards_num = remaining.length;
-        state.write.remaining = shuffle(remaining).sort(
-          (a, b) => b.stage - a.stage,
-        );
-        state.write.is_init = true;
+        applyPrepareWrite(state, cardsById);
       }, "prepareWrite");
     },
 
@@ -272,16 +294,23 @@ const createGameSlice: Slice<GameStore> = setAction => {
 
     initFromCards: (cards, mode) => {
       set(state => {
-        if (mode === "module") {
-          state.orderIds = cards.map(c => c._id);
-          return;
-        }
-
-        const entries = shuffle(cards.map(c => [c._id, c] as const)).sort(
-          (a, b) => a[1].stage - b[1].stage,
-        );
-        state.orderIds = entries.map(([id]) => id);
+        state.orderIds = buildOrderIds(cards, mode);
       }, "initFromCards");
+    },
+
+    initAndPrepareFlashcards: (cards, mode) => {
+      set(state => {
+        state.orderIds = buildOrderIds(cards, mode);
+        applyPrepareFlashcards(state as WritableDraft<GamePrepareSlice>);
+      }, "initAndPrepareFlashcards");
+    },
+
+    initAndPrepareWrite: (cards, mode) => {
+      set(state => {
+        state.orderIds = buildOrderIds(cards, mode);
+        const cardsById = Object.fromEntries(cards.map(c => [c._id, c]));
+        applyPrepareWrite(state as WritableDraft<GamePrepareSlice>, cardsById);
+      }, "initAndPrepareWrite");
     },
 
     shuffleOrder: cardsById => {

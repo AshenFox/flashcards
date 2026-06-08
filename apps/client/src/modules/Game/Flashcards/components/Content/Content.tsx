@@ -3,7 +3,6 @@ import { useCardsUIStore } from "@components/Cards/state/context";
 import ContentContainer from "@modules/Game/components/ContentContainer";
 import {
   useGameActiveCardsQuery,
-  useGameOrderLength,
   useOrderedGameCards,
 } from "@modules/Game/hooks";
 import { useGameStore } from "@zustand/game/gameStore";
@@ -26,11 +25,10 @@ const Content = () => {
   const side = useGameStore(s => s.flashcards.side);
   const ended_early = useGameStore(s => s.flashcards.ended_early);
   const orderedCards = useOrderedGameCards();
-  const orderLength = useGameOrderLength();
   const { isLoading } = useGameActiveCardsQuery();
 
   const activeCardData = orderedCards[progress];
-  const length = orderLength;
+  const length = orderedCards.length;
   const cardId = activeCardData?._id;
   const cardEdit = useCardsUIStore(s =>
     cardId ? (s.cards[cardId]?.edit ?? false) : false,

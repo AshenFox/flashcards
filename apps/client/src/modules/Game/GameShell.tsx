@@ -36,9 +36,10 @@ const useGameBootstrap = (mode: "flashcards" | "write") => {
 
   const { data } = useGameActiveCardsQuery();
 
-  const initFromCards = useGameStore(s => s.initFromCards);
-  const prepareFlashcards = useGameStore(s => s.prepareFlashcards);
-  const prepareWrite = useGameStore(s => s.prepareWrite);
+  const initAndPrepareFlashcards = useGameStore(
+    s => s.initAndPrepareFlashcards,
+  );
+  const initAndPrepareWrite = useGameStore(s => s.initAndPrepareWrite);
   const resetAllGameFields = useGameStore(s => s.resetAllGameFields);
   const resetOrder = useGameStore(s => s.resetOrder);
 
@@ -57,6 +58,7 @@ const useGameBootstrap = (mode: "flashcards" | "write") => {
   }, [resetGameSession]);
 
   useEffect(() => {
+    if (initializedSession.current === null) return;
     initializedSession.current = null;
     resetGameSession();
   }, [sessionKey, resetGameSession]);
@@ -68,20 +70,17 @@ const useGameBootstrap = (mode: "flashcards" | "write") => {
 
     initializedSession.current = sessionKey;
 
-    const cardsById = Object.fromEntries(entries.map(c => [c._id, c]));
+    const cardMode = isSR ? "sr" : "module";
 
-    initFromCards(entries, isSR ? "sr" : "module");
-
-    if (mode === "flashcards") prepareFlashcards();
-    else prepareWrite(cardsById);
+    if (mode === "flashcards") initAndPrepareFlashcards(entries, cardMode);
+    else if (mode === "write") initAndPrepareWrite(entries, cardMode);
   }, [
     data?.entries,
     sessionKey,
-    initFromCards,
+    initAndPrepareFlashcards,
+    initAndPrepareWrite,
     isSR,
     mode,
-    prepareFlashcards,
-    prepareWrite,
   ]);
 };
 

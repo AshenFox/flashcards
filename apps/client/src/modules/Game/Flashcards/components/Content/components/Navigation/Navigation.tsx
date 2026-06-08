@@ -47,10 +47,12 @@ const Navigation = () => {
   const _idRef = useRef(activeCardData?._id);
   const sideRef = useRef(side);
   const isTurnedRef = useRef(is_turned);
+  const saveSRAnswerRef = useRef(saveSRAnswer);
 
   _idRef.current = activeCardData?._id;
   sideRef.current = side;
   isTurnedRef.current = is_turned;
+  saveSRAnswerRef.current = saveSRAnswer;
 
   useEffect(() => {
     const keyDown = (e: KeyboardEvent) => {
@@ -70,7 +72,7 @@ const Navigation = () => {
         if (!cardId) return;
 
         if (e.key === "ArrowRight") {
-          saveSRAnswer({ _id: cardId, answer: 1 });
+          saveSRAnswerRef.current({ _id: cardId, answer: 1 });
           saveFlashcardsAnswer({
             _id: cardId,
             answer: "correct",
@@ -79,7 +81,7 @@ const Navigation = () => {
         }
 
         if (e.key === "ArrowLeft") {
-          saveSRAnswer({ _id: cardId, answer: -1 });
+          saveSRAnswerRef.current({ _id: cardId, answer: -1 });
           saveFlashcardsAnswer({
             _id: cardId,
             answer: "incorrect",
@@ -102,13 +104,7 @@ const Navigation = () => {
     window.addEventListener("keydown", keyDown);
 
     return () => window.removeEventListener("keydown", keyDown);
-  }, [
-    isSR,
-    saveFlashcardsAnswer,
-    saveSRAnswer,
-    setFlashcardsProgress,
-    setFlashcardsSide,
-  ]);
+  }, [isSR, saveFlashcardsAnswer, setFlashcardsProgress, setFlashcardsSide]);
 
   if (!activeCardData) return null;
 
