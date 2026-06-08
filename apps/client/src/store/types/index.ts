@@ -1,16 +1,12 @@
 import { AuthActions } from "@store/reducers/auth/slice";
 import { DimenActions } from "@store/reducers/dimen/slice";
-import { GameActions } from "@store/reducers/game/slice";
 import { HeaderActions } from "@store/reducers/header/slice";
-import { MainActions } from "@store/reducers/main/slice";
 import { ModalActions } from "@store/reducers/modal/slice";
 
 export type AppActions =
   | HeaderActions
   | DimenActions
   | ModalActions
-  | MainActions
-  | GameActions
   | AuthActions;
 
 export type InferActions<T> =

@@ -1,25 +1,24 @@
 import { ControlButton } from "@modules/Game/components/Controls";
-import { useActions, useAppSelector } from "@store/hooks";
+import { useGameCardsById } from "@modules/Game/hooks";
 import { ShuffleIcon } from "@ui/Icons";
+import { useGameStore } from "@zustand/game/gameStore";
 import { memo, MouseEvent } from "react";
 
 const ShuffleBtn = () => {
-  const {
-    shuffleFlashcards,
-    sortFlashcards,
-    setFlashcardsShuffled,
-    resetFlashcardsProgress,
-  } = useActions();
-
-  const shuffled = useAppSelector(s => s.game.flashcards.shuffled);
+  const setFlashcardsShuffled = useGameStore(s => s.setFlashcardsShuffled);
+  const resetFlashcardsProgress = useGameStore(s => s.resetFlashcardsProgress);
+  const shuffleOrder = useGameStore(s => s.shuffleOrder);
+  const sortOrder = useGameStore(s => s.sortOrder);
+  const cardsById = useGameCardsById();
+  const shuffled = useGameStore(s => s.flashcards.shuffled);
 
   const clickShuffle = (_e: MouseEvent<HTMLButtonElement>) => {
     if (shuffled) {
-      sortFlashcards();
-      setFlashcardsShuffled({ value: false });
+      sortOrder(cardsById);
+      setFlashcardsShuffled(false);
     } else {
-      shuffleFlashcards();
-      setFlashcardsShuffled({ value: true });
+      shuffleOrder(cardsById);
+      setFlashcardsShuffled(true);
     }
 
     resetFlashcardsProgress();

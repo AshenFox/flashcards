@@ -1,7 +1,6 @@
-import { useActions, useAppSelector } from "@store/hooks";
+import { useGameRouteParams } from "@modules/Game/hooks";
 import { WriteIcon } from "@ui/Icons";
-import { useRouter } from "next/router";
-import { memo, useEffect } from "react";
+import { memo } from "react";
 
 import Controls, { ControlButtons } from "../components/Controls";
 import Content from "./components/Content";
@@ -9,43 +8,7 @@ import { EndGameBtn, StartOver } from "./components/ControlButtons";
 import Progress from "./components/Progress";
 
 const Write = () => {
-  const {
-    resetModuleData,
-    resetAllGameFields,
-    getModuleCards,
-    prepareWrite,
-    loadSRCards,
-  } = useActions();
-
-  const cards = useAppSelector(s => s.main.cards);
-  const user = useAppSelector(s => s.auth.user);
-
-  const router = useRouter();
-  const { _id, number } = router.query;
-
-  const isSR = _id === "sr";
-
-  const { length } = Object.values(cards);
-
-  useEffect(() => {
-    return () => {
-      resetAllGameFields();
-      resetModuleData();
-    };
-  }, []);
-
-  useEffect(() => {
-    if (user) {
-      if (isSR && typeof number === "string") loadSRCards(+number);
-      else if (typeof _id === "string") getModuleCards(_id);
-    }
-  }, [user]);
-
-  useEffect(() => {
-    if (length) {
-      prepareWrite();
-    }
-  }, [length]);
+  const { isSR } = useGameRouteParams();
 
   return (
     <>

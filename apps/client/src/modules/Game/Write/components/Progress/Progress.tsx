@@ -1,15 +1,15 @@
 import DefaultProgress, {
   ProgressItem,
 } from "@modules/Game/components/Progress";
-import { useAppSelector } from "@store/hooks";
 import ProgressBar from "@ui/ProgressBar";
-import React, { memo } from "react";
+import { useGameStore } from "@zustand/game/gameStore";
+import { memo } from "react";
 
 const Progress = () => {
-  const remaining = useAppSelector(s => s.game.write.remaining);
-  const answered = useAppSelector(s => s.game.write.answered);
-  const rounds = useAppSelector(s => s.game.write.rounds);
-  const all_cards_num = useAppSelector(s => s.game.write.all_cards_num);
+  const remaining = useGameStore(s => s.write.remaining);
+  const answered = useGameStore(s => s.write.answered);
+  const rounds = useGameStore(s => s.write.rounds);
+  const all_cards_num = useGameStore(s => s.write.all_cards_num);
 
   const correctAnswered = answered.filter(
     item => item.answer === "correct",
@@ -17,7 +17,7 @@ const Progress = () => {
 
   let correctRounds = 0;
   for (const round of rounds) {
-    let correctRound = round.answered.filter(
+    const correctRound = round.answered.filter(
       item => item.answer === "correct",
     ).length;
     correctRounds += correctRound;

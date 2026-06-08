@@ -1,14 +1,13 @@
 import { ControlButton } from "@modules/Game/components/Controls";
-import { useActions, useAppSelector } from "@store/hooks";
+import { useGameOrderLength } from "@modules/Game/hooks";
+import { useGameStore } from "@zustand/game/gameStore";
 import { memo, MouseEvent } from "react";
 
 const EndGameBtn = () => {
-  const { endFlashcardsEarly } = useActions();
-
-  const progress = useAppSelector(s => s.game.flashcards.progress);
-  const ended_early = useAppSelector(s => s.game.flashcards.ended_early);
-  const cards = useAppSelector(s => s.main.cards);
-  const length = Object.values(cards).length;
+  const endFlashcardsEarly = useGameStore(s => s.endFlashcardsEarly);
+  const progress = useGameStore(s => s.flashcards.progress);
+  const ended_early = useGameStore(s => s.flashcards.ended_early);
+  const length = useGameOrderLength();
   const isAtEnd = length === progress || ended_early;
 
   const clickEndGame = (_e: MouseEvent<HTMLButtonElement>) => {

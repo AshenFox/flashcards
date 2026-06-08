@@ -4,9 +4,7 @@ import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
 
 import { authActions, authThunks } from "../reducers/auth/slice";
 import { dimenActions } from "../reducers/dimen/slice";
-import { gameActions, gameThunks } from "../reducers/game/slice";
 import { headerActions } from "../reducers/header/slice";
-import { mainActions, mainThunks } from "../reducers/main/slice";
 import { modalActions, modalThunks } from "../reducers/modal/slice";
 import { AppDispatch, RootState } from "../store";
 
@@ -25,10 +23,6 @@ export const useActions = () => {
       ...modalThunks,
       ...authActions,
       ...authThunks,
-      ...gameActions,
-      ...gameThunks,
-      ...mainActions,
-      ...mainThunks,
     };
 
     return bindActionCreators(allActions, dispatch);

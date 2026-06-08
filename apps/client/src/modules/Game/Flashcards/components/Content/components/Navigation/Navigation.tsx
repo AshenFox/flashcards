@@ -1,5 +1,9 @@
-import { useActions, useAppSelector } from "@store/hooks";
+import {
+  useOrderedGameCards,
+  useSaveSRAnswerMutation,
+} from "@modules/Game/hooks";
 import { TriangleLeftIcon, TriangleRightIcon } from "@ui/Icons";
+import { useGameStore } from "@zustand/game/gameStore";
 import clsx from "clsx";
 import { useRouter } from "next/router";
 import { memo, MouseEvent, useEffect, useRef } from "react";
@@ -7,30 +11,30 @@ import { memo, MouseEvent, useEffect, useRef } from "react";
 import s from "./styles.module.scss";
 
 const Navigation = () => {
-  const {
-    saveFlashcardsAnswer,
-    setFlashcardsSide,
-    setFlashcardsProgress,
-    saveSRAnswer,
-  } = useActions();
+  const saveFlashcardsAnswer = useGameStore(s => s.saveFlashcardsAnswer);
+  const setFlashcardsSide = useGameStore(s => s.setFlashcardsSide);
+  const setFlashcardsProgress = useGameStore(s => s.setFlashcardsProgress);
+  const { mutate: saveSRAnswer } = useSaveSRAnswerMutation();
 
   const router = useRouter();
   const { _id } = router.query;
 
   const isSR = _id === "sr";
 
-  const cards = useAppSelector(s => s.main.cards);
-  const progress = useAppSelector(s => s.game.flashcards.progress);
-  const is_turned = useAppSelector(s => s.game.flashcards.is_turned);
-  const side = useAppSelector(s => s.game.flashcards.side);
+  const orderedCards = useOrderedGameCards();
+  const progress = useGameStore(s => s.flashcards.progress);
+  const is_turned = useGameStore(s => s.flashcards.is_turned);
+  const side = useGameStore(s => s.flashcards.side);
+
+  const activeCardData = orderedCards[progress];
 
   const clickNavItem =
     (value: "next" | "prev", cardAnswer?: "correct" | "incorrect") =>
     (_e: MouseEvent<HTMLDivElement | HTMLButtonElement>) => {
-      if (value === "next" && isSR) {
+      if (value === "next" && isSR && activeCardData) {
         const { _id } = activeCardData;
-        if (cardAnswer === "correct") saveSRAnswer(_id, 1);
-        if (cardAnswer === "incorrect") saveSRAnswer(_id, -1);
+        if (cardAnswer === "correct") saveSRAnswer({ _id, answer: 1 });
+        if (cardAnswer === "incorrect") saveSRAnswer({ _id, answer: -1 });
 
         saveFlashcardsAnswer({
           _id,
@@ -40,15 +44,11 @@ const Navigation = () => {
       setFlashcardsProgress(value);
     };
 
-  const cardsArr = Object.values(cards);
-
-  const activeCardData = cardsArr[progress];
-
-  const _idRef = useRef(activeCardData._id);
+  const _idRef = useRef(activeCardData?._id);
   const sideRef = useRef(side);
   const isTurnedRef = useRef(is_turned);
 
-  _idRef.current = activeCardData._id;
+  _idRef.current = activeCardData?._id;
   sideRef.current = side;
   isTurnedRef.current = is_turned;
 
@@ -56,30 +56,32 @@ const Navigation = () => {
     const keyDown = (e: KeyboardEvent) => {
       if (e.key === "ArrowUp" || e.key === "ArrowDown") {
         if (sideRef.current === "term") {
-          setFlashcardsSide({ value: "definition" });
+          setFlashcardsSide("definition");
           return;
         }
         if (sideRef.current === "definition") {
-          setFlashcardsSide({ value: "term" });
+          setFlashcardsSide("term");
           return;
         }
       }
 
       if (isSR && isTurnedRef.current) {
-        const _id = _idRef.current;
+        const cardId = _idRef.current;
+        if (!cardId) return;
+
         if (e.key === "ArrowRight") {
-          saveSRAnswer(_id, 1);
+          saveSRAnswer({ _id: cardId, answer: 1 });
           saveFlashcardsAnswer({
-            _id,
+            _id: cardId,
             answer: "correct",
           });
           setFlashcardsProgress("next");
         }
 
         if (e.key === "ArrowLeft") {
-          saveSRAnswer(_id, -1);
+          saveSRAnswer({ _id: cardId, answer: -1 });
           saveFlashcardsAnswer({
-            _id,
+            _id: cardId,
             answer: "incorrect",
           });
           setFlashcardsProgress("next");
@@ -100,7 +102,15 @@ const Navigation = () => {
     window.addEventListener("keydown", keyDown);
 
     return () => window.removeEventListener("keydown", keyDown);
-  }, []);
+  }, [
+    isSR,
+    saveFlashcardsAnswer,
+    saveSRAnswer,
+    setFlashcardsProgress,
+    setFlashcardsSide,
+  ]);
+
+  if (!activeCardData) return null;
 
   return (
     <div className={s.navigation}>
@@ -138,7 +148,7 @@ const Navigation = () => {
             className={clsx(
               s.item,
               s.next,
-              progress >= cardsArr.length && s.inactive,
+              progress >= orderedCards.length && s.inactive,
             )}
           >
             <button onClick={clickNavItem("next")}>

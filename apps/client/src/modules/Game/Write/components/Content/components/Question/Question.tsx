@@ -1,11 +1,12 @@
 import Speaker from "@components/Speaker";
 import { SRIndicator, SRInfoTooltip } from "@components/SRIndicator";
-import { GameCard as Card } from "@modules/Game/types";
-import { useActions, useAppSelector } from "@store/hooks";
+import type { CardDto } from "@flashcards/common";
+import { useCheckWriteAnswer } from "@modules/Game/hooks";
 import Img from "@ui/Img";
 import Input from "@ui/Input";
 import TextArea from "@ui/TextArea";
 import TextLabel from "@ui/TextLabel";
+import { useGameStore } from "@zustand/game/gameStore";
 import { useRouter } from "next/router";
 import {
   ChangeEvent,
@@ -20,11 +21,12 @@ import {
 import s from "./styles.module.scss";
 
 type QuestionProps = {
-  data: Card;
+  data: CardDto;
 };
 
 const Question = ({ data }: QuestionProps) => {
-  const { setWriteAnswerField, checkWriteAnswer } = useActions();
+  const setWriteAnswerField = useGameStore(s => s.setWriteAnswerField);
+  const checkWriteAnswer = useCheckWriteAnswer();
 
   const router = useRouter();
 
@@ -33,7 +35,7 @@ const Question = ({ data }: QuestionProps) => {
   const isSR = _id_param === "sr";
 
   const { _id, term, definition, imgurl } = data || {};
-  const answer = useAppSelector(s => s.game.write.answer);
+  const answer = useGameStore(s => s.write.answer);
 
   const formattedDefinition = definition.replaceAll(
     /\( \/(.*?)\/ \)/g,
@@ -42,7 +44,7 @@ const Question = ({ data }: QuestionProps) => {
   );
 
   const changeAnswer = (e: ChangeEvent<HTMLInputElement>) =>
-    setWriteAnswerField({ value: e.target.value });
+    setWriteAnswerField(e.target.value);
 
   const keyDownAnswer = useCallback(
     (e: KeyboardEvent) => {

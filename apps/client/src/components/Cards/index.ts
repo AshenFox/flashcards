@@ -1,6 +1,5 @@
 export { default as Card } from "./Card";
 export { default as EditCard } from "./EditCard";
-export { EndGame, GameCard } from "./GameCard";
 export {
   useControlCard,
   useDeleteCard,

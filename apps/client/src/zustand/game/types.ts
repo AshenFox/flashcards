@@ -1,6 +1,3 @@
-import { CaseReducer } from "@reduxjs/toolkit";
-import { Action } from "@store/types";
-
 export type FlashcardsAnswer = {
   id: string;
   answer: "correct" | "incorrect";
@@ -45,5 +42,3 @@ export type GameState = {
     rounds: WriteRound[];
   };
 };
-
-export type GameCaseReducer<P = undefined> = CaseReducer<GameState, Action<P>>;

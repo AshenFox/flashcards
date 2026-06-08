@@ -1,11 +1,10 @@
 import Results, { ResultItem } from "@modules/Game/components/Results";
-import { useActions, useAppSelector } from "@store/hooks";
+import { useGameStore } from "@zustand/game/gameStore";
 import { memo, useEffect } from "react";
 
 const Finish = () => {
-  const { nextWriteRound } = useActions();
-
-  const rounds = useAppSelector(s => s.game.write.rounds);
+  const nextWriteRound = useGameStore(s => s.nextWriteRound);
+  const rounds = useGameStore(s => s.write.rounds);
 
   useEffect(() => {
     nextWriteRound();
