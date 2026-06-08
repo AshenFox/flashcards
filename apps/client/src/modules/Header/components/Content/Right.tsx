@@ -3,10 +3,12 @@ import {
   getIsGame,
   getIsSettings,
 } from "@helpers/functions/determinePath";
-import { useActions } from "@store/hooks";
+import LogIn from "@modules/Modal/components/Content/LogIn";
+import SignUp from "@modules/Modal/components/Content/SignUp";
 import { NewModuleIcon } from "@ui/Icons";
 import { useAuthStore } from "@zustand/auth";
 import { useLayoutStore } from "@zustand/layout";
+import { useModalStore } from "@zustand/modal";
 import clsx from "clsx";
 import { useRouter } from "next/router";
 import { memo, MouseEvent, useCallback } from "react";
@@ -16,7 +18,7 @@ import Item from "./components/Item";
 import s from "./styles.module.scss";
 
 const Right = () => {
-  const { changeModal, toggleModal } = useActions();
+  const open = useModalStore(s => s.open);
   const logOut = useAuthStore(s => s.logOut);
 
   const router = useRouter();
@@ -36,12 +38,18 @@ const Right = () => {
     [setDropdownActive],
   );
 
-  const openModal = useCallback(
-    (value: "log_in" | "sign_up") => (_e: MouseEvent<HTMLButtonElement>) => {
-      changeModal({ active_modal: value });
-      toggleModal();
+  const openLogInModal = useCallback(
+    (_e: MouseEvent<HTMLButtonElement>) => {
+      open({ title: "Log in", content: <LogIn /> });
     },
-    [changeModal, toggleModal],
+    [open],
+  );
+
+  const openSignUpModal = useCallback(
+    (_e: MouseEvent<HTMLButtonElement>) => {
+      open({ title: "Sign up", content: <SignUp /> });
+    },
+    [open],
   );
 
   return (
@@ -76,9 +84,9 @@ const Right = () => {
         </>
       ) : (
         <>
-          <Item onClick={openModal("log_in")}>Log in</Item>
+          <Item onClick={openLogInModal}>Log in</Item>
 
-          <Item onClick={openModal("sign_up")} padded>
+          <Item onClick={openSignUpModal} padded>
             Sign up
           </Item>
         </>

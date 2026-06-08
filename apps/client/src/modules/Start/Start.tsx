@@ -1,15 +1,15 @@
-import { useActions } from "@store/hooks";
+import LogIn from "@modules/Modal/components/Content/LogIn";
 import { Button } from "@ui/InteractiveElement";
+import { useModalStore } from "@zustand/modal";
 import { memo, MouseEvent } from "react";
 
 import s from "./styles.module.scss";
 
 const Start = () => {
-  const { changeModal, toggleModal } = useActions();
+  const open = useModalStore(state => state.open);
 
-  const click = (value: "log_in") => (_e: MouseEvent<HTMLButtonElement>) => {
-    changeModal({ active_modal: value });
-    toggleModal();
+  const click = (_e: MouseEvent<HTMLButtonElement>) => {
+    open({ title: "Log in", content: <LogIn /> });
   };
 
   return (
@@ -25,7 +25,7 @@ const Start = () => {
             </p>
           </div>
 
-          <Button onClick={click("log_in")} className={s.get_started}>
+          <Button onClick={click} className={s.get_started}>
             Get started
           </Button>
         </div>

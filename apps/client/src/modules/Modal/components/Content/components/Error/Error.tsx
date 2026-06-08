@@ -1,4 +1,4 @@
-import { ErrorObj } from "@store/reducers/modal/types";
+import type { ErrorObj } from "@zustand/auth";
 import { memo } from "react";
 
 import s from "./styles.module.scss";

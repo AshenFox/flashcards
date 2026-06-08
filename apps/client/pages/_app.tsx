@@ -12,10 +12,9 @@ import AuthSpinner from "@modules/AuthSpinner";
 import AuthWrapper from "@modules/AuthWrapper";
 import Dropdown from "@modules/Dropdown";
 import Header from "@modules/Header";
-import store from "@store/store";
+import ModalRenderer from "@modules/Modal";
 import { QueryClientProvider } from "@tanstack/react-query";
 import type { AppContext, AppProps } from "next/app";
-import { Provider } from "react-redux";
 
 type MyAppProps = AppProps & {
   initialTheme: "light" | "dark" | null;
@@ -25,18 +24,17 @@ const MyApp = ({ Component, pageProps, initialTheme }: MyAppProps) => (
   <QueryClientProvider client={queryClient}>
     <Theme initialTheme={initialTheme}>
       <Head initialTheme={initialTheme} />
-      <Provider store={store}>
-        <AuthWrapper>
-          <AppWrapper>
-            <Header />
-            <Component {...pageProps} />
-            <Dropdown />
-          </AppWrapper>
-        </AuthWrapper>
-        <AuthSpinner />
-        <Voice />
-        <TabUpdateController />
-      </Provider>
+      <AuthWrapper>
+        <AppWrapper>
+          <Header />
+          <Component {...pageProps} />
+          <Dropdown />
+        </AppWrapper>
+      </AuthWrapper>
+      <AuthSpinner />
+      <ModalRenderer />
+      <Voice />
+      <TabUpdateController />
       <PasteControl />
     </Theme>
   </QueryClientProvider>

@@ -1,10 +1,11 @@
+import Delete from "@modules/Modal/components/Content/Delete";
 import { useModuleCardsQuery, useModuleQuery } from "@modules/Module/hooks";
-import { useActions } from "@store/hooks";
 import ConfirmPopup from "@ui/ConfirmPopup";
 import DateStr from "@ui/DateStr";
 import { DeleteIcon, EditIcon } from "@ui/Icons";
 import Skeleton from "@ui/Skeleton";
 import Tooltip from "@ui/Tooltip";
+import { useModalStore } from "@zustand/modal";
 import Link from "next/link";
 import { memo, MouseEvent, useCallback, useState } from "react";
 
@@ -20,14 +21,13 @@ const Info = () => {
   const currentModule = moduleData?.module;
   const cards = cardsData?.entries ?? [];
 
-  const { changeModal, toggleModal } = useActions();
+  const open = useModalStore(state => state.open);
   const dropAllCardsSR = useDropAllCardsSR();
 
   const [question, setQuestion] = useState(false);
 
-  const openModal = (value: "delete") => (_e: MouseEvent<HTMLDivElement>) => {
-    changeModal({ active_modal: value });
-    toggleModal();
+  const openDeleteModal = (_e: MouseEvent<HTMLDivElement>) => {
+    open({ title: "Delete this set?", content: <Delete /> });
   };
 
   const setActive = useCallback((value: boolean) => {
@@ -84,7 +84,7 @@ const Info = () => {
 
         <div
           className={s.nav_item}
-          onClick={openModal("delete")}
+          onClick={openDeleteModal}
           data-tooltip-id="delete-module"
         >
           <DeleteIcon width="25" height="25" />

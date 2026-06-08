@@ -1,49 +1,69 @@
 import Eye from "@modules/Modal/Eye";
-import { useActions, useAppSelector } from "@store/hooks";
-import { ModalInputFields } from "@store/reducers/modal/types";
+import { useMutation } from "@tanstack/react-query";
 import Input from "@ui/Input";
 import { Button } from "@ui/InteractiveElement";
 import TextLabel from "@ui/TextLabel";
+import { type LogInErrors, useAuthStore } from "@zustand/auth";
+import { useModalStore } from "@zustand/modal";
 import { ChangeEvent, KeyboardEvent, memo, MouseEvent, useState } from "react";
 
 import Error from "./components/Error/Error";
+import SignUp from "./SignUp";
 import s from "./styles.module.scss";
 
+const defaultLogInErrors: LogInErrors = {
+  ok: true,
+  username: { ok: true, errors: [] },
+  password: { ok: true, errors: [] },
+};
+
 const LogIn = () => {
-  const { changeModal, controlField, enter } = useActions();
+  const replace = useModalStore(state => state.replace);
+  const close = useModalStore(state => state.close);
+  const logIn = useAuthStore(state => state.logIn);
 
-  const username = useAppSelector(s => s.modal.log_in.username);
-  const password = useAppSelector(s => s.modal.log_in.password);
-  const userErr = useAppSelector(s => s.modal.log_in_errors.username);
-  const passErr = useAppSelector(s => s.modal.log_in_errors.password);
-  const loading = useAppSelector(s => s.modal.loading);
-
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [errors, setErrors] = useState(defaultLogInErrors);
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
+
+  const loginMutation = useMutation({
+    mutationFn: () => logIn({ username, password }),
+    onSuccess: result => {
+      setErrors(result);
+      if (result.ok) close();
+    },
+    onError: err => {
+      console.error("Login failed:", err);
+    },
+  });
+
   const onPasswordVisibleButton = (e: MouseEvent<SVGElement>) => {
     e.preventDefault();
     setIsPasswordVisible(v => !v);
   };
 
-  const onClickChangeModal =
-    (value: "sign_up") => (_e: MouseEvent<HTMLButtonElement>) => {
-      changeModal({ active_modal: value });
-    };
+  const onClickChangeModal = (_e: MouseEvent<HTMLButtonElement>) => {
+    replace({ title: "Sign up", content: <SignUp /> });
+  };
 
-  const onCLickLoadingButton =
-    (value: "log_in") => (_e: MouseEvent<HTMLButtonElement>) => {
-      enter(value);
-    };
+  const onClickSubmit = (_e: MouseEvent<HTMLButtonElement>) => {
+    loginMutation.mutate();
+  };
 
   const onChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value;
-    const name = e.target.name as ModalInputFields;
+    const { name, value } = e.target;
 
-    controlField({ field: "log_in", name, value });
+    if (name === "username") setUsername(value);
+    if (name === "password") setPassword(value);
   };
 
   const onKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === "Enter") enter("log_in");
+    if (e.key === "Enter") loginMutation.mutate();
   };
+
+  const userErr = errors.username;
+  const passErr = errors.password;
 
   return (
     <>
@@ -83,9 +103,9 @@ const LogIn = () => {
       </TextLabel>
 
       <Button
-        active={true}
-        loading={loading}
-        onClick={onCLickLoadingButton("log_in")}
+        active={!loginMutation.isSuccess}
+        loading={loginMutation.isPending}
+        onClick={onClickSubmit}
         className={s.submit_button}
       >
         Log in
@@ -94,7 +114,7 @@ const LogIn = () => {
       <div className={s.options}>
         <p>
           Don&apos;t have an account?{" "}
-          <button onClick={onClickChangeModal("sign_up")}>Sign up!</button>
+          <button onClick={onClickChangeModal}>Sign up!</button>
         </p>
       </div>
     </>

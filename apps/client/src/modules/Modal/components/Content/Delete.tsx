@@ -1,13 +1,13 @@
 import { useDeleteModuleMutation, useModuleQuery } from "@modules/Module/hooks";
-import { useActions } from "@store/hooks";
 import { Button } from "@ui/InteractiveElement";
+import { useModalStore } from "@zustand/modal";
 import { clsx } from "clsx";
 import { memo, MouseEvent } from "react";
 
 import s from "./styles.module.scss";
 
 const Delete = () => {
-  const { toggleModal } = useActions();
+  const close = useModalStore(state => state.close);
   const { data } = useModuleQuery();
   const deleteMutation = useDeleteModuleMutation();
 
@@ -16,7 +16,7 @@ const Delete = () => {
   const clickDelete = (_e: MouseEvent<HTMLButtonElement>) =>
     deleteMutation.mutate();
 
-  const close = (_e: MouseEvent<HTMLButtonElement>) => toggleModal();
+  const onClose = (_e: MouseEvent<HTMLButtonElement>) => close();
 
   return (
     <>
@@ -37,7 +37,7 @@ const Delete = () => {
 
       <div className={s.choice}>
         <div className={clsx(s.choice_item, s.cancel)}>
-          <Button onClick={close}>Cancel</Button>
+          <Button onClick={onClose}>Cancel</Button>
         </div>
 
         <div className={s.choice_item}>

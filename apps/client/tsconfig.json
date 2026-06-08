@@ -24,7 +24,6 @@
       "@pages/*": ["pages/*"],
       "@styles/*": ["src/styles/*"],
       "@helpers/*": ["src/helpers/*"],
-      "@store/*": ["src/store/*"],
       "@api/*": ["src/api/*"],
       "@api": ["src/api"],
       "@zustand/*": ["src/zustand/*"],

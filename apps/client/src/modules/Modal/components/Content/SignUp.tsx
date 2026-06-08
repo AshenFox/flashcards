@@ -1,113 +1,165 @@
+import { authCheckSignUp } from "@api/methods";
 import Eye from "@modules/Modal/Eye";
-import { useActions, useAppSelector } from "@store/hooks";
-import { ModalInputFields } from "@store/reducers/modal/types";
+import { keepPreviousData, useMutation, useQuery } from "@tanstack/react-query";
 import Input from "@ui/Input";
 import { Button } from "@ui/InteractiveElement";
 import TextLabel from "@ui/TextLabel";
+import { type SignUpErrors, useAuthStore } from "@zustand/auth";
+import { useModalStore } from "@zustand/modal";
 import clsx from "clsx";
 import { ChangeEvent, memo, MouseEvent, useRef, useState } from "react";
 
 import Error from "./components/Error/Error";
+import LogIn from "./LogIn";
 import s from "./styles.module.scss";
 
+const defaultSignUpErrors: SignUpErrors = {
+  ok: false,
+  username: { ok: true, errors: [] },
+  password: { ok: true, errors: [] },
+  email: { ok: true, errors: [] },
+};
+
 const SignUp = () => {
-  const { changeModal, controlField, enter, checkField } = useActions();
+  const replace = useModalStore(state => state.replace);
+  const close = useModalStore(state => state.close);
+  const signUp = useAuthStore(state => state.signUp);
 
-  const username = useAppSelector(s => s.modal.sign_up.username);
-  const password = useAppSelector(s => s.modal.sign_up.password);
-  const email = useAppSelector(s => s.modal.sign_up.email);
-  const userErr = useAppSelector(s => s.modal.sign_up_errors.username);
-  const passErr = useAppSelector(s => s.modal.sign_up_errors.password);
-  const emailErr = useAppSelector(s => s.modal.sign_up_errors.email);
-  const ok = useAppSelector(s => s.modal.sign_up_errors.ok);
-  const loading = useAppSelector(s => s.modal.loading);
-
+  const [liveValues, setLiveValues] = useState({
+    username: "",
+    email: "",
+    password: "",
+  });
+  const [checkValues, setCheckValues] = useState({
+    username: "",
+    email: "",
+    password: "",
+  });
+  const [submitErrors, setSubmitErrors] = useState<SignUpErrors | null>(null);
+  const [touched, setTouched] = useState<Set<string>>(new Set());
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
+
+  const debounceTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  const hasInput = !!(
+    liveValues.username ||
+    liveValues.email ||
+    liveValues.password
+  );
+
+  const validationQuery = useQuery({
+    queryKey: ["signUpCheck", checkValues],
+    queryFn: () => authCheckSignUp<SignUpErrors>(checkValues),
+    enabled: hasInput,
+    placeholderData: keepPreviousData,
+  });
+
+  const signUpMutation = useMutation({
+    mutationFn: () => signUp(liveValues),
+    onSuccess: result => {
+      if (result.ok) {
+        close();
+      } else {
+        setSubmitErrors(result);
+      }
+    },
+    onError: err => {
+      console.error("Sign up failed:", err);
+    },
+  });
+
+  const isCheckingField = validationQuery.isFetching;
+  const validationErrors =
+    submitErrors ?? validationQuery.data ?? defaultSignUpErrors;
 
   const onPasswordVisibleButton = (e: MouseEvent<SVGElement>) => {
     e.preventDefault();
     setIsPasswordVisible(v => !v);
   };
 
-  const onClickChangeModal = (value: "log_in") => () => {
-    changeModal({ active_modal: value });
+  const onClickChangeModal = () => {
+    replace({ title: "Log in", content: <LogIn /> });
   };
 
-  const onCLickLoadingButton = (value: "sign_up") => () => {
-    enter(value);
+  const onClickSubmit = () => {
+    setTouched(new Set(["username", "email", "password"]));
+    signUpMutation.mutate();
   };
 
   const onChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const target = e.target;
-    const value = target.value;
-    const name = target.name as ModalInputFields;
+    const { name, value } = e.target;
+    const next = { ...liveValues, [name]: value };
 
-    controlField({ field: "sign_up", name, value });
+    setLiveValues(next);
+    setSubmitErrors(null);
+    setTouched(prev => new Set(prev).add(name));
 
-    // Timer control
-    let timer = timers.current[name];
-
-    if (timer) clearTimeout(timer);
-    timers.current[name] = setTimeout(() => {
-      checkField(name);
-      timers.current[name] = null;
+    if (debounceTimer.current) clearTimeout(debounceTimer.current);
+    debounceTimer.current = setTimeout(() => {
+      setCheckValues(next);
     }, 500);
   };
 
-  const timers = useRef<{
-    username: ReturnType<typeof setTimeout>;
-    email: ReturnType<typeof setTimeout>;
-    password: ReturnType<typeof setTimeout>;
-  }>({
-    username: null,
-    email: null,
-    password: null,
-  });
+  const userErr = validationErrors.username;
+  const passErr = validationErrors.password;
+  const emailErr = validationErrors.email;
 
   return (
     <>
-      <Error errObj={userErr} />
+      {touched.has("username") && <Error errObj={userErr} />}
       <TextLabel htmlFor="username">USERNAME:</TextLabel>
       <Input
         name="username"
         type="text"
         className={clsx(
           s.signup_input,
-          !!username && userErr?.ok && !timers.current.username && s.success,
+          touched.has("username") &&
+            !!liveValues.username &&
+            userErr?.ok &&
+            !isCheckingField &&
+            s.success,
         )}
         id="username"
         placeholder="Enter a user name"
-        value={username}
+        value={liveValues.username}
         onChange={onChange}
       />
 
-      <Error errObj={emailErr} />
+      {touched.has("email") && <Error errObj={emailErr} />}
       <TextLabel htmlFor="email">EMAIL:</TextLabel>
       <Input
         name="email"
         type="email"
         className={clsx(
           s.signup_input,
-          !!email && emailErr.ok && !timers.current.email && s.success,
+          touched.has("email") &&
+            !!liveValues.email &&
+            emailErr.ok &&
+            !isCheckingField &&
+            s.success,
         )}
         id="email"
         placeholder="Enter an email"
-        value={email}
+        value={liveValues.email}
         onChange={onChange}
       />
 
-      <Error errObj={passErr} />
+      {touched.has("password") && <Error errObj={passErr} />}
       <TextLabel htmlFor="password">PASSWORD:</TextLabel>
       <Input
         name="password"
         type={isPasswordVisible ? "text" : "password"}
         className={clsx(
           s.signup_input,
-          !!password && passErr.ok && !timers.current.password && s.success,
+          touched.has("password") &&
+            !!liveValues.password &&
+            passErr.ok &&
+            !isCheckingField &&
+            s.success,
         )}
         id="password"
         placeholder="Enter a password"
-        value={password}
+        value={liveValues.password}
         onChange={onChange}
         after={
           <Eye
@@ -118,9 +170,11 @@ const SignUp = () => {
       />
 
       <Button
-        active={ok}
-        loading={loading}
-        onClick={onCLickLoadingButton("sign_up")}
+        active={
+          validationErrors.ok && !isCheckingField && !signUpMutation.isSuccess
+        }
+        loading={signUpMutation.isPending || isCheckingField}
+        onClick={onClickSubmit}
         className={s.submit_button}
       >
         Sign up
@@ -129,7 +183,7 @@ const SignUp = () => {
       <div className={s.options}>
         <p>
           Already have an account?{" "}
-          <button onClick={onClickChangeModal("log_in")}>Log in!</button>
+          <button onClick={onClickChangeModal}>Log in!</button>
         </p>
       </div>
     </>
