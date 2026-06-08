@@ -13,9 +13,9 @@ import type {
   GetMainModuleResponseDto,
   ModuleDto,
 } from "@flashcards/common";
-import { useAppSelector } from "@store/store";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { saveLastUpdate } from "@utils/saveLastUpdate";
+import { useAuthStore } from "@zustand/auth";
 import { createStoreHook, withProduce } from "@zustand/helpers";
 import { produce } from "immer";
 import { useRouter } from "next/router";
@@ -45,7 +45,7 @@ export const useEditRouteKey = (): string | undefined => {
 
 export const useEditQuery = () => {
   const routeKey = useEditRouteKey();
-  const user = useAppSelector(s => s.auth.user);
+  const user = useAuthStore(s => s.user);
 
   return useQuery({
     queryKey: getEditQueryKey(routeKey),
@@ -72,7 +72,7 @@ export const useEditResolvedModuleId = (): string | undefined => {
 };
 
 export const useEditCardsQuery = () => {
-  const user = useAppSelector(s => s.auth.user);
+  const user = useAuthStore(s => s.user);
   const resolvedModuleId = useEditResolvedModuleId();
 
   return useQuery({

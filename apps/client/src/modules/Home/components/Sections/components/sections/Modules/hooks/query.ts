@@ -1,7 +1,7 @@
 import { mainGetModules } from "@api/methods/main/mainGetModules";
 import type { GetMainModulesResponseDto, ModuleDto } from "@flashcards/common";
-import { useAppSelector } from "@store/store";
 import { type InfiniteData, useInfiniteQuery } from "@tanstack/react-query";
+import { useAuthStore } from "@zustand/auth";
 import type { ModulesFilters } from "@zustand/filters";
 import { useEffect } from "react";
 
@@ -23,7 +23,7 @@ export const getQueryKey = (filters: ModulesFilters) =>
 export type HomeModulesQueryResult = ReturnType<typeof useHomeModulesQuery>;
 
 export const useHomeModulesQuery = () => {
-  const user = useAppSelector(s => s.auth.user);
+  const user = useAuthStore(s => s.user);
   const filters = useHomeModulesFiltersStore(state => state.filters);
   const setPagination = useHomeModulesFiltersStore(
     state => state.setPagination,

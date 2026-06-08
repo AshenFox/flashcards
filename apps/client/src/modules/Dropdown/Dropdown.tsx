@@ -4,9 +4,9 @@ import {
   getIsSettings,
   getIsWrite,
 } from "@helpers/functions/determinePath";
-import { useActions } from "@store/hooks";
 import { NewModuleIcon } from "@ui/Icons";
 import Portal from "@ui/Portal";
+import { useAuthStore } from "@zustand/auth";
 import { useLayoutStore } from "@zustand/layout";
 import clsx from "clsx";
 import { useRouter } from "next/router";
@@ -24,7 +24,7 @@ import Item from "./components/Item";
 import s from "./styles.module.scss";
 
 const Dropdown = () => {
-  const { logOut } = useActions();
+  const logOut = useAuthStore(s => s.logOut);
 
   const dropdown_active = useLayoutStore(s => s.dropdown_active);
   const header_height = useLayoutStore(s => s.header_height);

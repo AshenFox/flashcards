@@ -8,9 +8,9 @@ import {
   cardsUISlice,
 } from "@components/Cards";
 import type { CardDto, GetMainModuleCardsResponseDto } from "@flashcards/common";
-import { useAppSelector } from "@store/store";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { saveLastUpdate } from "@utils/saveLastUpdate";
+import { useAuthStore } from "@zustand/auth";
 import { useGameStore } from "@zustand/game/gameStore";
 import { createStoreHook, withProduce } from "@zustand/helpers";
 import { useRouter } from "next/router";
@@ -66,7 +66,7 @@ const useGameActiveQueryKey = () => {
 
 export const useGameModuleCardsQuery = () => {
   const { moduleId } = useGameRouteParams();
-  const user = useAppSelector(s => s.auth.user);
+  const user = useAuthStore(s => s.user);
 
   return useQuery({
     queryKey: getGameModuleCardsQueryKey(moduleId),
@@ -77,7 +77,7 @@ export const useGameModuleCardsQuery = () => {
 
 export const useGameSRCardsQuery = () => {
   const { srNumber, isSR } = useGameRouteParams();
-  const user = useAppSelector(s => s.auth.user);
+  const user = useAuthStore(s => s.user);
 
   return useQuery({
     queryKey: getGameSRCardsQueryKey(srNumber),

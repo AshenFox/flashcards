@@ -1,7 +1,7 @@
 import Container from "@components/Container";
 import ContentWrapper from "@components/ContentWrapper";
 import { getIsGame } from "@helpers/functions/determinePath";
-import { useAppSelector } from "@store/hooks";
+import { useAuthSession, useAuthStore } from "@zustand/auth";
 import { useLayoutStore } from "@zustand/layout";
 import clsx from "clsx";
 import { useRouter } from "next/router";
@@ -15,8 +15,8 @@ const Header = () => {
 
   const setHeaderDimensions = useLayoutStore(s => s.setHeaderDimensions);
 
-  const user = useAppSelector(s => s.auth.user);
-  const loading = useAppSelector(s => s.auth.loading);
+  const user = useAuthStore(s => s.user);
+  const { isPending } = useAuthSession();
 
   const isGame = getIsGame(router.pathname);
 
@@ -64,7 +64,7 @@ const Header = () => {
       height: rect?.height ?? 0,
       width: rect?.width ?? 0,
     });
-  }, [user, loading, setHeaderDimensions]);
+  }, [user, isPending, setHeaderDimensions]);
 
   const headerEl = useRef<HTMLElement>(null);
 

@@ -1,6 +1,6 @@
 import { getIsGame } from "@helpers/functions/determinePath";
-import { useAppSelector } from "@store/store";
 import LogoIcon from "@ui/Icons/components/LogoIcon";
+import { useAuthStore } from "@zustand/auth";
 import clsx from "clsx";
 import Link from "next/link";
 import { useRouter } from "next/router";
@@ -13,7 +13,7 @@ const Logo = () => {
 
   const isGame = getIsGame(router.pathname);
 
-  const user = useAppSelector(s => s.auth.user);
+  const user = useAuthStore(s => s.user);
 
   return (
     <Link

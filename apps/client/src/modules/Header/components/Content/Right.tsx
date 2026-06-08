@@ -4,8 +4,8 @@ import {
   getIsSettings,
 } from "@helpers/functions/determinePath";
 import { useActions } from "@store/hooks";
-import { useAppSelector } from "@store/store";
 import { NewModuleIcon } from "@ui/Icons";
+import { useAuthStore } from "@zustand/auth";
 import { useLayoutStore } from "@zustand/layout";
 import clsx from "clsx";
 import { useRouter } from "next/router";
@@ -16,11 +16,12 @@ import Item from "./components/Item";
 import s from "./styles.module.scss";
 
 const Right = () => {
-  const { changeModal, toggleModal, logOut } = useActions();
+  const { changeModal, toggleModal } = useActions();
+  const logOut = useAuthStore(s => s.logOut);
 
   const router = useRouter();
 
-  const user = useAppSelector(s => s.auth.user);
+  const user = useAuthStore(s => s.user);
   const dropdown_active = useLayoutStore(s => s.dropdown_active);
   const setDropdownActive = useLayoutStore(s => s.setDropdownActive);
 

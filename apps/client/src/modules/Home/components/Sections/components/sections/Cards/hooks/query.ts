@@ -1,7 +1,7 @@
 import { mainGetCards } from "@api/methods/main/mainGetCards";
 import type { GetMainCardsResponseDto } from "@flashcards/common";
-import { useAppSelector } from "@store/store";
 import { type InfiniteData, useInfiniteQuery } from "@tanstack/react-query";
+import { useAuthStore } from "@zustand/auth";
 import type { CardsFilters } from "@zustand/filters";
 import { useEffect } from "react";
 
@@ -21,7 +21,7 @@ export const getQueryKey = (filters: CardsFilters) =>
 export type HomeCardsQueryResult = ReturnType<typeof useHomeCardsQuery>;
 
 export const useHomeCardsQuery = () => {
-  const user = useAppSelector(s => s.auth.user);
+  const user = useAuthStore(s => s.user);
   const filters = useHomeCardsFiltersStore(state => state.filters);
   const setPagination = useHomeCardsFiltersStore(state => state.setPagination);
 

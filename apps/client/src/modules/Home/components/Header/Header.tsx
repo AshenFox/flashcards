@@ -1,5 +1,5 @@
-import { useAppSelector } from "@store/store";
 import Skeleton from "@ui/Skeleton";
+import { useAuthStore } from "@zustand/auth";
 import React, { memo } from "react";
 
 import ItemsNumber from "./components/ItemsNumber";
@@ -7,7 +7,7 @@ import Navigation from "./components/Navigation";
 import s from "./styles.module.scss";
 
 const Header = () => {
-  const username = useAppSelector(s => s.auth.user?.username);
+  const username = useAuthStore(s => s.user?.username);
 
   return (
     <div className={s.header}>

@@ -2,7 +2,6 @@ import { bindActionCreators } from "@reduxjs/toolkit";
 import { useMemo } from "react";
 import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
 
-import { authActions, authThunks } from "../reducers/auth/slice";
 import { modalActions, modalThunks } from "../reducers/modal/slice";
 import { AppDispatch, RootState } from "../store";
 
@@ -17,8 +16,6 @@ export const useActions = () => {
     const allActions = {
       ...modalActions,
       ...modalThunks,
-      ...authActions,
-      ...authThunks,
     };
 
     return bindActionCreators(allActions, dispatch);

@@ -7,9 +7,9 @@ import type {
   CardDto,
   GetMainModuleCardsResponseDto,
 } from "@flashcards/common";
-import { useAppSelector } from "@store/store";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { saveLastUpdate } from "@utils/saveLastUpdate";
+import { useAuthStore } from "@zustand/auth";
 import type { ModuleCardsFilters } from "@zustand/filters";
 import { createModuleCardsFilterSlice } from "@zustand/filters";
 import { createStoreHook, withProduce } from "@zustand/helpers";
@@ -43,7 +43,7 @@ export const useModuleQuery = () => {
 
   const moduleId = typeof _id === "string" ? _id : undefined;
 
-  const user = useAppSelector(s => s.auth.user);
+  const user = useAuthStore(s => s.user);
 
   return useQuery({
     queryKey: getModuleQueryKey(moduleId),
@@ -58,7 +58,7 @@ export const useModuleCardsQuery = () => {
 
   const moduleId = typeof _id === "string" ? _id : undefined;
 
-  const user = useAppSelector(s => s.auth.user);
+  const user = useAuthStore(s => s.user);
   const filters = useModuleFiltersStore(state => state.filters);
 
   return useQuery({
