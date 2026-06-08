@@ -2,6 +2,7 @@ import { useModalStore } from "@zustand/modal";
 import { memo, useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 
+import ModalBackdrop from "./ModalBackdrop";
 import ModalShell from "./ModalShell";
 
 const ModalRenderer = () => {
@@ -19,6 +20,7 @@ const ModalRenderer = () => {
 
   return createPortal(
     <>
+      <ModalBackdrop />
       {modals.map((entry, index) => (
         <ModalShell key={entry.id} entry={entry} stackIndex={index} />
       ))}

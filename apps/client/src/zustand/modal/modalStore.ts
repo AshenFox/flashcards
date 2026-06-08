@@ -24,13 +24,16 @@ export const modalSlice: Slice<ModalStore> = setAction => {
     replace: config =>
       set(state => {
         const top = state.modals[state.modals.length - 1];
+
         if (top && !top.isClosing) {
-          top.title = config.title;
-          top.content = config.content;
-        } else {
-          const id = crypto.randomUUID();
-          state.modals.push({ ...config, id, isClosing: false });
+          top.isClosing = true;
         }
+
+        state.modals.push({
+          ...config,
+          id: crypto.randomUUID(),
+          isClosing: false,
+        });
       }, "replace"),
     close: id =>
       set(state => {

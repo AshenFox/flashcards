@@ -5,88 +5,68 @@ import { memo, MouseEvent, useEffect, useRef } from "react";
 
 import contentStyles from "./components/Content/styles.module.scss";
 import s from "./styles.module.scss";
+import { transitionBackdrop, transitionDialog } from "./transitions";
 
 type ModalShellProps = {
   entry: ModalEntry;
   stackIndex: number;
 };
 
-const transitionModal = 125;
-const transitionDialog = 225;
-
 const ModalShell = ({ entry, stackIndex }: ModalShellProps) => {
   const close = useModalStore(state => state.close);
   const _remove = useModalStore(state => state._remove);
 
-  const modalEl = useRef<HTMLDivElement>(null);
+  const layerEl = useRef<HTMLDivElement>(null);
   const dialogEl = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const modal = modalEl.current;
+    const layer = layerEl.current;
     const dialog = dialogEl.current;
-    if (!modal || !dialog || entry.isClosing) return;
+    if (!layer || !dialog || entry.isClosing) return;
 
-    const styleModal = modal.style;
+    const styleLayer = layer.style;
     const styleDialog = dialog.style;
 
-    styleModal.display = "flex";
-
-    const openModalTimeout = setTimeout(() => {
-      styleModal.opacity = "1";
-    }, 0);
+    styleLayer.display = "flex";
 
     const openDialogTimeout = setTimeout(() => {
       styleDialog.opacity = "1";
       styleDialog.transform = "translateY(0vh)";
-    }, transitionModal);
+    }, transitionBackdrop);
 
     return () => {
-      clearTimeout(openModalTimeout);
       clearTimeout(openDialogTimeout);
     };
   }, [entry.isClosing]);
 
   useEffect(() => {
-    const modal = modalEl.current;
+    const layer = layerEl.current;
     const dialog = dialogEl.current;
-    if (!modal || !dialog || !entry.isClosing) return;
+    if (!layer || !dialog || !entry.isClosing) return;
 
-    const styleModal = modal.style;
+    const styleLayer = layer.style;
     const styleDialog = dialog.style;
 
     styleDialog.opacity = "";
     styleDialog.transform = "";
 
-    const fadeTimeout = setTimeout(() => {
-      styleModal.opacity = "0";
+    const removeTimeout = setTimeout(() => {
+      styleLayer.display = "";
+      _remove(entry.id);
     }, transitionDialog);
 
-    const removeTimeout = setTimeout(() => {
-      styleModal.display = "";
-      _remove(entry.id);
-    }, transitionDialog + transitionModal);
-
     return () => {
-      clearTimeout(fadeTimeout);
       clearTimeout(removeTimeout);
     };
   }, [entry.isClosing, entry.id, _remove]);
-
-  const onMouseDown = (e: MouseEvent<HTMLDivElement>) => {
-    if (e.target === modalEl.current) close(entry.id);
-  };
 
   const closeClick = (_e: MouseEvent<HTMLDivElement>) => close(entry.id);
 
   return (
     <div
-      className={s.modal}
-      onMouseDown={onMouseDown}
-      style={{
-        transitionDuration: `${transitionModal * 0.001}s`,
-        zIndex: 1000 + stackIndex,
-      }}
-      ref={modalEl}
+      className={s.dialogLayer}
+      ref={layerEl}
+      style={{ zIndex: 1001 + stackIndex }}
     >
       <div
         className={s.dialog}
