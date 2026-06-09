@@ -1,26 +1,19 @@
-import type { ErrorObj } from "@zustand/auth";
 import { memo } from "react";
 
 import s from "./styles.module.scss";
 
 type ErrorProps = {
-  errObj: ErrorObj;
-  single?: boolean;
+  message?: string;
 };
 
-const Error = ({ errObj, single }: ErrorProps) => {
-  const { ok, errors } = errObj;
+const Error = ({ message }: ErrorProps) => {
+  if (!message) return null;
+
   return (
     <div>
-      {!ok && (
-        <ul className={s.errors}>
-          {single ? (
-            <li>{errors[0]}</li>
-          ) : (
-            errors.map((error, i) => <li key={i}>{error}</li>)
-          )}
-        </ul>
-      )}
+      <ul className={s.errors}>
+        <li>{message}</li>
+      </ul>
     </div>
   );
 };

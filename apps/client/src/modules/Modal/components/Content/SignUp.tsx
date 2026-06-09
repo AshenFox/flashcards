@@ -1,76 +1,56 @@
-import { authCheckSignUp } from "@api/methods";
+import { type SignUpFormData, signUpSchema } from "@flashcards/common";
+import { zodResolver } from "@hookform/resolvers/zod";
 import Eye from "@modules/Modal/Eye";
-import { keepPreviousData, useMutation, useQuery } from "@tanstack/react-query";
 import Input from "@ui/Input";
 import { Button } from "@ui/InteractiveElement";
 import TextLabel from "@ui/TextLabel";
-import { type SignUpErrors, useAuthStore } from "@zustand/auth";
+import { useAuthStore } from "@zustand/auth";
 import { useModalStore } from "@zustand/modal";
 import clsx from "clsx";
-import { ChangeEvent, memo, MouseEvent, useRef, useState } from "react";
+import { memo, MouseEvent, useState } from "react";
+import { type Resolver, useForm } from "react-hook-form";
 
+import { applyFieldErrors } from "./applyFieldErrors";
 import Error from "./components/Error/Error";
 import LogIn from "./LogIn";
 import s from "./styles.module.scss";
-
-const defaultSignUpErrors: SignUpErrors = {
-  ok: false,
-  username: { ok: true, errors: [] },
-  password: { ok: true, errors: [] },
-  email: { ok: true, errors: [] },
-};
 
 const SignUp = () => {
   const replace = useModalStore(state => state.replace);
   const close = useModalStore(state => state.close);
   const signUp = useAuthStore(state => state.signUp);
 
-  const [liveValues, setLiveValues] = useState({
-    username: "",
-    email: "",
-    password: "",
-  });
-  const [checkValues, setCheckValues] = useState({
-    username: "",
-    email: "",
-    password: "",
-  });
-  const [submitErrors, setSubmitErrors] = useState<SignUpErrors | null>(null);
-  const [touched, setTouched] = useState<Set<string>>(new Set());
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
 
-  const debounceTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
-
-  const hasInput = !!(
-    liveValues.username ||
-    liveValues.email ||
-    liveValues.password
-  );
-
-  const validationQuery = useQuery({
-    queryKey: ["signUpCheck", checkValues],
-    queryFn: () => authCheckSignUp<SignUpErrors>(checkValues),
-    enabled: hasInput,
-    placeholderData: keepPreviousData,
+  const {
+    register,
+    handleSubmit,
+    setError,
+    formState: { errors, touchedFields, isValid, isSubmitting },
+  } = useForm<SignUpFormData>({
+    resolver: zodResolver(signUpSchema) as Resolver<SignUpFormData>,
+    mode: "all",
+    defaultValues: {
+      username: "",
+      email: "",
+      password: "",
+    },
   });
 
-  const signUpMutation = useMutation({
-    mutationFn: () => signUp(liveValues),
-    onSuccess: result => {
-      if (result.ok) {
-        close();
-      } else {
-        setSubmitErrors(result);
+  const onSubmit = handleSubmit(async (data: SignUpFormData) => {
+    try {
+      const result = await signUp(data);
+
+      if (result.success === false) {
+        applyFieldErrors(setError, result.fieldErrors);
+        return;
       }
-    },
-    onError: err => {
-      console.error("Sign up failed:", err);
-    },
-  });
 
-  const isCheckingField = validationQuery.isFetching;
-  const validationErrors =
-    submitErrors ?? validationQuery.data ?? defaultSignUpErrors;
+      close();
+    } catch (err) {
+      console.error("Sign up failed:", err);
+    }
+  });
 
   const onPasswordVisibleButton = (e: MouseEvent<SVGElement>) => {
     e.preventDefault();
@@ -81,86 +61,45 @@ const SignUp = () => {
     replace({ title: "Log in", content: <LogIn /> });
   };
 
-  const onClickSubmit = () => {
-    setTouched(new Set(["username", "email", "password"]));
-    signUpMutation.mutate();
-  };
-
-  const onChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    const next = { ...liveValues, [name]: value };
-
-    setLiveValues(next);
-    setSubmitErrors(null);
-    setTouched(prev => new Set(prev).add(name));
-
-    if (debounceTimer.current) clearTimeout(debounceTimer.current);
-    debounceTimer.current = setTimeout(() => {
-      setCheckValues(next);
-    }, 500);
-  };
-
-  const userErr = validationErrors.username;
-  const passErr = validationErrors.password;
-  const emailErr = validationErrors.email;
-
   return (
     <>
-      {touched.has("username") && <Error errObj={userErr} />}
+      {touchedFields.username && <Error message={errors.username?.message} />}
       <TextLabel htmlFor="username">USERNAME:</TextLabel>
       <Input
-        name="username"
+        {...register("username")}
         type="text"
         className={clsx(
           s.signup_input,
-          touched.has("username") &&
-            !!liveValues.username &&
-            userErr?.ok &&
-            !isCheckingField &&
-            s.success,
+          touchedFields.username && !errors.username && s.success,
         )}
         id="username"
         placeholder="Enter a user name"
-        value={liveValues.username}
-        onChange={onChange}
       />
 
-      {touched.has("email") && <Error errObj={emailErr} />}
+      {touchedFields.email && <Error message={errors.email?.message} />}
       <TextLabel htmlFor="email">EMAIL:</TextLabel>
       <Input
-        name="email"
+        {...register("email")}
         type="email"
         className={clsx(
           s.signup_input,
-          touched.has("email") &&
-            !!liveValues.email &&
-            emailErr.ok &&
-            !isCheckingField &&
-            s.success,
+          touchedFields.email && !errors.email && s.success,
         )}
         id="email"
         placeholder="Enter an email"
-        value={liveValues.email}
-        onChange={onChange}
       />
 
-      {touched.has("password") && <Error errObj={passErr} />}
+      {touchedFields.password && <Error message={errors.password?.message} />}
       <TextLabel htmlFor="password">PASSWORD:</TextLabel>
       <Input
-        name="password"
+        {...register("password")}
         type={isPasswordVisible ? "text" : "password"}
         className={clsx(
           s.signup_input,
-          touched.has("password") &&
-            !!liveValues.password &&
-            passErr.ok &&
-            !isCheckingField &&
-            s.success,
+          touchedFields.password && !errors.password && s.success,
         )}
         id="password"
         placeholder="Enter a password"
-        value={liveValues.password}
-        onChange={onChange}
         after={
           <Eye
             isVisible={isPasswordVisible}
@@ -170,11 +109,9 @@ const SignUp = () => {
       />
 
       <Button
-        active={
-          validationErrors.ok && !isCheckingField && !signUpMutation.isSuccess
-        }
-        loading={signUpMutation.isPending || isCheckingField}
-        onClick={onClickSubmit}
+        active={isValid && !isSubmitting}
+        loading={isSubmitting}
+        onClick={onSubmit}
         className={s.submit_button}
       >
         Sign up

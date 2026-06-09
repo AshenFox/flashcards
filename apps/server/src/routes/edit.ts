@@ -12,7 +12,7 @@ import { auth } from "@supplemental/middleware";
 import { notification_timeout } from "@supplemental/notifications_control";
 import { ResponseLocals } from "@supplemental/types";
 import express, { Request, Response } from "express";
-import { AnyKeys, FilterQuery, Types } from "mongoose";
+import { AnyKeys, Types } from "mongoose";
 
 const router = express.Router();
 

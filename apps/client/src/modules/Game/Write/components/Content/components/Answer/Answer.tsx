@@ -218,7 +218,7 @@ const Answer = ({ data }: AnswerProps) => {
                 autoComplete="off"
                 value={copy_answer}
                 onChange={changeCopyAnswer}
-                inputRef={copyAnswerInput}
+                ref={copyAnswerInput}
                 movingBorder
               />
               <TextLabel htmlFor="write-input">copy answer</TextLabel>

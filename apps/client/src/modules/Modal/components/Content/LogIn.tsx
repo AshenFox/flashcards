@@ -1,41 +1,53 @@
+import { type LogInFormData, logInSchema } from "@flashcards/common";
+import { zodResolver } from "@hookform/resolvers/zod";
 import Eye from "@modules/Modal/Eye";
-import { useMutation } from "@tanstack/react-query";
 import Input from "@ui/Input";
 import { Button } from "@ui/InteractiveElement";
 import TextLabel from "@ui/TextLabel";
-import { type LogInErrors, useAuthStore } from "@zustand/auth";
+import { useAuthStore } from "@zustand/auth";
 import { useModalStore } from "@zustand/modal";
-import { ChangeEvent, KeyboardEvent, memo, MouseEvent, useState } from "react";
+import { KeyboardEvent, memo, MouseEvent, useState } from "react";
+import { type Resolver, useForm } from "react-hook-form";
 
+import { applyFieldErrors } from "./applyFieldErrors";
 import Error from "./components/Error/Error";
 import SignUp from "./SignUp";
 import s from "./styles.module.scss";
-
-const defaultLogInErrors: LogInErrors = {
-  ok: true,
-  username: { ok: true, errors: [] },
-  password: { ok: true, errors: [] },
-};
 
 const LogIn = () => {
   const replace = useModalStore(state => state.replace);
   const close = useModalStore(state => state.close);
   const logIn = useAuthStore(state => state.logIn);
 
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
-  const [errors, setErrors] = useState(defaultLogInErrors);
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
 
-  const loginMutation = useMutation({
-    mutationFn: () => logIn({ username, password }),
-    onSuccess: result => {
-      setErrors(result);
-      if (result.ok) close();
+  const {
+    register,
+    handleSubmit,
+    setError,
+    formState: { errors, isValid, isSubmitting },
+  } = useForm<LogInFormData>({
+    resolver: zodResolver(logInSchema) as Resolver<LogInFormData>,
+    mode: "all",
+    defaultValues: {
+      username: "",
+      password: "",
     },
-    onError: err => {
+  });
+
+  const onSubmit = handleSubmit(async (data: LogInFormData) => {
+    try {
+      const result = await logIn(data);
+
+      if (result.success === false) {
+        applyFieldErrors(setError, result.fieldErrors);
+        return;
+      }
+
+      close();
+    } catch (err) {
       console.error("Login failed:", err);
-    },
+    }
   });
 
   const onPasswordVisibleButton = (e: MouseEvent<SVGElement>) => {
@@ -43,53 +55,35 @@ const LogIn = () => {
     setIsPasswordVisible(v => !v);
   };
 
-  const onClickChangeModal = (_e: MouseEvent<HTMLButtonElement>) => {
+  const onClickChangeModal = () => {
     replace({ title: "Sign up", content: <SignUp /> });
   };
 
-  const onClickSubmit = (_e: MouseEvent<HTMLButtonElement>) => {
-    loginMutation.mutate();
-  };
-
-  const onChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-
-    if (name === "username") setUsername(value);
-    if (name === "password") setPassword(value);
-  };
-
   const onKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === "Enter") loginMutation.mutate();
+    if (e.key === "Enter") void onSubmit();
   };
-
-  const userErr = errors.username;
-  const passErr = errors.password;
 
   return (
     <>
-      <Error errObj={userErr} single={true} />
+      <Error message={errors.username?.message} />
       <Input
-        name="username"
+        {...register("username")}
         id="username"
         className={s.login_input}
         placeholder="Type your username"
-        value={username}
-        onChange={onChange}
         onKeyDown={onKeyDown}
       />
       <TextLabel htmlFor="username" className={s.label}>
         USERNAME
       </TextLabel>
 
-      {userErr.ok && <Error errObj={passErr} single={true} />}
+      <Error message={errors.password?.message} />
       <Input
+        {...register("password")}
         type={isPasswordVisible ? "text" : "password"}
-        name="password"
         id="password"
         className={s.login_input}
         placeholder="Type your password"
-        value={password}
-        onChange={onChange}
         onKeyDown={onKeyDown}
         after={
           <Eye
@@ -103,9 +97,9 @@ const LogIn = () => {
       </TextLabel>
 
       <Button
-        active={!loginMutation.isSuccess}
-        loading={loginMutation.isPending}
-        onClick={onClickSubmit}
+        active={isValid && !isSubmitting}
+        loading={isSubmitting}
+        onClick={onSubmit}
         className={s.submit_button}
       >
         Log in

@@ -2,8 +2,8 @@ import clsx from "clsx";
 import React, {
   InputHTMLAttributes,
   memo,
-  MutableRefObject,
   ReactNode,
+  Ref,
   useCallback,
   useRef,
 } from "react";
@@ -11,29 +11,41 @@ import React, {
 import s from "./styles.module.scss";
 
 type InputProps = InputHTMLAttributes<HTMLInputElement> & {
+  ref?: Ref<HTMLInputElement>;
   movingBorder?: boolean;
   before?: ReactNode;
   after?: ReactNode;
-  inputRef?: MutableRefObject<HTMLInputElement>;
   error?: boolean;
 };
 
 const Input = ({
+  ref,
   className,
   id,
   before,
   after,
-  inputRef,
   movingBorder,
   error,
   ...rest
 }: InputProps) => {
   const innerInputRef = useRef<HTMLInputElement>(null);
 
+  const setRef = useCallback(
+    (node: HTMLInputElement | null) => {
+      innerInputRef.current = node;
+
+      if (typeof ref === "function") {
+        ref(node);
+      } else if (ref) {
+        ref.current = node;
+      }
+    },
+    [ref],
+  );
+
   const onContainerClick = useCallback(() => {
-    innerInputRef?.current?.focus();
-    inputRef?.current?.focus();
-  }, [inputRef]);
+    innerInputRef.current?.focus();
+  }, []);
 
   return (
     <div
@@ -51,7 +63,7 @@ const Input = ({
         {...rest}
         className={clsx(s.input, "input__input")}
         id={id}
-        ref={inputRef ?? innerInputRef}
+        ref={setRef}
       />
       {after}
     </div>

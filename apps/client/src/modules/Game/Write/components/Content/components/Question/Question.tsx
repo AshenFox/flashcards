@@ -128,7 +128,7 @@ const Question = ({ data }: QuestionProps) => {
             autoComplete="off"
             onChange={changeAnswer}
             value={answer}
-            inputRef={answerInput}
+            ref={answerInput}
           />
           <TextLabel htmlFor="write-input">type the answer</TextLabel>
         </fieldset>

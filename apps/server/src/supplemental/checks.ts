@@ -1,212 +1,145 @@
+import {
+  type AuthFieldErrors,
+  type LogInFormData,
+  logInSchema,
+  type SignUpFormData,
+  signUpSchema,
+} from "@flashcards/common";
 import userModel from "@models/user_model";
 import bcrypt from "bcryptjs";
 
-const minLength = (str: string, length: number) => str.length <= length;
-
-const invalidChar = (str: string, allowed: RegExp) => {
-  let result = false;
-
-  let arr = [...str];
-
-  for (let i = 0; i < arr.length; i++) {
-    if (!allowed.test(arr[i])) {
-      result = true;
-    }
-  }
-
-  return result;
-};
+type ValidationResult<T> =
+  | { success: true; data: T }
+  | { success: false; fieldErrors: AuthFieldErrors };
 
 const userExists = async (str: string) => {
-  let result = false;
-
   try {
-    let user = await userModel.findOne({
-      username: str,
-    });
-
-    if (user) result = true;
+    const user = await userModel.findOne({ username: str });
+    return !!user;
   } catch (err) {
     console.log(err);
+    return false;
   }
-
-  return result;
 };
-
-const emailFormat = (str: string) => !emailRegExp.test(str);
 
 const emailTaken = async (str: string) => {
-  let result = false;
-
   try {
-    let user = await userModel.findOne({
-      email: str,
-    });
-
-    if (user) result = true;
+    const user = await userModel.findOne({ email: str });
+    return !!user;
   } catch (err) {
     console.log(err);
+    return false;
   }
-
-  return result;
 };
 
-const oneUppercase = (str: string) => allCapitalRegExp.test(str);
-
 const noUser = async (str: string) => {
-  let result = false;
-
   try {
-    let user = await userModel.findOne({
-      username: str,
-    });
-
-    if (!user) result = true;
+    const user = await userModel.findOne({ username: str });
+    return !user;
   } catch (err) {
     console.log(err);
+    return true;
   }
-
-  return result;
 };
 
 const incorrectPassword = async (username: string, password: string) => {
-  let result = false;
-
   try {
-    let user = await userModel.findOne({
-      username: username,
-    });
+    const user = await userModel.findOne({ username });
 
-    if (!user) {
-      result = true;
-      throw new Error("User is not found");
-    }
+    if (!user) return true;
 
-    if (!(await bcrypt.compare(password, user.password))) result = true;
+    return !(await bcrypt.compare(password, user.password));
   } catch (err) {
     console.log(err);
+    return true;
   }
-
-  return result;
 };
 
-const isEmpty = (str: string) => !str;
+const signUpValidator = signUpSchema.superRefine(async (data, ctx) => {
+  const [usernameTaken, emailTakenResult] = await Promise.all([
+    userExists(data.username),
+    emailTaken(data.email),
+  ]);
 
-const userRegExp = /[A-z0-9]/;
-const passRegExp = /[A-z0-9"!#$%&'()*+,.:;<=>?@\]^_`{}~"/\\-]/;
-const emailRegExp =
-  /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z0-9]+\.)+[a-zA-Z]{2,}))$/;
-const allCapitalRegExp = /[A-Z]/;
-
-type CheckData = {
-  username: string;
-  password: string;
-  email: string;
-};
-
-type Field = {
-  ok: boolean;
-  errors: string[];
-};
-
-export type CheckResult = {
-  ok: boolean;
-  username?: Field;
-  password?: Field;
-  email?: Field;
-};
-
-export const check = async (data: CheckData, type: "log_in" | "sign_up") => {
-  const { username, password, email } = data;
-
-  let result: CheckResult = { ok: true };
-
-  // Username checks
-  if (typeof username !== "undefined") {
-    const errors: string[] = [];
-    const length = 5;
-
-    if (isEmpty(username)) errors.push("Please enter a username.");
-    if (invalidChar(username, userRegExp))
-      errors.push("Your username may only contain latin letters and numbers.");
-
-    // type === log_in
-    if (type === "log_in") {
-      if (await noUser(username))
-        errors.push(`Username "${username}" does not exist`);
-    }
-    // ----------
-
-    // type === sign_up
-    if (type === "sign_up") {
-      if (minLength(username, length))
-        errors.push(
-          `Your username is too short. The minimum length is ${length} characters.`,
-        );
-      if (await userExists(username)) errors.push("Username taken.");
-    }
-    // ----------
-    result.username = {
-      ok: !errors.length,
-      errors,
-    };
-
-    if (errors.length) result.ok = false;
+  if (usernameTaken) {
+    ctx.addIssue({
+      code: "custom",
+      path: ["username"],
+      message: "Username taken.",
+    });
   }
 
-  // Password checks
-  if (typeof password !== "undefined") {
-    const errors: string[] = [];
-    const length = 7;
+  if (emailTakenResult) {
+    ctx.addIssue({
+      code: "custom",
+      path: ["email"],
+      message: "This email has already been taken.",
+    });
+  }
+});
 
-    if (isEmpty(password)) errors.push("Please enter a password.");
-    if (invalidChar(password, passRegExp))
-      errors.push(
-        "Your password may only contain latin letters, numbers and special symbols.",
-      );
-    // type === log_in
-    if (type === "log_in") {
-      if (await incorrectPassword(username, password))
-        errors.push("The password you entered is incorrect. Try again...");
-    }
-    // ----------
-    // type === sign_up
-    if (type === "sign_up") {
-      if (minLength(password, length))
-        errors.push(
-          `Your password is too short. The minimum length is ${length} characters.`,
-        );
-      if (!oneUppercase(password))
-        errors.push("Your password must have at least one uppercase letter.");
-    }
-    // ----------
-
-    result.password = {
-      ok: !errors.length,
-      errors,
-    };
-
-    if (errors.length) result.ok = false;
+const logInValidator = logInSchema.superRefine(async (data, ctx) => {
+  if (await noUser(data.username)) {
+    ctx.addIssue({
+      code: "custom",
+      path: ["username"],
+      message: `Username "${data.username}" does not exist`,
+    });
+    return;
   }
 
-  // Email checks
-  if (typeof email !== "undefined") {
-    const errors: string[] = [];
+  if (await incorrectPassword(data.username, data.password)) {
+    ctx.addIssue({
+      code: "custom",
+      path: ["password"],
+      message: "The password you entered is incorrect. Try again...",
+    });
+  }
+});
 
-    if (isEmpty(email)) errors.push("Please enter an email.");
-    if (emailFormat(email)) errors.push("Invalid email format.");
-    if (await emailTaken(email))
-      errors.push("This email has already been taken.");
+type ZodLikeError = {
+  issues: ReadonlyArray<{
+    path: ReadonlyArray<PropertyKey>;
+    message: string;
+  }>;
+};
 
-    result.email = {
-      ok: !errors.length,
-      errors,
-    };
+const toFieldErrors = (error: ZodLikeError): AuthFieldErrors => {
+  const fieldErrors: AuthFieldErrors = {};
 
-    if (errors.length) result.ok = false;
+  for (const issue of error.issues) {
+    const field = issue.path[0];
+
+    if (typeof field !== "string") continue;
+
+    const key = field as keyof AuthFieldErrors;
+    fieldErrors[key] ??= [];
+    fieldErrors[key]!.push(issue.message);
   }
 
-  if (Object.keys(result).length < 3) result.ok = false;
+  return fieldErrors;
+};
 
-  return result;
+export const validateSignUp = async (
+  data: unknown,
+): Promise<ValidationResult<SignUpFormData>> => {
+  const result = await signUpValidator.safeParseAsync(data);
+
+  if (result.success) {
+    return { success: true, data: result.data };
+  }
+
+  return { success: false, fieldErrors: toFieldErrors(result.error) };
+};
+
+export const validateLogIn = async (
+  data: unknown,
+): Promise<ValidationResult<LogInFormData>> => {
+  const result = await logInValidator.safeParseAsync(data);
+
+  if (result.success) {
+    return { success: true, data: result.data };
+  }
+
+  return { success: false, fieldErrors: toFieldErrors(result.error) };
 };

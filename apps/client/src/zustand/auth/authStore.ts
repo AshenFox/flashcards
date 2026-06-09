@@ -1,11 +1,11 @@
 import { setAuthToken } from "@api/axiosInstance";
-import { authEntry, authGetUser } from "@api/methods";
+import { authGetUser, authLogIn, authSignUp } from "@api/methods";
 import { queryClient } from "@api/queryClient";
 import { createStoreHook, withActionName } from "@zustand/helpers";
 import { useLayoutStore } from "@zustand/layout";
 
 import type { Slice } from "../types";
-import type { AuthStore, LogInErrors, SignUpErrors } from "./types";
+import type { AuthActionResult, AuthStore } from "./types";
 
 export type { AuthStore } from "./types";
 
@@ -44,13 +44,12 @@ export const authSlice: Slice<AuthStore> = setAction => {
       const pathname = window.location.pathname;
       if (pathname !== "/") window.location.replace("/");
     },
-    logIn: async credentials => {
-      const { token, errors } = await authEntry<LogInErrors>(
-        "log_in",
-        credentials,
-      );
+    logIn: async (credentials): Promise<AuthActionResult> => {
+      const { token, fieldErrors } = await authLogIn(credentials);
 
-      if (!token) return errors;
+      if (!token) {
+        return { success: false as const, fieldErrors: fieldErrors ?? {} };
+      }
 
       try {
         localStorage.setItem("value", token);
@@ -69,12 +68,14 @@ export const authSlice: Slice<AuthStore> = setAction => {
         throw err;
       }
 
-      return errors;
+      return { success: true as const };
     },
-    signUp: async data => {
-      const { token, errors } = await authEntry<SignUpErrors>("sign_up", data);
+    signUp: async (data): Promise<AuthActionResult> => {
+      const { token, fieldErrors } = await authSignUp(data);
 
-      if (!token) return errors;
+      if (!token) {
+        return { success: false as const, fieldErrors: fieldErrors ?? {} };
+      }
 
       try {
         localStorage.setItem("value", token);
@@ -93,7 +94,7 @@ export const authSlice: Slice<AuthStore> = setAction => {
         throw err;
       }
 
-      return errors;
+      return { success: true as const };
     },
   };
 };

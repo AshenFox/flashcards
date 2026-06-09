@@ -1,3 +1,3 @@
-export { authCheckSignUp } from "./authCheckSignUp";
-export { authEntry } from "./authEntry";
 export { authGetUser } from "./authGetUser";
+export { authLogIn } from "./authLogIn";
+export { authSignUp } from "./authSignUp";
