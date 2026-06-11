@@ -100,9 +100,8 @@ const Img = ({
         )}
 
         {status === "loading" && (
-          <Skeleton className={s.loading} inline={false} />
+          <Skeleton className={clsx(s.img, s.loading)} inline={false} />
         )}
-
         {status === "error" && (
           <div
             className={s.error}
