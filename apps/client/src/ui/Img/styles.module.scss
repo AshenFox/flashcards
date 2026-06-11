@@ -1,43 +1,45 @@
 @use "@styles/vars" as *;
 
-.container {
-  position: relative;
-  width: 100%;
-  height: 100%;
-}
+@layer base {
+  .container {
+    position: relative;
+    width: 100%;
+    height: 100%;
+  }
 
-.content {
-  position: relative;
-  display: block;
-  width: 100%;
-  height: 100%;
-}
+  .content {
+    position: relative;
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
 
-.img {
-  display: block;
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-}
+  .img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
 
-.img_hidden {
-  opacity: 0;
-}
+  .img_hidden {
+    opacity: 0;
+  }
 
-.loading {
-  position: absolute;
-  inset: 0;
-}
+  .loading {
+    position: absolute;
+    inset: 0;
+  }
 
-.error {
-  position: absolute;
-  display: grid;
-  padding: 1.25rem;
-  inset: 0;
-  place-items: center;
+  .error {
+    position: absolute;
+    display: grid;
+    padding: 1.25rem;
+    inset: 0;
+    place-items: center;
 
-  svg {
-    width: 2.5rem;
-    height: 2.5rem;
+    svg {
+      width: 2.5rem;
+      height: 2.5rem;
+    }
   }
 }
