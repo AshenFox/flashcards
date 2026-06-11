@@ -16,8 +16,6 @@ COPY . .
 RUN npm install --verbose
 
 # Webpack build; increase Node heap for Next.js production build in constrained environments
-ARG NEXT_PUBLIC_VAPID_KEY
-ENV NEXT_PUBLIC_VAPID_KEY=$NEXT_PUBLIC_VAPID_KEY
 ENV NODE_OPTIONS="--max-old-space-size=4096"
 RUN npm run build
 

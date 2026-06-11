@@ -18,7 +18,7 @@
     "devd": "docker-compose -f docker-compose.dev.yaml up",
     "devd-rebuild": "docker-compose -f docker-compose.dev.yaml up --no-deps --build --force-recreate app",
     "prod": "docker-compose -f docker-compose.prod.yaml up -d",
-    "prod-rebuild": "docker-compose -f docker-compose.prod.yaml --env-file packages/config/.env up -d --no-deps --build --force-recreate app",
+    "prod-rebuild": "docker-compose -f docker-compose.prod.yaml up -d --no-deps --build --force-recreate app",
     "ts": "npm run ts -w @flashcards/common -w @flashcards/server -w @flashcards/client",
     "eslint": "npm run eslint --workspaces --if-present",
     "eslint:fix": "npm run eslint:fix --workspaces --if-present",
