@@ -1,4 +1,8 @@
+import dotenv from "dotenv";
 import path from "path";
 
-const configDir = path.dirname(require.resolve("@flashcards/config"));
-process.env.NODE_CONFIG_DIR = configDir;
+const configEnvPath = path.resolve(
+  __dirname,
+  "../../../packages/config/.env",
+);
+dotenv.config({ path: configEnvPath });

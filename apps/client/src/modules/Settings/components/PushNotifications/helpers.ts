@@ -1,5 +1,4 @@
 import { notificationsSubscribePush } from "@api/methods";
-import flashcardsConfig from "@flashcards/config";
 
 export const urlBase64ToUint8Array = (base64String: string) => {
   const base64 = base64String.trim();
@@ -54,7 +53,7 @@ export const subscribeToPush = async (
     throw new Error("Service Worker not supported");
 
   const applicationServerKey = urlBase64ToUint8Array(
-    flashcardsConfig.publicVapidKey,
+    process.env.NEXT_PUBLIC_VAPID_KEY!,
   );
 
   const subscription = await registration.pushManager.subscribe({

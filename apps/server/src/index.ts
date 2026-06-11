@@ -12,7 +12,6 @@ import sr from "@routes/sr";
 import connectDB from "@supplemental/db";
 import { send_notifications } from "@supplemental/notifications_control";
 // dependencies
-import config from "config";
 import express from "express";
 import fs from "fs";
 import http from "http";
@@ -69,9 +68,9 @@ expressServer.all("*", (req, res) => {
 
 // Push notifications
 
-const publicVapidKey = config.get("publicVapidKey") as string;
-const privateVapidKey = config.get("privateVapidKey") as string;
-const webpushSubject = config.get("webpushSubject") as string;
+const publicVapidKey = process.env.NEXT_PUBLIC_VAPID_KEY as string;
+const privateVapidKey = process.env.VAPID_PRIVATE_KEY as string;
+const webpushSubject = process.env.WEBPUSH_SUBJECT as string;
 
 webpush.setVapidDetails(webpushSubject, publicVapidKey, privateVapidKey);
 

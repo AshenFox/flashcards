@@ -7,6 +7,10 @@ services:
     build:
       context: .
       dockerfile: Dockerfile.prod
+      args:
+        NEXT_PUBLIC_VAPID_KEY: ${NEXT_PUBLIC_VAPID_KEY}
+    env_file:
+      - packages/config/.env
     environment:
       - NODE_ENV=production
       - NODE_OPTIONS=--openssl-legacy-provider

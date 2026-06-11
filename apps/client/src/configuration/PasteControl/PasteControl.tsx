@@ -1,6 +1,7 @@
-import { sanitizeConfig } from "@flashcards/config";
 import { memo, useEffect } from "react";
 import sanitize from "sanitize-html";
+
+import sanitizeConfig from "./sanitize-config.json";
 
 const PasteControl = () => {
   useEffect(() => {

@@ -4,7 +4,6 @@ import { validateLogIn, validateSignUp } from "@supplemental/checks";
 import { auth } from "@supplemental/middleware";
 import { ResponseLocals } from "@supplemental/types";
 import bcrypt from "bcryptjs";
-import config from "config";
 import express, { Request, Response } from "express";
 import jwt from "jsonwebtoken";
 
@@ -47,7 +46,7 @@ router.post("/sign_up", async (req: SignUpPostReq, res: SignUpPostRes) => {
 
     console.log("A new user has been signed up!");
 
-    const token = jwt.sign({ _id: user._id }, config.get("jwtSecret"));
+    const token = jwt.sign({ _id: user._id }, process.env.JWT_SECRET as string);
 
     console.log("A user has logged in!");
 
@@ -85,7 +84,7 @@ router.post("/log_in", async (req: LogInPostReq, res: LogInPostRes) => {
 
     if (!user) throw new Error("The user has not been found.");
 
-    const token = jwt.sign({ _id: user._id }, config.get("jwtSecret"));
+    const token = jwt.sign({ _id: user._id }, process.env.JWT_SECRET as string);
 
     console.log("A user has logged in!");
 

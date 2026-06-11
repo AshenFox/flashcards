@@ -15,7 +15,6 @@
   },
   "dependencies": {
     "@flashcards/common": "*",
-    "@flashcards/config": "*",
     "@flashcards/eslint": "*",
     "@hookform/resolvers": "^5.4.0",
     "@tanstack/react-query": "^5.76.0",
@@ -38,7 +37,6 @@
     "zustand": "^5.0.11"
   },
   "devDependencies": {
-    "@types/config": "^0.0.41",
     "@types/react": "^19.1.0",
     "@types/react-dom": "^19.1.0",
     "@types/sanitize-html": "^2.6.2",
