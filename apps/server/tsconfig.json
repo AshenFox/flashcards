@@ -15,7 +15,8 @@
       "@models/*": ["./src/models/*"],
       "@routes/*": ["./src/routes/*"],
       "@supplemental/*": ["./src/supplemental/*"],
-      "@serverTypes/*": ["./src/types/*"]
+      "@serverTypes/*": ["./src/types/*"],
+      "@setup": ["./src/setup.ts"]
     },
     "moduleResolution": "bundler",
     "declaration": true,

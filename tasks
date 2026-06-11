@@ -1,3 +1,0 @@
-rename zustand folder to store
-may be move stores to corresponding components 
-we also need to fix config package setup

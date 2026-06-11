@@ -1,7 +1,8 @@
+import { env } from "@setup";
 import ImageSearch from "image-search-google";
 
-const cse_id: string = process.env.GOOGLE_CSE_ID as string;
-const keyArr: string[] = (process.env.GOOGLE_API_KEYS ?? "").split(",");
+const cse_id = env.GOOGLE_CSE_ID;
+const keyArr = env.GOOGLE_API_KEYS.split(",");
 
 type ClientInterface = {
   clientArr: Client[];

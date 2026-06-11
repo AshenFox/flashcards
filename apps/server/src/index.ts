@@ -1,5 +1,3 @@
-import "./setup";
-
 // routes
 import auth from "@routes/auth";
 import edit from "@routes/edit";
@@ -8,6 +6,7 @@ import main from "@routes/main";
 import notifications from "@routes/notifications";
 import scrape from "@routes/scrape";
 import sr from "@routes/sr";
+import { env } from "@setup";
 // supplemental
 import connectDB from "@supplemental/db";
 import { send_notifications } from "@supplemental/notifications_control";
@@ -68,9 +67,9 @@ expressServer.all("*", (req, res) => {
 
 // Push notifications
 
-const publicVapidKey = process.env.NEXT_PUBLIC_VAPID_KEY as string;
-const privateVapidKey = process.env.VAPID_PRIVATE_KEY as string;
-const webpushSubject = process.env.WEBPUSH_SUBJECT as string;
+const publicVapidKey = env.NEXT_PUBLIC_VAPID_KEY;
+const privateVapidKey = env.VAPID_PRIVATE_KEY;
+const webpushSubject = env.WEBPUSH_SUBJECT;
 
 webpush.setVapidDetails(webpushSubject, publicVapidKey, privateVapidKey);
 

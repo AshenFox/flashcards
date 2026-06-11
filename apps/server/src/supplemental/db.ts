@@ -1,7 +1,8 @@
+import { env } from "@setup";
 import mongoose from "mongoose";
 
-const dev = process.env.NODE_ENV !== "production";
-const db = (dev ? process.env.MONGO_URI_DEV : process.env.MONGO_URI_PROD) as string;
+const dev = env.NODE_ENV !== "production";
+const db = dev ? env.MONGO_URI_DEV : env.MONGO_URI_PROD;
 
 const connectDB = async () => {
   try {
