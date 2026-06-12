@@ -1,4 +1,5 @@
-import { CSSProperties, memo, useEffect, useMemo, useState } from "react";
+import { useDevicePixelRatio } from "@components/Virtualized/hooks/useDevicePixelRatio";
+import { CSSProperties, memo, useMemo, useState } from "react";
 
 import { useHasActiveOwner } from "./hooks/registry";
 import { useGlobalHeaderPull } from "./hooks/useGlobalHeaderPull";
@@ -10,36 +11,24 @@ type AppWrapperProps = {
 
 const AppWrapper = ({ children }: AppWrapperProps) => {
   const [offset, setOffset] = useState(0);
-  const [transitionArmed, setTransitionArmed] = useState(false);
 
   useGlobalHeaderPull(setOffset);
 
   const hasActiveOwner = useHasActiveOwner();
 
-  useEffect(() => {
-    if (hasActiveOwner) {
-      setTimeout(() => setTransitionArmed(true), 400);
-    } else {
-      setTransitionArmed(false);
-    }
-  }, [hasActiveOwner]);
+  const dpr = useDevicePixelRatio();
 
-  useEffect(() => {
-    return () => {
-      setTransitionArmed(false);
-    };
-  }, []);
+  const modifiedOffset = Math.round(offset * dpr) / dpr;
 
   const style = useMemo<CSSProperties | undefined>(() => {
     if (!hasActiveOwner) return undefined;
 
     return {
-      transform: `translateY(${-offset}px)`,
-      marginBottom: `-${offset}px`,
+      transform: `translateY(${-modifiedOffset}px)`,
+      marginBottom: `-${modifiedOffset}px`,
       willChange: "margin-bottom, transform",
-      transition: transitionArmed ? "transform 0.1s linear" : undefined,
     };
-  }, [hasActiveOwner, offset, transitionArmed]);
+  }, [hasActiveOwner, modifiedOffset]);
 
   return (
     <div className={s.appWrapper} style={style}>
