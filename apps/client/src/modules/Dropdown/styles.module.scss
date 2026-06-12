@@ -4,16 +4,18 @@
   position: fixed;
   z-index: 45;
   top: 0;
-  right: -200px;
+  right: 0;
   display: none;
   height: 200rem;
   flex-direction: column;
   border-left: 1px solid var(--element-border-color);
   background-color: var(--element-background-color);
-  transition: right 0.3s ease;
+  transform: translateX(110%);
+  transition: transform 0.2s ease-out;
+  will-change: transform;
 
   &.active {
-    right: 0;
+    transform: translateX(0);
   }
 
   &.isGame {
