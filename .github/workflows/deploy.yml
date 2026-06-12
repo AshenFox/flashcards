@@ -25,9 +25,9 @@ jobs:
           port: ${{ secrets.PORT }}
           script: |
             cd apps/flashcards/packages/config
-            echo ${{ secrets.PASSWORD }} | sudo -S -k git pull
+            echo ${{ secrets.PASSWORD }} | sudo -S -k git -c "url.https://${{ secrets.GH_PAT }}@github.com/.insteadOf=https://github.com/" pull
             cd ../../
-            echo ${{ secrets.PASSWORD }} | sudo -S -k git pull
+            echo ${{ secrets.PASSWORD }} | sudo -S -k git -c "url.https://${{ secrets.GH_PAT }}@github.com/.insteadOf=https://github.com/" pull
             echo ${{ secrets.PASSWORD }} | sudo -S -k docker stop $(echo ${{ secrets.PASSWORD }} | sudo -S -k docker ps -a -q)
             echo ${{ secrets.PASSWORD }} | sudo -S -k npm run prod-rebuild
             echo ${{ secrets.PASSWORD }} | sudo -S -k docker start $(echo ${{ secrets.PASSWORD }} | sudo -S -k docker ps -a -q)
