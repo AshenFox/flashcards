@@ -1,3 +1,4 @@
+import { generateId } from "@utils/generateId";
 import { createStoreHook, withActionName } from "@zustand/helpers";
 
 import type { Slice } from "../types";
@@ -15,7 +16,7 @@ export const modalSlice: Slice<ModalStore> = setAction => {
   return {
     ...initialState,
     open: config => {
-      const id = crypto.randomUUID();
+      const id = generateId();
       set(state => {
         state.modals.push({ ...config, id, isClosing: false });
       }, "open");
@@ -31,7 +32,7 @@ export const modalSlice: Slice<ModalStore> = setAction => {
 
         state.modals.push({
           ...config,
-          id: crypto.randomUUID(),
+          id: generateId(),
           isClosing: false,
         });
       }, "replace"),
