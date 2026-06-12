@@ -1,11 +1,14 @@
-import { useActions } from "@store/hooks";
+import { useCardsCash } from "@components/Cards";
 import {
   createContext,
   ReactNode,
   useCallback,
   useContext,
+  useMemo,
   useState,
 } from "react";
+
+import { useEditCardsUIStore } from "./hooks";
 
 interface EditContextType {
   selectionActive: boolean;
@@ -20,17 +23,25 @@ interface EditContextProviderProps {
 
 export const EditContextProvider = ({ children }: EditContextProviderProps) => {
   const [selectionActive, setSelectionActive] = useState(false);
-  const { setCardsSave } = useActions();
+  const cardsCache = useCardsCash();
+  const setCardUI = useEditCardsUIStore(s => s.set);
 
   const toggleSelectionActive = useCallback(() => {
     setSelectionActive(prev => !prev);
-    setCardsSave({ value: false });
-  }, [setCardsSave]);
+    for (const card of cardsCache.getAllCards()) {
+      setCardUI(card._id, d => {
+        d.save = false;
+      });
+    }
+  }, [cardsCache, setCardUI]);
+
+  const contextValue = useMemo(
+    () => ({ selectionActive, toggleSelectionActive }),
+    [selectionActive, toggleSelectionActive],
+  );
 
   return (
-    <EditContext.Provider value={{ selectionActive, toggleSelectionActive }}>
-      {children}
-    </EditContext.Provider>
+    <EditContext.Provider value={contextValue}>{children}</EditContext.Provider>
   );
 };
 

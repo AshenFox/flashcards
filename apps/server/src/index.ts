@@ -1,5 +1,3 @@
-import "./setup";
-
 // routes
 import auth from "@routes/auth";
 import edit from "@routes/edit";
@@ -8,11 +6,11 @@ import main from "@routes/main";
 import notifications from "@routes/notifications";
 import scrape from "@routes/scrape";
 import sr from "@routes/sr";
+import { env } from "@setup";
 // supplemental
 import connectDB from "@supplemental/db";
 import { send_notifications } from "@supplemental/notifications_control";
 // dependencies
-import config from "config";
 import express from "express";
 import fs from "fs";
 import http from "http";
@@ -69,9 +67,9 @@ expressServer.all("*", (req, res) => {
 
 // Push notifications
 
-const publicVapidKey = config.get("publicVapidKey") as string;
-const privateVapidKey = config.get("privateVapidKey") as string;
-const webpushSubject = config.get("webpushSubject") as string;
+const publicVapidKey = env.NEXT_PUBLIC_VAPID_KEY;
+const privateVapidKey = env.VAPID_PRIVATE_KEY;
+const webpushSubject = env.WEBPUSH_SUBJECT;
 
 webpush.setVapidDetails(webpushSubject, publicVapidKey, privateVapidKey);
 
@@ -117,6 +115,12 @@ const start = async () => {
 
 const shutDown = async () => {
   console.log("\nGracefully shutting down from SIGINT (Ctrl-C)");
+
+  if (pushInterval) {
+    clearInterval(pushInterval);
+    pushInterval = null;
+  }
+
   await nextApp.close();
   process.exit(0);
 };

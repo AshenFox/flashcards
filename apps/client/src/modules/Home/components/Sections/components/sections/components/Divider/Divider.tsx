@@ -1,22 +1,20 @@
+import clsx from "clsx";
 import { memo } from "react";
 
 import s from "./style.module.scss";
 
 type DividerProps = {
-  prevDateString?: string;
-  curDateString?: string;
+  label?: string;
   draft?: boolean;
 };
 
-const Divider = ({ prevDateString, curDateString, draft }: DividerProps) => {
-  const { curName, exists } = process(prevDateString, curDateString);
+const Divider = ({ label, draft }: DividerProps) => {
+  if (!draft && !label) return null;
 
-  if (exists) return;
-
-  const msg = draft ? "in progress" : curName;
+  const msg = draft ? "in progress" : (label as string);
 
   return (
-    <div className={s.divider}>
+    <div className={clsx(s.divider)}>
       <div className={s.text}>{msg.toUpperCase()}</div>
       <div className={s.line}></div>
     </div>
@@ -24,42 +22,6 @@ const Divider = ({ prevDateString, curDateString, draft }: DividerProps) => {
 };
 
 export default memo(Divider);
-
-const createName = (dateString: string) => {
-  const date = new Date(dateString);
-
-  const sec = (new Date().getTime() - date.getTime()) * 0.001;
-
-  if (sec < 60) {
-    return "a few seconds ago";
-  } else if (sec < 600) {
-    return "several minutes ago";
-  } else if (sec < 1800) {
-    return `${Math.floor(sec / 60)} minutes ago`;
-  } else if (sec < 3600) {
-    return `less than an hour ago`;
-  } else if (sec < 86400) {
-    return `${Math.floor(sec / 3600)} hours ago`;
-  } else if (sec < 604800) {
-    return `several days ago`;
-  } else if (sec < 2419200) {
-    return `${Math.floor(sec / 604800)} weeks ago`;
-  } else {
-    return `in ${months[date.getMonth()]} ${date.getFullYear()}`;
-  }
-};
-
-const process = (prevDateString?: string, curDateString?: string) => {
-  const prevName = prevDateString && createName(prevDateString);
-  const curName = curDateString && createName(curDateString);
-
-  const exists =
-    typeof prevName === "string" &&
-    typeof curName === "string" &&
-    curName === prevName;
-
-  return { curName, exists };
-};
 
 const months = [
   "january",
@@ -75,3 +37,48 @@ const months = [
   "november",
   "december",
 ];
+
+export const getDateBucket = (dateString: string): string => {
+  const date = new Date(dateString);
+  const now = new Date();
+
+  const startOfToday = new Date(
+    now.getFullYear(),
+    now.getMonth(),
+    now.getDate(),
+  );
+
+  const startOfYesterday = new Date(startOfToday);
+  startOfYesterday.setDate(startOfYesterday.getDate() - 1);
+
+  const startOfWeek = new Date(startOfToday);
+  startOfWeek.setDate(startOfWeek.getDate() - startOfToday.getDay());
+
+  const startOfLastWeek = new Date(startOfWeek);
+  startOfLastWeek.setDate(startOfLastWeek.getDate() - 7);
+
+  if (date >= startOfToday) return "today";
+  if (date >= startOfYesterday) return "yesterday";
+  if (date >= startOfWeek) return "this week";
+  if (date >= startOfLastWeek) return "last week";
+
+  return `${months[date.getMonth()]} ${date.getFullYear()}`;
+};
+
+export const getBelowDividerLabel = (
+  curDateString: string | undefined,
+  nextDateString: string | undefined,
+): string | undefined => {
+  if (!curDateString || !nextDateString) return undefined;
+  const curBucket = getDateBucket(curDateString);
+  const nextBucket = getDateBucket(nextDateString);
+  if (curBucket === nextBucket) return undefined;
+  return nextBucket;
+};
+
+export const getTopDividerLabel = (
+  curDateString: string | undefined,
+): string | undefined => {
+  if (!curDateString) return undefined;
+  return getDateBucket(curDateString);
+};

@@ -6,20 +6,25 @@ $modal-background-color: #2b2a2c;
   outline: none;
 }
 
-.modal {
+.backdrop {
   position: fixed;
   z-index: 1000;
-  top: 0;
-  left: 0;
+  display: none;
+  background-color: rgba($modal-background-color, 0.8);
+  inset: 0;
+  opacity: 0;
+  transition-property: opacity;
+  transition-timing-function: ease;
+}
+
+.dialogLayer {
+  position: fixed;
   display: none;
   overflow: auto;
-  width: 100%;
-  height: 100%;
   padding: 2rem 0;
-  background-color: rgba($modal-background-color, 0.8);
-  opacity: 0;
-  transition-property: all;
-  transition-timing-function: ease;
+  inset: 0;
+  opacity: 1;
+  pointer-events: none;
 
   @media (max-width: $mobile) {
     padding: 0;
@@ -28,13 +33,13 @@ $modal-background-color: #2b2a2c;
 
 .dialog {
   position: relative;
-  z-index: 2000;
   width: 100%;
   max-width: 600px;
   margin: auto;
   background-color: var(--element-background-color);
   opacity: 0;
-  transform: translateY(-30vh);
+  pointer-events: auto;
+  transform: translateY(-10vh);
   transition-property: all;
   transition-timing-function: ease-out;
 

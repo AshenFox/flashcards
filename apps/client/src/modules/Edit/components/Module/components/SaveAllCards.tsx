@@ -1,30 +1,32 @@
-import { useActions, useAppSelector } from "@store/hooks";
+import { useEditCards, useEditCardsUIStore } from "@modules/Edit/hooks";
 import Checkbox from "@ui/Checkbox";
 import Tooltip from "@ui/Tooltip";
-import { memo, useCallback } from "react";
+import { memo, useCallback, useMemo } from "react";
 
 import s from "./styles.module.scss";
 
 const SaveAllCards = () => {
-  const { setCardsSave } = useActions();
+  const cardsArr = useEditCards();
+  const cardsUi = useEditCardsUIStore(s => s.cards);
+  const setCardUI = useEditCardsUIStore(s => s.set);
 
-  const cards = useAppSelector(s => s.main.cards);
-
-  const cardsArr = Object.values(cards);
-
-  let active = !!cardsArr.length;
-
-  for (const card of cardsArr) {
-    if (card.save === false) {
-      active = false;
-      break;
+  const active = useMemo(() => {
+    if (!cardsArr.length) return false;
+    for (const card of cardsArr) {
+      const save = cardsUi[card._id]?.save ?? false;
+      if (!save) return false;
     }
-  }
+    return true;
+  }, [cardsArr, cardsUi]);
 
-  const clickAllSave = useCallback(
-    () => setCardsSave({ value: !active }),
-    [active, setCardsSave],
-  );
+  const clickAllSave = useCallback(() => {
+    const target = !active;
+    for (const card of cardsArr) {
+      setCardUI(card._id, d => {
+        d.save = target;
+      });
+    }
+  }, [active, cardsArr, setCardUI]);
 
   const id = "switch-save-main";
 

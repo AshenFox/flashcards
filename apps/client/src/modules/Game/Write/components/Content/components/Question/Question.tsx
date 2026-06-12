@@ -1,11 +1,12 @@
 import Speaker from "@components/Speaker";
 import { SRIndicator, SRInfoTooltip } from "@components/SRIndicator";
-import { useActions, useAppSelector } from "@store/hooks";
-import { Card } from "@store/reducers/main/types";
+import type { CardDto } from "@flashcards/common";
+import { useCheckWriteAnswer } from "@modules/Game/hooks";
 import Img from "@ui/Img";
 import Input from "@ui/Input";
 import TextArea from "@ui/TextArea";
 import TextLabel from "@ui/TextLabel";
+import { useGameStore } from "@zustand/game/gameStore";
 import { useRouter } from "next/router";
 import {
   ChangeEvent,
@@ -20,11 +21,12 @@ import {
 import s from "./styles.module.scss";
 
 type QuestionProps = {
-  data: Card;
+  data: CardDto;
 };
 
 const Question = ({ data }: QuestionProps) => {
-  const { setWriteAnswerField, checkWriteAnswer } = useActions();
+  const setWriteAnswerField = useGameStore(s => s.setWriteAnswerField);
+  const checkWriteAnswer = useCheckWriteAnswer();
 
   const router = useRouter();
 
@@ -33,7 +35,7 @@ const Question = ({ data }: QuestionProps) => {
   const isSR = _id_param === "sr";
 
   const { _id, term, definition, imgurl } = data || {};
-  const answer = useAppSelector(s => s.game.write.answer);
+  const answer = useGameStore(s => s.write.answer);
 
   const formattedDefinition = definition.replaceAll(
     /\( \/(.*?)\/ \)/g,
@@ -42,7 +44,7 @@ const Question = ({ data }: QuestionProps) => {
   );
 
   const changeAnswer = (e: ChangeEvent<HTMLInputElement>) =>
-    setWriteAnswerField({ value: e.target.value });
+    setWriteAnswerField(e.target.value);
 
   const keyDownAnswer = useCallback(
     (e: KeyboardEvent) => {
@@ -104,7 +106,11 @@ const Question = ({ data }: QuestionProps) => {
             <span onClick={clickNotKnow}>Don&apos;t know</span>
           </div>
         )}
-        <Img containerClass={s.img_container} imgClass={s.img} url={imgurl} />
+        <Img
+          containerClass={s.img_container}
+          contentClass={s.img_content}
+          url={imgurl}
+        />
         <TextArea html={formattedDefinition} className={s.definition} />
         <Speaker
           _id={_id}
@@ -122,7 +128,7 @@ const Question = ({ data }: QuestionProps) => {
             autoComplete="off"
             onChange={changeAnswer}
             value={answer}
-            inputRef={answerInput}
+            ref={answerInput}
           />
           <TextLabel htmlFor="write-input">type the answer</TextLabel>
         </fieldset>

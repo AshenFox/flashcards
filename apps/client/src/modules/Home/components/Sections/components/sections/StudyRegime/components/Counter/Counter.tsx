@@ -1,6 +1,6 @@
-import { useActions, useAppSelector } from "@store/hooks";
 import { MinusIcon, PlusIcon } from "@ui/Icons";
 import Input from "@ui/Input";
+import { useSRStore } from "@zustand/sr";
 import {
   ChangeEvent,
   memo,
@@ -8,45 +8,71 @@ import {
   TouchEvent,
   useEffect,
   useRef,
+  useState,
 } from "react";
 
 import s from "./styles.module.scss";
 
-const Counter = () => {
-  const { setSRCounter } = useActions();
+type CounterProps = {
+  repeatNum?: number;
+};
 
-  const counter = useAppSelector(s => s.sr.counter);
+const Counter = ({ repeatNum }: CounterProps) => {
+  const counter = useSRStore(s => s.counter);
+  const updateCounter = useSRStore(s => s.updateCounter);
 
-  const handleCounterChange = (e: ChangeEvent<HTMLInputElement>) =>
-    setSRCounter(null, e.target.value);
+  const [localValue, setLocalValue] = useState<string>(() =>
+    typeof counter === "number" ? String(counter) : "",
+  );
+
+  useEffect(() => {
+    setLocalValue(typeof counter === "number" ? String(counter) : "");
+  }, [counter]);
+
+  const handleCounterChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setLocalValue(e.target.value);
+  };
+
+  const handleCounterBlur = () => {
+    if (!localValue) {
+      // if input left empty, reset to minimum allowed value
+      updateCounter({ value: "1", repeatNum });
+      return;
+    }
+
+    updateCounter({ value: localValue, repeatNum });
+  };
 
   const intervalRef = useRef<ReturnType<typeof setInterval>>(null);
   const timeoutRef = useRef<ReturnType<typeof setTimeout>>(null);
   const blockSingle = useRef<boolean>(false);
 
   const single =
-    (value: "stepUp" | "stepDown") => (e: MouseEvent<HTMLDivElement>) => {
+    (value: "stepUp" | "stepDown") => (_e: MouseEvent<HTMLDivElement>) => {
       if (blockSingle.current) return;
-      if (value === "stepUp") setSRCounter(1);
-      if (value === "stepDown") setSRCounter(-1);
+      if (value === "stepUp") updateCounter({ additionNumber: 1, repeatNum });
+      else if (value === "stepDown")
+        updateCounter({ additionNumber: -1, repeatNum });
     };
 
   const multiple =
     (value: "stepUp" | "stepDown") =>
-    (e: MouseEvent<HTMLDivElement> | TouchEvent<HTMLDivElement>) => {
+    (_e: MouseEvent<HTMLDivElement> | TouchEvent<HTMLDivElement>) => {
       timeoutRef.current = setTimeout(() => {
         timeoutRef.current = null;
         blockSingle.current = true;
 
         intervalRef.current = setInterval(() => {
-          if (value === "stepUp") setSRCounter(5);
-          if (value === "stepDown") setSRCounter(-5);
+          if (value === "stepUp")
+            updateCounter({ additionNumber: 5, repeatNum });
+          else if (value === "stepDown")
+            updateCounter({ additionNumber: -5, repeatNum });
         }, 100);
       }, 500);
     };
 
   useEffect(() => {
-    const cleanup = (e: Event) => {
+    const cleanup = (_e: Event) => {
       clearTimeout(timeoutRef.current);
       clearInterval(intervalRef.current);
       timeoutRef.current = null;
@@ -80,7 +106,8 @@ const Counter = () => {
           type="number"
           className={s.number}
           onChange={handleCounterChange}
-          value={counter}
+          onBlur={handleCounterBlur}
+          value={localValue}
         />
         <div
           className={s.add}

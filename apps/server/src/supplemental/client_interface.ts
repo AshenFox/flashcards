@@ -1,8 +1,8 @@
-import config from "config";
+import { env } from "@setup";
 import ImageSearch from "image-search-google";
 
-const cse_id: string = config.get("cse_id");
-const keyArr: string[] = config.get("keyArr");
+const cse_id = env.GOOGLE_CSE_ID;
+const keyArr = env.GOOGLE_API_KEYS.split(",");
 
 type ClientInterface = {
   clientArr: Client[];

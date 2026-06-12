@@ -7,37 +7,29 @@ $notebook: 1199px;
 
 $h-mobile-sm: 500px;
 $h-mobile: 620px;
-$h-tablet: 840px;
 
-/* ======= */
+/* ======= Base palette ======= */
 
 $dandelion: #ffdd67;
 $lightning-yellow: #ffcd1f;
 $orange-peel: #ff9800;
 $orange: #ff5722;
-$jade: #00ad57;
 $violet: #6400bb;
 $pale-teal: #c2e2e2;
 $teal: #00a9a6;
 
 $concrete: #f3f3f3;
-$mint-cream: #f2f2f2;
 $silver-foil: #979797;
 $charcoal: #3d3d3d;
 $quartz: #4b4b4b;
 $jet: #363636;
 $raisin-black: #232323;
 
-$ivory: #fffefc;
 $anti-flash-white: #f0f0f0;
-$gainsboro: #dbdbdb;
 $philippine-silver: #b6b6b6;
-$cadet-grey: #97a5aa;
 $dim-gray: #696969;
 $dark-liver: #4e4e4e;
-$davys-grey: #5e5e5e;
 
-$languid-lavender: #d5c8e0;
 $regalia: #54267b;
 $american-purple: #431c64;
 
@@ -49,9 +41,24 @@ $magic-mint: #bde8d3;
 $crayola: #23b26d;
 $benzol-green: #00da70;
 
+/* ======= Light-theme palette — Regalia purple hero ======= */
+
+$purple-page: #e6e3ec;
+$card-white: #fff;
+$purple-border: #d0c9dc;
+$purple-border-2: #d4cede;
+$purple-divider: #d0c9dc;
+$purple-border-strong: #b7afc6;
+$purple-text-strong: #2e2838;
+$purple-text: #4a4453;
+$purple-muted: #9b93a8;
+$purple-label: #6e6680;
+$purple-icon: #4a4453;
+
+/* ======= */
+
 html.light,
 html.dark {
-  /* constant colors/helpers */
   --stronger-success-color: #{$benzol-green};
   --stronger-danger-color: #{$lust};
   --active-color: #{$lightning-yellow};
@@ -63,34 +70,34 @@ html.dark {
 }
 
 html.light {
-  /* general app element colors */
-  --app-background-color: #{$mint-cream};
-  --element-background-color: #{$ivory};
-  --element-border-color: #{$gainsboro};
+  /* general */
+  --app-background-color: #{$purple-page};
+  --element-background-color: #{$card-white};
+  --element-border-color: #{$purple-border};
   --secondary-element-background-color: #{$teal};
-  --icon-fill: #{$davys-grey};
-  --input-border-color: #{$jet};
-  --divider-color: #{$philippine-silver};
-  --reverse-color: #{$anti-flash-white};
+  --icon-fill: #{$purple-icon};
+  --input-border-color: #{$purple-border-strong};
+  --divider-color: #{$purple-divider};
+  --reverse-color: #{$purple-page};
   --header-color: #{$regalia};
   --header-secondary-color: #{$american-purple};
 
   /* text */
-  --text-color: #{$dark-liver};
-  --stronger-text-color: #{$jet};
-  --subtle-text-color: #{$cadet-grey};
-  --stronger-subtle-text-color: #{$dim-gray};
+  --text-color: #{$purple-text};
+  --stronger-text-color: #{$purple-text-strong};
+  --subtle-text-color: #{$purple-muted};
+  --stronger-subtle-text-color: #{$purple-label};
 
-  /* general state */
-  --inactive-color: #{$gainsboro};
-  --inactive-secondary-color: #{$cadet-grey};
+  /* state */
+  --inactive-color: #{$purple-border-2};
+  --inactive-secondary-color: #{$purple-muted};
   --alternative-active-color: #{$lightning-yellow};
   --accentuated-color: #{$regalia};
   --stronger-accentuated-color: #{$american-purple};
 }
 
 html.dark {
-  /* general app elements colors */
+  /* general */
   --app-background-color: #{$raisin-black};
   --element-background-color: #{$jet};
   --element-border-color: #{$quartz};
@@ -108,7 +115,7 @@ html.dark {
   --subtle-text-color: #{$silver-foil};
   --stronger-subtle-text-color: #{$philippine-silver};
 
-  /* general state and colors */
+  /* state */
   --inactive-color: #{$dim-gray};
   --inactive-secondary-color: #{$silver-foil};
   --alternative-active-color: #{$dandelion};

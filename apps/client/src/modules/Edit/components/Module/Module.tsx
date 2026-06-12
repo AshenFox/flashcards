@@ -2,12 +2,21 @@ import Container from "@components/Container";
 import ContentWrapper from "@components/ContentWrapper";
 import { useSaveState } from "@modules/Edit/components/Save/useSaveActive";
 import { useEditContext } from "@modules/Edit/context";
-import { useActions, useAppSelector } from "@store/hooks";
+import {
+  useEditIsLoading,
+  useEditModule,
+  useEditModuleTitleControl,
+} from "@modules/Edit/hooks";
 import Input from "@ui/Input";
 import { Button } from "@ui/InteractiveElement";
 import TextLabel from "@ui/TextLabel";
-import { memo, useCallback, useRef } from "react";
-import { ContentEditableEvent } from "react-contenteditable";
+import {
+  type ChangeEvent,
+  memo,
+  useCallback,
+  useEffect,
+  useState,
+} from "react";
 
 import Save from "../Save/Save";
 import { ExportCards, ImportCards, SaveAllCards } from "./components";
@@ -15,34 +24,32 @@ import s from "./styles.module.scss";
 
 const Module = () => {
   const { selectionActive, toggleSelectionActive } = useEditContext();
-  const { controlModule, editModule } = useActions();
+  const { onTitleChange } = useEditModuleTitleControl();
 
-  const currentModule = useAppSelector(s => s.main.module);
-  const loading = useAppSelector(
-    s => s.main.sections.editDraft.loading || s.main.sections.module.loading,
-  );
+  const editModule = useEditModule();
+  const loading = useEditIsLoading();
 
-  const { title, draft, _id: moduleId } = currentModule || {};
+  const { title = "", draft, _id: moduleId } = editModule || {};
+
+  const [localTitle, setLocalTitle] = useState(title);
+
+  useEffect(() => {
+    setLocalTitle(title);
+  }, [title, moduleId]);
 
   const handleModuleChange = useCallback(
-    (e: ContentEditableEvent) => {
-      controlModule({ value: e.target.value });
-
-      clearTimeout(timer.current);
-      timer.current = setTimeout(async () => {
-        editModule();
-        timer.current = null;
-      }, 500);
+    (e: ChangeEvent<HTMLInputElement>) => {
+      const value = e.target.value;
+      setLocalTitle(value);
+      onTitleChange(value);
     },
-    [controlModule, editModule],
+    [onTitleChange],
   );
-
-  const timer = useRef<ReturnType<typeof setTimeout>>(null);
 
   const { active } = useSaveState();
 
   const errMessage =
-    draft && selectionActive
+    draft && active
       ? "PLEASE ENTER A TITLE AND ENSURE SAVING OF AT LEAST 2 CARDS"
       : "PLEASE ENTER A TITLE";
 
@@ -55,10 +62,10 @@ const Module = () => {
           <div className={s.content}>
             <div className={s.title}>
               <Input
-                value={title ?? ""}
+                value={localTitle}
                 onChange={handleModuleChange}
                 className={s.input}
-                error={!active}
+                // error={!active}
                 id={inputId}
                 disabled={loading}
               />

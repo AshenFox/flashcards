@@ -1,4 +1,3 @@
-import { useActions, useAppSelector } from "@store/hooks";
 import { TriangleLeftIcon, TriangleRightIcon } from "@ui/Icons";
 import { clsx } from "clsx";
 import { memo, MouseEvent, useCallback } from "react";
@@ -8,15 +7,20 @@ import s from "../styles.module.scss";
 type ControlProps = {
   direction: "left" | "right";
   _id: string;
+  galleryPosition?: number;
+  galleryWidth?: number;
+  onMove: (direction: "left" | "right") => void;
 };
 
-const Control = ({ direction, _id }: ControlProps) => {
-  const { moveGallery } = useActions();
-
-  const cards = useAppSelector(s => s.main.cards);
-
-  const card = cards[_id];
-  const { position = 0, width = 0 } = card?.gallery ?? {};
+const Control = ({
+  direction,
+  _id,
+  galleryPosition = 0,
+  galleryWidth = 0,
+  onMove,
+}: ControlProps) => {
+  const position = galleryPosition;
+  const width = galleryWidth;
 
   let active = true;
 
@@ -39,10 +43,10 @@ const Control = ({ direction, _id }: ControlProps) => {
   }
 
   const clickControl = useCallback(
-    (e: MouseEvent<HTMLDivElement>) => {
-      if (active) moveGallery({ _id, value: direction });
+    (_e: MouseEvent<HTMLDivElement>) => {
+      if (active) onMove(direction);
     },
-    [_id, active, direction, moveGallery],
+    [active, direction, onMove],
   );
 
   return (

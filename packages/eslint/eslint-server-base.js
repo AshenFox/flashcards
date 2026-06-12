@@ -1,10 +1,12 @@
-const js = require("@eslint/js");
+import baseConfig from "./eslint-base.js";
 
-module.exports = {
-  extends: [require.resolve("@flashcards/eslint/eslint-base")],
-  rules: {
-    ...js.configs.recommended.rules,
-    "no-undef": "off",
-    "no-unused-vars": "off",
+export default [
+  ...baseConfig,
+  {
+    files: ["**/*.{js,mjs,cjs,ts,tsx}"],
+    rules: {
+      "no-undef": "off",
+      "no-unused-vars": "off",
+    },
   },
-};
+];

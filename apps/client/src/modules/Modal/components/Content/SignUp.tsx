@@ -1,116 +1,105 @@
+import { type SignUpFormData, signUpSchema } from "@flashcards/common";
+import { zodResolver } from "@hookform/resolvers/zod";
 import Eye from "@modules/Modal/Eye";
-import { useActions, useAppSelector } from "@store/hooks";
-import { ModalInputFields } from "@store/reducers/modal/types";
 import Input from "@ui/Input";
 import { Button } from "@ui/InteractiveElement";
 import TextLabel from "@ui/TextLabel";
+import { useAuthStore } from "@zustand/auth";
+import { useModalStore } from "@zustand/modal";
 import clsx from "clsx";
-import { ChangeEvent, memo, MouseEvent, useRef, useState } from "react";
+import { memo, MouseEvent, useState } from "react";
+import { type Resolver, useForm } from "react-hook-form";
 
+import { applyFieldErrors } from "./applyFieldErrors";
 import Error from "./components/Error/Error";
+import LogIn from "./LogIn";
 import s from "./styles.module.scss";
 
 const SignUp = () => {
-  const { changeModal, controlField, enter, checkField } = useActions();
-
-  const username = useAppSelector(s => s.modal.sign_up.username);
-  const password = useAppSelector(s => s.modal.sign_up.password);
-  const email = useAppSelector(s => s.modal.sign_up.email);
-  const userErr = useAppSelector(s => s.modal.sign_up_errors.username);
-  const passErr = useAppSelector(s => s.modal.sign_up_errors.password);
-  const emailErr = useAppSelector(s => s.modal.sign_up_errors.email);
-  const ok = useAppSelector(s => s.modal.sign_up_errors.ok);
-  const loading = useAppSelector(s => s.modal.loading);
+  const replace = useModalStore(state => state.replace);
+  const close = useModalStore(state => state.close);
+  const signUp = useAuthStore(state => state.signUp);
 
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
+
+  const {
+    register,
+    handleSubmit,
+    setError,
+    formState: { errors, touchedFields, isValid, isSubmitting },
+  } = useForm<SignUpFormData>({
+    resolver: zodResolver(signUpSchema) as Resolver<SignUpFormData>,
+    mode: "all",
+    defaultValues: {
+      username: "",
+      email: "",
+      password: "",
+    },
+  });
+
+  const onSubmit = handleSubmit(async (data: SignUpFormData) => {
+    try {
+      const result = await signUp(data);
+
+      if (result.success === false) {
+        applyFieldErrors(setError, result.fieldErrors);
+        return;
+      }
+
+      close();
+    } catch (err) {
+      console.error("Sign up failed:", err);
+    }
+  });
 
   const onPasswordVisibleButton = (e: MouseEvent<SVGElement>) => {
     e.preventDefault();
     setIsPasswordVisible(v => !v);
   };
 
-  const onClickChangeModal =
-    (value: "log_in") => (e: MouseEvent<HTMLButtonElement>) => {
-      changeModal({ active_modal: value });
-    };
-
-  const onCLickLoadingButton =
-    (value: "sign_up") => (e: MouseEvent<HTMLButtonElement>) => {
-      enter(value);
-    };
-
-  const onChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const target = e.target;
-    const value = target.value;
-    const name = target.name as ModalInputFields;
-
-    controlField({ field: "sign_up", name, value });
-
-    // Timer control
-    let timer = timers.current[name];
-
-    if (timer) clearTimeout(timer);
-    timers.current[name] = setTimeout(() => {
-      checkField(name);
-      timers.current[name] = null;
-    }, 500);
+  const onClickChangeModal = () => {
+    replace({ title: "Log in", content: <LogIn /> });
   };
-
-  const timers = useRef<{
-    username: ReturnType<typeof setTimeout>;
-    email: ReturnType<typeof setTimeout>;
-    password: ReturnType<typeof setTimeout>;
-  }>({
-    username: null,
-    email: null,
-    password: null,
-  });
 
   return (
     <>
-      <Error errObj={userErr} />
+      {touchedFields.username && <Error message={errors.username?.message} />}
       <TextLabel htmlFor="username">USERNAME:</TextLabel>
       <Input
-        name="username"
+        {...register("username")}
         type="text"
         className={clsx(
           s.signup_input,
-          !!username && userErr?.ok && !timers.current.username && s.success,
+          touchedFields.username && !errors.username && s.success,
         )}
         id="username"
         placeholder="Enter a user name"
-        value={username}
-        onChange={onChange}
       />
 
-      <Error errObj={emailErr} />
+      {touchedFields.email && <Error message={errors.email?.message} />}
       <TextLabel htmlFor="email">EMAIL:</TextLabel>
       <Input
-        name="email"
+        {...register("email")}
         type="email"
         className={clsx(
           s.signup_input,
-          !!email && emailErr.ok && !timers.current.email && s.success,
+          touchedFields.email && !errors.email && s.success,
         )}
         id="email"
         placeholder="Enter an email"
-        value={email}
-        onChange={onChange}
       />
 
-      <Error errObj={passErr} />
+      {touchedFields.password && <Error message={errors.password?.message} />}
       <TextLabel htmlFor="password">PASSWORD:</TextLabel>
       <Input
-        name="password"
+        {...register("password")}
         type={isPasswordVisible ? "text" : "password"}
         className={clsx(
           s.signup_input,
-          !!password && passErr.ok && !timers.current.password && s.success,
+          touchedFields.password && !errors.password && s.success,
         )}
         id="password"
         placeholder="Enter a password"
-        value={password}
-        onChange={onChange}
         after={
           <Eye
             isVisible={isPasswordVisible}
@@ -120,9 +109,9 @@ const SignUp = () => {
       />
 
       <Button
-        active={ok}
-        loading={loading}
-        onClick={onCLickLoadingButton("sign_up")}
+        active={isValid && !isSubmitting}
+        loading={isSubmitting}
+        onClick={onSubmit}
         className={s.submit_button}
       >
         Sign up
@@ -131,7 +120,7 @@ const SignUp = () => {
       <div className={s.options}>
         <p>
           Already have an account?{" "}
-          <button onClick={onClickChangeModal("log_in")}>Log in!</button>
+          <button onClick={onClickChangeModal}>Log in!</button>
         </p>
       </div>
     </>

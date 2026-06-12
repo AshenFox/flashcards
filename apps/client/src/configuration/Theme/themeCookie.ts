@@ -8,9 +8,13 @@ export type ResolvedTheme = "light" | "dark";
  * Parse resolved theme from Cookie header (server-side).
  * Returns the stored "light" | "dark" or null if missing/invalid.
  */
-export function parseThemeFromCookie(cookieHeader: string | undefined): ResolvedTheme | null {
+export function parseThemeFromCookie(
+  cookieHeader: string | undefined,
+): ResolvedTheme | null {
   if (!cookieHeader || typeof cookieHeader !== "string") return null;
-  const match = cookieHeader.match(new RegExp(`${THEME_COOKIE_NAME}=(light|dark)`));
+  const match = cookieHeader.match(
+    new RegExp(`${THEME_COOKIE_NAME}=(light|dark)`),
+  );
   const value = match?.[1];
   return value === "light" || value === "dark" ? value : null;
 }

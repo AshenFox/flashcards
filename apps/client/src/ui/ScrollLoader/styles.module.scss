@@ -6,7 +6,7 @@
   display: inline-block;
   width: 80px;
   height: 80px;
-  opacity: 0;
+  opacity: 1;
 
   div {
     position: absolute;
@@ -42,15 +42,7 @@
 .container {
   display: flex;
   overflow: hidden;
-  height: 0;
+  height: 3.5rem;
   align-items: center;
   justify-content: center;
-
-  &.active {
-    height: 3.5rem;
-
-    .loader {
-      opacity: 1;
-    }
-  }
 }

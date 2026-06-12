@@ -1,75 +1,89 @@
+import { type LogInFormData, logInSchema } from "@flashcards/common";
+import { zodResolver } from "@hookform/resolvers/zod";
 import Eye from "@modules/Modal/Eye";
-import { useActions, useAppSelector } from "@store/hooks";
-import { ModalInputFields } from "@store/reducers/modal/types";
 import Input from "@ui/Input";
 import { Button } from "@ui/InteractiveElement";
 import TextLabel from "@ui/TextLabel";
-import { ChangeEvent, KeyboardEvent, memo, MouseEvent, useState } from "react";
+import { useAuthStore } from "@zustand/auth";
+import { useModalStore } from "@zustand/modal";
+import { KeyboardEvent, memo, MouseEvent, useState } from "react";
+import { type Resolver, useForm } from "react-hook-form";
 
+import { applyFieldErrors } from "./applyFieldErrors";
 import Error from "./components/Error/Error";
+import SignUp from "./SignUp";
 import s from "./styles.module.scss";
 
 const LogIn = () => {
-  const { changeModal, controlField, enter } = useActions();
-
-  const username = useAppSelector(s => s.modal.log_in.username);
-  const password = useAppSelector(s => s.modal.log_in.password);
-  const userErr = useAppSelector(s => s.modal.log_in_errors.username);
-  const passErr = useAppSelector(s => s.modal.log_in_errors.password);
-  const loading = useAppSelector(s => s.modal.loading);
+  const replace = useModalStore(state => state.replace);
+  const close = useModalStore(state => state.close);
+  const logIn = useAuthStore(state => state.logIn);
 
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
+
+  const {
+    register,
+    handleSubmit,
+    setError,
+    formState: { errors, isValid, isSubmitting },
+  } = useForm<LogInFormData>({
+    resolver: zodResolver(logInSchema) as Resolver<LogInFormData>,
+    mode: "all",
+    defaultValues: {
+      username: "",
+      password: "",
+    },
+  });
+
+  const onSubmit = handleSubmit(async (data: LogInFormData) => {
+    try {
+      const result = await logIn(data);
+
+      if (result.success === false) {
+        applyFieldErrors(setError, result.fieldErrors);
+        return;
+      }
+
+      close();
+    } catch (err) {
+      console.error("Login failed:", err);
+    }
+  });
+
   const onPasswordVisibleButton = (e: MouseEvent<SVGElement>) => {
     e.preventDefault();
     setIsPasswordVisible(v => !v);
   };
 
-  const onClickChangeModal =
-    (value: "sign_up") => (e: MouseEvent<HTMLButtonElement>) => {
-      changeModal({ active_modal: value });
-    };
-
-  const onCLickLoadingButton =
-    (value: "log_in") => (e: MouseEvent<HTMLButtonElement>) => {
-      enter(value);
-    };
-
-  const onChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value;
-    const name = e.target.name as ModalInputFields;
-
-    controlField({ field: "log_in", name, value });
+  const onClickChangeModal = () => {
+    replace({ title: "Sign up", content: <SignUp /> });
   };
 
   const onKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === "Enter") enter("log_in");
+    if (e.key === "Enter") void onSubmit();
   };
 
   return (
     <>
-      <Error errObj={userErr} single={true} />
+      <Error message={errors.username?.message} />
       <Input
-        name="username"
+        {...register("username")}
         id="username"
         className={s.login_input}
         placeholder="Type your username"
-        value={username}
-        onChange={onChange}
         onKeyDown={onKeyDown}
       />
       <TextLabel htmlFor="username" className={s.label}>
         USERNAME
       </TextLabel>
 
-      {userErr.ok && <Error errObj={passErr} single={true} />}
+      <Error message={errors.password?.message} />
       <Input
+        {...register("password")}
         type={isPasswordVisible ? "text" : "password"}
-        name="password"
         id="password"
         className={s.login_input}
         placeholder="Type your password"
-        value={password}
-        onChange={onChange}
         onKeyDown={onKeyDown}
         after={
           <Eye
@@ -83,9 +97,9 @@ const LogIn = () => {
       </TextLabel>
 
       <Button
-        active={true}
-        loading={loading}
-        onClick={onCLickLoadingButton("log_in")}
+        active={isValid && !isSubmitting}
+        loading={isSubmitting}
+        onClick={onSubmit}
         className={s.submit_button}
       >
         Log in
@@ -94,7 +108,7 @@ const LogIn = () => {
       <div className={s.options}>
         <p>
           Don&apos;t have an account?{" "}
-          <button onClick={onClickChangeModal("sign_up")}>Sign up!</button>
+          <button onClick={onClickChangeModal}>Sign up!</button>
         </p>
       </div>
     </>

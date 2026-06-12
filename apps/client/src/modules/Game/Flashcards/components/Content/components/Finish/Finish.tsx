@@ -1,9 +1,9 @@
 import Results, { ResultItem } from "@modules/Game/components/Results";
-import { useAppSelector } from "@store/hooks";
+import { useGameStore } from "@zustand/game/gameStore";
 import { memo } from "react";
 
 const Finish = () => {
-  const answers = useAppSelector(s => s.game.flashcards.answers);
+  const answers = useGameStore(s => s.flashcards.answers);
 
   const correctNum = answers.filter(item => item.answer === "correct").length;
 

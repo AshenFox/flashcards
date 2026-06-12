@@ -2,7 +2,7 @@ import Container from "@components/Container";
 import ContentWrapper from "@components/ContentWrapper";
 import { memo } from "react";
 
-import CardsContainer from "./components/CardsContainer";
+import CardsContainer from "./components/Cards/CardsContainer";
 import Param from "./components/Param/Param";
 import s from "./styles.module.scss";
 

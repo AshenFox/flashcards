@@ -1,10 +1,10 @@
-import { User } from "@flashcards/common";
+import { type AuthResponse, User } from "@flashcards/common";
 import userModel from "@models/user_model";
-import { check, CheckResult } from "@supplemental/checks";
+import { env } from "@setup";
+import { validateLogIn, validateSignUp } from "@supplemental/checks";
 import { auth } from "@supplemental/middleware";
 import { ResponseLocals } from "@supplemental/types";
 import bcrypt from "bcryptjs";
-import config from "config";
 import express, { Request, Response } from "express";
 import jwt from "jsonwebtoken";
 
@@ -14,95 +14,82 @@ type ResError = {
   errorBody: string;
 };
 
-// @route ------ POST api/auth/check/:type
-// @desc ------- Check form data of certain type
+// @route ------ POST api/auth/sign_up
+// @desc ------- Sign up a user
 // @access ----- Public
 
-type CheckPostParams = {
-  type: "log_in" | "sign_up";
+type SignUpPostReqBody = {
+  username: string;
+  email: string;
+  password: string;
 };
 
-type CheckPostReq = Request<CheckPostParams>;
-type CheckPostRes = Response<CheckResult | ResError>;
+type SignUpPostReq = Request<unknown, unknown, SignUpPostReqBody>;
+type SignUpPostRes = Response<AuthResponse | ResError>;
 
-router.post("/check/:type", async (req: CheckPostReq, res: CheckPostRes) => {
+router.post("/sign_up", async (req: SignUpPostReq, res: SignUpPostRes) => {
   try {
-    const { type } = req.params;
-    const errors = await check(req.body, type);
-    res.status(200).json(errors);
+    const validation = await validateSignUp(req.body);
+
+    if (!validation.success) {
+      res.status(200).json({ fieldErrors: validation.fieldErrors });
+      return;
+    }
+
+    const { username, email, password } = validation.data;
+
+    const user = await userModel.create({
+      username,
+      email,
+      registration_date: new Date(),
+      password: await bcrypt.hash(password, 10),
+    });
+
+    console.log("A new user has been signed up!");
+
+    const token = jwt.sign({ _id: user._id }, env.JWT_SECRET);
+
+    console.log("A user has logged in!");
+
+    res.status(200).json({ token });
   } catch (err) {
     console.error(err);
     res.status(500).json({ errorBody: "Server Error" });
   }
 });
 
-// @route ------ POST api/auth/entry/:type
-// @desc ------- Entry a user
+// @route ------ POST api/auth/log_in
+// @desc ------- Log in a user
 // @access ----- Public
 
-type EntryPostParams = {
-  type: "log_in" | "sign_up";
-};
-
-type EntryPostReqBody = {
+type LogInPostReqBody = {
   username: string;
-  email: string;
   password: string;
 };
 
-type EntryPostReq = Request<EntryPostParams, any, EntryPostReqBody>;
+type LogInPostReq = Request<unknown, unknown, LogInPostReqBody>;
+type LogInPostRes = Response<AuthResponse | ResError>;
 
-type EntryPostResBody = {
-  errors: CheckResult;
-  token?: string;
-};
-
-type EntryPostRes = Response<EntryPostResBody | ResError>;
-
-router.post("/entry/:type", async (req: EntryPostReq, res: EntryPostRes) => {
+router.post("/log_in", async (req: LogInPostReq, res: LogInPostRes) => {
   try {
-    const { type } = req.params;
+    const validation = await validateLogIn(req.body);
 
-    const errors = await check(req.body, type);
-
-    const { username, email, password } = req.body;
-
-    const res_data: EntryPostResBody = { errors };
-
-    if (errors.ok) {
-      let user: User | null = null;
-
-      if (type === "log_in") {
-        user = await userModel.findOne({
-          username,
-        });
-      } else if (type === "sign_up") {
-        const user_data = {
-          username,
-          email,
-          registration_date: new Date(),
-          password: "",
-        };
-
-        user_data.password = await bcrypt.hash(password, 10);
-
-        user = await userModel.create(user_data);
-
-        console.log("A new user has been signed up!");
-      }
-
-      if (!user) throw new Error("The user has not been found.");
-
-      const _id = user._id;
-
-      const token = jwt.sign({ _id }, config.get("jwtSecret"));
-
-      res_data.token = token;
-
-      console.log(`A user has logged in!`);
+    if (!validation.success) {
+      res.status(200).json({ fieldErrors: validation.fieldErrors });
+      return;
     }
 
-    res.status(200).json(res_data);
+    const { username } = validation.data;
+
+    const user = await userModel.findOne({ username });
+
+    if (!user) throw new Error("The user has not been found.");
+
+    const token = jwt.sign({ _id: user._id }, env.JWT_SECRET);
+
+    console.log("A user has logged in!");
+
+    res.status(200).json({ token });
   } catch (err) {
     console.error(err);
     res.status(500).json({ errorBody: "Server Error" });

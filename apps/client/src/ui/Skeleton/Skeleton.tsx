@@ -1,3 +1,4 @@
+import clsx from "clsx";
 import React, { memo } from "react";
 import Skeleton, { SkeletonProps } from "react-loading-skeleton";
 
@@ -7,11 +8,11 @@ type CustomSkeletonProps = SkeletonProps;
 
 const CustomSkeleton = (props: CustomSkeletonProps) => (
   <Skeleton
-    className={s.skeleton}
     baseColor="var(--skeleton-base-color)"
     highlightColor="var(--skeleton-highlight-color)"
     inline
     {...props}
+    className={clsx(s.skeleton, props.className)}
   />
 );
 

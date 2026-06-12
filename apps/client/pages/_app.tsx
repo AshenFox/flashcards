@@ -1,22 +1,20 @@
 import "@styles/main.scss";
 import "react-loading-skeleton/dist/skeleton.css";
 
+import { queryClient } from "@api/queryClient";
 import Head from "@configuration/Head";
 import PasteControl from "@configuration/PasteControl";
 import TabUpdateController from "@configuration/TabUpdateController";
-import Theme from "@configuration/Theme";
+import Theme, { parseThemeFromCookie } from "@configuration/Theme";
 import Voice from "@configuration/Voice";
+import AppWrapper from "@modules/AppWrapper";
 import AuthSpinner from "@modules/AuthSpinner";
 import AuthWrapper from "@modules/AuthWrapper";
 import Dropdown from "@modules/Dropdown";
 import Header from "@modules/Header";
-import store from "@store/store";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import ModalRenderer from "@modules/Modal";
+import { QueryClientProvider } from "@tanstack/react-query";
 import type { AppContext, AppProps } from "next/app";
-import { Provider } from "react-redux";
-import { parseThemeFromCookie } from "@configuration/Theme";
-
-const queryClient = new QueryClient();
 
 type MyAppProps = AppProps & {
   initialTheme: "light" | "dark" | null;
@@ -26,16 +24,17 @@ const MyApp = ({ Component, pageProps, initialTheme }: MyAppProps) => (
   <QueryClientProvider client={queryClient}>
     <Theme initialTheme={initialTheme}>
       <Head initialTheme={initialTheme} />
-      <Provider store={store}>
-        <AuthWrapper>
+      <AuthWrapper>
+        <AppWrapper>
           <Header />
-          <Dropdown />
           <Component {...pageProps} />
-        </AuthWrapper>
-        <AuthSpinner />
-        <Voice />
-        <TabUpdateController />
-      </Provider>
+          <Dropdown />
+        </AppWrapper>
+      </AuthWrapper>
+      <AuthSpinner />
+      <ModalRenderer />
+      <Voice />
+      <TabUpdateController />
       <PasteControl />
     </Theme>
   </QueryClientProvider>

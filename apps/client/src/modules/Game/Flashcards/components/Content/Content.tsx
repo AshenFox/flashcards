@@ -1,6 +1,11 @@
-import EditCard from "@components/EditCard";
+import { EditCard } from "@components/Cards";
+import { useCardsUIStore } from "@components/Cards/state/context";
 import ContentContainer from "@modules/Game/components/ContentContainer";
-import { useAppSelector } from "@store/hooks";
+import {
+  useGameActiveCardsQuery,
+  useOrderedGameCards,
+} from "@modules/Game/hooks";
+import { useGameStore } from "@zustand/game/gameStore";
 import { useRouter } from "next/router";
 import { memo, ReactNode } from "react";
 
@@ -16,25 +21,25 @@ const Content = () => {
 
   const isSR = _id === "sr";
 
-  const progress = useAppSelector(s => s.game.flashcards.progress);
-  const side = useAppSelector(s => s.game.flashcards.side);
-  const ended_early = useAppSelector(s => s.game.flashcards.ended_early);
-  const cards = useAppSelector(s => s.main.cards);
-  const loading = useAppSelector(
-    s => s.main.sections.srCards.loading || s.main.sections.moduleCards.loading,
+  const progress = useGameStore(s => s.flashcards.progress);
+  const side = useGameStore(s => s.flashcards.side);
+  const ended_early = useGameStore(s => s.flashcards.ended_early);
+  const orderedCards = useOrderedGameCards();
+  const { isLoading } = useGameActiveCardsQuery();
+
+  const activeCardData = orderedCards[progress];
+  const length = orderedCards.length;
+  const cardId = activeCardData?._id;
+  const cardEdit = useCardsUIStore(s =>
+    cardId ? (s.cards[cardId]?.edit ?? false) : false,
   );
 
-  const formatted_cards = Object.values(cards);
-  const { length } = formatted_cards;
-
-  const activeCardData = formatted_cards[progress];
-
   const isEnd = length === progress || ended_early;
-  const isEdit = length && length !== progress ? activeCardData.edit : false;
+  const isEdit = !!(length && length !== progress && cardEdit);
 
   let content: ReactNode = null;
 
-  if (isEdit) {
+  if (isEdit && activeCardData) {
     content = (
       <EditCard
         key={activeCardData._id}
@@ -47,7 +52,7 @@ const Content = () => {
     content = (
       <>
         {!isEnd &&
-          formatted_cards.map((card, i) => {
+          orderedCards.map((card, i) => {
             if (i === progress) {
               return <Card key={card._id} data={card} side={side} />;
             } else if (i === progress - 1 && progress - 1 >= 0) {
@@ -71,7 +76,7 @@ const Content = () => {
 
   return (
     <ContentContainer
-      loading={loading || !length}
+      loading={isLoading || !length}
       isScrollable={isEdit || (isSR && isEnd)}
     >
       <div className={s.container}>{content}</div>

@@ -1,10 +1,10 @@
-import { useActions, useAppSelector } from "@store/hooks";
-import { memo, MouseEvent, useEffect } from "react";
+import { Link } from "@ui/InteractiveElement";
+import { useGameStore } from "@zustand/game/gameStore";
+import { useRouter } from "next/router";
+import { memo, useEffect } from "react";
 
 import Score from "./component/Score";
 import s from "./styles.module.scss";
-import { Link } from "@ui/InteractiveElement";
-import { useRouter } from "next/router";
 
 const Round = () => {
   const router = useRouter();
@@ -12,11 +12,10 @@ const Round = () => {
 
   const isSR = _id === "sr";
 
-  const { nextWriteRound } = useActions();
-
-  const answered = useAppSelector(s => s.game.write.answered);
-  const rounds = useAppSelector(s => s.game.write.rounds);
-  const all_cards_num = useAppSelector(s => s.game.write.all_cards_num);
+  const nextWriteRound = useGameStore(s => s.nextWriteRound);
+  const answered = useGameStore(s => s.write.answered);
+  const rounds = useGameStore(s => s.write.rounds);
+  const all_cards_num = useGameStore(s => s.write.all_cards_num);
 
   const correctAnswered = answered.filter(
     item => item.answer === "correct",
@@ -25,7 +24,7 @@ const Round = () => {
   let correctRounds = 0;
 
   for (const round of rounds) {
-    let correctRound = round.answered.filter(
+    const correctRound = round.answered.filter(
       item => item.answer === "correct",
     ).length;
     correctRounds += correctRound;
@@ -39,7 +38,7 @@ const Round = () => {
 
   const roundNum = rounds.length + 1;
 
-  const clickContinue = (e: MouseEvent<HTMLButtonElement>) => {
+  const clickContinue = () => {
     nextWriteRound();
   };
 
@@ -55,7 +54,7 @@ const Round = () => {
     return () => {
       window.removeEventListener("keydown", keyDownContinue);
     };
-  }, []);
+  }, [nextWriteRound]);
 
   return (
     <div className={s.round}>

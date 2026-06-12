@@ -1,7 +1,8 @@
+import { useSetCardEdit } from "@components/Cards/state/ui";
 import Speaker from "@components/Speaker";
 import { SRIndicator, SRInfoTooltip } from "@components/SRIndicator";
-import { useActions, useAppSelector } from "@store/hooks";
-import { Card } from "@store/reducers/main/types";
+import type { CardDto } from "@flashcards/common";
+import { useSaveSRAnswerMutation } from "@modules/Game/hooks";
 import { EditIcon } from "@ui/Icons";
 import Img from "@ui/Img";
 import Input from "@ui/Input";
@@ -9,6 +10,7 @@ import { Button } from "@ui/InteractiveElement";
 import TextArea from "@ui/TextArea";
 import TextLabel from "@ui/TextLabel";
 import Tooltip from "@ui/Tooltip";
+import { useGameStore } from "@zustand/game/gameStore";
 import clsx from "clsx";
 import { useRouter } from "next/router";
 import {
@@ -23,12 +25,14 @@ import {
 import s from "./styles.module.scss";
 
 type AnswerProps = {
-  data: Card;
+  data: CardDto;
 };
 
 const Answer = ({ data }: AnswerProps) => {
-  const { setCardEdit, setWriteCopyAnswerField, nextWriteCard, putSRAnswer } =
-    useActions();
+  const setCardEdit = useSetCardEdit();
+  const setWriteCopyAnswerField = useGameStore(s => s.setWriteCopyAnswerField);
+  const nextWriteCard = useGameStore(s => s.nextWriteCard);
+  const { mutate: saveSRAnswer } = useSaveSRAnswerMutation();
 
   const router = useRouter();
   const { _id: _id_param } = router.query;
@@ -37,10 +41,10 @@ const Answer = ({ data }: AnswerProps) => {
 
   const { _id, term, definition, imgurl } = data;
 
-  const answer = useAppSelector(s => s.game.write.answer);
-  const copy_answer = useAppSelector(s => s.game.write.copy_answer);
-  const remaining = useAppSelector(s => s.game.write.remaining);
-  const rounds = useAppSelector(s => s.game.write.rounds);
+  const answer = useGameStore(s => s.write.answer);
+  const copy_answer = useGameStore(s => s.write.copy_answer);
+  const remaining = useGameStore(s => s.write.remaining);
+  const rounds = useGameStore(s => s.write.rounds);
 
   const activeCard = remaining[remaining.length - 1];
   let isCorrect = false;
@@ -68,14 +72,14 @@ const Answer = ({ data }: AnswerProps) => {
   }
 
   const changeCopyAnswer = (e: ChangeEvent<HTMLInputElement>) =>
-    setWriteCopyAnswerField({ value: e.target.value });
+    setWriteCopyAnswerField(e.target.value);
 
-  const clickEdit = (e: MouseEvent<HTMLDivElement>) =>
+  const clickEdit = (_e: MouseEvent<HTMLDivElement>) =>
     setCardEdit({ _id, value: true });
 
   const continueGame = useCallback(() => {
     if (canContinue) {
-      if (isFirstRound && isSR) putSRAnswer(_id, isCorrect ? 1 : -1);
+      if (isFirstRound && isSR) saveSRAnswer({ _id, answer: isCorrect ? 1 : -1 });
       nextWriteCard();
     }
   }, [
@@ -85,13 +89,13 @@ const Answer = ({ data }: AnswerProps) => {
     _id,
     isSR,
     nextWriteCard,
-    putSRAnswer,
+    saveSRAnswer,
   ]);
 
   const overrideAnswer = useCallback(() => {
-    if (isFirstRound && isSR) putSRAnswer(_id, 1);
-    nextWriteCard({ override: true });
-  }, [_id, isFirstRound, isSR, nextWriteCard, putSRAnswer]);
+    if (isFirstRound && isSR) saveSRAnswer({ _id, answer: 1 });
+    nextWriteCard(true);
+  }, [_id, isFirstRound, isSR, nextWriteCard, saveSRAnswer]);
 
   const clickContinue = (e: MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
@@ -99,7 +103,7 @@ const Answer = ({ data }: AnswerProps) => {
     continueGame();
   };
 
-  const clickOverride = (e: MouseEvent<HTMLButtonElement>) => {
+  const clickOverride = (_e: MouseEvent<HTMLButtonElement>) => {
     overrideAnswer();
   };
 
@@ -163,7 +167,11 @@ const Answer = ({ data }: AnswerProps) => {
       <div>
         <div className={s.section}>
           <span className={s.section_title}>Definition</span>
-          <Img containerClass={s.img_container} imgClass={s.img} url={imgurl} />
+          <Img
+            containerClass={s.img_container}
+            contentClass={s.img_content}
+            url={imgurl}
+          />
           <div className={s.section_body}>
             <TextArea html={definition} />
             <Speaker
@@ -210,7 +218,7 @@ const Answer = ({ data }: AnswerProps) => {
                 autoComplete="off"
                 value={copy_answer}
                 onChange={changeCopyAnswer}
-                inputRef={copyAnswerInput}
+                ref={copyAnswerInput}
                 movingBorder
               />
               <TextLabel htmlFor="write-input">copy answer</TextLabel>

@@ -1,4 +1,3 @@
-import Tooltip from "@ui/Tooltip";
 import clsx from "clsx";
 import {
   cloneElement,
@@ -33,7 +32,6 @@ const Switch = ({
   className,
   icon,
   iconSize,
-  tooltip,
   onClick,
   onMouseDown,
   onMouseUp,

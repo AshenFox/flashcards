@@ -1,7 +1,7 @@
-import { useActions, useAppSelector } from "@store/hooks";
-import { EasySpeechStatus, VoiceData } from "@store/reducers/voice/types";
 import { SpeakerIcon } from "@ui/Icons";
 import Tooltip from "@ui/Tooltip";
+import type { VoiceData } from "@zustand/voice";
+import { useVoiceStore } from "@zustand/voice";
 import clsx from "clsx";
 import EasySpeech from "easy-speech";
 import { ForwardedRef, memo, useCallback, useMemo } from "react";
@@ -16,10 +16,15 @@ type SpeakerProps = {
   ref?: ForwardedRef<HTMLDivElement>;
 };
 
-const Speaker = ({ _id, text, type, className, ref }: SpeakerProps) => {
-  const { setVoiceSpeaking } = useActions();
+type EasySpeechStatus = {
+  speechSynthesis?: { speaking?: boolean };
+};
 
-  const { voices, working, speaking } = useAppSelector(({ voice }) => voice);
+const Speaker = ({ _id, text, type, className, ref }: SpeakerProps) => {
+  const setVoiceSpeaking = useVoiceStore(s => s.setVoiceSpeaking);
+  const voices = useVoiceStore(s => s.voices);
+  const working = useVoiceStore(s => s.working);
+  const speaking = useVoiceStore(s => s.speaking);
 
   const filteredText = useMemo(() => filterText(text), [text]);
   const language = useMemo(() => detectLanguage(filteredText), [filteredText]);
@@ -61,7 +66,7 @@ const Speaker = ({ _id, text, type, className, ref }: SpeakerProps) => {
           console.info("Start speaking...");
           setVoiceSpeaking({ _id, type });
         },
-        pause: e => {
+        pause: _e => {
           console.info("Pause");
         },
         end: () => {
@@ -90,7 +95,7 @@ const Speaker = ({ _id, text, type, className, ref }: SpeakerProps) => {
 
     const status = EasySpeech.status() as EasySpeechStatus;
 
-    if (status.speechSynthesis.speaking) {
+    if (status?.speechSynthesis?.speaking) {
       cancel();
       setVoiceSpeaking();
     } else {

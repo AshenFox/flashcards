@@ -9,6 +9,7 @@ import {
 
 type QueryCreator = {
   page?: number;
+  size?: number;
   search?: string;
   created?: "newest" | "oldest";
   by?: "term" | "definition";

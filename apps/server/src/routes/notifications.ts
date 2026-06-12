@@ -111,7 +111,7 @@ router.put(
   async (req: PutSubscriptionReq, res: PutSubscriptionRes) => {
     try {
       const { _id } = req.params;
-      const { name, subscriptionData } = req.body;
+      const { name } = req.body;
       const user = res.locals.user;
 
       const subscription = (user.subscriptions as Subscriptions).find(

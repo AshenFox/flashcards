@@ -7,6 +7,8 @@ services:
     build:
       context: .
       dockerfile: Dockerfile.prod
+    env_file:
+      - packages/config/.env.server
     environment:
       - NODE_ENV=production
       - NODE_OPTIONS=--openssl-legacy-provider

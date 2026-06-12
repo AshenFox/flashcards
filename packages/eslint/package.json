@@ -2,15 +2,18 @@
   "name": "@flashcards/eslint",
   "version": "1.0.0",
   "private": true,
+  "type": "module",
   "exports": {
-    "./eslint-base": "./eslint-base.js",
-    "./eslint-server-base": "./eslint-server-base.js"
+    ".": "./index.js",
+    "./base": "./eslint-base.js",
+    "./server": "./eslint-server-base.js"
   },
   "devDependencies": {
-    "@eslint/js": "^8.56.0",
-    "@typescript-eslint/parser": "^8.26.1",
-    "eslint": "^8.57.1",
-    "eslint-plugin-import": "^2.29.1",
+    "@eslint/js": "^9.39.2",
+    "@typescript-eslint/eslint-plugin": "^8.46.1",
+    "@typescript-eslint/parser": "^8.46.1",
+    "eslint": "^9.39.2",
+    "eslint-plugin-import": "^2.32.0",
     "eslint-plugin-simple-import-sort": "^12.1.0"
   }
 }

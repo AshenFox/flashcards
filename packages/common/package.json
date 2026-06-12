@@ -22,7 +22,8 @@
   "dependencies": {
     "@flashcards/eslint": "*",
     "axios": "^1.6.7",
-    "web-push": "^3.4.4"
+    "web-push": "^3.4.4",
+    "zod": "4.4.3"
   },
   "devDependencies": {
     "@types/web-push": "^3.3.2",

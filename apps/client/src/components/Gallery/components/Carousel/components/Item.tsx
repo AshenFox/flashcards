@@ -1,33 +1,40 @@
-import { useActions } from "@store/hooks";
-import { ImgurlObj } from "@store/reducers/main/types";
+import { ImgurlObj } from "@components/Gallery/types";
+import Img from "@ui/Img";
 import clsx from "clsx";
 import { memo, SyntheticEvent, useCallback } from "react";
 
 import s from "../styles.module.scss";
 
 type ItemProps = {
-  _id: string;
   index: string;
   data: ImgurlObj;
+  onImageStatusChange?: (index: string, ok: boolean) => void;
+  onSelectImage?: (url: string) => void;
 };
 
-const Item = ({ _id, index, data }: ItemProps) => {
-  const { setCardImgurl, setUrlOk, editCard } = useActions();
-
+const Item = ({
+  index,
+  data,
+  onImageStatusChange,
+  onSelectImage,
+}: ItemProps) => {
   const { url, ok } = data;
 
   const error = useCallback(
-    (e: SyntheticEvent<HTMLImageElement>) => setUrlOk(_id, index, false),
-    [_id, index, setUrlOk],
+    (_e: SyntheticEvent<HTMLImageElement>) => {
+      onImageStatusChange?.(index, false);
+    },
+    [index, onImageStatusChange],
   );
   const load = useCallback(
-    (e: SyntheticEvent<HTMLImageElement>) => setUrlOk(_id, index, true),
-    [_id, index, setUrlOk],
+    (_e: SyntheticEvent<HTMLImageElement>) => {
+      onImageStatusChange?.(index, true);
+    },
+    [index, onImageStatusChange],
   );
 
   const clickGalleryItem = () => {
-    setCardImgurl({ _id, value: url });
-    editCard(_id);
+    onSelectImage?.(url);
   };
 
   return (
@@ -35,7 +42,12 @@ const Item = ({ _id, index, data }: ItemProps) => {
       className={clsx(s.item, !ok && s.hidden)}
       onClick={clickGalleryItem}
     >
-      <img src={url} alt="Gallery img" onLoad={load} onError={error} />
+      <Img
+        url={url}
+        alt="Gallery img"
+        onLoad={load}
+        onError={error}
+      />
     </figcaption>
   );
 };

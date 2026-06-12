@@ -8,8 +8,10 @@ type ScrollLoaderProps = {
 };
 
 const ScrollLoader = ({ active }: ScrollLoaderProps) => {
+  if (!active) return null;
+
   return (
-    <div className={clsx(s.container, active && s.active)}>
+    <div className={clsx(s.container)}>
       <div className={s.loader}>
         <div></div>
         <div></div>

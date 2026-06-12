@@ -13,7 +13,7 @@ export const createClassName = ({
   clsx(
     s.interactive_element,
     "interactive_element__element",
-    loading && active && "interactive_element__loading",
+    loading && "interactive_element__loading",
     !active && "interactive_element__inactive",
     pressed && "interactive_element__pressed",
     s[design],

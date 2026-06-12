@@ -26,6 +26,7 @@
     "Nify",
     "notif",
     "onwarn",
+    "overscan",
     "Pageable",
     "posgram",
     "precomposed",
@@ -39,6 +40,17 @@
     "webpush",
     "whiteblue"
   ],
+  "eslint.workingDirectories": [
+    "apps/client",
+    "apps/server",
+    "packages/common"
+  ],
+  "editor.formatOnSave": true,
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "[typescript]": { "editor.defaultFormatter": "esbenp.prettier-vscode" },
+  "[typescriptreact]": { "editor.defaultFormatter": "esbenp.prettier-vscode" },
+  "[javascript]": { "editor.defaultFormatter": "esbenp.prettier-vscode" },
+  "[javascriptreact]": { "editor.defaultFormatter": "esbenp.prettier-vscode" },
   "editor.codeActionsOnSave": {
     "source.fixAll.eslint": "always",
     "source.fixAll.stylelint": "always"

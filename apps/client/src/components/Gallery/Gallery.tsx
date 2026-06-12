@@ -1,5 +1,3 @@
-import { useActions } from "@store/hooks";
-import { Card } from "@store/reducers/main/types";
 import { ArrowRightIcon } from "@ui/Icons";
 import Input from "@ui/Input";
 import clsx from "clsx";
@@ -14,28 +12,43 @@ import {
 } from "react";
 
 import Carousel from "./components/Carousel";
-import { Error, LoadingSpinner } from "./components/States";
+import { Error as GalleryError, LoadingSpinner } from "./components/States";
+import { useCardGallery } from "./hooks";
 import s from "./styles.module.scss";
 
 type GalleryProps = {
-  data: Card;
+  _id: string;
   active: boolean;
   game?: boolean;
+  onSelectImage?: (url: string) => void;
 };
 
-const Gallery = ({ data, active, game = false }: GalleryProps) => {
-  const { controlGalleryQuery, resetGalleryFields, searchImages } =
-    useActions();
-
-  const { _id, gallery } = data || {};
-  const { loading, query, error } = gallery;
+const Gallery = ({
+  _id,
+  active,
+  game = false,
+  onSelectImage,
+}: GalleryProps) => {
+  const {
+    query,
+    setQuery,
+    isLoading,
+    isError,
+    error,
+    position,
+    width,
+    imgurl_obj,
+    searchImages,
+    setImageOk,
+    moveGallery,
+  } = useCardGallery(_id);
 
   const [uPressed, setUPressed] = useState(false);
   const [altPressed, setAltPressed] = useState(false);
 
   const addUrlFlag = useCallback(
-    () => controlGalleryQuery({ _id, value: "@url - " + query }),
-    [_id, controlGalleryQuery, query],
+    () => setQuery(prev => "@url - " + prev),
+    [setQuery],
   );
 
   useEffect(() => {
@@ -47,9 +60,8 @@ const Gallery = ({ data, active, game = false }: GalleryProps) => {
   }, [uPressed, altPressed, addUrlFlag]);
 
   const changeImgSearchbar = useCallback(
-    (e: ChangeEvent<HTMLInputElement>) =>
-      controlGalleryQuery({ _id, value: e.target.value }),
-    [_id, controlGalleryQuery],
+    (e: ChangeEvent<HTMLInputElement>) => setQuery(e.target.value),
+    [setQuery],
   );
 
   const keyDownImgSearchbar = useCallback(
@@ -68,19 +80,17 @@ const Gallery = ({ data, active, game = false }: GalleryProps) => {
 
       if (key === "Enter") {
         e.preventDefault();
-        resetGalleryFields({ _id });
-        searchImages(_id);
+        searchImages();
       }
     },
-    [_id, resetGalleryFields, searchImages],
+    [searchImages],
   );
 
   const clickImgSearchbar = useCallback(
-    (e: MouseEvent<SVGSVGElement>) => {
-      resetGalleryFields({ _id });
-      searchImages(_id);
+    (_e: MouseEvent<SVGSVGElement>) => {
+      searchImages();
     },
-    [_id, resetGalleryFields, searchImages],
+    [searchImages],
   );
 
   return (
@@ -107,9 +117,20 @@ const Gallery = ({ data, active, game = false }: GalleryProps) => {
           </form>
         </div>
         <div className={s.results}>
-          <Carousel data={data} game={game} />
-          <LoadingSpinner active={loading} />
-          <Error active={error} />
+          <Carousel
+            _id={_id}
+            imgurl_obj={imgurl_obj}
+            position={position ?? 0}
+            width={width}
+            onMove={moveGallery}
+            onImageStatusChange={setImageOk}
+            onSelectImage={onSelectImage}
+            isLoading={isLoading}
+            isError={isError}
+            game={game}
+          />
+          <LoadingSpinner active={isLoading} />
+          <GalleryError isError={isError} error={error} />
         </div>
       </div>
     </div>

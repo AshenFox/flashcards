@@ -1,83 +1,80 @@
-import { useActions, useAppSelector } from "@store/hooks";
+import { Virtualizer } from "@tanstack/react-virtual";
 import { ArrowUpIcon } from "@ui/Icons";
+import Portal from "@ui/Portal";
 import clsx from "clsx";
-import { memo } from "react";
-import { useEffect, useRef } from "react";
+import { memo, useCallback, useEffect, useRef, useState } from "react";
 
 import s from "./styles.module.scss";
+import {
+  applyHtmlOverscrollBehaviorYNone,
+  restoreHtmlOverscrollBehaviorY,
+} from "./utils";
 
-const ScrollTop = () => {
-  const { setScrollTop } = useActions();
+type ScrollTopProps = {
+  virtualizer?: Virtualizer<Window | Element, Element>;
+  onScrollTop?: () => void;
+  enabled?: boolean;
+};
 
-  const scroll_top = useAppSelector(s => s.main.scroll_top);
+const ScrollTop = ({
+  virtualizer,
+  onScrollTop,
+  enabled = true,
+}: ScrollTopProps) => {
+  const [isVisible, setIsVisible] = useState(false);
 
-  const scroll_top_ref = useRef(scroll_top);
-  scroll_top_ref.current = scroll_top;
+  const isVisibleRef = useRef(isVisible);
+  isVisibleRef.current = isVisible;
+
+  const previousOverscrollBehaviorYRef = useRef<string | null>(null);
+
+  const scrollToTopSmooth = useCallback(() => {
+    virtualizer?.scrollToOffset(0, { behavior: "smooth" });
+  }, [virtualizer]);
 
   useEffect(() => {
-    const onScroll = (e: Event) => {
-      if (window.scrollY > 100 && !scroll_top_ref.current)
-        setScrollTop({ value: true });
+    const onScroll = () => {
+      if (window.scrollY > 100 && !isVisibleRef.current) setIsVisible(true);
 
-      if (window.scrollY < 100 && scroll_top_ref.current)
-        setScrollTop({ value: false });
+      if (window.scrollY < 100 && isVisibleRef.current) setIsVisible(false);
     };
 
     window.addEventListener("scroll", onScroll);
+    onScroll();
 
     return () => window.removeEventListener("scroll", onScroll);
+  }, [setIsVisible]);
+
+  useEffect(() => {
+    if (enabled && isVisible)
+      applyHtmlOverscrollBehaviorYNone(previousOverscrollBehaviorYRef);
+    else restoreHtmlOverscrollBehaviorY(previousOverscrollBehaviorYRef);
+  }, [isVisible, enabled]);
+
+  useEffect(() => {
+    return () => {
+      restoreHtmlOverscrollBehaviorY(previousOverscrollBehaviorYRef);
+    };
   }, []);
 
-  const clickScroll = () => movePageUp();
+  const clickScroll = useCallback(() => {
+    if (!isVisible || !enabled) return;
+
+    if (onScrollTop) onScrollTop();
+    else if (virtualizer) scrollToTopSmooth();
+    else window.scrollTo({ top: 0, behavior: "smooth" });
+  }, [onScrollTop, virtualizer, isVisible, scrollToTopSmooth, enabled]);
 
   return (
-    <div
-      className={clsx(s.scroll, scroll_top && s.active)}
-      onClick={clickScroll}
-    >
-      <ArrowUpIcon height="20" width="20" />
-    </div>
+    <Portal>
+      <div
+        className={clsx(s.scroll, isVisible && s.active)}
+        onClick={clickScroll}
+      >
+        <ArrowUpIcon height="20" width="20" />
+      </div>
+    </Portal>
   );
 };
 
 export default memo(ScrollTop);
-
-let startTime: number = null;
-
-const ease = (
-  currentTime: number,
-  startValue: number,
-  changeInValue: number,
-  duration: number,
-) => {
-  currentTime /= duration / 2;
-
-  if (currentTime < 1)
-    return (changeInValue / 2) * currentTime * currentTime + startValue;
-  currentTime--;
-  return (
-    (-changeInValue / 2) * (currentTime * (currentTime - 2) - 1) + startValue
-  );
-};
-
-const animation = (currentTime: number) => {
-  if (startTime === null) startTime = currentTime;
-
-  let timeElapsed = currentTime - startTime;
-  let positionY = ease(timeElapsed, scrollY, -scrollY, 750);
-
-  window.scrollTo(0, positionY);
-
-  if (positionY) {
-    requestAnimationFrame(animation);
-  } else {
-    startTime = null;
-  }
-};
-
-const movePageUp = () => {
-  let pageYOffset: number =
-    window.pageYOffset || document.documentElement.scrollTop;
-
-  if (pageYOffset) requestAnimationFrame(animation);
-};

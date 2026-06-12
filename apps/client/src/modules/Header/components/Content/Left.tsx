@@ -1,6 +1,6 @@
 import { getIsGame, getIsSR } from "@helpers/functions/determinePath";
-import { useAppSelector } from "@store/store";
 import { GameBackIcon } from "@ui/Icons";
+import { useAuthSession } from "@zustand/auth";
 import { useRouter } from "next/router";
 import { memo } from "react";
 
@@ -15,7 +15,7 @@ const Left = () => {
   const isSR = getIsSR(_id);
   const isGame = getIsGame(router.pathname);
 
-  const loading = useAppSelector(s => s.auth.loading);
+  const { isPending } = useAuthSession();
 
   return (
     <div className={s.left}>
@@ -25,7 +25,7 @@ const Left = () => {
           icon={<GameBackIcon />}
           iconSize={25}
           className={s.back}
-          active={!loading}
+          active={!isPending}
         />
       )}
 

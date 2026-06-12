@@ -8,6 +8,7 @@ const isDev = process.env.NODE_ENV === "development";
 
 const config = defineConfig({
   input: "src/**/*.{ts,js}",
+  external: ["@flashcards/config/load-env"],
   output: {
     dir: ".build",
     format: "cjs",

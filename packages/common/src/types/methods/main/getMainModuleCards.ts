@@ -9,6 +9,10 @@ import {
 
 type QueryCreator = {
   _id?: string;
+  search?: string;
+  created?: "newest" | "oldest" | "no-order";
+  by?: "term" | "definition";
+  sr?: "all" | "in-lowest" | "in-highest" | "out";
 };
 
 type ResponseCreator<

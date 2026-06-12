@@ -1,5 +1,5 @@
 import userModel from "@models/user_model";
-import config from "config";
+import { env } from "@setup";
 import { NextFunction, Request } from "express";
 import jwt from "jsonwebtoken";
 import queryString from "query-string";
@@ -21,7 +21,7 @@ export const auth = async (
     return res.status(401).json({ msg: "No token, authorization denied" });
 
   try {
-    const { _id } = jwt.verify(token, config.get("jwtSecret")) as {
+    const { _id } = jwt.verify(token, env.JWT_SECRET) as {
       _id: string;
     };
 

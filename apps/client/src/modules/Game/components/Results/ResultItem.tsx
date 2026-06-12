@@ -1,4 +1,4 @@
-import { useAppSelector } from "@store/hooks";
+import { useGameCardsById } from "@modules/Game/hooks";
 import DateStr from "@ui/DateStr";
 import { CloseIcon, TickIcon } from "@ui/Icons";
 import Img from "@ui/Img";
@@ -24,10 +24,9 @@ const ResultItem = ({ data, number, showHeader = true }: ResultItemProps) => {
 
   const isSR = _id === "sr";
 
-  const cards = useAppSelector(s => s.main.cards);
-
+  const cardsById = useGameCardsById();
   const { term, definition, imgurl, stage, nextRep, prevStage } =
-    cards[data.id] ?? {};
+    cardsById[data.id] ?? {};
 
   return (
     <div className={s.body_item}>
@@ -61,7 +60,7 @@ const ResultItem = ({ data, number, showHeader = true }: ResultItemProps) => {
         <div className={s.body_right}>
           <div>
             <TextArea html={definition} />
-            <Img imgClass={s.img} url={imgurl} />
+            <Img contentClass={s.img_content} url={imgurl} />
           </div>
         </div>
       </div>

@@ -1,9 +1,9 @@
-import { DefaultFilters } from "@store/reducers/main/types";
 import { FilterIcon, UndoIcon } from "@ui/Icons";
 import FilledFilterIcon from "@ui/Icons/components/FilledFilterIcon";
 import Input from "@ui/Input";
 import { Button } from "@ui/InteractiveElement";
 import Tooltip from "@ui/Tooltip";
+import { DefaultFilters } from "@zustand/filters";
 import clsx from "clsx";
 import {
   ChangeEventHandler,
@@ -27,10 +27,10 @@ export type FiltersProps = {
   placeholder?: string;
   className?: string;
   alwaysReload?: boolean;
-  setFilterValue?: SetFilterValue;
-  getData: () => void;
-  resetData: () => void;
-  resetFilters: () => void;
+  setFilterValue: SetFilterValue;
+  getData?: () => void;
+  resetData?: () => void;
+  resetFilters?: () => void;
 };
 
 const Filters = ({
@@ -68,8 +68,8 @@ const Filters = ({
       clearTimeout(timer.current);
 
       timer.current = setTimeout(() => {
-        resetData();
-        getData();
+        resetData?.();
+        getData?.();
       }, 300);
     },
     [getData, resetData, setFilterValue],
@@ -77,9 +77,9 @@ const Filters = ({
 
   const onResetClick = useCallback(() => {
     if (isFilterEmpty) return;
-    resetFilters();
-    resetData();
-    getData();
+    resetFilters?.();
+    resetData?.();
+    getData?.();
   }, [isFilterEmpty, getData, resetFilters, resetData]);
 
   useLayoutEffect(() => {

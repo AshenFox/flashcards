@@ -1,35 +1,38 @@
-import { useActions, useAppSelector } from "@store/hooks";
-import { useRouter } from "next/router";
+import { CardsUIProvider } from "@components/Cards";
 import { memo, useEffect } from "react";
 
 import Body from "./components/Body/Body";
 import Header from "./components/Header/Header";
+import {
+  useModuleCardsCache,
+  useModuleCardsQuery,
+  useModuleCardsUIStore,
+  useModuleFiltersStore,
+  useSyncModulePagination,
+} from "./hooks";
 
 const Module = () => {
-  const { getModule, resetModuleData, resetSectionFilters } = useActions();
+  const { data: cardsData } = useModuleCardsQuery();
+  useSyncModulePagination(cardsData);
 
-  const router = useRouter();
-  const { _id } = router.query;
-
-  const user = useAppSelector(s => s.auth.user);
-
-  useEffect(() => {
-    if (user && typeof _id === "string") getModule(_id);
-  }, [user]);
+  const resetFilters = useModuleFiltersStore(s => s.resetFilters);
+  const resetUI = useModuleCardsUIStore(s => s.reset);
 
   useEffect(() => {
     return () => {
-      resetModuleData();
-      // think how you can save filters value for each specific module
-      resetSectionFilters("module");
+      resetFilters();
+      resetUI();
     };
-  }, [resetModuleData, resetSectionFilters]);
+  }, [resetFilters, resetUI]);
 
   return (
-    <>
+    <CardsUIProvider
+      useCardsUIStore={useModuleCardsUIStore}
+      useCardsCash={useModuleCardsCache}
+    >
       <Header />
       <Body />
-    </>
+    </CardsUIProvider>
   );
 };
 

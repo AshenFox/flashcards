@@ -4,12 +4,13 @@ import { memo } from "react";
 import s from "./styles.module.scss";
 
 type ErrorProps = {
-  active: boolean;
+  isError: boolean;
+  error: Error | null;
 };
 
-const Error = ({ active }: ErrorProps) => (
-  <div className={clsx(s.error_container, !active && s.hide)}>
-    <span>The service is currently unavailable. Please try later...</span>
+const Error = ({ isError, error }: ErrorProps) => (
+  <div className={clsx(s.error_container, !isError && s.hide)}>
+    <span>{error?.message}</span>
   </div>
 );
 

@@ -1,4 +1,4 @@
-import { FilterValue } from "@store/reducers/main/types";
+import { FilterValue } from "@zustand/filters";
 import React, { memo, useCallback, useMemo } from "react";
 import Select from "react-select";
 
@@ -11,8 +11,8 @@ export type FilterProps = {
   filter: FilterData;
   alwaysReload?: boolean;
   setFilterValue: SetFilterValue;
-  getData: () => void;
-  resetData: () => void;
+  getData?: () => void;
+  resetData?: () => void;
 };
 
 const Filter = ({
@@ -35,8 +35,8 @@ const Filter = ({
       setFilterValue(id, value.value);
 
       if (value || alwaysReload) {
-        resetData();
-        getData();
+        resetData?.();
+        getData?.();
       }
     },
     [id, alwaysReload, getData, resetData, setFilterValue],

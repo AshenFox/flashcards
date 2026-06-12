@@ -1,7 +1,7 @@
 import Container from "@components/Container";
-import { useAppSelector } from "@store/store";
 import { TriangleLeftIcon } from "@ui/Icons";
 import { Link } from "@ui/InteractiveElement";
+import { useLayoutStore } from "@zustand/layout";
 import { CSSProperties, memo, ReactNode } from "react";
 
 import s from "./styles.module.scss";
@@ -13,7 +13,7 @@ type ControlsProps = {
 };
 
 const Controls = ({ title, titleIcon, children }: ControlsProps) => {
-  const header_height = useAppSelector(s => s.dimen.header_height);
+  const header_height = useLayoutStore(s => s.header_height);
 
   const styles: CSSProperties = { top: `${header_height}px` };
 

@@ -1,14 +1,13 @@
 import { ControlButton } from "@modules/Game/components/Controls";
-import { useActions, useAppSelector } from "@store/hooks";
+import { useGameStore } from "@zustand/game/gameStore";
 import { memo, MouseEvent } from "react";
 
 const EndGameBtn = () => {
-  const { endWriteEarly } = useActions();
-
-  const is_init = useAppSelector(s => s.game.write.is_init);
-  const remaining = useAppSelector(s => s.game.write.remaining);
-  const answered = useAppSelector(s => s.game.write.answered);
-  const ended_early = useAppSelector(s => s.game.write.ended_early);
+  const endWriteEarly = useGameStore(s => s.endWriteEarly);
+  const is_init = useGameStore(s => s.write.is_init);
+  const remaining = useGameStore(s => s.write.remaining);
+  const answered = useGameStore(s => s.write.answered);
+  const ended_early = useGameStore(s => s.write.ended_early);
 
   const isGameFinished =
     !remaining.length &&
@@ -16,7 +15,7 @@ const EndGameBtn = () => {
     is_init;
   const isAtEnd = isGameFinished || ended_early;
 
-  const clickEndGame = (e: MouseEvent<HTMLButtonElement>) => {
+  const clickEndGame = (_e: MouseEvent<HTMLButtonElement>) => {
     endWriteEarly();
   };
 

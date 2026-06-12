@@ -5,6 +5,8 @@ services:
     build:
       context: .
       dockerfile: Dockerfile.dev
+    env_file:
+      - packages/config/.env.server
     environment:
       - NODE_OPTIONS=--openssl-legacy-provider
     volumes:

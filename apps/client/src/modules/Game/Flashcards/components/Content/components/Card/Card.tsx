@@ -1,11 +1,12 @@
+import { useSetCardEdit } from "@components/Cards/state/ui";
 import Speaker from "@components/Speaker";
 import { SRIndicator, SRInfoTooltip } from "@components/SRIndicator";
-import { useActions } from "@store/hooks";
-import { Card as CardType } from "@store/reducers/main/types";
+import type { CardDto } from "@flashcards/common";
 import { EditIcon } from "@ui/Icons";
 import Img from "@ui/Img";
 import TextArea from "@ui/TextArea";
 import Tooltip from "@ui/Tooltip";
+import { useGameStore } from "@zustand/game/gameStore";
 import clsx from "clsx";
 import { useRouter } from "next/router";
 import { memo, MouseEvent } from "react";
@@ -13,13 +14,14 @@ import { memo, MouseEvent } from "react";
 import s from "./styles.module.scss";
 
 type CardProps = {
-  data: CardType;
+  data: CardDto;
   side?: "definition" | "term";
   position?: "prev" | "next";
 };
 
 const Card = ({ data, side = "definition", position = null }: CardProps) => {
-  const { setFlashcardsSide, setCardEdit } = useActions();
+  const setFlashcardsSide = useGameStore(s => s.setFlashcardsSide);
+  const setCardEdit = useSetCardEdit();
 
   const router = useRouter();
   const { _id: _id_param } = router.query;
@@ -30,7 +32,7 @@ const Card = ({ data, side = "definition", position = null }: CardProps) => {
 
   const formattedDefinition = definition.replaceAll(
     /\(( |\u00A0|&nbsp;)*\/(.*?)\/( |\u00A0|&nbsp;)*\)/g,
-    (match, space1, transcription) => {
+    (_match, _space1, transcription) => {
       return `( /<span class=${s.transcription_hidden}>${transcription}</span>/ )`;
     },
   );
@@ -57,10 +59,10 @@ const Card = ({ data, side = "definition", position = null }: CardProps) => {
       if ((e.target as HTMLElement).closest(`.${s.transcription_hidden}`))
         return;
 
-      setFlashcardsSide({ value });
+      setFlashcardsSide(value);
     };
 
-  const clickEdit = (e: MouseEvent<HTMLDivElement>) =>
+  const clickEdit = (_e: MouseEvent<HTMLDivElement>) =>
     setCardEdit({ _id, value: true });
 
   const tooltipTermSRId = `term_${_id}`;
@@ -73,7 +75,7 @@ const Card = ({ data, side = "definition", position = null }: CardProps) => {
       <div className={frontClassName} onClick={clickSide("term")}>
         <Img
           containerClass={clsx(s.img_container, !definition && s.full)}
-          imgClass={s.img}
+          contentClass={s.img_content}
           url={imgurl}
         />
         {isSR && (

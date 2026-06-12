@@ -1,86 +1,132 @@
-import Card from "@components/Card";
-import EditCard from "@components/EditCard";
-import Filters, { FilterData, SetFilterValue } from "@components/Filters";
+import { CardsUIProvider } from "@components/Cards";
+import Filters, { SetFilterValue } from "@components/Filters";
 import NotFound from "@components/NotFound";
-import { useActions } from "@store/hooks";
-import { defaultHomeCardsFilters } from "@store/reducers/main/initState";
-import { useAppSelector } from "@store/store";
+import {
+  useResetSlidingWindowVirtualizerToTrueTop,
+  useSlidingWindowVirtualPagesFetch,
+  VirtualizedItem,
+  VirtualizedList,
+} from "@components/Virtualized";
+import type { GetMainCardsResponseDto } from "@flashcards/common";
+import { useAppVerticalPull } from "@modules/AppWrapper";
+import ScrollTop from "@modules/ScrollTop";
+import { useQueryClient } from "@tanstack/react-query";
 import ScrollLoader from "@ui/ScrollLoader";
-import React, { Fragment, memo, useCallback, useEffect, useMemo } from "react";
+import React, { memo, useCallback, useEffect, useMemo, useRef } from "react";
 
 import Divider from "../components/Divider";
 import s from "../styles.module.scss";
-
-const filtersData: FilterData[] = [
-  {
-    id: "created",
-    label: "Date Order",
-    defaultValue: defaultHomeCardsFilters.created,
-    options: [
-      { value: "newest", label: "Newest" },
-      { value: "oldest", label: "Oldest" },
-    ],
-  },
-  {
-    id: "sr",
-    label: "SR",
-    defaultValue: defaultHomeCardsFilters.sr,
-    options: [
-      { value: "all", label: "All" },
-      { value: "in-lowest", label: "In Lowest" },
-      { value: "in-highest", label: "In Highest" },
-      { value: "out", label: "Out" },
-    ],
-  },
-  {
-    id: "by",
-    label: "By",
-    defaultValue: defaultHomeCardsFilters.by,
-    options: [
-      { value: "term", label: "Term" },
-      { value: "definition", label: "Definition" },
-    ],
-  },
-];
+import CardRow from "./components/CardRow";
+import { FETCH_PREV_VISIBLE_THRESHOLD, filtersData } from "./constants";
+import { useHomeCardsCache } from "./hooks/cache";
+import { buildHomeCardsItems } from "./hooks/items";
+import {
+  getQueryKey,
+  HOME_CARDS_PAGE_SIZE,
+  useHomeCardsQuery,
+} from "./hooks/query";
+import { useHomeCardsFiltersStore, useHomeCardsUIStore } from "./hooks/stores";
+import { useHomeCardsSlidingWindowVirtualizer } from "./hooks/virtualizer";
 
 const Cards = () => {
-  const cards = useAppSelector(s => s.main.cards);
-  const loading = useAppSelector(s => s.main.sections.homeCards.loading);
-  const filters = useAppSelector(s => s.main.sections.homeCards.filters);
-  const { search, by } = filters;
+  const listTopRef = useRef<HTMLDivElement>(null);
+  const queryClient = useQueryClient();
 
-  const formatted_cards = useMemo(() => Object.values(cards), [cards]);
+  const filters = useHomeCardsFiltersStore(state => state.filters);
+  const pagination = useHomeCardsFiltersStore(state => state.pagination);
+  const setFilter = useHomeCardsFiltersStore(state => state.setFilter);
+  const resetFilters = useHomeCardsFiltersStore(state => state.resetFilters);
+
+  const query = useHomeCardsQuery();
 
   const {
-    getCards,
-    resetHomeCardsData,
-    setSectionFilter,
-    resetSectionFilters,
-  } = useActions();
+    data,
+    hasPreviousPage,
+    isFetchingPreviousPage,
+    isFetchingNextPage,
+    isFetching,
+  } = query;
 
-  const setFilterValue = useCallback<SetFilterValue>(
-    (filter, value) => {
-      setSectionFilter({
-        section: "homeCards",
-        filter,
-        value,
-      });
-    },
-    [setSectionFilter],
+  const refreshCardsQuery = useCallback(() => {
+    const filters = useHomeCardsFiltersStore.getState().filters;
+    queryClient.invalidateQueries({ queryKey: getQueryKey(filters) });
+  }, [queryClient]);
+
+  const resetUIStore = useHomeCardsUIStore(s => s.reset);
+
+  const rawCards = useMemo(
+    () => data?.pages.flatMap(p => p.entries) ?? [],
+    [data],
   );
 
-  const resetFilters = useCallback(() => {
-    resetSectionFilters("homeCards");
-  }, [resetSectionFilters]);
+  const items = useMemo(
+    () => buildHomeCardsItems(rawCards, !!hasPreviousPage),
+    [rawCards, hasPreviousPage],
+  );
+
+  const resultsFound = pagination?.number;
+
+  const virtualizer = useHomeCardsSlidingWindowVirtualizer({
+    items,
+  });
+
+  const getQueryKeyForReset = useCallback(
+    () => getQueryKey(useHomeCardsFiltersStore.getState().filters),
+    [],
+  );
+
+  const { resetToTrueTop, isResettingToTop } =
+    useResetSlidingWindowVirtualizerToTrueTop<GetMainCardsResponseDto>({
+      queryClient,
+      getQueryKey: getQueryKeyForReset,
+      virtualizer,
+    });
+
+  const blendDistancePx = HOME_CARDS_PAGE_SIZE * 200;
+
+  useAppVerticalPull({
+    elementRef: listTopRef,
+    tippingPoint: !!hasPreviousPage,
+    enabled: !!data,
+    blendDistancePx,
+  });
+
+  useSlidingWindowVirtualPagesFetch({
+    virtualizer,
+    itemCount: items.length,
+    query,
+    firstVisibleThreshold: FETCH_PREV_VISIBLE_THRESHOLD,
+    enabled: !isResettingToTop,
+  });
 
   useEffect(() => {
     return () => {
-      resetHomeCardsData();
+      resetUIStore();
     };
-  }, []);
+  }, [resetUIStore]);
+
+  const resetData = useCallback(() => {
+    resetUIStore();
+  }, [resetUIStore]);
+
+  const loading =
+    isResettingToTop ||
+    isFetching ||
+    isFetchingNextPage ||
+    isFetchingPreviousPage;
+
+  const setFilterValue = useCallback<SetFilterValue>(
+    (filter, value) => {
+      setFilter(filter as keyof typeof filters, value);
+    },
+    [setFilter],
+  );
 
   return (
-    <>
+    <CardsUIProvider
+      useCardsUIStore={useHomeCardsUIStore}
+      useCardsCash={useHomeCardsCache}
+    >
       <Filters
         id="home-cards-filters"
         filtersValues={filters}
@@ -89,33 +135,47 @@ const Cards = () => {
         className={s.filter}
         alwaysReload
         setFilterValue={setFilterValue}
-        getData={getCards}
-        resetData={resetHomeCardsData}
+        getData={refreshCardsQuery}
+        resetData={resetData}
         resetFilters={resetFilters}
       />
-      {formatted_cards.map((card, i) => {
-        const prevDateString = formatted_cards[i - 1]?.creation_date;
-        const curDateString = card.creation_date;
+      <VirtualizedList ref={listTopRef} totalSize={virtualizer.getTotalSize()}>
+        {virtualizer.getVirtualItems().map(virtualItem => {
+          const item = items[virtualItem.index];
+          if (!item) return null;
 
-        return (
-          <Fragment key={card._id}>
-            <Divider
-              prevDateString={prevDateString}
-              curDateString={curDateString}
-            />
-            {card.edit ? (
-              <EditCard data={card} toggle={true} loading={loading} />
-            ) : (
-              <Card data={card} filter={search} filterType={by} isModuleLink />
-            )}
-          </Fragment>
-        );
-      })}
+          return (
+            <VirtualizedItem
+              key={item._id}
+              virtualizer={virtualizer}
+              virtualItem={virtualItem}
+            >
+              {item.type === "card" ? (
+                <CardRow
+                  data={item.card}
+                  search={filters.search}
+                  by={filters.by}
+                  isModuleLink
+                  loading={loading}
+                />
+              ) : (
+                <Divider label={item.label} />
+              )}
+            </VirtualizedItem>
+          );
+        })}
+      </VirtualizedList>
+
       <ScrollLoader active={loading} />
+      <ScrollTop
+        virtualizer={virtualizer}
+        onScrollTop={resetToTrueTop}
+        enabled={!loading}
+      />
       {!loading && (
         <NotFound
-          resultsFound={formatted_cards.length}
-          filterValue={search}
+          resultsFound={resultsFound}
+          filterValue={filters.search}
           notFoundMsg={value =>
             value ? (
               <>
@@ -128,7 +188,7 @@ const Cards = () => {
           nothingMsg={<>You don&apos;t have any cards yet.</>}
         />
       )}
-    </>
+    </CardsUIProvider>
   );
 };
 

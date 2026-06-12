@@ -8,7 +8,7 @@ const TabUpdateController = () => {
   }, []);
 
   useEffect(() => {
-    const handleStorage = (e: StorageEvent) => {
+    const handleStorage = (_e: StorageEvent) => {
       const isFocused = document.hasFocus();
       if (isFocused) reload();
       else shouldReloadRef.current = true;

@@ -1,20 +1,22 @@
-import { useActions, useAppSelector } from "@store/hooks";
+import { useDeleteModuleMutation, useModuleQuery } from "@modules/Module/hooks";
 import { Button } from "@ui/InteractiveElement";
+import { useModalStore } from "@zustand/modal";
 import { clsx } from "clsx";
 import { memo, MouseEvent } from "react";
 
 import s from "./styles.module.scss";
 
 const Delete = () => {
-  const { deleteModule, toggleModal } = useActions();
+  const close = useModalStore(state => state.close);
+  const { data } = useModuleQuery();
+  const deleteMutation = useDeleteModuleMutation();
 
-  const currentModule = useAppSelector(s => s.main.module);
+  const title = data?.module?.title;
 
-  const { _id, module_loading, title } = currentModule || {};
+  const clickDelete = (_e: MouseEvent<HTMLButtonElement>) =>
+    deleteMutation.mutate();
 
-  const clickDelete = (e: MouseEvent<HTMLButtonElement>) => deleteModule(_id);
-
-  const close = (e: MouseEvent<HTMLButtonElement>) => toggleModal();
+  const onClose = (_e: MouseEvent<HTMLButtonElement>) => close();
 
   return (
     <>
@@ -25,7 +27,7 @@ const Delete = () => {
       <div className={s.warning}>
         <p>
           You are about to delete this module and all of its data. You
-          won&apos;t be able to access this set ever again.
+          won&apos;t be able to access this module ever again.
         </p>
       </div>
 
@@ -35,11 +37,11 @@ const Delete = () => {
 
       <div className={s.choice}>
         <div className={clsx(s.choice_item, s.cancel)}>
-          <Button onClick={close}>Cancel</Button>
+          <Button onClick={onClose}>Cancel</Button>
         </div>
 
         <div className={s.choice_item}>
-          <Button loading={module_loading} onClick={clickDelete}>
+          <Button loading={deleteMutation.isPending} onClick={clickDelete}>
             Yes, delete set
           </Button>
         </div>

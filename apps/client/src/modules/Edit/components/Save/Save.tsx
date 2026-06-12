@@ -1,5 +1,5 @@
 import { useEditContext } from "@modules/Edit/context";
-import { useActions } from "@store/hooks";
+import { useEditPublishDraftMutation } from "@modules/Edit/hooks";
 import { Button } from "@ui/InteractiveElement";
 import { memo, MouseEvent, useCallback } from "react";
 
@@ -9,16 +9,18 @@ import { useSaveState } from "./useSaveActive";
 const Save = () => {
   const { selectionActive } = useEditContext();
 
-  const { createModule } = useActions();
-
-  const { active, loading } = useSaveState();
+  const publishMut = useEditPublishDraftMutation();
+  const { active, loading: pageLoading } = useSaveState();
 
   const clickSave = useCallback(
-    (e: MouseEvent<HTMLButtonElement>) => {
-      if (active) createModule(!selectionActive);
+    (_e: MouseEvent<HTMLButtonElement>) => {
+      if (!active) return;
+      publishMut.mutate({ saveAllCards: !selectionActive });
     },
-    [active, createModule, selectionActive],
+    [active, publishMut, selectionActive],
   );
+
+  const loading = pageLoading || publishMut.isPending;
 
   return (
     <Button

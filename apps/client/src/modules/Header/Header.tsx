@@ -1,7 +1,8 @@
 import Container from "@components/Container";
 import ContentWrapper from "@components/ContentWrapper";
 import { getIsGame } from "@helpers/functions/determinePath";
-import { useActions, useAppSelector } from "@store/hooks";
+import { useAuthSession, useAuthStore } from "@zustand/auth";
+import { useLayoutStore } from "@zustand/layout";
 import clsx from "clsx";
 import { useRouter } from "next/router";
 import { memo, useCallback, useEffect, useRef } from "react";
@@ -12,30 +13,31 @@ import s from "./styles.module.scss";
 const Header = () => {
   const router = useRouter();
 
-  const { setHeaderDimen } = useActions();
+  const setHeaderDimensions = useLayoutStore(s => s.setHeaderDimensions);
 
-  const user = useAppSelector(s => s.auth.user);
-  const loading = useAppSelector(s => s.auth.loading);
+  const user = useAuthStore(s => s.user);
+  const { isPending } = useAuthSession();
 
   const isGame = getIsGame(router.pathname);
 
   const onSizeChange = useCallback(() => {
     const rect = headerEl.current?.getBoundingClientRect();
-    setHeaderDimen({
+    setHeaderDimensions({
       height: rect?.height ?? 0,
       width: rect?.width ?? 0,
     });
-  }, [setHeaderDimen]);
+  }, [setHeaderDimensions]);
+
   const onSizeChangeDelayed = useCallback(
     () =>
       setTimeout(() => {
         const rect = headerEl.current?.getBoundingClientRect();
-        setHeaderDimen({
+        setHeaderDimensions({
           height: rect?.height ?? 0,
           width: rect?.width ?? 0,
         });
       }, 110),
-    [setHeaderDimen],
+    [setHeaderDimensions],
   );
 
   useEffect(() => {
@@ -50,7 +52,7 @@ const Header = () => {
     observer.observe(currentHeaderEl);
 
     return () => {
-      window.removeEventListener("resize", onSizeChange);
+      window.removeEventListener("resize", onSizeChangeDelayed);
       window.removeEventListener("orientationchange", onSizeChangeDelayed);
       observer.unobserve(currentHeaderEl);
     };
@@ -58,16 +60,20 @@ const Header = () => {
 
   useEffect(() => {
     const rect = headerEl.current?.getBoundingClientRect();
-    setHeaderDimen({
+    setHeaderDimensions({
       height: rect?.height ?? 0,
       width: rect?.width ?? 0,
     });
-  }, [user, loading, setHeaderDimen]);
+  }, [user, isPending, setHeaderDimensions]);
 
   const headerEl = useRef<HTMLElement>(null);
 
   return (
-    <header className={clsx(s.header, isGame && s.sticky)} ref={headerEl}>
+    <header
+      id="app-header"
+      className={clsx(s.header, isGame && s.sticky)}
+      ref={headerEl}
+    >
       <ContentWrapper tagType="section">
         <Container>
           <div className={s.content}>

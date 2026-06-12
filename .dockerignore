@@ -2,3 +2,7 @@ node_modules
 npm-debug.log
 .build
 .vscode
+# .env.client must NOT be added here — it is required in the Docker build context
+# so that next.config.ts can call loadClientEnv() at Next.js build time to inject
+# NEXT_PUBLIC_* variables into the client bundle.
+packages/config/.env.server
