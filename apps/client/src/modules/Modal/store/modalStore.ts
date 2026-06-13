@@ -1,7 +1,7 @@
+import { createStoreHook, withActionName } from "@store/helpers";
+import type { Slice } from "@store/types";
 import { generateId } from "@utils/generateId";
-import { createStoreHook, withActionName } from "@zustand/helpers";
 
-import type { Slice } from "../types";
 import type { ModalStore } from "./types";
 
 export type { ModalStore } from "./types";

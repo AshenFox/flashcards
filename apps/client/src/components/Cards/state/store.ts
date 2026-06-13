@@ -1,5 +1,5 @@
-import { withActionName } from "@zustand/helpers";
-import { Slice } from "@zustand/types";
+import { withActionName } from "@store/helpers";
+import { Slice } from "@store/types";
 
 import { type CardFields, type CardsUIStore, defaultCardUI } from "./types";
 

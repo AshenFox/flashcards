@@ -5,7 +5,7 @@ import {
   useGameActiveCardsQuery,
   useOrderedGameCards,
 } from "@modules/Game/hooks";
-import { useGameStore } from "@zustand/game/gameStore";
+import { useGameStore } from "@modules/Game/store/gameStore";
 import { useRouter } from "next/router";
 import { memo, ReactNode } from "react";
 

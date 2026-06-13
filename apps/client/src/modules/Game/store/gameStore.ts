@@ -1,7 +1,7 @@
 import type { CardDto } from "@flashcards/common";
+import { createStoreHook, withActionName } from "@store/helpers";
+import { Slice } from "@store/types";
 import { shuffle } from "@utils/shuffle";
-import { createStoreHook, withActionName } from "@zustand/helpers";
-import { Slice } from "@zustand/types";
 import type { WritableDraft } from "immer";
 
 import type { GameState } from "./types";

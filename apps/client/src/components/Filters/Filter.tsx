@@ -1,4 +1,4 @@
-import { FilterValue } from "@zustand/filters";
+import { FilterValue } from "@components/Filters/store";
 import React, { memo, useCallback, useMemo } from "react";
 import Select from "react-select";
 

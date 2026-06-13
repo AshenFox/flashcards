@@ -1,11 +1,11 @@
 import { type LogInFormData, logInSchema } from "@flashcards/common";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Eye from "@modules/Modal/Eye";
+import { useModalStore } from "@modules/Modal/store";
+import { useAuthStore } from "@store/auth";
 import Input from "@ui/Input";
 import { Button } from "@ui/InteractiveElement";
 import TextLabel from "@ui/TextLabel";
-import { useAuthStore } from "@zustand/auth";
-import { useModalStore } from "@zustand/modal";
 import { KeyboardEvent, memo, MouseEvent, useState } from "react";
 import { type Resolver, useForm } from "react-hook-form";
 

@@ -1,6 +1,6 @@
 import { getIsGame, getIsSR } from "@helpers/functions/determinePath";
+import { useAuthSession } from "@store/auth";
 import { GameBackIcon } from "@ui/Icons";
-import { useAuthSession } from "@zustand/auth";
 import { useRouter } from "next/router";
 import { memo } from "react";
 

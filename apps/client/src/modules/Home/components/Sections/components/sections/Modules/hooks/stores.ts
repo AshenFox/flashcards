@@ -1,5 +1,5 @@
-import { createModulesFilterSlice } from "@zustand/filters";
-import { createStoreHook } from "@zustand/helpers";
+import { createModulesFilterSlice } from "@components/Filters/store";
+import { createStoreHook } from "@store/helpers";
 
 import { getQueryKey } from "./query";
 

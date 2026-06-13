@@ -1,5 +1,5 @@
 import { CardsUIProvider } from "@components/Cards";
-import { useGameStore } from "@zustand/game/gameStore";
+import { useGameStore } from "@modules/Game/store/gameStore";
 import { memo, ReactNode, useCallback, useEffect, useRef } from "react";
 
 import {

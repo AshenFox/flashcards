@@ -1,8 +1,8 @@
 import Container from "@components/Container";
 import ContentWrapper from "@components/ContentWrapper";
 import { getIsGame } from "@helpers/functions/determinePath";
-import { useAuthSession, useAuthStore } from "@zustand/auth";
-import { useLayoutStore } from "@zustand/layout";
+import { useAuthSession, useAuthStore } from "@store/auth";
+import { useLayoutStore } from "@store/layout";
 import clsx from "clsx";
 import { useRouter } from "next/router";
 import { memo, useCallback, useEffect, useRef } from "react";

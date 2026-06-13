@@ -1,4 +1,4 @@
-import { createStoreHook } from "@zustand/helpers";
+import { createStoreHook } from "@store/helpers";
 
 import { layoutSlice } from "./layoutStore";
 

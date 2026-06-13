@@ -1,6 +1,6 @@
+import { useModalStore } from "@modules/Modal/store";
 import { useDeleteModuleMutation, useModuleQuery } from "@modules/Module/hooks";
 import { Button } from "@ui/InteractiveElement";
-import { useModalStore } from "@zustand/modal";
 import { clsx } from "clsx";
 import { memo, MouseEvent } from "react";
 

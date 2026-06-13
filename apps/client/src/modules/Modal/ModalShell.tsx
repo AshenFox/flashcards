@@ -1,6 +1,6 @@
+import type { ModalEntry } from "@modules/Modal/store";
+import { useModalStore } from "@modules/Modal/store";
 import { CloseIcon } from "@ui/Icons";
-import type { ModalEntry } from "@zustand/modal";
-import { useModalStore } from "@zustand/modal";
 import { memo, MouseEvent, useEffect, useRef } from "react";
 
 import contentStyles from "./components/Content/styles.module.scss";

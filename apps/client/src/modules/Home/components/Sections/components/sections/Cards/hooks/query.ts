@@ -1,8 +1,8 @@
 import { mainGetCards } from "@api/methods/main/mainGetCards";
+import type { CardsFilters } from "@components/Filters/store";
 import type { GetMainCardsResponseDto } from "@flashcards/common";
+import { useAuthStore } from "@store/auth";
 import { type InfiniteData, useInfiniteQuery } from "@tanstack/react-query";
-import { useAuthStore } from "@zustand/auth";
-import type { CardsFilters } from "@zustand/filters";
 import { useEffect } from "react";
 
 import { useHomeCardsFiltersStore } from "./stores";

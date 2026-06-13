@@ -1,5 +1,5 @@
+import { useAuthSession } from "@store/auth";
 import Spinner from "@ui/Spinner";
-import { useAuthSession } from "@zustand/auth";
 import clsx from "clsx";
 import { memo } from "react";
 

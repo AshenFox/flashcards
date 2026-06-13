@@ -3,6 +3,7 @@ import Speaker from "@components/Speaker";
 import { SRIndicator, SRInfoTooltip } from "@components/SRIndicator";
 import type { CardDto } from "@flashcards/common";
 import { useSaveSRAnswerMutation } from "@modules/Game/hooks";
+import { useGameStore } from "@modules/Game/store/gameStore";
 import { EditIcon } from "@ui/Icons";
 import Img from "@ui/Img";
 import Input from "@ui/Input";
@@ -10,7 +11,6 @@ import { Button } from "@ui/InteractiveElement";
 import TextArea from "@ui/TextArea";
 import TextLabel from "@ui/TextLabel";
 import Tooltip from "@ui/Tooltip";
-import { useGameStore } from "@zustand/game/gameStore";
 import clsx from "clsx";
 import { useRouter } from "next/router";
 import {

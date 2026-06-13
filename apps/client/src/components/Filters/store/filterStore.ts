@@ -1,6 +1,6 @@
-import { withActionName } from "@zustand/helpers";
+import { withActionName } from "@store/helpers";
+import { type Slice } from "@store/types";
 
-import { type Slice } from "../types";
 import {
   CardsFilters,
   defaultCardsFilters,

@@ -1,6 +1,5 @@
 import { MinusIcon, PlusIcon } from "@ui/Icons";
 import Input from "@ui/Input";
-import { useSRStore } from "@zustand/sr";
 import {
   ChangeEvent,
   memo,
@@ -11,6 +10,7 @@ import {
   useState,
 } from "react";
 
+import { useSRStore } from "../../store";
 import s from "./styles.module.scss";
 
 type CounterProps = {

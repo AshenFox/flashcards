@@ -1,7 +1,7 @@
-import { withActionName } from "@zustand/helpers";
-import { calcCounter } from "@zustand/sr/helpers";
+import { withActionName } from "@store/helpers";
+import type { Slice } from "@store/types";
 
-import type { Slice } from "../types";
+import { calcCounter } from "./helpers";
 
 export type SRStore = {
   counter: number | undefined;

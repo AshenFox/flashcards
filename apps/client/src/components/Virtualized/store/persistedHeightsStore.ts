@@ -1,5 +1,5 @@
-import { withActionName } from "@zustand/helpers";
-import type { Slice } from "@zustand/types";
+import { withActionName } from "@store/helpers";
+import type { Slice } from "@store/types";
 
 import { RowHeightsStore } from "./types";
 

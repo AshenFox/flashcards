@@ -1,10 +1,10 @@
 import { setAuthToken } from "@api/axiosInstance";
 import { authGetUser, authLogIn, authSignUp } from "@api/methods";
 import { queryClient } from "@api/queryClient";
-import { createStoreHook, withActionName } from "@zustand/helpers";
-import { useLayoutStore } from "@zustand/layout";
+import { createStoreHook, withActionName } from "@store/helpers";
+import { useLayoutStore } from "@store/layout";
+import type { Slice } from "@store/types";
 
-import type { Slice } from "../types";
 import type { AuthActionResult, AuthStore } from "./types";
 
 export type { AuthStore } from "./types";

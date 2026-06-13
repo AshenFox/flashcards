@@ -1,5 +1,5 @@
+import { useAuthStore } from "@store/auth";
 import Skeleton from "@ui/Skeleton";
-import { useAuthStore } from "@zustand/auth";
 import React, { memo } from "react";
 
 import ItemsNumber from "./components/ItemsNumber";

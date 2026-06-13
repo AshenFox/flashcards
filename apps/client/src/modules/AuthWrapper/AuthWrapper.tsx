@@ -1,4 +1,4 @@
-import { useAuthSession } from "@zustand/auth";
+import { useAuthSession } from "@store/auth";
 import { memo, ReactNode } from "react";
 
 type AuthWrapperProps = {

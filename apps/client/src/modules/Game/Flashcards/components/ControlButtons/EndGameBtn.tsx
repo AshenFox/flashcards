@@ -1,6 +1,6 @@
 import { ControlButton } from "@modules/Game/components/Controls";
 import { useGameOrderLength } from "@modules/Game/hooks";
-import { useGameStore } from "@zustand/game/gameStore";
+import { useGameStore } from "@modules/Game/store/gameStore";
 import { memo, MouseEvent } from "react";
 
 const EndGameBtn = () => {

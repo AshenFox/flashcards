@@ -1,4 +1,4 @@
-import { useModalStore } from "@zustand/modal";
+import { useModalStore } from "@modules/Modal/store";
 import { memo, useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 

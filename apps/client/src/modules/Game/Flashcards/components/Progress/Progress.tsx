@@ -1,8 +1,8 @@
 import DefaultProgress, {
   ProgressItem,
 } from "@modules/Game/components/Progress";
+import { useGameStore } from "@modules/Game/store/gameStore";
 import ProgressBar from "@ui/ProgressBar";
-import { useGameStore } from "@zustand/game/gameStore";
 import { memo } from "react";
 
 import s from "./styles.module.scss";

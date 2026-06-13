@@ -1,11 +1,11 @@
 import Delete from "@modules/Modal/components/Content/Delete";
+import { useModalStore } from "@modules/Modal/store";
 import { useModuleCardsQuery, useModuleQuery } from "@modules/Module/hooks";
 import ConfirmPopup from "@ui/ConfirmPopup";
 import DateStr from "@ui/DateStr";
 import { DeleteIcon, EditIcon } from "@ui/Icons";
 import Skeleton from "@ui/Skeleton";
 import Tooltip from "@ui/Tooltip";
-import { useModalStore } from "@zustand/modal";
 import Link from "next/link";
 import { memo, MouseEvent, useCallback, useState } from "react";
 

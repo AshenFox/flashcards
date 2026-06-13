@@ -1,7 +1,7 @@
 import Filters, { FilterData, SetFilterValue } from "@components/Filters";
+import { defaultModuleCardsFilters } from "@components/Filters/store";
 import { useQueryClient } from "@tanstack/react-query";
 import Skeleton from "@ui/Skeleton";
-import { defaultModuleCardsFilters } from "@zustand/filters";
 import { useRouter } from "next/router";
 import { memo, useCallback } from "react";
 

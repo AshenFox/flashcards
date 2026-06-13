@@ -1,5 +1,5 @@
 import { ControlButton } from "@modules/Game/components/Controls";
-import { useGameStore } from "@zustand/game/gameStore";
+import { useGameStore } from "@modules/Game/store/gameStore";
 import { memo, MouseEvent } from "react";
 
 const EndGameBtn = () => {
