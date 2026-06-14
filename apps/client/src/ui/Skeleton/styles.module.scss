@@ -5,7 +5,7 @@
 }
 
 html:global(.light) .skeleton {
-  --skeleton-base-color: #{$concrete};
+  --skeleton-base-color: #{$purple-page};
   --skeleton-highlight-color: var(--element-border-color);
 }
 
