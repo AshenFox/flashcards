@@ -1,15 +1,13 @@
-@use "@styles/vars" as *;
-
 .skeleton {
   color: inherit;
 }
 
 html:global(.light) .skeleton {
-  --skeleton-base-color: #{$purple-page};
+  --skeleton-base-color: var(--app-background-color);
   --skeleton-highlight-color: var(--element-border-color);
 }
 
 html:global(.dark) .skeleton {
-  --skeleton-base-color: #{$charcoal};
+  --skeleton-base-color: var(--element-background-color);
   --skeleton-highlight-color: var(--element-border-color);
 }
