@@ -13,6 +13,10 @@ const NotificationSchema = new Schema<Notification>({
   },
 });
 
+// Poller scans { time: { $lt: now } } every 5s; sr lookups query by user_id.
+NotificationSchema.index({ time: 1 });
+NotificationSchema.index({ user_id: 1 });
+
 const notificationModel = mongoose.model<Notification>(
   "Notifications",
   NotificationSchema,

@@ -111,6 +111,26 @@ async function spawnChildProcess(data) {
 }
 
 (async () => {
+  // Start the local MongoDB container (detached) before anything else, so it
+  // has time to boot while the builds run. `npm run db` is the single source of
+  // truth for the compose file/flags. Left running on exit — use `npm run
+  // db-stop` to tear it down.
+  console.log("🐳 Starting MongoDB container…");
+  try {
+    const { stdout, stderr } = await execPromise("npm run db");
+    console.log(stdout);
+    if (stderr) console.error(stderr);
+  } catch (err) {
+    // Don't abort the whole dev session (builds, watchers, client work) just
+    // because the DB couldn't start — most often Docker Desktop isn't running.
+    console.error(
+      "⚠️  Could not start the MongoDB container (is Docker running?). " +
+        "Continuing without it — the server won't be able to connect until " +
+        "you start it with `npm run db`.",
+    );
+    if (err.stderr) console.error(err.stderr);
+  }
+
   await execPromise("npm run cleanBuild").then(({ stdout, stderr }) => {
     console.log(stdout);
     console.error(stderr);

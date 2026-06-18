@@ -1,16 +1,13 @@
-version: "3.8"
-
 services:
-  app:
-    build:
-      context: .
-      dockerfile: Dockerfile.dev
+  mongo:
+    image: mongo:8.2
+    container_name: mongo
+    restart: unless-stopped
+    ports:
+      - "27017:27017"               # exposed so native `npm run dev` can reach it
     env_file:
       - packages/config/.env.server
-    environment:
-      - NODE_OPTIONS=--openssl-legacy-provider
     volumes:
-      - ./apps:/app/apps
-      - ./packages:/app/packages
-    ports:
-      - 4000:4000
+      - ./infra/data:/data/db
+      - ./infra/backups:/backups
+      - ./infra/mongo/init.js:/docker-entrypoint-initdb.d/init.js:ro

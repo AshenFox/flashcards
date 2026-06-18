@@ -32,6 +32,9 @@ const CardSchema = new Schema<Card>({
   author: String,
 });
 
+// Cards are routinely queried/counted by owner + module (see updateModuleNumberSR).
+CardSchema.index({ author_id: 1, moduleID: 1 });
+
 const cardModel = mongoose.model<Card>("Cards", CardSchema);
 
 /**

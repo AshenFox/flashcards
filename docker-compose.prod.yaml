@@ -1,5 +1,3 @@
-version: '3.8'
-
 services:
   app:
     container_name: flashcards-container
@@ -14,3 +12,21 @@ services:
       - NODE_OPTIONS=--openssl-legacy-provider
     ports:
       - 4000:4000
+    depends_on:
+      - mongo
+
+  mongo:
+    image: mongo:8.2
+    container_name: mongo            # required so `docker exec mongo ...` works
+    restart: always
+    env_file:
+      - packages/config/.env.server  # supplies MONGO_INITDB_* — keeps the password out of git
+    volumes:
+      - ./infra/data:/data/db
+      - ./infra/backups:/backups
+      - ./infra/mongo/init.js:/docker-entrypoint-initdb.d/init.js:ro
+    ports:
+      # Loopback-only: bound to 127.0.0.1 on the VPS, so Mongo is NEVER reachable
+      # from the public internet — only via an SSH tunnel into the box (for Compass).
+      # The app does NOT use this; it connects over the docker network at mongo:27017.
+      - "127.0.0.1:27017:27017"
