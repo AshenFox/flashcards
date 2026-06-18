@@ -22,6 +22,9 @@ const ModuleSchema = new Schema<Module>({
   draft: Boolean,
 });
 
+// Modules are listed/updated per owner.
+ModuleSchema.index({ author_id: 1 });
+
 ModuleSchema.set("toObject", { virtuals: true });
 ModuleSchema.set("toJSON", { virtuals: true });
 

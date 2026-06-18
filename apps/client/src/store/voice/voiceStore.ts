@@ -1,6 +1,6 @@
-import { withActionName } from "@zustand/helpers";
+import { withActionName } from "@store/helpers";
 
-import type { Slice } from "../types";
+import type { Slice } from "@store/types";
 import type { Speaking, Voices, VoiceStore } from "./types";
 
 export type { VoiceStore } from "./types";

@@ -1,5 +1,5 @@
+import { useGameStore } from "@modules/Game/store/gameStore";
 import { Link } from "@ui/InteractiveElement";
-import { useGameStore } from "@zustand/game/gameStore";
 import { useRouter } from "next/router";
 import { memo, useEffect } from "react";
 

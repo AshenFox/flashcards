@@ -1,6 +1,6 @@
 import LogIn from "@modules/Modal/components/Content/LogIn";
+import { useModalStore } from "@modules/Modal/store";
 import { Button } from "@ui/InteractiveElement";
-import { useModalStore } from "@zustand/modal";
 import { memo, MouseEvent } from "react";
 
 import s from "./styles.module.scss";

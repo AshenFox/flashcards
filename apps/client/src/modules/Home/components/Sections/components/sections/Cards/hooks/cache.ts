@@ -1,7 +1,7 @@
 import { queryClient } from "@api/queryClient";
 import { CardsCache, CardsCacheHook } from "@components/Cards";
 import type { CardDto, GetMainCardsResponseDto } from "@flashcards/common";
-import { withProduce } from "@zustand/helpers";
+import { withProduce } from "@store/helpers";
 import { useMemo } from "react";
 
 import { getQueryKey } from "./query";

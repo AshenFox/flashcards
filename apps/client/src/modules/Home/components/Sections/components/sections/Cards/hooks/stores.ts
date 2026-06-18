@@ -1,6 +1,6 @@
 import { cardsUISlice } from "@components/Cards";
-import { createCardsFilterSlice } from "@zustand/filters";
-import { createStoreHook } from "@zustand/helpers";
+import { createCardsFilterSlice } from "@components/Filters/store";
+import { createStoreHook } from "@store/helpers";
 
 import { getQueryKey } from "./query";
 

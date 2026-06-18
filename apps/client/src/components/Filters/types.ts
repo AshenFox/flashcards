@@ -1,4 +1,4 @@
-import { FilterValue } from "@zustand/filters";
+import { FilterValue } from "@components/Filters/store";
 import { Options } from "react-select";
 
 export type SetFilterValue = (

@@ -1,4 +1,4 @@
-import { useModalStore } from "@zustand/modal";
+import { useModalStore } from "@modules/Modal/store";
 import { memo, MouseEvent, useEffect, useRef, useState } from "react";
 
 import s from "./styles.module.scss";

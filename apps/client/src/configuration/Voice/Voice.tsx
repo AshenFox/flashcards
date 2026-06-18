@@ -1,4 +1,4 @@
-import { initEasySpeech, useVoiceStore } from "@zustand/voice";
+import { initEasySpeech, useVoiceStore } from "@store/voice";
 import { memo, useEffect } from "react";
 
 const Voice = () => {

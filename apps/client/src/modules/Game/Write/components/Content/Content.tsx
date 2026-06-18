@@ -2,7 +2,7 @@ import { EditCard } from "@components/Cards";
 import { useCardsUIStore } from "@components/Cards/state/context";
 import ContentContainer from "@modules/Game/components/ContentContainer";
 import { useGameActiveCardsQuery, useGameCardsById } from "@modules/Game/hooks";
-import { useGameStore } from "@zustand/game/gameStore";
+import { useGameStore } from "@modules/Game/store/gameStore";
 import React, { memo, ReactNode } from "react";
 
 import Answer from "./components/Answer";

@@ -1,6 +1,6 @@
 import { ControlButton } from "@modules/Game/components/Controls";
 import { useGameCardsById } from "@modules/Game/hooks";
-import { useGameStore } from "@zustand/game/gameStore";
+import { useGameStore } from "@modules/Game/store/gameStore";
 import { memo, MouseEvent, useCallback } from "react";
 
 const StartOver = () => {

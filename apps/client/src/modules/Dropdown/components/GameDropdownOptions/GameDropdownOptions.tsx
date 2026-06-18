@@ -1,6 +1,6 @@
 import { useGameCardsById, useGameOrderLength } from "@modules/Game/hooks";
+import { useGameStore } from "@modules/Game/store/gameStore";
 import { ShuffleIcon } from "@ui/Icons";
-import { useGameStore } from "@zustand/game/gameStore";
 import { memo, MouseEvent as ReactMouseEvent } from "react";
 
 import Divider from "../Divider";

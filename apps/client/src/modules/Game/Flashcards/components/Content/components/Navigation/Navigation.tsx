@@ -2,8 +2,8 @@ import {
   useOrderedGameCards,
   useSaveSRAnswerMutation,
 } from "@modules/Game/hooks";
+import { useGameStore } from "@modules/Game/store/gameStore";
 import { TriangleLeftIcon, TriangleRightIcon } from "@ui/Icons";
-import { useGameStore } from "@zustand/game/gameStore";
 import clsx from "clsx";
 import { useRouter } from "next/router";
 import { memo, MouseEvent, useEffect, useRef } from "react";

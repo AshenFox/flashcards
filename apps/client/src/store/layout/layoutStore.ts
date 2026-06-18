@@ -1,6 +1,6 @@
-import { withActionName } from "@zustand/helpers";
+import { withActionName } from "@store/helpers";
 
-import type { Slice } from "../types";
+import type { Slice } from "@store/types";
 import type { LayoutStore } from "./types";
 
 export type { LayoutStore } from "./types";

@@ -13,10 +13,10 @@ import type {
   GetMainModuleResponseDto,
   ModuleDto,
 } from "@flashcards/common";
+import { useAuthStore } from "@store/auth";
+import { createStoreHook, withProduce } from "@store/helpers";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { saveLastUpdate } from "@utils/saveLastUpdate";
-import { useAuthStore } from "@zustand/auth";
-import { createStoreHook, withProduce } from "@zustand/helpers";
 import { produce } from "immer";
 import { useRouter } from "next/router";
 import { useCallback, useEffect, useMemo, useRef } from "react";

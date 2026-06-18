@@ -1,7 +1,7 @@
 import Container from "@components/Container";
+import { useLayoutStore } from "@store/layout";
 import { TriangleLeftIcon } from "@ui/Icons";
 import { Link } from "@ui/InteractiveElement";
-import { useLayoutStore } from "@zustand/layout";
 import { CSSProperties, memo, ReactNode } from "react";
 
 import s from "./styles.module.scss";

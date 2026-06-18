@@ -1,5 +1,5 @@
 import Results, { ResultItem } from "@modules/Game/components/Results";
-import { useGameStore } from "@zustand/game/gameStore";
+import { useGameStore } from "@modules/Game/store/gameStore";
 import { memo, useEffect } from "react";
 
 const Finish = () => {

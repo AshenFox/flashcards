@@ -3,16 +3,16 @@ import { mainGetModule } from "@api/methods/main/mainGetModule";
 import { mainGetModuleCards } from "@api/methods/main/mainGetModuleCards";
 import { queryClient } from "@api/queryClient";
 import { CardsCache, CardsCacheHook, cardsUISlice } from "@components/Cards";
+import type { ModuleCardsFilters } from "@components/Filters/store";
+import { createModuleCardsFilterSlice } from "@components/Filters/store";
 import type {
   CardDto,
   GetMainModuleCardsResponseDto,
 } from "@flashcards/common";
+import { useAuthStore } from "@store/auth";
+import { createStoreHook, withProduce } from "@store/helpers";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { saveLastUpdate } from "@utils/saveLastUpdate";
-import { useAuthStore } from "@zustand/auth";
-import type { ModuleCardsFilters } from "@zustand/filters";
-import { createModuleCardsFilterSlice } from "@zustand/filters";
-import { createStoreHook, withProduce } from "@zustand/helpers";
 import { useRouter } from "next/router";
 import { useEffect, useMemo } from "react";
 

@@ -1,9 +1,9 @@
+import { DefaultFilters } from "@components/Filters/store";
 import { FilterIcon, UndoIcon } from "@ui/Icons";
 import FilledFilterIcon from "@ui/Icons/components/FilledFilterIcon";
 import Input from "@ui/Input";
 import { Button } from "@ui/InteractiveElement";
 import Tooltip from "@ui/Tooltip";
-import { DefaultFilters } from "@zustand/filters";
 import clsx from "clsx";
 import {
   ChangeEventHandler,

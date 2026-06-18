@@ -1,7 +1,7 @@
 import { ControlButton } from "@modules/Game/components/Controls";
 import { useGameCardsById } from "@modules/Game/hooks";
+import { useGameStore } from "@modules/Game/store/gameStore";
 import { ShuffleIcon } from "@ui/Icons";
-import { useGameStore } from "@zustand/game/gameStore";
 import { memo, MouseEvent } from "react";
 
 const ShuffleBtn = () => {

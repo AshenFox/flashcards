@@ -8,30 +8,38 @@ $notebook: 1199px;
 $h-mobile-sm: 500px;
 $h-mobile: 620px;
 
-/* ======= Base palette ======= */
+/* ======= Grayscale ======= */
+
+$concrete: #f3f3f3;
+$anti-flash-white: #f0f0f0;
+$philippine-silver: #b6b6b6;
+$silver-foil: #979797;
+$dim-gray: #696969;
+$dark-liver: #4e4e4e;
+$quartz: #4b4b4b;
+$charcoal: #3d3d3d;
+$jet: #363636;
+$raisin-black: #232323;
+
+/* ======= Yellow / Orange ======= */
 
 $dandelion: #ffdd67;
 $lightning-yellow: #ffcd1f;
 $orange-peel: #ff9800;
 $orange: #ff5722;
-$violet: #6400bb;
+
+/* ======= Teal ======= */
+
 $pale-teal: #c2e2e2;
 $teal: #00a9a6;
 
-$concrete: #f3f3f3;
-$silver-foil: #979797;
-$charcoal: #3d3d3d;
-$quartz: #4b4b4b;
-$jet: #363636;
-$raisin-black: #232323;
+/* ======= Purple ======= */
 
-$anti-flash-white: #f0f0f0;
-$philippine-silver: #b6b6b6;
-$dim-gray: #696969;
-$dark-liver: #4e4e4e;
-
+$violet: #6400bb;
 $regalia: #54267b;
 $american-purple: #431c64;
+
+/* ======= Status ======= */
 
 $brilliant-white: #e8f0fd;
 $light-red: #ffd4cd;

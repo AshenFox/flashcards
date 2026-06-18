@@ -1,5 +1,5 @@
 import { FilterData } from "@components/Filters";
-import { defaultModulesFilters } from "@zustand/filters";
+import { defaultModulesFilters } from "@components/Filters/store";
 
 /** When the first visible virtual row is at or above this index, load the previous page. */
 export const FETCH_PREV_VISIBLE_THRESHOLD = 6;

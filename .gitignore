@@ -17,9 +17,19 @@ node_modules
 config
 .build
 .rollup.cache
+.claude
+CLAUDE.md
 
 # misc
 .DS_Store
+
+# infra runtime data (keep dirs, ignore contents)
+/infra/data/*
+/infra/uploads/*
+/infra/backups/*
+!/infra/data/.gitkeep
+!/infra/uploads/.gitkeep
+!/infra/backups/.gitkeep
 *.pem
 
 # debug

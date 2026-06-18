@@ -1,6 +1,6 @@
 import { getIsGame } from "@helpers/functions/determinePath";
+import { useAuthStore } from "@store/auth";
 import LogoIcon from "@ui/Icons/components/LogoIcon";
-import { useAuthStore } from "@zustand/auth";
 import clsx from "clsx";
 import Link from "next/link";
 import { useRouter } from "next/router";

@@ -1,8 +1,8 @@
 import { mainGetModules } from "@api/methods/main/mainGetModules";
+import type { ModulesFilters } from "@components/Filters/store";
 import type { GetMainModulesResponseDto, ModuleDto } from "@flashcards/common";
+import { useAuthStore } from "@store/auth";
 import { type InfiniteData, useInfiniteQuery } from "@tanstack/react-query";
-import { useAuthStore } from "@zustand/auth";
-import type { ModulesFilters } from "@zustand/filters";
 import { useEffect } from "react";
 
 import { useHomeModulesFiltersStore } from "./stores";

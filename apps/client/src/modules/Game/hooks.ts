@@ -8,11 +8,11 @@ import {
   cardsUISlice,
 } from "@components/Cards";
 import type { CardDto, GetMainModuleCardsResponseDto } from "@flashcards/common";
+import { useGameStore } from "@modules/Game/store/gameStore";
+import { useAuthStore } from "@store/auth";
+import { createStoreHook, withProduce } from "@store/helpers";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { saveLastUpdate } from "@utils/saveLastUpdate";
-import { useAuthStore } from "@zustand/auth";
-import { useGameStore } from "@zustand/game/gameStore";
-import { createStoreHook, withProduce } from "@zustand/helpers";
 import { useRouter } from "next/router";
 import { useCallback, useMemo } from "react";
 

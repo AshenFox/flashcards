@@ -4,10 +4,10 @@ import {
   getIsSettings,
   getIsWrite,
 } from "@helpers/functions/determinePath";
+import { useAuthStore } from "@store/auth";
+import { useLayoutStore } from "@store/layout";
 import { NewModuleIcon } from "@ui/Icons";
 import Portal from "@ui/Portal";
-import { useAuthStore } from "@zustand/auth";
-import { useLayoutStore } from "@zustand/layout";
 import clsx from "clsx";
 import { useRouter } from "next/router";
 import {
