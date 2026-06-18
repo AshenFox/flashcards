@@ -17,6 +17,8 @@ node_modules
 config
 .build
 .rollup.cache
+.claude
+CLAUDE.md
 
 # misc
 .DS_Store
