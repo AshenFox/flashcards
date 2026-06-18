@@ -1,6 +1,6 @@
 #!/bin/bash
-# New-VPS first-boot: start the stack, optionally restore the DB from a chosen archive,
-# and install the weekly backup cron.
+# New-VPS first-boot / maintenance: start the stack, then — depending on the chosen action —
+# restore the DB from an archive, install the weekly backup cron, or both.
 # Run from the project root: ./infra/scripts/bootstrap.sh
 set -e
 
@@ -16,6 +16,64 @@ set -a
 . "$ENV_FILE"
 set +a
 
+# --- Restore the DB from a chosen archive (interactive) -----------------------
+restore_db() {
+  local RESTORE_URI FILES i FILE_NUM CHOSEN
+  RESTORE_URI="mongodb://${MONGO_INITDB_ROOT_USERNAME}:${MONGO_INITDB_ROOT_PASSWORD}@localhost/flashcards?authSource=admin"
+
+  # Collect archives in infra/backups (weekly + manual), newest first.
+  mapfile -t FILES < <(ls -1t ./infra/backups/*.archive.gz 2>/dev/null)
+  if [ "${#FILES[@]}" -eq 0 ]; then
+    echo "No .archive.gz files found in ./infra/backups — nothing to restore."
+    return 0
+  fi
+  echo "Archives in ./infra/backups (newest first):"
+  for i in "${!FILES[@]}"; do
+    printf "  %d) %s\n" "$((i + 1))" "$(basename "${FILES[$i]}")"
+  done
+  read -rp "Choose a number to restore: " FILE_NUM
+  if ! [[ "$FILE_NUM" =~ ^[0-9]+$ ]] || [ "$FILE_NUM" -lt 1 ] || [ "$FILE_NUM" -gt "${#FILES[@]}" ]; then
+    echo "ERROR: invalid selection '$FILE_NUM'." >&2
+    return 1
+  fi
+  CHOSEN="$(basename "${FILES[$((FILE_NUM - 1))]}")"
+  echo "Restoring ./infra/backups/${CHOSEN} ..."
+  # Path is relative to the container's working dir (/), mapping to the bind mount.
+  # Non-fatal: a failed restore (wrong Mongo version, corrupt archive) must NOT
+  # abort the script under `set -e`, or a "both" run would never install the cron.
+  if docker exec mongo mongorestore \
+    --uri="$RESTORE_URI" \
+    --drop --gzip --archive="./backups/${CHOSEN}"; then
+    echo "Database restored."
+  else
+    echo "WARNING: restore failed — investigate the archive/version, then restore" >&2
+    echo "         manually (see infra/README.md)." >&2
+  fi
+}
+
+# --- Install the weekly backup cron (idempotent) ------------------------------
+install_cron() {
+  local PROJECT_DIR CRON_TAG CRON_LINE
+  PROJECT_DIR="$(pwd)"
+  # User crontab (the deploy user is in the docker group, so no sudo needed). Idempotent via
+  # a named marker tag: we strip any line carrying $CRON_TAG and re-add a single fresh entry,
+  # so re-running this replaces rather than duplicates. The tag is a trailing shell comment —
+  # cron passes the line to /bin/sh, which ignores everything after the '#'.
+  CRON_TAG="# flashcards-weekly-backup"   # unique id for this job — match on this, not the command
+  CRON_LINE="0 3 * * 0 cd ${PROJECT_DIR} && ./infra/scripts/backup.sh >> ${PROJECT_DIR}/infra/backups/backup.log 2>&1 ${CRON_TAG}"
+  # A minimal VPS may not ship cron. Don't let a missing `crontab` abort the script (set -e).
+  if ! command -v crontab >/dev/null 2>&1; then
+    echo "WARNING: 'crontab' not found — skipping the weekly backup cron." >&2
+    echo "         Install cron, then re-run this script (or add the job by hand):" >&2
+    echo "           sudo apt-get update && sudo apt-get install -y cron && sudo systemctl enable --now cron" >&2
+    echo "         Cron line to install:" >&2
+    echo "           $CRON_LINE" >&2
+    return 0
+  fi
+  ( crontab -l 2>/dev/null | grep -v -F "$CRON_TAG"; echo "$CRON_LINE" ) | crontab -
+  echo "Weekly backup cron installed (Sundays 03:00)."
+}
+
 echo "Creating runtime directories..."
 mkdir -p ./infra/data ./infra/uploads ./infra/backups
 
@@ -27,53 +85,20 @@ until docker exec mongo mongosh --quiet --eval "db.adminCommand('ping')" >/dev/n
   sleep 1
 done
 
-# --- Optional restore ---
-RESTORE_URI="mongodb://${MONGO_INITDB_ROOT_USERNAME}:${MONGO_INITDB_ROOT_PASSWORD}@localhost/flashcards?authSource=admin"
-
+# --- Choose what to do --------------------------------------------------------
 echo
-read -rp "Restore the database from an existing backup archive? [y/N]: " RESTORE_CHOICE
-if [[ ! "$RESTORE_CHOICE" =~ ^[Yy]$ ]]; then
-  echo "Skipping restore — starting with an empty database."
-else
-  # Collect archives in infra/backups (weekly + manual), newest first.
-  mapfile -t FILES < <(ls -1t ./infra/backups/*.archive.gz 2>/dev/null)
-  if [ "${#FILES[@]}" -eq 0 ]; then
-    echo "No .archive.gz files found in ./infra/backups — starting with an empty database."
-  else
-    echo "Archives in ./infra/backups (newest first):"
-    for i in "${!FILES[@]}"; do
-      printf "  %d) %s\n" "$((i + 1))" "$(basename "${FILES[$i]}")"
-    done
-    read -rp "Choose a number to restore: " FILE_NUM
-    if ! [[ "$FILE_NUM" =~ ^[0-9]+$ ]] || [ "$FILE_NUM" -lt 1 ] || [ "$FILE_NUM" -gt "${#FILES[@]}" ]; then
-      echo "ERROR: invalid selection '$FILE_NUM'." >&2
-      exit 1
-    fi
-    CHOSEN="$(basename "${FILES[$((FILE_NUM - 1))]}")"
-    echo "Restoring ./infra/backups/${CHOSEN} ..."
-    # Path is relative to the container's working dir (/), mapping to the bind mount.
-    # Non-fatal: a failed restore (wrong Mongo version, corrupt archive) must NOT
-    # abort the script under `set -e`, or the backup cron below would never install.
-    if docker exec mongo mongorestore \
-      --uri="$RESTORE_URI" \
-      --drop --gzip --archive="./backups/${CHOSEN}"; then
-      echo "Database restored."
-    else
-      echo "WARNING: restore failed — continuing so the backup cron still gets installed." >&2
-      echo "         Investigate the archive/version, then restore manually (see infra/README.md)." >&2
-    fi
-  fi
-fi
-
-echo "Installing weekly backup cron..."
-# User crontab (the deploy user is in the docker group, so no sudo needed). Idempotent via
-# a named marker tag: we strip any line carrying $CRON_TAG and re-add a single fresh entry,
-# so re-running bootstrap replaces rather than duplicates. The tag is a trailing shell
-# comment — cron passes the line to /bin/sh, which ignores everything after the '#'.
-PROJECT_DIR="$(pwd)"
-CRON_TAG="# flashcards-weekly-backup"   # unique id for this job — match on this, not the command
-CRON_LINE="0 3 * * 0 cd ${PROJECT_DIR} && ./infra/scripts/backup.sh >> ${PROJECT_DIR}/infra/backups/backup.log 2>&1 ${CRON_TAG}"
-( crontab -l 2>/dev/null | grep -v -F "$CRON_TAG"; echo "$CRON_LINE" ) | crontab -
-echo "Weekly backup cron installed (Sundays 03:00)."
+echo "What would you like to do?"
+echo "  1) Restore the database from a backup archive"
+echo "  2) Install the weekly backup cron"
+echo "  3) Both (restore, then install cron)"
+echo "  4) Neither — just leave the stack running"
+read -rp "Choose [1-4]: " ACTION
+case "$ACTION" in
+  1) restore_db ;;
+  2) install_cron ;;
+  3) restore_db; install_cron ;;
+  4) echo "Skipping restore and cron — stack is up." ;;
+  *) echo "ERROR: invalid selection '$ACTION'." >&2; exit 1 ;;
+esac
 
 echo "Bootstrap complete."
