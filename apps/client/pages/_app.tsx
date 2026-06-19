@@ -7,9 +7,10 @@ import PasteControl from "@configuration/PasteControl";
 import TabUpdateController from "@configuration/TabUpdateController";
 import Theme, { parseThemeFromCookie } from "@configuration/Theme";
 import Voice from "@configuration/Voice";
+import type { UserDto } from "@flashcards/common";
 import AppWrapper from "@modules/AppWrapper";
+import AuthProvider from "@modules/AuthProvider";
 import AuthSpinner from "@modules/AuthSpinner";
-import AuthWrapper from "@modules/AuthWrapper";
 import Dropdown from "@modules/Dropdown";
 import Header from "@modules/Header";
 import ModalRenderer from "@modules/Modal";
@@ -18,19 +19,25 @@ import type { AppContext, AppProps } from "next/app";
 
 type MyAppProps = AppProps & {
   initialTheme: "light" | "dark" | null;
+  initialUser: UserDto | null | undefined;
 };
 
-const MyApp = ({ Component, pageProps, initialTheme }: MyAppProps) => (
+const MyApp = ({
+  Component,
+  pageProps,
+  initialTheme,
+  initialUser,
+}: MyAppProps) => (
   <QueryClientProvider client={queryClient}>
     <Theme initialTheme={initialTheme}>
       <Head initialTheme={initialTheme} />
-      <AuthWrapper>
+      <AuthProvider initialUser={initialUser}>
         <AppWrapper>
           <Header />
           <Component {...pageProps} />
           <Dropdown />
         </AppWrapper>
-      </AuthWrapper>
+      </AuthProvider>
       <AuthSpinner />
       <ModalRenderer />
       <Voice />
@@ -40,10 +47,15 @@ const MyApp = ({ Component, pageProps, initialTheme }: MyAppProps) => (
   </QueryClientProvider>
 );
 
-MyApp.getInitialProps = async ({ ctx }: AppContext) => {
+MyApp.getInitialProps = ({ ctx }: AppContext) => {
   const cookieHeader = ctx.req?.headers?.cookie;
   const initialTheme = parseThemeFromCookie(cookieHeader);
-  return { initialTheme };
+  // The Express auth guard already resolved the session for this request and
+  // attached it to req.user (see apps/server/src/index.ts). Read it here to
+  // seed the store — no extra fetch. On client navigations ctx.req is absent,
+  // so initialUser stays undefined and the live store value is preserved.
+  const initialUser = ctx.req ? (ctx.req.user ?? null) : undefined;
+  return { initialTheme, initialUser };
 };
 
 export default MyApp;

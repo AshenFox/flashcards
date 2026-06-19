@@ -9,8 +9,10 @@ import sr from "@routes/sr";
 import { env } from "@setup";
 // supplemental
 import connectDB from "@supplemental/db";
+import { guard } from "@supplemental/middleware";
 import { send_notifications } from "@supplemental/notifications_control";
 // dependencies
+import cookieParser from "cookie-parser";
 import express from "express";
 import fs from "fs";
 import http from "http";
@@ -43,6 +45,7 @@ const expressServer = express();
 // expressServer.use(express.json({ extended: false }));
 expressServer.use(express.urlencoded({ extended: false }));
 expressServer.use(express.json());
+expressServer.use(cookieParser());
 
 // ----------
 // ----------
@@ -56,6 +59,16 @@ expressServer.use("/api/scrape", scrape);
 expressServer.use("/api/edit", edit);
 expressServer.use("/api/sr", sr);
 expressServer.use("/api/notifications", notifications);
+
+// ----------
+// ----------
+// ----------
+
+// Auth route guard (see @supplemental/middleware): redirects before Next
+// renders and seeds req.user for getInitialProps.
+expressServer.get("*", (req, res, next) => {
+  void guard(req, res, next);
+});
 
 expressServer.all("*", (req, res) => {
   return handle(req, res);

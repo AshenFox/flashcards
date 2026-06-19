@@ -16,7 +16,8 @@ export type AuthState = {
 export type AuthStore = AuthState & {
   setUser: (user: UserDto) => void;
   clearUser: () => void;
-  logOut: () => void;
+  clearSession: () => void;
+  logOut: () => Promise<void>;
   logIn: (credentials: LogInFormData) => Promise<AuthActionResult>;
   signUp: (data: SignUpFormData) => Promise<AuthActionResult>;
 };

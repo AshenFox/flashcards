@@ -7,7 +7,7 @@ import tscAlias from "rollup-plugin-tsc-alias";
 const isDev = process.env.NODE_ENV === "development";
 
 const config = defineConfig({
-  input: "src/**/*.{ts,js}",
+  input: ["src/**/*.{ts,js}", "!src/**/*.d.ts"],
   external: ["@flashcards/config/load-env"],
   output: {
     dir: ".build",

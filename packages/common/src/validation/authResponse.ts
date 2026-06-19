@@ -1,8 +1,10 @@
+import type { UserDto } from "@common/types";
+
 export type AuthFieldErrors = Partial<
   Record<"username" | "email" | "password", string[]>
 >;
 
 export type AuthResponse = {
-  token?: string;
+  user?: UserDto;
   fieldErrors?: AuthFieldErrors;
 };

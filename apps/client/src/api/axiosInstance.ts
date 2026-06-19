@@ -1,4 +1,6 @@
+import { PUBLIC_LANDING_PATH } from "@flashcards/common";
 import axios, { AxiosInstance } from "axios";
+import Router from "next/router";
 
 const axiosInstance: AxiosInstance = axios.create({
   baseURL: "/api/",
@@ -8,12 +10,23 @@ const axiosInstance: AxiosInstance = axios.create({
   },
 });
 
-export const setAuthToken = (token: string | undefined) => {
-  if (token) {
-    axiosInstance.defaults.headers.Authorization = `Bearer ${token}`;
-  } else {
-    axiosInstance.defaults.headers.Authorization = undefined;
-  }
-};
+// The session lives in an httpOnly cookie that the browser sends automatically
+// on same-origin requests, so no Authorization header is injected here.
+// If the session expires or is revoked mid-session, the API responds 401 — we
+// tear down local auth state (same teardown as an explicit logout) and send the
+// user back to the public landing page.
+axiosInstance.interceptors.response.use(
+  response => response,
+  error => {
+    if (error?.response?.status === 401 && typeof window !== "undefined") {
+      void import("@store/auth").then(({ useAuthStore }) =>
+        useAuthStore.getState().clearSession(),
+      );
+      if (Router.pathname !== PUBLIC_LANDING_PATH)
+        void Router.replace(PUBLIC_LANDING_PATH);
+    }
+    return Promise.reject(error);
+  },
+);
 
 export default axiosInstance;
