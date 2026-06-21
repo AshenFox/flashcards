@@ -1,6 +1,5 @@
 import { useEditCards, useEditCardsUIStore } from "@modules/Edit/hooks";
 import Checkbox from "@ui/Checkbox";
-import Tooltip from "@ui/Tooltip";
 import { memo, useCallback, useMemo } from "react";
 
 import s from "./styles.module.scss";
@@ -35,7 +34,7 @@ const SaveAllCards = () => {
       id={id}
       className={s.save}
       active={active}
-      icon={<Tooltip id={id}>Select all cards</Tooltip>}
+      tooltip="Select all cards"
       onClick={clickAllSave}
       isGroupSelection
     />

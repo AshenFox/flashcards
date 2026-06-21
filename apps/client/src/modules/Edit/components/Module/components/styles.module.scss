@@ -1,17 +1,6 @@
 @use "@styles/vars" as *;
 
 .save {
-  :global(.tooltip__tooltip) {
-    top: -2.5rem;
-    right: 0;
-    width: max-content;
-  }
-
-  :global(.switch__checkbox:checked ~ .tooltip__tooltip) {
-    border-color: var(--success-color);
-    color: var(--success-color);
-  }
-
   :global(.switch__checkbox:checked ~ .switch__switch) {
     border-color: var(--success-color);
 

@@ -1,9 +1,11 @@
+import { Tooltip, TooltipProps } from "@ui/Tooltip";
 import clsx from "clsx";
 import {
   cloneElement,
   memo,
   MouseEventHandler,
   ReactElement,
+  ReactNode,
   SVGProps,
   TouchEventHandler,
 } from "react";
@@ -18,6 +20,8 @@ type CheckboxProps = {
   icon?: ReactElement<SVGProps<SVGSVGElement>>;
   iconSize?: number;
   isGroupSelection?: boolean;
+  tooltip?: ReactNode;
+  tooltipSide?: TooltipProps["side"];
   onClick?: MouseEventHandler<HTMLLabelElement>;
   onMouseDown?: MouseEventHandler<HTMLLabelElement>;
   onMouseUp?: MouseEventHandler<HTMLLabelElement>;
@@ -33,6 +37,8 @@ const Checkbox = ({
   iconSize,
   small = false,
   isGroupSelection = false,
+  tooltip,
+  tooltipSide,
   onClick,
   onMouseDown,
   onMouseUp,
@@ -42,31 +48,33 @@ const Checkbox = ({
   const innerIconSize = iconSize ?? small ? 17 : 25;
 
   return (
-    <div className={clsx(s.container, className)} data-tooltip-id={id}>
-      <input
-        className={clsx(s.checkbox, "checkbox__input")}
-        type="checkbox"
-        id={id}
-        checked={active}
-        readOnly
-      />
-      {!!icon &&
-        cloneElement(icon, { width: innerIconSize, height: innerIconSize })}
-      <label
-        className={clsx(
-          s.label,
-          "checkbox__label",
-          small && s.small,
-          isGroupSelection && s.groupSelection,
-        )}
-        htmlFor={id}
-        onClick={onClick}
-        onMouseDown={onMouseDown}
-        onMouseUp={onMouseUp}
-        onTouchStart={onTouchStart}
-        onTouchEnd={onTouchEnd}
-      />
-    </div>
+    <Tooltip content={tooltip} side={tooltipSide}>
+      <div className={clsx(s.container, className)}>
+        <input
+          className={clsx(s.checkbox, "checkbox__input")}
+          type="checkbox"
+          id={id}
+          checked={active}
+          readOnly
+        />
+        {!!icon &&
+          cloneElement(icon, { width: innerIconSize, height: innerIconSize })}
+        <label
+          className={clsx(
+            s.label,
+            "checkbox__label",
+            small && s.small,
+            isGroupSelection && s.groupSelection,
+          )}
+          htmlFor={id}
+          onClick={onClick}
+          onMouseDown={onMouseDown}
+          onMouseUp={onMouseUp}
+          onTouchStart={onTouchStart}
+          onTouchEnd={onTouchEnd}
+        />
+      </div>
+    </Tooltip>
   );
 };
 

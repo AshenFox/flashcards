@@ -2,7 +2,6 @@ import { useSetCardSRMutation } from "@components/Cards";
 import type { CardDto } from "@flashcards/common";
 import { StudyRegimeIcon } from "@ui/Icons";
 import Switch from "@ui/Switch";
-import Tooltip from "@ui/Tooltip";
 import clsx from "clsx";
 import { memo, MouseEvent, useLayoutEffect, useMemo, useState } from "react";
 
@@ -32,7 +31,6 @@ const SR = ({ cards, loading }: SRProps) => {
     return (
       <div className={s.sr_control_icon}>
         <StudyRegimeIcon />
-        <Tooltip id={`module-sr-control`}>All cards study regime</Tooltip>
       </div>
     );
   }, []);
@@ -43,6 +41,7 @@ const SR = ({ cards, loading }: SRProps) => {
       className={clsx(s.sr_control)}
       active={loading ? prevActive : active}
       icon={switchIcon}
+      tooltip="All cards study regime"
       onClick={clickSwitch}
     />
   );

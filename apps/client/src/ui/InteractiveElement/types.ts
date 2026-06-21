@@ -1,5 +1,6 @@
+import { TooltipProps } from "@ui/Tooltip";
 import { Url } from "next/dist/shared/lib/router/router";
-import { MouseEvent, ReactElement, SVGProps } from "react";
+import { MouseEvent, ReactElement, ReactNode, SVGProps } from "react";
 
 export type Design = "plain" | "padded" | "outline";
 
@@ -16,6 +17,8 @@ export type InteractiveElementProps = InnerProps & {
   className?: string;
   active?: boolean;
   design?: "plain" | "padded" | "outline";
+  tooltip?: ReactNode;
+  tooltipSide?: TooltipProps["side"];
 };
 
 export type ButtonProps = InteractiveElementProps & {

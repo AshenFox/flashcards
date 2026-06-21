@@ -33,15 +33,7 @@
     }
   }
 
-  :global(.tooltip__tooltip.react-tooltip) {
-    color: var(--danger-color);
-  }
-
   &.question {
-    :global(.tooltip__tooltip) {
-      opacity: 0 !important;
-    }
-
     svg {
       fill: var(--danger-color);
     }

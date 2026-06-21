@@ -1,12 +1,12 @@
 import { useSetCardEdit } from "@components/Cards/state/ui";
 import Speaker from "@components/Speaker";
-import { SRIndicator, SRInfoTooltip } from "@components/SRIndicator";
+import { SRIndicator, SRInfoTooltipContent } from "@components/SRIndicator";
 import type { CardDto } from "@flashcards/common";
 import { useGameStore } from "@modules/Game/store/gameStore";
 import { EditIcon } from "@ui/Icons";
 import Img from "@ui/Img";
 import TextArea from "@ui/TextArea";
-import Tooltip from "@ui/Tooltip";
+import { Tooltip } from "@ui/Tooltip";
 import clsx from "clsx";
 import { useRouter } from "next/router";
 import { memo, MouseEvent } from "react";
@@ -65,10 +65,14 @@ const Card = ({ data, side = "definition", position = null }: CardProps) => {
   const clickEdit = (_e: MouseEvent<HTMLDivElement>) =>
     setCardEdit({ _id, value: true });
 
-  const tooltipTermSRId = `term_${_id}`;
-  const tooltipDefinitionSRId = `definition_${_id}`;
-  const tooltipTermEditId = `term_edit_${_id}`;
-  const tooltipDefinitionEditId = `definition_edit_${_id}`;
+  const srTooltip = (
+    <SRInfoTooltipContent
+      stage={data.stage}
+      nextRep={data.nextRep}
+      prevStage={data.prevStage}
+      active={data.studyRegime}
+    />
+  );
 
   return (
     <div className={cardClassName}>
@@ -79,14 +83,12 @@ const Card = ({ data, side = "definition", position = null }: CardProps) => {
           url={imgurl}
         />
         {isSR && (
-          <>
-            <SRIndicator
-              id={tooltipTermSRId}
-              stage={data.stage}
-              className={clsx(s.sr_indicator)}
-            />
-            <SRInfoTooltip id={tooltipTermSRId} place={"right"} data={data} />
-          </>
+          <SRIndicator
+            stage={data.stage}
+            className={clsx(s.sr_indicator)}
+            tooltipSide="right"
+            tooltip={srTooltip}
+          />
         )}
 
         {definition && (
@@ -100,42 +102,30 @@ const Card = ({ data, side = "definition", position = null }: CardProps) => {
           type={"definition"}
           className={s.speaker}
         />
-        <div
-          className={s.edit}
-          onClick={clickEdit}
-          data-tooltip-id={tooltipTermEditId}
-        >
-          <EditIcon width="21" height="21" />
-        </div>
-        <Tooltip id={tooltipTermEditId}>Edit card</Tooltip>
+        <Tooltip content="Edit card">
+          <div className={s.edit} onClick={clickEdit}>
+            <EditIcon width="21" height="21" />
+          </div>
+        </Tooltip>
       </div>
       <div className={backClassName} onClick={clickSide("definition")}>
         {isSR && (
-          <>
-            <SRIndicator
-              id={tooltipDefinitionSRId}
-              stage={data.stage}
-              className={clsx(s.sr_indicator)}
-            />
-            <SRInfoTooltip
-              id={tooltipDefinitionSRId}
-              place={"right"}
-              data={data}
-            />
-          </>
+          <SRIndicator
+            stage={data.stage}
+            className={clsx(s.sr_indicator)}
+            tooltipSide="right"
+            tooltip={srTooltip}
+          />
         )}
         <div className={s.term_container}>
           <TextArea html={term} className={s.term} />
         </div>
         <Speaker _id={_id} text={term} type={"term"} className={s.speaker} />
-        <div
-          className={s.edit}
-          onClick={clickEdit}
-          data-tooltip-id={tooltipDefinitionEditId}
-        >
-          <EditIcon width="21" height="21" />
-        </div>
-        <Tooltip id={tooltipDefinitionEditId}>Edit card</Tooltip>
+        <Tooltip content="Edit card">
+          <div className={s.edit} onClick={clickEdit}>
+            <EditIcon width="21" height="21" />
+          </div>
+        </Tooltip>
       </div>
     </div>
   );

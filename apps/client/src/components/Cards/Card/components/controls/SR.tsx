@@ -1,5 +1,5 @@
 import { SRIndicator } from "@components/SRIndicator";
-import SRInfoTooltip from "@components/SRIndicator/SRInfoTooltip";
+import SRInfoTooltipContent from "@components/SRIndicator/SRInfoTooltipContent";
 import type { CardDto } from "@flashcards/common";
 import Switch from "@ui/Switch";
 import clsx from "clsx";
@@ -54,11 +54,22 @@ const SR = ({ data }: SRProps) => {
   const switchIcon = useMemo(() => {
     return (
       <div>
-        <SRIndicator stage={data.stage} active={studyRegime} small />
-        <SRInfoTooltip id={id} data={data} />
+        <SRIndicator
+          stage={data.stage}
+          active={studyRegime}
+          small
+          tooltip={
+            <SRInfoTooltipContent
+              stage={data.stage}
+              nextRep={data.nextRep}
+              prevStage={data.prevStage}
+              active={studyRegime}
+            />
+          }
+        />
       </div>
     );
-  }, [studyRegime, id, data]);
+  }, [studyRegime, data]);
 
   return (
     <Switch

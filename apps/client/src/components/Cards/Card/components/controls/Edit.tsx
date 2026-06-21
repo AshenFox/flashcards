@@ -1,6 +1,6 @@
 import type { CardDto } from "@flashcards/common";
 import { EditIcon } from "@ui/Icons";
-import Tooltip from "@ui/Tooltip";
+import { Tooltip } from "@ui/Tooltip";
 import clsx from "clsx";
 import { memo } from "react";
 
@@ -18,19 +18,12 @@ const Edit = ({ data }: EditProps) => {
 
   const clickEdit = () => setCardEdit({ _id, value: true });
 
-  const editCardBtnId = `edit-card-${_id}`;
-
   return (
-    <>
-      <div
-        className={clsx(s.controls_item, s.edit)}
-        onClick={clickEdit}
-        data-tooltip-id={editCardBtnId}
-      >
+    <Tooltip content="Edit card">
+      <div className={clsx(s.controls_item, s.edit)} onClick={clickEdit}>
         <EditIcon width="19" height="19" />
       </div>
-      <Tooltip id={editCardBtnId}>Edit card</Tooltip>
-    </>
+    </Tooltip>
   );
 };
 

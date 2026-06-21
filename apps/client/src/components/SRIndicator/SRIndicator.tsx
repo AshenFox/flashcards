@@ -1,15 +1,17 @@
 import { StudyRegimeIcon } from "@ui/Icons";
+import { Tooltip, TooltipProps } from "@ui/Tooltip";
 import clsx from "clsx";
-import { memo, ReactElement, useMemo } from "react";
+import { memo, ReactElement, ReactNode, useMemo } from "react";
 
 import s from "./styles.module.scss";
 
 export type SRIndicatorProps = {
   stage: number;
-  id?: string;
   active?: boolean;
   small?: boolean;
   className?: string;
+  tooltip?: ReactNode;
+  tooltipSide?: TooltipProps["side"];
 };
 
 const full = 360;
@@ -20,10 +22,11 @@ const diameter = radius * 2;
 
 const SRIndicator = ({
   stage,
-  id,
   active = true,
   small = false,
   className,
+  tooltip,
+  tooltipSide,
 }: SRIndicatorProps) => {
   const dots = useMemo(() => {
     let angle = 120;
@@ -56,19 +59,20 @@ const SRIndicator = ({
   }, [stage]);
 
   return (
-    <div
-      className={clsx(
-        "sr_indicator",
-        s.indicator,
-        active && s.active,
-        small && s.small,
-        className,
-      )}
-      data-tooltip-id={id}
-    >
-      <StudyRegimeIcon />
-      <div className={"sr_indicator__dots"}>{dots}</div>
-    </div>
+    <Tooltip content={tooltip} side={tooltipSide}>
+      <div
+        className={clsx(
+          "sr_indicator",
+          s.indicator,
+          active && s.active,
+          small && s.small,
+          className,
+        )}
+      >
+        <StudyRegimeIcon />
+        <div className={"sr_indicator__dots"}>{dots}</div>
+      </div>
+    </Tooltip>
   );
 };
 

@@ -14,6 +14,7 @@ import AuthSpinner from "@modules/AuthSpinner";
 import Dropdown from "@modules/Dropdown";
 import Header from "@modules/Header";
 import ModalRenderer from "@modules/Modal";
+import * as Tooltip from "@radix-ui/react-tooltip";
 import { QueryClientProvider } from "@tanstack/react-query";
 import type { AppContext, AppProps } from "next/app";
 
@@ -30,19 +31,21 @@ const MyApp = ({
 }: MyAppProps) => (
   <QueryClientProvider client={queryClient}>
     <Theme initialTheme={initialTheme}>
-      <Head initialTheme={initialTheme} />
-      <AuthProvider initialUser={initialUser}>
-        <AppWrapper>
-          <Header />
-          <Component {...pageProps} />
-          <Dropdown />
-        </AppWrapper>
-      </AuthProvider>
-      <AuthSpinner />
-      <ModalRenderer />
-      <Voice />
-      <TabUpdateController />
-      <PasteControl />
+      <Tooltip.Provider delayDuration={200} skipDelayDuration={300}>
+        <Head initialTheme={initialTheme} />
+        <AuthProvider initialUser={initialUser}>
+          <AppWrapper>
+            <Header />
+            <Component {...pageProps} />
+            <Dropdown />
+          </AppWrapper>
+        </AuthProvider>
+        <AuthSpinner />
+        <ModalRenderer />
+        <Voice />
+        <TabUpdateController />
+        <PasteControl />
+      </Tooltip.Provider>
     </Theme>
   </QueryClientProvider>
 );
@@ -54,7 +57,7 @@ MyApp.getInitialProps = ({ ctx }: AppContext) => {
   // attached it to req.user (see apps/server/src/index.ts). Read it here to
   // seed the store — no extra fetch. On client navigations ctx.req is absent,
   // so initialUser stays undefined and the live store value is preserved.
-  const initialUser = ctx.req ? (ctx.req.user ?? null) : undefined;
+  const initialUser = ctx.req ? ctx.req.user ?? null : undefined;
   return { initialTheme, initialUser };
 };
 

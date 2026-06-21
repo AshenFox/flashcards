@@ -1,6 +1,6 @@
 import { useSetCardEdit } from "@components/Cards/state/ui";
 import Speaker from "@components/Speaker";
-import { SRIndicator, SRInfoTooltip } from "@components/SRIndicator";
+import { SRIndicator, SRInfoTooltipContent } from "@components/SRIndicator";
 import type { CardDto } from "@flashcards/common";
 import { useSaveSRAnswerMutation } from "@modules/Game/hooks";
 import { useGameStore } from "@modules/Game/store/gameStore";
@@ -10,7 +10,7 @@ import Input from "@ui/Input";
 import { Button } from "@ui/InteractiveElement";
 import TextArea from "@ui/TextArea";
 import TextLabel from "@ui/TextLabel";
-import Tooltip from "@ui/Tooltip";
+import { Tooltip } from "@ui/Tooltip";
 import clsx from "clsx";
 import { useRouter } from "next/router";
 import {
@@ -79,7 +79,8 @@ const Answer = ({ data }: AnswerProps) => {
 
   const continueGame = useCallback(() => {
     if (canContinue) {
-      if (isFirstRound && isSR) saveSRAnswer({ _id, answer: isCorrect ? 1 : -1 });
+      if (isFirstRound && isSR)
+        saveSRAnswer({ _id, answer: isCorrect ? 1 : -1 });
       nextWriteCard();
     }
   }, [
@@ -137,29 +138,28 @@ const Answer = ({ data }: AnswerProps) => {
     };
   }, [keyDownControl]);
 
-  const tooltipSRId = `answer_sr_${_id}`;
-  const tooltipEditId = `answer_edit_${_id}`;
-
   return (
     <div className={s.answer} tabIndex={0} ref={gameAnswer}>
       {isSR && (
-        <>
-          <SRIndicator
-            id={tooltipSRId}
-            stage={data.stage}
-            className={s.sr_indicator}
-          />
-          <SRInfoTooltip id={tooltipSRId} data={data} place="right" />
-        </>
+        <SRIndicator
+          stage={data.stage}
+          className={s.sr_indicator}
+          tooltipSide="right"
+          tooltip={
+            <SRInfoTooltipContent
+              stage={data.stage}
+              nextRep={data.nextRep}
+              prevStage={data.prevStage}
+              active={data.studyRegime}
+            />
+          }
+        />
       )}
-      <div
-        className={clsx(s.edit, isSR && s.sr)}
-        onClick={clickEdit}
-        data-tooltip-id={tooltipEditId}
-      >
-        <EditIcon width="21" height="21" />
-      </div>
-      <Tooltip id={tooltipEditId}>Edit card</Tooltip>
+      <Tooltip content="Edit card">
+        <div className={clsx(s.edit, isSR && s.sr)} onClick={clickEdit}>
+          <EditIcon width="21" height="21" />
+        </div>
+      </Tooltip>
       <h1 className={clsx(s.type, activeCard.answer && s[activeCard.answer])}>
         {activeCard.answer}
       </h1>

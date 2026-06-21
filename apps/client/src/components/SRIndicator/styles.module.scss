@@ -5,6 +5,10 @@
   display: flex;
   flex-direction: column;
   gap: 0.2rem;
+
+  &.info_active {
+    color: var(--success-color);
+  }
 }
 
 .indicator {
@@ -66,10 +70,6 @@
 
     :global(.sr_indicator__dots) {
       opacity: 1;
-    }
-
-    & ~ :global(.tooltip__tooltip) .info {
-      color: var(--success-color);
     }
   }
 }

@@ -1,5 +1,5 @@
 import { DropStudyRegimeIcon } from "@ui/Icons";
-import Tooltip from "@ui/Tooltip";
+import { Tooltip } from "@ui/Tooltip";
 import clsx from "clsx";
 import { memo, MouseEvent } from "react";
 
@@ -11,22 +11,20 @@ type SRDropProps = {
   onActivate: () => void;
 };
 
-const SRDrop = ({ moduleId, question, onActivate }: SRDropProps) => {
+const SRDrop = ({ question, onActivate }: SRDropProps) => {
   const clickDropSR = (_e: MouseEvent<HTMLDivElement>) => onActivate();
 
   return (
-    <div
-      data-tooltip-id={`drop-sr-module-${moduleId}`}
-      className={clsx(s.drop, {
-        [s.active]: question,
-      })}
-      onClick={clickDropSR}
-    >
-      <DropStudyRegimeIcon width="25" height="25" />
-      <Tooltip id={`drop-sr-module-${moduleId}`}>
-        Drop all cards study progress
-      </Tooltip>
-    </div>
+    <Tooltip content="Drop all cards study progress">
+      <div
+        className={clsx(s.drop, {
+          [s.active]: question,
+        })}
+        onClick={clickDropSR}
+      >
+        <DropStudyRegimeIcon width="25" height="25" />
+      </div>
+    </Tooltip>
   );
 };
 
