@@ -1,7 +1,7 @@
 import Container from "@components/Container";
 import ContentWrapper from "@components/ContentWrapper";
+import { useAuthStore } from "@features/auth";
 import { getIsGame } from "@helpers/functions/determinePath";
-import { useAuthStore } from "@store/auth";
 import { useLayoutStore } from "@store/layout";
 import clsx from "clsx";
 import { useRouter } from "next/router";
@@ -86,3 +86,4 @@ const Header = () => {
 };
 
 export default memo(Header);
+

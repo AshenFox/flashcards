@@ -1,8 +1,8 @@
+import { useAuthStore } from "@features/auth";
 import { type SignUpFormData, signUpSchema } from "@flashcards/common";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Eye from "@modules/Modal/Eye";
 import { useModalStore } from "@modules/Modal/store";
-import { useAuthStore } from "@store/auth";
 import Input from "@ui/Input";
 import { Button } from "@ui/InteractiveElement";
 import TextLabel from "@ui/TextLabel";
@@ -128,3 +128,4 @@ const SignUp = () => {
 };
 
 export default memo(SignUp);
+

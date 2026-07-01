@@ -1,5 +1,5 @@
+import { useAuthStore } from "@features/auth";
 import { getIsGame } from "@helpers/functions/determinePath";
-import { useAuthStore } from "@store/auth";
 import LogoIcon from "@ui/Icons/components/LogoIcon";
 import clsx from "clsx";
 import Link from "next/link";
@@ -26,3 +26,4 @@ const Logo = () => {
 };
 
 export default memo(Logo);
+

@@ -5,22 +5,18 @@ import {
   toUserDto,
 } from "@flashcards/common";
 import userModel from "@models/user_model";
-import { env } from "@setup";
-import { validateLogIn, validateSignUp } from "@supplemental/checks";
-import { sessionCookieOptions } from "@supplemental/middleware";
 import bcrypt from "bcryptjs";
 import express, { Request, Response } from "express";
-import jwt from "jsonwebtoken";
+
+import { sessionCookieOptions } from "./cookies";
+import { signAuthToken } from "./session";
+import { validateLogIn, validateSignUp } from "./validation";
 
 const router = express.Router();
 
 type ResError = {
   errorBody: string;
 };
-
-// @route ------ POST api/auth/sign_up
-// @desc ------- Sign up a user
-// @access ----- Public
 
 type SignUpPostReqBody = {
   username: string;
@@ -51,7 +47,7 @@ router.post("/sign_up", async (req: SignUpPostReq, res: SignUpPostRes) => {
 
     console.log("A new user has been signed up!");
 
-    const token = jwt.sign({ _id: user._id }, env.JWT_SECRET);
+    const token = signAuthToken(user._id);
 
     console.log("A user has logged in!");
 
@@ -66,10 +62,6 @@ router.post("/sign_up", async (req: SignUpPostReq, res: SignUpPostRes) => {
     res.status(500).json({ errorBody: "Server Error" });
   }
 });
-
-// @route ------ POST api/auth/log_in
-// @desc ------- Log in a user
-// @access ----- Public
 
 type LogInPostReqBody = {
   username: string;
@@ -94,7 +86,7 @@ router.post("/log_in", async (req: LogInPostReq, res: LogInPostRes) => {
 
     if (!user) throw new Error("The user has not been found.");
 
-    const token = jwt.sign({ _id: user._id }, env.JWT_SECRET);
+    const token = signAuthToken(user._id);
 
     console.log("A user has logged in!");
 
@@ -110,13 +102,10 @@ router.post("/log_in", async (req: LogInPostReq, res: LogInPostRes) => {
   }
 });
 
-// @route ------ POST api/auth/log_out
-// @desc ------- Clear the session cookie
-// @access ----- Public
-
 router.post("/log_out", (_req: Request, res: Response) => {
   res.clearCookie(SESSION_COOKIE, sessionCookieOptions);
   res.status(200).json({ success: true });
 });
 
 export default router;
+

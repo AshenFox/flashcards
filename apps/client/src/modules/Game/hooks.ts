@@ -7,9 +7,9 @@ import {
   CardsCacheHook,
   cardsUISlice,
 } from "@components/Cards";
+import { useAuthStore } from "@features/auth";
 import type { CardDto, GetMainModuleCardsResponseDto } from "@flashcards/common";
 import { useGameStore } from "@modules/Game/store/gameStore";
-import { useAuthStore } from "@store/auth";
 import { createStoreHook, withProduce } from "@store/helpers";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { saveLastUpdate } from "@utils/saveLastUpdate";
@@ -241,3 +241,4 @@ export const useCheckWriteAnswer = () => {
     [cardsCache, checkWriteAnswerReducer],
   );
 };
+

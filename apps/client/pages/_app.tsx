@@ -7,20 +7,23 @@ import PasteControl from "@configuration/PasteControl";
 import TabUpdateController from "@configuration/TabUpdateController";
 import Theme, { parseThemeFromCookie } from "@configuration/Theme";
 import Voice from "@configuration/Voice";
-import type { UserDto } from "@flashcards/common";
+import {
+  AuthStoreProvider,
+  getInitialAuthUser,
+  type InitialAuthUser,
+} from "@features/auth";
 import AppWrapper from "@modules/AppWrapper";
 import AuthSpinner from "@modules/AuthSpinner";
 import Dropdown from "@modules/Dropdown";
 import Header from "@modules/Header";
 import ModalRenderer from "@modules/Modal";
 import * as Tooltip from "@radix-ui/react-tooltip";
-import { AuthStoreProvider } from "@store/auth";
 import { QueryClientProvider } from "@tanstack/react-query";
 import type { AppContext, AppProps } from "next/app";
 
 type MyAppProps = AppProps & {
   initialTheme: "light" | "dark" | null;
-  initialUser: UserDto | null | undefined;
+  initialUser: InitialAuthUser;
 };
 
 const MyApp = ({
@@ -53,14 +56,10 @@ const MyApp = ({
 MyApp.getInitialProps = ({ ctx }: AppContext) => {
   const cookieHeader = ctx.req?.headers?.cookie;
   const initialTheme = parseThemeFromCookie(cookieHeader);
-  // The Express auth guard already resolved the session for this request and
-  // attached it to req.user (see apps/server/src/index.ts). Read it here and
-  // hand it to AuthStoreProvider, which seeds a per-request store — no extra
-  // fetch. On client navigations ctx.req is absent, so initialUser stays
-  // undefined and the existing store is reused (see AuthStoreProvider).
-  const initialUser = ctx.req ? ctx.req.user ?? null : undefined;
+  const initialUser = getInitialAuthUser(ctx);
 
   return { initialTheme, initialUser };
 };
 
 export default MyApp;
+

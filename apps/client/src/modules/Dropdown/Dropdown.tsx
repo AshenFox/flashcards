@@ -1,10 +1,10 @@
+import { useAuthStore } from "@features/auth";
 import {
   getIsDraft,
   getIsFlashcards,
   getIsSettings,
   getIsWrite,
 } from "@helpers/functions/determinePath";
-import { useAuthStore } from "@store/auth";
 import { useLayoutStore } from "@store/layout";
 import { NewModuleIcon } from "@ui/Icons";
 import Portal from "@ui/Portal";
@@ -108,3 +108,4 @@ const Dropdown = () => {
 };
 
 export default memo(Dropdown);
+

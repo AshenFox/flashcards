@@ -2,11 +2,7 @@ import type { User, UserDto } from "@common/types";
 
 /**
  * Convert a server-side `User` (Mongoose document shape: ObjectId / Date) into
- * the JSON-serializable `UserDto` the client consumes (string id / ISO dates).
- * This is the conversion JSON serialization performs at runtime anyway, made
- * explicit so the wire shape is type-checked instead of cast away.
- *
- * The password hash is never sent — it is blanked here.
+ * the JSON-serializable `UserDto` the client consumes.
  */
 export const toUserDto = (user: User): UserDto => ({
   _id: user._id.toString(),

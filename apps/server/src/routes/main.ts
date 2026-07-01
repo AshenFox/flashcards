@@ -1,3 +1,4 @@
+import { auth } from "@auth/apiAuth";
 import {
   Card,
   ErrorResponse,
@@ -14,7 +15,7 @@ import {
 } from "@flashcards/common";
 import cardModel, { CardSortObj } from "@models/card_model";
 import moduleModel, { ModuleSortObj } from "@models/module_model";
-import { auth, query } from "@supplemental/middleware";
+import { query } from "@supplemental/middleware";
 import { ResponseLocals } from "@supplemental/types";
 import express, { Request } from "express";
 import { FilterQuery } from "mongoose";
@@ -325,3 +326,5 @@ router.get(
 );
 
 export default router;
+
+

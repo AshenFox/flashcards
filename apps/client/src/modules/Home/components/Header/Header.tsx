@@ -1,4 +1,4 @@
-import { useAuthStore } from "@store/auth";
+import { useAuthStore } from "@features/auth";
 import Skeleton from "@ui/Skeleton";
 import React, { memo } from "react";
 
@@ -21,3 +21,4 @@ const Header = () => {
 };
 
 export default memo(Header);
+

@@ -21,3 +21,4 @@ export type AuthStore = AuthState & {
   logIn: (credentials: LogInFormData) => Promise<AuthActionResult>;
   signUp: (data: SignUpFormData) => Promise<AuthActionResult>;
 };
+

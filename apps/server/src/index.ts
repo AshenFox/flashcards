@@ -1,5 +1,6 @@
 // routes
-import auth from "@routes/auth";
+import { guard } from "@auth/guard";
+import auth from "@auth/router";
 import edit from "@routes/edit";
 import img_search from "@routes/img_search";
 import main from "@routes/main";
@@ -9,7 +10,6 @@ import sr from "@routes/sr";
 import { env } from "@setup";
 // supplemental
 import connectDB from "@supplemental/db";
-import { guard } from "@supplemental/middleware";
 import { send_notifications } from "@supplemental/notifications_control";
 // dependencies
 import cookieParser from "cookie-parser";
@@ -64,7 +64,7 @@ expressServer.use("/api/notifications", notifications);
 // ----------
 // ----------
 
-// Auth route guard (see @supplemental/middleware): redirects before Next
+// Auth route guard (see @auth/guard): redirects before Next
 // renders and seeds req.user for getInitialProps.
 expressServer.get("*", (req, res, next) => {
   void guard(req, res, next);
@@ -144,3 +144,5 @@ start();
 // ----------
 // ----------
 // ----------
+
+

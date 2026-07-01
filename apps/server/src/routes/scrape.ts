@@ -1,4 +1,4 @@
-import { auth } from "@supplemental/middleware";
+import { auth } from "@auth/apiAuth";
 import { ScrapingHeaders } from "@supplemental/scrape";
 import axios from "axios";
 import * as cheerio from "cheerio";
@@ -209,3 +209,4 @@ router.get("/urban", auth, async (req: UrbanGetReq, res: UrbanGetRes) => {
 });
 
 export default router;
+

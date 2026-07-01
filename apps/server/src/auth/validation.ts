@@ -125,9 +125,7 @@ export const validateSignUp = async (
 ): Promise<ValidationResult<SignUpFormData>> => {
   const result = await signUpValidator.safeParseAsync(data);
 
-  if (result.success) {
-    return { success: true, data: result.data };
-  }
+  if (result.success) return { success: true, data: result.data };
 
   return { success: false, fieldErrors: toFieldErrors(result.error) };
 };
@@ -137,9 +135,8 @@ export const validateLogIn = async (
 ): Promise<ValidationResult<LogInFormData>> => {
   const result = await logInValidator.safeParseAsync(data);
 
-  if (result.success) {
-    return { success: true, data: result.data };
-  }
+  if (result.success) return { success: true, data: result.data };
 
   return { success: false, fieldErrors: toFieldErrors(result.error) };
 };
+

@@ -1,4 +1,3 @@
-import { authLogIn, authLogOut, authSignUp } from "@api/methods";
 import { queryClient } from "@api/queryClient";
 import {
   type AuthResponse,
@@ -15,33 +14,23 @@ import { createStore } from "zustand";
 import { devtools } from "zustand/middleware";
 import { immer } from "zustand/middleware/immer";
 
+import { authLogIn, authLogOut, authSignUp } from "../api";
 import type { AuthActionResult, AuthStore } from "./types";
 
-// The slice is parameterised by the request's user so the store is seeded at
-// creation. zustand's useStore reads getInitialState() for its server snapshot,
-// so a per-request initial state is what makes SSR render the right auth state
-// with no flash — no render-time seeding required.
 const createAuthSlice =
   (initialUser: UserDto | null): Slice<AuthStore> =>
   setAction => {
     const set = withActionName<AuthStore>(setAction);
 
-    // Tear down all client-side session state. Shared by an explicit logOut and
-    // by the 401 interceptor when the session expires/revokes mid-use, so both
-    // paths clean up identically (user, query cache, open dropdown).
     const clearSession = (label: string) => {
       set(state => {
         state.user = null;
       }, label);
       queryClient.clear();
       useLayoutStore.getState().setDropdownActive(false);
-      // Broadcast to other tabs (via the storage event TabUpdateController
-      // listens for) so they reload and pick up the now-cleared session cookie.
       saveLastUpdate();
     };
 
-    // Shared tail of logIn/signUp: persist the user and redirect, or surface the
-    // server-side field errors.
     const applyAuthResult = (
       { user, fieldErrors }: AuthResponse,
       label: string,
@@ -53,7 +42,6 @@ const createAuthSlice =
         state.user = user;
       }, label);
 
-      // Broadcast to other tabs so they reload into the new session.
       saveLastUpdate();
 
       void Router.replace(DEFAULT_AUTHED_PATH);
@@ -73,9 +61,6 @@ const createAuthSlice =
         }, "clearUser"),
       clearSession: () => clearSession("clearSession"),
       logOut: async () => {
-        // The httpOnly cookie is the source of truth, so clear it server-side
-        // first. If that fails, keep the user logged in rather than faking a
-        // logout that the next navigation's guard would silently undo.
         try {
           await authLogOut();
         } catch (err) {
@@ -95,11 +80,6 @@ const createAuthSlice =
     };
   };
 
-/**
- * Build a fresh auth store seeded with the request's user. Created once per
- * request on the server (so no cross-request bleed) and once per app load on the
- * client, via AuthStoreProvider.
- */
 export const createAuthStore = (initialUser: UserDto | null) => {
   const storeWithImmer = immer(createAuthSlice(initialUser));
 
@@ -112,3 +92,4 @@ export const createAuthStore = (initialUser: UserDto | null) => {
 };
 
 export type AuthStoreApi = ReturnType<typeof createAuthStore>;
+
