@@ -19,8 +19,11 @@ axiosInstance.interceptors.response.use(
   response => response,
   error => {
     if (error?.response?.status === 401 && typeof window !== "undefined") {
-      void import("@store/auth").then(({ useAuthStore }) =>
-        useAuthStore.getState().clearSession(),
+      // Lazy import to avoid a cycle (this module is pulled in by the store's
+      // api methods). getAuthStore() returns the per-request store registered by
+      // AuthStoreProvider on mount.
+      void import("@store/auth").then(({ getAuthStore }) =>
+        getAuthStore()?.getState().clearSession(),
       );
       if (Router.pathname !== PUBLIC_LANDING_PATH)
         void Router.replace(PUBLIC_LANDING_PATH);
