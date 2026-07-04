@@ -1,6 +1,5 @@
 import type { CardDto } from "@flashcards/common";
 import Checkbox from "@ui/Checkbox";
-import Tooltip from "@ui/Tooltip";
 import { memo, MouseEvent, TouchEvent, useCallback, useRef } from "react";
 
 import { useCardsUIStore } from "../../../state/context";
@@ -51,7 +50,7 @@ const Save = ({ data }: SaveProps) => {
       className={s.save}
       active={save}
       small
-      icon={<Tooltip id={id}>Select the card</Tooltip>}
+      tooltip="Select the card"
       onMouseDown={down}
       onMouseUp={up}
       onTouchStart={down}

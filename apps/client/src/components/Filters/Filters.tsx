@@ -3,7 +3,6 @@ import { FilterIcon, UndoIcon } from "@ui/Icons";
 import FilledFilterIcon from "@ui/Icons/components/FilledFilterIcon";
 import Input from "@ui/Input";
 import { Button } from "@ui/InteractiveElement";
-import Tooltip from "@ui/Tooltip";
 import clsx from "clsx";
 import {
   ChangeEventHandler,
@@ -132,10 +131,8 @@ const Filters = ({
             icon={isFilterEmpty ? <FilterIcon /> : <FilledFilterIcon />}
             onClick={toggleFilter}
             id={filterBtnId}
+            tooltip={isFilterOpen ? "Close filters" : "Open filters"}
           />
-          <Tooltip id={filterBtnId}>
-            {isFilterOpen ? "Close filters" : "Open filters"}
-          </Tooltip>
         </div>
         {isFilterOpen && (
           <div className={s.group_container}>
@@ -167,10 +164,8 @@ const Filters = ({
                     })}
                     icon={<UndoIcon />}
                     onClick={onResetClick}
+                    tooltip={isFilterEmpty ? undefined : "Reset filters"}
                   />
-                  {!isFilterEmpty && (
-                    <Tooltip id={resetBtnId}>Reset filters</Tooltip>
-                  )}
                 </div>
               </div>
             </div>

@@ -1,6 +1,6 @@
 import type { CardDto } from "@flashcards/common";
 import { DeleteIcon } from "@ui/Icons";
-import Tooltip from "@ui/Tooltip";
+import { Tooltip } from "@ui/Tooltip";
 import clsx from "clsx";
 import { memo, useCallback } from "react";
 
@@ -22,19 +22,15 @@ const Delete = ({ data, active = false }: DeleteProps) => {
     [_id, active, deleteCard],
   );
 
-  const id = `delete-card-${_id}`;
-
   return (
-    <>
+    <Tooltip content="Delete card">
       <div
         className={clsx(s.delete, !active && s.inactive)}
         onClick={clickCardDelete}
-        data-tooltip-id={id}
       >
         <DeleteIcon width="17" height="17" />
       </div>
-      <Tooltip id={id}>Delete card</Tooltip>
-    </>
+    </Tooltip>
   );
 };
 

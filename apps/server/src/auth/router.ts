@@ -1,22 +1,22 @@
-import { type AuthResponse, User } from "@flashcards/common";
+import {
+  type AuthResponse,
+  SESSION_COOKIE,
+  SESSION_MAX_AGE_S,
+  toUserDto,
+} from "@flashcards/common";
 import userModel from "@models/user_model";
-import { env } from "@setup";
-import { validateLogIn, validateSignUp } from "@supplemental/checks";
-import { auth } from "@supplemental/middleware";
-import { ResponseLocals } from "@supplemental/types";
 import bcrypt from "bcryptjs";
 import express, { Request, Response } from "express";
-import jwt from "jsonwebtoken";
+
+import { sessionCookieOptions } from "./cookies";
+import { signAuthToken } from "./session";
+import { validateLogIn, validateSignUp } from "./validation";
 
 const router = express.Router();
 
 type ResError = {
   errorBody: string;
 };
-
-// @route ------ POST api/auth/sign_up
-// @desc ------- Sign up a user
-// @access ----- Public
 
 type SignUpPostReqBody = {
   username: string;
@@ -47,20 +47,21 @@ router.post("/sign_up", async (req: SignUpPostReq, res: SignUpPostRes) => {
 
     console.log("A new user has been signed up!");
 
-    const token = jwt.sign({ _id: user._id }, env.JWT_SECRET);
+    const token = signAuthToken(user._id);
 
     console.log("A user has logged in!");
 
-    res.status(200).json({ token });
+    res.cookie(SESSION_COOKIE, token, {
+      ...sessionCookieOptions,
+      maxAge: SESSION_MAX_AGE_S * 1000,
+    });
+
+    res.status(200).json({ user: toUserDto(user) });
   } catch (err) {
     console.error(err);
     res.status(500).json({ errorBody: "Server Error" });
   }
 });
-
-// @route ------ POST api/auth/log_in
-// @desc ------- Log in a user
-// @access ----- Public
 
 type LogInPostReqBody = {
   username: string;
@@ -85,38 +86,26 @@ router.post("/log_in", async (req: LogInPostReq, res: LogInPostRes) => {
 
     if (!user) throw new Error("The user has not been found.");
 
-    const token = jwt.sign({ _id: user._id }, env.JWT_SECRET);
+    const token = signAuthToken(user._id);
 
     console.log("A user has logged in!");
 
-    res.status(200).json({ token });
+    res.cookie(SESSION_COOKIE, token, {
+      ...sessionCookieOptions,
+      maxAge: SESSION_MAX_AGE_S * 1000,
+    });
+
+    res.status(200).json({ user: toUserDto(user) });
   } catch (err) {
     console.error(err);
     res.status(500).json({ errorBody: "Server Error" });
   }
 });
 
-// @route ------ GET api/auth
-// @desc ------- Authenticate
-// @access ----- Private
-
-type AuthGetRes = ResponseLocals<User | ResError | null>;
-
-router.get("/", auth, async (req: Request, res: AuthGetRes) => {
-  try {
-    const _id = res.locals.user._id;
-
-    const user = await userModel.findOne({
-      _id,
-    });
-
-    if (user) user.password = "";
-
-    res.status(200).json(user);
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ errorBody: "Server Error" });
-  }
+router.post("/log_out", (_req: Request, res: Response) => {
+  res.clearCookie(SESSION_COOKIE, sessionCookieOptions);
+  res.status(200).json({ success: true });
 });
 
 export default router;
+

@@ -20,6 +20,9 @@ const cardFields = {
 
 type GamePrepareSlice = Pick<GameStore, "flashcards" | "write" | "orderIds">;
 
+const buildCardsById = (cards: CardDto[]): Record<string, CardDto> =>
+  Object.fromEntries(cards.map(c => [c._id, c]));
+
 const buildOrderIds = (cards: CardDto[], mode: "module" | "sr"): string[] => {
   if (mode === "module") {
     return cards.map(c => c._id);
@@ -61,6 +64,7 @@ const applyPrepareWrite = (
 };
 
 const gameInitState: GameState = {
+  cardsById: {},
   flashcards: {
     progress: 0,
     side: "definition",
@@ -114,6 +118,7 @@ export type GameStore = GameState & {
   shuffleOrder: (cardsById: Record<string, CardDto>) => void;
   sortOrder: (cardsById: Record<string, CardDto>) => void;
   resetOrder: () => void;
+  updateCardSnapshot: (_id: string, patch: Partial<CardDto>) => void;
 };
 
 const createGameSlice: Slice<GameStore> = setAction => {
@@ -125,6 +130,7 @@ const createGameSlice: Slice<GameStore> = setAction => {
 
     resetAllGameFields: () => {
       set(state => {
+        state.cardsById = {};
         state.flashcards = { ...gameInitState.flashcards };
         state.write = {
           ...gameInitState.write,
@@ -191,12 +197,23 @@ const createGameSlice: Slice<GameStore> = setAction => {
               .length === 0;
           state.write.is_game_finished = is_game_finished;
           state.write.is_round_finished = !is_game_finished;
+
+          if (is_game_finished) {
+            state.write.rounds.push({
+              answered: [...state.write.answered],
+              cards_num:
+                state.write.remaining.length + state.write.answered.length,
+            });
+            state.write.answered = [];
+          }
         }
       }, "nextWriteCard");
     },
 
     nextWriteRound: () => {
       set(state => {
+        if (!state.write.answered.length) return;
+
         state.write.answer = "";
         state.write.copy_answer = "";
         state.write.is_round_finished = false;
@@ -288,18 +305,28 @@ const createGameSlice: Slice<GameStore> = setAction => {
         const areAllCardsCorrect = !state.write.answered.filter(
           item => item.answer === "incorrect",
         ).length;
-        if (areAllCardsCorrect) state.write.is_game_finished = true;
+        if (areAllCardsCorrect) {
+          state.write.is_game_finished = true;
+
+          state.write.rounds.push({
+            answered: [...state.write.answered],
+            cards_num: state.write.answered.length,
+          });
+          state.write.answered = [];
+        }
       }, "endWriteEarly");
     },
 
     initFromCards: (cards, mode) => {
       set(state => {
+        state.cardsById = buildCardsById(cards);
         state.orderIds = buildOrderIds(cards, mode);
       }, "initFromCards");
     },
 
     initAndPrepareFlashcards: (cards, mode) => {
       set(state => {
+        state.cardsById = buildCardsById(cards);
         state.orderIds = buildOrderIds(cards, mode);
         applyPrepareFlashcards(state as WritableDraft<GamePrepareSlice>);
       }, "initAndPrepareFlashcards");
@@ -307,8 +334,9 @@ const createGameSlice: Slice<GameStore> = setAction => {
 
     initAndPrepareWrite: (cards, mode) => {
       set(state => {
+        state.cardsById = buildCardsById(cards);
         state.orderIds = buildOrderIds(cards, mode);
-        const cardsById = Object.fromEntries(cards.map(c => [c._id, c]));
+        const cardsById = state.cardsById;
         applyPrepareWrite(state as WritableDraft<GamePrepareSlice>, cardsById);
       }, "initAndPrepareWrite");
     },
@@ -335,6 +363,14 @@ const createGameSlice: Slice<GameStore> = setAction => {
       set(state => {
         state.orderIds = [];
       }, "resetOrder");
+    },
+
+    updateCardSnapshot: (_id, patch) => {
+      set(state => {
+        const card = state.cardsById[_id];
+        if (!card) return;
+        Object.assign(card, patch);
+      }, "updateCardSnapshot");
     },
   };
 };

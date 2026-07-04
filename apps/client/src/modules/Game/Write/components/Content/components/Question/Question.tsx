@@ -1,5 +1,5 @@
 import Speaker from "@components/Speaker";
-import { SRIndicator, SRInfoTooltip } from "@components/SRIndicator";
+import { SRIndicator, SRInfoTooltipContent } from "@components/SRIndicator";
 import type { CardDto } from "@flashcards/common";
 import { useCheckWriteAnswer } from "@modules/Game/hooks";
 import { useGameStore } from "@modules/Game/store/gameStore";
@@ -86,20 +86,23 @@ const Question = ({ data }: QuestionProps) => {
     };
   }, [keyDownAnswer]);
 
-  const tooltipId = `question_${_id}`;
-
   return (
     <div className={s.question}>
       <div className={s.container}>
         {isSR && (
-          <>
-            <SRIndicator
-              id={tooltipId}
-              stage={data.stage}
-              className={s.sr_indicator}
-            />
-            <SRInfoTooltip id={tooltipId} data={data} place="right" />
-          </>
+          <SRIndicator
+            stage={data.stage}
+            className={s.sr_indicator}
+            tooltipSide="right"
+            tooltip={
+              <SRInfoTooltipContent
+                stage={data.stage}
+                nextRep={data.nextRep}
+                prevStage={data.prevStage}
+                active={data.studyRegime}
+              />
+            }
+          />
         )}
         {term && (
           <div className={s.do_not_know}>

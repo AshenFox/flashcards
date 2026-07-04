@@ -23,6 +23,7 @@
       "@pages/*": ["./pages/*"],
       "@styles/*": ["./src/styles/*"],
       "@helpers/*": ["./src/helpers/*"],
+      "@features/*": ["./src/features/*"],
       "@api/*": ["./src/api/*"],
       "@api": ["./src/api"],
       "@store/*": ["./src/store/*"],

@@ -12,6 +12,7 @@
     "strict": true,
     "skipLibCheck": true,
     "paths": {
+      "@auth/*": ["./src/auth/*"],
       "@models/*": ["./src/models/*"],
       "@routes/*": ["./src/routes/*"],
       "@supplemental/*": ["./src/supplemental/*"],

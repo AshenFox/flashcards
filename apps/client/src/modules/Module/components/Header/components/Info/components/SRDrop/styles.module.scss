@@ -11,12 +11,6 @@
     transition: all 0.2s;
   }
 
-  :global(.tooltip__tooltip) {
-    top: -3rem;
-    width: max-content;
-    color: var(--danger-color) !important;
-  }
-
   &:hover {
     svg {
       fill: var(--danger-color);
@@ -24,10 +18,6 @@
   }
 
   &.active {
-    :global(.tooltip__tooltip) {
-      opacity: 0 !important;
-    }
-
     svg {
       fill: var(--danger-color);
     }

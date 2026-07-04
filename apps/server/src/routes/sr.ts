@@ -1,10 +1,10 @@
+import { auth } from "@auth/apiAuth";
 import { Card } from "@flashcards/common";
 import notificationModel from "@models//notification_model";
 import cardModel, {
   CardSortObj,
   updateModuleNumberSR,
 } from "@models/card_model";
-import { auth } from "@supplemental/middleware";
 import { notification_timeout } from "@supplemental/notifications_control";
 import sr_stages from "@supplemental/sr_stages";
 import { ResponseLocals } from "@supplemental/types";
@@ -300,3 +300,4 @@ const get_dates = (stage: number) => {
 
   return { nextRep, prevStage };
 };
+

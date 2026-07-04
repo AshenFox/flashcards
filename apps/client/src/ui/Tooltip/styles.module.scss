@@ -1,23 +1,13 @@
 @use "@styles/vars" as *;
 
-.tooltip:global(.react-tooltip) {
-  --rt-opacity: 1;
-
+.content {
   z-index: 30;
   padding: 0.5rem 1rem;
   border: 1px solid var(--element-border-color);
   border-radius: 0.5rem;
-  margin: 0;
   background-color: var(--element-background-color);
   color: var(--text-color);
   font-size: 1.2rem;
   line-height: 1;
-  pointer-events: none;
-
-  &,
-  & > * {
-    transition-duration: 0.2s;
-    transition-property: padding, border, border-radius, margin,
-      background-color, font-size, line-height, pointer-events, color, opacity;
-  }
+  user-select: none;
 }

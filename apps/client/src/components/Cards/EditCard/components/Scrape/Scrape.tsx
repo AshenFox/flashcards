@@ -1,5 +1,5 @@
 import type { CardDto } from "@flashcards/common";
-import Tooltip from "@ui/Tooltip";
+import { Tooltip } from "@ui/Tooltip";
 import clsx from "clsx";
 import { memo, MouseEvent, useCallback } from "react";
 
@@ -23,33 +23,28 @@ const Scrape = ({ data }: ScrapeProps) => {
     [scrape],
   );
 
-  const cambridgeId = `scrape-cambridge-${_id}`;
-  const urbanId = `scrape-urban-${_id}`;
-
   return (
     <div
       className={clsx(s.scrape, {
         [s.loading]: loading,
       })}
     >
-      <div
-        className={clsx(s.button, s.cod)}
-        onClick={clickScrapeButton("cod")}
-        data-tooltip-id={cambridgeId}
-      >
-        <div className={s.background}></div>
-        <Tooltip id={cambridgeId}>
-          Search in Cambridge Online Dictionary
-        </Tooltip>
-      </div>
-      <div
-        className={clsx(s.button, s.urban)}
-        onClick={clickScrapeButton("urban")}
-        data-tooltip-id={urbanId}
-      >
-        <div className={s.background}></div>
-        <Tooltip id={urbanId}>Search in Urban Dictionary</Tooltip>
-      </div>
+      <Tooltip content="Search in Cambridge Online Dictionary">
+        <div
+          className={clsx(s.button, s.cod)}
+          onClick={clickScrapeButton("cod")}
+        >
+          <div className={s.background}></div>
+        </div>
+      </Tooltip>
+      <Tooltip content="Search in Urban Dictionary">
+        <div
+          className={clsx(s.button, s.urban)}
+          onClick={clickScrapeButton("urban")}
+        >
+          <div className={s.background}></div>
+        </div>
+      </Tooltip>
     </div>
   );
 };

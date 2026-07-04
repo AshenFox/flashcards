@@ -1,7 +1,7 @@
 import type { VoiceData } from "@store/voice";
 import { useVoiceStore } from "@store/voice";
 import { SpeakerIcon } from "@ui/Icons";
-import Tooltip from "@ui/Tooltip";
+import { Tooltip } from "@ui/Tooltip";
 import clsx from "clsx";
 import EasySpeech from "easy-speech";
 import { ForwardedRef, memo, useCallback, useMemo } from "react";
@@ -104,10 +104,12 @@ const Speaker = ({ _id, text, type, className, ref }: SpeakerProps) => {
     }
   }, [active, filteredText, language, setVoiceSpeaking, speak, cancel]);
 
-  const id = `speaker-${_id}-${type}`;
-
   return (
-    <>
+    <Tooltip
+      content={
+        active ? (speaking ? "Stop speaking" : `Speak ${type}`) : undefined
+      }
+    >
       <div
         className={clsx(s.speaker, className, {
           [s.disabled]: !active,
@@ -115,16 +117,10 @@ const Speaker = ({ _id, text, type, className, ref }: SpeakerProps) => {
         })}
         onClick={clickSpeaker}
         ref={ref}
-        data-tooltip-id={id}
       >
         <SpeakerIcon />
       </div>
-      {active && (
-        <Tooltip id={id}>
-          {speaking ? "Stop speaking" : "Speak " + type}
-        </Tooltip>
-      )}
-    </>
+    </Tooltip>
   );
 };
 

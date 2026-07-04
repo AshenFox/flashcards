@@ -1,3 +1,4 @@
+import { auth } from "@auth/apiAuth";
 import {
   DeleteNotificationsSubscriptionParams,
   DeleteNotificationsSubscriptionResponse,
@@ -11,7 +12,6 @@ import {
   Subscription,
   Subscriptions,
 } from "@flashcards/common";
-import { auth } from "@supplemental/middleware";
 import { ResponseLocals } from "@supplemental/types";
 import express, { Request } from "express";
 import { Types } from "mongoose";
@@ -174,3 +174,4 @@ router.delete(
 );
 
 export default router;
+

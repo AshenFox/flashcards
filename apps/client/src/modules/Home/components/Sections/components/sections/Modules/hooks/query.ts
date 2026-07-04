@@ -1,7 +1,7 @@
 import { mainGetModules } from "@api/methods/main/mainGetModules";
 import type { ModulesFilters } from "@components/Filters/store";
+import { useAuthStore } from "@features/auth";
 import type { GetMainModulesResponseDto, ModuleDto } from "@flashcards/common";
-import { useAuthStore } from "@store/auth";
 import { type InfiniteData, useInfiniteQuery } from "@tanstack/react-query";
 import { useEffect } from "react";
 
@@ -73,3 +73,4 @@ export const useHomeModulesQuery = () => {
 
   return query;
 };
+

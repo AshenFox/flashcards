@@ -1,5 +1,6 @@
 import { CardsUIProvider } from "@components/Cards";
 import { useGameStore } from "@modules/Game/store/gameStore";
+import { useRouter } from "next/router";
 import { memo, ReactNode, useCallback, useEffect, useRef } from "react";
 
 import {
@@ -29,12 +30,13 @@ const GameShell = ({ children, mode }: GameShellProps) => {
 
 const useGameBootstrap = (mode: "flashcards" | "write") => {
   const { isSR, moduleId, srNumber } = useGameRouteParams();
+  const router = useRouter();
 
   const sessionKey = isSR
     ? `${mode}:sr:${srNumber}`
     : `${mode}:module:${moduleId}`;
 
-  const { data } = useGameActiveCardsQuery();
+  const { data, isFetched } = useGameActiveCardsQuery();
 
   const initAndPrepareFlashcards = useGameStore(
     s => s.initAndPrepareFlashcards,
@@ -42,6 +44,7 @@ const useGameBootstrap = (mode: "flashcards" | "write") => {
   const initAndPrepareWrite = useGameStore(s => s.initAndPrepareWrite);
   const resetAllGameFields = useGameStore(s => s.resetAllGameFields);
   const resetOrder = useGameStore(s => s.resetOrder);
+  const orderLength = useGameStore(s => s.orderIds.length);
 
   const initializedSession = useRef<string | null>(null);
 
@@ -82,6 +85,14 @@ const useGameBootstrap = (mode: "flashcards" | "write") => {
     isSR,
     mode,
   ]);
+
+  useEffect(() => {
+    const entries = data?.entries;
+    if (!isSR || !isFetched || entries === undefined) return;
+    if (entries.length || orderLength) return;
+
+    router.replace("/home/sr");
+  }, [data?.entries, isFetched, isSR, orderLength, router]);
 };
 
 export default memo(GameShell);

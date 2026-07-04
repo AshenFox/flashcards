@@ -5,11 +5,11 @@ import { queryClient } from "@api/queryClient";
 import { CardsCache, CardsCacheHook, cardsUISlice } from "@components/Cards";
 import type { ModuleCardsFilters } from "@components/Filters/store";
 import { createModuleCardsFilterSlice } from "@components/Filters/store";
+import { useAuthStore } from "@features/auth";
 import type {
   CardDto,
   GetMainModuleCardsResponseDto,
 } from "@flashcards/common";
-import { useAuthStore } from "@store/auth";
 import { createStoreHook, withProduce } from "@store/helpers";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { saveLastUpdate } from "@utils/saveLastUpdate";
@@ -180,3 +180,4 @@ export const useDeleteModuleMutation = () => {
     },
   });
 };
+

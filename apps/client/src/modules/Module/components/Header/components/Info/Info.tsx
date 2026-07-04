@@ -5,7 +5,7 @@ import ConfirmPopup from "@ui/ConfirmPopup";
 import DateStr from "@ui/DateStr";
 import { DeleteIcon, EditIcon } from "@ui/Icons";
 import Skeleton from "@ui/Skeleton";
-import Tooltip from "@ui/Tooltip";
+import { Tooltip } from "@ui/Tooltip";
 import Link from "next/link";
 import { memo, MouseEvent, useCallback, useState } from "react";
 
@@ -76,20 +76,18 @@ const Info = () => {
         />
         <SR cards={cards} loading={cardsLoading} />
         <Link href={`/edit/${currentModule?._id}`}>
-          <div className={s.nav_item} data-tooltip-id="edit-module">
-            <EditIcon width="25" height="25" />
-          </div>
-          <Tooltip id="edit-module">Edit module</Tooltip>
+          <Tooltip content="Edit module">
+            <div className={s.nav_item}>
+              <EditIcon width="25" height="25" />
+            </div>
+          </Tooltip>
         </Link>
 
-        <div
-          className={s.nav_item}
-          onClick={openDeleteModal}
-          data-tooltip-id="delete-module"
-        >
-          <DeleteIcon width="25" height="25" />
-          <Tooltip id="delete-module">Delete module</Tooltip>
-        </div>
+        <Tooltip content="Delete module">
+          <div className={s.nav_item} onClick={openDeleteModal}>
+            <DeleteIcon width="25" height="25" />
+          </div>
+        </Tooltip>
       </div>
     </div>
   );

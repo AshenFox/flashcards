@@ -14,16 +14,7 @@
     height: 25px;
   }
 
-  :global(.tooltip__tooltip) {
-    left: 1.5rem;
-  }
-
   :global(.switch__checkbox:checked) {
-    & ~ .sr_control_icon :global(.tooltip__tooltip) {
-      border-color: var(--success-color);
-      color: var(--success-color);
-    }
-
     & ~ .sr_control_icon svg {
       fill: var(--success-color);
     }

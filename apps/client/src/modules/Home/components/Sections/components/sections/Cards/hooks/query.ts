@@ -1,7 +1,7 @@
 import { mainGetCards } from "@api/methods/main/mainGetCards";
 import type { CardsFilters } from "@components/Filters/store";
+import { useAuthStore } from "@features/auth";
 import type { GetMainCardsResponseDto } from "@flashcards/common";
-import { useAuthStore } from "@store/auth";
 import { type InfiniteData, useInfiniteQuery } from "@tanstack/react-query";
 import { useEffect } from "react";
 
@@ -57,3 +57,4 @@ export const useHomeCardsQuery = () => {
 
   return query;
 };
+

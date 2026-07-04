@@ -1,3 +1,4 @@
+import { auth } from "@auth/apiAuth";
 import {
   Card,
   CardBase,
@@ -8,7 +9,6 @@ import {
 } from "@flashcards/common";
 import cardModel, { updateModuleNumberSR } from "@models/card_model";
 import moduleModel from "@models/module_model";
-import { auth } from "@supplemental/middleware";
 import { notification_timeout } from "@supplemental/notifications_control";
 import { ResponseLocals } from "@supplemental/types";
 import express, { Request, Response } from "express";
@@ -541,3 +541,4 @@ router.put("/cards", auth, async (req: CardsEditReq, res: CardsEditRes) => {
 // ----------------
 
 export default router;
+

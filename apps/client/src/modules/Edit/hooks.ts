@@ -6,6 +6,7 @@ import { mainGetModule } from "@api/methods/main/mainGetModule";
 import { mainGetModuleCards } from "@api/methods/main/mainGetModuleCards";
 import { queryClient } from "@api/queryClient";
 import { CardsCache, CardsCacheHook, cardsUISlice } from "@components/Cards";
+import { useAuthStore } from "@features/auth";
 import type {
   CardDto,
   GetEditDraftResponseDto,
@@ -13,7 +14,6 @@ import type {
   GetMainModuleResponseDto,
   ModuleDto,
 } from "@flashcards/common";
-import { useAuthStore } from "@store/auth";
 import { createStoreHook, withProduce } from "@store/helpers";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { saveLastUpdate } from "@utils/saveLastUpdate";
@@ -301,3 +301,4 @@ export const useEditPublishDraftMutation = () => {
     },
   });
 };
+

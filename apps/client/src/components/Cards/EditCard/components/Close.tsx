@@ -1,6 +1,6 @@
 import type { CardDto } from "@flashcards/common";
 import { CloseIcon } from "@ui/Icons";
-import Tooltip from "@ui/Tooltip";
+import { Tooltip } from "@ui/Tooltip";
 import { memo, useCallback } from "react";
 
 import { useSetCardEdit } from "../../state/ui";
@@ -19,15 +19,12 @@ const Close = ({ data }: CloseProps) => {
     setCardEdit({ _id, value: false });
   }, [_id, setCardEdit]);
 
-  const id = `close-edit-card-${_id}`;
-
   return (
-    <>
-      <div className={s.close} onClick={clickClose} data-tooltip-id={id}>
+    <Tooltip content="Stop editing">
+      <div className={s.close} onClick={clickClose}>
         <CloseIcon width="15" height="15" />
       </div>
-      <Tooltip id={id}>Stop editing</Tooltip>
-    </>
+    </Tooltip>
   );
 };
 

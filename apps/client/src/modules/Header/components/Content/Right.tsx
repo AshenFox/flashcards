@@ -1,3 +1,4 @@
+import { useAuthStore } from "@features/auth";
 import {
   getIsDraft,
   getIsGame,
@@ -6,7 +7,6 @@ import {
 import LogIn from "@modules/Modal/components/Content/LogIn";
 import SignUp from "@modules/Modal/components/Content/SignUp";
 import { useModalStore } from "@modules/Modal/store";
-import { useAuthStore } from "@store/auth";
 import { useLayoutStore } from "@store/layout";
 import { NewModuleIcon } from "@ui/Icons";
 import clsx from "clsx";
@@ -96,3 +96,4 @@ const Right = () => {
 };
 
 export default memo(Right);
+

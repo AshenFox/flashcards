@@ -1,5 +1,5 @@
+import { auth } from "@auth/apiAuth";
 import client_interface from "@supplemental/client_interface";
-import { auth } from "@supplemental/middleware";
 import express, { Request, Response } from "express";
 
 const router = express.Router();
@@ -35,3 +35,4 @@ router.get("/", auth, async (req: Request, res: GetRes) => {
 });
 
 export default router;
+

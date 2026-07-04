@@ -2,6 +2,7 @@
 
 .divider {
   display: flex;
+  align-items: center;
   padding: 0.5rem 1rem;
 }
 
@@ -14,9 +15,9 @@
 }
 
 .line {
-  height: 1px;
-  flex-grow: 10;
-  margin: auto;
-  background-color: var(--divider-color);
-  text-align: center;
+  min-width: 2rem;
+  height: 0;
+  flex: 1 1 auto;
+  border-top: 1px solid var(--divider-color);
+  margin: 0;
 }
