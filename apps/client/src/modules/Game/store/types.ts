@@ -1,3 +1,5 @@
+import type { CardDto } from "@flashcards/common";
+
 export type FlashcardsAnswer = {
   id: string;
   answer: "correct" | "incorrect";
@@ -20,6 +22,7 @@ export type WriteRound = {
 };
 
 export type GameState = {
+  cardsById: Record<string, CardDto>;
   flashcards: {
     progress: number;
     side: "definition" | "term";

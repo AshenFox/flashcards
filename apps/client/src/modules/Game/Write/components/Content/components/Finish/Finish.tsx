@@ -1,14 +1,9 @@
 import Results, { ResultItem } from "@modules/Game/components/Results";
 import { useGameStore } from "@modules/Game/store/gameStore";
-import { memo, useEffect } from "react";
+import { memo } from "react";
 
 const Finish = () => {
-  const nextWriteRound = useGameStore(s => s.nextWriteRound);
   const rounds = useGameStore(s => s.write.rounds);
-
-  useEffect(() => {
-    nextWriteRound();
-  }, [nextWriteRound]);
 
   return (
     <>

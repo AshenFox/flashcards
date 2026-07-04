@@ -2,13 +2,12 @@ import { mainGetModuleCards } from "@api/methods/main/mainGetModuleCards";
 import { srGetCards } from "@api/methods/sr/srGetCards";
 import { srPutAnswer } from "@api/methods/sr/srPutAnswer";
 import { queryClient } from "@api/queryClient";
-import {
-  CardsCache,
-  CardsCacheHook,
-  cardsUISlice,
-} from "@components/Cards";
+import { CardsCache, CardsCacheHook, cardsUISlice } from "@components/Cards";
 import { useAuthStore } from "@features/auth";
-import type { CardDto, GetMainModuleCardsResponseDto } from "@flashcards/common";
+import type {
+  CardDto,
+  GetMainModuleCardsResponseDto,
+} from "@flashcards/common";
 import { useGameStore } from "@modules/Game/store/gameStore";
 import { createStoreHook, withProduce } from "@store/helpers";
 import { useMutation, useQuery } from "@tanstack/react-query";
@@ -45,8 +44,7 @@ export const useGameRouteParams = () => {
 
   const isSR = _id === "sr";
   const moduleId = typeof _id === "string" && !isSR ? _id : undefined;
-  const srNumber =
-    isSR && typeof number === "string" ? +number : undefined;
+  const srNumber = isSR && typeof number === "string" ? +number : undefined;
 
   return { isSR, moduleId, srNumber };
 };
@@ -84,11 +82,6 @@ export const useGameSRCardsQuery = () => {
     queryFn: async () => {
       const { cards } = await srGetCards(srNumber!);
 
-      if (!cards.length) {
-        window.location.replace("/home/sr");
-        throw new Error("No cards to repeat.");
-      }
-
       return { entries: cards } satisfies GameSRCardsData;
     },
     enabled: !!user && isSR && srNumber !== undefined,
@@ -119,6 +112,7 @@ export const useGameCardsUIStore = createStoreHook({
 
 export const useGameCardsCache: CardsCacheHook = () => {
   const queryKey = useGameActiveQueryKey();
+  const cardsById = useGameStore(s => s.cardsById);
 
   const cardsCache: CardsCache = useMemo(
     () => ({
@@ -126,13 +120,16 @@ export const useGameCardsCache: CardsCacheHook = () => {
         const data = queryClient.getQueryData<
           GetMainModuleCardsResponseDto | GameSRCardsData
         >(queryKey);
-        return getEntries(data).find(card => card._id === _id);
+        return (
+          getEntries(data).find(card => card._id === _id) ?? cardsById[_id]
+        );
       },
       getAllCards: () => {
         const data = queryClient.getQueryData<
           GetMainModuleCardsResponseDto | GameSRCardsData
         >(queryKey);
-        return getEntries(data);
+        const entries = getEntries(data);
+        return entries.length ? entries : Object.values(cardsById);
       },
       set: (recipe: (entries: CardDto[]) => void) => {
         queryClient.setQueryData(
@@ -148,7 +145,7 @@ export const useGameCardsCache: CardsCacheHook = () => {
         queryClient.invalidateQueries({ queryKey });
       },
     }),
-    [queryKey],
+    [cardsById, queryKey],
   );
 
   return cardsCache;
@@ -160,12 +157,16 @@ export const useGameCardsCache: CardsCacheHook = () => {
 
 export const useOrderedGameCards = (): CardDto[] => {
   const orderIds = useGameStore(s => s.orderIds);
+  const snapshotCardsById = useGameStore(s => s.cardsById);
   const { data } = useGameActiveCardsQuery();
   const entries = getEntries(data);
 
   const byId = useMemo(
-    () => Object.fromEntries(entries.map(c => [c._id, c])),
-    [entries],
+    () => ({
+      ...snapshotCardsById,
+      ...Object.fromEntries(entries.map(c => [c._id, c])),
+    }),
+    [entries, snapshotCardsById],
   );
 
   return useMemo(
@@ -178,12 +179,16 @@ export const useOrderedGameCards = (): CardDto[] => {
 };
 
 export const useGameCardsById = (): Record<string, CardDto> => {
+  const snapshotCardsById = useGameStore(s => s.cardsById);
   const { data } = useGameActiveCardsQuery();
   const entries = getEntries(data);
 
   return useMemo(
-    () => Object.fromEntries(entries.map(c => [c._id, c])),
-    [entries],
+    () => ({
+      ...snapshotCardsById,
+      ...Object.fromEntries(entries.map(c => [c._id, c])),
+    }),
+    [entries, snapshotCardsById],
   );
 };
 
@@ -195,12 +200,14 @@ export const useGameOrderLength = () => useGameStore(s => s.orderIds.length);
 
 export const useSaveSRAnswerMutation = () => {
   const cardsCache = useGameCardsCache();
+  const updateCardSnapshot = useGameStore(s => s.updateCardSnapshot);
 
   return useMutation({
     mutationFn: ({ _id, answer }: { _id: string; answer: 1 | -1 }) =>
       srPutAnswer(_id, answer),
     onSuccess: (data, { _id }) => {
       saveLastUpdate();
+      updateCardSnapshot(_id, data);
       cardsCache.set(entries => {
         const entry = entries.find(c => c._id === _id);
         if (!entry) return;
@@ -241,4 +248,3 @@ export const useCheckWriteAnswer = () => {
     [cardsCache, checkWriteAnswerReducer],
   );
 };
-
