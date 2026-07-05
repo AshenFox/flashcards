@@ -29,7 +29,7 @@ export const getEditQueryKey = (routeKey?: string) =>
   ["edit", routeKey ?? "none"] as const;
 
 export const getEditCardsQueryKey = (moduleId: string | undefined) =>
-  ["edit", moduleId, "cards", "oldest"] as const;
+  ["edit", moduleId, "cards", "no-order"] as const;
 
 type EditMetaDto = GetMainModuleResponseDto | GetEditDraftResponseDto;
 
