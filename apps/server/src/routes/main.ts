@@ -309,6 +309,18 @@ router.get(
       if (Object.keys(sortObj).length > 0) cardQuery = cardQuery.sort(sortObj);
       const cards = await cardQuery;
 
+      if (Object.keys(sortObj).length === 0) {
+        const orderByCardId = new Map(
+          foundModule.cards.map((cardId, index) => [String(cardId), index]),
+        );
+
+        cards.sort((a, b) => {
+          const aOrder = orderByCardId.get(String(a._id)) ?? Number.MAX_VALUE;
+          const bOrder = orderByCardId.get(String(b._id)) ?? Number.MAX_VALUE;
+          return aOrder - bOrder;
+        });
+      }
+
       res.status(200).json({
         entries: cards,
         pagination: {
